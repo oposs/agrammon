@@ -12,9 +12,9 @@ shows how changes in structure and production methods at the farm level
 affect emissions.
 
 The model was developed by the [Swiss College of Agriculture
-(SHL)[(http://www.shl.bfh.ch/) and the companies [Bonjour Engineering
-GmbH](http://http://www.ecodata.ch) and Oetiker+Partner
-AG(https://www.oetiker.ch), with support from the [Federal Office for the
+(SHL)](http://www.shl.bfh.ch/) and the companies [Bonjour Engineering
+GmbH](http://http://www.ecodata.ch) and [Oetiker+Partner
+AG](https://www.oetiker.ch), with support from the [Federal Office for the
 Environment (FOEN)](https://www.bafu.admin.ch/bafu/en/home.html).
 
 Please see the [Agrammon website](https://www.agrammon.ch) for more details.
