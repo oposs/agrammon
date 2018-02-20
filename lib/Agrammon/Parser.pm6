@@ -41,6 +41,14 @@ grammar Agrammon::Parser {
         ]*
     }
 
+    token section:sym<tests> {
+        <.section-heading('tests')>
+        [
+        | <.blank-line>
+        | <tests=.option-section>
+        ]*
+    }
+
     token option-section {
         '+' <name=.ident> \h* \n
         [
