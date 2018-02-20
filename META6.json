@@ -1,0 +1,15 @@
+{
+    "perl"          : "6.*",
+    "name"          : "Agrammon",
+    "version"       : "0.1",
+    "description"   : "Simulation model for calculating ammonia emissions from agriculture.",
+    "tags"          : [ "Agriculture" ],
+    "authors"       : [ "Fritz Zaucker <fritz.zaucker@oetiker.ch>",
+                        "Jonathan Worthington <jonathan@edument.se>" ],
+    "license"       : "Artistic-2.0",
+    "depends"       : [ ],
+    "provides"      : {
+    },
+    "resources": [],
+    "source-url"    : "https://github.com/oposs/agrammon.git"
+}
