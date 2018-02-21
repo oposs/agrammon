@@ -2,7 +2,7 @@ use v6;
 use Agrammon::Model::Input;
 use Agrammon::Model::Module;
 use Agrammon::Model::Output;
-use Agrammon::Model::Tests;
+use Agrammon::Model::Test;
 use Agrammon::Model::Technical;
 
 class Agrammon::ModelBuilder {
@@ -34,7 +34,7 @@ class Agrammon::ModelBuilder {
 
     method section:sym<tests>($/) {
         make 'tests' => $<tests>.map({
-            Agrammon::Model::Tests.new(|.ast)
+            Agrammon::Model::Test.new(|.ast)
         });
     }
 

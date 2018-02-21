@@ -86,4 +86,24 @@ given slurp($*PROGRAM.parent.add('test-data/CMilk.nhd')) -> $test-data {
     }
 }
 
+given slurp($*PROGRAM.parent.add('test-data/CMilkWithTests.nhd')) -> $test-data {
+    my $parsed = Agrammon::Parser.parse($test-data, actions => Agrammon::ModelBuilder);
+    ok $parsed, 'Successfully parsed CMilkWithTests.nhd';
+
+    my $model = $parsed.ast;
+
+    isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
+
+    # just testing additiona tests section
+    my @tests = $model.tests;
+    is @tests.elems, 1, 'Have one test';
+    isa-ok @tests[0], Agrammon::Model::Test,
+        'Correct tests model type';
+    given @tests[0] {
+        is .name, 'test1', 'Correct name of test';
+        is .description, 'Test1',
+            'Correct description for test';
+    }
+
+}
 done-testing;

@@ -1,6 +1,6 @@
 use v6;
 use Agrammon::Model::Input;
-use Agrammon::Model::Tests;
+use Agrammon::Model::Test;
 use Agrammon::Model::Output;
 use Agrammon::Model::Technical;
 
@@ -13,5 +13,5 @@ class Agrammon::Model::Module {
     has Agrammon::Model::Input @.input;
     has Agrammon::Model::Technical @.technical;
     has Agrammon::Model::Output @.output;
-    has Agrammon::Model::Tests @.tests;
+    has Agrammon::Model::Test @.tests;
 }
