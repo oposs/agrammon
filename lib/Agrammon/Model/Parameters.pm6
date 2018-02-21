@@ -1,6 +1,6 @@
 use v6;
-use Agrammon::Model::Parameters::Technical;
+use Agrammon::Model::Technical;
 
 class Agrammon::Model::Parameters {
-    has Agrammon::Model::Parameters::Technical @.technical_parameters;
+    has Agrammon::Model::Technical @.technical_parameters;
 }

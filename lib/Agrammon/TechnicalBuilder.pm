@@ -1,6 +1,6 @@
 use v6;
 use Agrammon::Model::Parameters;
-use Agrammon::Model::Parameters::Technical;
+use Agrammon::Model::Technical;
 
 class Agrammon::TechnicalBuilder {
     method TOP($/) {
@@ -9,7 +9,7 @@ class Agrammon::TechnicalBuilder {
 
     method section:sym<technical_parameters>($/) {
         make 'technical_parameters' => $<technical_parameters>.map({
-            Agrammon::Model::Parameters::Technical.new(|.ast)
+            Agrammon::Model::Technical.new(|.ast)
         });
     }
 
