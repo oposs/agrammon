@@ -1,6 +1,6 @@
 use v6;
 
-grammar Agrammon::Parser {
+grammar Agrammon::ModuleParser {
     token TOP {
         <.blank-line>*
         <section>+
@@ -38,6 +38,14 @@ grammar Agrammon::Parser {
         [
         | <.blank-line>
         | <output=.option-section>
+        ]*
+    }
+
+    token section:sym<tests> {
+        <.section-heading('tests')>
+        [
+        | <.blank-line>
+        | <tests=.option-section>
         ]*
     }
 
