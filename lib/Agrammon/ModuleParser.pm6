@@ -92,8 +92,8 @@ grammar Agrammon::ModuleParser {
         <.blank-line>*
         $<value>=[
             [
-                <!before \s* '+' || '***'>
-                \N+ \n
+                <!before \s* ['+' || '***']>
+                \N* \n
             ]*
         ]
     }
