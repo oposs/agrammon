@@ -9,6 +9,13 @@
     "license"       : "Artistic-2.0",
     "depends"       : [ ],
     "provides"      : {
+        "Agrammon::Model::Input": "lib/Agrammon/Model/Input.pm6",
+        "Agrammon::Model::Module": "lib/Agrammon/Model/Module.pm6",
+        "Agrammon::Model::Output": "lib/Agrammon/Model/Output.pm6",
+        "Agrammon::Model::Technical": "lib/Agrammon/Model/Technical.pm6",
+        "Agrammon::Model::Test": "lib/Agrammon/Model/Test.pm6",
+        "Agrammon::ModuleBuilder": "lib/Agrammon/ModuleBuilder.pm6",
+        "Agrammon::ModuleParser": "lib/Agrammon/ModuleParser.pm6"
     },
     "resources": [],
     "source-url"    : "https://github.com/oposs/agrammon.git"

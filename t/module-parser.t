@@ -1,10 +1,10 @@
 use v6;
-use Agrammon::ModelBuilder;
+use Agrammon::ModuleBuilder;
 use Agrammon::ModuleParser;
 use Test;
 
 given slurp($*PROGRAM.parent.add('test-data/CMilk.nhd')) -> $test-data {
-    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModelBuilder);
+    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModuleBuilder);
     ok $parsed, 'Successfully parsed CMilk.nhd';
 
     my $model = $parsed.ast;
@@ -87,7 +87,7 @@ given slurp($*PROGRAM.parent.add('test-data/CMilk.nhd')) -> $test-data {
 }
 
 given slurp($*PROGRAM.parent.add('test-data/CMilkWithTests.nhd')) -> $test-data {
-    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModelBuilder);
+    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModuleBuilder);
     ok $parsed, 'Successfully parsed CMilkWithTests.nhd';
 
     my $model = $parsed.ast;
