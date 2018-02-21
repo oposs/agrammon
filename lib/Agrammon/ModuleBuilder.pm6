@@ -5,7 +5,7 @@ use Agrammon::Model::Output;
 use Agrammon::Model::Test;
 use Agrammon::Model::Technical;
 
-class Agrammon::ModelBuilder {
+class Agrammon::ModuleBuilder {
     method TOP($/) {
         make Agrammon::Model::Module.new(|flat($<section>.map(*.ast)).Map);
     }
