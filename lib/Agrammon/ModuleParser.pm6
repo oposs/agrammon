@@ -4,6 +4,14 @@ grammar Agrammon::ModuleParser {
     token TOP {
         <.blank-line>*
         <section>+
+        [
+        || $
+        || <.panic('Confused')>
+        ]
+    }
+
+    method panic($message) {
+        die "$message near " ~ self.orig.substr(self.pos, 50).perl;
     }
 
     proto token section { * }
@@ -14,6 +22,14 @@ grammar Agrammon::ModuleParser {
         | <option=.single-line-option>
         | <option=.multi-line-str-option>
         | <.blank-line>
+        ]*
+    }
+
+    token section:sym<external> {
+        <.section-heading('external')>
+        [
+        | <.blank-line>
+        | <external=.option-section>
         ]*
     }
 
@@ -50,7 +66,7 @@ grammar Agrammon::ModuleParser {
     }
 
     token option-section {
-        '+' <name=.ident> \h* \n
+        '+' <name> \h* \n
         [
         | <.blank-line>
         | '  ' <option=.single-line-option>
@@ -84,10 +100,14 @@ grammar Agrammon::ModuleParser {
         <.blank-line>*
         $<value>=[
             [
-                <!before \s* '+' || '***'>
-                \N+ \n
+                <!before \s* ['+' || '***']>
+                \N* \n
             ]*
         ]
+    }
+
+    token name {
+        <.ident> [ '::' <.ident> ]*
     }
 
     token blank-line {
