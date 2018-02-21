@@ -1,6 +1,4 @@
 use v6;
-no precompilation;
-use Grammar::Tracer;
 
 grammar Agrammon::TechnicalParser {
     token TOP {
