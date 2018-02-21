@@ -1,4 +1,5 @@
 use v6;
+use Agrammon::Model::External;
 use Agrammon::Model::Input;
 use Agrammon::Model::Module;
 use Agrammon::Model::Output;
@@ -12,6 +13,12 @@ class Agrammon::ModuleBuilder {
 
     method section:sym<general>($/) {
         make %( $<option>.map(*.ast) );
+    }
+
+    method section:sym<external>($/) {
+        make 'external' => $<external>.map({
+            Agrammon::Model::External.new(|.ast)
+        });
     }
 
     method section:sym<input>($/) {

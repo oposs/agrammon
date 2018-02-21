@@ -25,6 +25,14 @@ grammar Agrammon::ModuleParser {
         ]*
     }
 
+    token section:sym<external> {
+        <.section-heading('external')>
+        [
+        | <.blank-line>
+        | <external=.option-section>
+        ]*
+    }
+
     token section:sym<input> {
         <.section-heading('input')>
         [
@@ -58,7 +66,7 @@ grammar Agrammon::ModuleParser {
     }
 
     token option-section {
-        '+' <name=.ident> \h* \n
+        '+' <name> \h* \n
         [
         | <.blank-line>
         | '  ' <option=.single-line-option>
@@ -96,6 +104,10 @@ grammar Agrammon::ModuleParser {
                 \N* \n
             ]*
         ]
+    }
+
+    token name {
+        <.ident> [ '::' <.ident> ]*
     }
 
     token blank-line {

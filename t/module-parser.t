@@ -104,6 +104,28 @@ given slurp($*PROGRAM.parent.add('test-data/CMilkWithTests.nhd')) -> $test-data 
         is .description, 'Test1',
             'Correct description for test';
     }
-
 }
+
+given slurp($*PROGRAM.parent.add('test-data/PlantProduction.nhd')) -> $test-data {
+    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModuleBuilder);
+    ok $parsed, 'Successfully parsed PlantProduction.nhd';
+
+    my $model = $parsed.ast;
+
+    isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
+
+    my @external = $model.external;
+    is @external.elems, 3, 'Found 3 externals';
+    for ^3 {
+        isa-ok @external[0], Agrammon::Model::External,
+            'External entry is correct model type';
+    }
+    is @external[0].name, 'PlantProduction::AgriculturalArea',
+        'Correct external name (1)';
+    is @external[1].name, 'PlantProduction::MineralFertiliser',
+        'Correct external name (2)';
+    is @external[2].name, 'PlantProduction::RecyclingFertiliser',
+        'Correct external name (3)';
+}
+
 done-testing;
