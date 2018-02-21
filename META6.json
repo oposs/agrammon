@@ -12,6 +12,7 @@
         "Agrammon::Model::Input": "lib/Agrammon/Model/Input.pm6",
         "Agrammon::Model::Module": "lib/Agrammon/Model/Module.pm6",
         "Agrammon::Model::Output": "lib/Agrammon/Model/Output.pm6",
+        "Agrammon::Model::Prameters": "lib/Agrammon/Model/Parameters.pm6",
         "Agrammon::Model::Technical": "lib/Agrammon/Model/Technical.pm6",
         "Agrammon::Model::Test": "lib/Agrammon/Model/Test.pm6",
         "Agrammon::ModuleBuilder": "lib/Agrammon/ModuleBuilder.pm6",
