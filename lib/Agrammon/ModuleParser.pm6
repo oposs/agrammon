@@ -1,6 +1,6 @@
 use v6;
 
-grammar Agrammon::Parser {
+grammar Agrammon::ModuleParser {
     token TOP {
         <.blank-line>*
         <section>+
