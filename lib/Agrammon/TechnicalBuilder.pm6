@@ -4,24 +4,15 @@ use Agrammon::Model::Technical;
 
 class Agrammon::TechnicalBuilder {
     method TOP($/) {
-        make Agrammon::Model::Parameters.new(|flat($<section>.map(*.ast)).Map);
-    }
-
-    method section:sym<technical_parameters>($/) {
-        make 'technical_parameters' => $<technical_parameters>.map({
-            Agrammon::Model::Technical.new(|.ast)
-        });
+        make Agrammon::Model::Parameters.new(technical => $<parameters>.map(*.ast));
     }
 
     method option-section($/) {
-        make %(
-            name => ~$<name>,
-            |flat($<option>.map(*.ast)).Map
-        );
+         make %( $<name> => $<option>.map(*.ast));
     }
 
     method single-line-option($/) {
-        make ~$<key> => ~$<value>;
+        make Agrammon::Model::Technical.new( name => ~$<key>, value => ~$<value> );
     }
 
 }

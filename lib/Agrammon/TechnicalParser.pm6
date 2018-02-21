@@ -3,21 +3,15 @@ use v6;
 grammar Agrammon::TechnicalParser {
     token TOP {
         <.blank-line>*
-        <section>+
+        <.section-heading('technical_parameters')>
+        [
+        | <parameters=.option-section>
+        | <.blank-line>
+        ]*
     }
-
-    proto token section { * }
 
     token name {
         <.ident> [ '::' <.ident> ]*
-    }
-    
-    token section:sym<technical_parameters> {
-        <.section-heading('technical_parameters')>
-        [
-        | <technical_parameters=.option-section>
-        | <.blank-line>
-        ]*
     }
 
     token option-section {

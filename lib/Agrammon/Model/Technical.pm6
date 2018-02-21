@@ -6,4 +6,3 @@ class Agrammon::Model::Technical {
     has Str %.units{Str};
     has $.value;
 }
-
