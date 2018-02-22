@@ -128,4 +128,14 @@ given slurp($*PROGRAM.parent.add('test-data/PlantProduction.nhd')) -> $test-data
         'Correct external name (3)';
 }
 
+given slurp($*PROGRAM.parent.add('test-data/DairyCow.nhd')) -> $test-data {
+    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModuleBuilder);
+    ok $parsed, 'Successfully parsed DairyCow.nhd';
+
+    my $model = $parsed.ast;
+
+    isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
+    ok $model.instances eq 'multi', 'DairyCow.nhd is multi';
+}
+
 done-testing;
