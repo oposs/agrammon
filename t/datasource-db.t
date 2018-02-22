@@ -7,16 +7,17 @@ use Test;
 my $host = hostname;
 my $db-host = 'localhost';
 my $db-user = 'postgres';
-my $password;
+my $db-password;
 if ($host eq 'engelberg') {
-    my $pg-file = $*PROGRAM.parent.add('test-data/.secret/agrammon.pg');
-    if ($pg-file.IO.e) {
-        my @pg-data = $pg-file.IO.lines;
-        if (@pg-data) {
-            $db-host  = chomp @pg-data[0];
-            $db-user  = chomp @pg-data[1];
-            $password = chomp @pg-data[2];
-        }
+    my $pg-data = chomp slurp($*PROGRAM.parent.add('test-data/.secret/agrammon.pg'));
+    if ($pg-data ~~ /host '=' (.+?) ';'/) {
+        $db-host  = $/[0];
+    }
+    if ($pg-data ~~ /user '=' (.+?) ';'/) {
+        $db-user  = $/[0];
+    }
+    if ($pg-data ~~ /password '=' (.+?) ';'/) {
+        $db-password = $/[0];
     }
 }
 
@@ -28,7 +29,7 @@ my $dbh = DBIish.connect('Pg',
                          :port(5432),
                          :database<agrammon_dev>,
                          user => $db-user,
-                         :$password
+                         :$db-password
                         );
 
 if ($host ne 'engelberg') {
