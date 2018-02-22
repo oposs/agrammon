@@ -25,7 +25,7 @@ my $dbh = DBIish.connect('Pg',
                         );
 
 if ($host ne 'engelberg') {
-    ok prepare-test-db($dbh), 'Test database prepared';
+    ok prepare-test-db($dbh, $dataset), 'Test database prepared';
 }
 
 my $rowsExpected = 6;
@@ -42,7 +42,7 @@ done-testing;
 
 
 
-sub prepare-test-db($dbh) {
+sub prepare-test-db($dbh, $dataset) {
     my $sth = $dbh.do(q:to/STATEMENT/);
     CREATE TABLE pers (
         pers_id       SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
@@ -52,13 +52,11 @@ sub prepare-test-db($dbh) {
         pers_password TEXT NOT NULL				  -- Password for pers data
     )
     STATEMENT
-    $sth.execute();
 
     $sth = $dbh.do(q:to/STATEMENT/);
     INSERT INTO pers (pers_id, pers_email, pers_first, pers_last, pers_password)
          VALUES (1, 'fritz.zaucker@oetiker.ch', 'Fritz', 'Zaucker', 'test')
     STATEMENT
-    $sth.execute();
 
     $sth = $dbh.do(q:to/STATEMENT/);
     CREATE TABLE dataset (
@@ -69,16 +67,15 @@ sub prepare-test-db($dbh) {
         UNIQUE(dataset_name, dataset_pers)
     )
     STATEMENT
-    $sth.execute();
 
-    $sth = $dbh.do(q:to/STATEMENT/);
+    $sth = $dbh.prepare(q:to/STATEMENT/);
     INSERT INTO dataset (dataset_name, dataset_pers)
-    VALUES ($dataset, 1);
+    VALUES (?, ?);
     STATEMENT
-    $sth.execute();
+    $sth.execute($dataset, 1);
 
     $sth = $dbh.do(q:to/STATEMENT/);
-    CREATE TABLE data (
+    CREATE TABLE data_new (
         data_id	SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
         data_dataset  INT4 REFERENCES dataset NOT NULL,
         data_var	TEXT NOT NULL,				 -- Agrammon variable name
@@ -88,17 +85,25 @@ sub prepare-test-db($dbh) {
         data_comment  TEXT
     )                
     STATEMENT
-    $sth.execute();
 
-    $sth = $dbh.prepare(q:to/STATEMENT/);
+    $sth = $dbh.do(q:to/STATEMENT/);
     CREATE TABLE branches (
         branches_id   SERIAL NOT NULL PRIMARY KEY,       -- Unique ID
         branches_var  INT4 UNIQUE NOT NULL REFERENCES data_new(data_id) ON DELETE CASCADE, -- variable this data belongs to
         branches_data NUMERIC[],
-        branches_options, TEXT[]
+        branches_options TEXT[]
     )
     STATEMENT
-    $sth.execute();
+
+    $sth = $dbh.do(q:to/STATEMENT/);
+    CREATE OR REPLACE FUNCTION pers_email2id(NAME text) returns int4
+       AS 'SELECT pers_id FROM pers WHERE pers_email = $1 ' STABLE LANGUAGE 'sql';
+    STATEMENT
+
+    $sth = $dbh.do(q:to/STATEMENT/);
+    CREATE FUNCTION dataset_name2id(USERNAME text, NAME text) returns int4
+       AS 'SELECT dataset_id FROM dataset WHERE dataset_name = $2 AND dataset_pers = pers_email2id($1)' STABLE LANGUAGE 'sql'
+    STATEMENT
 
     $sth = $dbh.prepare(q:to/STATEMENT/);
     SELECT dataset_name2id(?, ?)
