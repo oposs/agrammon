@@ -6,8 +6,8 @@ my $filename = 't/test-data/inputPlantproduction.csv';
 my $datasetsExpected = 2;
 my $elementsExpected = 6;
 
-my $fh = open $filename, :r, chomp => False
-            or die "Couldn't open file $filename for reading";
+my $fh = open $filename, :r, :!chomp
+    or die "Couldn't open file $filename for reading";
 
 my $ds = Agrammon::DataSource::CSV.new;
 isa-ok $ds, Agrammon::DataSource::CSV, 'Is a DataSource::CSV';
