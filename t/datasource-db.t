@@ -9,10 +9,17 @@ my $db-host = 'localhost';
 my $db-user = 'postgres';
 my $password;
 if ($host eq 'engelberg') {
-    $db-host = 'erika.oetiker.ch';
-    $db-user = 'agrammon';
-    $password = chomp slurp($*PROGRAM.parent.add('test-data/.secret/agrammon.pg'));
+    my $pg-file = $*PROGRAM.parent.add('test-data/.secret/agrammon.pg');
+    if ($pg-file.IO.e) {
+        my @pg-data = $pg-file.IO.lines;
+        if (@pg-data) {
+            $db-host  = chomp @pg-data[0];
+            $db-user  = chomp @pg-data[1];
+            $password = chomp @pg-data[2];
+        }
+    }
 }
+
 my $username = 'fritz.zaucker@oetiker.ch';
 my $dataset  = 'Agrammon6Testing';
 
@@ -46,10 +53,10 @@ sub prepare-test-db($dbh, $dataset) {
     my $sth = $dbh.do(q:to/STATEMENT/);
     CREATE TABLE pers (
         pers_id       SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
-        pers_email    TEXT NOT NULL UNIQUE,			  -- used as login name
+        pers_email    TEXT NOT NULL UNIQUE,                       -- used as login name
         pers_first    TEXT NOT NULL CHECK (pers_first != ''),  -- First Name of Person
         pers_last     TEXT NOT NULL CHECK (pers_last != ''),   -- Last Name of Person
-        pers_password TEXT NOT NULL				  -- Password for pers data
+        pers_password TEXT NOT NULL                               -- Password for pers data
     )
     STATEMENT
 
@@ -60,10 +67,10 @@ sub prepare-test-db($dbh, $dataset) {
 
     $sth = $dbh.do(q:to/STATEMENT/);
     CREATE TABLE dataset (
-        dataset_id	SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
-        dataset_name  TEXT NOT NULL,				 -- User selected name
-        dataset_pers  INT4 REFERENCES pers NOT NULL,		 -- Owner of data
-        dataset_mod_date TIMESTAMP,				 -- last changed
+        dataset_id      SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
+        dataset_name  TEXT NOT NULL,                             -- User selected name
+        dataset_pers  INT4 REFERENCES pers NOT NULL,             -- Owner of data
+        dataset_mod_date TIMESTAMP,                              -- last changed
         UNIQUE(dataset_name, dataset_pers)
     )
     STATEMENT
@@ -76,11 +83,11 @@ sub prepare-test-db($dbh, $dataset) {
 
     $sth = $dbh.do(q:to/STATEMENT/);
     CREATE TABLE data_new (
-        data_id	SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
+        data_id SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
         data_dataset  INT4 REFERENCES dataset NOT NULL,
-        data_var	TEXT NOT NULL,				 -- Agrammon variable name
+        data_var        TEXT NOT NULL,                           -- Agrammon variable name
         data_instance TEXT,
-        data_val	TEXT,					 -- Value of Agrammon variable
+        data_val        TEXT,                                    -- Value of Agrammon variable
         data_instance_order integer,
         data_comment  TEXT
     )                
