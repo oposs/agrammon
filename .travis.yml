@@ -6,3 +6,4 @@ perl6:
 install:
     - rakudobrew build-zef
     - zef --debug --deps-only install .
+    - zef --/test install Text::CSV
