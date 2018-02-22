@@ -119,8 +119,8 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vaches lat
   print = 7
   ++labels
     en = Grazing, housing and yard dairy cow NH3-emissions
-    de = Weide, Stall und Laufhof MilchkÃ¼he NH3-Emission
-    fr = Vaches laitiÃ¨res Emissions de NH3 pÃ¢turage, l'Ã©table et parcours extÃ©rieur
+    de = Weide, Stall und Laufhof Milchkuehe NH3-Emission
+    fr = Vaches laitières Emissions de NH3 pâturage, l'étable et parcours extérieur
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -131,9 +131,3 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vaches lat
     Val(nh3_nhousing, DairyCow::Housing) +
         Val(nh3_nyard, DairyCow::Yard)       +
         Val(nh3_ngrazing, DairyCow::Grazing);
-
-   
-
-
-
-
