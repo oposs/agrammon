@@ -7,7 +7,7 @@
     "authors"       : [ "Fritz Zaucker <fritz.zaucker@oetiker.ch>",
                         "Jonathan Worthington <jonathan@edument.se>" ],
     "license"       : "Artistic-2.0",
-    "depends"       : [Text::CSV],
+    "depends"       : [ "Text::CSV" ],
     "provides"      : {
         "Agrammon::Model::Input": "lib/Agrammon/Model/Input.pm6",
         "Agrammon::Model::Module": "lib/Agrammon/Model/Module.pm6",
