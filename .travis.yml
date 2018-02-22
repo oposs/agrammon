@@ -12,3 +12,4 @@ services:
 
 before_script:
   - psql -c 'create database agrammon_dev;' -U postgres
+ 
