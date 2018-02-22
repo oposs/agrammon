@@ -1,13 +1,11 @@
 use v6;
 use Agrammon::DataSource::CSV;
 use Test;
-use Text::CSV;
 
 my $filename = 't/test-data/inputPlantproduction.csv';
 my $datasetsExpected = 2;
 my $elementsExpected = 6;
 
-my $csv = Text::CSV.new(sep => ";");
 my $fh = open $filename, :r, chomp => False
             or die "Couldn't open file $filename for reading";
 
