@@ -9,6 +9,8 @@ class Agrammon::Model::Module {
     has Str $.author;
     has Str $.date;
     has Str $.taxonomy;
+    has Str $.instances;
+    has Str $.gui;
     has Str $.short;
     has Str $.description;
     has Agrammon::Model::External @.external;
