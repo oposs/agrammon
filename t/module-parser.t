@@ -136,6 +136,7 @@ given slurp($*PROGRAM.parent.add('test-data/DairyCow.nhd')) -> $test-data {
 
     isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
     ok $model.instances eq 'multi', 'DairyCow.nhd is multi';
+    ok $model.gui eq 'Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vaches latière,Livestock::Dairy cows', 'DairyCow.nhd has correct gui parameter';
 }
 
 done-testing;
