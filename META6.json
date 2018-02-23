@@ -11,6 +11,10 @@
     "provides"      : {
         "Agrammon::DataSource::DB": "lib/Agrammon/DataSource/DB.pm6",
         "Agrammon::DataSource::CSV": "lib/Agrammon/DataSource/CSV.pm6",
+        "Agrammon::Environment": "lib/Agrammon/Environment.pm6",
+        "Agrammon::Formula": "lib/Agrammon/Formula.pm6",
+        "Agrammon::Formula::Builder": "lib/Agrammon/Formula/Builder.pm6",
+        "Agrammon::Formula::Parser": "lib/Agrammon/Formula/Parser.pm6",
         "Agrammon::Model::Input": "lib/Agrammon/Model/Input.pm6",
         "Agrammon::Model::Module": "lib/Agrammon/Model/Module.pm6",
         "Agrammon::Model::Output": "lib/Agrammon/Model/Output.pm6",
@@ -18,7 +22,8 @@
         "Agrammon::Model::Technical": "lib/Agrammon/Model/Technical.pm6",
         "Agrammon::Model::Test": "lib/Agrammon/Model/Test.pm6",
         "Agrammon::ModuleBuilder": "lib/Agrammon/ModuleBuilder.pm6",
-        "Agrammon::ModuleParser": "lib/Agrammon/ModuleParser.pm6"
+        "Agrammon::ModuleParser": "lib/Agrammon/ModuleParser.pm6",
+        "Agrammon::OutputReference": "lib/Agrammon/OutputReference.pm6"
     },
     "resources": [],
     "source-url"    : "https://github.com/oposs/agrammon.git"
