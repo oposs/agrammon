@@ -6,3 +6,9 @@ perl6:
 install:
     - rakudobrew build-zef
     - zef --debug --deps-only install .
+
+services:
+  - postgresql: "9.6"
+
+before_script:
+  - psql -c 'create database agrammon_test;' -U postgres
