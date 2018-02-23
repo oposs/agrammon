@@ -40,8 +40,9 @@ if ($pg-file.IO.e) {
     if ($pg-data ~~ /agdataset '=' (.+?) ';'/) {
         $ag-dataset = $/[0];
     }
-    say "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
-    say "aguser=$ag-user, agdataset=$ag-dataset";
+#    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
+    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=XXX, dbdatabase=$db-database";
+    diag "aguser=$ag-user, agdataset=$ag-dataset";
 }
 my $dbh = DBIish.connect('Pg',
                          :host($db-host),
