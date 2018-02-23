@@ -9,6 +9,7 @@
     "license"       : "Artistic-2.0",
     "depends"       : [ "Text::CSV", "DBIish" ],
     "provides"      : {
+        "Agrammon::DataSource::DB": "lib/Agrammon/DataSource/DB.pm6",
         "Agrammon::DataSource::CSV": "lib/Agrammon/DataSource/CSV.pm6",
         "Agrammon::Model::Input": "lib/Agrammon/Model/Input.pm6",
         "Agrammon::Model::Module": "lib/Agrammon/Model/Module.pm6",

@@ -13,7 +13,7 @@ class Agrammon::DataSource::DB {
              WHERE data_dataset=dataset_name2id(?,?)
                AND data_var not like '%ignore'
           ORDER BY data_var, data_val
-STATEMENT
+         STATEMENT
                                  
          $sth.execute($user, $dataset);
          my @rows = $sth.allrows();
