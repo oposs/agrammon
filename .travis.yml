@@ -11,4 +11,4 @@ services:
   - postgresql: "9.6"
 
 before_script:
-  - psql -c 'create database agrammon_dev;' -U postgres
+  - psql -c 'create database agrammon_test;' -U postgres
