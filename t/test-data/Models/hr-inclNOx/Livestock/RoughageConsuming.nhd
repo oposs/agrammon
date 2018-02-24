@@ -1,0 +1,118 @@
+*** general ***
+
+author    = Agrammon Group
+date      = 2008-02-22
+taxonomy  = Livestock::RoughageConsuming
+instances = multi
+gui       = Livestock::RoughageConsuming,Tierhaltung::Andere Raufutterverzehrer,Production animale::Autre consommant des fourrages gross,Livestock::Other roughage consuming
+
++short
+ Collects the annual emission of NH3 and the N flux for .
+
++description 
+ 
+ Summarizes the annual emission of NH3 for other roughage consuming animals housing, yard and grazing.
+  \begin{todo}{Cyrill Bonjour}{}
+     Give a better description.
+  \end{todo}
+
+
+*** external ***
+
++RoughageConsuming::Excretion
++RoughageConsuming::Housing
++RoughageConsuming::Grazing
+
+*** input ***
+
+*** output ***
+
++n_excretion
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by other animals.
+  ++formula
+        Val(n_excretion, RoughageConsuming::Excretion); 
+
++n_from_other
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from other animals housing.
+  ++formula
+	Val(n_outhousing, RoughageConsuming::Housing);
+
++tan_from_other
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from other animals housing.
+  ++formula
+	Val(tan_outhousing, RoughageConsuming::Housing);
+
++n_liquid_from_other
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from other animals housing, liquid fraction.
+  ++formula
+	Val(n_outhousing_liquid, RoughageConsuming::Housing); 
+
++tan_liquid_from_other
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from other animals housing, liquid fraction.
+  ++formula
+	Val(tan_outhousing_liquid, RoughageConsuming::Housing); 
+
++n_solid_from_other
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from other animals housing, solid fraction.
+  ++formula
+	Val(n_outhousing_solid, RoughageConsuming::Housing);
+
++tan_solid_from_other
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from other animals housing, solid fraction.
+  ++formula
+	Val(tan_outhousing_solid, RoughageConsuming::Housing); 
+
++nh3_nother
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from other animals housing and grazing.
+  ++formula
+	 Val(nh3_nhousing, RoughageConsuming::Housing) +
+         Val(nh3_ngrazing, RoughageConsuming::Grazing);
+         
