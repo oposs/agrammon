@@ -45,9 +45,9 @@ subtest "loadModule()" =>{
     given 'Livestock' -> $module-name {
 	ok my $model = Agrammon::Model.new(path => $path);
 	my $module = $model.loadModule($module-name);
-	is my $parent = $module.parent, '', "Module $module-name has no parent";
-	is my $name = $module.name, $module-name, "Module $module-name has name $module-name";
-	}
+	is $module.parent, '', "Module $module-name has no parent";
+	is $module.name, $module-name, "Module $module-name has name $module-name";
+    }
 
     given 'Livestock::DairyCow::Excretion::CMilk' -> $module-name {
 	ok my $model = Agrammon::Model.new(path => $path);
