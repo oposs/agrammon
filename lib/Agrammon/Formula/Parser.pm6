@@ -12,7 +12,7 @@ grammar Agrammon::Formula::Parser {
     }
 
     rule EXPR {
-        <term>
+        <term> [ <infix> <term> ]*
     }
 
     proto token term { * }
@@ -29,6 +29,10 @@ grammar Agrammon::Formula::Parser {
             [<module=.name> || <.panic('Missing or malformed module name')>]
         ')'
     }
+
+    proto token infix { * }
+    token infix:sym<*> { '*' }
+    token infix:sym<+> { '+' }
 
     token name {
         <.ident> ['::' <.ident>]*
