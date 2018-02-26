@@ -21,14 +21,14 @@ subtest "loadModule()" =>{
     my $path = $*PROGRAM.parent.add('test-data/');
     given 'CMilk' -> $module-name {
 	ok my $model = Agrammon::Model.new(path => $path);
-	ok my $module = $model.loadModule($module-name), "Load module $module-name";
+	ok my $module = $model.load-module($module-name), "Load module $module-name";
 	is $module.input[0].name, 'milk_yield', "Found input milk_yield";
     }
 
     given 'CMilk' -> $module-name {
 	chmod 0, $path ~ $module-name ~ '.nhd';
 	ok my $model = Agrammon::Model.new(path => $path);
-	throws-like { my $module = $model.loadModule($module-name) },
+	throws-like { my $module = $model.load-module($module-name) },
                       X::Agrammon::Model::FileNotReadable,
                       "Cannot load module $module-name from read-only file";
 	chmod 0o644, $path ~ $module-name ~ '.nhd';
@@ -36,7 +36,7 @@ subtest "loadModule()" =>{
 
     given 'CMilk_notExists' -> $module-name {
 	ok my $model = Agrammon::Model.new(path => $path);
-	throws-like { my $module = $model.loadModule($module-name) },
+	throws-like { my $module = $model.load-module($module-name) },
                     X::Agrammon::Model::FileNotFound,
                     "Cannot load module $module-name from none-existing file";
     }
@@ -44,14 +44,14 @@ subtest "loadModule()" =>{
     $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
     given 'Livestock' -> $module-name {
 	ok my $model = Agrammon::Model.new(path => $path);
-	my $module = $model.loadModule($module-name);
+	my $module = $model.load-module($module-name);
 	is $module.parent, '', "Module $module-name has no parent";
 	is $module.name, $module-name, "Module $module-name has name $module-name";
     }
 
     given 'Livestock::DairyCow::Excretion::CMilk' -> $module-name {
 	ok my $model = Agrammon::Model.new(path => $path);
-	my $module = $model.loadModule($module-name);
+	my $module = $model.load-module($module-name);
 	is my $parent = $module.parent,
 	    'Livestock::DairyCow::Excretion',
 	    "Module $module-name has parent Livestock::DairyCow::Excretion";

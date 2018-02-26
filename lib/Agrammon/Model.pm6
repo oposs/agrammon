@@ -42,14 +42,13 @@ class Agrammon::Model {
 	return $!path ~ $file;
     }
 
-    method loadModule($module-name) {
+    method load-module($module-name) {
 	my $file = self.module2file($module-name);
-	die X::Agrammon::Model::FileNotFound.new(:file($file))    unless $file.IO.e;
-	die X::Agrammon::Model::FileNotReadable.new(:file($file)) unless $file.IO.r;
+	die X::Agrammon::Model::FileNotFound.new(:$file)    unless $file.IO.e;
+	die X::Agrammon::Model::FileNotReadable.new(:$file) unless $file.IO.r;
 	
-	my $module-data = slurp($file);
-	my $module = Agrammon::ModuleParser.parse(
-	    $module-data,
+	my $module = Agrammon::ModuleParser.parsefile(
+	    $file,
 	    actions => Agrammon::ModuleBuilder
 	).ast;
 	return $module;
@@ -61,7 +60,7 @@ class Agrammon::Model {
 	die X::Agrammon::Model::CircularModel.new(:module($top))
 	    if %pending{$top}:exists;
 	%pending{$top} = 1;
-	my $module = self.loadModule($top);
+	my $module = self.load-module($top);
 	my $parent = $module.parent;
 	say "Loading $top" if $debug;
 	my @externals = $module.external;
