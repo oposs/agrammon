@@ -8,7 +8,7 @@ subtest "Helper function" => {
     my $path = $*PROGRAM.parent.add('test-data/');
     ok my $model = Agrammon::Model.new(path => $path);
     given 'Livestock::DairyCow::Excretion::CMilk' -> $module-name {
-        is my $file = $model.module2file($module-name),
+        is $model.module2file($module-name),
             $path ~ 'Livestock/DairyCow/Excretion/CMilk.nhd',
             "module2file(): convert module $module-name to file";
     }
@@ -28,7 +28,7 @@ subtest "loadModule()" =>{
     given 'CMilk' -> $module-name {
         chmod 0, $path ~ $module-name ~ '.nhd';
         ok my $model = Agrammon::Model.new(path => $path);
-        throws-like { my $module = $model.load-module($module-name) },
+        throws-like { $model.load-module($module-name) },
                       X::Agrammon::Model::FileNotReadable,
                       "Cannot load module $module-name from read-only file";
         chmod 0o644, $path ~ $module-name ~ '.nhd';
@@ -36,7 +36,7 @@ subtest "loadModule()" =>{
 
     given 'CMilk_notExists' -> $module-name {
         ok my $model = Agrammon::Model.new(path => $path);
-        throws-like { my $module = $model.load-module($module-name) },
+        throws-like { $model.load-module($module-name) },
                     X::Agrammon::Model::FileNotFound,
                     "Cannot load module $module-name from none-existing file";
     }
@@ -52,10 +52,10 @@ subtest "loadModule()" =>{
     given 'Livestock::DairyCow::Excretion::CMilk' -> $module-name {
         ok my $model = Agrammon::Model.new(path => $path);
         my $module = $model.load-module($module-name);
-        is my $parent = $module.parent,
+        is $module.parent,
             'Livestock::DairyCow::Excretion',
             "Module $module-name has parent Livestock::DairyCow::Excretion";
-        is my $name = $module.name, 'CMilk', "Module $module-name has name CMilk";
+        is $module.name, 'CMilk', "Module $module-name has name CMilk";
     }
 
 }

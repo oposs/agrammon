@@ -54,7 +54,7 @@ class Agrammon::Model {
         return $module;
     }
 
-    method load($module-name, :%pending = {}, :%loaded = {}) {
+    method load($module-name, :%pending, :%loaded) {
 
         # trying to load module while already loading it
         die X::Agrammon::Model::CircularModel.new(:module($module-name))
