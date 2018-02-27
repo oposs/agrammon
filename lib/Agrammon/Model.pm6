@@ -6,21 +6,21 @@ use Agrammon::Model::Module;
 class X::Agrammon::Model::FileNotFound is Exception {
     has $.file;
     method message() {
-	"Model file $!file not found!";
+        "Model file $!file not found!";
     }
 }
 
 class X::Agrammon::Model::FileNotReadable is Exception {
     has $.file;
     method message() {
-	"Model file $!file not readable!";
+        "Model file $!file not readable!";
     }
 }
 
 class X::Agrammon::Model::CircularModel is Exception {
     has $.module;
     method message() {
-	"Module $!module has circular dependency!";
+        "Module $!module has circular dependency!";
     }
 }
 
@@ -29,49 +29,53 @@ class Agrammon::Model {
     has Agrammon::Model::Module @.evaluation-order;
   
     method file2module($file) {
-	my $module = $file;
-	$module ~~ s:g|'/'|::|;
-	$module ~~ s/\.nhd$//;
-	return $module;
+        my $module = $file;
+        $module ~~ s:g|'/'|::|;
+        $module ~~ s/\.nhd$//;
+        return $module;
     }
 
     method module2file($module) {
-	my $file = $module;
-	$file ~~ s:g|'::'|/|;
-	$file ~= '.nhd';
-	return $!path ~ $file;
+        my $file = $module;
+        $file ~~ s:g|'::'|/|;
+        $file ~= '.nhd';
+        return $!path ~ $file;
     }
 
     method load-module($module-name) {
-	my $file = self.module2file($module-name);
-	die X::Agrammon::Model::FileNotFound.new(:$file)    unless $file.IO.e;
-	die X::Agrammon::Model::FileNotReadable.new(:$file) unless $file.IO.r;
-	
-	my $module = Agrammon::ModuleParser.parsefile(
-	    $file,
-	    actions => Agrammon::ModuleBuilder
-	).ast;
-	return $module;
+        my $file = self.module2file($module-name);
+        die X::Agrammon::Model::FileNotFound.new(:$file)    unless $file.IO.e;
+        die X::Agrammon::Model::FileNotReadable.new(:$file) unless $file.IO.r;
+
+        my $module = Agrammon::ModuleParser.parsefile(
+            $file,
+            actions => Agrammon::ModuleBuilder
+        ).ast;
+        return $module;
     }
 
-    method load($top, $debug?) {
-	state %pending;
+    method load($module-name, :%pending = {}, :%loaded = {}) {
 
-	die X::Agrammon::Model::CircularModel.new(:module($top))
-	    if %pending{$top}:exists;
-	%pending{$top} = 1;
-	my $module = self.load-module($top);
-	my $parent = $module.parent;
-	say "Loading $top" if $debug;
-	my @externals = $module.external;
-	for @externals -> $external {
-	    my $external-name = $external.name;
-	    my $include = $parent ?? $parent ~ '::' ~ $external-name
-	                          !! $external-name;
-	    self.load($include);
-	}
-	@!evaluation-order.push($module);
-	%pending{$top}:delete;
+        # trying to load module while already loading it
+        die X::Agrammon::Model::CircularModel.new(:module($module-name))
+            if %pending{$module-name}:exists;
+
+        # module has already been loaded
+        return if %loaded{$module-name};
+
+        %pending{$module-name} = True;
+        my $module = self.load-module($module-name);
+        my $parent = $module.parent;
+        my @externals = $module.external;
+        for @externals -> $external {
+            my $external-name = $external.name;
+            my $include = $parent ?? $parent ~ '::' ~ $external-name
+                                  !! $external-name;
+            self.load($include, :%pending, :%loaded);
+        }
+        @!evaluation-order.push($module);
+        %loaded{$module-name} = True;
+        %pending{$module-name}:delete;
     }
 
 }
