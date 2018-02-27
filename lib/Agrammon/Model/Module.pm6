@@ -22,15 +22,15 @@ class Agrammon::Model::Module {
     has Str $.parent;
 
     method TWEAK {
-	my $tax = $!taxonomy;
-	if ( $tax ~~ /^(.*) '::' (.+)$/ ) {
-	    $!parent = "$0";
-	    $!name   = "$1";
-	}
-	else {
-	    $!parent = '';
-	    $!name   = "$tax";
-	}
+        my $tax = $!taxonomy;
+        if ( $tax ~~ /^(.*) '::' (.+)$/ ) {
+            $!parent = "$0";
+            $!name   = "$1";
+        }
+        else {
+            $!parent = '';
+            $!name   = "$tax";
+        }
     }
 
 }
