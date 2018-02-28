@@ -6,8 +6,8 @@ plan 3;
 subtest "Helper function" => {
     
     my $path = $*PROGRAM.parent.add('test-data/');
-    ok my $model = Agrammon::Model.new(path => $path);
     given 'Livestock::DairyCow::Excretion::CMilk' -> $module-name {
+	ok my $model = Agrammon::Model.new(path => $path);
         is $model.module2file($module-name),
             $path ~ 'Livestock/DairyCow/Excretion/CMilk.nhd',
             "module2file(): convert module $module-name to file";
@@ -73,30 +73,29 @@ subtest 'load()' => {
             Simple::Sub2
             Simple
         |;
-        given 'Simple' -> $module {
+        given 'Simple' -> $module-name {
             ok my $model = Agrammon::Model.new(path => $path);
-            $model.load($module);
+            $model.load($module-name);
             is $model.evaluation-order.elems, @expected.elems,
                 "Loaded {@expected.elems} model files";
-            my @tax;
-            for $model.evaluation-order { @tax.push($_.taxonomy) };
+            my @tax = $model.evaluation-order>>.taxonomy;
             is-deeply @tax, @expected, 'Load order as expected';
         }
     }
 
     subtest 'circular model detection' => {
         my $path = $*PROGRAM.parent.add('test-data/Models/test_circular/');
-        given 'Circular' -> $module {
+        given 'Circular' -> $module-name {
             ok my $model = Agrammon::Model.new(path => $path);
-            throws-like { $model.load($module) },
+            throws-like { $model.load($module-name) },
                           X::Agrammon::Model::CircularModel,
-                          "Circular model $module";
+                          "Circular model $module-name";
         }
-        given 'Simple' -> $module {
+        given 'Simple' -> $module-name {
             ok my $model = Agrammon::Model.new(path => $path);
-            throws-like { $model.load($module) },
+            throws-like { $model.load($module-name) },
                           X::Agrammon::Model::CircularModel,
-                          "Circular model $module";
+                          "Circular model $module-name";
         }
     }
 
@@ -112,12 +111,11 @@ subtest 'load()' => {
             Livestock::DairyCow::Excretion::CFeed
             Livestock::DairyCow::Excretion
         |;
-        given 'Livestock::DairyCow::Excretion' -> $module {
+        given 'Livestock::DairyCow::Excretion' -> $module-name {
             ok my $model = Agrammon::Model.new(path => $path);
-            $model.load($module);
+            $model.load($module-name);
             is $model.evaluation-order.elems, 6, "Loaded 6 model file";
-            my @tax;
-            for $model.evaluation-order { @tax.push($_.taxonomy) };
+            my @tax = $model.evaluation-order>>.taxonomy;
             is-deeply @tax, @expected,'Load order as expected';
         }
     }
