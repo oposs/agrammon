@@ -39,7 +39,7 @@ class Agrammon::Model {
         my $file = $module;
         $file ~~ s:g|'::'|/|;
         $file ~= '.nhd';
-        return $!path ~ $file;
+        return $!path.add($file);
     }
 
     method load-module($module-name) {
@@ -76,6 +76,12 @@ class Agrammon::Model {
         @!evaluation-order.push($module);
         %loaded{$module-name} = True;
         %pending{$module-name}:delete;
+    }
+
+    method dump {
+        for @!evaluation-order.reverse {
+            say $_.taxonomy;
+        }
     }
 
 }

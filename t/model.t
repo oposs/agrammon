@@ -1,7 +1,9 @@
 use v6;
 use Agrammon::Model;
 use Test;
-plan 3;
+use Test::Output;
+
+plan 4;
 
 subtest "Helper function" => {
     
@@ -120,6 +122,23 @@ subtest 'load()' => {
         }
     }
     
+}
+
+subtest 'dump()' => {
+    my $path = $*PROGRAM.parent.add('test-data/Models/test_simple/');
+    my $output-expected = q:to/OUTPUT/;
+        Simple
+        Simple::Sub2
+        Simple::Sub2b
+        Simple::Sub2a
+        Simple::Sub1
+        Simple::Sub1a
+        OUTPUT
+    given 'Simple' -> $module {
+        ok my $model = Agrammon::Model.new(path => $path);
+        $model.load($module);
+        stdout-is { $model.dump }, $output-expected, 'Output as expected';
+    }
 }
 
 done-testing;
