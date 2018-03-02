@@ -1,0 +1,14 @@
+Print Level Description
+-----------------------
+
+0 = all
+1 = Emissions after Level (yard summarized in housing)
+2 = Emissions after Level, including yard
+3 = Flux after Level 
+
+5 = Add's Emission after Level and animal, storage or application category
+6 = Animal Numbers
+7 = Flux after Level and animal, storage or application category
+
+10 = Emissionrates or emission Factors
+15 = other Correction factors and parameters

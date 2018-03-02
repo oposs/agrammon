@@ -1,0 +1,116 @@
+*** general ***
+
+author    = Agrammon Group
+date      = 2008-02-19
+taxonomy  = Livestock::FatteningPigs
+instances = multi
+gui       = Livestock::Fattening pigs,Tierhaltung::Mastschweine,Production animale::Porcs à l'engrais,Livestock::Fattening pigs
+
++short
+
+ Collects the annual emission of NH3 and the N flux for fattening pigs.
+
++description 
+ This process summarizes the annual emission of NH3 for fattening pigs from housing and
+ grazing.
+ And it summarizes the annual N flux from housing to the storage for fattening pigs.
+
+*** input ***
+
+*** external ***
+
++FatteningPigs::Grazing
++FatteningPigs::Housing
++FatteningPigs::Excretion
+
+*** output ***
+
++n_excretion
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by fattening pigs.
+  ++formula
+    Val(n_excretion,FatteningPigs::Excretion);
+
++n_from_fattening_pig
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from fattening pigs housing.
+  ++formula
+    Val(n_outhousing,FatteningPigs::Housing); 
+
++tan_from_fattening_pig
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from fattening pigs housing.
+  ++formula
+    Val(tan_outhousing,FatteningPigs::Housing); 
+
++n_liquid_from_fattening_pig
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from fattening pigs housing, liquid fraction.
+  ++formula 
+    Val(n_outhousing_liquid,FatteningPigs::Housing); 
+
++tan_liquid_from_fattening_pig
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from fattening pigs housing, liquid fraction.
+  ++formula
+    Val(tan_outhousing_liquid,FatteningPigs::Housing);
+	
++n_solid_from_fattening_pig
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from fattening pigs housing, solid fraction.
+  ++formula
+    Val(n_outhousing_solid,FatteningPigs::Housing);
+
++tan_solid_from_fattening_pig
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from fattening pigs housing, liquid fraction.
+  ++formula
+    Val(tan_outhousing_solid,FatteningPigs::Housing);
+
++nh3_nfattening_pig
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from fattening pigs housing and grazing (production).
+  ++formula
+     Val(nh3_nhousing,FatteningPigs::Housing) +
+     Val(nh3_ngrazing,FatteningPigs::Grazing);
+         

@@ -1,0 +1,100 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-19
+taxonomy = Cattle::Housing::KArea
+
++short
+
+  Calculates correction factor according to the area per animal in
+  the house.
+
++description
+
+  It is assumed that additional areas in stable, as example if the stabel is
+  built for more animal, are fully used. 
+  So the emissions increase 5\% per 10\% additional area in a stable up to
+  the double of the regularized minimal area.
+
+  \begin{todo}{All}{}
+	Provide Articles which confirm/justify the assumption. As decided on
+	workshop from 2.11.2007.
+  \end{todo}
+
+
+*** input ***
+
++dimensioning_barn
+  unit = number of animals
+  label = Dimensioning of barn 
+  type = integer
+  ++description
+    Number of Animals which area allowed in a barn.
+
+*** technical ***
+
++k_area_tide_housing_slurry
+  value = 0.0
+  unit  = -
+  ++description
+    Increasing factor for larger tide housing barns
+
++k_area_tide_housing_liquid_solid
+  value = 0.0
+  unit  = -
+  ++description
+    Increasing factor for larger tide housing barns
+
++k_area_loose_housing_slurry
+  value = 0.5
+  unit  = -
+  ++description
+    Increasing factor for larger loose housing barns, 10 0/0 bigger leads to 5 0/0 more emission.
+
++k_area_loose_housing_liquid_solid
+  value = 0.5
+  unit  = -
+  ++description
+    Increasing factor for larger loose housing barns, 10 0/0 bigger leads to 5 0/0 more emission.
+
++k_area_loose_housing_deep_litter
+  value = 0.5
+  unit  = -
+  ++description
+    Increasing factor for larger loose housing barns, 10 0/0 bigger leads to 5 0/0 more emission.
+
+*** external ***
++ERCattleHousing
++/Production::DairyCow::Exkretion
+
+
+*** output ***
+
++area_increase
+  unit = -
+  print = 15
+  ++description
+    Factor on what barn size does increase the regularized minimal, limited to 0.5
+
+  ++formula 
+    if( ( $external{/Production::DairyCow::Exkretion}{dairy_cows} < $input{dimensioning_barn}  ) and ( $external{/Production::DairyCow::Exkretion}{dairy_cows} != 0 ) ){ 
+    	 if( $input{dimensioning_barn} >= ($external{/Production::DairyCow::Exkretion}{dairy_cows} * 1.5) ){   
+	     return 0.5; 
+	 }
+	 else { 
+	     return( ( $input{dimensioning_barn} / $external{/Production::DairyCow::Exkretion}{dairy_cows} ) -1 );
+        }  			
+    }
+    else {
+	return 0.0;
+    };
+
++k_area
+  unit = -
+  print = 15
+  ++description
+    correction factor for area per animal
+
+  ++formula
+    my $key = "k_area_" . $external{ERCattleHousing}{housing_type};
+    return 1 + ( $output{area_increase} * $technical{$key} );

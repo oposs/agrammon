@@ -1,0 +1,61 @@
+*** general ***
+
+author   = Fritz Zaucker
+date     = 2018-02-24
+taxonomy = Simple
+
++short
+
+  For testing.
+
++description
+
+  Test description.
+
+*** input ***
+
++input1
+  type = integer
+  validator = ge(0)
+#  branch = true
+  ++labels
+    en = Input1
+    de = Eingabe1
+  ++units
+    en = -
+  ++description
+    Test input1
+  ++help
+    +++en 
+       <p>Test input1</p>
+    +++de 
+       <p>Test Eingabe1</p>
+        
+
+*** technical ***
+
++tech1
+  value = 115
+  ++units 
+    en = kg N/year
+    de = kg N/Jahr
+  ++description
+    tech1 parameter
+
+*** external ***
+
++Simple::Sub1
++Simple::Sub2
+
+*** output ***
+
++output1
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+  ++formula
+    In(input1);
+
+  ++description
+    output1

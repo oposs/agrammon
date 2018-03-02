@@ -1,0 +1,83 @@
+
+\documentclass[10pt]{article}
+\RequirePackage[paper=a4paper,
+                twoside=false,
+                heightrounded=true,
+                headsep=0cm,
+                left=2cm,
+                right=2cm,
+                top=0.8cm,
+%                landscape=false,
+                landscape=true,
+                bottom=3.8cm]{geometry}
+%\usepackage{tabularx}
+%\usepackage{longtable}
+%\usepackage{xtab}
+\usepackage{ltxtable}
+\usepackage{graphicx}
+\usepackage{color}
+
+\usepackage{fancyvrb}
+
+
+\usepackage[english]{babel}
+%\RequirePackage[latin1]{inputenc}%
+\RequirePackage[utf8x]{inputenc}
+\RequirePackage[T1]{fontenc}
+%\RequirePackage{fontenc}
+%\RequirePackage{textcomp}
+\RequirePackage{fancyhdr}
+\RequirePackage{lastpage}
+%\RequirePackage[nofancy]{svninfo}
+
+%\svnInfo $Id: model.tex 1230 2009-10-12 12:00:00Z bonjour $
+
+\pagestyle{fancy}
+\setlength{\headheight}{35pt}
+\setlength{\headsep}{2.5ex}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.2pt}
+\lfoot{\small\textsf{Seite \thepage/\pageref{LastPage}}}
+%\cfoot{\footnotesize\textsf{\svnInfoFile{} / \svnInfoRevision / \svnInfoDate}}
+%\rfoot{\small\textsf{\textbf{Agrammon}}}
+\rfoot{\small\textsf{\textbf{\today}}}
+
+
+\newsavebox{\todoname}
+\newsavebox{\todosign}
+\savebox{\todosign}{
+  \put(0,0){\framebox[8mm]{\huge\bf !}}
+}
+
+
+%\newenvironment{todo}[2]
+%{\vspace{1.5em} \begin{sloppypar}\noindent \slshape To Do: #1 
+%     \sbox{\todoname}{#2}\marginpar{\usebox{\todosign}}
+%     \begin{quote} \it}
+%{\hspace*{\fill}( \usebox{\todoname} )%
+%     \end{quote}\end{sloppypar}}
+
+\newenvironment{todo}[2]
+{\color{white}}
+{\color{black}}
+
+
+\title{Technical process description AGRAMMON \\Draft}
+\author{Agrammon Group}
+%\date{\svnInfoDate / \svnInfoRevision }
+
+\begin{document}
+
+\maketitle
+\clearpage
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\input{intro.tex}
+\clearpage
+\input{modules.tex}
+%\clearpage
+%\input{parameters.tex}
+\end{document}

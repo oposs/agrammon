@@ -1,0 +1,291 @@
+\section{Input Parameters}
+\tablefirsthead{\hline\bf Parameter & \bf Unit & \bf Description\\\hline}
+\tablehead{\hline\bf Parameter & \bf Unit & \bf Description\\}
+\tabletail{\hline}
+\begin{xtabular}{|p{5cm}|l|p{0.5\textwidth}|}
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Livestock::Poultry::Excretion}\\\hline
+animalcategory & - & Poultry category (layers, growers, broilers, turkeys, and other poultry).\begin{flushleft}Possible~values:  \texttt{ broilers}, \texttt{ growers}, \texttt{ other\_poultry}, \texttt{ turkeys}, \texttt{layers}\end{flushleft} \\\hline
+animals & - & Number of poultry animals for the selected type in barn. \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Livestock::Poultry::Outdoor}\\\hline
+free\-\_range & - & Average free range hours per day.\begin{flushleft}Possible~values:  \texttt{ no}, \texttt{yes}\end{flushleft} \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Livestock::Poultry::Housing::Type}\\\hline
+housing\-\_type & - & Type of housing.\begin{flushleft}Possible~values:  \texttt{ deep\_litter}, \texttt{ deep\_pit}, \texttt{manure\_belt}\end{flushleft} \\\hline
+manure\-\_removal\-\_interval & - & Manure removal interval by manure belt.\begin{flushleft}Possible~values:  \texttt{ 3\_to\_4\_times\_a\_month}, \texttt{ more\_than\_4\_times\_a\_month}, \texttt{ no\_manure\_belt}, \texttt{ twice\_a\_month}, \texttt{less\_than\_twice\_a\_month}\end{flushleft} \\\hline
+drinking\-\_system & - & Type of drinking system.\begin{flushleft}Possible~values:  \texttt{ bell\_drinkers}, \texttt{drinking\_nipples}\end{flushleft} \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Livestock::Poultry::Housing::AirScrubber}\\\hline
+air\-\_scrubber & - & Exhaust air scrubber: none, acid, biotrickling\_filter.\begin{flushleft}Possible~values:  \texttt{ acid}, \texttt{ biotrickling}, \texttt{none}\end{flushleft} \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Storage::SolidManure::Poultry}\\\hline
+share\-\_applied\-\_direct\-\_poultry\-\_manure & \% & Share of poultry manure applied to land without storage. \\\hline
+share\-\_covered\-\_basin & \% & Share of droppings or mist from poultry stored in covered basin. \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Storage::SolidManure::Solid}\\\hline
+share\-\_applied\-\_direct\-\_cattle\-\_other\-\_manure & \% & Share of cattle manure applied to land without storage. \\\hline
+share\-\_applied\-\_direct\-\_pig\-\_manure & \% & Share of pig manure applied to land without storage. \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Application::Slurry::Ctech}\\\hline
+share\-\_splash\-\_plate & \% & Share of slurry applied with splash plate. \\\hline
+share\-\_trailing\-\_hose & \% & Share of slurry applied with trailing hose. \\\hline
+share\-\_trailing\-\_shoe & \% & Share of slurry applied with trailing shoes. \\\hline
+share\-\_shallow\-\_injection & \% & Share of slurry applied with shallow injection. \\\hline
+share\-\_deep\-\_injection & \% & Share of slurry applied with deep injection. \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Application::Slurry::Applrate}\\\hline
+dilution\-\_parts\-\_water & 1:x & Specific slurry dilution. TAN contents have been calculated based on a
+   standard dilution of 1:1 with a TAN content of 1.15 kg N /m3.   \\\hline
+appl\-\_rate & m3 /ha & Application rate, mean volume of slurry applied on a ha per deployment. \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Application::Slurry::Csoft}\\\hline
+appl\-\_evening & \% & Share of slurry applied in the evening after 18:00. \\\hline
+appl\-\_hotdays & - & Proportion of slurry applied on hot days.\begin{flushleft}Possible~values:  \texttt{ never}, \texttt{ rarely}, \texttt{ sometimes}, \texttt{frequently}\end{flushleft} \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Application::Slurry::Cseason}\\\hline
+appl\-\_summer & \% & Share of slurry applied June to August (in \%). \\\hline
+appl\-\_autumn\-\_winter\-\_spring & \% & Share of slurry applied September to May. \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Application::SolidManure::CincorpTime}\\\hline
+incorp\-\_lw1h & \% & Share of incorporated solid manure within 1 hour. \\\hline
+incorp\-\_lw4h & \% & Share of incorporated solid manure within 4 hours. \\\hline
+incorp\-\_lw8h & \% & Share of incorporated solid manure within 8 hours. \\\hline
+incorp\-\_lw1d & \% & Share of incorporated solid manure within 1 day. \\\hline
+incorp\-\_lw3d & \% & Share of incorporated solid manure within 3 days. \\\hline
+incorp\-\_gt3d & \% & Share of incorporated solid manure after 3 days. \\\hline
+incorp\-\_none & \% & Share of solid manure not incorporated. \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf Application::SolidManure::Cseason}\\\hline
+appl\-\_summer & \% & Share of solid manure applied June to August (in \%). \\\hline
+appl\-\_autumn\-\_winter\-\_spring & \% & Share of solid manure applied September to May (in \%). \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf PlantProduction::AgriculturalArea}\\\hline
+agricultural\-\_area & ha & Agricultural area. \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf PlantProduction::MineralFertiliser}\\\hline
+mineral\-\_nitrogen\-\_fertiliser\-\_urea & kg N /a & Amount of urea in kg N /a. \\\hline
+mineral\-\_nitrogen\-\_fertiliser\-\_except\-\_urea & kg N /a & Amount of nitrogen fertiliser (except urea) in kg N /a. \\\hline
+\multicolumn{3}{@{}l}{}\\
+\multicolumn{3}{@{}l}{\footnotesize\bf PlantProduction::RecyclingFertiliser}\\\hline
+compost & t /a & Amount of compost (in t fresh matter per year).
+    Kompost besteht aus Grünabfällen nicht-landwirtschaflticher Herkunft von gewerblich-industriellen Anlagen oder von Feldrandkompostierung. \\\hline
+solid\-\_digestate & t /a & Amount of solid digestate form industrial factories. \\\hline
+liquid\-\_digestate & m3 /a & Amount of liquid digestate form industrial factories. \\\hline
+\end{xtabular}
+\section{Technical Parameters}
+\tablefirsthead{\hline\bf Parameter & \bf Value & \bf Unit & \bf Description\\\hline}
+\tablehead{\hline\bf Parameter & \bf Value & \bf Unit & \bf Description\\}
+\tabletail{\hline}
+\begin{xtabular}{|p{5cm}|l|l|p{0.5\textwidth}|}
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Livestock::Poultry::Excretion}\\\hline
+standard\-\_N\-\_excretion\-\_layers & 0.80 & kg N /a & Annual standard N excretion for poultry category (layers) according to 
+    Flisch et al. (2009). \\\hline
+standard\-\_N\-\_excretion\-\_growers & 0.34 & kg N /a & Annual standard N excretion for poultry category (growers) according to
+    Flisch et al. (2009). \\\hline
+standard\-\_N\-\_excretion\-\_broilers & 0.45 & kg N /a & Annual standard N excretion for poultry category (broilers) according to
+    Flisch et al. (2009). \\\hline
+standard\-\_N\-\_excretion\-\_turkeys & 1.4 & kg N /a & Annual standard N excretion for poultry category according (turkeys) to
+    Flisch et al. (2009). \\\hline
+standard\-\_N\-\_excretion\-\_other\-\_poultry & 0.56 & kg N /a & Annual standard N excretion for other poultry category according to
+    Flisch et al. (2009). \\\hline
+share\-\_Nsol\-\_layers & 0.6 & - & Nsol content of excreta for layers. Derived from e.g.
+    TODO \\\hline
+share\-\_Nsol\-\_growers & 0.6 & - & Nsol content of excreta for growers. Derived from e.g.
+    TODO \\\hline
+share\-\_Nsol\-\_broilers & 0.6 & - & Nsol content of excreta for broilers. Derived from e.g.
+    TODO \\\hline
+share\-\_Nsol\-\_turkeys & 0.6 & - & Nsol content of excreta for turkeys. Derived from e.g.
+    TODO \\\hline
+share\-\_Nsol\-\_other\-\_poultry & 0.6 & - & Nsol content of excreta for other poultry. Derived from e.g.
+    TODO \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Livestock::Poultry::Outdoor}\\\hline
+er\-\_free\-\_range & 0.7 & - & Emission rate for free range poultry, based on Menzi et al. (1997): 70\% of TAN or 28\% of Ntot \\\hline
+free\-\_range\-\_days\-\_layers & 280 & d /a & Average free range days per year. \\\hline
+free\-\_range\-\_hours\-\_layers & 2.88 & h /d & Average free range hours per day, assumed is 12\% of Day \\\hline
+free\-\_range\-\_days\-\_growers & 280 & d /a & Average free range days per year. \\\hline
+free\-\_range\-\_hours\-\_growers & 2.88 & h /d & Average free range hours per day, assumed is 12\% of Day \\\hline
+free\-\_range\-\_days\-\_turkeys & 280 & d /a & Average free range days per year. \\\hline
+free\-\_range\-\_hours\-\_turkeys & 0.96 & h /d & Average free range hours per day, assumed is 4\% of Day \\\hline
+free\-\_range\-\_days\-\_other\-\_poultry & 280 & d /a & Average free range days per year. \\\hline
+free\-\_range\-\_hours\-\_other\-\_poultry & 0.96 & h /d & Average free range hours per day, assumed is 12\% of Day \\\hline
+free\-\_range\-\_days\-\_broilers & 280 & d /a & Average free range days per year. \\\hline
+free\-\_range\-\_hours\-\_broilers & 0.96 & h /d & Average free range hours per day, assumed is 4\% of Day \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Livestock::Poultry::Housing::Type}\\\hline
+er\-\_housing\-\_layers\-\_growers\-\_manure\-\_belt & 0.15 & - & Emission rate for the poultry housing type, based on EAGER workshop January 2007: 15\% of Ntot, converted using 60\% Nsol and emission factor of 25\%. \\\hline
+er\-\_housing\-\_layers\-\_growers\-\_deep\-\_pit & 0.30 & - & Emission rate for the poultry housing type, based on EAGER workshop January 2007, UNECE 2007: 30\% of Ntot, converted using 60\% Nsol and emission factor of 50\%. \\\hline
+er\-\_housing\-\_layers\-\_growers\-\_deep\-\_litter & 0.30 & - & Emission rate for the poultry housing type, based on EAGER workshop January 2007, UNECE 2007: 30\% of Ntot, converted using 60\% Nsol and emission factor of 50\%. \\\hline
+er\-\_housing\-\_other\-\_deep\-\_litter & 0.12 & - & Emission rate for the poultry housing type, based on Reidy et al. (2009): 12\% of Ntot, converted using 60\% Nsol and emission factor of 20\%. \\\hline
+c\-\_manure\-\_removal\-\_interval\-\_less\-\_than\-\_twice\-\_a\-\_month & 1.2 & - & Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi.  \\\hline
+c\-\_manure\-\_removal\-\_interval\-\_twice\-\_a\-\_month & 1 & - & Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi.  \\\hline
+c\-\_manure\-\_removal\-\_interval\-\_3\-\_to\-\_4\-\_times\-\_a\-\_month & 0.8 & - & Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi.  \\\hline
+c\-\_manure\-\_removal\-\_interval\-\_more\-\_than\-\_4\-\_times\-\_a\-\_month & 0.6 & - & Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi.  \\\hline
+c\-\_drinking\-\_nipples & 1.0 & - & Emission rate for the poultry drinking type standard version. \\\hline
+c\-\_bell\-\_drinkers & 1.2 & - & Emission rate for the poultry drinking type additional emission. Empirical assumption by Reidy/Menzi. 
+  \\TODO: Give better description! \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Livestock::Poultry::Housing::AirScrubber}\\\hline
+red\-\_acid\-\_air\-\_scrubber & 0.9 & - & Reduction efficiency as compared to group-housed on fully and partly slatted floors (UNECE 2007, paragraph 71, table 5). \\\hline
+red\-\_biotrickling\-\_filter\-\_air\-\_scrubber & 0.7 & - & Reduction efficiency as compared to group-housed on fully and partly slatted floors (UNECE 2007, paragraph 71, table 5). \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Storage}\\\hline
+mineralizationrate\-\_liquid & 0.1 & - & A netto mineralization of 10\% from Norg to NSol/TAN is assuemd, according to
+  the GAS\_EM Model \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Storage::SolidManure::Poultry}\\\hline
+er\-\_layers\-\_growers\-\_other\-\_poultry & 0.25 & - & Emission rate for layers, growers and other poultry for manure (deep pit, deep litter) and droppings (manure belt)(based on EAGER workshop, January 2008: 15\% Ntot, converted using Nsol 60\% and emission factor of 25\%. \\\hline
+er\-\_turkeys\-\_broilers & 0.1 & - & Emission rate for  manure of broilers and turkeys based on EAGER workshop, January 2008: 6\% Ntot, converted using Nsol 60\% and emission factor of 10\%. \\\hline
+c\-\_droppings\-\_mist\-\_covered\-\_basin & 0.6 & - & Reduction of emission rate for the droppings or mist stored in covered basin for poultry. \\\hline
+immobilizationrate\-\_poultry & 0.4 & - & A netto immobilization of 40\% from NSol/TAN to Norg is assuemd, according to
+  the GAS\_EM Model \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Storage::SolidManure::Solid}\\\hline
+er\-\_tan\-\_pigs & 0.5 & - & The value has been derived from the Eager workshop, January 2008: (additional explanation following) \\\hline
+er\-\_tan\-\_cattle\-\_other & 0.3 & - & The value has been derived from the Eager workshop, January 2008: (additional explanation following) \\\hline
+immobilizationrate\-\_solid & 0.4 & - & A netto immobilization of 40\% from NSol/TAN to Norg is assuemd, according to
+  the GAS\_EM Model \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::Slurry}\\\hline
+er\-\_App\-\_cattle\-\_liquid & 0.5 & - & Emission rate for slurry application based on TAN of the slurry. The 
+    average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al. (1998), Menzi et al. (1997a) \\\hline
+er\-\_App\-\_pigs\-\_liquid & 0.35 & - & Die Emissionsrate wurde gemäss ALFAM Modell (Sogaard et al., 2002) berechnet mit folgenden Inputdaten: durchschnittliche Temperatur von März bis November: 12°C (Daten SMA Station Bern Liebefeld 1993-2002); Windgeschwindigkeit von 1 m/s:
+Schweinegülle Mast: TAN Gehalt Gülle: 2.1 kg/m3 (Verdünnung 1:1, d.h. 2.5 \% TS gemäss Flisch et al., 2009); ohne Korrekturen für emissionsminderende Ausbringung, ohne Einarbeitung nach Ausbringung; Ausbringungsmenge: 30 m3/ha; mikrometeorologische Messung: 30.3 \% TAN (Mittelwert Boden feucht, Boden trocken). Bei gleichen Annahmen, jedoch einer reduzierten Ausbringungsmenge von 20 m3/ha (aufgrund des im Vergleich zu Rindergülle höheren TAN-Gehalts) und eines TS Gehalts von 3 \% (höherer Strohanteil bei Labelsystemen): 33.2 \%.
+Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt Gülle: 1.65 kg/m3; Verdünnung 1:1, d.h. 2.5 \% TS gemäss Flisch et al., 2009) Emissionsraten von 32.9 \% bzw. 36.2 \% TAN. \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::Slurry::Ctech}\\\hline
+red\-\_splash\-\_plate & 0.0 & - & There is no reduction for broadcasting with splash plate as to this way of 
+    applying slurry all the other methods are compared to. \\\hline
+red\-\_trailing\-\_hose & -0.3 & - & Reduction efficiency as compared to broadcasting applying trailing hose.
+    Adopted from UNECE (2007), Frick and Menzi (1997) 
+    and Menzi et al. (1997). \\\hline
+red\-\_trailing\-\_shoe & -0.5 & - & Reduction efficiency as compared to broadcasting applying trailing shoe. 
+    Adopted from UNECE (2007), Frick and Menzi (1997) 
+    and Menzi et al. (1997). \\\hline
+red\-\_shallow\-\_injection & -0.7 & - & Reduction efficiency as compared to broadcasting applying shallow injection.
+    Adopted from UNECE (2007), Frick and Menzi (1997) 
+    and Menzi et al. (1997). \\\hline
+red\-\_deep\-\_injection & -0.8 & - & Reduction efficiency as compared to broadcasting applying deep injection.
+    Adopted from UNECE(2007), Frick and Menzi (1997) 
+    and Menzi et al. (1997).  \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::Slurry::Applrate}\\\hline
+norm\-\_er & 0.5 & - & Standard emission of 50\% of the applied TAN calculated based on an
+    equation published by Menzi et al (1998) using a TAN standard of 1.15 
+    kg /m3 for an 1:1 dilution, with application rate (AR) standard of 30 m3 /ha and average 
+    swiss meteorological conditions ( T=12 C, humitity=70\%):
+    ((19.41 * TAN\_standard + 4.2 * 1.102 - 9.51) * (0.0214 * ARstandard + 0.36) / (AR\_standard * TAN-standard))) \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::Slurry::Csoft}\\\hline
+c\-\_evening & -0.2 & - & Correction factor of the emission rate if slurry is applied in the
+    evening (after 18h)(Menzi et al 1997; Frick and Menzi 1997).
+
+    Assumption based on a single experiment with an application after 18h in August at a temperature of >20°C: reduction of the emission by 38\%, the reduction of the emission averaged over the whole year is only 50\%, i.e. -0.2
+The correction is omitted for solid manure since infiltration into soil does not occur. \\\hline
+c\-\_hotdays\-\_frequently & 0.1 & - & Correction factor of the emission rate if slurry is applied frequently 
+    on hot days.
+
+    Loss calculated according to the model of Katz (Menzi et al. 1997b) at 17°C (i.e. +5°C) compared to the reference temperature of 12°C (other parameters: 70\% rela-tive air humidity, 1.15 kg/m3 TAN, 30 m3/ha) resulting in a loss of 19.22 kg N/ha at 17 °C and 55.7\% TAN, respectively (compared to 17.45 kg N/ha and 50.6\% TAN at 12°C, respectively) which corresponds to an increase of 10.1\% (rounded to 10\%). \\\hline
+c\-\_hotdays\-\_sometimes & 0.0 & - & Correction factor of the emission rate if slurry is applied sometimes
+    on hot days (estimation based on Menzi et al (1997)). \\\hline
+c\-\_hotdays\-\_rarely & -0.1 & - & Correction factor of the emission rate if slurry is applied rarely
+    on hot days (estimation based on Menzi et al (1997)). \\\hline
+c\-\_hotdays\-\_never & -0.2 & - & Correction factor of the emission rate if slurry is applied never
+    on hot days (estimation based on Menzi et al (1997)). \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::Slurry::Cseason}\\\hline
+c\-\_summer & 0.15 & - & Correction factor for the application of slurry in summer (June to
+  August): Model calculation according to the model of Katz (Menzi et
+  al. 1997b) with meteorological data from Liebefeld 1993-2002:
+  average from March to November 12°C, 70\% relative air humidity, 1.15
+  kg/m3 TAN, 30 m3/ha resulting in a loss of 50.6\% TAN; summer 17.8°C
+  resulting in a loss of 56.7\% TAN (+12\%). Value chosen for
+  cal-culation: +15\% \\\hline
+c\-\_autumn\-\_winter\-\_spring & -0.05 & - & Correction factor for the application of slurry in autumn, winter and spring (Sept to May): Model calculation according to the model of Katz (Menzi et
+  al. 1997b) with meteorological data from Liebefeld 1993-2002: average
+  from March to November 12°C, 70\% relative air humidity, 1.15 kg/m3
+  TAN, 30 m3/ha resulting in a loss of 50.6\% TAN; spring/autumn/winter 9°C
+  resulting in a loss of 48.1\% TAN (-4.8\%). Value chosen for
+  calculation: -5\% \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::SolidManure::Solid}\\\hline
+er\-\_App\-\_manure\-\_dairycows\-\_cattle\-\_pigs & 0.8 & - & Emission rate for manure application. The average rate has been
+  derived from Frick et al. (1996) and Menzi et al. (1996). The value is
+  based on the average emissions from diffrent Swiss
+  experiments. Emission based on TAN of slurry. \\\hline
+er\-\_App\-\_manure\-\_horses\-\_otherequides\-\_smallruminants & 0.7 & - & Emission rate for manure application. The average rate has been
+  derived from Frick et al. (1996) and Menzi et al. (1996). The value is
+  based on the average emissions from diffrent Swiss
+  experiments. Emission based on TAN of slurry. \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::SolidManure::Solid::CincorpTime}\\\hline
+eff\-\_inc\-\_lw1h & -0.9 & - & Reduction due to incorporation of solid manure within 1 hour.
+    UNECE (2007).  \\\hline
+eff\-\_inc\-\_lw4h & -0.7 & - & Reduction due to incorporation of solid manure within 4 hours.
+     Empirical estimate deduced from UNECE (2007).
+     Mean value between the category incorporation within 1 hour and incorporation within 8 hours. \\\hline
+eff\-\_inc\-\_lw8h & -0.5 & - & Reduction due to incorporation of solid manure within 8 hours.
+     Values adapted from UNECE (2007) (category Incorporation by plough within 12 h) \\\hline
+eff\-\_inc\-\_lw1d & -0.35 & - & Reduction due to incorporation of solid manure within 1 day.
+    Values adapted from UNECE (2007)
+    Empirical estimate deduced from Menzi et al. (1997). \\\hline
+eff\-\_inc\-\_lw3d & -0.3 & - & Reduction due to incorporation of solid manure within 3 days.
+    Empirical estimate deduced from Menzi et al. (1997). \\\hline
+eff\-\_inc\-\_gt3d & -0.1 & - & Reduction due to incorporation of solid manure after 3 days
+    Empirical estimate deduced from Menzi et al. (1997). \\\hline
+eff\-\_inc\-\_none & 0.0 & - & Basis with no incorporation of solid manure. \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::SolidManure::Cseason}\\\hline
+c\-\_summer & 0.15 & - & Correction factor for the application of solid manure in summer (June to August):
+Model calculation according to the model of Katz (Menzi et al. 1997b) with meteorological data from Liebefeld 1993-2002: average from March to November 12°C, 70\% relative air humidity, 1.15 kg/m3 TAN, 30 m3/ha resulting in a loss of 50.6\% TAN; summer 17.8°C resulting in a loss of 56.7\% TAN (+12\%). Value chosen for cal-culation: +15\%. \\\hline
+c\-\_autumn\-\_winter\-\_spring & -0.05 & - & Correction factor for the application of solid manure in autumn, winter and spring (Sept to May):
+  Model calculation according to the model of Katz (Menzi et al. 1997b) with meteorological data from Liebefeld 1993-2002: average from March to November 12°C, 70\% relative air humidity, 1.15 kg/m3 TAN, 30 m3/ha resulting in a loss of 50.6\% TAN; spring/autumn/winter 9°C resulting in a loss of 48.1\% TAN (-4.8\%). Value chosen for calculation: -5\%. \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::SolidManure::Poultry}\\\hline
+er\-\_App\-\_manure\-\_layers\-\_growers\-\_other\-\_poultry & 0.3 & - & Emission rate for manure application. The average rate has been
+  derived from Frick et al. (1996) and Menzi et al. (1997). The value is
+  based on the average emissions from diffrent Swiss
+  experiments. Emission based on TAN of slurry. \\\hline
+er\-\_App\-\_manure\-\_turkeys\-\_broilers & 0.65 & - & Emission rate for manure application. The average rate has been
+  derived from Frick et al. (1996) and Menzi et al. (1997). The value is
+  based on the average emissions from diffrent Swiss
+  experiments. Emission based on TAN of slurry. \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf Application::SolidManure::Poultry::CincorpTime}\\\hline
+eff\-\_inc\-\_lw1h & -0.95 & - & Reduction due to incorporation of solid manure within 1 hour.
+    UNECE (2007).  \\\hline
+eff\-\_inc\-\_lw4h & -0.8 & - & Reduction due to incorporation of solid manure within 4 hours.
+     Empirical estimate deduced from UNECE (2007).
+     Mean value between the category incorporation within 1 hour and incorporation within 8 hours. \\\hline
+eff\-\_inc\-\_lw8h & -0.7 & - & Reduction due to incorporation of solid manure within 8 hours.
+     Values adapted from UNECE (2007) (category Incorporation by plough within 12 h) \\\hline
+eff\-\_inc\-\_lw1d & -0.55 & - & Reduction due to incorporation of solid manure within 1 day.
+    Values adapted from UNECE (2007)
+    Empirical estimate deduced from Menzi et al. (1997). \\\hline
+eff\-\_inc\-\_lw3d & -0.3 & - & Reduction due to incorporation of solid manure within 3 days.
+    Empirical estimate deduced from Menzi et al. (1997). \\\hline
+eff\-\_inc\-\_gt3d & -0.1 & - & Reduction due to incorporation of solid manure after 3 days
+    Empirical estimate deduced from Menzi et al. (1997). \\\hline
+eff\-\_inc\-\_none & 0.0 & - & Basis with no incorporation of solid manure. \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf PlantProduction::AgriculturalArea}\\\hline
+er\-\_agricultural\-\_area & 2 & kg N /ha /a & Emission rate from the agricultural area. The average rate has been
+  derived from Schjoerring and Mattson (2001). Emission based on kg/ ha AA (AA = agricultural area, Landwirschaftliche Nutzfläche). N ist NH3 N. \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf PlantProduction::MineralFertiliser}\\\hline
+er\-\_App\-\_mineral\-\_nitrogen\-\_fertiliser\-\_urea & 0.15 & - & Emission rate for the application of urea. The average rate has been
+  derived from Vanderweerden and Jarvis (1997). Emission based on Ntot. \\\hline
+er\-\_App\-\_mineral\-\_nitrogen\-\_fertiliser\-\_except\-\_urea & 0.02 & - & Emission rate for the application of ammonium nitrate. The average rate has been
+  derived from Vanderweerden and Jarvis (1997). Emission based on Ntot. \\\hline
+\multicolumn{4}{@{}l}{}\\
+\multicolumn{4}{@{}l}{\footnotesize\bf PlantProduction::RecyclingFertiliser}\\\hline
+er\-\_compost & 0.24 & kg N / t & Emission rate from compost, calculated with an emmission rate of 80 \\% TAN and a fraction of
+  0.3 kg TAN per t fresh matter (Flisch et al., 2009).
+  of TAN. \\\hline
+er\-\_solid\-\_digestate & 0.24 & kg N / t & Emission rate for solid digestat from industrial plantse, calculated with an emmission rate
+  of 80 \\% TAN and a fraction of  0.3 kg TAN per t fresh matter (Flisch et al., 2009). \\\hline
+er\-\_liquid\-\_digestate & 1.2 & kg N / t & Emission rate from liquid digestate from industrial plants, calculated with an emmission
+  rate of 60 \\% TAN and a fraction of 2 kg TAN per t fresh matter (Flisch et al., 2009). \\\hline
+\end{xtabular}

@@ -1,0 +1,161 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-04-22
+taxonomy = Application::Slurry::Csoft
+
++short
+
+ Correction factor of the standard emission rate if different kind of
+ "soft measures" are respected/applied. 
+
++description
+
+ This process computes the correction factor if different soft measures for
+ slurry application are respected.
+
+ \subsubsection{References:}
+  Menzi H, Frick R, Kaufmann R 1997. Ammoniak-Emissionen in der Schweiz:
+  Ausmass und technische Beurteilung des
+  Reduktionspotentials. Eidgenössische Forschungsanstalt für
+  Agrarökologie und Landbau, Zürich-Reckenholz. 107pp. 
+
+  Frick R, Menzi H 1997. Hofdüngeranwendung: Wie Ammoniakverluste
+  vermindern? Auch einfache Massnahmen wirken. FAT Bericht Nr. 496.
+
+
+*** input ***
+ 
++appl_evening 
+  models = SHL 
+  type  = percent
+  default_calc = 0 
+  ++labels 
+    en = Share of slurry applied in the evening after 18:00
+    de = Anteil Gülleausbringung am Abend nach 18:00 Uhr
+    fr = Part de lisier Ã©pandu le soir aprÃ¨s 18:00h
+  ++units  
+    en = %
+  ++description
+    Share of slurry applied in the evening after 18:00.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: 20%</p>
+    +++de
+       <p>Vorschlag für Standardwert: 20%</p>
+    +++fr
+       <p>Proposition de valeur standard: 20%</p>
+ 
++appl_hotdays
+  models = SHL
+  type  = enum
+  default_calc = sometimes
+  ++enum
+    +++frequently
+       en = frequently
+       de = häufig
+       fr = frÃ©quemment
+       it = frequently
+    +++sometimes
+       en = sometimes
+       de = manchmal
+       fr = parfois
+       it = sometimes
+    +++rarely
+       en = rarely
+       de = selten
+       fr = rarement
+       it = rarely
+    +++never
+       en = never
+       de = nie
+       fr = jamais
+       it = never
+  ++labels 
+    en = Frequency of slurry applied on hot days
+    de = Bringen Sie Gülle an für die Jahreszeit besonders warmen Tagen aus?
+    fr = Epandez-vous du lisier les jours particuliÃ¨rement chauds pour la saison?
+  ++units 
+    en = -
+  ++description
+    Proportion of slurry applied on hot days.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: sometimes</p>
+    +++de
+       <p>Vorschlag für Standardwert: manchmal</p>
+    +++fr
+       <p>Proposition de valeur standard: Parfois</p>
+       
+
+*** technical ***
+
++c_evening 
+  value = -0.2
+  ++units 
+    en = -
+  ++description
+    Correction factor of the emission rate if slurry is applied in the
+    evening (after 18h)(Menzi et al 1997; Frick and Menzi 1997).
+
+    Assumption based on a single experiment with an application after 18h in August at a temperature of >20Â°C: reduction of the emission by 38%, the reduction of the emission averaged over the whole year is only 50%, i.e. -0.2
+The correction is omitted for solid manure since infiltration into soil does not occur.
+
+
++c_hotdays_frequently 
+  value = 0.05
+  ++units 
+    en = -
+  ++description
+    Correction factor of the emission rate if slurry is applied frequently 
+    on hot days.
+
+    Loss calculated according to the model of Katz (Menzi et al. 1997b) at 17Â°C (i.e. +5Â°C) compared to the reference temperature of 12Â°C (other parameters: 70% rela-tive air humidity, 1.15 kg/m3 TAN, 30 m3/ha) resulting in a loss of 19.22 kg N/ha at 17 Â°C and 55.7% TAN, respectively (compared to 17.45 kg N/ha and 50.6% TAN at 12Â°C, respectively) which corresponds to an increase of 10.1% (rounded to 10%).
+
++c_hotdays_sometimes
+  value = 0.0
+  ++units 
+    en = -
+  ++description  
+    Correction factor of the emission rate if slurry is applied sometimes
+    on hot days (estimation based on Menzi et al (1997)).
+
++c_hotdays_rarely
+  value = -0.02
+  ++units 
+    en = -
+  ++description
+    Correction factor of the emission rate if slurry is applied rarely
+    on hot days (estimation based on Menzi et al (1997)).
+
++c_hotdays_never
+  value = -0.04
+  ++units 
+    en = -
+  ++description
+    Correction factor of the emission rate if slurry is applied never
+    on hot days (estimation based on Menzi et al (1997)).
+
+*** external ***
+
+*** output ***
+
++c_hotdays
+  print = 15
+  ++units 
+    en = -
+  ++description
+    Correction factor of the emission rate if slurry is applied on hot days.
+  ++formula
+     return $TE->{'c_hotdays_'.In(appl_hotdays)};
+
++c_soft
+  print = 15
+  ++units 
+    en = -
+  ++description
+  Correction factor of the emission rate if slurry is applied by
+  considering  different kinds of "soft measures". 
+  ++formula
+   return ( 1 + (( In(appl_evening)/100) * Tech(c_evening) + Out(c_hotdays)));
+

@@ -1,0 +1,802 @@
+*** general ***
+
+author   = Agrammon Group	
+date     = 2008-05-08
+taxonomy = Livestock::OtherCattle::Yard
+
++short
+   Computes the annual NH3 emission from cattle (apart from dairy
+   cows) on exercise yards. Based on the access time and if the the basic 
+   feeding is on the yard.
+
++description 
+  
+
+*** external ***
+
++Excretion
++GrazingInput
+
+*** input ***
+
++yard_days
+  type  = integer
+  validator = between(0,365);
+ ++labels
+   en = Duration of access to exercise yard over the year
+   de = Jährliche Zutrittsdauer zum Laufhof
+   fr = Nombre de jours avec accès au parcours extérieur (par an)
+ ++units
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Access to exercise yards days per year.
+  ++help
+    +++en
+       <p>Standard values for Switzerland</p>
+       <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" >
+             Loose housings
+           </td> 
+	   <td align="center" >
+	     Tied housings
+           </td> 
+         </tr>
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" colspan="2" >
+             Days per year
+           </td> 
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+ 	     Suckling cows
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > 145 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+             Heifers 1st year
+          </td>
+          <td align="center" > 245 </td>
+          <td align="center" > 100 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Heifers 2nd year
+          </td>
+          <td align="center" > 240 </td>
+          <td align="center" > 105 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Heifers 3rd year
+          </td>
+          <td align="center" > 260 </td>
+          <td align="center" > 110 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Fattening calves
+          </td>
+          <td align="center" > 60 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Calves of suckling cows
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Beef cattle
+          </td>
+          <td align="center" > 160 </td>
+          <td align="center" > 80 </td>
+	 </tr>
+      </table>
+    +++de
+       <p>Rinder, die angebunden gehalten werden, müssen regelmässig, mindestens jedoch an 60 Tagen während der Vegetationsperiode und an 30 Tagen während der Winterfütterungsperiode, Auslauf erhalten (Tierschutzverordnung vom 23. April 2008, Stand am 1. Januar 2009).</p>
+       <p>Vorschlag für Standardwerte</p>
+       <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" >
+             Laufställe
+           </td> 
+	   <td align="center" >
+	     Anbindeställe
+           </td> 
+         </tr>
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" colspan="2" >
+             Tage pro Jahr
+           </td> 
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+ 	     Mutterkühe
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > 145 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+             Aufzuchtrinder unter 1-jährig
+          </td>
+          <td align="center" > 245 </td>
+          <td align="center" > 100 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder 1- bis 2-jährig
+          </td>
+          <td align="center" > 240 </td>
+          <td align="center" > 105 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder über 2-jährig
+          </td>
+          <td align="center" > 260 </td>
+          <td align="center" > 110 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Mastkälber
+          </td>
+          <td align="center" > 60 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Mutterkuhkälber
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Masttiere Rindviehmast
+          </td>
+          <td align="center" > 160 </td>
+          <td align="center" > 80 </td>
+	 </tr>
+      </table>
+    +++fr
+       <p>Les bovins gardés à l’attache doivent avoir accès régulièrement à un parcours extérieur, au moins pendant 60 jours durant la période de végétation et pendant 30 jours durant la période d’affouragement d’hiver (Ord. sur la protection des animaux du 23 avril 2008, état au 1er janvier 2009). </p>
+       <p>Proposition de valeurs standard</p>
+       <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" >
+             Stabulation libre
+           </td> 
+	   <td align="center" >
+	     Stabulation entravée 
+           </td> 
+         </tr>
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" colspan="2" >
+             Jours par an 
+           </td> 
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+ 	     Vaches allaitantes
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > 145 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+             Remontes de moins d’un an
+          </td>
+          <td align="center" > 245 </td>
+          <td align="center" > 100 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Remontes âgées entre 1 et 2 ans
+          </td>
+          <td align="center" > 240 </td>
+          <td align="center" > 105 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Remontes âgées de plus de 2 ans
+          </td>
+          <td align="center" > 260 </td>
+          <td align="center" > 110 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Veaux à l’engrais
+          </td>
+          <td align="center" > 60 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Veaux de vaches allaitantes
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Bovins à l’engrais
+          </td>
+          <td align="center" > 160 </td>
+          <td align="center" > 80 </td>
+	 </tr>
+      </table>
+
+
++exercise_yard
+  type  = enum
+  ++enum
+    +++not_available
+       en = not_available
+       de = nicht_vorhanden
+       fr = non_disponible
+       it = not_available
+    +++available_roughage_is_not_supplied_in_the_exercise_yard
+       en = available_roughage_is_not_supplied_in_the_exercise_yard
+       de = vorhanden:_keine_Verabreichung_von_Grundfutter_im_Laufhof
+       fr =  disponible:_sans_fourrage_à_disposition_dans_le_parcours
+       it = available_roughage_is_not_supplied_in_the_exercise_yard
+    +++available_roughage_is_partly_supplied_in_the_exercise_yard
+       en = available_roughage_is_partly_supplied_in_the_exercise_yard
+       de = vorhanden:_Verabreichung_von_Grundfutter_teilweise_im_Laufhof
+       fr = disponible:_fourrage_en_partie_à_disposition_dans_le_parcours
+       it = available_roughage_is_partly_supplied_in_the_exercise_yard
+    +++available_roughage_is_exclusively_supplied_in_the_exercise_yard
+       en = available_roughage_is_exclusively_supplied_in_the_exercise_yard
+       de = vorhanden:_Verabreichung_von_Grundfutter_ausschliesslich_im_Laufhof
+       fr = disponible:_fourrage_à_disposition_exclusivement_dans_le_parcours
+       it = available_roughage_is_exclusively_supplied_in_the_exercise_yard
+  ++labels 
+    en = Exercise yard
+    de = Laufhof
+    fr = Parcours extérieur
+  ++units  
+    en = -
+  ++description
+    Exercise yard: not available, available: roughage is not supplied in the exercise yard, available: roughage is partly supplied in the exercise yard, available: roughage is exclusively supplied in the exercise yard.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: “available roughage is not supplied in the exercise yard”</p>
+    +++de
+       <p>Die Verabreichung von Grundfutter im Laufhof wird nur für Laufhöfe mit einem befestigten oder einem perforierten Boden empfohlen. Ausschliessliche Fütterung von Grundfutter im Laufhof kommt nur vor, wenn der Laufhof in den Laufstall integriert ist.</p>
+       <p>Vorschlag für Standardwert: vorhanden: keine Verabreichung von Grundfutter im Laufhof</p>
+    +++fr
+       <p>La distribution de fourrage dans le parcours extérieur n’est recommandée que si le parcours a un sol en dur ou un sol perforé. La variante ‚Fourrage à disposition exclusivement dans le parcours extérieur’ n’est possible que lorsque le parcours est intégré dans la stabulation libre. </p>
+       <p>Proposition de valeur standard: sans fourrage à disposition  dans le parcours </p>
+
++floor_properties_exercise_yard_SHL
+  models = SHL
+  type  = enum
+  default_calc = solid_floor
+  ++enum
+     +++solid_floor
+	en = solid_floor
+	de = Boden_planbefestigt
+	fr = sol_en_dur
+	it = solid_floor
+     +++unpaved_floor
+	en = unpaved_floor
+	de = Boden_unbefestigt
+	fr = sol_sans_revêtement_dur
+	it = unpaved_floor
+     +++perforated_floor
+	en = perforated_floor
+	de = Boden_perforiert
+	fr = sol_perforé
+	it = perforated_floor
+     +++paddock_or_pasture_used_as_exercise_yard
+	en = paddock_or_pasture_used_as_exercise_yard
+	de = kein_Laufhof:_Auslauf_auf_Weide
+	fr = pas_de_parcours:_accès_au_pâturage
+	it = paddock_or_pasture_used_as_exercise_yard
+  ++labels 
+    en = Type of exercise yard
+    de = Laufhoftyp
+    fr = Type de parcours extérieur
+  ++units  
+    en = -
+  ++description
+    Floor properties(solid floor, unpaved floor, perforated floor, paddock or pasture used as exercise yard).
+  ++help
+    +++en
+       <p>Standard value for Switzerland: “solid floor”</p>
+       <p>Perforated floor: three quarts of the yard surface or more must exhibit a perforated or a slatted floor. If less than three quarts are perforated solid floor must be entered.</p>
+    +++de
+       <dl>  
+       <dt>Boden planbefestigt:</dt>
+       <dd>Laufhöfe mit Betonboden oder Asphalt (wasserundurchlässig). Mit Verbundsteinen und Pflastersteinen ausgelegte Flächen (wasserdurchlässig) werden den planbefestigten Böden gleichgestellt.</dd>
+
+       <dt>Boden unbefestigt:</dt>
+       <dd> Laufhöfe mit unbefestigtem oder wasserdurchlässigem Boden wie Kies, Sand, Mergel, Holzschnitzel, Rasengittersteine etc.</dd>
+       <dt>Boden perforiert:</dt>
+       <dd> 
+       	    Spalten oder Lochböden; mindestens ¾ der Laufhoffläche muss einen perforierten Boden aufweisen. 
+       	    Wenn weniger als ¾ der Laufhoffläche einen perforierten Boden aufweist: Eingabe von Boden 
+	    planbefestigt. Nur anwendbar bei regelmässiger Reinigung des Bodens, durchlässigen Spalten/Löchern 
+	    des Bodens sowie Lagerung eines wesentlichen Teils der Gülle des Betriebs in der Grube unterhalb 
+	    des perforierten Bodens.
+       </dd>
+       </dl>
+       <p>Laufhöfe mit unbefestigter Oberfläche dürfen nicht permanent zugänglich sein (max. 2 Stunden pro Tag).</p>
+       <p>Vorschlag für Standardwert: Boden planbefestigt</p>
+    +++fr
+       <dl>  
+       <dt>Sol en dur: </dt>
+       <dd>Parcours avec un sol bétonné ou asphalté (imperméable à l’eau). Les surfaces pavées (perméables à l’eau) sont considérées également comme des sols en dur. </dd>
+
+       <dt>Sol sans revêtement dur:</dt>
+       <dd> Parcours avec des sols non durs ou perméables à l’eau comme les sols recouverts de gravier, de sable, de marne, de copeaux de bois ou de dalles gazon, etc. </dd>
+       <dt>Sol perforé:</dt>
+       <dd> Caillebotis ou sols à trous; au moins ¾ de la surface du parcours doit être un sol perforé. Si moins de ¾ de la surface est perforée, alors introduire ‚Sol en dur’. </dd>
+</dl>
+       <p>Les parcours extérieurs avec des sols sans revêtement dur ne doivent pas être accessibles de manière permanente (max. 2 heures par jour). </p>
+       <p>Proposition de valeur standard: sol en dur</p>
+
+
++floor_properties_exercise_yard_LU
+  models = LU
+  type  = enum
+  default_calc = solid_floor
+  ++enum
+     +++solid_floor
+	en = solid_floor
+	de = Boden_planbefestigt
+	fr = sol_en_dur
+	it = solid_floor
+     +++perforated_floor
+	en = perforated_floor
+	de = Boden_perforiert
+	fr = sol_perforé
+	it = perforated_floor
+     +++sloped_concrete_floor_with_central_drain_and_stationary_scraper
+	en = sloped_concrete_floor_with_central_drain_and_stationary_scraper
+	de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber
+	fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire
+	it = sloped_concrete_floor_with_central_drain_and_stationary_scraper
+     +++sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
+	en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
+	de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung
+	fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage
+	it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
+     +++sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
+	en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
+	de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung_plus_Dusche
+	fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage_et_douche
+	it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
+  ++labels 
+    en = Type of exercise yard
+    de = Laufhoftyp
+    fr = Type de parcours extérieur
+  ++units 
+    en = -
+  ++description
+    Type of exercise yard.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: "solid floor" </p>
+    +++de
+       <dl>  
+       <dt>Boden planbefestigt:</dt>
+       <dd>Laufhöfe mit Betonboden oder Asphalt (wasserundurchlässig). Mit Verbundsteinen und Pflastersteinen ausgelegte Flächen (wasserdurchlässig) werden den planbefestigten Böden gleichgestellt.</dd>
+       <dt>Boden perforiert:</dt>
+       <dd> Spalten oder Lochböden; mindestens ¾ der Laufhoffläche muss einen perforierten Boden aufweisen. Falls weniger als ¾ der Laufhoffläche einen perforierten Boden aufweist: Eingabe von Boden planbefestigt.</dd>
+       <dt>Geneigter planbefestigter Boden mit mittiger Harnabflussrinn und stationärem Schieber:</dt>
+       <dd>Reinigung alle zwei Stunden</dd>
+       <dt>Geneigter planbefestigter Boden mit mittiger Harnabflussrinn und stationärem Schieber plus Windschutz und Beschattung:</dt>
+       <dd>Reinigung alle zwei Stunden.</dd>
+       <dt>Geneigter planbefestigter Boden mit mittiger Harnabflussrinn und stationärem Schieber plus Windschutz und Beschattung plus Dusche:</dt>
+       <dd>Reinigung alle zwei Stunden</dd>
+       </dl>
+       <p>Laufhöfe mit unbefestigter Oberfläche dürfen nicht permanent zugänglich sein (max. 2 Stunden pro Tag).</p>
+       <p>Vorschlag für Standardwert: Boden planbefestigt</p>
+    +++fr
+       <dl>  
+       <dt>Sol en dur:</dt>
+       <dd>Parcours avec un sol bétonné ou asphalté (imperméable à l’eau). Les surfaces pavées (perméables à l’eau) sont considérées également comme des sols en dur. </dd>
+       <dt>Sol perforé:</dt>
+       <dd>Caillebotis ou sols à trous; au moins ¾ de la surface du parcours doit être un sol perforé. Si moins de ¾ de la surface est perforée, alors introduire ‚Sol en dur’. </dd>
+       <dt>Sol en dur incliné avec une rigole d’évacuation centrale et un racleur stationnaire:</dt>
+       <dd>Nettoyage toutes les 2 heures</dd>
+       <dt>Sol en dur incliné avec une rigole d ' évacuation centrale et un racleur stationnaire avec brise - vent et ombrage:</dt>
+       <dd>Nettoyage toutes les 2 heures</dd>
+       <dt>Sol en dur incliné avec une rigole d ' évacuation centrale et un racleur stationnaire avec brise - vent et ombrage et douche:</dt>
+       <dd>Nettoyage toutes les 2 heures</dd>
+       </dl> 
+       <p></p>
+       <p>Proposition valeur standard: sol en dur</p>
+
++free_correction_factor
+  models = SHL
+  type = float
+  default_calc = 0
+  default_gui = 0
+  validator = between(0,100);
+  ++labels 
+    en = Additional emission mitigation measure for the exercise yard (see column Help)
+    de = Zusätzliche emissionsmindernde Massnahme Laufhof (siehe Spalte Hilfe)
+    fr = Mesure supplémentaire limitant les émissions sur le parcours extérieur (cf. aide)
+  ++units 
+    en = %
+  ++description
+    Factor to define free ?
+  ++help
+    +++en
+       <p> </p>
+    +++de
+	<p>
+           Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt
+           werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene Zahl entspricht
+           der Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Laufhof 
+           nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar 
+           aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
+	</p>
+        <p>
+	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+           zur Emissionsminderung berücksichtigen müssen. 
+	</p>
+        <p>Vorschlag für Standardwert: 0 %.</p>
+    +++fr
+	<p>
+	  Ici, vous pouvez introduire l’effet d’une mesure supplémentaire limitant les 
+	  émissions (p.ex. un nouveau type de sol limitant les émissions). Le chiffre 
+	  introduit correspond à la réduction d’émission en pourcent (p.ex. 30%: l’émission 
+	  provenant du parcors extérieur diminue de 30%). Il est recommandé de mentionner
+	  la mesure choisie dans la colonne ‘Commentaire’ et de justifier le taux de 
+	  réduction choisi.
+	</p>
+	<p>
+	  Cette fonction s’adresse principalement aux utilisateurs/trices qui font des 
+	  pronostiques d’émissions et qui doivent prendre en compte l’effet de nouvelles 
+	  technologies destinées à limiter les émissions et encore méconnues actuellement.
+	</p>
+	<p>Proposition valeur standard: 0 %.</p>
+
+*** technical ***
+
++er_yard
+  value = 0.7
+  ++units  
+    en = -
+  ++description	
+     Emission rate for TAN on yard.
+
++share_available_roughage_is_exclusively_supplied_in_the_exercise_yard
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Share of excretion per day for animals with roughage exclusively on the yard.
+
++share_available_roughage_is_partly_supplied_in_the_exercise_yard
+  value = 0.2
+  ++units  
+    en = -
+  ++description
+    Share of excretion per day for animals with roughage partly on the yard.
+
++share_available_roughage_is_not_supplied_in_the_exercise_yard
+  value = 0.1
+  ++units  
+    en = -
+  ++description
+    Share of excretion per day for animals with roughage not supplied in the yard.
+
++red_floor_properties_solid_floor
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_floor_properties_unpaved_floor
+  value = 0.5
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_floor_properties_perforated_floor
+  value = 0.75
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_floor_properties_paddock_or_pasture_used_as_exercise_yard
+  value = 0.9
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_sloped_concrete_floor_with_central_drain_and_stationary_scraper
+  value = 0.2
+  ++units
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
+  value = 0.3
+  ++units
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
+  value = 0.5
+  ++units
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
+
+*** output ***
+
+
++yard_days
+  print = 7
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Access to exercise yards days per year.
+  ++formula
+    In(yard_days);
+
++days_with_grazing_and_yard
+  print = 7
+  ++units  
+    en = days
+    de = Tage
+    fr = jours
+  ++description
+    Number of Days whith access to yard and pasture
+  ++formula
+     if( (Val(grazing_days, GrazingInput) + Out(yard_days)) > 365 ){
+     	 writeLog({en=>"The sum of days with access to the exercise yard and of grazing days per year for other cattle is higher than 365!\n",
+                   de=>"Die Summe der Weide- und Laufhoftage für übriges Rindvieh ist grösser als 365!\n",
+                  fr=>"La somme des jours de pâturage et des jours avec accès au parcours extérieur pour "
+                      . "la catégorie autres bovons est supérieure à 365 !\n",
+                 }); 
+     	 return ( Val(grazing_days, GrazingInput) + Out(yard_days) - 365) ;
+     } else{
+	 return (0);
+     };
+
++c_free_factor_yard
+  print = 10
+  ++units 
+    en = -
+  ++description
+    Free reduction of the Emission rate for the Yard.
+  ++formula
+  if(In(free_correction_factor)//0 > 0) {   	    
+      writeLog({en=>"You have entered an additional emission mitigation measure for an exercise yard of the category other cattle of " 
+                    . In(free_correction_factor) 
+                    . "\%!\n", 
+                de=>"Sie haben eine zusätzliche emissionsmindernde  Massnahme für einen Laufhof der Kategorie übriges Rindvieh " 
+                    . In(free_correction_factor) 
+                    . "\% eingegeben!\n", 
+                fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d’un parcours extérieur "
+		    . "pour autres bovins de ". In(free_correction_factor) . "\%.\n" 
+               });
+	    return 1 - In(free_correction_factor)/100;
+     
+  } else {
+    return 1;
+  } 
+
++c_floor_properties_exercise_yard_SHL
+  print = 15
+  ++units
+    en = -
+  ++description
+    Reduction factor for the emission due to the use of the floor properties in housing systems.
+  ++formula
+    if (In(floor_properties_exercise_yard_SHL) eq 'solid_floor'){
+       	 return Tech(red_floor_properties_solid_floor);
+    } elsif (In(floor_properties_exercise_yard_SHL) eq 'unpaved_floor'){
+       	 return Tech(red_floor_properties_unpaved_floor);
+    } elsif (In(floor_properties_exercise_yard_SHL) eq 'perforated_floor'){
+       	 return Tech(red_floor_properties_perforated_floor);
+    } elsif (In(floor_properties_exercise_yard_SHL) eq 'paddock_or_pasture_used_as_exercise_yard'){
+       	 return Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
+    } else{ return 0;};
+
++c_floor_properties_exercise_yard_LU
+  print = 15
+  ++units
+    en = -
+  ++description
+    Reduction factor for the emission due to the use of the floor properties in housing systems.
+  ++formula
+    return 0 unless defined In(floor_properties_exercise_yard_LU);
+    if (In(floor_properties_exercise_yard_LU) eq 'solid_floor'){
+       	 return Tech(red_floor_properties_solid_floor);
+    } elsif (In(floor_properties_exercise_yard_LU) eq 'perforated_floor'){
+       	 return Tech(red_floor_properties_perforated_floor);
+    } elsif (In(floor_properties_exercise_yard_LU) eq 'sloped_concrete_floor_with_central_drain_and_stationary_scraper'){
+       	 return Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper);
+    } elsif (In(floor_properties_exercise_yard_LU) eq 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading'){
+       	 return Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading);
+    } elsif (In(floor_properties_exercise_yard_LU) eq 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower'){
+       	 return Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower);
+    } else{ return 0;};
+
++share_excretion
+  print = 7
+  ++units  
+    en = -
+  ++description
+    Share of excretion on the yard according the stay on yard.
+    If the basic feeding is on the yard the share_basicfeeding is assumed. 
+    Otherwise the share is selected according to the access.
+  ++formula 
+    if( In(exercise_yard) eq 'available_roughage_is_not_supplied_in_the_exercise_yard') {
+	return Tech(share_available_roughage_is_not_supplied_in_the_exercise_yard);
+    } elsif( In(exercise_yard) eq 'available_roughage_is_partly_supplied_in_the_exercise_yard') {
+	return Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard);
+    }  elsif( In(exercise_yard) eq 'available_roughage_is_exclusively_supplied_in_the_exercise_yard') {
+	return Tech(share_available_roughage_is_exclusively_supplied_in_the_exercise_yard);
+    }  elsif( In(exercise_yard) eq 'not_available') {
+	return 0;
+    };
++share_excretion_with_grazing
+  print = debug
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Share of excretion on the yard according the stay on yard with parallel acess to Pasture.
+    If the basic feeding is on the yard the share_basicfeeding is assumed. 
+    Otherwise the share is selected according to the access.
+  ++formula
+     if( (Out(days_with_grazing_and_yard) > 0) and (Out(share_excretion) > 0.2) ){
+     	 writeLog({en=>"The category \"roughage is exclusively supplied in the exercise yard\" is not compatible with"
+                       . " the number of grazing days entered!\n",
+                   de=>"Verabreichung von Grundfutter ausschliesslich auf dem Laufhof ist nicht möglich mit den eingegebenen Weidetagen!\n",
+                  fr=>"La distribution de fourrage exclusivement dans le parcours extérieur pour les "
+                      . " autres bovins n’est pas possible pendant les jours de pâturage !\n",
+                 }); 
+     	 return( 0.2 );
+     }else{
+	 Out(share_excretion);
+     };
+         
++n_into_yard
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N excretion on yard for a defined animal category.
+  ++formula
+    Val(n_excretion,Excretion) * Out(share_excretion) * (In(yard_days)-Out(days_with_grazing_and_yard))/365 +
+    Val(n_excretion,Excretion) * Out(share_excretion_with_grazing) 
+    * (Out(days_with_grazing_and_yard)/365); 
+
++n_sol_into_yard
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual soluble N excretion on yard for a defined animal category.
+  ++formula
+    Val(n_sol_excretion,Excretion) * Out(share_excretion) * (In(yard_days) - Out(days_with_grazing_and_yard))/365 +
+    Val(n_sol_excretion,Excretion) * Out(share_excretion_with_grazing) 
+    * Out(days_with_grazing_and_yard) / 365;
+
++nh3_nyard
+  print = 5a
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual NH3 emission from yard.
+  ++formula
+    Out(n_sol_into_yard) * Tech(er_yard) * (1 - (Out(c_floor_properties_exercise_yard_SHL))) * (1 - (Out(c_floor_properties_exercise_yard_LU))) * Out(c_free_factor_yard);
+
++nh3_nyard_animal
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual NH3 emission per anmimal from yard.
+  ++formula
+    if(  Val(animals,Excretion) != 0 ){
+	 return Out(nh3_nyard) / Val(animals,Excretion);
+    } else { return 0;};
+	
++n_outyard
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux out of yard.
+  ++formula
+    Out(n_into_yard) - Out(nh3_nyard);
+
++tan_outyard
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux as TAN out of yard into storage.
+  ++formula
+    Out(n_sol_into_yard) - Out(nh3_nyard);
+
++n_outyard_liquid
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux from liquid part out of yard.
+  ++formula
+    Out(n_into_yard) - Out(nh3_nyard);
+
++tan_outyard_liquid
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux as TAN from liquid part out of yard into storage.
+  ++formula
+    Out(n_sol_into_yard) - Out(nh3_nyard);
+
++n_outyard_solid
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux from solid part out of yard.
+  ++formula
+    0;
+
++tan_outyard_solid
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux as TAN from solid part out of yard into storage.
+  ++formula
+    0;
