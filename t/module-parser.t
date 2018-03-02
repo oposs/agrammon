@@ -3,9 +3,14 @@ use Agrammon::ModuleBuilder;
 use Agrammon::ModuleParser;
 use Test;
 
-given slurp($*PROGRAM.parent.add('test-data/CMilk.nhd')) -> $test-data {
-    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModuleBuilder);
-    ok $parsed, 'Successfully parsed CMilk.nhd';
+my $test-root   = $*PROGRAM.parent.add('test-data');
+my $module-file = "$test-root/CMilk.nhd";
+subtest "Loading $module-file" => {
+    my $parsed = Agrammon::ModuleParser.parsefile(
+        $module-file,
+        actions => Agrammon::ModuleBuilder
+    );
+    ok $parsed, "Successfully parsed $module-file";
 
     my $model = $parsed.ast;
     isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
@@ -86,12 +91,15 @@ given slurp($*PROGRAM.parent.add('test-data/CMilk.nhd')) -> $test-data {
     }
 }
 
-given slurp($*PROGRAM.parent.add('test-data/CMilkWithTests.nhd')) -> $test-data {
-    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModuleBuilder);
-    ok $parsed, 'Successfully parsed CMilkWithTests.nhd';
+$module-file = "$test-root/CMilkWithTests.nhd";
+subtest "Loading $module-file" => {
+    my $parsed = Agrammon::ModuleParser.parsefile(
+        $module-file,
+        actions => Agrammon::ModuleBuilder
+    );
+    ok $parsed, "Successfully parsed $module-file";
 
     my $model = $parsed.ast;
-
     isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
 
     # just testing additiona tests section
@@ -106,12 +114,15 @@ given slurp($*PROGRAM.parent.add('test-data/CMilkWithTests.nhd')) -> $test-data 
     }
 }
 
-given slurp($*PROGRAM.parent.add('test-data/PlantProduction.nhd')) -> $test-data {
-    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModuleBuilder);
-    ok $parsed, 'Successfully parsed PlantProduction.nhd';
+$module-file = "$test-root/PlantProduction.nhd";
+subtest "Loading $module-file" => {
+    my $parsed = Agrammon::ModuleParser.parsefile(
+        $module-file,
+        actions => Agrammon::ModuleBuilder
+    );
+    ok $parsed, "Successfully parsed $module-file";
 
     my $model = $parsed.ast;
-
     isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
 
     my @external = $model.external;
@@ -128,12 +139,15 @@ given slurp($*PROGRAM.parent.add('test-data/PlantProduction.nhd')) -> $test-data
         'Correct external name (3)';
 }
 
-given slurp($*PROGRAM.parent.add('test-data/DairyCow.nhd')) -> $test-data {
-    my $parsed = Agrammon::ModuleParser.parse($test-data, actions => Agrammon::ModuleBuilder);
-    ok $parsed, 'Successfully parsed DairyCow.nhd';
+$module-file = "$test-root/DairyCow.nhd";
+subtest "Loading $module-file" => {
+    my $parsed = Agrammon::ModuleParser.parsefile(
+        $module-file,
+        actions => Agrammon::ModuleBuilder
+    );
+    ok $parsed, "Successfully parsed $module-file";
 
     my $model = $parsed.ast;
-
     isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
     ok $model.instances eq 'multi', 'DairyCow.nhd is multi';
     ok $model.gui eq 'Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vaches latière,Livestock::Dairy cows', 'DairyCow.nhd has correct gui parameter';
