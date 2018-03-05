@@ -76,6 +76,11 @@ grammar Agrammon::Formula::Parser {
     token infix:sym<+> { '+' }
     token infix:sym<=> { '=' }
     token infix:sym<< > >> { '>' }
+    token infix:sym<< >= >> { '>=' }
+    token infix:sym<< < >> { '<' }
+    token infix:sym<< <= >> { '<=' }
+    token infix:sym<< == >> { '==' }
+    token infix:sym<< != >> { '!=' }
 
     token name {
         <.ident> ['::' <.ident>]*

@@ -187,6 +187,36 @@ class Agrammon::Formula::BinOp::NumericGreaterThan does Agrammon::Formula::Relat
     }
 }
 
+class Agrammon::Formula::BinOp::NumericGreaterThanOrEqual does Agrammon::Formula::RelationalOp {
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) >= $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::NumericLessThan does Agrammon::Formula::RelationalOp {
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) < $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::NumericLessThanOrEqual does Agrammon::Formula::RelationalOp {
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) <= $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::NumericEqual does Agrammon::Formula::RelationalOp {
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) == $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::NumericNotEqual does Agrammon::Formula::RelationalOp {
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) != $!right.evaluate($env)
+    }
+}
+
 class Agrammon::Formula::BinOp::Assign does Agrammon::Formula::BinOp {
     submethod TWEAK() {
         unless $!left ~~ Agrammon::Formula::LValue {

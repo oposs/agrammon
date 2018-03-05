@@ -111,4 +111,24 @@ class Agrammon::Formula::Builder {
     method infix:sym<< > >>($/) {
         make Agrammon::Formula::BinOp::NumericGreaterThan;
     }
+
+    method infix:sym<< >= >>($/) {
+        make Agrammon::Formula::BinOp::NumericGreaterThanOrEqual;
+    }
+
+    method infix:sym<< < >>($/) {
+        make Agrammon::Formula::BinOp::NumericLessThan;
+    }
+
+    method infix:sym<< <= >>($/) {
+        make Agrammon::Formula::BinOp::NumericLessThanOrEqual;
+    }
+
+    method infix:sym<< == >>($/) {
+        make Agrammon::Formula::BinOp::NumericEqual;
+    }
+
+    method infix:sym<< != >>($/) {
+        make Agrammon::Formula::BinOp::NumericNotEqual;
+    }
 }
