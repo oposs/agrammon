@@ -55,6 +55,13 @@ grammar Agrammon::Formula::Parser {
             [<module=.name> || <.panic('Missing or malformed module name')>]
         ')'
     }
+    rule term:sym<Sum> {
+        'Sum('
+            [<symbol=.ident> || <.panic('Bad identifier')>]
+            [',' || <.panic('Missing , in Sum')>]
+            [<module=.name> || <.panic('Missing or malformed module name')>]
+        ')'
+    }
 
     rule term:sym<my> {
         'my' <variable>

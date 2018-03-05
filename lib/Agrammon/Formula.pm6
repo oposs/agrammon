@@ -170,6 +170,23 @@ class Agrammon::Formula::Val does Agrammon::Formula {
     method output-used() { ($!reference,) }
 }
 
+class Agrammon::Formula::Sum does Agrammon::Formula {
+    has Agrammon::OutputReference $.reference;
+
+    method evaluate(Agrammon::Environment $env) {
+        given $env.output{$!reference.module}{$!reference.symbol} {
+            when Iterable {
+                .sum
+            }
+            default {
+                die "Expected multiple results for $!reference.module()::$!reference.symbol()";
+            }
+        }
+    }
+
+    method output-used() { ($!reference,) }
+}
+
 class Agrammon::Formula::Integer does Agrammon::Formula {
     has Int $.value;
     method evaluate($) { $!value }

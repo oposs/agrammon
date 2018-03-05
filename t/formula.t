@@ -354,4 +354,28 @@ subtest {
     is $result, 3 * 10, 'Correct result from evaluation';
 }, 'Comments';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/);
+        Sum(n_sol_excretion,Livestock::OtherCattle::Excretion )
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    my @output-used = $f.output-used;
+    is @output-used.elems, 1, 'Have 1 output used';
+    is @output-used[0].module, 'Livestock::OtherCattle::Excretion',
+        'Correct output used module';
+    is @output-used[0].symbol, 'n_sol_excretion',
+        'Correct output used symbol';
+    my @values = 9, 3, 27, 4;
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        output => {
+            'Livestock::OtherCattle::Excretion' => {
+                'n_sol_excretion' => @values
+            }
+        }
+    ));
+    is $result, ([+] @values), 'Correct result from evaluation';
+}, 'Sum(...)';
+
 done-testing;

@@ -86,6 +86,15 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<Sum>($/) {
+        make Agrammon::Formula::Sum.new(
+            reference => Agrammon::OutputReference.new(
+                symbol => ~$<symbol>,
+                module => ~$<module>
+            )
+        );
+    }
+
     method term:sym<my>($/) {
         make Agrammon::Formula::VarDecl.new(name => ~$<variable>);
     }
