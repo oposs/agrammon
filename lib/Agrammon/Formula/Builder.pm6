@@ -3,7 +3,9 @@ use Agrammon::OutputReference;
 
 class Agrammon::Formula::Builder {
     method TOP($/) {
-        make $<statementlist>.ast;
+        make Agrammon::Formula::Routine.new(
+            statements => $<statementlist>.ast
+        );
     }
 
     method statementlist($/) {
@@ -90,6 +92,10 @@ class Agrammon::Formula::Builder {
 
     method term:sym<variable>($/) {
         make Agrammon::Formula::Var.new(name => ~$<variable>);
+    }
+
+    method term:sym<return>($/) {
+        make Agrammon::Formula::Return.new(expression => $<EXPR>.ast);
     }
 
     method term:sym<integer>($/) {

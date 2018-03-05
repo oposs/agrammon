@@ -24,6 +24,10 @@ role Agrammon::Formula::LValue does Agrammon::Formula {
     # Just a marker role for l-values (things that can be assigned to)
 }
 
+class X::Agrammon::Formula::ReturnException is Exception {
+    has $.payload;
+}
+
 class Agrammon::Formula::StatementList does Agrammon::Formula {
     has Agrammon::Formula @.statements;
 
@@ -45,6 +49,23 @@ class Agrammon::Formula::StatementList does Agrammon::Formula {
 
     method output-used() {
         self!merge-outputs: @!statements.map(*.output-used)
+    }
+}
+
+class Agrammon::Formula::Routine does Agrammon::Formula {
+    has Agrammon::Formula::StatementList $.statements;
+
+    method input-used() { $!statements.input-used }
+    method technical-used() { $!statements.technical-used }
+    method output-used() { $!statements.output-used }
+
+    method evaluate(Agrammon::Environment $env) {
+        return $!statements.evaluate($env);
+        CATCH {
+            when X::Agrammon::Formula::ReturnException {
+                return .payload;
+            }
+        }
     }
 }
 
@@ -102,6 +123,20 @@ class Agrammon::Formula::Var does Agrammon::Formula::LValue {
 
     method evaluate(Agrammon::Environment $env) is rw {
         $env.scope.lookup($!name)
+    }
+}
+
+class Agrammon::Formula::Return does Agrammon::Formula {
+    has Agrammon::Formula $.expression;
+
+    method input-used() { $!expression.input-used }
+    method technical-used() { $!expression.technical-used }
+    method output-used() { $!expression.output-used }
+
+    method evaluate(Agrammon::Environment $env) {
+        die X::Agrammon::Formula::ReturnException.new(
+            payload => $!expression.evaluate($env)
+        );
     }
 }
 

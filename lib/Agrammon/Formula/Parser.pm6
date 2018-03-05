@@ -67,6 +67,11 @@ grammar Agrammon::Formula::Parser {
         '$' <.ident>
     }
 
+    rule term:sym<return> {
+        'return' <EXPR>
+    }
+
+
     token term:sym<integer> {
         \d+
     }
