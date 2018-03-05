@@ -1,5 +1,6 @@
 use v6;
 use Agrammon::Model::External;
+use Agrammon::Formula::Parser;
 use Agrammon::Model::Input;
 use Agrammon::Model::Module;
 use Agrammon::Model::Output;
@@ -12,7 +13,11 @@ class Agrammon::ModuleBuilder {
     }
 
     method section:sym<general>($/) {
-        make %( $<option>.map(*.ast) );
+        my %general := %( $<option>.map(*.ast) );
+        with %general<taxonomy> {
+            $*TAXONOMY = $_;
+        }
+        make %general;
     }
 
     method section:sym<external>($/) {
@@ -35,7 +40,22 @@ class Agrammon::ModuleBuilder {
 
     method section:sym<output>($/) {
         make 'output' => $<output>.map({
-            Agrammon::Model::Output.new(|.ast)
+            my %output-props = .ast;
+            with %output-props<formula> <-> $formula {
+                with $*TAXONOMY -> $taxonomy {
+                    $formula = parse-formula($formula, $taxonomy);
+                    CATCH {
+                        default {
+                            die "Error parsing formula for output '%output-props<name>' " ~
+                                "in $taxonomy: $_";
+                        }
+                    }
+                }
+                else {
+                    die "Missing taxonomy in general section, or general section too late";
+                }
+            }
+            Agrammon::Model::Output.new(|%output-props)
         });
     }
 
