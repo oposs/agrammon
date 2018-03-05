@@ -308,6 +308,16 @@ subtest {
 }, 'Early return from within a conditional';
 
 subtest {
+    my $f = parse-formula('return;');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new());
+    nok $result.defined, 'Correct result from evaluation';
+}, 'Empty return evalutes to Nil';
+
+subtest {
     my $f = parse-formula(q:to/FORMULA/);
         (In(solid_digestate) - Tech(er_solid_digestate)) /
         (In(compost) - Tech(er_compost));

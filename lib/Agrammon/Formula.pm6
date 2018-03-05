@@ -25,7 +25,7 @@ role Agrammon::Formula::LValue does Agrammon::Formula {
 }
 
 class X::Agrammon::Formula::ReturnException is Exception {
-    has $.payload;
+    has $.payload is default(Nil);
 }
 
 class Agrammon::Formula::StatementList does Agrammon::Formula {
@@ -173,6 +173,10 @@ class Agrammon::Formula::Val does Agrammon::Formula {
 class Agrammon::Formula::Integer does Agrammon::Formula {
     has Int $.value;
     method evaluate($) { $!value }
+}
+
+class Agrammon::Formula::Nil does Agrammon::Formula {
+    method evaluate($) { Nil }
 }
 
 role Agrammon::Formula::BinOp does Agrammon::Formula {

@@ -69,7 +69,7 @@ grammar Agrammon::Formula::Parser {
     }
 
     rule term:sym<return> {
-        'return' <EXPR>
+        'return' <EXPR>?
     }
 
     rule term:sym<( )> {

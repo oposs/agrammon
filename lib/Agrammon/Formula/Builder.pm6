@@ -95,7 +95,9 @@ class Agrammon::Formula::Builder {
     }
 
     method term:sym<return>($/) {
-        make Agrammon::Formula::Return.new(expression => $<EXPR>.ast);
+        make Agrammon::Formula::Return.new(
+            expression => $<EXPR> ?? $<EXPR>.ast !! Agrammon::Formula::Nil.new
+        );
     }
 
     method term:sym<( )>($/) {
