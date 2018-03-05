@@ -272,6 +272,29 @@ subtest {
 }, 'if/else construct with != operator';
 
 subtest {
+    my $f = parse-formula(q:to/FORMULA/);
+        In(milk_yield) != Tech(standard_milk_yield)
+            ? Tech(a_low)
+            : Tech(a_high)
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('standard_milk_yield', 'a_low', 'a_high'),
+        'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result-true = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 55 },
+        technical => { standard_milk_yield => 55, a_high => 10, a_low => 5 }
+    ));
+    is $result-true, 10, 'Correct result when if condition is false';
+    my $result-false = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 35 },
+        technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
+    ));
+    is $result-false, 5, 'Correct result when if condition is true';
+}, '... ? ... : ... construct';
+
+subtest {
     my $f = parse-formula('return In(agricultural_area)');
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';

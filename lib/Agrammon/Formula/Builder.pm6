@@ -32,6 +32,12 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    my class TernaryOperator {
+        has $.expression;
+        method prec() { 'j=' }
+        method assoc() { 'right' }
+    }
+
     method EXPR($/) {
         my @terms-parsed = $<term>.map(*.ast);
         my @ops-parsed = $<infix>.map(*.ast);
@@ -65,8 +71,18 @@ class Agrammon::Formula::Builder {
     sub reduce(@termstack, @opstack) {
         my $right = @termstack.pop;
         my $left = @termstack.pop;
-        my $op-type = @opstack.pop;
-        @termstack.push($op-type.new(:$left, :$right));
+        given @opstack.pop {
+            when TernaryOperator {
+                @termstack.push(Agrammon::Formula::If.new(
+                    condition => $left,
+                    then => .expression,
+                    else => $right
+                ));
+            }
+            default {
+                @termstack.push(.new(:$left, :$right));
+            }
+        }
     }
 
     method term:sym<In>($/) {
@@ -159,5 +175,9 @@ class Agrammon::Formula::Builder {
 
     method infix:sym<< != >>($/) {
         make Agrammon::Formula::BinOp::NumericNotEqual;
+    }
+
+    method infix:sym<? :>($/) {
+        make TernaryOperator.new(expression => $<EXPR>.ast);
     }
 }

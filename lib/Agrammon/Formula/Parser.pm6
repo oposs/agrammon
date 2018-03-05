@@ -100,6 +100,10 @@ grammar Agrammon::Formula::Parser {
     token infix:sym<< == >> { '==' }
     token infix:sym<< != >> { '!=' }
 
+    rule infix:sym<? :> {
+        '?' <EXPR> ':'
+    }
+
     token name {
         <.ident> ['::' <.ident>]*
     }
