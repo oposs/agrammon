@@ -133,6 +133,20 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::Integer.new(value => +$/);
     }
 
+    method term:sym<single-string>($/) {
+        make Agrammon::Formula::String.new(
+            value => $<single-string-piece>.map(*.ast).join
+        );
+    }
+
+    method single-string-piece:sym<non-esc>($/) {
+        make ~$/;
+    }
+
+    method single-string-piece:sym<esc>($/) {
+        make ~$<escaped>;
+    }
+
     method infix:sym</>($/) {
         make Agrammon::Formula::BinOp::Divide;
     }
@@ -175,6 +189,14 @@ class Agrammon::Formula::Builder {
 
     method infix:sym<< != >>($/) {
         make Agrammon::Formula::BinOp::NumericNotEqual;
+    }
+
+    method infix:sym<eq>($/) {
+        make Agrammon::Formula::BinOp::StringEqual;
+    }
+
+    method infix:sym<ne>($/) {
+        make Agrammon::Formula::BinOp::StringNotEqual;
     }
 
     method infix:sym<? :>($/) {

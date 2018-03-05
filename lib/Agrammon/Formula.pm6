@@ -192,6 +192,11 @@ class Agrammon::Formula::Integer does Agrammon::Formula {
     method evaluate($) { $!value }
 }
 
+class Agrammon::Formula::String does Agrammon::Formula {
+    has Str $.value;
+    method evaluate($) { $!value }
+}
+
 class Agrammon::Formula::Nil does Agrammon::Formula {
     method evaluate($) { Nil }
 }
@@ -286,6 +291,18 @@ class Agrammon::Formula::BinOp::NumericEqual does Agrammon::Formula::RelationalO
 class Agrammon::Formula::BinOp::NumericNotEqual does Agrammon::Formula::RelationalOp {
     method evaluate(Agrammon::Environment $env) {
         $!left.evaluate($env) != $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::StringEqual does Agrammon::Formula::RelationalOp {
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) eq $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::StringNotEqual does Agrammon::Formula::RelationalOp {
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) ne $!right.evaluate($env)
     }
 }
 

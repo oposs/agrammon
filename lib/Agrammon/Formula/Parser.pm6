@@ -87,6 +87,24 @@ grammar Agrammon::Formula::Parser {
         \d+
     }
 
+    token term:sym<single-string> {
+        "'"
+        <single-string-piece>*
+        ["'" || <.panic('Unterminated string')>]
+    }
+
+    proto token single-string-piece { * }
+    token single-string-piece:sym<non-esc> {
+        <-['\\]>+
+    }
+    token single-string-piece:sym<esc> {
+        '\\'
+        [
+        | $<escaped>=<[\\']>
+        | (.) {} <.panic("Unknown escape \\$0")>
+        ]
+    }
+
     proto token infix { * }
     token infix:sym</> { '/' }
     token infix:sym<*> { '*' }
@@ -99,6 +117,8 @@ grammar Agrammon::Formula::Parser {
     token infix:sym<< <= >> { '<=' }
     token infix:sym<< == >> { '==' }
     token infix:sym<< != >> { '!=' }
+    token infix:sym<eq> { 'eq' }
+    token infix:sym<ne> { 'ne' }
 
     rule infix:sym<? :> {
         '?' <EXPR> ':'

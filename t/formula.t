@@ -286,13 +286,57 @@ subtest {
         input => { milk_yield => 55 },
         technical => { standard_milk_yield => 55, a_high => 10, a_low => 5 }
     ));
-    is $result-true, 10, 'Correct result when if condition is false';
+    is $result-true, 10, 'Correct result when condition is false';
     my $result-false = $f.evaluate(Agrammon::Environment.new(
         input => { milk_yield => 35 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
-    is $result-false, 5, 'Correct result when if condition is true';
+    is $result-false, 5, 'Correct result when condition is true';
 }, '... ? ... : ... construct';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/);
+        In(level) eq 'low'
+            ? Tech(a_low)
+            : Tech(a_high)
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('level',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('a_low', 'a_high'), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result-true = $f.evaluate(Agrammon::Environment.new(
+        input => { level => 'low' },
+        technical => { a_high => 10, a_low => 5 }
+    ));
+    is $result-true, 5, 'Correct result when eq matches';
+    my $result-false = $f.evaluate(Agrammon::Environment.new(
+        input => { level => 'high' },
+        technical => { a_high => 10, a_low => 5 }
+    ));
+    is $result-false, 10, 'Correct result when eq does not match';
+}, 'The string eq operator and string literals';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/);
+        In(level) ne 'low'
+            ? Tech(a_high)
+            : Tech(a_low)
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('level',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('a_high', 'a_low'), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result-true = $f.evaluate(Agrammon::Environment.new(
+        input => { level => 'high' },
+        technical => { a_high => 10, a_low => 5 }
+    ));
+    is $result-true, 10, 'Correct result when ne does not match';
+    my $result-false = $f.evaluate(Agrammon::Environment.new(
+        input => { level => 'low' },
+        technical => { a_high => 10, a_low => 5 }
+    ));
+    is $result-false, 5, 'Correct result when ne matches';
+}, 'The string ne operator and string literals';
 
 subtest {
     my $f = parse-formula('return In(agricultural_area)');
