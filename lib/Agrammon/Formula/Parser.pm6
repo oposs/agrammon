@@ -3,8 +3,14 @@ use Agrammon::Formula::Builder;
 
 grammar Agrammon::Formula::Parser {
     rule TOP {
-        || <EXPR> ';'? $
-        || <.panic('Confused')>
+        <statementlist>
+        [ $ || <.panic('Confused')> ]
+    }
+
+    rule statementlist {
+        [
+            <EXPR> [';' || <?before '}' | $>]
+        ]*
     }
 
     method panic($message) {

@@ -20,6 +20,31 @@ role Agrammon::Formula {
     }
 }
 
+class Agrammon::Formula::StatementList does Agrammon::Formula {
+    has Agrammon::Formula @.statements;
+
+    method evaluate(Agrammon::Environment $env) {
+        my $result;
+        for @!statements {
+            $result = .evaluate($env);
+        }
+        return $result;
+    }
+
+    method input-used() {
+        self!merge-inputs: @!statements.map(*.input-used)
+    }
+
+    method technical-used() {
+        self!merge-technicals: @!statements.map(*.technical-used)
+    }
+
+    method output-used() {
+        self!merge-outputs: @!statements.map(*.output-used)
+    }
+
+}
+
 class Agrammon::Formula::In does Agrammon::Formula {
     has $.symbol;
 

@@ -3,7 +3,13 @@ use Agrammon::OutputReference;
 
 class Agrammon::Formula::Builder {
     method TOP($/) {
-        make $<EXPR>.ast;
+        make $<statementlist>.ast;
+    }
+
+    method statementlist($/) {
+        make Agrammon::Formula::StatementList.new(
+            statements => $<EXPR>.map(*.ast)
+        );
     }
 
     method EXPR($/) {
