@@ -307,4 +307,22 @@ subtest {
     is $result-false, 5, 'When condition true, get early return value';
 }, 'Early return from within a conditional';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/);
+        (In(solid_digestate) - Tech(er_solid_digestate)) /
+        (In(compost) - Tech(er_compost));
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('solid_digestate', 'compost',),
+        'Correct inputs-used';
+    is-deeply $f.technical-used, ('er_solid_digestate', 'er_compost'),
+        'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { solid_digestate => 100, compost => 13 },
+        technical => { er_solid_digestate => 10, er_compost => 4 }
+    ));
+    is $result, (100 - 10) / (13 - 4), 'Correct result from evaluation';
+}, 'Grouping parentheses and the - and / operators';
+
 done-testing;

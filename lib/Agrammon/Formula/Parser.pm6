@@ -71,14 +71,19 @@ grammar Agrammon::Formula::Parser {
         'return' <EXPR>
     }
 
+    rule term:sym<( )> {
+        '(' <EXPR> [ ')' || <.panic('Missing closing )')> ]
+    }
 
     token term:sym<integer> {
         \d+
     }
 
     proto token infix { * }
+    token infix:sym</> { '/' }
     token infix:sym<*> { '*' }
     token infix:sym<+> { '+' }
+    token infix:sym<-> { '-' }
     token infix:sym<=> { '=' }
     token infix:sym<< > >> { '>' }
     token infix:sym<< >= >> { '>=' }

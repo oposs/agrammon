@@ -195,6 +195,14 @@ role Agrammon::Formula::BinOp does Agrammon::Formula {
     method assoc() { ... }
 }
 
+class Agrammon::Formula::BinOp::Divide does Agrammon::Formula::BinOp {
+    method prec() { 'u=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) / $!right.evaluate($env)
+    }
+}
+
 class Agrammon::Formula::BinOp::Multiply does Agrammon::Formula::BinOp {
     method prec() { 'u=' }
     method assoc() { 'left' }
@@ -208,6 +216,14 @@ class Agrammon::Formula::BinOp::Add does Agrammon::Formula::BinOp {
     method assoc() { 'left' }
     method evaluate(Agrammon::Environment $env) {
         $!left.evaluate($env) + $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::Subtract does Agrammon::Formula::BinOp {
+    method prec() { 't=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) - $!right.evaluate($env)
     }
 }
 

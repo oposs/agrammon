@@ -98,8 +98,16 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::Return.new(expression => $<EXPR>.ast);
     }
 
+    method term:sym<( )>($/) {
+        make $<EXPR>.ast;
+    }
+
     method term:sym<integer>($/) {
         make Agrammon::Formula::Integer.new(value => +$/);
+    }
+
+    method infix:sym</>($/) {
+        make Agrammon::Formula::BinOp::Divide;
     }
 
     method infix:sym<*>($/) {
@@ -108,6 +116,10 @@ class Agrammon::Formula::Builder {
 
     method infix:sym<+>($/) {
         make Agrammon::Formula::BinOp::Add;
+    }
+
+    method infix:sym<->($/) {
+        make Agrammon::Formula::BinOp::Subtract;
     }
 
     method infix:sym<=>($/) {
