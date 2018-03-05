@@ -8,7 +8,25 @@ class Agrammon::Formula::Builder {
 
     method statementlist($/) {
         make Agrammon::Formula::StatementList.new(
-            statements => $<EXPR>.map(*.ast)
+            statements => $<statement>.map(*.ast)
+        );
+    }
+
+    method statement($/) {
+        make ($<statement_control> // $<EXPR>).ast;
+    }
+
+    method statement_control:sym<if>($/) {
+        make Agrammon::Formula::If.new(
+            condition => $<EXPR>.ast,
+            then => $<then>.ast,
+            else => $<else> ?? $<else>.ast !! Nil
+        );
+    }
+
+    method block($/) {
+        make Agrammon::Formula::Block.new(
+            statements => $<statementlist>.ast
         );
     }
 
@@ -88,5 +106,9 @@ class Agrammon::Formula::Builder {
 
     method infix:sym<=>($/) {
         make Agrammon::Formula::BinOp::Assign;
+    }
+
+    method infix:sym<< > >>($/) {
+        make Agrammon::Formula::BinOp::NumericGreaterThan;
     }
 }

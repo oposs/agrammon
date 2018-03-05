@@ -48,6 +48,47 @@ class Agrammon::Formula::StatementList does Agrammon::Formula {
     }
 }
 
+class Agrammon::Formula::If does Agrammon::Formula {
+    has Agrammon::Formula $.condition;
+    has Agrammon::Formula $.then;
+    has Agrammon::Formula $.else;
+
+    method input-used() {
+        self!merge-inputs: $!condition.input-used, $!then.input-used,
+            ($!else ?? $!else.input-used !! Empty)
+    }
+
+    method technical-used() {
+        self!merge-technicals: $!condition.technical-used, $!then.technical-used,
+            ($!else ?? $!else.technical-used !! Empty)
+    }
+
+    method output-used() {
+        self!merge-outputs: $!condition.output-used, $!then.output-used,
+            ($!else ?? $!else.output-used !! Empty)
+    }
+
+    method evaluate(Agrammon::Environment $env) {
+        $!condition.evaluate($env)
+            ?? $!then.evaluate($env)
+            !! $!else ?? $!else.evaluate($env) !! Nil
+    }
+}
+
+class Agrammon::Formula::Block does Agrammon::Formula {
+    has Agrammon::Formula::StatementList $.statements;
+
+    method input-used() { $!statements.input-used }
+    method technical-used() { $!statements.technical-used }
+    method output-used() { $!statements.output-used }
+
+    method evaluate(Agrammon::Environment $env) {
+        $env.enter-scope();
+        LEAVE $env.leave-scope();
+        $!statements.evaluate($env)
+    }
+}
+
 class Agrammon::Formula::VarDecl does Agrammon::Formula::LValue {
     has Str $.name;
 
@@ -132,6 +173,17 @@ class Agrammon::Formula::BinOp::Add does Agrammon::Formula::BinOp {
     method assoc() { 'left' }
     method evaluate(Agrammon::Environment $env) {
         $!left.evaluate($env) + $!right.evaluate($env)
+    }
+}
+
+role Agrammon::Formula::RelationalOp does Agrammon::Formula::BinOp {
+    method prec() { 'm=' }
+    method assoc() { 'left' }
+}
+
+class Agrammon::Formula::BinOp::NumericGreaterThan does Agrammon::Formula::RelationalOp {
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) > $!right.evaluate($env)
     }
 }
 

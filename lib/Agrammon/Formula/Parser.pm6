@@ -8,17 +8,35 @@ grammar Agrammon::Formula::Parser {
     }
 
     rule statementlist {
-        [
-            <EXPR> [';' || <?before '}' | $>]
-        ]*
+        <statement>*
     }
 
     method panic($message) {
         die "$message near " ~ self.orig.substr(self.pos, 50).perl;
     }
 
+    rule statement {
+        | <statement_control> ';'?
+        | <EXPR> [';' || <?before '}' | $>]
+    }
+
     rule EXPR {
         <term> [ <infix> <term> ]*
+    }
+
+    proto token statement_control { * }
+
+    rule statement_control:sym<if> {
+        'if'
+        [ '(' <EXPR> ')' || <.panic('Missing or malformed condition')> ]
+        <then=.block>
+        [ 'else' <else=.block> ]?
+    }
+
+    rule block {
+        [ '{' || <.panic('Expected block')> ]
+        <statementlist>
+        [ '}' || <.panic('Missing } after block')> ]
     }
 
     proto token term { * }
@@ -57,6 +75,7 @@ grammar Agrammon::Formula::Parser {
     token infix:sym<*> { '*' }
     token infix:sym<+> { '+' }
     token infix:sym<=> { '=' }
+    token infix:sym<< > >> { '>' }
 
     token name {
         <.ident> ['::' <.ident>]*
