@@ -102,6 +102,15 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<Out>($/) {
+        make Agrammon::Formula::Val.new(
+            reference => Agrammon::OutputReference.new(
+                symbol => ~$<symbol>,
+                module => $*CURRENT-MODULE
+            )
+        );
+    }
+
     method term:sym<Sum>($/) {
         make Agrammon::Formula::Sum.new(
             reference => Agrammon::OutputReference.new(

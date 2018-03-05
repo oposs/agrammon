@@ -55,6 +55,9 @@ grammar Agrammon::Formula::Parser {
             [<module=.name> || <.panic('Missing or malformed module name')>]
         ')'
     }
+    rule term:sym<Out> {
+        'Out(' [<symbol=.ident> || <.panic('Bad identifier')>] ')'
+    }
     rule term:sym<Sum> {
         'Sum('
             [<symbol=.ident> || <.panic('Bad identifier')>]
@@ -137,6 +140,6 @@ grammar Agrammon::Formula::Parser {
     }
 }
 
-sub parse-formula(Str $formula) is export {
+sub parse-formula(Str $formula, Str $*CURRENT-MODULE) is export {
     Agrammon::Formula::Parser.parse($formula, actions => Agrammon::Formula::Builder).ast
 }
