@@ -6,6 +6,18 @@ role Agrammon::Formula {
     method input-used(--> List) { ... }
     method technical-used(--> List) { ... }
     method output-used(--> List) { ... }
+
+    method !merge-inputs(*@merge) {
+        list unique @merge
+    }
+
+    method !merge-technicals(*@merge) {
+        list unique @merge
+    }
+
+    method !merge-outputs(*@merge) {
+        list unique :by{ .module ~ '::' ~ .symbol }, @merge
+    }
 }
 
 class Agrammon::Formula::In does Agrammon::Formula {
@@ -49,16 +61,15 @@ role Agrammon::Formula::BinOp does Agrammon::Formula {
     has Agrammon::Formula $.right;
 
     method input-used() {
-        list unique flat $!left.input-used, $!right.input-used
+        self!merge-inputs: $!left.input-used, $!right.input-used
     }
 
     method technical-used() {
-        list unique flat $!left.technical-used, $!right.technical-used
+        self!merge-technicals: $!left.technical-used, $!right.technical-used
     }
 
     method output-used() {
-        list unique :by{ .module ~ '::' ~ .symbol },
-            flat $!left.output-used, $!right.output-used
+        self!merge-outputs: $!left.output-used, $!right.output-used
     }
 
     method prec() { ... }
