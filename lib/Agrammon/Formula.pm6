@@ -3,9 +3,9 @@ use Agrammon::OutputReference;
 
 role Agrammon::Formula {
     method evaluate(Agrammon::Environment --> Any) { ... }
-    method input-used(--> List) { ... }
-    method technical-used(--> List) { ... }
-    method output-used(--> List) { ... }
+    method input-used(--> List) { () }
+    method technical-used(--> List) { () }
+    method output-used(--> List) { () }
 
     method !merge-inputs(*@merge) {
         list unique @merge
@@ -53,8 +53,6 @@ class Agrammon::Formula::In does Agrammon::Formula {
     }
 
     method input-used() { ($!symbol,) }
-    method technical-used() { () }
-    method output-used() { () }
 }
 
 class Agrammon::Formula::Tech does Agrammon::Formula {
@@ -64,9 +62,7 @@ class Agrammon::Formula::Tech does Agrammon::Formula {
         $env.technical{$!symbol}
     }
 
-    method input-used() { () }
     method technical-used() { ($!symbol,) }
-    method output-used() { () }
 }
 
 class Agrammon::Formula::Val does Agrammon::Formula {
@@ -76,8 +72,6 @@ class Agrammon::Formula::Val does Agrammon::Formula {
         $env.output{$!reference.module}{$!reference.symbol}
     }
 
-    method input-used() { () }
-    method technical-used() { () }
     method output-used() { ($!reference,) }
 }
 
