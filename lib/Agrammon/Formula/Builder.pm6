@@ -66,11 +66,23 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<my>($/) {
+        make Agrammon::Formula::VarDecl.new(name => ~$<variable>);
+    }
+
+    method term:sym<variable>($/) {
+        make Agrammon::Formula::Var.new(name => ~$<variable>);
+    }
+
     method infix:sym<*>($/) {
         make Agrammon::Formula::BinOp::Multiply;
     }
 
     method infix:sym<+>($/) {
         make Agrammon::Formula::BinOp::Add;
+    }
+
+    method infix:sym<=>($/) {
+        make Agrammon::Formula::BinOp::Assign;
     }
 }

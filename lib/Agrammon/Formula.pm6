@@ -20,6 +20,10 @@ role Agrammon::Formula {
     }
 }
 
+role Agrammon::Formula::LValue does Agrammon::Formula {
+    # Just a marker role for l-values (things that can be assigned to)
+}
+
 class Agrammon::Formula::StatementList does Agrammon::Formula {
     has Agrammon::Formula @.statements;
 
@@ -42,7 +46,22 @@ class Agrammon::Formula::StatementList does Agrammon::Formula {
     method output-used() {
         self!merge-outputs: @!statements.map(*.output-used)
     }
+}
 
+class Agrammon::Formula::VarDecl does Agrammon::Formula::LValue {
+    has Str $.name;
+
+    method evaluate(Agrammon::Environment $env) is rw {
+        $env.scope.declare($!name)
+    }
+}
+
+class Agrammon::Formula::Var does Agrammon::Formula::LValue {
+    has Str $.name;
+
+    method evaluate(Agrammon::Environment $env) is rw {
+        $env.scope.lookup($!name)
+    }
 }
 
 class Agrammon::Formula::In does Agrammon::Formula {
@@ -108,5 +127,18 @@ class Agrammon::Formula::BinOp::Add does Agrammon::Formula::BinOp {
     method assoc() { 'left' }
     method evaluate(Agrammon::Environment $env) {
         $!left.evaluate($env) + $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::Assign does Agrammon::Formula::BinOp {
+    submethod TWEAK() {
+        unless $!left ~~ Agrammon::Formula::LValue {
+            die "Cannot assign to $!left.^name()";
+        }
+    }
+    method prec() { 'i=' }
+    method assoc() { 'right' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) = $!right.evaluate($env)
     }
 }

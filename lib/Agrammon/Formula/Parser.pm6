@@ -22,6 +22,7 @@ grammar Agrammon::Formula::Parser {
     }
 
     proto token term { * }
+
     rule term:sym<In> {
         'In(' [<symbol=.ident> || <.panic('Bad identifier')>] ')'
     }
@@ -36,9 +37,22 @@ grammar Agrammon::Formula::Parser {
         ')'
     }
 
+    rule term:sym<my> {
+        'my' <variable>
+    }
+
+    rule term:sym<variable> {
+        <variable>
+    }
+
+    token variable {
+        '$' <.ident>
+    }
+
     proto token infix { * }
     token infix:sym<*> { '*' }
     token infix:sym<+> { '+' }
+    token infix:sym<=> { '=' }
 
     token name {
         <.ident> ['::' <.ident>]*

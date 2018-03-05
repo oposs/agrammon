@@ -96,7 +96,6 @@ subtest {
     is $result, 3 * 10 + 5 * 4, 'Correct result from evaluation';
 }, 'Correct precedence of * and + operators';
 
-
 subtest {
     my $f = parse-formula(q:to/FORMULA/);
         Val(nh3_nmineralfertiliser, PlantProduction::MineralFertiliser) +
@@ -127,5 +126,23 @@ subtest {
     ));
     is $result, 12 + 15, 'Correct result from evaluation';
 }, 'Val(...) + Val(...)';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/);
+        my $a;
+        $a = In(compost);
+        my $b = In(compost);
+        $b = $b + $b;
+        $a * $b
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('compost',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { compost => 55 }
+    ));
+    is $result, 55 * (55 + 55), 'Correct result from evaluation';
+}, 'Variable declaration, assignment, and lookup';
 
 done-testing;
