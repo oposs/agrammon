@@ -3,6 +3,7 @@ use Agrammon::Formula::Builder;
 
 grammar Agrammon::Formula::Parser {
     rule TOP {
+        <.ws>
         <statementlist>
         [ $ || <.panic('Confused')> ]
     }
@@ -94,6 +95,14 @@ grammar Agrammon::Formula::Parser {
 
     token name {
         <.ident> ['::' <.ident>]*
+    }
+
+    token ws {
+        <!ww>
+        [
+        || \s+
+        || '#' \N+ \n
+        ]*
     }
 }
 

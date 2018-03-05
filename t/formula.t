@@ -325,4 +325,23 @@ subtest {
     is $result, (100 - 10) / (13 - 4), 'Correct result from evaluation';
 }, 'Grouping parentheses and the - and / operators';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/);
+        # leading comment
+        In(solid_digestate) * Tech(er_solid_digestate) # +
+        #In(compost) * Tech(er_compost);
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('solid_digestate',),
+        'Correct inputs-used';
+    is-deeply $f.technical-used, ('er_solid_digestate',),
+        'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { solid_digestate => 3 },
+        technical => { er_solid_digestate => 10 }
+    ));
+    is $result, 3 * 10, 'Correct result from evaluation';
+}, 'Comments';
+
 done-testing;
