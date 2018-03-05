@@ -145,4 +145,18 @@ subtest {
     is $result, 55 * (55 + 55), 'Correct result from evaluation';
 }, 'Variable declaration, assignment, and lookup';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/);
+        3 * In(compost) + 20
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('compost',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { compost => 55 }
+    ));
+    is $result, 3 * 55 + 20, 'Correct result from evaluation';
+}, 'Integer literals';
+
 done-testing;

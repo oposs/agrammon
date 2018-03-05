@@ -49,6 +49,10 @@ grammar Agrammon::Formula::Parser {
         '$' <.ident>
     }
 
+    token term:sym<integer> {
+        \d+
+    }
+
     proto token infix { * }
     token infix:sym<*> { '*' }
     token infix:sym<+> { '+' }

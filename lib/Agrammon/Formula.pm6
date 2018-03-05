@@ -94,6 +94,11 @@ class Agrammon::Formula::Val does Agrammon::Formula {
     method output-used() { ($!reference,) }
 }
 
+class Agrammon::Formula::Integer does Agrammon::Formula {
+    has Int $.value;
+    method evaluate($) { $!value }
+}
+
 role Agrammon::Formula::BinOp does Agrammon::Formula {
     has Agrammon::Formula $.left;
     has Agrammon::Formula $.right;

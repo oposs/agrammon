@@ -74,6 +74,10 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::Var.new(name => ~$<variable>);
     }
 
+    method term:sym<integer>($/) {
+        make Agrammon::Formula::Integer.new(value => +$/);
+    }
+
     method infix:sym<*>($/) {
         make Agrammon::Formula::BinOp::Multiply;
     }
