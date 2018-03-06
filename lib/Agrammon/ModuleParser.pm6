@@ -108,7 +108,11 @@ grammar Agrammon::ModuleParser {
     }
 
     token name {
-        <.ident> [ '::' <.ident> ]*
+        <.name-part> [ '::' <.name-part> ]*
+    }
+
+    token name-part {
+        <.ident> | '..'
     }
 
     token blank-line {
