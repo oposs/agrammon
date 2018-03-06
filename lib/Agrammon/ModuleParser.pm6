@@ -2,6 +2,7 @@ use v6;
 
 grammar Agrammon::ModuleParser {
     token TOP {
+        :my $*TAXONOMY = '';
         <.blank-line>*
         <section>+
         [

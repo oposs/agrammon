@@ -164,13 +164,15 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 #     ( Out(n_excretion) - Tech(standard_N_excretion) * In(dairy_cows)
 #                                                     * Val(cmilk_yield, Excretion::CMilk) 
 #     ) * Tech(feed_influence_on_Nsol);
-     ($TE->{share_Nsol} * ( ($IN->{inp_n_excretion} eq 'default') ? $TE->{standard_N_excretion} : $IN->{inp_n_excretion} )
-       * $Livestock_DairyCow_Excretion_CMilk{Out_cmilk_yield}
-       * $IN->{dairy_cows}
+     (Tech(share_Nsol) * ( (In(inp_n_excretion) eq 'default')
+            ? Tech(standard_N_excretion)
+            : In(inp_n_excretion) )
+       * Val(cmilk_yield, Livestock::DairyCow::Excretion::CMilk)
+       * In(dairy_cows)
      ) +
-     ( $Out_n_excretion - $TE->{standard_N_excretion} * $IN->{dairy_cows}
-                                                      * $Livestock_DairyCow_Excretion_CMilk{Out_cmilk_yield}
-     ) * $TE->{feed_influence_on_Nsol};
+     ( Out(n_excretion) - Tech(standard_N_excretion) * In(dairy_cows)
+            * Val(cmilk_yield, Livestock::DairyCow::Excretion::CMilk)
+     ) * Tech(feed_influence_on_Nsol);
   ++description
     Annual soluble N excreted by a specified number of animals. 
 
