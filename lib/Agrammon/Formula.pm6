@@ -354,6 +354,38 @@ class Agrammon::Formula::BinOp::StringNotEqual does Agrammon::Formula::Relationa
     }
 }
 
+class Agrammon::Formula::BinOp::TightAnd does Agrammon::Formula::BinOp {
+    method prec() { 'l=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) && $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::TightOr does Agrammon::Formula::BinOp {
+    method prec() { 'k=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) || $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::LooseAnd does Agrammon::Formula::BinOp {
+    method prec() { 'd=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) && $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::LooseOr does Agrammon::Formula::BinOp {
+    method prec() { 'c=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) || $!right.evaluate($env)
+    }
+}
+
 class Agrammon::Formula::BinOp::Assign does Agrammon::Formula::BinOp {
     submethod TWEAK() {
         unless $!left ~~ Agrammon::Formula::LValue {

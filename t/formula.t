@@ -520,4 +520,112 @@ subtest {
     is $result, 10, 'Correct result for middle when';
 }, 'The given block and statement modifier when';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        if (In(milk_yield) != 1 and In(milk_yield) != 2) {
+            return 'yes';
+        }
+        else {
+            return 'no'
+        }
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 1 }
+    ));
+    is $result, 'no', 'Correct result when false before and';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 2 }
+    ));
+    is $result, 'no', 'Correct result when false after and';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 3 }
+    ));
+    is $result, 'yes', 'Correct result when both true';
+}, 'The infix and operator';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        if (In(milk_yield) == 1 or In(milk_yield) == 2) {
+            return 'yes';
+        }
+        else {
+            return 'no'
+        }
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 1 }
+    ));
+    is $result, 'yes', 'Correct result when true before or';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 2 }
+    ));
+    is $result, 'yes', 'Correct result when true after or';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 3 }
+    ));
+    is $result, 'no', 'Correct result when both false';
+}, 'The infix or operator';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        if (In(milk_yield) != 1 && In(milk_yield) != 2) {
+            return 'yes';
+        }
+        else {
+            return 'no'
+        }
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 1 }
+    ));
+    is $result, 'no', 'Correct result when false before and';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 2 }
+    ));
+    is $result, 'no', 'Correct result when false after and';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 3 }
+    ));
+    is $result, 'yes', 'Correct result when both true';
+}, 'The infix && operator';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        if (In(milk_yield) == 1 || In(milk_yield) == 2) {
+            return 'yes';
+        }
+        else {
+            return 'no'
+        }
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 1 }
+    ));
+    is $result, 'yes', 'Correct result when true before or';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 2 }
+    ));
+    is $result, 'yes', 'Correct result when true after or';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 3 }
+    ));
+    is $result, 'no', 'Correct result when both false';
+}, 'The infix || operator';
+
 done-testing;

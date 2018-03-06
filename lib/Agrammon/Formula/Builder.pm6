@@ -233,6 +233,22 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::BinOp::StringNotEqual;
     }
 
+    method infix:sym<and>($/) {
+        make Agrammon::Formula::BinOp::LooseAnd;
+    }
+
+    method infix:sym<or>($/) {
+        make Agrammon::Formula::BinOp::LooseOr;
+    }
+
+    method infix:sym<&&>($/) {
+        make Agrammon::Formula::BinOp::TightAnd;
+    }
+
+    method infix:sym<||>($/) {
+        make Agrammon::Formula::BinOp::TightOr;
+    }
+
     method infix:sym<? :>($/) {
         make TernaryOperator.new(expression => $<EXPR>.ast);
     }
