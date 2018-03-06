@@ -167,7 +167,7 @@ Selects the emission rate and other correction factors for the specific housing 
     Emission rate for the housing type.
   ++formula
 #    Val(er_housing, 'Type::' . In(housing_type));
-	given ( $IN->{housing_type} ) {
+	given ( In(housing_type) ) {
 	    return Val(er_housing,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
 	    return Val(er_housing,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
 	    return Val(er_housing,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
@@ -182,7 +182,7 @@ Selects the emission rate and other correction factors for the specific housing 
   ++description
     Liquid share for the housing type.
   ++formula
-	given ( $IN->{housing_type} ) {
+	given ( In(housing_type) ) {
 	    return Val(share_liquid,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
 	    return Val(share_liquid,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
         return Val(share_liquid,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
@@ -198,7 +198,7 @@ Selects the emission rate and other correction factors for the specific housing 
     Solid share for the housing type.
   ++formula
 #      Val(share_solid, 'Type::' . In(housing_type));
-	given ( $IN->{housing_type} ) {
+	given ( In(housing_type) ) {
 	    return Val(share_solid,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
 	    return Val(share_solid,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
         return Val(share_solid,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
@@ -214,7 +214,7 @@ Selects the emission rate and other correction factors for the specific housing 
     Correction factor for the housing type area.
   ++formula
 #      Val(k_area, 'Type::' . In(housing_type));
-	given ( $IN->{housing_type} ) {
+	given ( In(housing_type) ) {
 	    return Val(k_area,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
 	    return Val(k_area,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
         return Val(k_area,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
