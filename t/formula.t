@@ -5,7 +5,7 @@ use Agrammon::Formula::Parser;
 use Test;
 
 subtest {
-    my $f = parse-formula('In(agricultural_area)', 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula('In(agricultural_area)', 'PlantProduction');
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
@@ -17,7 +17,7 @@ subtest {
 }, 'In(...)';
 
 subtest {
-    my $f = parse-formula('In(agricultural_area);', 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula('In(agricultural_area);', 'PlantProduction');
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
@@ -29,7 +29,7 @@ subtest {
 }, 'Semicolon at end of expression';
 
 subtest {
-    my $f = parse-formula('Tech(er_agricultural_area)', 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula('Tech(er_agricultural_area)', 'PlantProduction');
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
     is-deeply $f.input-used, (), 'Correct inputs-used';
     is-deeply $f.technical-used, ('er_agricultural_area',), 'Correct technical-used';
@@ -41,21 +41,21 @@ subtest {
 }, 'Tech(...)';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
-        Val(mineral_nitrogen_fertiliser_urea, PlantProduction::MineralFertiliser);
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        Val(mineral_nitrogen_fertiliser_urea, PlantProduction);
         FORMULA
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
     is-deeply $f.input-used, (), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     my @output-used = $f.output-used;
     is @output-used.elems, 1, 'Have 1 output used';
-    is @output-used[0].module, 'PlantProduction::MineralFertiliser',
+    is @output-used[0].module, 'PlantProduction',
         'Correct output used module';
     is @output-used[0].symbol, 'mineral_nitrogen_fertiliser_urea',
         'Correct output used symbol';
     my $result = $f.evaluate(Agrammon::Environment.new(
         output => {
-            'PlantProduction::MineralFertiliser' => {
+            'PlantProduction' => {
                 'mineral_nitrogen_fertiliser_urea' => 45
             }
         }
@@ -64,7 +64,30 @@ subtest {
 }, 'Val(...)';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'Livestock::DairyCow::Housing::Type');
+        Val(dairy_cows, ..::Excretion);
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    my @output-used = $f.output-used;
+    is @output-used.elems, 1, 'Have 1 output used';
+    is @output-used[0].module, 'Livestock::DairyCow::Excretion',
+        'Correct output used module';
+    is @output-used[0].symbol, 'dairy_cows',
+        'Correct output used symbol';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        output => {
+            'Livestock::DairyCow::Excretion' => {
+                'dairy_cows' => 49
+            }
+        }
+    ));
+    is $result, 49, 'Correct result from evaluation';
+}, 'Val(...) with name using ..';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         In(agricultural_area) * Tech(er_agricultural_area);
         FORMULA
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
@@ -79,7 +102,7 @@ subtest {
 }, 'Can parse/interpret * operator';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         In(solid_digestate) * Tech(er_solid_digestate) +
         In(compost) * Tech(er_compost);
         FORMULA
@@ -97,8 +120,8 @@ subtest {
 }, 'Correct precedence of * and + operators';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
-        Val(nh3_nmineralfertiliser, PlantProduction::MineralFertiliser) +
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        Val(nh3_nmineralfertiliser, PlantProduction) +
         Val(nh3_nrecyclingfertiliser, PlantProduction::RecyclingFertiliser)
         FORMULA
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
@@ -106,7 +129,7 @@ subtest {
     is-deeply $f.technical-used, (), 'Correct technical-used';
     my @output-used = $f.output-used;
     is @output-used.elems, 2, 'Have 2 output used';
-    is @output-used[0].module, 'PlantProduction::MineralFertiliser',
+    is @output-used[0].module, 'PlantProduction',
         'Correct first output used module';
     is @output-used[0].symbol, 'nh3_nmineralfertiliser',
         'Correct first output used symbol';
@@ -116,7 +139,7 @@ subtest {
         'Correct second output used symbol';
     my $result = $f.evaluate(Agrammon::Environment.new(
         output => {
-            'PlantProduction::MineralFertiliser' => {
+            'PlantProduction' => {
                 'nh3_nmineralfertiliser' => 12
             },
             'PlantProduction::RecyclingFertiliser' => {
@@ -128,7 +151,7 @@ subtest {
 }, 'Val(...) + Val(...)';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         my $a;
         $a = In(compost);
         my $b = In(compost);
@@ -146,7 +169,7 @@ subtest {
 }, 'Variable declaration, assignment, and lookup';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         3 * In(compost) + 20
         FORMULA
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
@@ -160,7 +183,7 @@ subtest {
 }, 'Integer literals';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         my $a;
         if (In(milk_yield) > Tech(standard_milk_yield)) {
             $a = Tech(a_high);
@@ -188,7 +211,7 @@ subtest {
 }, 'if/else construct with > operator';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         my $a;
         if (In(milk_yield) < Tech(standard_milk_yield)) {
             $a = Tech(a_low);
@@ -216,7 +239,7 @@ subtest {
 }, 'if/else construct with < operator';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         my $a;
         if (In(milk_yield) == Tech(standard_milk_yield)) {
             $a = Tech(a_high);
@@ -244,7 +267,7 @@ subtest {
 }, 'if/else construct with == operator';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         my $a;
         if (In(milk_yield) != Tech(standard_milk_yield)) {
             $a = Tech(a_low);
@@ -272,7 +295,7 @@ subtest {
 }, 'if/else construct with != operator';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         In(milk_yield) != Tech(standard_milk_yield)
             ? Tech(a_low)
             : Tech(a_high)
@@ -295,7 +318,7 @@ subtest {
 }, '... ? ... : ... construct';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         In(level) eq 'low'
             ? Tech(a_low)
             : Tech(a_high)
@@ -317,7 +340,7 @@ subtest {
 }, 'The string eq operator and string literals';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         In(level) ne 'low'
             ? Tech(a_high)
             : Tech(a_low)
@@ -339,7 +362,7 @@ subtest {
 }, 'The string ne operator and string literals';
 
 subtest {
-    my $f = parse-formula('return In(agricultural_area)', 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula('return In(agricultural_area)', 'PlantProduction');
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
@@ -351,7 +374,7 @@ subtest {
 }, 'Simple use of return in last statement';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         if (In(milk_yield) != Tech(standard_milk_yield)) {
             return Tech(a_low);
         }
@@ -375,7 +398,7 @@ subtest {
 }, 'Early return from within a conditional';
 
 subtest {
-    my $f = parse-formula('return;', 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula('return;', 'PlantProduction');
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
     is-deeply $f.input-used, (), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
@@ -385,7 +408,7 @@ subtest {
 }, 'Empty return evalutes to Nil';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         (In(solid_digestate) - Tech(er_solid_digestate)) /
         (In(compost) - Tech(er_compost));
         FORMULA
@@ -403,7 +426,7 @@ subtest {
 }, 'Grouping parentheses and the - and / operators';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         # leading comment
         In(solid_digestate) * Tech(er_solid_digestate) # +
         #In(compost) * Tech(er_compost);
@@ -422,7 +445,7 @@ subtest {
 }, 'Comments';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         Sum(n_sol_excretion,Livestock::OtherCattle::Excretion )
         FORMULA
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
@@ -446,7 +469,7 @@ subtest {
 }, 'Sum(...)';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         Out(mineral_nitrogen_fertiliser_urea);
         FORMULA
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
@@ -454,13 +477,13 @@ subtest {
     is-deeply $f.technical-used, (), 'Correct technical-used';
     my @output-used = $f.output-used;
     is @output-used.elems, 1, 'Have 1 output used';
-    is @output-used[0].module, 'PlantProduction::MineralFertiliser',
+    is @output-used[0].module, 'PlantProduction',
         'Correct output used module';
     is @output-used[0].symbol, 'mineral_nitrogen_fertiliser_urea',
         'Correct output used symbol';
     my $result = $f.evaluate(Agrammon::Environment.new(
         output => {
-            'PlantProduction::MineralFertiliser' => {
+            'PlantProduction' => {
                 'mineral_nitrogen_fertiliser_urea' => 89
             }
         }
@@ -469,7 +492,7 @@ subtest {
 }, 'Out(...)';
 
 subtest {
-    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         given (In(level)) {
             return Tech(a_low) when 'low';
             return Tech(a_mid) when 'middle';

@@ -122,7 +122,7 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::Val.new(
             reference => Agrammon::OutputReference.new(
                 symbol => ~$<symbol>,
-                module => ~$<module>
+                module => $<module>.ast
             )
         );
     }
@@ -140,7 +140,7 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::Sum.new(
             reference => Agrammon::OutputReference.new(
                 symbol => ~$<symbol>,
-                module => ~$<module>
+                module => $<module>.ast
             )
         );
     }
@@ -235,5 +235,22 @@ class Agrammon::Formula::Builder {
 
     method infix:sym<? :>($/) {
         make TernaryOperator.new(expression => $<EXPR>.ast);
+    }
+
+    method name($/) {
+        my @parts = $<name-part>.map(~*);
+        my @current = $*CURRENT-MODULE.split('::');
+        @current.pop;
+        while @parts && @parts[0] eq '..' {
+            @parts.shift;
+            @current.pop;
+        }
+        unless @parts {
+            die "Name $/ must have at least one named part";
+        }
+        if any(@parts) eq '..' {
+            die "Name $/ is invalid due to non-leading use of `..`";
+        }
+        make (flat @current, @parts).join('::');
     }
 }
