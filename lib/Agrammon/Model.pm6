@@ -79,9 +79,11 @@ class Agrammon::Model {
     }
 
     method dump {
+        my Str $output;
         for @!evaluation-order.reverse {
-            say $_.taxonomy;
+            $output ~= $_.taxonomy ~ "\n";
         }
+        return $output;
     }
 
 }

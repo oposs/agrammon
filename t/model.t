@@ -1,7 +1,6 @@
 use v6;
 use Agrammon::Model;
 use Test;
-use Test::Output;
 
 plan 4;
 
@@ -137,7 +136,7 @@ subtest 'dump()' => {
     given 'Simple' -> $module {
         ok my $model = Agrammon::Model.new(path => $path);
         $model.load($module);
-        stdout-is { $model.dump }, $output-expected, 'Output as expected';
+        is $model.dump, $output-expected, 'Output as expected';
     }
 }
 

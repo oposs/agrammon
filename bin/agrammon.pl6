@@ -6,23 +6,19 @@ my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location 
 ;
 
-sub MAIN (
-    Str $command   = 'help',
-    Str $filename? = %*ENV{'AGRAMMON_MODEL_START'} // '';
-) {
+#| Run the model
+multi sub MAIN('web', $filename) {
+    say "Will start web service; NYI";
+}
 
-    {
-        say "No filename";
-        USAGE();
-        exit 1;
-    } unless $filename;
+#| Run the model
+multi sub MAIN('run', $filename) {
+    say "Will run the model; NYI";
+}
 
-    given $command {
-        when 'run'  { say 'Will run the model; not yet implemented' }
-        when 'web'  { say 'Will start web service; not yet implemented' }
-        when 'dump' { dump $filename.IO; }
-        default { USAGE(); }
-    }
+#| Dump model
+multi sub MAIN('dump', $filename) {
+    say chomp dump $filename.IO;
 }
 
 sub dump (IO::Path $path) {
@@ -34,17 +30,5 @@ sub dump (IO::Path $path) {
 
     my $model = Agrammon::Model.new(path => $module-path);
     $model.load($module);
-    $model.dump;
-}
-
-sub USAGE(){
-    # "empty" lines in the here doc must have leading spaces!
-    print q:c:to/EOH/; 
-        Usage: {$*PROGRAM-NAME} [command] [filename]
-               
-               command  [help | web | dump | run]
-               filename Start at this file. 
-               
-               filename defaults to \q{%*ENV{AGRAMMON_MODEL_START}} if not specified.
-        EOH
+    return $model.dump;
 }
