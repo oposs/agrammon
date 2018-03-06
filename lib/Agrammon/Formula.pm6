@@ -188,6 +188,18 @@ class Agrammon::Formula::Return does Agrammon::Formula {
     }
 }
 
+class Agrammon::Formula::Defined does Agrammon::Formula {
+    has Agrammon::Formula $.expression;
+
+    method input-used() { $!expression.input-used }
+    method technical-used() { $!expression.technical-used }
+    method output-used() { $!expression.output-used }
+
+    method evaluate(Agrammon::Environment $env) {
+        defined $!expression.evaluate($env)
+    }
+}
+
 class Agrammon::Formula::In does Agrammon::Formula {
     has $.symbol;
 

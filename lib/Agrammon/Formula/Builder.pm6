@@ -159,6 +159,12 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<defined>($/) {
+        make Agrammon::Formula::Defined.new(
+            expression => $<term>.ast
+        );
+    }
+
     method term:sym<( )>($/) {
         make $<EXPR>.ast;
     }

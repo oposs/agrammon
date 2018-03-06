@@ -95,6 +95,10 @@ grammar Agrammon::Formula::Parser {
         'return' <EXPR>?
     }
 
+    rule term:sym<defined> {
+        'defined' <term>
+    }
+
     rule term:sym<( )> {
         '(' <EXPR> [ ')' || <.panic('Missing closing )')> ]
     }

@@ -642,4 +642,22 @@ subtest {
     is $result, 'no', 'Correct result when both false';
 }, 'The infix || operator';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        defined In(milk_yield) ? 'yes' : 'nope'
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 55 }
+    ));
+    is $result, "yes", 'Correct result from defined when value is defined';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => Nil }
+    ));
+    is $result, "nope", 'Correct result from defined when value is not defined';
+}, 'defined <term>';
+
 done-testing;
