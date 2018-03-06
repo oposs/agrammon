@@ -81,6 +81,6 @@ class Agrammon::ModuleBuilder {
     }
 
     method multi-line-str-option($/) {
-        make ~$<key> => quietly $<value>.Str.indent(-$*indent).trim-trailing;
+        make ~$<key> => $<value>.Str.lines.map(*.trim).join("\n");
     }
 }
