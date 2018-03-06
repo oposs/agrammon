@@ -15,7 +15,25 @@ class Agrammon::Formula::Builder {
     }
 
     method statement($/) {
-        make ($<statement_control> // $<EXPR>).ast;
+        with $<statement_control> {
+            make .ast;
+        }
+        else {
+            my $ast = $<EXPR>.ast;
+            with $<statement_modifier> {
+                $ast = .ast()($ast);
+            }
+            make $ast;
+        }
+    }
+
+    method statement_modifier:sym<when>($/) {
+        make -> $statement {
+            Agrammon::Formula::When.new(
+                test => $<EXPR>.ast,
+                then => $statement
+            )
+        }
     }
 
     method statement_control:sym<if>($/) {
@@ -23,6 +41,13 @@ class Agrammon::Formula::Builder {
             condition => $<EXPR>.ast,
             then => $<then>.ast,
             else => $<else> ?? $<else>.ast !! Nil
+        );
+    }
+
+    method statement_control:sym<given>($/) {
+        make Agrammon::Formula::Given.new(
+            topic => $<EXPR>.ast,
+            block => $<block>.ast
         );
     }
 

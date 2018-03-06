@@ -18,7 +18,14 @@ grammar Agrammon::Formula::Parser {
 
     rule statement {
         | <statement_control> ';'?
-        | <EXPR> [';' || <?before '}' | $>]
+        | <EXPR>
+          <statement_modifier>?
+          [';' || <?before '}' | $>]
+    }
+
+    proto rule statement_modifier { * }
+    rule statement_modifier:sym<when> {
+        'when' <EXPR>
     }
 
     rule EXPR {
@@ -32,6 +39,12 @@ grammar Agrammon::Formula::Parser {
         [ '(' <EXPR> ')' || <.panic('Missing or malformed condition')> ]
         <then=.block>
         [ 'else' <else=.block> ]?
+    }
+
+    rule statement_control:sym<given> {
+        'given'
+        [ '(' <EXPR> ')' || <.panic('Missing or malformed topic')> ]
+        <block>
     }
 
     rule block {

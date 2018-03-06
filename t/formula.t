@@ -468,4 +468,33 @@ subtest {
     is $result, 89, 'Correct result from evaluation';
 }, 'Out(...)';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction::MineralFertiliser');
+        given (In(level)) {
+            return Tech(a_low) when 'low';
+            return Tech(a_mid) when 'middle';
+            return Tech(a_high) when 'high';
+        }
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('level',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('a_low', 'a_mid', 'a_high'), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { level => 'low' },
+        technical => { a_high => 20, a_mid => 10, a_low => 5 }
+    ));
+    is $result, 5, 'Correct result for first when';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { level => 'high' },
+        technical => { a_high => 20, a_mid => 10, a_low => 5 }
+    ));
+    is $result, 20, 'Correct result for final when';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { level => 'middle' },
+        technical => { a_high => 20, a_mid => 10, a_low => 5 }
+    ));
+    is $result, 10, 'Correct result for middle when';
+}, 'The given block and statement modifier when';
+
 done-testing;

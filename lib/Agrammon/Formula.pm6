@@ -106,7 +106,55 @@ class Agrammon::Formula::Block does Agrammon::Formula {
     method evaluate(Agrammon::Environment $env) {
         $env.enter-scope();
         LEAVE $env.leave-scope();
+        if %_<topic>:exists {
+            $env.scope.declare('$_');
+            $env.scope.lookup('$_') = %_<topic>;
+        }
         $!statements.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::Given does Agrammon::Formula {
+    has Agrammon::Formula $.topic;
+    has Agrammon::Formula::Block $.block;
+
+    method input-used() {
+        self!merge-inputs: $!topic.input-used, $!block.input-used
+    }
+
+    method technical-used() {
+        self!merge-technicals: $!topic.technical-used, $!block.technical-used
+    }
+
+    method output-used() {
+        self!merge-outputs: $!topic.output-used, $!block.output-used
+    }
+
+    method evaluate(Agrammon::Environment $env) {
+        $!block.evaluate($env, topic => $!topic.evaluate($env))
+    }
+}
+
+class Agrammon::Formula::When does Agrammon::Formula {
+    has Agrammon::Formula $.test;
+    has Agrammon::Formula $.then;
+
+    method input-used() {
+        self!merge-inputs: $!test.input-used, $!then.input-used
+    }
+
+    method technical-used() {
+        self!merge-technicals: $!test.technical-used, $!then.technical-used
+    }
+
+    method output-used() {
+        self!merge-outputs: $!test.output-used, $!then.output-used
+    }
+
+    method evaluate(Agrammon::Environment $env) {
+        if $!test.evaluate($env) ~~ $env.scope.lookup('$_') {
+            $!then.evaluate($env);
+        }
     }
 }
 
