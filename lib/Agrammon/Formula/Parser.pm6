@@ -103,6 +103,10 @@ grammar Agrammon::Formula::Parser {
         \d+
     }
 
+    token term:sym<rational> {
+        \d* '.' \d+
+    }
+
     token term:sym<single-string> {
         "'"
         <single-string-piece>*

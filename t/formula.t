@@ -184,6 +184,20 @@ subtest {
 
 subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        2.5 * In(compost) + 1.0
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('compost',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { compost => 55 }
+    ));
+    is $result, 2.5 * 55 + 1.0, 'Correct result from evaluation';
+}, 'Rational literals';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         my $a;
         if (In(milk_yield) > Tech(standard_milk_yield)) {
             $a = Tech(a_high);

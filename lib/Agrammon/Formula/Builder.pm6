@@ -167,6 +167,10 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::Integer.new(value => +$/);
     }
 
+    method term:sym<rational>($/) {
+        make Agrammon::Formula::Rational.new(value => +$/);
+    }
+
     method term:sym<single-string>($/) {
         make Agrammon::Formula::String.new(
             value => $<single-string-piece>.map(*.ast).join

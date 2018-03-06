@@ -240,6 +240,11 @@ class Agrammon::Formula::Integer does Agrammon::Formula {
     method evaluate($) { $!value }
 }
 
+class Agrammon::Formula::Rational does Agrammon::Formula {
+    has Rat $.value;
+    method evaluate($) { $!value }
+}
+
 class Agrammon::Formula::String does Agrammon::Formula {
     has Str $.value;
     method evaluate($) { $!value }
