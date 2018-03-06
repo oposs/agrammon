@@ -47,11 +47,15 @@ class Agrammon::Model {
         die X::Agrammon::Model::FileNotFound.new(:$file)    unless $file.IO.e;
         die X::Agrammon::Model::FileNotReadable.new(:$file) unless $file.IO.r;
 
-        my $module = Agrammon::ModuleParser.parsefile(
-            $file,
-            actions => Agrammon::ModuleBuilder
-        ).ast;
-        return $module;
+        {
+            return Agrammon::ModuleParser.parsefile(
+                $file,
+                actions => Agrammon::ModuleBuilder
+            ).ast;
+            CATCH {
+                die "Failed to parse module $file:\n$_";
+            }
+        }
     }
 
     method load($module-name, :%pending, :%loaded) {
