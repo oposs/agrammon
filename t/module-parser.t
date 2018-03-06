@@ -1,4 +1,5 @@
 use v6;
+use Agrammon::Formula;
 use Agrammon::ModuleBuilder;
 use Agrammon::ModuleParser;
 use Test;
@@ -87,7 +88,7 @@ subtest "Loading $module-file" => {
         is .units.elems, 1, 'First output has 1 unit';
         is .units.keys, <en>, 'Correct unit key';
         is .units<en>, '-', 'Correct unit value';
-        # TODO Test formula parse
+        ok .formula ~~ Agrammon::Formula, 'Formula parsed into a Formula object';
     }
 }
 
