@@ -165,7 +165,7 @@ grammar Agrammon::Formula::Parser {
     token double-string-piece:sym<esc> {
         '\\'
         [
-        | $<escaped>=<[\\']>
+        | $<escaped>=[\W]
         | $<sequence>=<[rnt0]>
         | (.) {} <.panic("Unknown escape \\$0")>
         ]
