@@ -211,6 +211,23 @@ class Agrammon::Formula::Builder {
         make ~$<escaped>;
     }
 
+    method term:sym<double-string>($/) {
+        make Agrammon::Formula::String.new(
+            value => $<double-string-piece>.map(*.ast).join
+        );
+    }
+
+    method double-string-piece:sym<non-esc>($/) {
+        make ~$/;
+    }
+
+    method double-string-piece:sym<esc>($/) {
+        my constant SEQS = { n => "\n", r => "\r", t => "\t", 0 => "\0" };
+        make $<escaped>
+            ?? ~$<escaped>
+            !! SEQS{~$<sequence>};
+    }
+
     method infix:sym</>($/) {
         make Agrammon::Formula::BinOp::Divide;
     }

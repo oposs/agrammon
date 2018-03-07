@@ -198,6 +198,18 @@ subtest {
 
 subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        "foo\nbar"
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new());
+    is $result, "foo\nbar", 'Correct result from evaluation';
+}, 'Double-quoted string literals';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         my $a;
         if (In(milk_yield) > Tech(standard_milk_yield)) {
             $a = Tech(a_high);

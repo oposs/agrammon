@@ -145,6 +145,25 @@ grammar Agrammon::Formula::Parser {
         ]
     }
 
+    token term:sym<double-string> {
+        '"'
+        <double-string-piece>*
+        ['"' || <.panic('Unterminated string')>]
+    }
+
+    proto token double-string-piece { * }
+    token double-string-piece:sym<non-esc> {
+        <-["\\]>+
+    }
+    token double-string-piece:sym<esc> {
+        '\\'
+        [
+        | $<escaped>=<[\\']>
+        | $<sequence>=<[rnt0]>
+        | (.) {} <.panic("Unknown escape \\$0")>
+        ]
+    }
+
     proto token infix { * }
     token infix:sym</> { '/' }
     token infix:sym<*> { '*' }
