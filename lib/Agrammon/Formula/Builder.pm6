@@ -36,6 +36,26 @@ class Agrammon::Formula::Builder {
         }
     }
 
+    method statement_modifier:sym<if>($/) {
+        make -> $statement {
+            Agrammon::Formula::If.new(
+                condition => $<EXPR>.ast,
+                then => $statement,
+                else => Nil
+            )
+        }
+    }
+
+    method statement_modifier:sym<unless>($/) {
+        make -> $statement {
+            Agrammon::Formula::If.new(
+                condition => $<EXPR>.ast,
+                then => Agrammon::Formula::Nil.new,
+                else => $statement
+            )
+        }
+    }
+
     method statement_control:sym<if>($/) {
         make Agrammon::Formula::If.new(
             condition => $<EXPR>.ast,

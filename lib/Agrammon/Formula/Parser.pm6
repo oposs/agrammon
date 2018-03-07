@@ -27,6 +27,12 @@ grammar Agrammon::Formula::Parser {
     rule statement_modifier:sym<when> {
         'when' <EXPR>
     }
+    rule statement_modifier:sym<if> {
+        'if' <EXPR>
+    }
+    rule statement_modifier:sym<unless> {
+        'unless' <EXPR>
+    }
 
     rule EXPR {
         <term> [ <infix> <term> ]*
