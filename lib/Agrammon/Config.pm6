@@ -8,8 +8,8 @@ class Agrammon::Config {
     has %.model;
   
     method load(Str $path) {
-	my $config = Config.new;
-	$config.read($path);
+        my $config = Config.new;
+        $config.read($path);
 
         %!general  = $config<General>;
         %!database = $config<Database>;
