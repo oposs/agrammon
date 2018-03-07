@@ -89,7 +89,7 @@ grammar Agrammon::ModuleParser {
     }
 
     token single-line-option {
-        \h* <key=.ident> \h* '=' \h* $<value>=[\N*] \n
+        \h* <key=.ident> \h* '=' \h* $<value>=[\N*] [\n || $]
     }
 
     token multi-line-str-option($prefix) {
@@ -101,8 +101,8 @@ grammar Agrammon::ModuleParser {
         <.blank-line>*
         $<value>=[
             [
-                <!before \s* ['+' || '***']>
-                \N* \n
+                <!before \s* ['+' || '***' || $]>
+                \N* [\n || $]
             ]*
         ]
     }
