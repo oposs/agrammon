@@ -8,7 +8,7 @@ my %*SUB-MAIN-OPTS =
 
 subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 
-#| Run the model
+#| Start the web interface
 multi sub MAIN('web', ExistingFile $filename) {
     say "Will start web service; NYI";
 }
@@ -30,7 +30,7 @@ multi sub MAIN('create-user', Str $username, Str $firstname, Str $lastname) {
 
 sub USAGE() {
     say "$*USAGE\n" ~ chomp q:to/USAGE/;
-        Extra info here
+        See https://www.agrammon.ch for more information about Agrammon.
     USAGE
 }
 
