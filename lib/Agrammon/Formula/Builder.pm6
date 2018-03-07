@@ -176,6 +176,19 @@ class Agrammon::Formula::Builder {
         make $<EXPR>.ast;
     }
 
+    method term:sym<{ }>($/) {
+        make Agrammon::Formula::Hash.new(
+            pairs => $<pair>.map(*.ast)
+        );
+    }
+
+    method pair($/) {
+        make Agrammon::Formula::Pair.new(
+            key => ~$<ident>,
+            value => $<EXPR>.ast
+        );
+    }
+
     method term:sym<integer>($/) {
         make Agrammon::Formula::Integer.new(value => +$/);
     }

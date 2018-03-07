@@ -696,4 +696,28 @@ subtest {
     is $result, "foofoofoo", 'Result is return value of built-in function';
 }, 'Call a simple built-in function with arguments In(...)/Tech(...) arguments';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        writeLog({
+            en => 'hello',
+            de => In(de),
+            fr => Tech(fr)
+        });
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my @args;
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        builtins => { writeLog => sub (%h) { push @args, %h; return 'logged' } },
+        input => { de => 'hallo' },
+        technical => { fr => 'salut' }
+    ));
+    is @args.elems, 1, 'Built-in function was called once';
+    is-deeply @args[0], { en => 'hello', de => 'hallo', fr => 'salut' },
+        'Correct hash passed as argument';
+    is $result, "logged", 'Result is return value of built-in function';
+}, 'Call a simple built-in function with a hash argument';
+
 done-testing;

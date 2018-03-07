@@ -273,6 +273,39 @@ class Agrammon::Formula::Sum does Agrammon::Formula {
     method output-used() { ($!reference,) }
 }
 
+class Agrammon::Formula::Hash does Agrammon::Formula::LValue {
+    has Agrammon::Formula @.pairs;
+
+    method input-used() {
+        self!merge-inputs: @!pairs.map(*.input-used)
+    }
+
+    method technical-used() {
+        self!merge-technicals: @!pairs.map(*.technical-used)
+    }
+
+    method output-used() {
+        self!merge-outputs: @!pairs.map(*.output-used)
+    }
+
+    method evaluate(Agrammon::Environment $env) is rw {
+        %( @!pairs.map(*.evaluate($env)) )
+    }
+}
+
+class Agrammon::Formula::Pair does Agrammon::Formula {
+    has Str $.key;
+    has Agrammon::Formula $.value;
+
+    method input-used() { $!value.input-used }
+    method technical-used() { $!value.technical-used }
+    method output-used() { $!value.output-used }
+
+    method evaluate(Agrammon::Environment $env) {
+        $!key => $!value.evaluate($env)
+    }
+}
+
 class Agrammon::Formula::Integer does Agrammon::Formula {
     has Int $.value;
     method evaluate($) { $!value }

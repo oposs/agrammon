@@ -109,6 +109,16 @@ grammar Agrammon::Formula::Parser {
         '(' <EXPR> [ ')' || <.panic('Missing closing )')> ]
     }
 
+    rule term:sym<{ }> {
+        '{'
+        <pair>* % [ ',' ]
+        [ '}' || <.panic('Missing } on hash literal or malformed hash')> ]
+    }
+
+    rule pair {
+        <ident> '=>' [ <EXPR> || <.panic('Missing or invalid expression after =>')> ]
+    }
+
     token term:sym<integer> {
         \d+
     }
