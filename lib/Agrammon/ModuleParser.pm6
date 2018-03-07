@@ -105,6 +105,7 @@ grammar Agrammon::ModuleParser {
                 \N* [\n || $]
             ]*
         ]
+        <.blank-line>*
     }
 
     token name {
