@@ -81,7 +81,7 @@ grammar Agrammon::ModuleParser {
     }
 
     token subsection-map {
-        \h* '++' \h* <key=.ident> \h* \n
+        \h* '++' \h* <key> \h* \n
         [
         | <value=.single-line-option>
         | <value=.multi-line-str-option('+++')>
@@ -89,11 +89,11 @@ grammar Agrammon::ModuleParser {
     }
 
     token single-line-option {
-        \h* <key=.ident> \h* '=' \h* $<value>=[\N*] \n
+        \h* <key> \h* '=' \h* $<value>=[\N*] [\n || $]
     }
 
     token multi-line-str-option($prefix) {
-        \h* $prefix \h* <key=.ident> \h* \n
+        \h* $prefix \h* <key> \h* \n
         # We want no leading lines and no trailing empty lines, but do want
         # interior empty lines. We eat lines up until we see a "terminator",
         # which is whitespace followed by *** (section heading) or + (next
@@ -101,10 +101,15 @@ grammar Agrammon::ModuleParser {
         <.blank-line>*
         $<value>=[
             [
-                <!before \s* ['+' || '***']>
-                \N* \n
+                <!before \s* ['+' || '***' || $]>
+                \N* [\n || $]
             ]*
         ]
+        <.blank-line>*
+    }
+
+    token key {
+        \w+
     }
 
     token name {

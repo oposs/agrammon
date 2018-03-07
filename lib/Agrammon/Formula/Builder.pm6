@@ -36,11 +36,41 @@ class Agrammon::Formula::Builder {
         }
     }
 
+    method statement_modifier:sym<if>($/) {
+        make -> $statement {
+            Agrammon::Formula::If.new(
+                condition => $<EXPR>.ast,
+                then => $statement,
+                else => Nil
+            )
+        }
+    }
+
+    method statement_modifier:sym<unless>($/) {
+        make -> $statement {
+            Agrammon::Formula::If.new(
+                condition => $<EXPR>.ast,
+                then => Agrammon::Formula::Nil.new,
+                else => $statement
+            )
+        }
+    }
+
     method statement_control:sym<if>($/) {
+        my $else := $<else> ?? $<else>.ast !! Nil;
+        my @elsif-cond = $<elsif-cond>.map(*.ast);
+        my @elsif = $<elsif>.map(*.ast);
+        while @elsif {
+            $else := Agrammon::Formula::If.new(
+                condition => @elsif-cond.pop,
+                then => @elsif.pop,
+                else => $else
+            );
+        }
         make Agrammon::Formula::If.new(
-            condition => $<EXPR>.ast,
+            condition => $<if-cond>.ast,
             then => $<then>.ast,
-            else => $<else> ?? $<else>.ast !! Nil
+            else => $else
         );
     }
 
@@ -145,6 +175,13 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<call>($/) {
+        make Agrammon::Formula::CallBuiltin.new(
+            name => ~$<ident>,
+            args => $<arg>.map(*.ast)
+        );
+    }
+
     method term:sym<my>($/) {
         make Agrammon::Formula::VarDecl.new(name => ~$<variable>);
     }
@@ -169,6 +206,19 @@ class Agrammon::Formula::Builder {
         make $<EXPR>.ast;
     }
 
+    method term:sym<{ }>($/) {
+        make Agrammon::Formula::Hash.new(
+            pairs => $<pair>.map(*.ast)
+        );
+    }
+
+    method pair($/) {
+        make Agrammon::Formula::Pair.new(
+            key => ~$<ident>,
+            value => $<EXPR>.ast
+        );
+    }
+
     method term:sym<integer>($/) {
         make Agrammon::Formula::Integer.new(value => +$/);
     }
@@ -191,6 +241,23 @@ class Agrammon::Formula::Builder {
         make ~$<escaped>;
     }
 
+    method term:sym<double-string>($/) {
+        make Agrammon::Formula::String.new(
+            value => $<double-string-piece>.map(*.ast).join
+        );
+    }
+
+    method double-string-piece:sym<non-esc>($/) {
+        make ~$/;
+    }
+
+    method double-string-piece:sym<esc>($/) {
+        my constant SEQS = { n => "\n", r => "\r", t => "\t", 0 => "\0" };
+        make $<escaped>
+            ?? ~$<escaped>
+            !! SEQS{~$<sequence>};
+    }
+
     method infix:sym</>($/) {
         make Agrammon::Formula::BinOp::Divide;
     }
@@ -205,6 +272,10 @@ class Agrammon::Formula::Builder {
 
     method infix:sym<->($/) {
         make Agrammon::Formula::BinOp::Subtract;
+    }
+
+    method infix:sym<.>($/) {
+        make Agrammon::Formula::BinOp::Concatenate;
     }
 
     method infix:sym<=>($/) {
@@ -257,6 +328,10 @@ class Agrammon::Formula::Builder {
 
     method infix:sym<||>($/) {
         make Agrammon::Formula::BinOp::TightOr;
+    }
+
+    method infix:sym<//>($/) {
+        make Agrammon::Formula::BinOp::DefinedOr;
     }
 
     method infix:sym<? :>($/) {

@@ -198,6 +198,18 @@ subtest {
 
 subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        "foo\nbar\!"
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new());
+    is $result, "foo\nbar!", 'Correct result from evaluation';
+}, 'Double-quoted string literals';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         my $a;
         if (In(milk_yield) > Tech(standard_milk_yield)) {
             $a = Tech(a_high);
@@ -659,5 +671,193 @@ subtest {
     ));
     is $result, "nope", 'Correct result from defined when value is not defined';
 }, 'defined <term>';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        In(milk_yield) // 1
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 55 }
+    ));
+    is $result, 55, 'Correct result when LHS is defined';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => Nil }
+    ));
+    is $result, 1, 'Correct result when LHS is undefined';
+}, 'The // operator';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        foo()
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $calls = 0;
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        builtins => { foo => sub { $calls++; return 42 } }
+    ));
+    is $calls, 1, 'Built-in function was called';
+    is $result, "42", 'Result is return value of built-in function';
+}, 'Call a simple built-in function without arguments';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        bar(In(n), Tech(s))
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('n',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('s',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my @args;
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        builtins => { bar => sub ($x, $str) { push @args, ($x, $str); return $str x $x } },
+        input => { n => 3 },
+        technical => { s => 'foo' }
+    ));
+    is @args.elems, 1, 'Built-in function was called';
+    is @args[0][0], 3, 'Correct first argument';
+    is @args[0][1], 'foo', 'Correct second argument';
+    is $result, "foofoofoo", 'Result is return value of built-in function';
+}, 'Call a simple built-in function with arguments In(...)/Tech(...) arguments';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        writeLog({
+            en => 'hello',
+            de => In(de),
+            fr => Tech(fr)
+        });
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my @args;
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        builtins => { writeLog => sub (%h) { push @args, %h; return 'logged' } },
+        input => { de => 'hallo' },
+        technical => { fr => 'salut' }
+    ));
+    is @args.elems, 1, 'Built-in function was called once';
+    is-deeply @args[0], { en => 'hello', de => 'hallo', fr => 'salut' },
+        'Correct hash passed as argument';
+    is $result, "logged", 'Result is return value of built-in function';
+}, 'Call a simple built-in function with a hash argument';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        writeLog({
+            en => 'hello',
+            de => In(de),
+            fr => Tech(fr),
+        });
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my @args;
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        builtins => { writeLog => sub (%h) { push @args, %h; return 'logged' } },
+        input => { de => 'hallo' },
+        technical => { fr => 'salut' }
+    ));
+    is @args.elems, 1, 'Built-in function was called once';
+    is-deeply @args[0], { en => 'hello', de => 'hallo', fr => 'salut' },
+        'Correct hash passed as argument';
+    is $result, "logged", 'Result is return value of built-in function';
+}, 'Call a simple built-in function with a hash argument with trailing comma';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        return Tech(fr) if In(de) eq 'hallo';
+        return 'bonjour';
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result-true = $f.evaluate(Agrammon::Environment.new(
+        input => { de => 'hallo' },
+        technical => { fr => 'salut' }
+    ));
+    is $result-true, "salut", 'Correct result when if is true';
+    my $result-false = $f.evaluate(Agrammon::Environment.new(
+        input => { de => 'guten tag' },
+        technical => { fr => 'salut' }
+    ));
+    is $result-false, "bonjour", 'Correct result when if is false';
+}, 'Statement modifier if';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        return Tech(fr) unless In(de) eq 'guten tag';
+        return 'bonjour';
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result-true = $f.evaluate(Agrammon::Environment.new(
+        input => { de => 'guten tag' },
+        technical => { fr => 'salut' }
+    ));
+    is $result-true, "bonjour", 'Correct result when unless is true';
+    my $result-false = $f.evaluate(Agrammon::Environment.new(
+        input => { de => 'hallo' },
+        technical => { fr => 'salut' }
+    ));
+    is $result-false, "salut", 'Correct result when unless is false';
+}, 'Statement modifier unless';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        if (In(de) eq 'fahrzeug') {
+            return 'vehicle';
+        }
+        elsif (In(de) eq 'werkzeug') {
+            return 'tool';
+        }
+        elsif (In(de) eq 'spielzeug') {
+            return 'toy';
+        }
+        else {
+            return 'thingy';
+        }
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my %expect = fahrzeug => 'vehicle', werkzeug => 'tool',
+                 spielzeug => 'toy', foo => 'thingy';
+    for %expect.kv -> $de, $expect {
+        my $result = $f.evaluate(Agrammon::Environment.new(
+            input => { de => $de },
+        ));
+        is $result, $expect, 'Correct result';
+    }
+}, 'if/elsif/elsif/else';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        Tech(fr) . " = " . In(de)
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { de => 'tag' },
+        technical => { fr => 'jour' }
+    ));
+    is $result, "jour = tag", 'Correct result of concatenation';
+}, 'The . concatenation operator';
 
 done-testing;

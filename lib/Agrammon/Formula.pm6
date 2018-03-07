@@ -174,6 +174,32 @@ class Agrammon::Formula::Var does Agrammon::Formula::LValue {
     }
 }
 
+class Agrammon::Formula::CallBuiltin does Agrammon::Formula::LValue {
+    has Str $.name;
+    has Agrammon::Formula @.args;
+
+    method input-used() {
+        self!merge-inputs: @!args.map(*.input-used)
+    }
+
+    method technical-used() {
+        self!merge-technicals: @!args.map(*.technical-used)
+    }
+
+    method output-used() {
+        self!merge-outputs: @!args.map(*.output-used)
+    }
+
+    method evaluate(Agrammon::Environment $env) is rw {
+        with $env.builtins{$!name} {
+            .(|@!args.map(*.evaluate($env)))
+        }
+        else {
+            die "No such builtin function '$!name'";
+        }
+    }
+}
+
 class Agrammon::Formula::Return does Agrammon::Formula {
     has Agrammon::Formula $.expression;
 
@@ -247,6 +273,39 @@ class Agrammon::Formula::Sum does Agrammon::Formula {
     method output-used() { ($!reference,) }
 }
 
+class Agrammon::Formula::Hash does Agrammon::Formula::LValue {
+    has Agrammon::Formula @.pairs;
+
+    method input-used() {
+        self!merge-inputs: @!pairs.map(*.input-used)
+    }
+
+    method technical-used() {
+        self!merge-technicals: @!pairs.map(*.technical-used)
+    }
+
+    method output-used() {
+        self!merge-outputs: @!pairs.map(*.output-used)
+    }
+
+    method evaluate(Agrammon::Environment $env) is rw {
+        %( @!pairs.map(*.evaluate($env)) )
+    }
+}
+
+class Agrammon::Formula::Pair does Agrammon::Formula {
+    has Str $.key;
+    has Agrammon::Formula $.value;
+
+    method input-used() { $!value.input-used }
+    method technical-used() { $!value.technical-used }
+    method output-used() { $!value.output-used }
+
+    method evaluate(Agrammon::Environment $env) {
+        $!key => $!value.evaluate($env)
+    }
+}
+
 class Agrammon::Formula::Integer does Agrammon::Formula {
     has Int $.value;
     method evaluate($) { $!value }
@@ -318,6 +377,14 @@ class Agrammon::Formula::BinOp::Subtract does Agrammon::Formula::BinOp {
     }
 }
 
+class Agrammon::Formula::BinOp::Concatenate does Agrammon::Formula::BinOp {
+    method prec() { 'r=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) ~ $!right.evaluate($env)
+    }
+}
+
 role Agrammon::Formula::RelationalOp does Agrammon::Formula::BinOp {
     method prec() { 'm=' }
     method assoc() { 'left' }
@@ -384,6 +451,14 @@ class Agrammon::Formula::BinOp::TightOr does Agrammon::Formula::BinOp {
     method assoc() { 'left' }
     method evaluate(Agrammon::Environment $env) {
         $!left.evaluate($env) || $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::DefinedOr does Agrammon::Formula::BinOp {
+    method prec() { 'k=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) // $!right.evaluate($env)
     }
 }
 

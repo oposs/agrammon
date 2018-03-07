@@ -27,6 +27,12 @@ grammar Agrammon::Formula::Parser {
     rule statement_modifier:sym<when> {
         'when' <EXPR>
     }
+    rule statement_modifier:sym<if> {
+        'if' <EXPR>
+    }
+    rule statement_modifier:sym<unless> {
+        'unless' <EXPR>
+    }
 
     rule EXPR {
         <term> [ <infix> <term> ]*
@@ -36,8 +42,9 @@ grammar Agrammon::Formula::Parser {
 
     rule statement_control:sym<if> {
         'if'
-        [ '(' <EXPR> ')' || <.panic('Missing or malformed condition')> ]
+        [ '(' <if-cond=.EXPR> ')' || <.panic('Missing or malformed condition')> ]
         <then=.block>
+        [ 'elsif' <elsif-cond=.EXPR> <elsif=.block> ]*
         [ 'else' <else=.block> ]?
     }
 
@@ -79,6 +86,12 @@ grammar Agrammon::Formula::Parser {
         ')'
     }
 
+    rule term:sym<call> {
+        <ident>'('
+        <arg=.EXPR>* % [ ',' ]
+        [ ')' || <.panic('Missing closing ) on call')> ]
+    }
+
     rule term:sym<my> {
         'my' <variable>
     }
@@ -101,6 +114,16 @@ grammar Agrammon::Formula::Parser {
 
     rule term:sym<( )> {
         '(' <EXPR> [ ')' || <.panic('Missing closing )')> ]
+    }
+
+    rule term:sym<{ }> {
+        '{'
+        <pair>* %% [ ',' ]
+        [ '}' || <.panic('Missing } on hash literal or malformed hash')> ]
+    }
+
+    rule pair {
+        <ident> '=>' [ <EXPR> || <.panic('Missing or invalid expression after =>')> ]
     }
 
     token term:sym<integer> {
@@ -129,11 +152,31 @@ grammar Agrammon::Formula::Parser {
         ]
     }
 
+    token term:sym<double-string> {
+        '"'
+        <double-string-piece>*
+        ['"' || <.panic('Unterminated string')>]
+    }
+
+    proto token double-string-piece { * }
+    token double-string-piece:sym<non-esc> {
+        <-["\\]>+
+    }
+    token double-string-piece:sym<esc> {
+        '\\'
+        [
+        | $<escaped>=[\W]
+        | $<sequence>=<[rnt0]>
+        | (.) {} <.panic("Unknown escape \\$0")>
+        ]
+    }
+
     proto token infix { * }
     token infix:sym</> { '/' }
     token infix:sym<*> { '*' }
     token infix:sym<+> { '+' }
     token infix:sym<-> { '-' }
+    token infix:sym<.> { '.' }
     token infix:sym<=> { '=' }
     token infix:sym<< > >> { '>' }
     token infix:sym<< >= >> { '>=' }
@@ -147,6 +190,7 @@ grammar Agrammon::Formula::Parser {
     token infix:sym<or> { 'or' }
     token infix:sym<&&> { '&&' }
     token infix:sym<||> { '||' }
+    token infix:sym<//> { '//' }
 
     rule infix:sym<? :> {
         '?' <EXPR> ':'
