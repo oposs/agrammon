@@ -18,7 +18,14 @@ grammar Agrammon::Formula::Parser {
 
     rule statement {
         | <statement_control> ';'?
-        | <EXPR> [';' || <?before '}' | $>]
+        | <EXPR>
+          <statement_modifier>?
+          [';' || <?before '}' | $>]
+    }
+
+    proto rule statement_modifier { * }
+    rule statement_modifier:sym<when> {
+        'when' <EXPR>
     }
 
     rule EXPR {
@@ -32,6 +39,12 @@ grammar Agrammon::Formula::Parser {
         [ '(' <EXPR> ')' || <.panic('Missing or malformed condition')> ]
         <then=.block>
         [ 'else' <else=.block> ]?
+    }
+
+    rule statement_control:sym<given> {
+        'given'
+        [ '(' <EXPR> ')' || <.panic('Missing or malformed topic')> ]
+        <block>
     }
 
     rule block {
@@ -82,12 +95,20 @@ grammar Agrammon::Formula::Parser {
         'return' <EXPR>?
     }
 
+    rule term:sym<defined> {
+        'defined' <term>
+    }
+
     rule term:sym<( )> {
         '(' <EXPR> [ ')' || <.panic('Missing closing )')> ]
     }
 
     token term:sym<integer> {
         \d+
+    }
+
+    token term:sym<rational> {
+        \d* '.' \d+
     }
 
     token term:sym<single-string> {
@@ -122,13 +143,21 @@ grammar Agrammon::Formula::Parser {
     token infix:sym<< != >> { '!=' }
     token infix:sym<eq> { 'eq' }
     token infix:sym<ne> { 'ne' }
+    token infix:sym<and> { 'and' }
+    token infix:sym<or> { 'or' }
+    token infix:sym<&&> { '&&' }
+    token infix:sym<||> { '||' }
 
     rule infix:sym<? :> {
         '?' <EXPR> ':'
     }
 
     token name {
-        <.ident> ['::' <.ident>]*
+        <name-part> ['::' <name-part>]*
+    }
+
+    token name-part {
+        <.ident> | '..'
     }
 
     token ws {

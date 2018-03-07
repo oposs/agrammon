@@ -106,7 +106,55 @@ class Agrammon::Formula::Block does Agrammon::Formula {
     method evaluate(Agrammon::Environment $env) {
         $env.enter-scope();
         LEAVE $env.leave-scope();
+        if %_<topic>:exists {
+            $env.scope.declare('$_');
+            $env.scope.lookup('$_') = %_<topic>;
+        }
         $!statements.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::Given does Agrammon::Formula {
+    has Agrammon::Formula $.topic;
+    has Agrammon::Formula::Block $.block;
+
+    method input-used() {
+        self!merge-inputs: $!topic.input-used, $!block.input-used
+    }
+
+    method technical-used() {
+        self!merge-technicals: $!topic.technical-used, $!block.technical-used
+    }
+
+    method output-used() {
+        self!merge-outputs: $!topic.output-used, $!block.output-used
+    }
+
+    method evaluate(Agrammon::Environment $env) {
+        $!block.evaluate($env, topic => $!topic.evaluate($env))
+    }
+}
+
+class Agrammon::Formula::When does Agrammon::Formula {
+    has Agrammon::Formula $.test;
+    has Agrammon::Formula $.then;
+
+    method input-used() {
+        self!merge-inputs: $!test.input-used, $!then.input-used
+    }
+
+    method technical-used() {
+        self!merge-technicals: $!test.technical-used, $!then.technical-used
+    }
+
+    method output-used() {
+        self!merge-outputs: $!test.output-used, $!then.output-used
+    }
+
+    method evaluate(Agrammon::Environment $env) {
+        if $!test.evaluate($env) ~~ $env.scope.lookup('$_') {
+            $!then.evaluate($env);
+        }
     }
 }
 
@@ -137,6 +185,18 @@ class Agrammon::Formula::Return does Agrammon::Formula {
         die X::Agrammon::Formula::ReturnException.new(
             payload => $!expression.evaluate($env)
         );
+    }
+}
+
+class Agrammon::Formula::Defined does Agrammon::Formula {
+    has Agrammon::Formula $.expression;
+
+    method input-used() { $!expression.input-used }
+    method technical-used() { $!expression.technical-used }
+    method output-used() { $!expression.output-used }
+
+    method evaluate(Agrammon::Environment $env) {
+        defined $!expression.evaluate($env)
     }
 }
 
@@ -189,6 +249,11 @@ class Agrammon::Formula::Sum does Agrammon::Formula {
 
 class Agrammon::Formula::Integer does Agrammon::Formula {
     has Int $.value;
+    method evaluate($) { $!value }
+}
+
+class Agrammon::Formula::Rational does Agrammon::Formula {
+    has Rat $.value;
     method evaluate($) { $!value }
 }
 
@@ -303,6 +368,38 @@ class Agrammon::Formula::BinOp::StringEqual does Agrammon::Formula::RelationalOp
 class Agrammon::Formula::BinOp::StringNotEqual does Agrammon::Formula::RelationalOp {
     method evaluate(Agrammon::Environment $env) {
         $!left.evaluate($env) ne $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::TightAnd does Agrammon::Formula::BinOp {
+    method prec() { 'l=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) && $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::TightOr does Agrammon::Formula::BinOp {
+    method prec() { 'k=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) || $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::LooseAnd does Agrammon::Formula::BinOp {
+    method prec() { 'd=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) && $!right.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::BinOp::LooseOr does Agrammon::Formula::BinOp {
+    method prec() { 'c=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) || $!right.evaluate($env)
     }
 }
 

@@ -15,7 +15,25 @@ class Agrammon::Formula::Builder {
     }
 
     method statement($/) {
-        make ($<statement_control> // $<EXPR>).ast;
+        with $<statement_control> {
+            make .ast;
+        }
+        else {
+            my $ast = $<EXPR>.ast;
+            with $<statement_modifier> {
+                $ast = .ast()($ast);
+            }
+            make $ast;
+        }
+    }
+
+    method statement_modifier:sym<when>($/) {
+        make -> $statement {
+            Agrammon::Formula::When.new(
+                test => $<EXPR>.ast,
+                then => $statement
+            )
+        }
     }
 
     method statement_control:sym<if>($/) {
@@ -23,6 +41,13 @@ class Agrammon::Formula::Builder {
             condition => $<EXPR>.ast,
             then => $<then>.ast,
             else => $<else> ?? $<else>.ast !! Nil
+        );
+    }
+
+    method statement_control:sym<given>($/) {
+        make Agrammon::Formula::Given.new(
+            topic => $<EXPR>.ast,
+            block => $<block>.ast
         );
     }
 
@@ -97,7 +122,7 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::Val.new(
             reference => Agrammon::OutputReference.new(
                 symbol => ~$<symbol>,
-                module => ~$<module>
+                module => $<module>.ast
             )
         );
     }
@@ -115,7 +140,7 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::Sum.new(
             reference => Agrammon::OutputReference.new(
                 symbol => ~$<symbol>,
-                module => ~$<module>
+                module => $<module>.ast
             )
         );
     }
@@ -134,12 +159,22 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<defined>($/) {
+        make Agrammon::Formula::Defined.new(
+            expression => $<term>.ast
+        );
+    }
+
     method term:sym<( )>($/) {
         make $<EXPR>.ast;
     }
 
     method term:sym<integer>($/) {
         make Agrammon::Formula::Integer.new(value => +$/);
+    }
+
+    method term:sym<rational>($/) {
+        make Agrammon::Formula::Rational.new(value => +$/);
     }
 
     method term:sym<single-string>($/) {
@@ -208,7 +243,40 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::BinOp::StringNotEqual;
     }
 
+    method infix:sym<and>($/) {
+        make Agrammon::Formula::BinOp::LooseAnd;
+    }
+
+    method infix:sym<or>($/) {
+        make Agrammon::Formula::BinOp::LooseOr;
+    }
+
+    method infix:sym<&&>($/) {
+        make Agrammon::Formula::BinOp::TightAnd;
+    }
+
+    method infix:sym<||>($/) {
+        make Agrammon::Formula::BinOp::TightOr;
+    }
+
     method infix:sym<? :>($/) {
         make TernaryOperator.new(expression => $<EXPR>.ast);
+    }
+
+    method name($/) {
+        my @parts = $<name-part>.map(~*);
+        my @current = $*CURRENT-MODULE.split('::');
+        @current.pop;
+        while @parts && @parts[0] eq '..' {
+            @parts.shift;
+            @current.pop;
+        }
+        unless @parts {
+            die "Name $/ must have at least one named part";
+        }
+        if any(@parts) eq '..' {
+            die "Name $/ is invalid due to non-leading use of `..`";
+        }
+        make (flat @current, @parts).join('::');
     }
 }
