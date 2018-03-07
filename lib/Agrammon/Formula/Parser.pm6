@@ -118,7 +118,7 @@ grammar Agrammon::Formula::Parser {
 
     rule term:sym<{ }> {
         '{'
-        <pair>* % [ ',' ]
+        <pair>* %% [ ',' ]
         [ '}' || <.panic('Missing } on hash literal or malformed hash')> ]
     }
 
