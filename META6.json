@@ -7,7 +7,7 @@
     "authors"       : [ "Fritz Zaucker <fritz.zaucker@oetiker.ch>",
                         "Jonathan Worthington <jonathan@edument.se>" ],
     "license"       : "Artistic-2.0",
-    "depends"       : [ "Text::CSV", "DBIish", "Test::NoTabs", "Config" ],
+    "depends"       : [ "Text::CSV", "DBIish", "Test::NoTabs", "Config", "Config::Parser::yaml" ],
     "provides"      : {
         "Agrammon::Config": "lib/Agrammon/Config.pm6",
         "Agrammon::DataSource::DB": "lib/Agrammon/DataSource/DB.pm6",
