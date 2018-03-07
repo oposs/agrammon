@@ -326,6 +326,10 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::BinOp::TightOr;
     }
 
+    method infix:sym<//>($/) {
+        make Agrammon::Formula::BinOp::DefinedOr;
+    }
+
     method infix:sym<? :>($/) {
         make TernaryOperator.new(expression => $<EXPR>.ast);
     }

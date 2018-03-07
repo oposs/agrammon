@@ -189,6 +189,7 @@ grammar Agrammon::Formula::Parser {
     token infix:sym<or> { 'or' }
     token infix:sym<&&> { '&&' }
     token infix:sym<||> { '||' }
+    token infix:sym<//> { '//' }
 
     rule infix:sym<? :> {
         '?' <EXPR> ':'

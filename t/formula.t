@@ -674,6 +674,24 @@ subtest {
 
 subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        In(milk_yield) // 1
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 55 }
+    ));
+    is $result, 55, 'Correct result when LHS is defined';
+    $result = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => Nil }
+    ));
+    is $result, 1, 'Correct result when LHS is undefined';
+}, 'The // operator';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         foo()
         FORMULA
     ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';

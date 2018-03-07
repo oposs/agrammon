@@ -446,6 +446,14 @@ class Agrammon::Formula::BinOp::TightOr does Agrammon::Formula::BinOp {
     }
 }
 
+class Agrammon::Formula::BinOp::DefinedOr does Agrammon::Formula::BinOp {
+    method prec() { 'k=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) // $!right.evaluate($env)
+    }
+}
+
 class Agrammon::Formula::BinOp::LooseAnd does Agrammon::Formula::BinOp {
     method prec() { 'd=' }
     method assoc() { 'left' }
