@@ -274,6 +274,10 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::BinOp::Subtract;
     }
 
+    method infix:sym<.>($/) {
+        make Agrammon::Formula::BinOp::Concatenate;
+    }
+
     method infix:sym<=>($/) {
         make Agrammon::Formula::BinOp::Assign;
     }

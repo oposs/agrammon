@@ -377,6 +377,14 @@ class Agrammon::Formula::BinOp::Subtract does Agrammon::Formula::BinOp {
     }
 }
 
+class Agrammon::Formula::BinOp::Concatenate does Agrammon::Formula::BinOp {
+    method prec() { 'r=' }
+    method assoc() { 'left' }
+    method evaluate(Agrammon::Environment $env) {
+        $!left.evaluate($env) ~ $!right.evaluate($env)
+    }
+}
+
 role Agrammon::Formula::RelationalOp does Agrammon::Formula::BinOp {
     method prec() { 'm=' }
     method assoc() { 'left' }
