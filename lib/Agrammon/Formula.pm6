@@ -174,6 +174,32 @@ class Agrammon::Formula::Var does Agrammon::Formula::LValue {
     }
 }
 
+class Agrammon::Formula::CallBuiltin does Agrammon::Formula::LValue {
+    has Str $.name;
+    has Agrammon::Formula @.args;
+
+    method input-used() {
+        self!merge-inputs: @!args.map(*.input-used)
+    }
+
+    method technical-used() {
+        self!merge-technicals: @!args.map(*.technical-used)
+    }
+
+    method output-used() {
+        self!merge-outputs: @!args.map(*.output-used)
+    }
+
+    method evaluate(Agrammon::Environment $env) is rw {
+        with $env.builtins{$!name} {
+            .(|@!args.map(*.evaluate($env)))
+        }
+        else {
+            die "No such builtin function '$!name'";
+        }
+    }
+}
+
 class Agrammon::Formula::Return does Agrammon::Formula {
     has Agrammon::Formula $.expression;
 

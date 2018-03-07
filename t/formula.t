@@ -660,4 +660,40 @@ subtest {
     is $result, "nope", 'Correct result from defined when value is not defined';
 }, 'defined <term>';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        foo()
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $calls = 0;
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        builtins => { foo => sub { $calls++; return 42 } }
+    ));
+    is $calls, 1, 'Built-in function was called';
+    is $result, "42", 'Result is return value of built-in function';
+}, 'Call a simple built-in function without arguments';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        bar(In(n), Tech(s))
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('n',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('s',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my @args;
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        builtins => { bar => sub ($x, $str) { push @args, ($x, $str); return $str x $x } },
+        input => { n => 3 },
+        technical => { s => 'foo' }
+    ));
+    is @args.elems, 1, 'Built-in function was called';
+    is @args[0][0], 3, 'Correct first argument';
+    is @args[0][1], 'foo', 'Correct second argument';
+    is $result, "foofoofoo", 'Result is return value of built-in function';
+}, 'Call a simple built-in function with arguments In(...)/Tech(...) arguments';
+
 done-testing;

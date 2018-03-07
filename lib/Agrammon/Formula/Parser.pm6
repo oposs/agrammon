@@ -79,6 +79,12 @@ grammar Agrammon::Formula::Parser {
         ')'
     }
 
+    rule term:sym<call> {
+        <ident>'('
+        <arg=.EXPR>* % [ ',' ]
+        [ ')' || <.panic('Missing closing ) on call')> ]
+    }
+
     rule term:sym<my> {
         'my' <variable>
     }

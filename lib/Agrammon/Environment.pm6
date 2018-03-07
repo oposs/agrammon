@@ -24,6 +24,7 @@ class Agrammon::Environment {
     has %.technical;
     has %.output;
     has Scope $.scope .= new;
+    has %.builtins;
 
     method enter-scope(--> Nil) {
         $!scope = Scope.new(outer => $!scope)

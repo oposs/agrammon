@@ -145,6 +145,13 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<call>($/) {
+        make Agrammon::Formula::CallBuiltin.new(
+            name => ~$<ident>,
+            args => $<arg>.map(*.ast)
+        );
+    }
+
     method term:sym<my>($/) {
         make Agrammon::Formula::VarDecl.new(name => ~$<variable>);
     }
