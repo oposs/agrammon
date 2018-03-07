@@ -57,10 +57,20 @@ class Agrammon::Formula::Builder {
     }
 
     method statement_control:sym<if>($/) {
+        my $else := $<else> ?? $<else>.ast !! Nil;
+        my @elsif-cond = $<elsif-cond>.map(*.ast);
+        my @elsif = $<elsif>.map(*.ast);
+        while @elsif {
+            $else := Agrammon::Formula::If.new(
+                condition => @elsif-cond.pop,
+                then => @elsif.pop,
+                else => $else
+            );
+        }
         make Agrammon::Formula::If.new(
-            condition => $<EXPR>.ast,
+            condition => $<if-cond>.ast,
             then => $<then>.ast,
-            else => $<else> ?? $<else>.ast !! Nil
+            else => $else
         );
     }
 

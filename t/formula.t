@@ -774,4 +774,33 @@ subtest {
     is $result-false, "salut", 'Correct result when unless is false';
 }, 'Statement modifier unless';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        if (In(de) eq 'fahrzeug') {
+            return 'vehicle';
+        }
+        elsif (In(de) eq 'werkzeug') {
+            return 'tool';
+        }
+        elsif (In(de) eq 'spielzeug') {
+            return 'toy';
+        }
+        else {
+            return 'thingy';
+        }
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my %expect = fahrzeug => 'vehicle', werkzeug => 'tool',
+                 spielzeug => 'toy', foo => 'thingy';
+    for %expect.kv -> $de, $expect {
+        my $result = $f.evaluate(Agrammon::Environment.new(
+            input => { de => $de },
+        ));
+        is $result, $expect, 'Correct result';
+    }
+}, 'if/elsif/elsif/else';
+
 done-testing;

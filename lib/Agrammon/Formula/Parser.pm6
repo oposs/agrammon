@@ -42,8 +42,9 @@ grammar Agrammon::Formula::Parser {
 
     rule statement_control:sym<if> {
         'if'
-        [ '(' <EXPR> ')' || <.panic('Missing or malformed condition')> ]
+        [ '(' <if-cond=.EXPR> ')' || <.panic('Missing or malformed condition')> ]
         <then=.block>
+        [ 'elsif' <elsif-cond=.EXPR> <elsif=.block> ]*
         [ 'else' <else=.block> ]?
     }
 
