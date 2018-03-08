@@ -1,15 +1,16 @@
 use v6;
-use Agrammon::Dataset;
-use Agrammon::User;
+use Agrammon::Config;
+use Agrammon::DB::Dataset;
+use Agrammon::DB::User;
 use DB::Pg;
 
-class Agrammon::Datasets {
-    has Agrammon::User $.user;
-    has Agrammon::Dataset @.collection;
+class Agrammon::DB::Datasets {
+    has Agrammon::DB::User $.user;
+    has Agrammon::DB::Dataset @.collection;
 
-    method load(Str $model-version) {
+    method load(Str $model-version, Agrammon::Config $cfg) {
         my $username = $!user.username;
-        my $pg = DB::Pg.new(conninfo => 'dbname=agrammon_dev host=erika.oetiker.ch user=agrammon password=agrammon@work');
+        my $pg = DB::Pg.new(conninfo => $cfg.db-conninfo);
         my @data = $pg.query(q:to/DATASETS/, $username, $model-version).arrays;
             SELECT dataset_id,
                    dataset_name,
@@ -32,7 +33,7 @@ class Agrammon::Datasets {
         DATASETS
 
         for @data -> @d {
-            my $ds = Agrammon::Dataset.new(
+            my $ds = Agrammon::DB::Dataset.new(
                 id        => @d[0],
                 name      => @d[1],
                 read-only => @d[4],

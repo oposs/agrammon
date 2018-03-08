@@ -1,8 +1,9 @@
 use v6;
-use Agrammon::Role;
+use Agrammon::Config;
+use Agrammon::DB::Role;
 use DB::Pg;
 
-class Agrammon::User {
+class Agrammon::DB::User {
     has Int $.id;
     has Str $.username;
     has Str $.firstname;
@@ -11,13 +12,14 @@ class Agrammon::User {
     has Str $.organisation;
     has DateTime $.last-login;
     has DateTime $.created;
-    has Agrammon::Role $.role;
+    has Agrammon::DB::Role $.role;
 
-    method create {
+    method create-account {
+        ...
     }
 
-    method load(Str $username) {
-        my $pg = DB::Pg.new(conninfo => 'dbname=agrammon_dev host=erika.oetiker.ch user=agrammon password=agrammon@work');
+    method load(Str $username, Agrammon::Config $cfg) {
+        my $pg = DB::Pg.new(conninfo => $cfg.db-conninfo);
         my @u = $pg.query(q:to/USER/, $username).array;
             SELECT pers_id,
                    pers_email,
@@ -42,16 +44,13 @@ class Agrammon::User {
         $!created      = @u[7];
 
         my $role-id = @u[8];
-        my @r = $pg.query(q:to/ROLE/, $role-id).array;
-            SELECT role_id,
-                   role_name
+        my %r = $pg.query(q:to/ROLE/, $role-id).hash;
+            SELECT role_id   AS id,
+                   role_name AS name
               FROM role
              WHERE role_id = $1
         ROLE
-        $!role = Agrammon::Role.new(
-            id   => @r[0],
-            name => @r[1]
-        );
+        $!role = Agrammon::DB::Role.new(|%r);
     }
     
 }

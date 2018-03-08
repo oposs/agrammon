@@ -1,7 +1,7 @@
 use v6;
-use Agrammon::User;
+use Agrammon::DB::User;
 
-class Agrammon::Dataset {
+class Agrammon::DB::Dataset {
     has Int $.id;
     has Str $.name;
     has Bool $.read-only;
@@ -9,9 +9,18 @@ class Agrammon::Dataset {
     has Str $.comment;
     has Str $.version;
     has DateTime $.mod-date;
-    has Agrammon::User $.user;
+    has Agrammon::DB::User $.user;
 
     method create {
+        ...
+    }
+
+    method load {
+        ...
+    }
+
+    method data {
+        ...
     }
     
 }

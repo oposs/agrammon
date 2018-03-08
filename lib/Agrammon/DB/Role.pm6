@@ -1,6 +1,6 @@
 use v6;
 
-class Agrammon::Role {
+class Agrammon::DB::Role {
     has Int $.id;
     has Str $.name;
     

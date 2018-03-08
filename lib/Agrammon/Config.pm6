@@ -17,4 +17,11 @@ class Agrammon::Config {
         %!model    = $config<Model>;
     }
 
+    method db-conninfo {
+        return 'dbname='   ~ %!database<name> ~ ' '
+             ~ 'host='     ~ %!database<host> ~ ' '
+             ~ 'user='     ~ %!database<user> ~ ' '
+             ~ 'password=' ~ %!database<password>;
+    }
+
 }

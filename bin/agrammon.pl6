@@ -2,9 +2,9 @@
 
 use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
-use Agrammon::Routes;
 
 use Agrammon::Model;
+use Agrammon::Web::Routes;
 
 my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location 
@@ -15,19 +15,18 @@ subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $filename) {
     say "Starting web service ...";
+    my $host = %*ENV<AGRAMMON_HOST> || '0.0.0.0';
+    my $port = %*ENV<AGRAMMON_PORT> || '20000';
     my Cro::Service $http = Cro::HTTP::Server.new(
-        http => <1.1>,
-        host => %*ENV<AGRAMMON_HOST> ||
-             die("Missing AGRAMMON_HOST in environment"),
-        port => %*ENV<AGRAMMON_PORT> ||
-             die("Missing AGRAMMON_PORT in environment"),
+        host => $host,
+        port => $port,
         application => routes(),
         after => [
                   Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
               ]
     );
     $http.start;
-    say "Listening at http://%*ENV<AGRAMMON_HOST>:%*ENV<AGRAMMON_PORT>";
+    say "Listening at http://$host:$port";
     react {
         whenever signal(SIGINT) {
             say "Shutting down...";

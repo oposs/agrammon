@@ -51,17 +51,17 @@ sub routes() is export {
 
         get -> 'get-cfg' {
             my $data = $ws.get-cfg;
-            content 'application/json', to-json $data;
+            content 'application/json', $data;
         }
 
         get -> 'get-datasets' {
             my $data = $ws.get-datasets;
-            content 'application/json', to-json $data;
+            content 'application/json', $data;
         }
 
         get -> 'get-tags' {
             my $data = $ws.get-tags;
-            content 'application/json', to-json $data;
+            content 'application/json', $data;
         }
 
         
