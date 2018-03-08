@@ -2,7 +2,7 @@ use v6;
 use JSON::Fast;
 use Cro::HTTP::Router;
 
-use Agrammon::Webservice;
+use Agrammon::Web::Service;
 
 ### TODO 
 #     auth                   => 1,
@@ -42,7 +42,7 @@ use Agrammon::Webservice;
 
 
 sub routes() is export {
-    my $ws = Agrammon::Webservice.new;
+    my $ws = Agrammon::Web::Service.new;
     
     route {
         get -> {
