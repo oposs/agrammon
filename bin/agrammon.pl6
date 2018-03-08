@@ -1,5 +1,9 @@
 #!/usr/bin/env perl6
 
+use Cro::HTTP::Log::File;
+use Cro::HTTP::Server;
+use Agrammon::Routes;
+
 use Agrammon::Model;
 
 my %*SUB-MAIN-OPTS =
@@ -10,7 +14,27 @@ subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $filename) {
-    say "Will start web service; NYI";
+    say "Starting web service ...";
+    my Cro::Service $http = Cro::HTTP::Server.new(
+        http => <1.1>,
+        host => %*ENV<AGRAMMON_HOST> ||
+             die("Missing AGRAMMON_HOST in environment"),
+        port => %*ENV<AGRAMMON_PORT> ||
+             die("Missing AGRAMMON_PORT in environment"),
+        application => routes(),
+        after => [
+                  Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
+              ]
+    );
+    $http.start;
+    say "Listening at http://%*ENV<AGRAMMON_HOST>:%*ENV<AGRAMMON_PORT>";
+    react {
+        whenever signal(SIGINT) {
+            say "Shutting down...";
+            $http.stop;
+            done;
+        }
+    }
 }
 
 #| Run the model

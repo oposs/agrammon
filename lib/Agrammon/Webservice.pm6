@@ -1,17 +1,17 @@
 use v6;
-#use Agrammon::Config;
+use Agrammon::Config;
 use Agrammon::Dataset;
 use Agrammon::Datasets;
 use Agrammon::User;
 use Agrammon::Tags;
 
 class Agrammon::Webservice {
-#    has Agrammon::Config $.cfg;
+    has Agrammon::Config $.cfg;
     has Agrammon::User   $.user;
 
-#    method get-cfg() {
-#        return $!cfg;
-#    }
+    method get-cfg() {
+        return $!cfg;
+    }
 
     method get-datasets(Str $model-version) {
         my $datasets = Agrammon::Datasets.new(user => $!user);

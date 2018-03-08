@@ -1,50 +1,27 @@
 use v6;
-#use Agrammon::Config;
+use Agrammon::Config;
 use Agrammon::Webservice;
 
-#use Cro::HTTP::Client;
 use Test;
 plan 9;
 
-my %config-expected = (
-    General => {
-        debugLevel  => 0,
-        log_file    => "/tmp/agrammon.log",
-        log_level   => "warn",
-        mojo_secret => "MyCookieSecret",
-    },
-    Database => {
-        dbi_dsn  => "dbi:Pg:dbname=agrammon_dev;host=erika.oetiker.ch",
-        dbi_user => "agrammon",
-        dbi_pass => "agrammonPassword",
-    },
-    GUI => {
-        variant => "Single",
-        title   => {
-            de => "AGRAMMON 4.0 Einzelbetriebsmodell",
-            en => "AGRAMMON 4.0 Single Farm Model",
-            fr => "AGRAMMON 4.0 modele Exploitation individuelle" ,
-        },
-    },
-    Model => {
-        debugLevel => 0,
-        home       => "/home/zaucker/Agrammon",
-        path       => "Models/branches/hr-limit-2010_details",
-        root       => "End.nhd",
-        technical  => "technical.cfg",
-        variant    => "SHL",
-        version    => "4.0 - #REV#",
-    },
-);
-
-my ($ws, $user);
+my $cfg-file = "t/test-data/agrammon.cfg.yaml";
 my $username = 'fritz.zaucker@oetiker.ch';
 
-subtest "Webservice" => {
+my ($ws, $user);
+subtest "Setup" => {
+    my $cfg = Agrammon::Config.new;
+    ok $cfg.load($cfg-file), "Load config from file $cfg-file";
     $user = Agrammon::User.new;
-    $user.load($username);
-    ok $ws = Agrammon::Webservice.new(user => $user), "Created Webservice object";
-    is $ws.user.username, $username,                  "Webservice has username=username";
+    ok $user.load($username), "Load user $username";
+    ok $ws = Agrammon::Webservice.new(
+        cfg => $cfg,
+        user => $user),               "Created Webservice object";
+    is $ws.user.username, $username,  "Webservice has username=username";
+}
+
+subtest "get-cfg()" => {
+    isa-ok $ws.get-cfg, "Agrammon::Config", "Got Agrammon::Config object";
 }
 
 subtest "get-datasets()" => {
@@ -57,16 +34,12 @@ subtest "get-datasets()" => {
     is @collection[0].name, 'TestSingle', 'First dataset has name TestSingle';
 }
 
-todo "Not implemented yet", 7;
+todo "Not implemented yet", 6;
 subtest "load-dataset()" => {
     flunk("Not implemented");
 }
 
 subtest "create-dataset()" => {
-    flunk("Not implemented");
-}
-
-subtest "get-cfg()" => {
     flunk("Not implemented");
 }
 
