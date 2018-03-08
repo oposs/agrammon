@@ -20,31 +20,31 @@ class Agrammon::DB::User {
 
     method load(Str $username, Agrammon::Config $cfg) {
         my $pg = DB::Pg.new(conninfo => $cfg.db-conninfo);
-        my @u = $pg.query(q:to/USER/, $username).array;
-            SELECT pers_id,
-                   pers_email,
-                   pers_first,
-                   pers_last,
-                   pers_password,
-                   pers_org,
-                   pers_last_login,
-                   pers_created,
-                   pers_role
+        my $u = $pg.query(q:to/USER/, $username).hash;
+            SELECT pers_id         AS id,
+                   pers_email      AS username,
+                   pers_first      AS firstname,
+                   pers_last       AS lastname,
+                   pers_password   AS password,
+                   pers_org        AS organisation,
+                   pers_last_login AS "last-login",
+                   pers_created    AS created,
+                   pers_role       AS "role-id"
               FROM pers
              WHERE pers_email = $1
         USER
 
-        $!id           = @u[0];
-        $!username     = @u[1];
-        $!firstname    = @u[2];
-        $!lastname     = @u[3];
-        $!password     = @u[4];
-        $!organisation = @u[5];
-        $!last-login   = @u[6];
-        $!created      = @u[7];
+        # how can this be done more compactly
+        $!id           = $u<id>;
+        $!username     = $u<username>;
+        $!firstname    = $u<firstname>;
+        $!lastname     = $u<lastname>;
+        $!password     = $u<password>;
+        $!organisation = $u<organisation>;
+        $!last-login   = $u<last-login>;
+        $!created      = $u<created>;
 
-        my $role-id = @u[8];
-        my %r = $pg.query(q:to/ROLE/, $role-id).hash;
+        my %r = $pg.query(q:to/ROLE/, $u<role-id>).hash;
             SELECT role_id   AS id,
                    role_name AS name
               FROM role
