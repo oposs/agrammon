@@ -3,6 +3,7 @@
 use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
 
+use Agrammon::Config;
 use Agrammon::Model;
 use Agrammon::Web::Routes;
 
@@ -14,13 +15,22 @@ subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $filename) {
+    my $username = 'fritz.zaucker@oetiker.ch';
+    my $cfg-file = 't/test-data/agrammon.cfg.yaml';
+    my $cfg = Agrammon::Config.new;
+    $cfg.load($cfg-file);
+    my $user = Agrammon::DB::User.new;
+    $user.load($username, $cfg);
+    my $ws = Agrammon::Web::Service.new(
+        cfg => $cfg,
+        user => $user);
     say "Starting web service ...";
     my $host = %*ENV<AGRAMMON_HOST> || '0.0.0.0';
-    my $port = %*ENV<AGRAMMON_PORT> || '20000';
+    my $port = %*ENV<AGRAMMON_PORT> || 20000;
     my Cro::Service $http = Cro::HTTP::Server.new(
         host => $host,
         port => $port,
-        application => routes(),
+        application => routes($ws),
         after => [
                   Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
               ]

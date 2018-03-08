@@ -41,8 +41,7 @@ use Agrammon::Web::Service;
 #     change_password        => 2,
 
 
-sub routes() is export {
-    my $ws = Agrammon::Web::Service.new;
+sub routes(Agrammon::Web::Service $ws) is export {
     
     route {
         get -> {
@@ -51,12 +50,18 @@ sub routes() is export {
 
         get -> 'get-cfg' {
             my $data = $ws.get-cfg;
-            content 'application/json', $data;
+            content 'application/json', $data.gui;
         }
 
-        get -> 'get-datasets' {
-            my $data = $ws.get-datasets;
-            content 'application/json', $data;
+        get -> 'get-datasets', $model-version {
+            my @datasets = $ws.get-datasets($model-version).collection;
+            my @data;
+            for @datasets -> $ds {
+                @data.push(
+                    $ds.id, $ds.name;
+                );
+            }
+            content 'application/json', @data;
         }
 
         get -> 'get-tags' {
