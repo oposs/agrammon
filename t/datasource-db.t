@@ -1,6 +1,6 @@
 use v6;
 use Agrammon::DataSource::DB;
-use DBIish;
+use DB::Pg;
 use Test;
 
 my $db-host     = 'localhost';
@@ -44,40 +44,31 @@ if ($pg-file.IO.e) {
     diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=XXX, dbdatabase=$db-database";
     diag "aguser=$ag-user, agdataset=$ag-dataset";
 }
-my $dbh = DBIish.connect('Pg',
-                         :host($db-host),
-                         :port($db-port),
-                         :database($db-database),
-                         :user($db-user),
-                         :password($db-password)
-                        );
 
-my $sth = $dbh.do(q:to/STATEMENT/);
-    BEGIN
-    STATEMENT
+my $conninfo = "host=$db-host user=$db-user password=$db-password dbname=$db-database";
+note "conninfo=$conninfo";
+ok my $pg = DB::Pg.new(conninfo => $conninfo), 'Create DB::Pg object';
+ok my $db = $pg.db, 'Get db handler';
+$db.begin;
 
-ok prepare-test-db($dbh, $ag-user, $ag-dataset), 'Test database prepared';
+ok prepare-test-db($db, $ag-user, $ag-dataset), 'Test database prepared';
 
 my $rowsExpected = 6;
 
 my $ds = Agrammon::DataSource::DB.new;
 isa-ok $ds, Agrammon::DataSource::DB, 'Is a DataSource::DB';
 
-my @data = $ds.read($dbh, $ag-user, $ag-dataset);
+my @data = $ds.read($db, $ag-user, $ag-dataset);
 is @data.elems, $rowsExpected, "Found $rowsExpected rows in dataset $ag-user:$ag-dataset";
 
-$sth = $dbh.do(q:to/STATEMENT/);
-    ROLLBACK
-    STATEMENT
-
-$dbh.dispose;
+$db.finish; # rollback
 
 done-testing;
 
 
 
-sub prepare-test-db($dbh, $user, $dataset) {
-    my $sth = $dbh.do(q:to/STATEMENT/);
+sub prepare-test-db($db, $user, $dataset) {
+    $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS pers (
         pers_id       SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
         pers_email    TEXT NOT NULL UNIQUE,                    -- used as login name
@@ -87,7 +78,7 @@ sub prepare-test-db($dbh, $user, $dataset) {
     )
     STATEMENT
 
-    $sth = $dbh.do(q:to/STATEMENT/);
+    $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS dataset (
         dataset_id      SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
         dataset_name  TEXT NOT NULL,                             -- User selected name
@@ -97,7 +88,7 @@ sub prepare-test-db($dbh, $user, $dataset) {
     )
     STATEMENT
 
-    $sth = $dbh.do(q:to/STATEMENT/);
+    $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS data_new (
         data_id SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
         data_dataset  INT4 REFERENCES dataset NOT NULL,
@@ -109,7 +100,7 @@ sub prepare-test-db($dbh, $user, $dataset) {
     )                
     STATEMENT
 
-    $sth = $dbh.do(q:to/STATEMENT/);
+    $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS branches (
         branches_id   SERIAL NOT NULL PRIMARY KEY,       -- Unique ID
         branches_var  INT4 UNIQUE NOT NULL REFERENCES data_new(data_id) ON DELETE CASCADE, -- variable this data belongs to
@@ -118,43 +109,37 @@ sub prepare-test-db($dbh, $user, $dataset) {
     )
     STATEMENT
 
-    $sth = $dbh.do(q:to/STATEMENT/);
+    $db.query(q:to/STATEMENT/);
     CREATE OR REPLACE FUNCTION pers_email2id(NAME text) returns int4
        AS 'SELECT pers_id FROM pers WHERE pers_email = $1 ' STABLE LANGUAGE 'sql';
     STATEMENT
 
-    $sth = $dbh.do(q:to/STATEMENT/);
+    $db.query(q:to/STATEMENT/);
     CREATE OR REPLACE FUNCTION dataset_name2id(USERNAME text, NAME text) returns int4
        AS 'SELECT dataset_id FROM dataset WHERE dataset_name = $2 AND dataset_pers = pers_email2id($1)' STABLE LANGUAGE 'sql'
     STATEMENT
 
-    $sth = $dbh.prepare(q:to/STATEMENT/);
+    $db.query(q:to/STATEMENT/, $user);
     INSERT INTO pers (pers_email, pers_first, pers_last, pers_password)
-         VALUES (?, 'X', 'X', 'X')
+         VALUES ($1, 'X', 'X', 'X')
     STATEMENT
-    $sth.execute($user);
 
-    $sth = $dbh.prepare(q:to/STATEMENT/);
-    SELECT pers_email2id(?)
+    my $userId = $db.query(q:to/STATEMENT/, $user).value;
+    SELECT pers_email2id($1)
     STATEMENT
-    $sth.execute($user);
-    my $userId = $sth.row()[0];
 
-    $sth = $dbh.prepare(q:to/STATEMENT/);
+    $db.query(q:to/STATEMENT/, $dataset, $userId);
     INSERT INTO dataset (dataset_name, dataset_pers)
-    VALUES (?, ?);
+    VALUES ($1, $2);
     STATEMENT
-    $sth.execute($dataset, $userId);
 
-    $sth = $dbh.prepare(q:to/STATEMENT/);
-    SELECT dataset_name2id(?, ?)
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
+    SELECT dataset_name2id($1, $2)
     STATEMENT
-    $sth.execute($user, $dataset);
-    my $datasetId = $sth.row()[0];
     
-    $sth = $dbh.prepare(q:to/STATEMENT/);
+    my $sth = $db.prepare(q:to/STATEMENT/);
         INSERT INTO data_new (data_dataset, data_var, data_val)
-        VALUES (?, ?, ?)
+        VALUES ($1, $2, $3)
     STATEMENT
 
     $sth.execute($datasetId, 'PlantProduction::AgriculturalArea::agricultural_area', 22);
@@ -163,6 +148,5 @@ sub prepare-test-db($dbh, $user, $dataset) {
     $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::compost', 0);
     $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::solid_digestate', 0);
     $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::liquid_digestate', 0);
-    $sth.finish;
     return 1;
 }

@@ -1,22 +1,21 @@
 use v6;
-use DBIish;
 
 class Agrammon::DataSource::DB {
     
-    method read($dbh, $user, $dataset) {
+    method read($db, $user, $dataset) {
 
-        my $sth = $dbh.prepare(q:to/STATEMENT/);
+        my $results = $db.query(q:to/STATEMENT/, $user, $dataset);
             SELECT data_var, data_val, data_instance,
                    branches_data, branches_options,
                    data_comment
               FROM data_new LEFT JOIN branches ON (data_id=branches_var)
-             WHERE data_dataset=dataset_name2id(?,?)
+             WHERE data_dataset=dataset_name2id($1,$2)
                AND data_var not like '%ignore'
           ORDER BY data_var, data_val
          STATEMENT
                                  
-         $sth.execute($user, $dataset);
-         my @rows = $sth.allrows();
+         my @rows = $results.arrays;
+            dd @rows;
          return @rows;
     }
 
