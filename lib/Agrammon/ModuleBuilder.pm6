@@ -39,7 +39,7 @@ class Agrammon::ModuleBuilder {
     }
 
     method section:sym<output>($/) {
-        make 'output' => $<output>.map({
+        make 'output' => [$<output>.map(sub ($_) {
             my %output-props = .ast;
             with %output-props<formula> <-> $formula {
                 with $*TAXONOMY -> $taxonomy {
@@ -56,7 +56,7 @@ class Agrammon::ModuleBuilder {
                 }
             }
             Agrammon::Model::Output.new(|%output-props)
-        });
+        })];
     }
 
     method section:sym<tests>($/) {
