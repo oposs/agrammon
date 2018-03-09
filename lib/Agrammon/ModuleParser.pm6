@@ -113,7 +113,7 @@ grammar Agrammon::ModuleParser {
     }
 
     token name {
-        <.name-part> [ '::' <.name-part> ]*
+        '::'? <.name-part> [ '::' <.name-part> ]*
     }
 
     token name-part {
