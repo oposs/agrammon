@@ -87,6 +87,29 @@ subtest {
 }, 'Val(...) with name using ..';
 
 subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'Livestock::DairyCow::Housing::Type');
+        Val(dairy_cows, ::Storage::Excretion);
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    my @output-used = $f.output-used;
+    is @output-used.elems, 1, 'Have 1 output used';
+    is @output-used[0].module, 'Storage::Excretion',
+        'Correct output used module';
+    is @output-used[0].symbol, 'dairy_cows',
+        'Correct output used symbol';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        output => {
+            'Storage::Excretion' => {
+                'dairy_cows' => 10
+            }
+        }
+    ));
+    is $result, 10, 'Correct result from evaluation';
+}, 'Val(...) with name with leading ::';
+
+subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         In(agricultural_area) * Tech(er_agricultural_area);
         FORMULA
@@ -195,6 +218,16 @@ subtest {
     ));
     is $result, 2.5 * 55 + 1.0, 'Correct result from evaluation';
 }, 'Rational literals';
+
+subtest {
+    my $f = parse-formula('1e-8', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new());
+    is $result, 1e-8, 'Correct result from evaluation';
+}, 'Float literals';
 
 subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
@@ -469,6 +502,19 @@ subtest {
     ));
     is $result, 3 * 10, 'Correct result from evaluation';
 }, 'Comments';
+
+subtest {
+    my $f = parse-formula('In(solid_digestate) #comment', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('solid_digestate',),
+        'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { solid_digestate => 3 }
+    ));
+    is $result, 3, 'Correct result from evaluation';
+}, 'Comment without newline after it at end of formula';
 
 subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
@@ -859,5 +905,120 @@ subtest {
     ));
     is $result, "jour = tag", 'Correct result of concatenation';
 }, 'The . concatenation operator';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        lc Tech(fr) . " = " . uc In(de)
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { de => 'Tag' },
+        technical => { fr => 'Jour' }
+    ));
+    is $result, "jour = TAG", 'Correct result of concatenation';
+}, 'The uc and lc case-change prefixes';
+
+subtest {
+    my $f = parse-formula('$TE->{"foo_" . In(thing)}', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('thing',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used (indirect no included)';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result-aaa = $f.evaluate(Agrammon::Environment.new(
+        input => { thing => 'aaa' },
+        technical => { foo_aaa => 13, foo_bbb => 12, }
+    ));
+    is $result-aaa, 13, 'Correct result from evaluation (1)';
+    my $result-bbb = $f.evaluate(Agrammon::Environment.new(
+        input => { thing => 'bbb' },
+        technical => { foo_aaa => 13, foo_bbb => 12, }
+    ));
+    is $result-bbb, 12, 'Correct result from evaluation (2)';
+}, '$TE->{...} (indirect technical access)';
+
+subtest {
+    my $f = parse-formula('die "a painful death"', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used (indirect no included)';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    throws-like { $f.evaluate(Agrammon::Environment.new()) },
+        X::Agrammon::Formula::Died,
+        message => "a painful death";
+}, 'The die built-in works';
+
+subtest {
+    my $f = parse-formula('warn "a little warning"', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used (indirect no included)';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $warning;
+    {
+        $f.evaluate(Agrammon::Environment.new());
+        CONTROL {
+            when CX::Warn {
+                $warning = .message;
+                .resume;
+            }
+        }
+    }
+    is $warning, "a little warning", 'Correct warning message';
+}, 'The warn built-in works';
+
+subtest {
+    my $f = parse-formula('In(agricultural_area);;', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { agricultural_area => 42 }
+    ));
+    is $result, 42, 'Correct result from evaluation';
+}, 'Doubled-up semicolon at end is ignored';
+
+subtest {
+    my $f = parse-formula('In(agricultural_area),', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { agricultural_area => 42 }
+    ));
+    is $result, 42, 'Correct result from evaluation';
+}, 'Trailing , for no particular reason, but some formulas do it';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        my $a;
+        if (not In(milk_yield) > Tech(standard_milk_yield)) {
+            $a = Tech(a_low);
+        }
+        else {
+            $a = Tech(a_high);
+        }
+        $a
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('standard_milk_yield', 'a_low', 'a_high'),
+        'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result-true = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 55 },
+        technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
+    ));
+    is $result-true, 10, 'Correct result when if condition is true';
+    my $result-false = $f.evaluate(Agrammon::Environment.new(
+        input => { milk_yield => 35 },
+        technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
+    ));
+    is $result-false, 5, 'Correct result when if condition is false';
+}, 'The not operator';
 
 done-testing;

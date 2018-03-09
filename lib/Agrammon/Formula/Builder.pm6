@@ -175,6 +175,10 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<$TE>($/) {
+        make Agrammon::Formula::TechIndirect.new(expression => $<EXPR>.ast);
+    }
+
     method term:sym<call>($/) {
         make Agrammon::Formula::CallBuiltin.new(
             name => ~$<ident>,
@@ -196,8 +200,38 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<die>($/) {
+        make Agrammon::Formula::Die.new(
+            expression => $<EXPR>.ast
+        );
+    }
+
+    method term:sym<warn>($/) {
+        make Agrammon::Formula::Warn.new(
+            expression => $<EXPR>.ast
+        );
+    }
+
+    method term:sym<not>($/) {
+        make Agrammon::Formula::Not.new(
+            expression => $<EXPR>.ast
+        );
+    }
+
     method term:sym<defined>($/) {
         make Agrammon::Formula::Defined.new(
+            expression => $<term>.ast
+        );
+    }
+
+    method term:sym<lc>($/) {
+        make Agrammon::Formula::Lower.new(
+            expression => $<term>.ast
+        );
+    }
+
+    method term:sym<uc>($/) {
+        make Agrammon::Formula::Upper.new(
             expression => $<term>.ast
         );
     }
@@ -225,6 +259,10 @@ class Agrammon::Formula::Builder {
 
     method term:sym<rational>($/) {
         make Agrammon::Formula::Rational.new(value => +$/);
+    }
+
+    method term:sym<float>($/) {
+        make Agrammon::Formula::Float.new(value => +$/);
     }
 
     method term:sym<single-string>($/) {
@@ -340,11 +378,13 @@ class Agrammon::Formula::Builder {
 
     method name($/) {
         my @parts = $<name-part>.map(~*);
-        my @current = $*CURRENT-MODULE.split('::');
-        @current.pop;
-        while @parts && @parts[0] eq '..' {
-            @parts.shift;
-            @current.pop;
+        my @current;
+        unless $<root> {
+            @current = $*CURRENT-MODULE.split('::').head(*-1);
+            while @parts && @parts[0] eq '..' {
+                @parts.shift;
+                @current.pop;
+            }
         }
         unless @parts {
             die "Name $/ must have at least one named part";

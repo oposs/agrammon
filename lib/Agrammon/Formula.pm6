@@ -200,13 +200,15 @@ class Agrammon::Formula::CallBuiltin does Agrammon::Formula::LValue {
     }
 }
 
-class Agrammon::Formula::Return does Agrammon::Formula {
+role Agrammon::Formula::OneExpressionBuiltin does Agrammon::Formula {
     has Agrammon::Formula $.expression;
 
     method input-used() { $!expression.input-used }
     method technical-used() { $!expression.technical-used }
     method output-used() { $!expression.output-used }
+}
 
+class Agrammon::Formula::Return does Agrammon::Formula::OneExpressionBuiltin {
     method evaluate(Agrammon::Environment $env) {
         die X::Agrammon::Formula::ReturnException.new(
             payload => $!expression.evaluate($env)
@@ -214,15 +216,43 @@ class Agrammon::Formula::Return does Agrammon::Formula {
     }
 }
 
-class Agrammon::Formula::Defined does Agrammon::Formula {
-    has Agrammon::Formula $.expression;
+class X::Agrammon::Formula::Died is Exception {
+    has $.message;
+}
 
-    method input-used() { $!expression.input-used }
-    method technical-used() { $!expression.technical-used }
-    method output-used() { $!expression.output-used }
+class Agrammon::Formula::Die does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        die X::Agrammon::Formula::Died.new(message => $!expression.evaluate($env));
+    }
+}
 
+class Agrammon::Formula::Warn does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        warn $!expression.evaluate($env);
+    }
+}
+
+class Agrammon::Formula::Not does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        not $!expression.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::Defined does Agrammon::Formula::OneExpressionBuiltin {
     method evaluate(Agrammon::Environment $env) {
         defined $!expression.evaluate($env)
+    }
+}
+
+class Agrammon::Formula::Lower does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        $!expression.evaluate($env).lc
+    }
+}
+
+class Agrammon::Formula::Upper does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        $!expression.evaluate($env).uc
     }
 }
 
@@ -244,6 +274,12 @@ class Agrammon::Formula::Tech does Agrammon::Formula {
     }
 
     method technical-used() { ($!symbol,) }
+}
+
+class Agrammon::Formula::TechIndirect does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        $env.technical{$!expression.evaluate($env)}
+    }
 }
 
 class Agrammon::Formula::Val does Agrammon::Formula {
@@ -273,7 +309,7 @@ class Agrammon::Formula::Sum does Agrammon::Formula {
     method output-used() { ($!reference,) }
 }
 
-class Agrammon::Formula::Hash does Agrammon::Formula::LValue {
+class Agrammon::Formula::Hash does Agrammon::Formula {
     has Agrammon::Formula @.pairs;
 
     method input-used() {
@@ -313,6 +349,11 @@ class Agrammon::Formula::Integer does Agrammon::Formula {
 
 class Agrammon::Formula::Rational does Agrammon::Formula {
     has Rat $.value;
+    method evaluate($) { $!value }
+}
+
+class Agrammon::Formula::Float does Agrammon::Formula {
+    has Num $.value;
     method evaluate($) { $!value }
 }
 

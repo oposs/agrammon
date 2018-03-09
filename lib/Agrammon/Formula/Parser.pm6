@@ -17,10 +17,10 @@ grammar Agrammon::Formula::Parser {
     }
 
     rule statement {
-        | <statement_control> ';'?
+        | <statement_control> ';'*
         | <EXPR>
-          <statement_modifier>?
-          [';' || <?before '}' | $>]
+          [ <statement_modifier> || ',' || <?> ]
+          [';'+ || <?before '}' | $>]
     }
 
     proto rule statement_modifier { * }
@@ -86,6 +86,10 @@ grammar Agrammon::Formula::Parser {
         ')'
     }
 
+    rule term:sym<$TE> {
+        '$TE->{' <EXPR> [ '}' || <.panic('Malformed indirect Tech lookup')> ]
+    }
+
     rule term:sym<call> {
         <ident>'('
         <arg=.EXPR>* % [ ',' ]
@@ -108,8 +112,28 @@ grammar Agrammon::Formula::Parser {
         'return' <EXPR>?
     }
 
+    rule term:sym<die> {
+        'die' <EXPR>
+    }
+
+    rule term:sym<warn> {
+        'warn' <EXPR>
+    }
+
+    rule term:sym<not> {
+        'not' <EXPR>
+    }
+
     rule term:sym<defined> {
         'defined' <term>
+    }
+
+    rule term:sym<lc> {
+        'lc' <term>
+    }
+
+    rule term:sym<uc> {
+        'uc' <term>
     }
 
     rule term:sym<( )> {
@@ -127,11 +151,15 @@ grammar Agrammon::Formula::Parser {
     }
 
     token term:sym<integer> {
-        \d+
+        '-'? \d+
     }
 
     token term:sym<rational> {
-        \d* '.' \d+
+        '-'? \d* '.' \d+
+    }
+
+    token term:sym<float> {
+        '-'? [ \d+ | \d* '.' \d+ ] 'e' '-'? \d+
     }
 
     token term:sym<single-string> {
@@ -197,7 +225,7 @@ grammar Agrammon::Formula::Parser {
     }
 
     token name {
-        <name-part> ['::' <name-part>]*
+        [$<root>='::']? <name-part> ['::' <name-part>]*
     }
 
     token name-part {
@@ -208,7 +236,7 @@ grammar Agrammon::Formula::Parser {
         <!ww>
         [
         || \s+
-        || '#' \N+ \n
+        || '#' \N* [\n | $]
         ]*
     }
 }
