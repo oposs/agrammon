@@ -216,6 +216,22 @@ class Agrammon::Formula::Return does Agrammon::Formula::OneExpressionBuiltin {
     }
 }
 
+class X::Agrammon::Formula::Died is Exception {
+    has $.message;
+}
+
+class Agrammon::Formula::Die does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        die X::Agrammon::Formula::Died.new(message => $!expression.evaluate($env));
+    }
+}
+
+class Agrammon::Formula::Warn does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        warn $!expression.evaluate($env);
+    }
+}
+
 class Agrammon::Formula::Defined does Agrammon::Formula::OneExpressionBuiltin {
     method evaluate(Agrammon::Environment $env) {
         defined $!expression.evaluate($env)

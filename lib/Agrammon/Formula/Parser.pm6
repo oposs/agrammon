@@ -112,6 +112,14 @@ grammar Agrammon::Formula::Parser {
         'return' <EXPR>?
     }
 
+    rule term:sym<die> {
+        'die' <EXPR>
+    }
+
+    rule term:sym<warn> {
+        'warn' <EXPR>
+    }
+
     rule term:sym<defined> {
         'defined' <term>
     }

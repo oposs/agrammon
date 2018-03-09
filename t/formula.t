@@ -929,4 +929,34 @@ subtest {
     is $result-bbb, 12, 'Correct result from evaluation (2)';
 }, '$TE->{...} (indirect technical access)';
 
+subtest {
+    my $f = parse-formula('die "a painful death"', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used (indirect no included)';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    throws-like { $f.evaluate(Agrammon::Environment.new()) },
+        X::Agrammon::Formula::Died,
+        message => "a painful death";
+}, 'The die built-in works';
+
+subtest {
+    my $f = parse-formula('warn "a little warning"', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used (indirect no included)';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $warning;
+    {
+        $f.evaluate(Agrammon::Environment.new());
+        CONTROL {
+            when CX::Warn {
+                $warning = .message;
+                .resume;
+            }
+        }
+    }
+    is $warning, "a little warning", 'Correct warning message';
+}, 'The warn built-in works';
+
 done-testing;

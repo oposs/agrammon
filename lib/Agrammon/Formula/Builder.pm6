@@ -200,6 +200,18 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<die>($/) {
+        make Agrammon::Formula::Die.new(
+            expression => $<EXPR>.ast
+        );
+    }
+
+    method term:sym<warn>($/) {
+        make Agrammon::Formula::Warn.new(
+            expression => $<EXPR>.ast
+        );
+    }
+
     method term:sym<defined>($/) {
         make Agrammon::Formula::Defined.new(
             expression => $<term>.ast
