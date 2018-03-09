@@ -69,6 +69,9 @@ class Agrammon::Model {
 
         %pending{$module-name} = True;
         my $module = self.load-module($module-name);
+        given $module.taxonomy -> $tax {
+            die "Wrong taxonomy '$tax' in $module-name" unless $tax eq $module-name;
+        }
         my $parent = $module.parent;
         my @externals = $module.external;
         for @externals -> $external {
