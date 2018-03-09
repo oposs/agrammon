@@ -120,6 +120,10 @@ grammar Agrammon::Formula::Parser {
         'warn' <EXPR>
     }
 
+    rule term:sym<not> {
+        'not' <EXPR>
+    }
+
     rule term:sym<defined> {
         'defined' <term>
     }

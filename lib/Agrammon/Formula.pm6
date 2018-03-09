@@ -232,6 +232,12 @@ class Agrammon::Formula::Warn does Agrammon::Formula::OneExpressionBuiltin {
     }
 }
 
+class Agrammon::Formula::Not does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        not $!expression.evaluate($env)
+    }
+}
+
 class Agrammon::Formula::Defined does Agrammon::Formula::OneExpressionBuiltin {
     method evaluate(Agrammon::Environment $env) {
         defined $!expression.evaluate($env)

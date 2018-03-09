@@ -212,6 +212,12 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<not>($/) {
+        make Agrammon::Formula::Not.new(
+            expression => $<EXPR>.ast
+        );
+    }
+
     method term:sym<defined>($/) {
         make Agrammon::Formula::Defined.new(
             expression => $<term>.ast
