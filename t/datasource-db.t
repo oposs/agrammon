@@ -45,7 +45,7 @@ if ($pg-file.IO.e) {
 }
 
 my $conninfo = "host=$db-host user=$db-user password=$db-password dbname=$db-database";
-ok my $pg = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
+ok my $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 
 transactionally {
 
@@ -148,12 +148,13 @@ sub prepare-test-db($user, $dataset) {
     $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::compost', 0);
     $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::solid_digestate', 0);
     $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::liquid_digestate', 0);
+
     return 1;
 }
 
 
 sub transactionally(&test) {
-    my $*AGRAMMON-DB-HANDLE = my $db = $pg.db;
+    my $*AGRAMMON-DB-HANDLE = my $db = $*AGRAMMON-DB-CONNECTION.db;
     $db.begin;
     test($db);
     $db.finish;

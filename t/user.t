@@ -4,7 +4,7 @@ use Agrammon::DB::User;
 use DB::Pg;
 
 use Test;
-plan 5;
+plan 6;
 
 my $cfg-file = "t/test-data/agrammon.cfg.yaml";
 my $username = 'fritz.zaucker@oetiker.ch';
@@ -45,6 +45,9 @@ subtest 'Create user' => {
 transactionally {
     my $username = 'agtest';
     my $uid;
+
+    ok prepare-test-db, 'Test database prepared';
+
     subtest 'create-account()' => {
         ok my $user = Agrammon::DB::User.new(
             :$username,
@@ -70,10 +73,55 @@ transactionally {
 
 done-testing;
 
+sub prepare-test-db {
+    my $db = $*AGRAMMON-DB-HANDLE;
+
+    $db.query(q:to/STATEMENT/);
+    CREATE TABLE IF NOT EXISTS role (
+        role_id       SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
+        role_name     TEXT NOT NULL UNIQUE,                    -- used as login name
+        pers_first    TEXT NOT NULL CHECK (pers_first != ''),  -- First Name of Person
+        pers_last     TEXT NOT NULL CHECK (pers_last != ''),   -- Last Name of Person
+        pers_password TEXT NOT NULL                            -- Password for pers data
+    )
+    STATEMENT
+
+    my $results = $db.query(q:to/STATEMENT/);
+    SELECT role_id
+      FROM role
+    STATEMENT
+
+    my @ids = $results.arrays.sort;
+    if (not @ids eqv [[0],[1],[2]]) {
+        my $sth = $db.prepare(q:to/STATEMENT/);
+            INSERT INTO role (role_id, role_name)
+            VALUES ($1, $2)
+        STATEMENT
+        $sth.execute(0, 'admin');
+        $sth.execute(1, 'user');
+        $sth.execute(2, 'support');
+    }
+    
+    $db.query(q:to/STATEMENT/);
+    CREATE TABLE IF NOT EXISTS pers (
+        pers_id         SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
+        pers_email      TEXT NOT NULL UNIQUE,                    -- used as login name
+        pers_first      TEXT NOT NULL CHECK (pers_first != ''),  -- First Name of Person
+        pers_last       TEXT NOT NULL CHECK (pers_last != ''),   -- Last Name of Person
+        pers_password   TEXT NOT NULL,                           -- Password
+        pers_org        TEXT NOT NULL,                           -- Organisation  
+        pers_last_login TIMESTAMP WITHOUT TIME ZONE,
+        pers_created    TIMESTAMP WITHOUT TIME ZONE,
+        pers_role       INTEGER NOT NULL REFERENCES role(role_id) DEFAULT 1
+    )
+    STATEMENT
+
+    return 1;
+}
+
 sub transactionally(&test) {
     my $*AGRAMMON-DB-HANDLE = my $db = $*AGRAMMON-DB-CONNECTION.db;
     $db.begin;
     test($db);
     $db.finish;
 }
-

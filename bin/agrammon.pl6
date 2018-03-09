@@ -25,7 +25,7 @@ multi sub MAIN('web', ExistingFile $filename) {
     my $cfg = Agrammon::Config.new;
     $cfg.load($cfg-file);
 
-    PROCESS::<$DB-CONNECTION> = DB::Pg.new(conninfo => $cfg.db-conninfo);
+    PROCESS::<$AGRAMMON-DB-CONNECTION> = DB::Pg.new(conninfo => $cfg.db-conninfo);
                               
     my $user = Agrammon::DB::User.new;
     $user.load($username);
