@@ -113,7 +113,7 @@ grammar Agrammon::ModuleParser {
     }
 
     token name {
-        <.name-part> [ '::' <.name-part> ]*
+        '::'? <.name-part> [ '::' <.name-part> ]*
     }
 
     token name-part {
@@ -123,5 +123,6 @@ grammar Agrammon::ModuleParser {
     token blank-line {
         | \h* \n
         | \h* '#' \N* \n
+        | \h+ $
     }
 }

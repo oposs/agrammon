@@ -69,17 +69,27 @@ class Agrammon::Model {
 
         %pending{$module-name} = True;
         my $module = self.load-module($module-name);
+        given $module.taxonomy -> $tax {
+            die "Wrong taxonomy '$tax' in $module-name" unless $tax eq $module-name;
+        }
         my $parent = $module.parent;
         my @externals = $module.external;
         for @externals -> $external {
             my $external-name = $external.name;
-            my $include = $parent ?? $parent ~ '::' ~ $external-name
-                                  !! $external-name;
+            my $include = $external-name.starts-with('::')
+                ?? $external-name.substr(2)
+                !! $parent
+                    ?? normalize($parent ~ '::' ~ $external-name)
+                    !! $external-name;
             self.load($include, :%pending, :%loaded);
         }
         @!evaluation-order.push($module);
         %loaded{$module-name} = True;
         %pending{$module-name}:delete;
+    }
+
+    sub normalize($module-name) {
+        $module-name.subst(/'::' <.ident> '::..'/, '', :g)
     }
 
     method dump {
