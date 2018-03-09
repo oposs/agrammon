@@ -17,10 +17,10 @@ grammar Agrammon::Formula::Parser {
     }
 
     rule statement {
-        | <statement_control> ';'?
+        | <statement_control> ';'*
         | <EXPR>
           <statement_modifier>?
-          [';' || <?before '}' | $>]
+          [';'+ || <?before '}' | $>]
     }
 
     proto rule statement_modifier { * }

@@ -969,4 +969,16 @@ subtest {
     is $warning, "a little warning", 'Correct warning message';
 }, 'The warn built-in works';
 
+subtest {
+    my $f = parse-formula('In(agricultural_area);;', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { agricultural_area => 42 }
+    ));
+    is $result, 42, 'Correct result from evaluation';
+}, 'Doubled-up semicolon at end is ignored';
+
 done-testing;
