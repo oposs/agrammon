@@ -471,6 +471,19 @@ subtest {
 }, 'Comments';
 
 subtest {
+    my $f = parse-formula('In(solid_digestate) #comment', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('solid_digestate',),
+        'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { solid_digestate => 3 }
+    ));
+    is $result, 3, 'Correct result from evaluation';
+}, 'Comment without newline after it at end of formula';
+
+subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         Sum(n_sol_excretion,Livestock::OtherCattle::Excretion )
         FORMULA

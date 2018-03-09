@@ -208,7 +208,7 @@ grammar Agrammon::Formula::Parser {
         <!ww>
         [
         || \s+
-        || '#' \N+ \n
+        || '#' \N* [\n | $]
         ]*
     }
 }
