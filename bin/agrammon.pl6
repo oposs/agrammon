@@ -15,16 +15,22 @@ subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $filename) {
+    # FIX ME: the user info must come from the login process
+    #         or session handling
     my $username = 'fritz.zaucker@oetiker.ch';
+
+    # initialization
     my $cfg-file = 't/test-data/agrammon.cfg.yaml';
     my $cfg = Agrammon::Config.new;
     $cfg.load($cfg-file);
     my $user = Agrammon::DB::User.new;
     $user.load($username, $cfg);
     my $ws = Agrammon::Web::Service.new(
-        cfg => $cfg,
-        user => $user);
-    say "Starting web service ...";
+        cfg  => $cfg,
+        user => $user
+    );
+
+    # setup and start web server
     my $host = %*ENV<AGRAMMON_HOST> || '0.0.0.0';
     my $port = %*ENV<AGRAMMON_PORT> || 20000;
     my Cro::Service $http = Cro::HTTP::Server.new(
@@ -32,8 +38,8 @@ multi sub MAIN('web', ExistingFile $filename) {
         port => $port,
         application => routes($ws),
         after => [
-                  Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
-              ]
+            Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
+        ]
     );
     $http.start;
     say "Listening at http://$host:$port";

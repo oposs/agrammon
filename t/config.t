@@ -22,7 +22,7 @@ my %config-expected = (
         title   => {
             de => "AGRAMMON 4.0 Einzelbetriebsmodell",
             en => "AGRAMMON 4.0 Single Farm Model",
-            fr => "AGRAMMON 4.0 modele Exploitation individuelle" ,
+            fr => "AGRAMMON 4.0 modèle Exploitation individuelle" ,
         },
     },
     Model => {

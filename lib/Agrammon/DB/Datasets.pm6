@@ -10,8 +10,6 @@ class Agrammon::DB::Datasets {
 
     method load(Str $model-version, Agrammon::Config $cfg) {
         my $username = $!user.username;
-        say "username=$username, model-version=$model-version";
-        say "conn-info=", $cfg.db-conninfo;
         my $pg = DB::Pg.new(conninfo => $cfg.db-conninfo);
         my $data = $pg.query(q:to/DATASETS/, $username, $model-version);
             SELECT dataset_id AS id,
@@ -41,5 +39,9 @@ class Agrammon::DB::Datasets {
         }
     }
 
+    method list {
+        my @list = @!collection.map: {.id, .name};
+        return @list;
+    }
     
 }

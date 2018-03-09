@@ -24,21 +24,29 @@ class Agrammon::Web::Service {
     }
 
     method create-dataset(Str $dataset-name) {
-        return Agrammon::DB::Dataset.new($!user).create($dataset-name);
+        my $dataset = Agrammon::DB::Dataset.new($!user);
+        $dataset.create($dataset-name, $!cfg);
+        return $dataset;
     }
 
     method get-tags() {
-        return Agrammon::DB::Tags.new($!user).collection;
+        my $tags = Agrammon::DB::Tags.new($!user);
+        $tags.load($!cfg);
+        return $tags;
     }
 
     method get-input-variables(Agrammon::DB::Dataset $dataset) {
+        ...
     }
 
     method get-output-variables(Agrammon::DB::Dataset $dataset) {
+        ...
     }
 
     method create-account(%user-data) {
-        return Agrammon::DB::User.new(%user-data).create-account;
+        my $user = Agrammon::DB::User.new(%user-data);
+        $user.create-account($!cfg);
+        return $user;
     }
 
 }

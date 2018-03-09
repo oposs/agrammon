@@ -6,7 +6,8 @@ class Agrammon::DB::Tags {
     has Agrammon::DB::User $.user;
     has Agrammon::DB::Tag @.collection;
     
-    method create {
+    method load {
+        ...
     }
     
 }

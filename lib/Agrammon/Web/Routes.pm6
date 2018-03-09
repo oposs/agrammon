@@ -54,14 +54,8 @@ sub routes(Agrammon::Web::Service $ws) is export {
         }
 
         get -> 'get-datasets', $model-version {
-            my @datasets = $ws.get-datasets($model-version).collection;
-            my @data;
-            for @datasets -> $ds {
-                @data.push(
-                    $ds.id, $ds.name;
-                );
-            }
-            content 'application/json', @data;
+            my $datasets = $ws.get-datasets($model-version);
+            content 'application/json', $datasets.list;
         }
 
         get -> 'get-tags' {
