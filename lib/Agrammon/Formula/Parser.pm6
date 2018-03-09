@@ -19,7 +19,7 @@ grammar Agrammon::Formula::Parser {
     rule statement {
         | <statement_control> ';'*
         | <EXPR>
-          <statement_modifier>?
+          [ <statement_modifier> || ',' || <?> ]
           [';'+ || <?before '}' | $>]
     }
 
