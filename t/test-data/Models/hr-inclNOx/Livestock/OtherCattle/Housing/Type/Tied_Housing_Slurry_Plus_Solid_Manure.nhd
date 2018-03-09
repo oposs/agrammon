@@ -2,7 +2,7 @@
 
 author   = Agrammon Group
 date     = 2008-04-18
-taxonomy = Livestock::OtherCattle::Housing::Type::TideHousingLiquidSolid
+taxonomy = Livestock::OtherCattle::Housing::Type::Tied_Housing_Slurry_Plus_Solid_Manure
 
 +short
 
