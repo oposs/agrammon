@@ -896,4 +896,19 @@ subtest {
     is $result, "jour = tag", 'Correct result of concatenation';
 }, 'The . concatenation operator';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        lc Tech(fr) . " = " . uc In(de)
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('de',), 'Correct inputs-used';
+    is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { de => 'Tag' },
+        technical => { fr => 'Jour' }
+    ));
+    is $result, "jour = TAG", 'Correct result of concatenation';
+}, 'The uc and lc case-change prefixes';
+
 done-testing;

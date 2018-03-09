@@ -112,6 +112,14 @@ grammar Agrammon::Formula::Parser {
         'defined' <term>
     }
 
+    rule term:sym<lc> {
+        'lc' <term>
+    }
+
+    rule term:sym<uc> {
+        'uc' <term>
+    }
+
     rule term:sym<( )> {
         '(' <EXPR> [ ')' || <.panic('Missing closing )')> ]
     }

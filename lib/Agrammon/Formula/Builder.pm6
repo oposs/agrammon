@@ -202,6 +202,18 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<lc>($/) {
+        make Agrammon::Formula::Lower.new(
+            expression => $<term>.ast
+        );
+    }
+
+    method term:sym<uc>($/) {
+        make Agrammon::Formula::Upper.new(
+            expression => $<term>.ast
+        );
+    }
+
     method term:sym<( )>($/) {
         make $<EXPR>.ast;
     }
