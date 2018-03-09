@@ -87,6 +87,29 @@ subtest {
 }, 'Val(...) with name using ..';
 
 subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'Livestock::DairyCow::Housing::Type');
+        Val(dairy_cows, ::Storage::Excretion);
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    my @output-used = $f.output-used;
+    is @output-used.elems, 1, 'Have 1 output used';
+    is @output-used[0].module, 'Storage::Excretion',
+        'Correct output used module';
+    is @output-used[0].symbol, 'dairy_cows',
+        'Correct output used symbol';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        output => {
+            'Storage::Excretion' => {
+                'dairy_cows' => 10
+            }
+        }
+    ));
+    is $result, 10, 'Correct result from evaluation';
+}, 'Val(...) with name with leading ::';
+
+subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         In(agricultural_area) * Tech(er_agricultural_area);
         FORMULA

@@ -197,7 +197,7 @@ grammar Agrammon::Formula::Parser {
     }
 
     token name {
-        <name-part> ['::' <name-part>]*
+        [$<root>='::']? <name-part> ['::' <name-part>]*
     }
 
     token name-part {

@@ -340,11 +340,13 @@ class Agrammon::Formula::Builder {
 
     method name($/) {
         my @parts = $<name-part>.map(~*);
-        my @current = $*CURRENT-MODULE.split('::');
-        @current.pop;
-        while @parts && @parts[0] eq '..' {
-            @parts.shift;
-            @current.pop;
+        my @current;
+        unless $<root> {
+            @current = $*CURRENT-MODULE.split('::').head(*-1);
+            while @parts && @parts[0] eq '..' {
+                @parts.shift;
+                @current.pop;
+            }
         }
         unless @parts {
             die "Name $/ must have at least one named part";
