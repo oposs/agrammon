@@ -287,7 +287,7 @@ class Agrammon::Formula::Sum does Agrammon::Formula {
     method output-used() { ($!reference,) }
 }
 
-class Agrammon::Formula::Hash does Agrammon::Formula::LValue {
+class Agrammon::Formula::Hash does Agrammon::Formula {
     has Agrammon::Formula @.pairs;
 
     method input-used() {
