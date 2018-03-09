@@ -123,5 +123,6 @@ grammar Agrammon::ModuleParser {
     token blank-line {
         | \h* \n
         | \h* '#' \N* \n
+        | \h+ $
     }
 }
