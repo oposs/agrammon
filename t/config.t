@@ -1,5 +1,4 @@
 use v6;
-use Config;
 use Agrammon::Config;
 
 use Test;
@@ -13,16 +12,17 @@ my %config-expected = (
         mojo_secret => "MyCookieSecret",
     },
     Database => {
-        dbi_dsn  => "dbi:Pg:dbname=agrammon_dev;host=erika.oetiker.ch",
-        dbi_user => "agrammon",
-        dbi_pass => "agrammonPassword",
+        name     => 'agrammon_dev',
+        host     => 'erika.oetiker.ch',
+        user     => 'agrammon',
+        password => "agrammon@work",
     },
     GUI => {
         variant => "Single",
         title   => {
             de => "AGRAMMON 4.0 Einzelbetriebsmodell",
             en => "AGRAMMON 4.0 Single Farm Model",
-            fr => "AGRAMMON 4.0 modele Exploitation individuelle" ,
+            fr => "AGRAMMON 4.0 modèle Exploitation individuelle" ,
         },
     },
     Model => {

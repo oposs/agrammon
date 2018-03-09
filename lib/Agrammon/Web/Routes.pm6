@@ -1,0 +1,68 @@
+use v6;
+use JSON::Fast;
+use Cro::HTTP::Router;
+
+use Agrammon::Web::Service;
+
+### TODO 
+#     auth                   => 1,
+
+#     delete_datasets        => 2,
+#     send_datasets          => 2,
+
+#     create_dataset         => 2,
+#     clone_dataset          => 2,
+#     rename_dataset         => 2,
+#     submit_dataset         => 2,
+#     load_dataset           => 2,
+
+#     get_output_variables   => 2,
+#     get_input_variables    => 2,
+#     get_input              => 2,
+
+#     store_data             => 2,
+#     store_dataset_comment  => 2,
+#     store_variable_comment => 2,
+#     delete_data            => 2,
+#     load_branch_data       => 2,
+#     store_branch_data      => 2,
+
+#     set_tag                => 2,
+#     remove_tag             => 2,
+#     delete_tag             => 2,
+#     rename_tag             => 2,
+#     new_tag                => 2,
+
+#     rename_instance        => 2,
+#     order_instances        => 2,
+
+#     create_account         => 2,
+#     reset_password         => 2,
+#     change_password        => 2,
+
+
+sub routes(Agrammon::Web::Service $ws) is export {
+    
+    route {
+        get -> {
+            static 'static/index.html'
+        }
+
+        get -> 'get-cfg' {
+            my $data = $ws.get-cfg;
+            content 'application/json', $data;
+        }
+
+        get -> 'get-datasets', $model-version {
+            my $data = $ws.get-datasets($model-version);
+            content 'application/json', $data;
+        }
+
+        get -> 'get-tags' {
+            my $data = $ws.get-tags;
+            content 'application/json', $data;
+        }
+
+        
+    }
+}
