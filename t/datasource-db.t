@@ -46,7 +46,6 @@ if ($pg-file.IO.e) {
 }
 
 my $conninfo = "host=$db-host user=$db-user password=$db-password dbname=$db-database";
-note "conninfo=$conninfo";
 ok my $pg = DB::Pg.new(conninfo => $conninfo), 'Create DB::Pg object';
 ok my $db = $pg.db, 'Get db handler';
 $db.begin;
