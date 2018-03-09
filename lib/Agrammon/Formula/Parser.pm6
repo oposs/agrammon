@@ -86,6 +86,10 @@ grammar Agrammon::Formula::Parser {
         ')'
     }
 
+    rule term:sym<$TE> {
+        '$TE->{' <EXPR> [ '}' || <.panic('Malformed indirect Tech lookup')> ]
+    }
+
     rule term:sym<call> {
         <ident>'('
         <arg=.EXPR>* % [ ',' ]

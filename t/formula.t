@@ -911,4 +911,22 @@ subtest {
     is $result, "jour = TAG", 'Correct result of concatenation';
 }, 'The uc and lc case-change prefixes';
 
+subtest {
+    my $f = parse-formula('$TE->{"foo_" . In(thing)}', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('thing',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used (indirect no included)';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result-aaa = $f.evaluate(Agrammon::Environment.new(
+        input => { thing => 'aaa' },
+        technical => { foo_aaa => 13, foo_bbb => 12, }
+    ));
+    is $result-aaa, 13, 'Correct result from evaluation (1)';
+    my $result-bbb = $f.evaluate(Agrammon::Environment.new(
+        input => { thing => 'bbb' },
+        technical => { foo_aaa => 13, foo_bbb => 12, }
+    ));
+    is $result-bbb, 12, 'Correct result from evaluation (2)';
+}, '$TE->{...} (indirect technical access)';
+
 done-testing;

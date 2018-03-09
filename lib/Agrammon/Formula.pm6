@@ -254,6 +254,12 @@ class Agrammon::Formula::Tech does Agrammon::Formula {
     method technical-used() { ($!symbol,) }
 }
 
+class Agrammon::Formula::TechIndirect does Agrammon::Formula::OneExpressionBuiltin {
+    method evaluate(Agrammon::Environment $env) {
+        $env.technical{$!expression.evaluate($env)}
+    }
+}
+
 class Agrammon::Formula::Val does Agrammon::Formula {
     has Agrammon::OutputReference $.reference;
 

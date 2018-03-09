@@ -175,6 +175,10 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<$TE>($/) {
+        make Agrammon::Formula::TechIndirect.new(expression => $<EXPR>.ast);
+    }
+
     method term:sym<call>($/) {
         make Agrammon::Formula::CallBuiltin.new(
             name => ~$<ident>,
