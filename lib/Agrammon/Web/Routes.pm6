@@ -45,17 +45,17 @@ sub routes(Agrammon::Web::Service $ws) is export {
     
     route {
         get -> {
-            content 'text/html', "<h1> agrammon </h1>";
+            static 'static/index.html'
         }
 
         get -> 'get-cfg' {
             my $data = $ws.get-cfg;
-            content 'application/json', $data.gui;
+            content 'application/json', $data;
         }
 
         get -> 'get-datasets', $model-version {
-            my $datasets = $ws.get-datasets($model-version);
-            content 'application/json', $datasets.list;
+            my $data = $ws.get-datasets($model-version);
+            content 'application/json', $data;
         }
 
         get -> 'get-tags' {

@@ -29,7 +29,17 @@ subtest "Setup" => {
 }
 
 subtest "get-cfg()" => {
-    isa-ok $ws.get-cfg, "Agrammon::Config", "Got Agrammon::Config object";
+    my %cfg-expected = (
+        guiVariant => "Single",
+        modelVariant => "SHL",
+        title => {de => "AGRAMMON 4.0 Einzelbetriebsmodell",
+                  en => "AGRAMMON 4.0 Single Farm Model",
+                  fr => "AGRAMMON 4.0 modèle Exploitation individuelle"
+                 },
+        variant => "SHL",
+        version => "4.0 - #REV#"
+    );
+    is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
 }
 
 subtest "get-datasets()" => {
