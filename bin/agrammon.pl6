@@ -2,6 +2,7 @@
 
 use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
+use DB::Pg;
 
 use Agrammon::Config;
 use Agrammon::Model;
@@ -23,8 +24,11 @@ multi sub MAIN('web', ExistingFile $filename) {
     my $cfg-file = 't/test-data/agrammon.cfg.yaml';
     my $cfg = Agrammon::Config.new;
     $cfg.load($cfg-file);
+
+    PROCESS::<$DB-CONNECTION> = DB::Pg.new(conninfo => $cfg.db-conninfo);
+                              
     my $user = Agrammon::DB::User.new;
-    $user.load($username, $cfg);
+    $user.load($username);
     my $ws = Agrammon::Web::Service.new(
         cfg  => $cfg,
         user => $user

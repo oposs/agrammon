@@ -15,12 +15,12 @@ class Agrammon::Web::Service {
 
     method get-datasets(Str $model-version) {
         my $datasets = Agrammon::DB::Datasets.new(user => $!user);
-        $datasets.load($model-version, $!cfg);
+        $datasets.load($model-version);
         return $datasets;
     }
 
     method load-dataset(Str $dataset-name) {
-        return Agrammon::DB::Dataset.new($!user).load($dataset-name, $!cfg).data;
+        return Agrammon::DB::Dataset.new($!user).load($dataset-name).data;
     }
 
     method create-dataset(Str $dataset-name) {
@@ -43,9 +43,9 @@ class Agrammon::Web::Service {
         ...
     }
 
-    method create-account(%user-data) {
+    method create-account(%user-data, Str $role) {
         my $user = Agrammon::DB::User.new(%user-data);
-        $user.create-account($!cfg);
+        $user.create-account($role);
         return $user;
     }
 

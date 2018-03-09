@@ -17,7 +17,7 @@ subtest "Helper function" => {
 }
 
 
-subtest "loadModule()" =>{
+subtest "loadModule()" => {
 
     my $path = $*PROGRAM.parent.add('test-data/');
     given 'CMilk' -> $module-name {

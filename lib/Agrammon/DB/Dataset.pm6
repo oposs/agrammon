@@ -15,7 +15,7 @@ class Agrammon::DB::Dataset {
         ...
     }
 
-    method load {
+    method load(Str $name) {
         ...
     }
 

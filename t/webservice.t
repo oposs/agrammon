@@ -2,6 +2,7 @@ use v6;
 use Agrammon::Config;
 use Agrammon::Web::Service;
 
+use DB::Pg;
 use Test;
 plan 9;
 
@@ -13,12 +14,14 @@ if (%*ENV<TRAVIS>) {
     exit;
 }
 
+my $*AGRAMMON-DB-CONNECTION;
 my ($ws, $user);
 subtest "Setup" => {
     my $cfg = Agrammon::Config.new;
     ok $cfg.load($cfg-file), "Load config from file $cfg-file";
+    ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(conninfo => $cfg.db-conninfo), 'Create DB::Pg object';
     $user = Agrammon::DB::User.new;
-    ok $user.load($username, $cfg), "Load user $username";
+    ok $user.load($username), "Load user $username";
     ok $ws = Agrammon::Web::Service.new(
         cfg => $cfg,
         user => $user),               "Created Web::Service object";

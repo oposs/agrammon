@@ -11,7 +11,6 @@ my $db-password = '';
 my $ag-user     = 'test@agrammon.ch';
 my $ag-dataset  = 'Agrammon6Testing';
 
-
 # overwrite defaults $db-* and $ag-* variables above
 # Format auf agrammon.pg:
 # dbhost=HOST;dbport=PORT;dbuser=USER;dbpassword=PASSWORD;dbdatabase=DATABASE;aguser=AGUSER;agdataset=DATASET;
@@ -46,27 +45,29 @@ if ($pg-file.IO.e) {
 }
 
 my $conninfo = "host=$db-host user=$db-user password=$db-password dbname=$db-database";
-ok my $pg = DB::Pg.new(conninfo => $conninfo), 'Create DB::Pg object';
-ok my $db = $pg.db, 'Get db handler';
-$db.begin;
+ok my $pg = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 
-ok prepare-test-db($db, $ag-user, $ag-dataset), 'Test database prepared';
+transactionally {
 
-my $rowsExpected = 6;
+    ok prepare-test-db($ag-user, $ag-dataset), 'Test database prepared';
 
-my $ds = Agrammon::DataSource::DB.new;
-isa-ok $ds, Agrammon::DataSource::DB, 'Is a DataSource::DB';
+    my $rowsExpected = 6;
 
-my @data = $ds.read($db, $ag-user, $ag-dataset);
-is @data.elems, $rowsExpected, "Found $rowsExpected rows in dataset $ag-user:$ag-dataset";
+    my $ds = Agrammon::DataSource::DB.new;
+    isa-ok $ds, Agrammon::DataSource::DB, 'Is a DataSource::DB';
 
-$db.finish; # rollback
+    my @data = $ds.read($ag-user, $ag-dataset);
+    is @data.elems, $rowsExpected, "Found $rowsExpected rows in dataset $ag-user:$ag-dataset";
+
+}
 
 done-testing;
 
 
 
-sub prepare-test-db($db, $user, $dataset) {
+sub prepare-test-db($user, $dataset) {
+    my $db = $*AGRAMMON-DB-HANDLE;
+
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS pers (
         pers_id       SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
@@ -149,3 +150,12 @@ sub prepare-test-db($db, $user, $dataset) {
     $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::liquid_digestate', 0);
     return 1;
 }
+
+
+sub transactionally(&test) {
+    my $*AGRAMMON-DB-HANDLE = my $db = $pg.db;
+    $db.begin;
+    test($db);
+    $db.finish;
+}
+
