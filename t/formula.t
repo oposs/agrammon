@@ -220,6 +220,16 @@ subtest {
 }, 'Rational literals';
 
 subtest {
+    my $f = parse-formula('1e-8', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new());
+    is $result, 1e-8, 'Correct result from evaluation';
+}, 'Float literals';
+
+subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         "foo\nbar\!"
         FORMULA

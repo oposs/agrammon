@@ -147,11 +147,15 @@ grammar Agrammon::Formula::Parser {
     }
 
     token term:sym<integer> {
-        \d+
+        '-'? \d+
     }
 
     token term:sym<rational> {
-        \d* '.' \d+
+        '-'? \d* '.' \d+
+    }
+
+    token term:sym<float> {
+        '-'? [ \d+ | \d* '.' \d+ ] 'e' '-'? \d+
     }
 
     token term:sym<single-string> {

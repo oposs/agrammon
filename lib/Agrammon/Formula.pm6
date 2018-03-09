@@ -346,6 +346,11 @@ class Agrammon::Formula::Rational does Agrammon::Formula {
     method evaluate($) { $!value }
 }
 
+class Agrammon::Formula::Float does Agrammon::Formula {
+    has Num $.value;
+    method evaluate($) { $!value }
+}
+
 class Agrammon::Formula::String does Agrammon::Formula {
     has Str $.value;
     method evaluate($) { $!value }

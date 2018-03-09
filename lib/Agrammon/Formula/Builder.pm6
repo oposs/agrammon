@@ -255,6 +255,10 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::Rational.new(value => +$/);
     }
 
+    method term:sym<float>($/) {
+        make Agrammon::Formula::Float.new(value => +$/);
+    }
+
     method term:sym<single-string>($/) {
         make Agrammon::Formula::String.new(
             value => $<single-string-piece>.map(*.ast).join
