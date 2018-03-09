@@ -62,6 +62,11 @@ multi sub MAIN('dump', ExistingFile $filename) {
     say chomp dump $filename.IO;
 }
 
+#| Create LaTeX docu
+multi sub MAIN('latex', ExistingFile $filename) {
+    say "Will create LaTeX docu; NYI";
+}
+
 #| Create Agrammon user
 multi sub MAIN('create-user', Str $username, Str $firstname, Str $lastname) {
     say "Will create Agrammon user; NYI";
