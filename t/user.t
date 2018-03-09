@@ -78,11 +78,8 @@ sub prepare-test-db {
 
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS role (
-        role_id       SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
-        role_name     TEXT NOT NULL UNIQUE,                    -- used as login name
-        pers_first    TEXT NOT NULL CHECK (pers_first != ''),  -- First Name of Person
-        pers_last     TEXT NOT NULL CHECK (pers_last != ''),   -- Last Name of Person
-        pers_password TEXT NOT NULL                            -- Password for pers data
+        role_id       SERIAL NOT NULL PRIMARY KEY, -- Unique ID
+        role_name     TEXT NOT NULL UNIQUE
     )
     STATEMENT
 
