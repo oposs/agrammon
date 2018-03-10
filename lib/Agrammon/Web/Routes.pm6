@@ -47,13 +47,24 @@ sub routes(Agrammon::Web::Service $ws) is export {
         subset Admin    of Agrammon::Web::UserSession where .is-admin;
         subset LoggedIn of Agrammon::Web::UserSession where *.logged-in;
 
-        get -> Agrammon::Web::UserSession $s {
-            content 'text/html', "Current user: {$s.logged-in ?? $s.username !! '-'}";
+        get -> 'index.html' {
+            static 'static/index.html'
         }
-
 
         get -> {
             static 'static/index.html'
+        }
+
+        get -> 'agrammon.html' {
+            static 'static/agrammon.html'
+        }
+
+        get -> 'script', *@path {
+            static 'static/script', @path
+        }
+        
+        get -> '/busy.gif' {
+            static 'static/busy.gif'
         }
 
         get -> 'login' {
@@ -72,7 +83,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
         post -> Agrammon::Web::UserSession $user, 'login' {
             request-body -> (:$username, :$password, *%) {
-                if valid-user-pass($username, $password) {
+                if $user.auth($username, $password) {
                     $user.username = $username;
                     redirect '/', :see-other;
                 }
@@ -80,11 +91,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
                     content 'text/html', "Bad username/password";
                 }
             }
-        }
-
-        sub valid-user-pass($username, $password) {
-            # Call a database or similar here
-            return $username eq 'fritz.zaucker@oetiker.ch' && $password eq 'Wlaschek';
         }
 
         get -> 'get-cfg' {
@@ -95,10 +101,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
         get -> LoggedIn $user, 'get-datasets', $model-version {
             my $data = $ws.get-datasets($user, $model-version);
             content 'application/json', $data;
-        }
-
-        get -> LoggedIn $user, 'users-only' {
-            content 'text/html', "Secret page just for *YOU*, $user.username()";
         }
 
         get -> LoggedIn $user, 'create-dataset', $name {
