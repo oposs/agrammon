@@ -4,10 +4,10 @@ use Agrammon::DB::Dataset;
 use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
 use Agrammon::DB::Tags;
+use Agrammon::Web::UserSession;
 
 class Agrammon::Web::Service {
     has Agrammon::Config   $.cfg;
-    has Agrammon::DB::User $.user;
 
     # return config hash as expected by Web GUI
     method get-cfg() {
@@ -24,26 +24,24 @@ class Agrammon::Web::Service {
     }
 
     # return list of datasets as expected by Web GUI
-    method get-datasets(Str $model-version) {
-        my $datasets = Agrammon::DB::Datasets.new(user => $!user);
-        $datasets.load($model-version);
-        return $datasets.list;
+    method get-datasets(Agrammon::Web::UserSession $user, Str $version) {
+        return Agrammon::DB::Datasets.new(:$user, :$version).load.list;
     }
 
-    method load-dataset(Str $dataset-name) {
-        return Agrammon::DB::Dataset.new($!user).load($dataset-name).data;
+    method get-tags(Agrammon::Web::UserSession $user) {
+        return Agrammon::DB::Tags.new(:$user).load.list;
     }
 
-    method create-dataset(Str $dataset-name) {
-        my $dataset = Agrammon::DB::Dataset.new($!user);
-        $dataset.create($dataset-name, $!cfg);
-        return $dataset;
+    method load-dataset(Agrammon::Web::UserSession $user, Str $name) {
+        return Agrammon::DB::Dataset.new(:$user, :$name).load.data;
     }
 
-    method get-tags() {
-        my $tags = Agrammon::DB::Tags.new($!user);
-        $tags.load($!cfg);
-        return $tags;
+    method create-dataset(Agrammon::Web::UserSession $user, Str $name) {
+        return Agrammon::DB::Dataset.new(:$user, :$name).create;
+    }
+
+    method create-tag(Agrammon::Web::UserSession $user, Str $name) {
+        return Agrammon::DB::Tag.new(:$user, :$name).create;
     }
 
     method get-input-variables(Agrammon::DB::Dataset $dataset) {

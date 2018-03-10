@@ -2,15 +2,17 @@ use v6;
 use Agrammon::DB;
 use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
+use Agrammon::Web::UserSession;
 
 class Agrammon::DB::Datasets does Agrammon::DB {
     has Agrammon::DB::User $.user;
     has Agrammon::DB::Dataset @.collection;
+    has Str $.version;
 
-    method load(Str $model-version) {
+    method load {
         self.with-db: -> $db {
             my $username = $!user.username;
-            my $results = $db.query(q:to/DATASETS/, $username, $model-version);
+            my $results = $db.query(q:to/DATASETS/, $username, $!version);
                 SELECT dataset_id AS id,
                        dataset_name AS name,
                        date_trunc('seconds', dataset_mod_date) AS "mod-date",
@@ -37,6 +39,7 @@ class Agrammon::DB::Datasets does Agrammon::DB {
                 @!collection.push($ds);
             }
         }
+        return self;
     }
     
     method list {

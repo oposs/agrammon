@@ -1,8 +1,9 @@
 use v6;
-use JSON::Fast;
+
 use Cro::HTTP::Router;
 
 use Agrammon::Web::Service;
+use Agrammon::Web::UserSession;
 
 ### TODO 
 #     auth                   => 1,
@@ -42,10 +43,48 @@ use Agrammon::Web::Service;
 
 
 sub routes(Agrammon::Web::Service $ws) is export {
-    
     route {
+        subset Admin    of Agrammon::Web::UserSession where .is-admin;
+        subset LoggedIn of Agrammon::Web::UserSession where *.logged-in;
+
+        get -> Agrammon::Web::UserSession $s {
+            content 'text/html', "Current user: {$s.logged-in ?? $s.username !! '-'}";
+        }
+
+
         get -> {
             static 'static/index.html'
+        }
+
+        get -> 'login' {
+            content 'text/html', q:to/HTML/;
+            <form method="POST" action="/login">
+              <div>
+                Username: <input type="text" name="username" />
+              </div>
+              <div>
+                Password: <input type="password" name="password" />
+              </div>
+              <input type="submit" value="Log In" />
+            </form>
+            HTML
+        }
+
+        post -> Agrammon::Web::UserSession $user, 'login' {
+            request-body -> (:$username, :$password, *%) {
+                if valid-user-pass($username, $password) {
+                    $user.username = $username;
+                    redirect '/', :see-other;
+                }
+                else {
+                    content 'text/html', "Bad username/password";
+                }
+            }
+        }
+
+        sub valid-user-pass($username, $password) {
+            # Call a database or similar here
+            return $username eq 'fritz.zaucker@oetiker.ch' && $password eq 'Wlaschek';
         }
 
         get -> 'get-cfg' {
@@ -53,16 +92,29 @@ sub routes(Agrammon::Web::Service $ws) is export {
             content 'application/json', $data;
         }
 
-        get -> 'get-datasets', $model-version {
-            my $data = $ws.get-datasets($model-version);
+        get -> LoggedIn $user, 'get-datasets', $model-version {
+            my $data = $ws.get-datasets($user, $model-version);
             content 'application/json', $data;
         }
 
-        get -> 'get-tags' {
-            my $data = $ws.get-tags;
-            content 'application/json', $data;
+        get -> LoggedIn $user, 'users-only' {
+            content 'text/html', "Secret page just for *YOU*, $user.username()";
         }
 
+        get -> LoggedIn $user, 'create-dataset', $name {
+            my $data = $ws.create-dataset($user, $name);
+            content 'application/json', $data;
+        }
+        
+        get -> LoggedIn $user, 'create-tag', $name {
+            my $data = $ws.create-tag($user, $name);
+            content 'application/json', $data;
+        }
+        
+        get -> LoggedIn $user, 'get-tags' {
+            my $data = $ws.get-tags($user);
+            content 'application/json', $data;
+        }
         
     }
 }
