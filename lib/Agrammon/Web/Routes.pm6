@@ -67,39 +67,42 @@ sub routes(Agrammon::Web::Service $ws) is export {
             static 'static/busy.gif'
         }
 
-        get -> 'login' {
-            content 'text/html', q:to/HTML/;
-            <form method="POST" action="/login">
-              <div>
-                Username: <input type="text" name="username" />
-              </div>
-              <div>
-                Password: <input type="password" name="password" />
-              </div>
-              <input type="submit" value="Log In" />
-            </form>
-            HTML
-        }
-
-        post -> Agrammon::Web::UserSession $user, 'login' {
-            request-body -> (:$username, :$password, *%) {
+        post -> Agrammon::Web::UserSession $user, 'auth' {
+#            request-body -> (:$user, :$password, *%) {
+#                my $username = $user;
+            request-body -> %data {
+                dd %data;
+                my $username = %data<user>;
+                my $password = %data<password>;
                 if $user.auth($username, $password) {
                     $user.username = $username;
-                    redirect '/', :see-other;
+                    $user.load($username);
+                    content 'application/json', %(
+                        user       => $username,
+                        role       => $user.role.name,
+                        last_login => $user.last-login,
+                        news       => 'No news',
+                        sudoUser   => 0
+                    );
                 }
                 else {
-                    content 'text/html', "Bad username/password";
                 }
             }
         }
 
-        get -> 'get-cfg' {
+        post -> 'get_cfg' {
             my $data = $ws.get-cfg;
             content 'application/json', $data;
         }
 
-        get -> LoggedIn $user, 'get-datasets', $model-version {
+        post -> LoggedIn $user, 'get_datasets' {
+            my $model-version = 'SingleSHL';
             my $data = $ws.get-datasets($user, $model-version);
+            content 'application/json', $data;
+        }
+
+        post -> LoggedIn $user, 'get_tags' {
+            my $data = $ws.get-tags($user);
             content 'application/json', $data;
         }
 
@@ -107,16 +110,11 @@ sub routes(Agrammon::Web::Service $ws) is export {
             my $data = $ws.create-dataset($user, $name);
             content 'application/json', $data;
         }
-        
+
         get -> LoggedIn $user, 'create-tag', $name {
             my $data = $ws.create-tag($user, $name);
             content 'application/json', $data;
         }
-        
-        get -> LoggedIn $user, 'get-tags' {
-            my $data = $ws.get-tags($user);
-            content 'application/json', $data;
-        }
-        
+
     }
 }

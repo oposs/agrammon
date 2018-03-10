@@ -8,10 +8,7 @@ class Agrammon::Web::UserSession is Agrammon::DB::User does Cro::HTTP::Auth {
 #    has $.is-logged-in;
 
     method logged-in() {
-#        say "*** username=", $!username // 'NONE';
-#        defined $!username;
-        say "*** username=", self.username // 'NONE';
-        defined self.username;
+        return defined self.username;
     }
 
     method auth($username, $password) {
@@ -22,7 +19,6 @@ class Agrammon::Web::UserSession is Agrammon::DB::User does Cro::HTTP::Auth {
                  WHERE pers_email = $1
             PERS
 
-            say "password=$password, dbpassword=%p<password>";
             return $password eq %p<password>;
         }
     }

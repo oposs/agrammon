@@ -1,4 +1,5 @@
 use v6;
+use Agrammon::DB::Tag;
 use Agrammon::DB::User;
 use Agrammon::Web::UserSession;
 
@@ -9,6 +10,8 @@ class Agrammon::DB::Dataset {
     has Str  $.model;
     has Str  $.comment;
     has Str  $.version;
+    has Int  $.records;
+    has Agrammon::DB::Tag @.tags;
     has DateTime $.mod-date;
     has Agrammon::DB::User $.user;
 

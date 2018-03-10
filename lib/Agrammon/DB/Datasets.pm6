@@ -21,7 +21,7 @@ class Agrammon::DB::Datasets does Agrammon::DB {
                        dataset_readonly AS "read-only",
                        dataset_version AS version,
                        '' AS tag,  -- tag attribute is set below
-                                      dataset_comment AS comment,
+                       dataset_comment AS comment,
                        dataset_model AS model,
                        dataset_pers != pers_email2id($1) AS "is-demo"
                   FROM dataset
@@ -34,16 +34,35 @@ class Agrammon::DB::Datasets does Agrammon::DB {
                          dataset_mod_date DESC, dataset_name ASC
             DATASETS
 
-            for $results.hashes -> $dh {
-                my $ds = Agrammon::DB::Dataset.new(|$dh);
+            for $results.hashes -> %dh {
+                my $ds = Agrammon::DB::Dataset.new(|%dh);
                 @!collection.push($ds);
+            }
+
+            my $tagResults = $db.query(q:to/TAGS/, $username);
+                   SELECT dataset_name AS dataset, tag_name AS tag
+                     FROM tag JOIN tagds   ON (tagds_tag=tag_id)
+                              JOIN dataset ON (tagds_dataset=dataset_id)
+                    WHERE (dataset_pers=pers_email2id($1))
+            TAGS
+            my @tagHashes = [$tagResults.hashes];
+
+            for @!collection -> $ds {
+                my @tags;
+                for @tagHashes -> %th {
+                    if (%th<dataset> eq $ds.name) {
+                        my $tag = Agrammon::DB::Tag.new(:name(%th<tag>));
+                        @tags.push($tag) ;
+                    }
+                }
+                $ds.tags = @tags;
             }
         }
         return self;
     }
     
     method list {
-        return [@!collection.map: {.id, .name}];
+        return [@!collection.map: {.name, .mod-date, .records, .read-only, .version, .tags, .comment, .model, 0}];
     }
     
 }

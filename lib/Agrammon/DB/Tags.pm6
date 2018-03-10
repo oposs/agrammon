@@ -28,7 +28,7 @@ class Agrammon::DB::Tags  does Agrammon::DB {
     }
     
     method list {
-        return [@!collection.map: {.id, .name}];
+        return [@!collection.map: {.name}];
     }
     
 }
