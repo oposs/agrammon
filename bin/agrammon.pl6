@@ -46,7 +46,6 @@ multi sub MAIN('web', ExistingFile $filename) {
         before => [
             Cro::HTTP::Session::InMemory[Agrammon::Web::UserSession].new(
                 expiration  => Duration.new(60 * 15),
-                cookie-name => 'AGRAMMON_SESSION_COOKIE_NAME'
             )
         ]
     );
