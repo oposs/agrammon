@@ -2,7 +2,6 @@ use v6;
 use Agrammon::DB;
 use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
-use Agrammon::Web::UserSession;
 
 class Agrammon::DB::Datasets does Agrammon::DB {
     has Agrammon::DB::User $.user;

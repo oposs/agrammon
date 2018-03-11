@@ -8,7 +8,7 @@ use DB::Pg;
 use Agrammon::Config;
 use Agrammon::Model;
 use Agrammon::Web::Routes;
-use Agrammon::Web::UserSession;
+use Agrammon::Web::SessionUser;
 
 my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location 
@@ -44,7 +44,7 @@ multi sub MAIN('web', ExistingFile $filename) {
             Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
         ],
         before => [
-            Cro::HTTP::Session::InMemory[Agrammon::Web::UserSession].new(
+            Cro::HTTP::Session::InMemory[Agrammon::Web::SessionUser].new(
                 expiration  => Duration.new(60 * 15),
             )
         ]

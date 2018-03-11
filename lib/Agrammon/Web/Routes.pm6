@@ -3,13 +3,13 @@ use v6;
 use Cro::HTTP::Router;
 
 use Agrammon::Web::Service;
-use Agrammon::Web::UserSession;
+use Agrammon::Web::SessionUser;
 
 
 sub routes(Agrammon::Web::Service $ws) is export {
     route {
-        subset Admin    of Agrammon::Web::UserSession where .is-admin;
-        subset LoggedIn of Agrammon::Web::UserSession where *.logged-in;
+        subset Admin    of Agrammon::Web::SessionUser where .is-admin;
+        subset LoggedIn of Agrammon::Web::SessionUser where *.logged-in;
 
         get -> 'index.html' {
             static 'static/index.html'
@@ -42,7 +42,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
         }
 
         ### account
-        post -> Agrammon::Web::UserSession $user, 'auth' {
+        post -> Agrammon::Web::SessionUser $user, 'auth' {
             request-body -> %data {
                 dd %data;
                 my $username = %data<user>;

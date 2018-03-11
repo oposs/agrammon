@@ -4,7 +4,7 @@ use Agrammon::DB::Dataset;
 use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
 use Agrammon::DB::Tags;
-use Agrammon::Web::UserSession;
+use Agrammon::Web::SessionUser;
 
 class Agrammon::Web::Service {
     has Agrammon::Config   $.cfg;
@@ -24,23 +24,23 @@ class Agrammon::Web::Service {
     }
 
     # return list of datasets as expected by Web GUI
-    method get-datasets(Agrammon::Web::UserSession $user, Str $version) {
+    method get-datasets(Agrammon::Web::SessionUser $user, Str $version) {
         return Agrammon::DB::Datasets.new(:$user, :$version).load.list;
     }
 
-    method get-tags(Agrammon::Web::UserSession $user) {
+    method get-tags(Agrammon::Web::SessionUser $user) {
         return Agrammon::DB::Tags.new(:$user).load.list;
     }
 
-    method load-dataset(Agrammon::Web::UserSession $user, Str $name) {
+    method load-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         return Agrammon::DB::Dataset.new(:$user, :$name).load.data;
     }
 
-    method create-dataset(Agrammon::Web::UserSession $user, Str $name) {
+    method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         return Agrammon::DB::Dataset.new(:$user, :$name).create;
     }
 
-    method create-tag(Agrammon::Web::UserSession $user, Str $name) {
+    method create-tag(Agrammon::Web::SessionUser $user, Str $name) {
         return Agrammon::DB::Tag.new(:$user, :$name).create;
     }
 
@@ -52,13 +52,13 @@ class Agrammon::Web::Service {
         ...
     }
 
-    method create-account(Agrammon::Web::UserSession $user, %user-data) {
+    method create-account(Agrammon::Web::SessionUser $user, %user-data) {
         my $newUser = Agrammon::DB::User.new(%user-data);
         $newUser.create;
         return $newUser;
     }
 
-    method change-password(Agrammon::Web::UserSession $user, Str $old, Str $new) {
+    method change-password(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
         $user.change-password($old, $new);
         return $user;
     }

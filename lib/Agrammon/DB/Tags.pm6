@@ -2,7 +2,6 @@ use v6;
 use Agrammon::DB;
 use Agrammon::DB::User;
 use Agrammon::DB::Tag;
-use Agrammon::Web::UserSession;
 
 class Agrammon::DB::Tags  does Agrammon::DB {
     has Agrammon::DB::User $.user;

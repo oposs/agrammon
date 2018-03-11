@@ -1,7 +1,6 @@
 use v6;
 use Agrammon::DB::Tag;
 use Agrammon::DB::User;
-use Agrammon::Web::UserSession;
 
 class Agrammon::DB::Dataset {
     has Int  $.id;
