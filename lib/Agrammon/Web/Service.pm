@@ -52,9 +52,14 @@ class Agrammon::Web::Service {
         ...
     }
 
-    method create-account(%user-data, Str $role) {
-        my $user = Agrammon::DB::User.new(%user-data);
-        $user.create-account($role);
+    method create-account(Agrammon::Web::UserSession $user, %user-data) {
+        my $newUser = Agrammon::DB::User.new(%user-data);
+        $newUser.create;
+        return $newUser;
+    }
+
+    method change-password(Agrammon::Web::UserSession $user, Str $old, Str $new) {
+        $user.change-password($old, $new);
         return $user;
     }
 

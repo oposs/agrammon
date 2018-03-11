@@ -47,9 +47,9 @@ class Agrammon::DB::User does Agrammon::DB {
         return $!id;
     }
 
-    method load(Str $username) {
+    method load {
         self.with-db: -> $db {
-            my $u = $db.query(q:to/USER/, $username).hash;
+            my $u = $db.query(q:to/USER/, $!username).hash;
                 SELECT pers_id         AS id,
                        pers_email      AS username,
                        pers_first      AS firstname,
@@ -81,7 +81,7 @@ class Agrammon::DB::User does Agrammon::DB {
             ROLE
             $!role = Agrammon::DB::Role.new(|%r);
         }
-        return 1;
+        return self;
     }
     
     method exists {

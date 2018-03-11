@@ -17,6 +17,10 @@ class Agrammon::Config {
         %!model    = $config<Model>;
     }
 
+    method model-variant {
+        %!gui<variant> ~ %!model<variant>;
+    }
+    
     method db-conninfo {
         return 'dbname='   ~ %!database<name> ~ ' '
              ~ 'host='     ~ %!database<host> ~ ' '
