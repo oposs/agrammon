@@ -10,8 +10,12 @@ class X::Agrammon::DB::User::Exists is Exception {
     }
 }
 
+class X::Agrammon::DB::User::NoUsername is Exception {
+    method message() {
+        "Need username to load user from database!";
+    }
+}
 
-#class Agrammon::DB::User does Agrammon::DB does Cro::HTTP::Auth {
 class Agrammon::DB::User does Agrammon::DB {
     has Int $.id;
     has Str $.username is rw;
@@ -48,6 +52,7 @@ class Agrammon::DB::User does Agrammon::DB {
     }
 
     method load {
+        die X::Agrammon::DB::User::NoUsername.new unless $!username;
         self.with-db: -> $db {
             my $u = $db.query(q:to/USER/, $!username).hash;
                 SELECT pers_id         AS id,
