@@ -49,7 +49,7 @@ class Agrammon::DB::Datasets does Agrammon::DB {
             for @!collection -> $ds {
                 my @tags;
                 for @tagHashes -> %th {
-                    if (%th<dataset> eq $ds.name) {
+                    if %th<dataset> eq $ds.name {
                         my $tag = Agrammon::DB::Tag.new(:name(%th<tag>));
                         @tags.push($tag) ;
                     }

@@ -1,7 +1,6 @@
 use v6;
 use Agrammon::DB;
 use Agrammon::DB::Role;
-use Cro::HTTP::Auth;
 
 class X::Agrammon::DB::User::Exists is Exception {
     has $.username;
@@ -14,7 +13,7 @@ class X::Agrammon::DB::User::Exists is Exception {
 #class Agrammon::DB::User does Agrammon::DB does Cro::HTTP::Auth {
 class Agrammon::DB::User does Agrammon::DB {
     has Int $.id;
-    has Str $.username is rw;
+    has Str $.username;
     has Str $.firstname;
     has Str $.lastname;
     has Str $.password;
@@ -94,10 +93,24 @@ class Agrammon::DB::User does Agrammon::DB {
             return $uid;
         }
     }
-    
-#    method logged-in() {
-#        say "*** username=", $!username // 'NONE';
-#        defined $!username;
-#   }
+
+    method auth($username, $password) {
+        self.with-db: -> $db {
+            my %p = $db.query(q:to/PERS/, $username).hash;
+                SELECT pers_password AS password
+                  FROM pers
+                 WHERE pers_email = $1
+            PERS
+
+            if  $password eq %p<password> {
+                $!username = $username;
+                self.load;
+            }
+            else {
+                $!username = Nil;
+            }
+        }
+        return self.logged-in;
+    }
 
 }

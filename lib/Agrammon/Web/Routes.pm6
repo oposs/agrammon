@@ -8,8 +8,7 @@ use Agrammon::Web::SessionUser;
 
 sub routes(Agrammon::Web::Service $ws) is export {
     route {
-        subset Admin    of Agrammon::Web::SessionUser where .is-admin;
-        subset LoggedIn of Agrammon::Web::SessionUser where *.logged-in;
+        subset LoggedIn of Agrammon::Web::SessionUser where .logged-in;
 
         get -> 'index.html' {
             static 'static/index.html'
@@ -31,10 +30,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
             static 'static/resource', @path
         }
         
-        get -> 'busy.gif' {
-            static 'static/busy.gif'
-        }
-
         ### cfg
         post -> 'get_cfg' {
             my $data = $ws.get-cfg;
@@ -44,12 +39,9 @@ sub routes(Agrammon::Web::Service $ws) is export {
         ### account
         post -> Agrammon::Web::SessionUser $user, 'auth' {
             request-body -> %data {
-                dd %data;
                 my $username = %data<user>;
                 my $password = %data<password>;
                 if $user.auth($username, $password) {
-                    $user.username = $username;
-                    $user.load;
                     content 'application/json', %(
                         user       => $username,
                         role       => $user.role.name,
@@ -65,7 +57,8 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
         # implement/test
         post -> LoggedIn $user, 'change_password' {
-            request-body -> (:$old, :$new) {
+            ...
+            request-body -> (:$old!, :$new!) {
                 my $data = $ws.change-password($user, $old, $new);
                 content 'application/json', $data;
             }
@@ -73,17 +66,18 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
         # implement/test
         post -> LoggedIn $user, 'reset_password' {
-#            request-body -> (:$email, :$password, :$key) {
-            request-body -> %request-data {
-                my $data = $ws.reset-password($user, %request-data);
+            ...
+            request-body -> (:$email!, :$password!, :$key!) {
+                my $data = $ws.reset-password($user, :$email, :$password, :$key);
                 content 'application/json', $data;
             }
         }
 
         # implement/test
         post -> LoggedIn $user, 'create_account' {
-            request-body -> %request-data {
-                my $data = $ws.create-account($user, %request-data);
+            ...
+            request-body -> %user-data {
+                my $data = $ws.create-account($user, %user-data);
                 content 'application/json', $data;
             }
         }
@@ -112,9 +106,10 @@ sub routes(Agrammon::Web::Service $ws) is export {
         }
 
         ### dataset
-        # implement/test
+
         post -> LoggedIn $user, 'create_dataset' {
-            request-body -> (:$name) {
+                ...
+            request-body -> (:$name!) {
                 my $data = $ws.create-dataset($user, $name);
                 content 'application/json', $data;
             }
@@ -122,31 +117,36 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
         # implement/test
         post -> LoggedIn $user, 'rename_dataset' {
-            request-body -> (:$name) {
-                my $data = $ws.rename-dataset($user, $name);
+                ...
+            request-body -> (:$old!, :$new!) {
+                my $data = $ws.rename-dataset($user, $old, $new);
                 content 'application/json', $data;
             }
         }
 
         # implement/test
         post -> LoggedIn $user, 'submit_dataset' {
-            request-body -> (:$name) {
-                my $data = $ws.create-dataset($user, $name);
+                ...
+            request-body -> (:$name!, :$mail) {
+                my $data = $ws.create-dataset($user, $name, $mail);
                 content 'application/json', $data;
             }
         }
+
         # implement/test
         post -> LoggedIn $user, 'load_dataset' {
-            request-body -> (:$name) {
+                ...
+            request-body -> (:$name!) {
                 my $data = $ws.load-dataset($user, $name);
                 content 'application/json', $data;
             }
         }
         
         # test/implement
-        post -> LoggedIn $user, 'store_dataset_comment', $name {
-            request-body -> (:$name) {
-                my $data = $ws.store-dataset-comment($user, $name);
+        post -> LoggedIn $user, 'store_dataset_comment' {
+                ...
+            request-body -> (:$name!, :$comment!) {
+                my $data = $ws.store-dataset-comment($user, $name!, $comment!);
                 content 'application/json', $data;
             }
         }
@@ -158,23 +158,26 @@ sub routes(Agrammon::Web::Service $ws) is export {
         }
 
         # test/implement
-        post -> LoggedIn $user, 'create_tag', $name {
-            request-body -> (:$name) {
+        post -> LoggedIn $user, 'create_tag' {
+                ...
+            request-body -> (:$name!) {
                 my $data = $ws.create-tag($user, $name);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'set_tag', $name {
-            request-body -> (:$name) {
-                my $data = $ws.set-tag($user, $name);
+        post -> LoggedIn $user, 'set_tag' {
+                ...
+            request-body -> (:$dataset!, :$tag!) {
+                my $data = $ws.set-tag($user, $dataset, $tag);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'remove_tag', $name {
+        post -> LoggedIn $user, 'remove_tag' {
+                ...
             request-body -> (:$name) {
                 my $data = $ws.remove-tag($user, $name);
                 content 'application/json', $data;
@@ -182,24 +185,27 @@ sub routes(Agrammon::Web::Service $ws) is export {
         }
 
         # test/implement
-        post -> LoggedIn $user, 'delete_tag', $name {
-            request-body -> (:$name) {
+        post -> LoggedIn $user, 'delete_tag' {
+                ...
+            request-body -> (:$name!) {
                 my $data = $ws.delete-tag($user, $name);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'rename_tag', $name {
-            request-body -> (:$name) {
-                my $data = $ws.rename-tag($user, $name);
+        post -> LoggedIn $user, 'rename_tag' {
+                ...
+            request-body -> (:$old!, :$new!) {
+                my $data = $ws.rename-tag($user, $old, $new);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'new_tag', $name {
-            request-body -> (:$name) {
+        post -> LoggedIn $user, 'new_tag' {
+                ...
+            request-body -> (:$name!) {
                 my $data = $ws.new-tag($user, $name);
                 content 'application/json', $data;
             }
@@ -208,65 +214,73 @@ sub routes(Agrammon::Web::Service $ws) is export {
         ### input/output
         
         # test/implement
-        post -> LoggedIn $user, 'get_input', $name {
-            request-body -> (:$name) {
-                my $data = $ws.get-input($user, $name);
+        post -> LoggedIn $user, 'get_input' {
+                ...
+            request-body -> (:$dataset!) {
+                my $data = $ws.get-input($user, $dataset);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'get_input_variables', $name {
-            request-body -> (:$name) {
-                my $data = $ws.get-input-variables($user, $name);
+        post -> LoggedIn $user, 'get_input_variables' {
+                ...
+            request-body -> (:$dataset!) {
+                my $data = $ws.get-input-variables($user, $dataset);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'get_output_variables', $name {
-            request-body -> (:$name) {
-                my $data = $ws.get-output-variables($user, $name);
+        post -> LoggedIn $user, 'get_output_variables' {
+                ...
+            request-body -> (:$dataset!) {
+                my $data = $ws.get-output-variables($user, $dataset);
                 content 'application/json', $data;
             }
         }
 
         ### data
         # test/implement
-        post -> LoggedIn $user, 'store_data', $name {
-            request-body -> (:$name) {
+        post -> LoggedIn $user, 'store_data' {
+                ...
+            request-body -> (:$dataset!, :$data!) {
                 my $data = $ws.store-data($user, $name);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'store_variable_comment', $name {
-            request-body -> (:$name) {
-                my $data = $ws.store-variable-comment($user, $name);
+        post -> LoggedIn $user, 'store_variable_comment' {
+                ...
+            request-body -> (:$name!, :$comment!) {
+                my $data = $ws.store-variable-comment($user, $name, $comment);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'delete_data', $name {
-            request-body -> (:$name) {
+        post -> LoggedIn $user, 'delete_data' {
+                ...
+            request-body -> (:$name!) {
                 my $data = $ws.delete-data($user, $name);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'load_branch_data', $name {
-            request-body -> (:$name) {
+        post -> LoggedIn $user, 'load_branch_data' {
+                ...
+            request-body -> (:$name!) {
                 my $data = $ws.load-branch-data($user, $name);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
-        post -> LoggedIn $user, 'store_branch_data', $name {
-            request-body -> (:$name) {
+        post -> LoggedIn $user, 'store_branch_data' {
+                ...
+            request-body -> (:$name!) {
                 my $data = $ws.store-branch-data($user, $name);
                 content 'application/json', $data;
             }
@@ -274,15 +288,17 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
         # test/implement
         post -> LoggedIn $user, 'rename_instances', $name {
-            request-body -> (:$name) {
-                my $data = $ws.renamne-instances($user, $name);
+                ...
+            request-body -> (:$old!, :$new!) {
+                my $data = $ws.renamne-instances($user, $old, $new);
                 content 'application/json', $data;
             }
         }
 
         # test/implement
         post -> LoggedIn $user, 'order_instances', $name {
-            request-body -> (:$name) {
+            ...
+            request-body -> (:$name!) {
                 my $data = $ws.order-instances($user, $name);
                 content 'application/json', $data;
             }

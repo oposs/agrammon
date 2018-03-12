@@ -13,7 +13,7 @@ my $cfg = Agrammon::Config.new;
 ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my $conninfo;
-if (%*ENV<TRAVIS>) {
+if %*ENV<TRAVIS> {
     my $db-host     = 'localhost';
     my $db-user     = 'postgres';
     my $db-password = '';
@@ -89,7 +89,7 @@ sub prepare-test-db {
     STATEMENT
 
     my @ids = $results.arrays.sort;
-    if (not @ids eqv [[0],[1],[2]]) {
+    if not @ids eqv [[0],[1],[2]] {
         my $sth = $db.prepare(q:to/STATEMENT/);
             INSERT INTO role (role_id, role_name)
             VALUES ($1, $2)

@@ -23,7 +23,7 @@ class Agrammon::Model::Module {
 
     method TWEAK {
         my $tax = $!taxonomy;
-        if ( $tax ~~ /^(.+) '::' (.+)$/ ) {
+        if $tax ~~ /^(.+) '::' (.+)$/ {
             $!parent = "$0";
             $!name   = "$1";
         }

@@ -9,7 +9,7 @@ plan 9;
 my $cfg-file = "t/test-data/agrammon.cfg.yaml";
 my $username = 'fritz.zaucker@oetiker.ch';
 
-if (%*ENV<TRAVIS>) {
+if %*ENV<TRAVIS> {
     skip-rest('Not set up for Travis yet');
     exit;
 }

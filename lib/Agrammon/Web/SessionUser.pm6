@@ -8,15 +8,4 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
         return defined self.username;
     }
 
-    method auth($username, $password) {
-        self.with-db: -> $db {
-            my %p = $db.query(q:to/PERS/, $username).hash;
-                SELECT pers_password AS password
-                  FROM pers
-                 WHERE pers_email = $1
-            PERS
-
-            return $password eq %p<password>;
-        }
-    }
 }
