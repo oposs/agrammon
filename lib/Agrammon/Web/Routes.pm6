@@ -86,7 +86,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
         # working
         post -> LoggedIn $user, 'get_datasets' {
             my $cfg = $ws.cfg;
-            dd $cfg;
             my $model-version = $cfg.model-variant; # model'SingleSHL';
             say "model-version=", $model-version;
             my $data = $ws.get-datasets($user, $model-version);
@@ -146,7 +145,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
         post -> LoggedIn $user, 'store_dataset_comment' {
                 ...
             request-body -> (:$name!, :$comment!) {
-                my $data = $ws.store-dataset-comment($user, $name!, $comment!);
+                my $data = $ws.store-dataset-comment($user, $name, $comment);
                 content 'application/json', $data;
             }
         }
@@ -245,8 +244,8 @@ sub routes(Agrammon::Web::Service $ws) is export {
         post -> LoggedIn $user, 'store_data' {
                 ...
             request-body -> (:$dataset!, :$data!) {
-                my $data = $ws.store-data($user, $name);
-                content 'application/json', $data;
+                my $ret = $ws.store-data($user, $dataset, $data);
+                content 'application/json', $ret;
             }
         }
 
