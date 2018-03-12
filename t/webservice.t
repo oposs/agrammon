@@ -1,6 +1,7 @@
 use v6;
 use Agrammon::Config;
 use Agrammon::Web::Service;
+use Agrammon::Web::SessionUser;
 
 use DB::Pg;
 use Test;
@@ -20,12 +21,9 @@ subtest "Setup" => {
     my $cfg = Agrammon::Config.new;
     ok $cfg.load($cfg-file), "Load config from file $cfg-file";
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(conninfo => $cfg.db-conninfo), 'Create DB::Pg object';
-    $user = Agrammon::DB::User.new;
-    ok $user.load($username), "Load user $username";
-    ok $ws = Agrammon::Web::Service.new(
-        cfg => $cfg,
-        user => $user),               "Created Web::Service object";
-    is $ws.user.username, $username,  "Web::Service has username=username";
+    $user = Agrammon::Web::SessionUser.new(:$username);
+    ok $user.load, "Load user $username";
+    ok $ws = Agrammon::Web::Service.new(:$cfg), "Created Web::Service object";
 }
 
 subtest "get-cfg()" => {
@@ -44,12 +42,11 @@ subtest "get-cfg()" => {
 
 subtest "get-datasets()" => {
     my $model-version = 'SingleSHL';
-    ok my $datasets = $ws.get-datasets($model-version), "Get $model-version datasets";
-    isa-ok $datasets, 'Agrammon::DB::Datasets', 'Got Agrammon::DB::Datasets object';
-    is $datasets.user.username, $username, "Datasets has username=$username";
-    my @collection = $datasets.collection;
-    isa-ok @collection[0], 'Agrammon::DB::Dataset', 'First dataset is Agrammon::DB::Dataset';
-    is @collection[0].name, 'TestSingle', 'First dataset has name TestSingle';
+    ok my $datasets = $ws.get-datasets($user, $model-version), "Get $model-version datasets";
+    isa-ok $datasets, 'Array', 'Got datasets Array';
+    isa-ok my $dataset = $datasets[0], 'List', 'Got dataset List';
+    is $dataset[0], 'TestSingle', 'First dataset has name TestSingle';
+    is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
 }
 
 todo "Not implemented yet", 6;
