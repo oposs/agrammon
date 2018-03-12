@@ -65,9 +65,10 @@ transactionally {
 
     subtest 'load()' => {
         ok my $new-user = Agrammon::DB::User.new, "Create another Agrammon::DB::User object";
-        ok $new-user.load($username),             "Load new user";
-        is $new-user.id, $uid,                    "Id is $uid";
-        is $new-user.username, $username,         "Username is $username";
+        throws-like {$new-user.load}, X::Agrammon::DB::User::NoUsername, "No username";
+        ok ($new-user.username = $username), "Set username to $username";
+        ok $new-user.load,                "Load new user";
+        is $new-user.username, $username, "Username is $username";
     }
 }
 
