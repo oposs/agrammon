@@ -92,6 +92,25 @@ class Agrammon::Model {
         $module-name.subst(/'::' <.ident> '::..'/, '', :g)
     }
 
+    method run(:%inputs!) {
+        my %outputs;
+        for @!evaluation-order -> $module {
+            my $tax = $module.taxonomy;
+            %outputs{$tax} = {};
+            my %module-input = %inputs{$tax};
+            my %module-technical = $module.technical.map({ .name => .value });
+            for $module.output {
+                my $env = Agrammon::Environment.new(
+                    input => %module-input,
+                    technical => %module-technical,
+                    output => %outputs
+                );
+                %outputs{$tax}{.name} = .formula.evaluate($env);
+            }
+        }
+        return %outputs;
+    }
+
     method dump {
         my Str $output;
         for @!evaluation-order.reverse {
