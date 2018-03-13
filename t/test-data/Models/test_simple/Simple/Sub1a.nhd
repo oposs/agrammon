@@ -52,7 +52,7 @@ taxonomy = Simple::Sub1a
     en = kg N/year
     de = kg N/Jahr
   ++formula
-    In(sub1Input1);
+    In(sub1aInput1);
 
   ++description
     sub1Output1
