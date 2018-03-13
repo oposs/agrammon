@@ -92,13 +92,16 @@ class Agrammon::Model {
         $module-name.subst(/'::' <.ident> '::..'/, '', :g)
     }
 
-    method run(:%inputs!) {
+    method run(:%input!, :%technical) {
         my %outputs;
         for @!evaluation-order -> $module {
             my $tax = $module.taxonomy;
             %outputs{$tax} = {};
-            my %module-input = %inputs{$tax};
+            my %module-input = %input{$tax};
             my %module-technical = $module.technical.map({ .name => .value });
+            with %technical{$tax} -> %override {
+                %module-technical ,= %override;
+            }
             for $module.output {
                 my $env = Agrammon::Environment.new(
                     input => %module-input,
