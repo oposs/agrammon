@@ -18,10 +18,6 @@ subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $filename) {
-    # FIX ME: the user info must come from the login process
-    #         or session handling
-    my $username = 'fritz.zaucker@oetiker.ch';
-
     # initialization
     my $cfg-file = $filename;
     my $cfg = Agrammon::Config.new;

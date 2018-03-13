@@ -46,7 +46,8 @@ sub routes(Agrammon::Web::Service $ws) is export {
                         user       => $username,
                         role       => $user.role.name,
                         last_login => $user.last-login,
-                        news       => 'No news',
+                        # TODO: news not implemented for the moment
+                        news       => Nil,
                         sudoUser   => 0
                     );
                 }
