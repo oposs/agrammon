@@ -58,8 +58,11 @@ class Agrammon::Model {
         }
     }
 
-    method load($module-name, :%pending, :%loaded) {
+    method load($module-name --> Nil) {
+        self!load-internal($module-name)
+    }
 
+    method !load-internal($module-name, :%pending, :%loaded) {
         # trying to load module while already loading it
         die X::Agrammon::Model::CircularModel.new(:module($module-name))
             if %pending{$module-name}:exists;
@@ -81,7 +84,7 @@ class Agrammon::Model {
                 !! $parent
                     ?? normalize($parent ~ '::' ~ $external-name)
                     !! $external-name;
-            self.load($include, :%pending, :%loaded);
+            self!load-internal($include, :%pending, :%loaded);
         }
         @!evaluation-order.push($module);
         %loaded{$module-name} = True;
