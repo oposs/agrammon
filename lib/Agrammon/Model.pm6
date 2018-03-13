@@ -24,6 +24,28 @@ class X::Agrammon::Model::CircularModel is Exception {
     }
 }
 
+role X::Agrammon::Model::BadFormula is Exception {
+    has $.module;
+    has $.output;
+    method !prefix() {
+        "Output '$!output' of module '$!module' "
+    }
+}
+
+class X::Agrammon::Model::InvalidInput does X::Agrammon::Model::BadFormula {
+    has $.input;
+    method message() {
+        self!prefix ~ "uses undeclared input '$!input'"
+    }
+}
+
+class X::Agrammon::Model::InvalidTechnical does X::Agrammon::Model::BadFormula {
+    has $.technical;
+    method message() {
+        self!prefix ~ "uses undeclared technical '$!technical'"
+    }
+}
+
 class Agrammon::Model {
     has IO::Path $.path;
     has Agrammon::Model::Module @.evaluation-order;
@@ -59,7 +81,8 @@ class Agrammon::Model {
     }
 
     method load($module-name --> Nil) {
-        self!load-internal($module-name)
+        self!load-internal($module-name);
+        self!sanity-check();
     }
 
     method !load-internal($module-name, :%pending, :%loaded) {
@@ -89,6 +112,29 @@ class Agrammon::Model {
         @!evaluation-order.push($module);
         %loaded{$module-name} = True;
         %pending{$module-name}:delete;
+    }
+
+    method !sanity-check() {
+        for @!evaluation-order -> $module {
+            my %known-input := set $module.input.map(*.name);
+            my %known-technical := set $module.technical.map(*.name);
+            for $module.output -> $output (:$formula, *%) {
+                with $formula.input-used.first(* !(elem) %known-input) {
+                    die X::Agrammon::Model::InvalidInput.new(
+                        module => $module.taxonomy,
+                        output => $output.name,
+                        input => $_
+                    );
+                }
+                with $formula.technical-used.first(* !(elem) %known-technical) {
+                    die X::Agrammon::Model::InvalidTechnical.new(
+                        module => $module.taxonomy,
+                        output => $output.name,
+                        technical => $_
+                    );
+                }
+            }
+        }
     }
 
     sub normalize($module-name) {

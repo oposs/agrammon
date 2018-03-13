@@ -1,0 +1,42 @@
+*** general ***
+
+author   = Jonathan Worthington
+date     = 2018-03-13
+taxonomy = InvalidTech
+
++short
+
+  Module using invalid technical.
+
+*** input ***
+
++monkeys
+  type = integer
+  validator = ge(0)
+  ++labels
+    en = Monkeys
+    de = Affen
+  ++units
+    en = -
+
+*** technical ***
+
++multiply
+  value = 20
+  ++units
+    en = monkeys/hour
+    de = affen/Stunde
+  ++description
+    tech1 parameter
+
+*** output ***
+
++result
+  print = 7
+  ++units
+    en = monkeys/hour
+    de = affen/Stunde
+  ++formula
+    Tech(add) * In(monkeys)
+  ++description
+    Final result
