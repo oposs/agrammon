@@ -1,0 +1,47 @@
+*** general ***
+
+author   = Jonathan Worthington
+date     = 2018-03-13
+taxonomy = Test::SubModule
+
++short
+
+  Sub module for testing with single instance models.
+
++description
+
+  Single instance test sub module.
+
+*** input ***
+
++monkeys
+  type = integer
+  validator = ge(0)
+  ++labels
+    en = Monkeys
+    de = Affen
+  ++units
+    en = -
+
+*** technical ***
+
++sub_multiply
+  value = 20
+  ++units
+    en = monkeys/hour
+    de = affen/Stunde
+  ++description
+    tech1 parameter
+
+*** output ***
+
++sub_result
+  print = 7
+  ++units
+    en = monkeys/hour
+    de = affen/Stunde
+  ++formula
+    Tech(sub_multiply) * In(monkeys)
+  ++description
+    Final result
+

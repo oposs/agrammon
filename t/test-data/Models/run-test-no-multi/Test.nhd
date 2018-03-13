@@ -1,0 +1,49 @@
+*** general ***
+
+author   = Jonathan Worthington
+date     = 2018-03-13
+taxonomy = Test
+
++short
+
+  For testing with single instance models.
+
++description
+
+  Single instance test.
+
+*** input ***
+
++final_add
+  type = integer
+  validator = ge(0)
+  ++labels
+    en = Final add
+  ++units
+    en = -
+
+*** technical ***
+
++final_multiply
+  value = 100
+  ++units
+    en = monkeys/hour
+    de = affen/Stunde
+  ++description
+    tech1 parameter
+
+*** external ***
+
++Test::SubModule
+
+*** output ***
+
++result
+  print = 7
+  ++units
+    en = monkeys/hour
+    de = affen/Stunde
+  ++formula
+    Val(sub_result, Test::SubModule) * Tech(final_multiply) + In(final_add)
+  ++description
+    Final result
