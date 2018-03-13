@@ -13,7 +13,7 @@ my $cfg = Agrammon::Config.new;
 ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my $conninfo;
-if (%*ENV<TRAVIS>) {
+if %*ENV<TRAVIS> {
     my $db-host     = 'localhost';
     my $db-user     = 'postgres';
     my $db-password = '';
@@ -64,10 +64,11 @@ transactionally {
     }
 
     subtest 'load()' => {
-        ok my $new-user = Agrammon::DB::User.new, "Create another Agrammon::DB::User object";
-        ok $new-user.load($username),             "Load new user";
-        is $new-user.id, $uid,                    "Id is $uid";
-        is $new-user.username, $username,         "Username is $username";
+        ok my $new-user = Agrammon::DB::User.new, "Create Agrammon::DB::User object without username";
+        throws-like {$new-user.load}, X::Agrammon::DB::User::NoUsername, "No username";
+        ok $new-user = Agrammon::DB::User.new(:$username), "Create another Agrammon::DB::User object with username";
+        ok $new-user.load,                "Load new user";
+        is $new-user.username, $username, "Username is $username";
     }
 }
 
@@ -89,7 +90,7 @@ sub prepare-test-db {
     STATEMENT
 
     my @ids = $results.arrays.sort;
-    if (not @ids eqv [[0],[1],[2]]) {
+    if not @ids eqv [[0],[1],[2]] {
         my $sth = $db.prepare(q:to/STATEMENT/);
             INSERT INTO role (role_id, role_name)
             VALUES ($1, $2)

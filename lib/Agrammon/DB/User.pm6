@@ -9,6 +9,11 @@ class X::Agrammon::DB::User::Exists is Exception {
     }
 }
 
+class X::Agrammon::DB::User::NoUsername is Exception {
+    method message() {
+        "Need username to load user from database!";
+    }
+}
 
 class Agrammon::DB::User does Agrammon::DB {
     has Int $.id;
@@ -45,9 +50,10 @@ class Agrammon::DB::User does Agrammon::DB {
         return $!id;
     }
 
-    method load(Str $username) {
+    method load {
+        die X::Agrammon::DB::User::NoUsername.new unless $!username;
         self.with-db: -> $db {
-            my $u = $db.query(q:to/USER/, $username).hash;
+            my $u = $db.query(q:to/USER/, $!username).hash;
                 SELECT pers_id         AS id,
                        pers_email      AS username,
                        pers_first      AS firstname,
@@ -79,7 +85,7 @@ class Agrammon::DB::User does Agrammon::DB {
             ROLE
             $!role = Agrammon::DB::Role.new(|%r);
         }
-        return 1;
+        return self;
     }
     
     method exists {
@@ -92,5 +98,24 @@ class Agrammon::DB::User does Agrammon::DB {
             return $uid;
         }
     }
-    
+
+    method auth($username, $password) {
+        self.with-db: -> $db {
+            my %p = $db.query(q:to/PERS/, $username).hash;
+                SELECT pers_password AS password
+                  FROM pers
+                 WHERE pers_email = $1
+            PERS
+
+            if  $password eq %p<password> {
+                $!username = $username;
+                self.load;
+            }
+            else {
+                $!username = Nil;
+            }
+        }
+        return self.logged-in;
+    }
+
 }

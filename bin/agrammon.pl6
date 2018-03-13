@@ -2,11 +2,13 @@
 
 use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
+use Cro::HTTP::Session::InMemory;
 use DB::Pg;
 
 use Agrammon::Config;
 use Agrammon::Model;
 use Agrammon::Web::Routes;
+use Agrammon::Web::SessionUser;
 
 my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location 
@@ -16,22 +18,15 @@ subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $filename) {
-    # FIX ME: the user info must come from the login process
-    #         or session handling
-    my $username = 'fritz.zaucker@oetiker.ch';
-
     # initialization
-    my $cfg-file = 't/test-data/agrammon.cfg.yaml';
+    my $cfg-file = $filename;
     my $cfg = Agrammon::Config.new;
     $cfg.load($cfg-file);
 
     PROCESS::<$AGRAMMON-DB-CONNECTION> = DB::Pg.new(conninfo => $cfg.db-conninfo);
                               
-    my $user = Agrammon::DB::User.new;
-    $user.load($username);
     my $ws = Agrammon::Web::Service.new(
-        cfg  => $cfg,
-        user => $user
+        cfg  => $cfg
     );
 
     # setup and start web server
@@ -43,6 +38,11 @@ multi sub MAIN('web', ExistingFile $filename) {
         application => routes($ws),
         after => [
             Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
+        ],
+        before => [
+            Cro::HTTP::Session::InMemory[Agrammon::Web::SessionUser].new(
+                expiration  => Duration.new(60 * 15),
+            )
         ]
     );
     $http.start;

@@ -17,26 +17,26 @@ my $ag-dataset  = 'Agrammon6Testing';
 # All in one line, each key=value pair terminated with ;
 # Fields missing are either set to '' (port, password) or stay as above
 my $pg-file = $*PROGRAM.parent.add('test-data/.secret/agrammon.pg');
-if ($pg-file.IO.e) {
+if $pg-file.IO.e {
     my $pg-data = chomp slurp($pg-file);
 
-    if ($pg-data ~~ /dbhost '=' (.+?) ';'/) {
+    if $pg-data ~~ /dbhost '=' (.+?) ';'/ {
         $db-host = $/[0];
     }
     $db-port = $pg-data ~~ /dbport '=' (.+?) ';'/ ?? $/[0] !! '';
 
-    if ($pg-data ~~ /dbuser '=' (.+?) ';'/) {
+    if $pg-data ~~ /dbuser '=' (.+?) ';'/ {
         $db-user = $/[0];
     }
     $db-password = $pg-data ~~ /dbpassword '=' (.+?) ';'/ ?? $/[0] !! '';
-    if ($pg-data ~~ /dbdatabase '=' (.+?) ';'/) {
+    if $pg-data ~~ /dbdatabase '=' (.+?) ';'/ {
         $db-database = $/[0];
     }
 
-    if ($pg-data ~~ /aguser '=' (.+?) ';'/) {
+    if $pg-data ~~ /aguser '=' (.+?) ';'/ {
         $ag-user = $/[0];
     }
-    if ($pg-data ~~ /agdataset '=' (.+?) ';'/) {
+    if $pg-data ~~ /agdataset '=' (.+?) ';'/ {
         $ag-dataset = $/[0];
     }
 #    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
