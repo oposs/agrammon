@@ -46,6 +46,22 @@ class X::Agrammon::Model::InvalidTechnical does X::Agrammon::Model::BadFormula {
     }
 }
 
+class X::Agrammon::Model::InvalidOutputSymbol does X::Agrammon::Model::BadFormula {
+    has $.from;
+    has $.symbol;
+    method message() {
+        self!prefix ~ "uses undeclared output '$!symbol' from $!from"
+    }
+}
+
+class X::Agrammon::Model::InvalidOutputModule does X::Agrammon::Model::BadFormula {
+    has $.from;
+    has $.symbol;
+    method message() {
+        self!prefix ~ "tries to use '$!symbol' from unknown module $!from (missing external?)"
+    }
+}
+
 class Agrammon::Model {
     has IO::Path $.path;
     has Agrammon::Model::Module @.evaluation-order;
@@ -114,11 +130,17 @@ class Agrammon::Model {
         %pending{$module-name}:delete;
     }
 
+    # Perform an abstract interpretation of the model, tracking outputs set,
+    # in order to check for unknown outputs and outputs used too early.
     method !sanity-check() {
+        my %known-outputs;
         for @!evaluation-order -> $module {
             my %known-input := set $module.input.map(*.name);
             my %known-technical := set $module.technical.map(*.name);
-            for $module.output -> $output (:$formula, *%) {
+            my $tax = $module.taxonomy;
+            %known-outputs{$tax} = {};
+
+            for $module.output -> $output (:$name, :$formula, *%) {
                 with $formula.input-used.first(* !(elem) %known-input) {
                     die X::Agrammon::Model::InvalidInput.new(
                         module => $module.taxonomy,
@@ -126,6 +148,7 @@ class Agrammon::Model {
                         input => $_
                     );
                 }
+
                 with $formula.technical-used.first(* !(elem) %known-technical) {
                     die X::Agrammon::Model::InvalidTechnical.new(
                         module => $module.taxonomy,
@@ -133,6 +156,29 @@ class Agrammon::Model {
                         technical => $_
                     );
                 }
+
+                for $formula.output-used -> $sym {
+                    with %known-outputs{$sym.module} -> %module-outputs {
+                        without %module-outputs{$sym.symbol} {
+                            die X::Agrammon::Model::InvalidOutputSymbol.new(
+                                module => $module.taxonomy,
+                                output => $output.name,
+                                from => $sym.module,
+                                symbol => $sym.symbol
+                            );
+                        }
+                    }
+                    else {
+                        die X::Agrammon::Model::InvalidOutputModule.new(
+                            module => $module.taxonomy,
+                            output => $output.name,
+                            from => $sym.module,
+                            symbol => $sym.symbol
+                        );
+                    }
+                }
+
+                %known-outputs{$tax}{$name} = True;
             }
         }
     }

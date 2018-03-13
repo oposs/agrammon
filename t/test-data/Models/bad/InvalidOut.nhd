@@ -1,0 +1,46 @@
+*** general ***
+
+author   = Jonathan Worthington
+date     = 2018-03-13
+taxonomy = InvalidOut
+
++short
+
+  Module using invalid out.
+
+*** input ***
+
++monkeys
+  type = integer
+  validator = ge(0)
+  ++labels
+    en = Monkeys
+    de = Affen
+  ++units
+    en = -
+
+*** technical ***
+
++multiply
+  value = 20
+  ++units
+    en = monkeys/hour
+    de = affen/Stunde
+  ++description
+    tech1 parameter
+
+*** external ***
+
++InvalidOut::Sub
+
+*** output ***
+
++result
+  print = 7
+  ++units
+    en = monkeys/hour
+    de = affen/Stunde
+  ++formula
+    Tech(multiply) * In(monkeys) + Val(su_result, InvalidOut::Sub)
+  ++description
+    Final result

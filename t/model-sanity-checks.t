@@ -18,4 +18,20 @@ throws-like
     output => 'result',
     technical => 'add';
 
+throws-like
+    { Agrammon::Model.new(path => $path).load('InvalidOut') },
+    X::Agrammon::Model::InvalidOutputSymbol,
+    module => 'InvalidOut',
+    output => 'result',
+    from => 'InvalidOut::Sub',
+    symbol => 'su_result';
+
+throws-like
+    { Agrammon::Model.new(path => $path).load('InvalidOutModule') },
+    X::Agrammon::Model::InvalidOutputModule,
+    module => 'InvalidOutModule',
+    output => 'result',
+    from => 'Some::Unknown::Module',
+    symbol => 'some_sym';
+
 done-testing;
