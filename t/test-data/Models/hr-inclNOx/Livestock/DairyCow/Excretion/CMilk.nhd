@@ -6,14 +6,16 @@ taxonomy = Livestock::DairyCow::Excretion::CMilk
 
 +short
 
-Just a short descritption
-But maybe may lines
+Computes the correction factor for the annual N excretion of a dairy
+cow as a function of the milk yield.
 
 +description
 
-Longer description. May span many lines.
-Longer description. May span many lines.
-Longer description. May span many lines.
+ This process describes the relationship between the milk yield and the N excretion. While the N excretion decreases by 10% per 1000 kg less milk yield below the standard milk yield, nitrogen excretion increases by 5% per 1000 kg more milk yield above the standard milk yield. This correction factor was taken from GRUDAF 2009. It was originally derived from excretion calculations for different milk yields ranging from 4000 to 10000 kg year-1. The lower increase of the nitrogen excretion above 6500 kg results from the increasing proportion of concentrate necessary to cover the energy requirement for yields above 6500 kg. It is thus increasingly possible to reduce the unbalance of energy and protein existing in virtually all rations with a high proportion of roughage.
+        \subsubsection{References:}
+Flisch R, Sinaj S, Charles R, Richner W (Eds.) 2009. Grundlagen für die die Düngung im
+Acker- und Futterbau 2009 (GRUDAF), Agrarforschung 16.2.
+
 
 *** input ***
 
@@ -85,4 +87,3 @@ Longer description. May span many lines.
   
   return (1 + ((In(milk_yield)
                - Tech(standard_milk_yield))/1000) * $a);
-

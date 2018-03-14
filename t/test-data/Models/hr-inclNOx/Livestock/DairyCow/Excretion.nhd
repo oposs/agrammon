@@ -87,7 +87,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** technical ***
 
 +standard_N_excretion
-  value = 115
+  value = 112
   ++units 
     en = kg N/year
     de = kg N/Jahr
@@ -97,7 +97,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Flisch et al. (2009).
 
 +share_Nsol
-  value = 0.6
+  value = 0.55
   ++units
     en  = -
   ++description
@@ -112,13 +112,10 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Proportion of N (calculated from feed ration correction) excreted as
     Nsol. Derived from e.g. Peterson et al. (1998).
 
-
 *** external ***
 
 +Excretion::CMilk
 +Excretion::CFeed
-
-
 
 *** output ***
 
@@ -144,9 +141,20 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     de = kg N/Jahr
     fr = kg N/an
   ++formula
+    ( (In(inp_n_excretion) eq 'default')? Tech(standard_N_excretion):In(inp_n_excretion) ) *
+    Val(cmilk_yield, Excretion::CMilk) *
+    Val(c_feed_ration, Excretion::CFeed);
+  ++description
+    Annual mean total N excreted per animal. 
+
++n_excretion_test
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++formula
     ( (In(inp_n_excretion) eq 'default')? Tech(standard_N_excretion):In(inp_n_excretion) )
-    * Val(cmilk_yield, Excretion::CMilk)
-    * Val(c_feed_ration, Excretion::CFeed);
   ++description
     Annual mean total N excreted per animal. 
 
@@ -164,14 +172,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 #     ( Out(n_excretion) - Tech(standard_N_excretion) * In(dairy_cows)
 #                                                     * Val(cmilk_yield, Excretion::CMilk) 
 #     ) * Tech(feed_influence_on_Nsol);
-     (Tech(share_Nsol) * ( (In(inp_n_excretion) eq 'default')
-            ? Tech(standard_N_excretion)
-            : In(inp_n_excretion) )
-       * Val(cmilk_yield, Livestock::DairyCow::Excretion::CMilk)
+     (Tech(share_Nsol) * ( (In(inp_n_excretion) eq 'default') ? Tech(standard_N_excretion) : In(inp_n_excretion) )
+       * Val(cmilk_yield, Excretion::CMilk)
        * In(dairy_cows)
      ) +
-     ( Out(n_excretion) - Tech(standard_N_excretion) * In(dairy_cows)
-            * Val(cmilk_yield, Livestock::DairyCow::Excretion::CMilk)
+     ( Out(n_excretion) - ( (In(inp_n_excretion) eq 'default') ? Tech(standard_N_excretion) : In(inp_n_excretion) ) * In(dairy_cows)
+            * Val(cmilk_yield, Excretion::CMilk)
      ) * Tech(feed_influence_on_Nsol);
   ++description
     Annual soluble N excreted by a specified number of animals. 

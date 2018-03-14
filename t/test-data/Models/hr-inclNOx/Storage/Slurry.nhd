@@ -9,7 +9,7 @@ gui       = Storage::Slurry,Hofdüngerlager::Gülle,Stockage::Lisier,Storage::Sl
 +short
 
  Describes a single liquid manuare storage.
-	
+        
 +description 
 
   This Process calculates the annual NH3 emission from a single liquid manuare
@@ -218,7 +218,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
   ++description
     Annual NH3 emission from slurry storage.
   ++formula
-    Val(ef_liquid, Slurry::EFLiquid) * Out(surface_area) * Out(c_mixing) 
+    Val(ef_liquid, Slurry::EFLiquid) * Out(surface_area) * Out(c_mixing)
     * Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;
 
 +volume
@@ -228,8 +228,3 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     Volume of Storage.
   ++formula
     In(volume)
-
-
-    
-    
-

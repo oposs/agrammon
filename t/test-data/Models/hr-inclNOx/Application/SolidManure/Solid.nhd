@@ -10,7 +10,7 @@ taxonomy = Application::SolidManure::Solid
  Computes the annual NH3 emission from solid manure application.
 
  Attention: simplified model based on total N output from storage!!!
-	
+
 +description 
 
 This process computes the annual average NH3 emission from solid
