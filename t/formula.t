@@ -1021,4 +1021,51 @@ subtest {
     is $result-false, 5, 'Correct result when if condition is false';
 }, 'The not operator';
 
+subtest {
+    my $f = parse-formula('default { return In(agricultural_area); }', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+        input => { agricultural_area => 142 }
+    ));
+    is $result, 142, 'Correct result from evaluation';
+}, 'default { } block just runs the code within it';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
+        my $result;
+        given (In(agricultural_area)) {
+            when 0 {
+                $result = "nothing";
+            }
+            when 1 {
+                $result = "something";
+            }
+            default {
+                $result = "lots";
+            }
+            $result = "bug";
+        }
+        return $result;
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result-first = $f.evaluate(Agrammon::Environment.new(
+        input => { agricultural_area => 0 }
+    ));
+    is $result-first, "nothing", 'Correct result from first when';
+    my $result-second = $f.evaluate(Agrammon::Environment.new(
+        input => { agricultural_area => 1 }
+    ));
+    is $result-second, "something", 'Correct result from second when';
+    my $result-default = $f.evaluate(Agrammon::Environment.new(
+        input => { agricultural_area => 2 }
+    ));
+    is $result-default, "lots", 'Correct result from second when';
+}, 'when/default blocks have correct behavior in leaving given';
+
 done-testing;
