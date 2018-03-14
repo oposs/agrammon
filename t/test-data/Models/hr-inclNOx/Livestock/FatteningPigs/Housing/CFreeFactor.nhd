@@ -2,7 +2,7 @@
 
 author   = Agrammon Group
 date     = 2008-02-19
-taxonomy = Livestock::FatteningPigs::Housing::Type
+taxonomy = Livestock::FatteningPigs::Housing::CFreeFactor
 
 +short
 

@@ -2,7 +2,7 @@
 
 author   = Agrammon Group
 date     = 2008-04-18
-taxonomy = Livestock::FattenintPigs::Housing::Type::Outdoor
+taxonomy = Livestock::FatteningPigs::Housing::Type::Outdoor
 
 +short
 
