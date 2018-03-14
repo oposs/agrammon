@@ -28,6 +28,10 @@ class X::Agrammon::Formula::ReturnException is Exception {
     has $.payload is default(Nil);
 }
 
+class X::Agrammon::Formula::SucceedException is Exception {
+    has $.payload is default(Nil);
+}
+
 class Agrammon::Formula::StatementList does Agrammon::Formula {
     has Agrammon::Formula @.statements;
 
@@ -131,11 +135,61 @@ class Agrammon::Formula::Given does Agrammon::Formula {
     }
 
     method evaluate(Agrammon::Environment $env) {
-        $!block.evaluate($env, topic => $!topic.evaluate($env))
+        return $!block.evaluate($env, topic => $!topic.evaluate($env));
+        CATCH {
+            when X::Agrammon::Formula::SucceedException {
+                return .payload;
+            }
+        }
     }
 }
 
 class Agrammon::Formula::When does Agrammon::Formula {
+    has Agrammon::Formula $.test;
+    has Agrammon::Formula::Block $.block;
+
+    method input-used() {
+        self!merge-inputs: $!test.input-used, $!block.input-used
+    }
+
+    method technical-used() {
+        self!merge-technicals: $!test.technical-used, $!block.technical-used
+    }
+
+    method output-used() {
+        self!merge-outputs: $!test.output-used, $!block.output-used
+    }
+
+    method evaluate(Agrammon::Environment $env) {
+        if $!test.evaluate($env) ~~ $env.scope.lookup('$_') {
+            die X::Agrammon::Formula::SucceedException.new:
+                payload => $!block.evaluate($env);
+        }
+    }
+}
+
+class Agrammon::Formula::Default does Agrammon::Formula {
+    has Agrammon::Formula $.block;
+
+    method input-used() {
+        self!merge-inputs: $!block.input-used
+    }
+
+    method technical-used() {
+        self!merge-technicals: $!block.technical-used
+    }
+
+    method output-used() {
+        self!merge-outputs: $!block.output-used
+    }
+
+    method evaluate(Agrammon::Environment $env) {
+        die X::Agrammon::Formula::SucceedException.new:
+            payload => $!block.evaluate($env);
+    }
+}
+
+class Agrammon::Formula::WhenMod does Agrammon::Formula {
     has Agrammon::Formula $.test;
     has Agrammon::Formula $.then;
 

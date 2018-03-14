@@ -54,6 +54,14 @@ grammar Agrammon::Formula::Parser {
         <block>
     }
 
+    rule statement_control:sym<when> {
+        'when' [ <EXPR> <block> || <.panic('Malformed when')> ]
+    }
+
+    rule statement_control:sym<default> {
+        'default' <block>
+    }
+
     rule block {
         [ '{' || <.panic('Expected block')> ]
         <statementlist>

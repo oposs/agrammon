@@ -29,7 +29,7 @@ class Agrammon::Formula::Builder {
 
     method statement_modifier:sym<when>($/) {
         make -> $statement {
-            Agrammon::Formula::When.new(
+            Agrammon::Formula::WhenMod.new(
                 test => $<EXPR>.ast,
                 then => $statement
             )
@@ -80,6 +80,20 @@ class Agrammon::Formula::Builder {
             block => $<block>.ast
         );
     }
+
+    method statement_control:sym<when>($/) {
+        make Agrammon::Formula::When.new(
+            test => $<EXPR>.ast,
+            block => $<block>.ast
+        )
+    }
+
+    method statement_control:sym<default>($/) {
+        make Agrammon::Formula::Default.new(
+            block => $<block>.ast
+        )
+    }
+
 
     method block($/) {
         make Agrammon::Formula::Block.new(
