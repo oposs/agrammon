@@ -79,6 +79,27 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Emission rate for free range poultry, based on Menzi et al. (1997): 70% of TAN or 28% of Ntot
 
++er_n2_free_range
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Not considerd relevant
+
++er_no_free_range
+  value = 0.0055
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Stehfest, Bouwman 2006
+
++er_n2o_free_range
+  value = 0.02
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
+
 +free_range_days_layers
   value = 280
   ++units  
@@ -240,6 +261,40 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Annual free_range NH3 emission from poultry (grazing). 
   ++formula
     Out(tan_excr_free_range) * Tech(er_free_range);
+
++n2_nfree_range
+  print = 5d
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual free_range N2 emission from poultry (grazing). 
+  ++formula
+    Out(n_excr_free_range) * Tech(er_n2_free_range);
+
++no_nfree_range
+  print = 5d
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual free_range NO emission from poultry (grazing). 
+  ++formula
+    Out(n_excr_free_range) * Tech(er_no_free_range);
+
++n2o_nfree_range
+  print = 5d
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual free_range N2O emission from poultry (grazing). 
+  ++formula
+    Out(n_excr_free_range) * Tech(er_n2o_free_range);
+
 
 +n_remain_free_range
   print = 7d

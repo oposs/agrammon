@@ -38,92 +38,99 @@ und Futterbau 2001. Agrarforschung 8:1-80.
  *** input ***
 
 +share_hay_summer
-  models = SHL
-  type = percent
-  default_calc = 0
-  ++labels 
-    en = Proportion of animals receiving hay in summer
-    de = Anteil der Tiere, die im Sommer Heu erhalten
-    fr = Proportion d'animaux recevant du foin en été
-  ++units 
-    en = %
-  ++description
+   models = SHL
+   type = percent
+   default_calc = 0
+   ++labels 
+     en = Proportion of animals receiving hay in summer
+     de = Anteil der Tiere, die im Sommer Heu erhalten
+     fr = Proportion d'animaux recevant du foin en été
+   ++units 
+     en = %
+   ++description
      Proportion of animals receiving hay in summer.
-  ++help
-    +++en
+   ++help
+     +++en
         <p>Standard value for Switzerland: 0%</p>
-    +++de
+     +++de
         <p>Vorschlag für Standardwert: 0%</p>
-    +++fr
+     +++fr
         <p>Proposition de valeur standard: 0%</p>
  
 
 +share_maize_silage_summer
-  models = SHL
-  type = percent
-  default_calc = 0
-  ++labels 
-    en = Proportion of animals receiving maize silage in summer
-    de = Anteil der Tiere, die im Sommer Maissilage erhalten
-    fr = Proportion d'animaux recevant de l'ensilage de maïs en été
-  ++units 
-    en = %
-  ++description
+   models = SHL
+   type = percent
+   default_calc = 0
+   ++labels 
+     en = Proportion of animals receiving maize silage in summer
+     de = Anteil der Tiere, die im Sommer Maissilage erhalten
+     fr = Proportion d'animaux recevant de l'ensilage de maïs en été
+   ++units 
+     en = %
+   ++description
      Proportion of animals receiving maize silage in summer.
-  ++help
-    +++en
+   ++help
+     +++en
         <p>Standard value for Switzerland: 0%</p>
-    +++de
+     +++de
         <p>Vorschlag für Standardwert: 0%</p>
-    +++fr
+     +++fr
         <p>Proposition de valeur standard: 0%</p>
  
 
 +share_maize_pellets_summer
-  models = SHL
-  type = percent
-  default_calc = 0
-  ++labels 
-    en = Proportion of animals receiving maize pellets in summer
-    de = Anteil der Tiere, die im Sommer Maiswürfel erhalten
-    fr = Proportion d'animaux recevant des pellets de maïs en été
-  ++units 
-    en = %
-  ++description
+   models = SHL
+   type = percent
+   default_calc = 0
+   ++labels 
+     en = Proportion of animals receiving maize pellets in summer
+     de = Anteil der Tiere, die im Sommer Maiswürfel erhalten
+     fr = Proportion d'animaux recevant des pellets de maïs en été
+   ++units 
+     en = %
+   ++description
      Proportion of animals receiving maize pellets in summer.
-  ++help
-    +++en
+   ++help
+     +++en
         <p>Standard value for Switzerland: 0%</p>
-    +++de
+     +++de
         <p>Vorschlag für Standardwert: 0%</p>
-    +++fr
+     +++fr
         <p>Proposition de valeur standard: 0%</p>
  
 
-
 *** technical ***
 
++c_default_grass
+   value = 0.07
+   ++units 
+     en = -
+   ++description
+     Modification of annual N excretion by adding hay to the standard 
+     ration during the summer feeding period.
+
 +c_hay_summer
-  value = -0.05
-  ++units 
-    en = -
-  ++description
+   value = -0.03
+   ++units 
+     en = -
+   ++description
      Modification of annual N excretion by adding hay to the standard 
      ration during the summer feeding period.
 
 +c_maize_silage_summer
-  value = -0.08
-  ++units 
-    en = -
-  ++description
+   value = -0.01
+   ++units 
+     en = -
+   ++description
      Modification of annual N excretion by adding maize silage 
      to the standard ration during summer feeding period.
 
 +c_maize_pellets_summer	
-  value = -0.04
-  ++units 
-    en = -
-  ++description
+   value = -0.01
+   ++units 
+     en = -
+   ++description
      Modification of annual N excretion by adding maize pellets 
      to the standard ration during summer feeding period.
 
@@ -132,12 +139,12 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 *** output ***
 
 +share_hay_summer
-  print = 22
-  ++units 
-    en = -
-  ++description
+ print = 22
+ ++units 
+   en = -
+ ++description
    Share
-  ++formula
+ ++formula
    if (In(share_hay_summer) > 1) {
       return (In(share_hay_summer)/100);
    } else {
@@ -145,12 +152,12 @@ und Futterbau 2001. Agrarforschung 8:1-80.
    };
 
 +share_maize_silage_summer
-  print = 22
-  ++units 
-    en = -
-  ++description
-    Share
-  ++formula
+ print = 22
+ ++units 
+   en = -
+ ++description
+   Share
+ ++formula
    if (In(share_maize_silage_summer) > 1) {
       return (In(share_maize_silage_summer)/100);
    } else {
@@ -158,17 +165,33 @@ und Futterbau 2001. Agrarforschung 8:1-80.
    };
 
 +share_maize_pellets_summer
-  print = 22
-  ++units 
-    en = -
-  ++description
-    Share
-  ++formula
+ print = 22
+ ++units 
+   en = -
+ ++description
+   Share
+ ++formula
    if (In(share_maize_pellets_summer) > 1) {
       return (In(share_maize_pellets_summer)/100);
    } else {
       return (In(share_maize_pellets_summer));
    };
+
++share_grass_only_summer
+ print = 22
+ ++units 
+   en = -
+ ++description
+   Share
+ ++formula
+  if ( Out(share_hay_summer) >= Out(share_maize_silage_summer) && Out(share_hay_summer) >= Out(share_maize_pellets_summer)) {
+     return( 1 - Out(share_hay_summer) );
+  } elsif ( Out(share_maize_silage_summer) >= Out(share_hay_summer) && Out(share_maize_silage_summer) >= Out(share_maize_pellets_summer) ) {
+     return( 1 - Out(share_maize_silage_summer) );
+  }else{
+    return (1 - Out(share_maize_pellets_summer));
+  }
+
 
 +c_summer_ration
   print = 15
@@ -179,5 +202,6 @@ und Futterbau 2001. Agrarforschung 8:1-80.
   ++formula
     Tech(c_hay_summer) * Out(share_hay_summer) +
     Tech(c_maize_silage_summer) * Out(share_maize_silage_summer) +
-    Tech(c_maize_pellets_summer)  * Out(share_maize_pellets_summer);
+    Tech(c_maize_pellets_summer)  * Out(share_maize_pellets_summer) +
+    Tech(c_default_grass) * Out(share_grass_only_summer) ;
 

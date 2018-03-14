@@ -32,23 +32,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** technical ***
 
-+d_summer
-  value = 0.55
-  ++units 
-    en = -
-  ++description
-    Duration of summer feeding period (200 days). 
-    Average for different altitude zones.
-
-+d_winter
-  value = 0.45
-  ++units 
-    en = -
-  ++description
-    Duration of the winter feeding period (165 days).
-    Average for different altitude zones.
-	
-
 *** external ***
 
 +CFeedSummerRatio
@@ -65,9 +48,9 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Feed ration correction factor for annual N excretion.
   ++formula
           1 + 
-	 (Tech(d_summer) * Val(c_summer_ration, CFeedSummerRatio) + 
-          Tech(d_winter) * Val(c_winter_ration, CFeedWinterRatio) +
-          Tech(d_summer) * Val(c_concentrates_summer, CConcentrates) +
-          Tech(d_winter) * Val(c_concentrates_winter, CConcentrates)
+	 (Val(c_summer_ration, CFeedSummerRatio) + 
+          Val(c_winter_ration, CFeedWinterRatio) +
+          Val(c_concentrates_summer, CConcentrates) +
+          Val(c_concentrates_winter, CConcentrates)
 	  );
 

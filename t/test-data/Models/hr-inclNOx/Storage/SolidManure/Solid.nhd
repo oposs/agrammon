@@ -211,55 +211,9 @@ taxonomy = Storage::SolidManure::Solid
   ++description 
   The value has been derived from the Eager workshop, January 2008: (additional explanation following)
 
-+er_n2_pigs
-  value = 0.02
-  ++units 
-    en = -
-  ++description 
-  The value has been derived from the Eager workshop, January 2008: (additional explanation following)
-
-+er_no_pigs
-  value = 0.002
-  ++units 
-    en = -
-  ++description 
-  The value has been derived from the Eager workshop, January 2008: (additional explanation following)
-
-+er_n2o_pigs
-  value = 0.002
-  ++units 
-    en = -
-  ++description 
-  The value has been derived from the Eager workshop, January 2008: (additional explanation following)
-
-
 +er_tan_cattle_other
   unit = -
   value = 0.3 
-  ++units 
-    en = -
-  ++description 
-  The value has been derived from the Eager workshop, January 2008: (additional explanation following)
-
-+er_n2_cattle_other
-  unit = -
-  value = 0.05 
-  ++units 
-    en = -
-  ++description 
-  The value has been derived from the Eager workshop, January 2008: (additional explanation following)
-
-+er_no_cattle_other
-  unit = -
-  value = 0.01
-  ++units 
-    en = -
-  ++description 
-  The value has been derived from the Eager workshop, January 2008: (additional explanation following)
-
-+er_n2o_cattle_other
-  unit = -
-  value = 0.01
   ++units 
     en = -
   ++description 
@@ -444,40 +398,6 @@ taxonomy = Storage::SolidManure::Solid
     Tech(er_tan_cattle_other) * Out(tan_into_storage_dairycows_cattle) * Out(c_covered_basin_cattle) 
     * Out(c_free_factor_storage_solidmanure_cattle) ;
 
-+n2_nsolid_dairycows_cattle
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from solid storage.
-  ++formula
-    Tech(er_n2_cattle_other) * Out(n_into_storage_dairycows_cattle);
-
-+no_nsolid_dairycows_cattle
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NO emission from solid storage.
-  ++formula
-    Tech(er_no_cattle_other) * Out(n_into_storage_dairycows_cattle);
-
-+n2o_nsolid_dairycows_cattle
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2O emission from solid storage.
-  ++formula
-    Tech(er_n2o_cattle_other) * Out(n_into_storage_dairycows_cattle);
-
-
 +nh3_nsolid_pigs
   print = 1a
   ++units  
@@ -490,41 +410,6 @@ taxonomy = Storage::SolidManure::Solid
     Tech(er_tan_pigs) * Out(tan_into_storage_pigs)* Out(c_covered_basin_pig) 
     * Out(c_free_factor_storage_solidmanure_pig);
 
-
-+n2_nsolid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from solid storage.
-  ++formula
-    Tech(er_n2_pigs) * Out(n_into_storage_pigs);
-
-+no_nsolid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from solid storage.
-  ++formula
-    Tech(er_no_pigs) * Out(n_into_storage_pigs);
-
-+n2o_nsolid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2O emission from solid storage.
-  ++formula
-    Tech(er_n2o_pigs) * Out(n_into_storage_pigs);
-
-
 +nh3_nsolid_horses_otherequides_smallruminants
   print = 1a
   ++units  
@@ -536,40 +421,6 @@ taxonomy = Storage::SolidManure::Solid
   ++formula
     Tech(er_tan_cattle_other) * Out(tan_into_storage_horses_otherequides_smallruminants)
     * Out(c_free_factor_storage_solidmanure_cattle); 
-
-
-+n2_nsolid_horses_otherequides_smallruminants
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from solid storage.
-  ++formula
-    Tech(er_n2_cattle_other) * Out(n_into_storage_horses_otherequides_smallruminants);
-
-+no_nsolid_horses_otherequides_smallruminants
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from solid storage.
-  ++formula
-    Tech(er_no_cattle_other) * Out(n_into_storage_horses_otherequides_smallruminants);
-
-+n2o_nsolid_horses_otherequides_smallruminants
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2O emission from solid storage.
-  ++formula
-    Tech(er_n2o_cattle_other) * Out(n_into_storage_horses_otherequides_smallruminants);
 
 
 +nh3_nsolid
@@ -647,6 +498,7 @@ taxonomy = Storage::SolidManure::Solid
     Annual N flux out of storage for manure application.
   ++formula
     Val(n_into_storage_solid_dairycows_cattle, ::Livestock) -
+    Val(nxox_nsolid_dairycows_cattle, ::Livestock) -
     Out(nh3_nsolid_dairycows_cattle);
 
 +tan_into_application_dairycows_cattle
@@ -658,9 +510,10 @@ taxonomy = Storage::SolidManure::Solid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(tan_into_storage_solid_dairycows_cattle, ::Livestock)
-     -  Out(nh3_nsolid_dairycows_cattle)
-     -  Out(immobilization_dairycows_cattle);;
+    Val(tan_into_storage_solid_dairycows_cattle, ::Livestock) -
+    Val(nxox_nsolid_dairycows_cattle, ::Livestock) -
+    Out(nh3_nsolid_dairycows_cattle) -
+    Out(immobilization_dairycows_cattle);
 
 +n_into_application_pigs
   print = 3a
@@ -672,6 +525,7 @@ taxonomy = Storage::SolidManure::Solid
     Annual N flux out of storage for manure application.
   ++formula
     Val(n_into_storage_solid_pigs, ::Livestock) -
+    Val(nxox_nsolid_pigs, ::Livestock) -
     Out(nh3_nsolid_pigs)
 
 +tan_into_application_pigs
@@ -683,9 +537,10 @@ taxonomy = Storage::SolidManure::Solid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(tan_into_storage_solid_pigs, ::Livestock) 
-      -  Out(nh3_nsolid_pigs) 
-      -  Out(immobilization_pigs);
+    Val(tan_into_storage_solid_pigs, ::Livestock) -
+    Val(nxox_nsolid_pigs, ::Livestock) -
+    Out(nh3_nsolid_pigs) -
+    Out(immobilization_pigs);
 
 +n_into_application_horses_otherequides_smallruminants
   print = 3a
@@ -696,8 +551,9 @@ taxonomy = Storage::SolidManure::Solid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) 
-    -  Out(nh3_nsolid_horses_otherequides_smallruminants);
+    Val(n_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) - 
+    Val(nxox_nsolid_equides_other, ::Livestock) -
+    Out(nh3_nsolid_horses_otherequides_smallruminants);
 
 +tan_into_application_horses_otherequides_smallruminants
   print = 3a
@@ -708,9 +564,10 @@ taxonomy = Storage::SolidManure::Solid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(tan_into_storage_solid_horses_otherequides_smallruminants, ::Livestock)
-    -  Out(nh3_nsolid_horses_otherequides_smallruminants)
-    -  Out(immobilization_horses_otherequides_smallruminants);
+    Val(tan_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) - 
+    Val(nxox_nsolid_equides_other, ::Livestock) -
+    Out(nh3_nsolid_horses_otherequides_smallruminants) -
+    Out(immobilization_horses_otherequides_smallruminants);
 
 
 +n_into_application_manure
@@ -722,7 +579,9 @@ taxonomy = Storage::SolidManure::Solid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_solid, ::Livestock) -  Out(nh3_nsolid);
+    Val(n_into_storage_solid, ::Livestock) -
+    Val(nxox_nsolid, ::Livestock) -
+    Out(nh3_nsolid);
 
 +tan_into_application
   print = 4a
@@ -733,8 +592,10 @@ taxonomy = Storage::SolidManure::Solid
   ++description
     Annual N flux as TAN out of storage for manure application.
   ++formula
-    Val(tan_into_storage_solid, ::Livestock) -  Out(nh3_nsolid)
-    - Out(immobilization );
+    Val(tan_into_storage_solid, ::Livestock) -
+    Val(nxox_nsolid, ::Livestock) -
+    Out(nh3_nsolid) -
+    Out(immobilization );
 
 
     

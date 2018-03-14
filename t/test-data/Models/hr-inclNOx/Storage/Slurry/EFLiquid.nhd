@@ -341,7 +341,6 @@ T. Kupper).
      return $TE->{'ef_pig_'.In(cover_type)};
  
 +ef_liquid
-  unit  =  kg N /m2 /a
   print = 15
   ++units  
     en =  kg N/m2/year

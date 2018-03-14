@@ -69,66 +69,6 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Val(nh3_nsolid, Storage::SolidManure);
 
 
-+n2_nstorage
-  format= %.0f
-  print = NOxFlux
-  ++labels 
-    sort = 802
-    en = Storage N2-Emissions
-    de = Hofdüngerlagerung N2-Emission
-    fr = Emission de N2 Stockage des engrais de ferme 
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NO emission from storage.
-  ++formula
-    Sum(n2_nliquid, Storage::Slurry) + 
-    Val(n2_nsolid, Storage::SolidManure);
-
-+no_nstorage
-  format= %.0f
-  print = NOxFlux
-  ++labels 
-    sort = 802
-    en = Storage NO-Emissions
-    de = Hofdüngerlagerung NO-Emission
-    fr = Emission de NO Stockage des engrais de ferme 
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NO emission from storage.
-  ++formula
-    Sum(no_nliquid, Storage::Slurry) + 
-    Val(no_nsolid, Storage::SolidManure);
-
-
-+n2o_nstorage
-  format= %.0f
-  print = NOxFlux
-  ++labels 
-    sort = 802
-    en = Storage N2O-Emissions
-    de = Hofdüngerlagerung N2O-Emission
-    fr = Emission de N2O Stockage des engrais de ferme 
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from storage.
-  ++formula
-    Sum(n2o_nliquid, Storage::Slurry) + 
-    Val(n2o_nsolid, Storage::SolidManure);
-
-
-    
-
-
-
 +nh3_nstorage_solid
   format= %.0f
   print = LivestockSummaryPlus
@@ -218,10 +158,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for application.
   ++formula
-    if(Val(n_into_storage_liquid, Livestock) <  Sum(nh3_nliquid, Storage::Slurry)  )
+    if(Val(n_into_storage_liquid, Livestock) < Sum(nh3_nliquid, Storage::Slurry)  )
       {0} 
     else 
-      {Val(n_into_storage_liquid, Livestock) - Sum(nh3_nliquid, Storage::Slurry)};
+      { Val(n_into_storage_liquid, Livestock) -
+	Val(nxox_nliquid, Livestock) -
+        Sum(nh3_nliquid, Storage::Slurry)
+	};
 
  +tan_into_application_liquid
   print = 4x
@@ -232,11 +175,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux as TAN out of storage for application.
   ++formula
-    if(Val(tan_into_storage_liquid, Livestock) <  Sum(nh3_nliquid, Storage::Slurry))
+    if( Val(tan_into_storage_liquid, Livestock) < ( Sum(nh3_nliquid, Storage::Slurry) + Val(nxox_nliquid, Livestock) ) )
       {0} 
     else 
-      {Val(tan_into_storage_liquid, Livestock) -  Sum(nh3_nliquid, Storage::Slurry) +
-       Out(mineralization_liquid)};
+      { Val(tan_into_storage_liquid, Livestock) -
+        Sum(nh3_nliquid, Storage::Slurry) -
+	Val(nxox_nliquid, Livestock) +
+        Out(mineralization_liquid) };
 
 
 +n_into_application_manure

@@ -73,7 +73,7 @@ taxonomy = Livestock::DairyCow::GrazingInput
   ++description
     Grazing hours per day.
   ++formula
-    In(grazing_hours);
+    do { In(grazing_hours) * 1;}
 
 +grazing_days
   print = 15
@@ -84,5 +84,5 @@ taxonomy = Livestock::DairyCow::GrazingInput
   ++description
     Grazing days per year.
   ++formula
-    In(grazing_days);
+    do { In(grazing_days) * 1;}
 

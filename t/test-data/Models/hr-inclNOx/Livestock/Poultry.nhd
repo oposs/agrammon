@@ -214,3 +214,36 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
     Val(nh3_nhousing, Poultry::Housing) +
     Val(nh3_nfree_range, Poultry::Outdoor);
          
++n2_npoultry
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from poultry production (housing and outdoor).
+  ++formula
+    Val(n2_nfree_range, Poultry::Outdoor);
+
+         
++no_npoultry
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from poultry production (housing and outdoor).
+  ++formula
+    Val(no_nfree_range, Poultry::Outdoor);
+         
++n2o_npoultry
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2O emission from poultry production (housing and outdoor).
+  ++formula
+    Val(n2o_nfree_range, Poultry::Outdoor);

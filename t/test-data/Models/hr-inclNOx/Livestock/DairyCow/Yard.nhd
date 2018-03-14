@@ -12,8 +12,9 @@ taxonomy = Livestock::DairyCow::Yard
 
 *** external ***
 
-+Excretion
 +GrazingInput
++Excretion
+
 
 *** input ***
 

@@ -2,7 +2,7 @@
 
 author   = Agrammon Group
 date     = 2008-04-18
-taxonomy = Livestock::OtherCattle::Housing::Type::Tied_Housing_Slurry
+taxonomy = Livestock::OtherCattle::Housing::Type::TideHousingSlurry
 
 +short
 

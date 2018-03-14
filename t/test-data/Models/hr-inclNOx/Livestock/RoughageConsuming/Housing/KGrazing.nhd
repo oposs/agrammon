@@ -2,7 +2,7 @@
 
 author   = Agrammon Group
 date     = 2012-06-05
-taxonomy = Livestock::RoughageConsuming::Housing::KGrazing
+taxonomy = Livestock::DairyCow::SmallRuminants::KGrazing
 
 +short
 

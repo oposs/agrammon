@@ -183,7 +183,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_from_equides,Livestock::Equides) +
     Sum(n_from_other,Livestock::SmallRuminants) +
     Sum(n_from_other,Livestock::RoughageConsuming) +
-     Sum(n_from_poultry,Livestock::Poultry);
+    Sum(n_from_poultry,Livestock::Poultry);
         
 +tan_into_storage
   format= %.0f
@@ -257,7 +257,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(n_liquid_from_pig,Livestock::Pig) +
     Sum(n_liquid_from_fattening_pig,Livestock::FatteningPigs); 
-        
+	
 +tan_into_storage_liquid
   print = 6
   ++units  
@@ -288,7 +288,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(tan_liquid_from_pig,Livestock::Pig) +
     Sum(tan_liquid_from_fattening_pig,Livestock::FatteningPigs); 
-        
+	
 +n_into_storage_solid_dairycows_cattle_pigs
   print = 3a
   ++units  
@@ -303,7 +303,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_solid_from_dairycow,Livestock::DairyCow) + 
     Sum(n_solid_from_pig,Livestock::Pig) +
     Sum(n_solid_from_fattening_pig,Livestock::FatteningPigs); 
-        
+	
 +n_into_storage_solid_dairycows_cattle
   print = 3a
   ++units  
@@ -316,7 +316,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(n_solid_from_cattle,Livestock::OtherCattle) +
     Sum(n_solid_from_dairycow,Livestock::DairyCow);
-        
+	
 +n_into_storage_solid_pigs
   print = 3a
   ++units  
@@ -393,7 +393,140 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     the storage from all animals besides poultry.
   ++formula
     Sum(tan_solid_from_cattle,Livestock::OtherCattle) +
-    Sum(tan_solid_from_dairycow,Livestock::DairyCow); 
+    Sum(tan_solid_from_dairycow,Livestock::DairyCow) 
+
++nxox_nsolid_dairycows_cattle
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NxOx flux (solid share) as TAN from housing and yard into 
+    the storage from dairycow and cattle.
+  ++formula
+    Sum(n2_nsolid_cattle,Livestock::OtherCattle) +
+    Sum(no_nsolid_cattle,Livestock::OtherCattle) +
+    Sum(n2o_nsolid_cattle,Livestock::OtherCattle) +
+
+    Sum(n2_nsolid_dairycow,Livestock::DairyCow) +
+    Sum(no_nsolid_dairycow,Livestock::DairyCow) +
+    Sum(n2o_nsolid_dairycow,Livestock::DairyCow);
+    
++nxox_nsolid_equides_other
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NxOx flux (solid share) as TAN from housing and yard into 
+    the storage from all other animals
+  ++formula
+    Sum(n2_nother,Livestock::SmallRuminants) +
+    Sum(n2_nother,Livestock::RoughageConsuming) +
+    Sum(n2_nequides,Livestock::Equides) +
+    Sum(no_nother,Livestock::SmallRuminants) +
+    Sum(no_nother,Livestock::RoughageConsuming) +
+    Sum(no_nequides,Livestock::Equides) +
+    Sum(n2o_nother,Livestock::SmallRuminants) +
+    Sum(n2o_nother,Livestock::RoughageConsuming) +
+    Sum(n2o_nequides,Livestock::Equides);
+
+
++nxox_nsolid_poultry
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NxOx flux (solid share) as TAN from housing and yard into 
+    the storage from poultry.
+  ++formula
+    Sum(n2_npoultry,Livestock::Poultry) + 
+    Sum(no_npoultry,Livestock::Poultry) + 
+    Sum(n2o_npoultry,Livestock::Poultry); 
+
+
++nxox_nsolid_pigs
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NxOx flux (solid share) as TAN from housing and yard into 
+    the storage from all pigs.
+  ++formula
+    Sum(n2_nsolid_pig,Livestock::Pig) +
+    Sum(no_nsolid_pig,Livestock::Pig) +
+    Sum(n2o_nsolid_pig,Livestock::Pig) +
+
+    Sum(n2_nsolid_fattening_pig,Livestock::FatteningPigs) +
+    Sum(no_nsolid_fattening_pig,Livestock::FatteningPigs) +
+    Sum(n2o_nsolid_fattening_pig,Livestock::FatteningPigs); 
+
+
++nxox_nsolid
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) as TAN from housing and yard into 
+    the storage from all animals besides poultry.
+  ++formula
+    Out(nxox_nsolid_dairycows_cattle) +
+    Out(nxox_nsolid_pigs) +
+    Out(nxox_nsolid_equides_other) +
+    Out(nxox_nsolid_poultry);
+
+
++nxox_nliquid
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) as TAN from housing and yard into 
+    the storage from all animals besides poultry.
+  ++formula
+    Sum(n2_nliquid_cattle,Livestock::OtherCattle) +
+    Sum(no_nliquid_cattle,Livestock::OtherCattle) +
+    Sum(n2o_nliquid_cattle,Livestock::OtherCattle) +
+
+    Sum(n2_nliquid_dairycow,Livestock::DairyCow) +
+    Sum(no_nliquid_dairycow,Livestock::DairyCow) +
+    Sum(n2o_nliquid_dairycow,Livestock::DairyCow) +
+    
+    Sum(n2_nliquid_pig,Livestock::Pig) +
+    Sum(no_nliquid_pig,Livestock::Pig) +
+    Sum(n2o_nliquid_pig,Livestock::Pig) +
+
+    Sum(n2_nliquid_fattening_pig,Livestock::FatteningPigs) +
+    Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) +
+    Sum(n2o_nliquid_fattening_pig,Livestock::FatteningPigs); 
+
+
++nxox_n
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) as TAN from housing and yard into 
+    the storage from all animals besides poultry.
+  ++formula
+    Out(nxox_nliquid) +
+    Out(nxox_nsolid_dairycows_cattle) +
+    Out(nxox_nsolid_pigs) +
+    Out(nxox_nsolid_equides_other) +
+    Out(nxox_nsolid_poultry);
+
 
 +tan_into_storage_solid_horses_otherequides_smallruminants
   print = 4a
@@ -502,84 +635,96 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
-  ++description
+ ++description
     Annual NH3 emission from livestock from all animals.
   ++formula
-        Sum(nh3_ncattle,Livestock::OtherCattle) +
-        Sum(nh3_ndairycow,Livestock::DairyCow) +
-        Sum(nh3_nother,Livestock::SmallRuminants) +
-        Sum(nh3_nother,Livestock::RoughageConsuming) +
-        Sum(nh3_npig,Livestock::Pig) +
-        Sum(nh3_nfattening_pig,Livestock::FatteningPigs) +
-        Sum(nh3_nequides,Livestock::Equides) +
-        Sum(nh3_npoultry,Livestock::Poultry); 
+	Sum(nh3_ncattle,Livestock::OtherCattle) +
+	Sum(nh3_ndairycow,Livestock::DairyCow) +
+	Sum(nh3_nother,Livestock::SmallRuminants) +
+	Sum(nh3_nother,Livestock::RoughageConsuming) +
+	Sum(nh3_npig,Livestock::Pig) +
+	Sum(nh3_nfattening_pig,Livestock::FatteningPigs) +
+	Sum(nh3_nequides,Livestock::Equides) +
+	Sum(nh3_npoultry,Livestock::Poultry); 
 
 +n2_nlivestock
   print = NOxFlux
   ++labels 
-    en = Total Livestock N2-Emissions
-    de = Total Tierproduktion N2-Emission
+    en = Total N2-Emissions Housing, Yard and Storage
+    de = Total N2-Emission Stall, Laufhof und Lager
     fr = Emission de N2 totale issue de la production animale
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
-  ++description
+ ++description
     Annual N2 emission from livestock from all animals.
   ++formula
-        Sum(n2_ncattle,Livestock::OtherCattle) +
-        Sum(n2_ndairycow,Livestock::DairyCow) +
-        Sum(n2_nother,Livestock::SmallRuminants) +
-        Sum(n2_nother,Livestock::RoughageConsuming) +
-        Sum(n2_npig,Livestock::Pig) +
-        Sum(n2_nfattening_pig,Livestock::FatteningPigs) +
-        Sum(n2_nequides,Livestock::Equides) +
-        Sum(n2_npoultry,Livestock::Poultry); 
+        Sum(n2_nsolid_cattle,Livestock::OtherCattle) +
+	Sum(n2_nliquid_cattle,Livestock::OtherCattle) +
+	Sum(n2_nsolid_dairycow,Livestock::DairyCow) +
+	Sum(n2_nliquid_dairycow,Livestock::DairyCow) +
+	Sum(n2_nother,Livestock::SmallRuminants) +
+	Sum(n2_nother,Livestock::RoughageConsuming) +
+	Sum(n2_nsolid_pig,Livestock::Pig) +
+	Sum(n2_nliquid_pig,Livestock::Pig) +
+	Sum(n2_nsolid_fattening_pig,Livestock::FatteningPigs) +
+	Sum(n2_nliquid_fattening_pig,Livestock::FatteningPigs) +
+	Sum(n2_nequides,Livestock::Equides) +
+	Sum(n2_npoultry,Livestock::Poultry); 
  
 
 +no_nlivestock
   print = NOxFlux
   ++labels 
-    en = Total Livestock NO-Emissions
-    de = Total Tierproduktion NO-Emission
+    en = Total NO-Emissions Housing, Yard and Storage
+    de = Total NO-Emission Stall, Laufhof und Lager
     fr = Emission de NO totale issue de la production animale
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
-  ++description
+ ++description
     Annual NO emission from livestock from all animals.
   ++formula
-        Sum(no_ncattle,Livestock::OtherCattle) +
-        Sum(no_ndairycow,Livestock::DairyCow) +
-        Sum(no_nother,Livestock::SmallRuminants) +
-        Sum(no_nother,Livestock::RoughageConsuming) +
-        Sum(no_npig,Livestock::Pig) +
-        Sum(no_nfattening_pig,Livestock::FatteningPigs) +
-        Sum(no_nequides,Livestock::Equides) +
-        Sum(no_npoultry,Livestock::Poultry); 
-
+        Sum(no_nsolid_cattle,Livestock::OtherCattle) +
+	Sum(no_nliquid_cattle,Livestock::OtherCattle) +
+	Sum(no_nsolid_dairycow,Livestock::DairyCow) +
+	Sum(no_nliquid_dairycow,Livestock::DairyCow) +
+	Sum(no_nother,Livestock::SmallRuminants) +
+	Sum(no_nother,Livestock::RoughageConsuming) +
+	Sum(no_nsolid_pig,Livestock::Pig) +
+	Sum(no_nliquid_pig,Livestock::Pig) +
+	Sum(no_nsolid_fattening_pig,Livestock::FatteningPigs) +
+	Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) +
+	Sum(no_nequides,Livestock::Equides) +
+	Sum(no_npoultry,Livestock::Poultry); 
+ 
 +n2o_nlivestock
   print = NOxFlux
   ++labels 
-    en = Total Livestock N2O-Emissions
-    de = Total Tierproduktion N2O-Emission
+    en = Total N2O-Emissions Housing, Yard and Storage
+    de = Total N2O-Emission Stall, Laufhof und Lager
     fr = Emission de N2O totale issue de la production animale
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
-  ++description
+ ++description
     Annual N2O emission from livestock from all animals.
   ++formula
-        Sum(n2o_ncattle,Livestock::OtherCattle) +
-        Sum(n2o_ndairycow,Livestock::DairyCow) +
-        Sum(n2o_nother,Livestock::SmallRuminants) +
-        Sum(n2o_nother,Livestock::RoughageConsuming) +
-        Sum(n2o_npig,Livestock::Pig) +
-        Sum(n2o_nfattening_pig,Livestock::FatteningPigs) +
-        Sum(n2o_nequides,Livestock::Equides) +
-        Sum(n2o_npoultry,Livestock::Poultry); 
+        Sum(n2o_nsolid_cattle,Livestock::OtherCattle) +
+	Sum(n2o_nliquid_cattle,Livestock::OtherCattle) +
+	Sum(n2o_nsolid_dairycow,Livestock::DairyCow) +
+	Sum(n2o_nliquid_dairycow,Livestock::DairyCow) +
+	Sum(n2o_nother,Livestock::SmallRuminants) +
+	Sum(n2o_nother,Livestock::RoughageConsuming) +
+	Sum(n2o_nsolid_pig,Livestock::Pig) +
+	Sum(n2o_nliquid_pig,Livestock::Pig) +
+	Sum(n2o_nsolid_fattening_pig,Livestock::FatteningPigs) +
+	Sum(n2o_nliquid_fattening_pig,Livestock::FatteningPigs) +
+	Sum(n2o_nequides,Livestock::Equides) +
+	Sum(n2o_npoultry,Livestock::Poultry); 
  
 
 +nh3_ngrazing

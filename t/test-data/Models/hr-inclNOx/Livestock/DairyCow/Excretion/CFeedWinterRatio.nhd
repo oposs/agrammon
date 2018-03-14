@@ -35,150 +35,162 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 
  *** input ***
 
+
+
 +share_maize_silage_winter
-  models = SHL
-  type = percent
-  default_calc = 0
-  ++labels
-    en = Proportion of animals receiving maize silage in winter
-    de = Anteil der Tiere, die im Winter Maissilage erhalten
-    fr = Proportion d'animaux recevant de l'ensilage de maïs en hiver
-  ++units 
-    en = %
-  ++description
+   models = SHL
+   type = percent
+   default_calc = 0
+   ++labels
+     en = Proportion of animals receiving maize silage in winter
+     de = Anteil der Tiere, die im Winter Maissilage erhalten
+     fr = Proportion d'animaux recevant de l'ensilage de maïs en hiver
+   ++units 
+     en = %
+   ++description
      Proportion of animals receiving maize silage in winter.
-  ++help
-    +++en
+   ++help
+     +++en
         <p>Standard value for Switzerland: 0%</p>
-    +++de
+     +++de
         <p>Vorschlag für Standardwert: 0%</p>
-    +++fr
+     +++fr
         <p>Proposition de valeur standard: 0%</p>
  
 
 +share_grass_silage_winter
-  models = SHL
-  type = percent
-  default_calc = 0
-  ++labels 
-    en = Proportion of animals receiving grass silage in winter
-    de = Anteil der Tiere, die im Winter Grassilage erhalten
-    fr = Proportion d'animaux recevant de l'ensilage d'herbe en hiver
-  ++units 
-    en = %
-  ++description
+   models = SHL
+   type = percent
+   default_calc = 0
+   ++labels 
+     en = Proportion of animals receiving grass silage in winter
+     de = Anteil der Tiere, die im Winter Grassilage erhalten
+     fr = Proportion d'animaux recevant de l'ensilage d'herbe en hiver
+   ++units 
+     en = %
+   ++description
      Proportion of animals receiving grass silage in winter.
-  ++help
-    +++en
+   ++help
+     +++en
         <p>Standard value for Switzerland: 0%</p>
-    +++de
+     +++de
         <p>Vorschlag für Standardwert: 0%</p>
-    +++fr
+     +++fr
         <p>Proposition de valeur standard: 0%</p>
  
 
 +share_maize_pellets_winter
-  models = SHL
-  type = percent
-  default_calc = 0
-  ++labels 
-    en = Proportion of animals receiving maize pellets in winter
-    de = Anteil der Tiere, die im Winter Maiswürfel erhalten
-    fr = Proportion d'animaux recevant des pellets de maïs en hiver
-  ++units 
-    en = %
-  ++description
+   models = SHL
+   type = percent
+   default_calc = 0
+   ++labels 
+     en = Proportion of animals receiving maize pellets in winter
+     de = Anteil der Tiere, die im Winter Maiswürfel erhalten
+     fr = Proportion d'animaux recevant des pellets de maïs en hiver
+   ++units 
+     en = %
+   ++description
      Proportion of animals receiving maize pellets in winter.
-  ++help
-    +++en
+   ++help
+     +++en
         <p>Standard value for Switzerland: 0%</p>
-    +++de
+     +++de
         <p>Vorschlag für Standardwert: 0%</p>
-    +++fr
+     +++fr
         <p>Proposition de valeur standard: 0%</p>
  
 
 +share_potatoes_winter
-  models = SHL
-  type = percent
-  default_calc = 0
-  ++labels 
-    en = Proportion of animals receiving potatoes in winter
-    de = Anteil der Tiere, die im Winter Kartoffeln erhalten
-    fr = Proportion d'animaux recevant des pommes de terre en hiver
-  ++units 
-    en = %
-  ++description
+   models = SHL
+   type = percent
+   default_calc = 0
+   ++labels 
+     en = Proportion of animals receiving potatoes in winter
+     de = Anteil der Tiere, die im Winter Kartoffeln erhalten
+     fr = Proportion d'animaux recevant des pommes de terre en hiver
+   ++units 
+     en = %
+   ++description
      Proportion of animals receiving potatoes in winter.
-  ++help
-    +++en
+   ++help
+     +++en
         <p>Standard value for Switzerland: 0%</p>
-    +++de
+     +++de
         <p>Vorschlag für Standardwert: 0%</p>
-    +++fr
+     +++fr
         <p>Proposition de valeur standard: 0%</p>
  
 
 +share_beets_winter
-  models = SHL
-  type = percent
-  default_calc = 0
-  ++labels 
-    en = Proportion of animals receiving beets in winter
-    de = Anteil der Tiere, die im Winter Futterrüben erhalten
-    fr = Proportion d'animaux recevant des betteraves en hiver
-  ++units 
-    en = %
-  ++description
+   models = SHL
+   type = percent
+   default_calc = 0
+   ++labels 
+     en = Proportion of animals receiving beets in winter
+     de = Anteil der Tiere, die im Winter Futterrüben erhalten
+     fr = Proportion d'animaux recevant des betteraves en hiver
+   ++units 
+     en = %
+   ++description
      Proportion of animals receiving beets in winter.
-  ++help
-    +++en
+   ++help
+     +++en
         <p>Standard value for Switzerland: 0%</p>
-    +++de
+     +++de
         <p>Vorschlag für Standardwert: 0%</p>
-    +++fr
+     +++fr
         <p>Proposition de valeur standard: 0%</p>
  
 
+
 *** technical ***
 
++c_default_hay
+   value = -0.01
+   ++units 
+     en = -
+   ++description
+     Modification of annual N excretion by adding grass silage to the 
+     standard ration during winter feeding period.
+
+
 +c_grass_silage_winter
-  value = 0.027
-  ++units 
-    en = -
-  ++description
+   value = 0.04
+   ++units 
+     en = -
+   ++description
      Modification of annual N excretion by adding grass silage to the 
      standard ration during winter feeding period.
 
 +c_maize_silage_winter
-  value = -0.016
-  ++units 
-    en = -
-  ++description
+   value = -0.02
+   ++units 
+     en = -
+   ++description
      Modification of annual N excretion by adding maize silage to the 
      standard ration during winter feeding period.
 
 +c_maize_pellets_winter
-  value = -0.014
-  ++units 
-    en = -
-  ++description
+   value = -0.02
+   ++units 
+     en = -
+   ++description
      Modification of annual N excretion by adding maize pellets to the 
      standard ration during winter feeding period.
 
 +c_potatoes_winter
-  value = 0.01
-  ++units 
-    en = -
-  ++description
+   value = 0.0
+   ++units 
+     en = -
+   ++description
      Modification of annual N excretion by adding potatoes to the standard 
      ration during the winter feeding period.
 
 +c_beets_winter
-  value = 0.019
-  ++units 
-    en = -
-  ++description
+   value = 0.0
+   ++units 
+     en = -
+   ++description
      Modification of annual N excretion by adding beets to the standard 
      ration during the winter feeding period.  
 
@@ -187,12 +199,12 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 *** output ***
 
 +share_grass_silage_winter
-  print = 22
-  ++units 
-    en = %
-  ++description
+ print = 22
+ ++units 
+   en = %
+ ++description
    Share
-  ++formula
+ ++formula
    if (In(share_grass_silage_winter) > 1) {
       return (In(share_grass_silage_winter)/100);
    } else {
@@ -200,12 +212,12 @@ und Futterbau 2001. Agrarforschung 8:1-80.
    };
 
 +share_maize_silage_winter
-  print = 22
-  ++units 
-    en = %
-  ++description
+ print = 22
+ ++units 
+   en = %
+ ++description
    Share
-  ++formula
+ ++formula
    if (In(share_maize_silage_winter) > 1) {
       return (In(share_maize_silage_winter)/100);
    } else {
@@ -213,12 +225,12 @@ und Futterbau 2001. Agrarforschung 8:1-80.
    };
 
 +share_maize_pellets_winter
-  print = 22
-  ++units 
-    en = %
-  ++description
+ print = 22
+ ++units 
+   en = %
+ ++description
    Share
-  ++formula
+ ++formula
    if (In(share_maize_pellets_winter) > 1) {
       return (In(share_maize_pellets_winter)/100);
    } else {
@@ -226,12 +238,12 @@ und Futterbau 2001. Agrarforschung 8:1-80.
    };
 
 +share_potatoes_winter
-  print = 22
-  ++units 
-    en = %
-  ++description
+ print = 22
+ ++units 
+   en = %
+ ++description
    Share
-  ++formula
+ ++formula
    if (In(share_potatoes_winter) > 1) {
       return (In(share_potatoes_winter)/100);
    } else {
@@ -239,28 +251,47 @@ und Futterbau 2001. Agrarforschung 8:1-80.
    };
 
 +share_beets_winter
-  print = 22
-  ++units 
-    en = %
-  ++description
+ print = 22
+ ++units 
+   en = %
+ ++description
    Share
-  ++formula
+ ++formula
    if (In(share_beets_winter) > 1 ) {
       return (In(share_beets_winter)/100);
    } else {
       return (In(share_beets_winter));
    };
 
++share_hay_only_winter
+ print = 22
+ ++units 
+   en = %
+ ++description
+   Share
+ ++formula
+  if ( Out(share_grass_silage_winter) >= Out(share_maize_silage_winter) && Out(share_grass_silage_winter) >= Out(share_maize_pellets_winter)) {
+     return( 1 - Out(share_grass_silage_winter) );
+  } elsif ( Out(share_maize_silage_winter) >= Out(share_grass_silage_winter) && Out(share_maize_silage_winter) >= Out(share_maize_pellets_winter) ) {
+     return( 1 - Out(share_maize_silage_winter) );
+  }else{
+    return( 1 - Out(share_maize_pellets_winter));
+  }
+
+ 
+
 +c_winter_ration
   print = 15
-  ++units 
-    en = %
+ ++units 
+   en = %
   ++description
     Winter feed ration correction factor for annual N excretion.
   ++formula
     Tech(c_grass_silage_winter) * Out(share_grass_silage_winter) + 
     Tech(c_maize_silage_winter) * Out(share_maize_silage_winter) +
-    Tech(c_maize_pellets_winter)  * Out(share_maize_pellets_winter) +
+    Tech(c_maize_pellets_winter) * Out(share_maize_pellets_winter) +
     Tech(c_potatoes_winter) * Out(share_potatoes_winter) + 
-    Tech(c_beets_winter) * Out(share_beets_winter);  
+    Tech(c_beets_winter) * Out(share_beets_winter) +
+    Tech(c_default_hay) * Out(share_hay_only_winter) ;
+
 
