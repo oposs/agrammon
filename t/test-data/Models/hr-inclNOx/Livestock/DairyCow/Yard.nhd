@@ -21,23 +21,23 @@ taxonomy = Livestock::DairyCow::Yard
 +yard_days
   type  = integer
   validator = between(0,365);
- ++labels
-   en = Duration of access to exercise yard over the year
-   de = Jährliche Zutrittsdauer zum Laufhof
-   fr = Nombre de jours avec accès au parcours extérieur (par an)
- ++units
+  ++labels
+    en = Duration of access to exercise yard over the year
+    de = Jährliche Zutrittsdauer zum Laufhof
+    fr = Nombre de jours avec accès au parcours extérieur (par an)
+  ++units
     en = days/year
     de = Tage/Jahr
     fr = jours/an
-  ++description
-    Access to exercise yard in days per year.
-  ++help
-    +++en
+ ++description
+   Access to exercise yard in days per year.
+   ++help
+     +++en
        <p>Standard values for Switzerland: 270 days per year for loose housing systems and 100 days per year for tied housing systems, respectively.</p>
-    +++de
+     +++de
        <p>Rinder, die angebunden gehalten werden, müssen regelmässig, mindestens jedoch an 60 Tagen während der Vegetationsperiode und an 30 Tagen während der Winterfütterungsperiode, Auslauf erhalten (Tierschutzverordnung vom 23. April 2008, Stand am 1. Januar 2009).</p>
        <p>Vorschlag für Standardwerte: 270 Tage pro Jahr bei Laufställen und 100 Tage pro Jahr bei Anbindeställen.</p>
-    +++fr
+     +++fr
        <p>Les bovins gardés à l’attache doivent avoir accès régulièrement à un parcours extérieur, au moins pendant 60 jours durant la période de végétation et pendant 30 jours durant la période d’affouragement d’hiver (Ord. sur la protection des animaux du 23 avril 2008, état au 1er janvier 2009). </p>
        <p>Proposition de valeurs standard: 270 jours par an pour les stabulations libres et 100 jours par an pour les stabulations entravées. </p>
 
@@ -89,25 +89,25 @@ taxonomy = Livestock::DairyCow::Yard
   default_calc = solid_floor
   ++enum
      +++solid_floor
-        en = solid_floor
-        de = Boden_planbefestigt
-        fr = sol_en_dur
-        it = solid_floor
+       en = solid_floor
+       de = Boden_planbefestigt
+       fr = sol_en_dur
+       it = solid_floor
      +++unpaved_floor
-        en = unpaved_floor
-        de = Boden_unbefestigt
-        fr = sol_sans_revêtement_dur
-        it = unpaved_floor
+       en = unpaved_floor
+       de = Boden_unbefestigt
+       fr = sol_sans_revêtement_dur
+       it = unpaved_floor
      +++perforated_floor
-        en = perforated_floor
-        de = Boden_perforiert
-        fr = sol_perforé
-        it = perforated_floor
+       en = perforated_floor
+       de = Boden_perforiert
+       fr = sol_perforé
+       it = perforated_floor
      +++paddock_or_pasture_used_as_exercise_yard
-        en = paddock_or_pasture_used_as_exercise_yard
-        de = kein_Laufhof:_Auslauf_auf_Weide
-        fr = pas_de_parcours:_accès_au_pâturage
-        it = paddock_or_pasture_used_as_exercise_yard
+       en = paddock_or_pasture_used_as_exercise_yard
+       de = kein_Laufhof:_Auslauf_auf_Weide
+       fr = pas_de_parcours:_accès_au_pâturage
+       it = paddock_or_pasture_used_as_exercise_yard
   ++labels 
     en = Type of exercise yard
     de = Laufhoftyp
@@ -152,30 +152,30 @@ taxonomy = Livestock::DairyCow::Yard
   default_calc = solid_floor
   ++enum
      +++solid_floor
-        en = solid_floor
-        de = Boden_planbefestigt
-        fr = sol_en_dur
-        it = solid_floor
+       en = solid_floor
+       de = Boden_planbefestigt
+       fr = sol_en_dur
+       it = solid_floor
      +++perforated_floor
-        en = perforated_floor
-        de = Boden_perforiert
-        fr = sol_perforé
-        it = perforated_floor
+       en = perforated_floor
+       de = Boden_perforiert
+       fr = sol_perforé
+       it = perforated_floor
      +++sloped_concrete_floor_with_central_drain_and_stationary_scraper
-        en = sloped_concrete_floor_with_central_drain_and_stationary_scraper
-        de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber
-        fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire
-        it = sloped_concrete_floor_with_central_drain_and_stationary_scraper
+       en = sloped_concrete_floor_with_central_drain_and_stationary_scraper
+       de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber
+       fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire
+       it = sloped_concrete_floor_with_central_drain_and_stationary_scraper
      +++sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
-        en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
-        de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung
-        fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage
-        it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
+       en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
+       de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung
+       fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage
+       it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
      +++sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
-        en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
-        de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung_plus_Dusche
-        fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage_et_douche
-        it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
+       en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
+       de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung_plus_Dusche
+       fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage_et_douche
+       it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
   ++labels 
     en = Type of exercise yard
     de = Laufhoftyp
@@ -236,33 +236,33 @@ taxonomy = Livestock::DairyCow::Yard
     +++en
        <p> </p>
     +++de
-        <p>
+       <p>
            Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt
            werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene Zahl entspricht
            der Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Laufhof 
            nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar 
            aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
-        </p>
-        <p>
+       </p>
+       <p>
            Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
            prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
            zur Emissionsminderung berücksichtigen müssen. 
-        </p>
-        <p>Vorschlag für Standardwert: 0 %.</p>
+       </p>
+       <p>Vorschlag für Standardwert: 0 %.</p>
     +++fr
-       <p>
+      <p>
           Ici, vous pouvez introduire l’effet d’une mesure supplémentaire limitant les émissions
           (p.ex. un nouveau type de sol limitant les émissions). Le chiffre introduit correspond
           à la réduction d’émission en pourcent (p.ex. 30%: l’émission provenant du parcors 
           extérieur diminue de 30%). Il est recommandé de mentionner la mesure choisie dans la 
           colonne ‘Commentaire’ et de justifier le taux de réduction choisi.
-       </p>
-       <p>
+      </p>
+      <p>
           Cette fonction s’adresse principalement aux utilisateurs/trices qui font des pronostiques 
           d’émissions et qui doivent prendre en compte l’effet de nouvelles technologies destinées 
           à limiter les émissions et encore méconnues actuellement.
        </p>
-        <p>Proposition valeur standard: 0 %.</p>
+       <p>Proposition valeur standard: 0 %.</p>
 
 *** technical ***
 
@@ -270,7 +270,7 @@ taxonomy = Livestock::DairyCow::Yard
   value = 0.7
   ++units
     en = -
-  ++description 
+  ++description
     Emission rate for TAN on yard.
 
 +share_available_roughage_is_exclusively_supplied_in_the_exercise_yard
@@ -367,14 +367,14 @@ taxonomy = Livestock::DairyCow::Yard
     Number of Days whith access to yard and pasture
   ++formula
      if( (Val(grazing_days, GrazingInput) + Out(yard_days)) > 365 ){
-         writeLog({en=>"The sum of days with access to the exercise yard and of grazing days per year for dairy cows is higher than 365!\n",
-                   de=>"Die Summe der Weide- und Laufhoftage für Milchkühe ist grösser als 365!\n",
-                   fr=>"La somme des jours de pâturage et des jours avec accès au parcours extérieur " 
+        writeLog({en=>"The sum of days with access to the exercise yard and of grazing days per year for dairy cows is higher than 365!\n",
+                  de=>"Die Summe der Weide- und Laufhoftage für Milchkühe ist grösser als 365!\n",
+                  fr=>"La somme des jours de pâturage et des jours avec accès au parcours extérieur " 
                        . "pour les vaches laitières est supérieure à 365 !\n",
                  }); 
-         return ( Val(grazing_days, GrazingInput) + Out(yard_days) - 365) ;
+        return ( Val(grazing_days, GrazingInput) + Out(yard_days) - 365) ;
      } else{
-         return (0);
+        return (0);
      };
 
 +c_free_factor_yard
@@ -384,7 +384,7 @@ taxonomy = Livestock::DairyCow::Yard
   ++description
     Free reduction of the Emission rate for the Yard.
   ++formula
-  if(In(free_correction_factor)//0 > 0) {           
+  if(In(free_correction_factor)//0 > 0) {
       writeLog({en=>"You have entered an additional emission mitigation measure for a dairy cows exercise yard of " 
                     . In(free_correction_factor) 
                     . "\%!\n", 
@@ -392,9 +392,9 @@ taxonomy = Livestock::DairyCow::Yard
                     . In(free_correction_factor) 
                     . "\% eingegeben!\n", 
                 fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d’un parcours "
-                    . "extérieur pour vaches laitières de " . In(free_correction_factor) . "\% !\n"
+                   . "extérieur pour vaches laitières de " . In(free_correction_factor) . "\% !\n"
                });
-            return 1 - In(free_correction_factor)/100;
+           return 1 - In(free_correction_factor)/100;
      
   } else {
     return 1;
@@ -524,7 +524,7 @@ taxonomy = Livestock::DairyCow::Yard
     Annual NH3 emission per anmimal from yard.
   ++formula
     if(  Val(dairy_cows, Excretion) != 0 ){
-         return Out(nh3_nyard) / Val(dairy_cows, Excretion);
+        return Out(nh3_nyard) / Val(dairy_cows, Excretion);
     } else { return 0;};
 
 +n_outyard

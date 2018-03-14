@@ -27,15 +27,15 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   type = enum
   ++enum
     +++yes
-        en = yes
-        de = Ja
-        fr = oui
-        it = yes
+       en = yes
+       de = Ja
+       fr = oui
+       it = yes
     +++no
-        en = no
-        de = Nein
-        fr = non
-        it = no
+       en = no
+       de = Nein
+       fr = non
+       it = no
   ++labels
     en = Do the animals have access to a free range?
     de = Haben die Tiere Zugang zu einer Weide?

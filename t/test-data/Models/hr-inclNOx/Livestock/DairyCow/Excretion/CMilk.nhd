@@ -34,11 +34,11 @@ Acker- und Futterbau 2009 (GRUDAF), Agrarforschung 16.2.
     Annual milk yield per dairy cow.
   ++help
     +++en
-       <p>Standard value for Switzerland: 6500 kg per head and year</p>
+      <p>Standard value for Switzerland: 6500 kg per head and year</p>
     +++de
-       <p>Vorschlag für Standardwert: 6500 kg pro Jahr</p>
+      <p>Vorschlag für Standardwert: 6500 kg pro Jahr</p>
     +++fr
-       <p>Proposition de valeur standard: 6500 kg par an </p>
+      <p>Proposition de valeur standard: 6500 kg par an </p>
  
 
 
@@ -48,8 +48,8 @@ Acker- und Futterbau 2009 (GRUDAF), Agrarforschung 16.2.
   value = 6500
   ++units
     en = kg/year
-        de = kg/Jahr
-        fr = kg/an
+    de = kg/Jahr
+    fr = kg/an
   ++description
     Annual standard milk yield per dairy cow.
 

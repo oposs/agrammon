@@ -10,7 +10,7 @@ taxonomy = Application::SolidManure::Solid
  Computes the annual NH3 emission from solid manure application.
 
  Attention: simplified model based on total N output from storage!!!
-        
+
 +description 
 
 This process computes the annual average NH3 emission from solid
@@ -110,7 +110,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     NH3 emission from solid manure application.
   ++formula
     Tech(er_App_manure_dairycows_cattle) 
-     * Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid)         
+     * Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid)
      * Val(c_incorp_time, Solid::CincorpTime)
      * Val(c_season, Cseason)
      * Val(c_free_factor_application_solidmanure, CfreeFactor);

@@ -1,6 +1,6 @@
 *** general ***
 
-author   = Agrammon Group       
+author   = Agrammon Group      
 date     = 2008-05-08
 taxonomy = Livestock::OtherCattle::Yard
 
@@ -288,25 +288,25 @@ taxonomy = Livestock::OtherCattle::Yard
   default_calc = solid_floor
   ++enum
      +++solid_floor
-        en = solid_floor
-        de = Boden_planbefestigt
-        fr = sol_en_dur
-        it = solid_floor
+       en = solid_floor
+       de = Boden_planbefestigt
+       fr = sol_en_dur
+       it = solid_floor
      +++unpaved_floor
-        en = unpaved_floor
-        de = Boden_unbefestigt
-        fr = sol_sans_revêtement_dur
-        it = unpaved_floor
+       en = unpaved_floor
+       de = Boden_unbefestigt
+       fr = sol_sans_revêtement_dur
+       it = unpaved_floor
      +++perforated_floor
-        en = perforated_floor
-        de = Boden_perforiert
-        fr = sol_perforé
-        it = perforated_floor
+       en = perforated_floor
+       de = Boden_perforiert
+       fr = sol_perforé
+       it = perforated_floor
      +++paddock_or_pasture_used_as_exercise_yard
-        en = paddock_or_pasture_used_as_exercise_yard
-        de = kein_Laufhof:_Auslauf_auf_Weide
-        fr = pas_de_parcours:_accès_au_pâturage
-        it = paddock_or_pasture_used_as_exercise_yard
+       en = paddock_or_pasture_used_as_exercise_yard
+       de = kein_Laufhof:_Auslauf_auf_Weide
+       fr = pas_de_parcours:_accès_au_pâturage
+       it = paddock_or_pasture_used_as_exercise_yard
   ++labels 
     en = Type of exercise yard
     de = Laufhoftyp
@@ -357,30 +357,30 @@ taxonomy = Livestock::OtherCattle::Yard
   default_calc = solid_floor
   ++enum
      +++solid_floor
-        en = solid_floor
-        de = Boden_planbefestigt
-        fr = sol_en_dur
-        it = solid_floor
+       en = solid_floor
+       de = Boden_planbefestigt
+       fr = sol_en_dur
+       it = solid_floor
      +++perforated_floor
-        en = perforated_floor
-        de = Boden_perforiert
-        fr = sol_perforé
-        it = perforated_floor
+       en = perforated_floor
+       de = Boden_perforiert
+       fr = sol_perforé
+       it = perforated_floor
      +++sloped_concrete_floor_with_central_drain_and_stationary_scraper
-        en = sloped_concrete_floor_with_central_drain_and_stationary_scraper
-        de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber
-        fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire
-        it = sloped_concrete_floor_with_central_drain_and_stationary_scraper
+       en = sloped_concrete_floor_with_central_drain_and_stationary_scraper
+       de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber
+       fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire
+       it = sloped_concrete_floor_with_central_drain_and_stationary_scraper
      +++sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
-        en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
-        de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung
-        fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage
-        it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
+       en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
+       de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung
+       fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage
+       it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
      +++sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
-        en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
-        de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung_plus_Dusche
-        fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage_et_douche
-        it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
+       en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
+       de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung_plus_Dusche
+       fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage_et_douche
+       it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
   ++labels 
     en = Type of exercise yard
     de = Laufhoftyp
@@ -391,7 +391,7 @@ taxonomy = Livestock::OtherCattle::Yard
     Type of exercise yard.
   ++help
     +++en
-       <p>Standard value for Switzerland: "solid floor" </p>
+      <p>Standard value for Switzerland: "solid floor" </p>
     +++de
        <dl>  
        <dt>Boden planbefestigt:</dt>
@@ -603,7 +603,7 @@ taxonomy = Livestock::OtherCattle::Yard
                 fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d’un parcours extérieur "
                     . "pour autres bovins de ". In(free_correction_factor) . "\%.\n" 
                });
-            return 1 - In(free_correction_factor)/100;
+           return 1 - In(free_correction_factor)/100;
      
   } else {
     return 1;

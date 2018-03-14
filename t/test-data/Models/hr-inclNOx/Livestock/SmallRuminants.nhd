@@ -19,8 +19,6 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
      Give a better description.
   \end{todo}
 
-*** input ***
-
 
 *** technical ***
 
@@ -62,7 +60,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual N excreted by other animals.
   ++formula
-        Val(n_excretion, SmallRuminants::Excretion); 
+       Val(n_excretion, SmallRuminants::Excretion); 
 
 +n_from_other
   print = 7
@@ -73,7 +71,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual N flux from other animals housing.
   ++formula
-        Val(n_outhousing, SmallRuminants::Housing);
+       Val(n_outhousing, SmallRuminants::Housing);
 
 +tan_from_other
   print = 7
@@ -84,7 +82,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual N flux as TAN from other animals housing.
   ++formula
-        Val(tan_outhousing, SmallRuminants::Housing);
+       Val(tan_outhousing, SmallRuminants::Housing);
 
 +n_liquid_from_other
   print = 7
@@ -95,7 +93,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual N flux from other animals housing, liquid fraction.
   ++formula
-        Val(n_outhousing_liquid, SmallRuminants::Housing); 
+       Val(n_outhousing_liquid, SmallRuminants::Housing); 
 
 +tan_liquid_from_other
   print = 7
@@ -106,7 +104,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual N flux as TAN from other animals housing, liquid fraction.
   ++formula
-        Val(tan_outhousing_liquid, SmallRuminants::Housing); 
+       Val(tan_outhousing_liquid, SmallRuminants::Housing); 
 
 +n_solid_from_other
   print = 7
@@ -117,7 +115,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual N flux from other animals housing, solid fraction.
   ++formula
-        Val(n_outhousing_solid, SmallRuminants::Housing);
+       Val(n_outhousing_solid, SmallRuminants::Housing);
 
 +tan_solid_from_other
   print = 7
@@ -128,7 +126,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual N flux as TAN from other animals housing, solid fraction.
   ++formula
-        Val(tan_outhousing_solid, SmallRuminants::Housing); 
+       Val(tan_outhousing_solid, SmallRuminants::Housing); 
 
 +nh3_nother
   print = 5
@@ -139,8 +137,8 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual NH3 emission from other animals housing and grazing.
   ++formula
-         Val(nh3_nhousing, SmallRuminants::Housing) +
-         Val(nh3_ngrazing, SmallRuminants::Grazing);
+       Val(nh3_nhousing, SmallRuminants::Housing) +
+       Val(nh3_ngrazing, SmallRuminants::Grazing);
          
 +n2_nother
   print = 5
@@ -151,7 +149,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual N2 emission from other animals housing and grazing.
   ++formula
-     Val(n_into_housing, SmallRuminants::Housing) * Tech(er_n2_nsolid);
+       Val(n_into_housing, SmallRuminants::Housing) * Tech(er_n2_nsolid);
          
 +no_nother
   print = 5
@@ -162,7 +160,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual NO emission from other animals housing and grazing.
   ++formula
-     Val(n_into_housing, SmallRuminants::Housing) * Tech(er_no_nsolid);
+       Val(n_into_housing, SmallRuminants::Housing) * Tech(er_no_nsolid);
          
 +n2o_nother
   print = 5
@@ -173,4 +171,4 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
   ++description
     Annual N2O emission from other animals housing and grazing.
   ++formula
-     Val(n_into_housing, SmallRuminants::Housing) * Tech(er_n2o_nsolid);
+       Val(n_into_housing, SmallRuminants::Housing) * Tech(er_n2o_nsolid);

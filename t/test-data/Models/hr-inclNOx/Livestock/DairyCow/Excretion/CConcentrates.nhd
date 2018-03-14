@@ -26,84 +26,84 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
  *** input ***
 
 +amount_summer
-   models = SHL
-   type = float
-   default_calc = 1
-   validator = between(0,6);
-   ++labels 
-     en = Amount of concentrates per animal and per day in summer
-     de = Durchschnittliche Kraftfuttermenge pro Kuh und Tag im Sommer
-     fr = Quantité moyenne de concentrés par vache et par jour en été
-   ++units 
-     en = kg/day
-     de = kg/Tag
-     fr = kg/jour
-   ++description
-      Amount of concentrates per animal per day in summer. 
-   ++help
-     +++en
-        <p>Standard value for Switzerland: 1.5 kg per head and day</p>
-     +++de
-        <p>Vorschlag für Standardwert: 1.5 kg pro Kuh und Tag</p>
-     +++fr
-        <p>Proposition de valeur standard: 1.5 kg par vache et par jour</p>
+  models = SHL
+  type = float
+  default_calc = 1
+  validator = between(0,6);
+  ++labels 
+    en = Amount of concentrates per animal and per day in summer
+    de = Durchschnittliche Kraftfuttermenge pro Kuh und Tag im Sommer
+    fr = Quantité moyenne de concentrés par vache et par jour en été
+  ++units 
+    en = kg/day
+    de = kg/Tag
+    fr = kg/jour
+  ++description
+     Amount of concentrates per animal per day in summer. 
+  ++help
+    +++en
+      <p>Standard value for Switzerland: 1.5 kg per head and day</p>
+    +++de
+      <p>Vorschlag für Standardwert: 1.5 kg pro Kuh und Tag</p>
+    +++fr
+      <p>Proposition de valeur standard: 1.5 kg par vache et par jour</p>
 
 +amount_winter
-   models = SHL
-   type = float
-   default_calc = 2
-   validator = between(0,6);
-   ++labels 
-     en = Amount of concentrates per animal and per day in winter
-     de = Durchschnittliche Kraftfuttermenge pro Kuh und Tag im Winter
-     fr = Quantité moyenne de concentrés par vache et par jour en hiver
-   ++units 
-     en = kg/day
-     de = kg/Tag
-     fr = kg/jour
-   ++description
-     Amount of concentrates per animal and per day in winter.
-   ++help
-     +++en
-        <p>Standard value for Switzerland: 2.5 kg per head and day</p>
-     +++de
-        <p>Vorschlag für Standardwert: 2.5 kg pro Kuh und Tag</p>
-     +++fr
-        <p>Proposition de valeur standard: 2.5 kg par vache et par jour</p>
+  models = SHL
+  type = float
+  default_calc = 2
+  validator = between(0,6);
+  ++labels 
+    en = Amount of concentrates per animal and per day in winter
+    de = Durchschnittliche Kraftfuttermenge pro Kuh und Tag im Winter
+    fr = Quantité moyenne de concentrés par vache et par jour en hiver
+  ++units 
+    en = kg/day
+    de = kg/Tag
+    fr = kg/jour
+  ++description
+    Amount of concentrates per animal and per day in winter.
+  ++help
+    +++en
+      <p>Standard value for Switzerland: 2.5 kg per head and day</p>
+    +++de
+      <p>Vorschlag für Standardwert: 2.5 kg pro Kuh und Tag</p>
+    +++fr
+      <p>Proposition de valeur standard: 2.5 kg par vache et par jour</p>
 
 *** technical ***
       
 +par_a_summer
-   value = 0.0393
-   ++units
-     en = day/kg
-     de = Tag/kg
-     fr = jour/kg
-   ++description
-      Parameter a of linear regression a + b*x.       
+  value = 0.0393
+  ++units
+    en = day/kg
+    de = Tag/kg
+    fr = jour/kg
+  ++description
+     Parameter a of linear regression a + b*x.       
 
 +par_b_summer
-   value = -0.0197
-   ++units 
-     en = -
-   ++description
-      Parameter a of linear regression a + b*x.
+  value = -0.0197
+  ++units 
+    en = -
+  ++description
+     Parameter a of linear regression a + b*x.
  
 +par_a_winter
-   value = -0.0406
-   ++units 
-     en = day/kg
-     de = Tag/kg
-     fr = jour/kg
-   ++description
-      Parameter a of linear regression a + b*x.
+  value = -0.0406
+  ++units
+    en = day/kg
+    de = Tag/kg
+    fr = jour/kg
+  ++description
+     Parameter a of linear regression a + b*x.
 
 +par_b_winter
-   value = 0.0145
-   ++units 
-     en = -
-   ++description
-      Parameter b of linear regression a + b*x.
+  value = 0.0145
+  ++units 
+    en = -
+  ++description
+     Parameter b of linear regression a + b*x.
            
 
 *** external ***
@@ -115,9 +115,9 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
   ++units 
     en = -
   ++description
-    Calculation of correction to exretions with 0.3, 0.5, 1, 2, 3, 4, 6 kg of concentrate (barley and wheat) per cow per day, taking into account the amount of roghage substituted by the concentrate (according to the energy content) and the relative differnce of the protein content of the roughage and the concentrate. Results used to calculate a regression for % modification of N excretion due to concentrate quantity summer. Standard for Summer = 1 kg animal-1 day-1. 
-   ++formula
-       Tech(par_a_summer) + Tech(par_b_summer) * In(amount_summer); 
+    Calculation of correction to excretions with 0.3, 0.5, 1, 2, 3, 4, 6 kg of concentrate (barley and wheat) per cow per day, taking into account the amount of roghage substituted by the concentrate (according to the energy content) and the relative differnce of the protein content of the roughage and the concentrate. Results used to calculate a regression for % modification of N excretion due to concentrate quantity summer. Standard for Summer = 1 kg animal-1 day-1. 
+  ++formula
+      Tech(par_a_summer) + Tech(par_b_summer) * In(amount_summer); 
        
         
 +c_concentrates_winter
@@ -125,9 +125,6 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
   ++units 
     en = -
   ++description
-        Calculation of correction to exretions with 0.3, 0.5, 1, 2, 3, 4, 6 kg of concentrate (barley and wheat) per cow per day, taking into account the amount of roghage substituted by the concentrate (according to the energy content) and the relative differnce of the protein content of the roughage and the concentrate. Results used to calculate a regression for % modification of N excretion due to concentrate quantity summer. Standard for Winter = 2 kg animal-1 day-1. 
+        Calculation of correction to excretions with 0.3, 0.5, 1, 2, 3, 4, 6 kg of concentrate (barley and wheat) per cow per day, taking into account the amount of roghage substituted by the concentrate (according to the energy content) and the relative differnce of the protein content of the roughage and the concentrate. Results used to calculate a regression for % modification of N excretion due to concentrate quantity summer. Standard for Winter = 2 kg animal-1 day-1. 
   ++formula
         Tech(par_a_winter) +  Tech(par_b_winter) * In(amount_winter);
-        
-        
-

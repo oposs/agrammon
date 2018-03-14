@@ -393,7 +393,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     the storage from all animals besides poultry.
   ++formula
     Sum(tan_solid_from_cattle,Livestock::OtherCattle) +
-    Sum(tan_solid_from_dairycow,Livestock::DairyCow) 
+    Sum(tan_solid_from_dairycow,Livestock::DairyCow);
 
 +nxox_nsolid_dairycows_cattle
   print = 4a
@@ -635,7 +635,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
- ++description
+  ++description
     Annual NH3 emission from livestock from all animals.
   ++formula
         Sum(nh3_ncattle,Livestock::OtherCattle) +
@@ -657,7 +657,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
- ++description
+  ++description
     Annual N2 emission from livestock from all animals.
   ++formula
         Sum(n2_nsolid_cattle,Livestock::OtherCattle) +
@@ -684,7 +684,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
- ++description
+  ++description
     Annual NO emission from livestock from all animals.
   ++formula
         Sum(no_nsolid_cattle,Livestock::OtherCattle) +
@@ -699,7 +699,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
         Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) +
         Sum(no_nequides,Livestock::Equides) +
         Sum(no_npoultry,Livestock::Poultry); 
- 
+
 +n2o_nlivestock
   print = NOxFlux
   ++labels 
@@ -710,7 +710,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
- ++description
+  ++description
     Annual N2O emission from livestock from all animals.
   ++formula
         Sum(n2o_nsolid_cattle,Livestock::OtherCattle) +

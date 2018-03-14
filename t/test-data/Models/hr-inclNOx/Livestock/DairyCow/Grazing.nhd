@@ -83,13 +83,13 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual total N excretion during grazing for dairy cows.
   ++formula
-    Val(n_excretion, Excretion) *
-      (Val(grazing_days,GrazingInput) - Val(days_with_grazing_and_yard,Yard)) / 365 *
-      Val(grazing_hours,GrazingInput) / 24 +
-    Val(n_excretion, Excretion) *
-      (1 - Val(share_excretion_with_grazing,Yard)) *
-      Val(days_with_grazing_and_yard,Yard) / 365 *
-      Val(grazing_hours,GrazingInput) / 24
+    Val(n_excretion, Excretion)
+      * (Val(grazing_days,GrazingInput) - Val(days_with_grazing_and_yard,Yard)) / 365
+      * Val(grazing_hours,GrazingInput) / 24 +
+    Val(n_excretion, Excretion)
+      * (1 - Val(share_excretion_with_grazing,Yard))
+      * Val(days_with_grazing_and_yard,Yard) / 365
+      * Val(grazing_hours,GrazingInput) / 24
 
 +n_sol_into_grazing
   print = 7c
@@ -174,8 +174,8 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual NH3 emission per dairy cow from grazing.
   ++formula
     if(  Val(dairy_cows, Excretion) != 0 ){
-        return Out(nh3_ngrazing) / Val(dairy_cows, Excretion);  
-    } else { return 0;};
+        return Out(nh3_ngrazing) / Val(dairy_cows, Excretion);
+    } else { return 0;}
  
 +grazing_days
   print = 15

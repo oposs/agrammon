@@ -170,7 +170,7 @@ gui       = Livestock::Fattening pigs,Tierhaltung::Mastschweine,Production anima
     Annual N flux as TAN from fattening pigs housing, liquid fraction.
   ++formula
     Val(tan_outhousing_liquid,FatteningPigs::Housing);
-        
+       
 +n_solid_from_fattening_pig
   print = 7
   ++units  
