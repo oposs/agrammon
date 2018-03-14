@@ -8,7 +8,7 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
 +short
 
  Computes the annual NH3 emission from solid manure storages.
-	
+        
 +description 
 
  This process calculates the annual NH3 emission from solid manure

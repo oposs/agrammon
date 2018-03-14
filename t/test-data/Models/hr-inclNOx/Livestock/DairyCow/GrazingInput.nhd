@@ -31,7 +31,7 @@ taxonomy = Livestock::DairyCow::GrazingInput
      +++en
         <p>Standard value for Switzerland: 180 days per year</p>
      +++de
-	<p>Anzahl Weidetage ohne Alpung im Sömmerungsgebiet</p>
+        <p>Anzahl Weidetage ohne Alpung im Sömmerungsgebiet</p>
         <p>Vorschlag für Standardwert: 180 Tage pro Jahr (Durchschnittswert Tal-, Hügel- und Bergregion). Diese Zahl bezieht sich auf die Anzahl Weidetage auf dem Heimbetrieb. Darin ist die Weide der Alpung im Sömmerungsgebiet nicht eingeschlossen.</p>
      +++fr
         <p>Nombre de jours de pâturage sans la période d’estivage</p>
@@ -55,7 +55,7 @@ taxonomy = Livestock::DairyCow::GrazingInput
      +++en
         <p>Standard value for Switzerland: 8.5 hours per day</p>
      +++de
-	<p>Anzahl Weidestunden ohne Alpung im Sömmerungsgebiet</p>
+        <p>Anzahl Weidestunden ohne Alpung im Sömmerungsgebiet</p>
         <p>Vorschlag für Standardwert: 8.5 Stunden pro Tag. Diese Zahl bezieht sich auf die Anzahl Weidestunden auf dem Heimbetrieb. Darin ist die Weide der Alpung im Sömmerungsgebiet nicht eingeschlossen.</p>
      +++fr
         <p>Nombre d’heures de pâturage, sans la période d’estivage </p>
@@ -73,7 +73,7 @@ taxonomy = Livestock::DairyCow::GrazingInput
   ++description
     Grazing hours per day.
   ++formula
-    do { In(grazing_hours) * 1;}
+    In(grazing_hours);
 
 +grazing_days
   print = 15
@@ -84,5 +84,4 @@ taxonomy = Livestock::DairyCow::GrazingInput
   ++description
     Grazing days per year.
   ++formula
-    do { In(grazing_days) * 1;}
-
+    In(grazing_days);

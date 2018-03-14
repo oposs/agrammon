@@ -171,7 +171,7 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
     Annual N flux as TAN from pigs housing, liquid fraction.
   ++formula
     Val(tan_outhousing_liquid, Pig::Housing);
-	
+        
 +n_solid_from_pig
   print = 7
   ++units  
@@ -217,10 +217,10 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
   ++formula
      given ( Val(housing_type, Pig::Housing::Type) ) {
             return Tech(er_n2_solid_Slurry)         when 'Slurry_Conventional';
-	    return Tech(er_n2_solid_Slurry)         when 'Slurry_Label';
-	    return Tech(er_n2_solid_Solid)          when 'Deep_Litter';
-	    return Tech(er_n2_solid_Solid)          when 'Outdoor';
-	    default { return 0; }
+            return Tech(er_n2_solid_Slurry)         when 'Slurry_Label';
+            return Tech(er_n2_solid_Solid)          when 'Deep_Litter';
+            return Tech(er_n2_solid_Solid)          when 'Outdoor';
+            default { return 0; }
       };
 
 +er_no_nsolid
@@ -231,10 +231,10 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
   ++formula
      given ( Val(housing_type, Pig::Housing::Type) ) {
             return Tech(er_no_solid_Slurry)         when 'Slurry_Conventional';
-	    return Tech(er_no_solid_Slurry)         when 'Slurry_Label';
-	    return Tech(er_no_solid_Solid)          when 'Deep_Litter';
-	    return Tech(er_no_solid_Solid)          when 'Outdoor';
-	    default { return 0; }
+            return Tech(er_no_solid_Slurry)         when 'Slurry_Label';
+            return Tech(er_no_solid_Solid)          when 'Deep_Litter';
+            return Tech(er_no_solid_Solid)          when 'Outdoor';
+            default { return 0; }
       };
 
 +er_n2o_nsolid
@@ -245,10 +245,10 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
   ++formula
      given ( Val(housing_type, Pig::Housing::Type) ) {
             return Tech(er_n2o_solid_Slurry)         when 'Slurry_Conventional';
-	    return Tech(er_n2o_solid_Slurry)         when 'Slurry_Label';
-	    return Tech(er_n2o_solid_Solid)          when 'Deep_Litter';
-	    return Tech(er_n2o_solid_Solid)          when 'Outdoor';
-	    default { return 0; }
+            return Tech(er_n2o_solid_Slurry)         when 'Slurry_Label';
+            return Tech(er_n2o_solid_Solid)          when 'Deep_Litter';
+            return Tech(er_n2o_solid_Solid)          when 'Outdoor';
+            default { return 0; }
       };
 
 +er_n2_nliquid
@@ -259,10 +259,10 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
   ++formula
      given ( Val(housing_type, Pig::Housing::Type) ) {
             return Tech(er_n2_liquid_Slurry)         when 'Slurry_Conventional';
-	    return Tech(er_n2_liquid_Slurry)         when 'Slurry_Label';
-	    return Tech(er_n2_liquid_Solid)          when 'Deep_Litter';
-	    return Tech(er_n2_liquid_Solid)          when 'Outdoor';
-	    default { return 0; }
+            return Tech(er_n2_liquid_Slurry)         when 'Slurry_Label';
+            return Tech(er_n2_liquid_Solid)          when 'Deep_Litter';
+            return Tech(er_n2_liquid_Solid)          when 'Outdoor';
+            default { return 0; }
       };
 
 +er_no_nliquid
@@ -273,10 +273,10 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
   ++formula
      given ( Val(housing_type, Pig::Housing::Type) ) {
             return Tech(er_no_liquid_Slurry)         when 'Slurry_Conventional';
-	    return Tech(er_no_liquid_Slurry)         when 'Slurry_Label';
-	    return Tech(er_no_liquid_Solid)          when 'Deep_Litter';
-	    return Tech(er_no_liquid_Solid)          when 'Outdoor';
-	    default { return 0; }
+            return Tech(er_no_liquid_Slurry)         when 'Slurry_Label';
+            return Tech(er_no_liquid_Solid)          when 'Deep_Litter';
+            return Tech(er_no_liquid_Solid)          when 'Outdoor';
+            default { return 0; }
       };
 
 +er_n2o_nliquid
@@ -287,10 +287,10 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
   ++formula
      given ( Val(housing_type, Pig::Housing::Type) ) {
             return Tech(er_n2o_liquid_Slurry)         when 'Slurry_Conventional';
-	    return Tech(er_n2o_liquid_Slurry)         when 'Slurry_Label';
-	    return Tech(er_n2o_liquid_Solid)          when 'Deep_Litter';
-	    return Tech(er_n2o_liquid_Solid)          when 'Outdoor';
-	    default { return 0; }
+            return Tech(er_n2o_liquid_Slurry)         when 'Slurry_Label';
+            return Tech(er_n2o_liquid_Solid)          when 'Deep_Litter';
+            return Tech(er_n2o_liquid_Solid)          when 'Outdoor';
+            default { return 0; }
       };
 
 

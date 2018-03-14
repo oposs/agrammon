@@ -30,7 +30,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 *** technical ***
 
 +mineralizationrate_liquid
-  value = 0.1	      
+  value = 0.1         
   ++units  
     en = -
   ++description
@@ -118,16 +118,16 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     True (1) if a Liquid Storage (Volume) is present.
   ++formula
     if( Sum(volume, Storage::Slurry) > 0){
-    	return 1;
+        return 1;
     }else{
-	if( Val(n_into_storage_liquid_check, Livestock) > 0 ){
-	  writeLog({en => "No storage for slurry defined although slurry is produced!\n",
+        if( Val(n_into_storage_liquid_check, Livestock) > 0 ){
+          writeLog({en => "No storage for slurry defined although slurry is produced!\n",
                     de => "Es ist kein Güllelager eingegeben, obwohl Gülle anfällt!\n",
-	            fr => "Aucun stock de lisier n’est mentionné, alors qu’il y a "
-		          . "production de lisier!\n"
+                    fr => "Aucun stock de lisier n’est mentionné, alors qu’il y a "
+                          . "production de lisier!\n"
                    });  
-	}
-	return 0;
+        }
+        return 0;
    }
     
 +mineralization_liquid 
@@ -162,9 +162,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       {0} 
     else 
       { Val(n_into_storage_liquid, Livestock) -
-	Val(nxox_nliquid, Livestock) -
+        Val(nxox_nliquid, Livestock) -
         Sum(nh3_nliquid, Storage::Slurry)
-	};
+        };
 
  +tan_into_application_liquid
   print = 4x
@@ -180,7 +180,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     else 
       { Val(tan_into_storage_liquid, Livestock) -
         Sum(nh3_nliquid, Storage::Slurry) -
-	Val(nxox_nliquid, Livestock) +
+        Val(nxox_nliquid, Livestock) +
         Out(mineralization_liquid) };
 
 

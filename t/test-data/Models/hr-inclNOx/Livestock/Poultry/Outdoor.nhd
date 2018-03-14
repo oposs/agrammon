@@ -28,14 +28,14 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++enum
     +++yes
         en = yes
-	de = Ja
-	fr = oui
-	it = yes
+        de = Ja
+        fr = oui
+        it = yes
     +++no
         en = no
-	de = Nein
-	fr = non
-	it = no
+        de = Nein
+        fr = non
+        it = no
   ++labels
     en = Do the animals have access to a free range?
     de = Haben die Tiere Zugang zu einer Weide?
@@ -203,8 +203,8 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range days per year.
   ++formula
     if( lc In(free_range) eq 'yes' ){
-#    	my $key = "free_range_days_" . Val(animalcategory, Excretion);
-#    	return Tech($key);
+#       my $key = "free_range_days_" . Val(animalcategory, Excretion);
+#       return Tech($key);
         return $TE->{'free_range_days_'.Val(animalcategory,Excretion)};
     }else{
         return 0;
@@ -220,8 +220,8 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range hours per day.
   ++formula
     if( lc In(free_range) eq 'yes' ){
-#    	my $key = "free_range_hours_" .  Val(animalcategory, Excretion);
-#    	return Tech($key);
+#       my $key = "free_range_hours_" .  Val(animalcategory, Excretion);
+#       return Tech($key);
         return $TE->{'free_range_hours_'.Val(animalcategory,Excretion)};
     }else{
         return 0;

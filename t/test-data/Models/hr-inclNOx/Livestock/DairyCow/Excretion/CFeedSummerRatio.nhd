@@ -126,7 +126,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
      Modification of annual N excretion by adding maize silage 
      to the standard ration during summer feeding period.
 
-+c_maize_pellets_summer	
++c_maize_pellets_summer 
    value = -0.01
    ++units 
      en = -

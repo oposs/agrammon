@@ -257,7 +257,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(n_liquid_from_pig,Livestock::Pig) +
     Sum(n_liquid_from_fattening_pig,Livestock::FatteningPigs); 
-	
+        
 +tan_into_storage_liquid
   print = 6
   ++units  
@@ -288,7 +288,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(tan_liquid_from_pig,Livestock::Pig) +
     Sum(tan_liquid_from_fattening_pig,Livestock::FatteningPigs); 
-	
+        
 +n_into_storage_solid_dairycows_cattle_pigs
   print = 3a
   ++units  
@@ -303,7 +303,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_solid_from_dairycow,Livestock::DairyCow) + 
     Sum(n_solid_from_pig,Livestock::Pig) +
     Sum(n_solid_from_fattening_pig,Livestock::FatteningPigs); 
-	
+        
 +n_into_storage_solid_dairycows_cattle
   print = 3a
   ++units  
@@ -316,7 +316,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(n_solid_from_cattle,Livestock::OtherCattle) +
     Sum(n_solid_from_dairycow,Livestock::DairyCow);
-	
+        
 +n_into_storage_solid_pigs
   print = 3a
   ++units  
@@ -638,14 +638,14 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
  ++description
     Annual NH3 emission from livestock from all animals.
   ++formula
-	Sum(nh3_ncattle,Livestock::OtherCattle) +
-	Sum(nh3_ndairycow,Livestock::DairyCow) +
-	Sum(nh3_nother,Livestock::SmallRuminants) +
-	Sum(nh3_nother,Livestock::RoughageConsuming) +
-	Sum(nh3_npig,Livestock::Pig) +
-	Sum(nh3_nfattening_pig,Livestock::FatteningPigs) +
-	Sum(nh3_nequides,Livestock::Equides) +
-	Sum(nh3_npoultry,Livestock::Poultry); 
+        Sum(nh3_ncattle,Livestock::OtherCattle) +
+        Sum(nh3_ndairycow,Livestock::DairyCow) +
+        Sum(nh3_nother,Livestock::SmallRuminants) +
+        Sum(nh3_nother,Livestock::RoughageConsuming) +
+        Sum(nh3_npig,Livestock::Pig) +
+        Sum(nh3_nfattening_pig,Livestock::FatteningPigs) +
+        Sum(nh3_nequides,Livestock::Equides) +
+        Sum(nh3_npoultry,Livestock::Poultry); 
 
 +n2_nlivestock
   print = NOxFlux
@@ -661,17 +661,17 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N2 emission from livestock from all animals.
   ++formula
         Sum(n2_nsolid_cattle,Livestock::OtherCattle) +
-	Sum(n2_nliquid_cattle,Livestock::OtherCattle) +
-	Sum(n2_nsolid_dairycow,Livestock::DairyCow) +
-	Sum(n2_nliquid_dairycow,Livestock::DairyCow) +
-	Sum(n2_nother,Livestock::SmallRuminants) +
-	Sum(n2_nother,Livestock::RoughageConsuming) +
-	Sum(n2_nsolid_pig,Livestock::Pig) +
-	Sum(n2_nliquid_pig,Livestock::Pig) +
-	Sum(n2_nsolid_fattening_pig,Livestock::FatteningPigs) +
-	Sum(n2_nliquid_fattening_pig,Livestock::FatteningPigs) +
-	Sum(n2_nequides,Livestock::Equides) +
-	Sum(n2_npoultry,Livestock::Poultry); 
+        Sum(n2_nliquid_cattle,Livestock::OtherCattle) +
+        Sum(n2_nsolid_dairycow,Livestock::DairyCow) +
+        Sum(n2_nliquid_dairycow,Livestock::DairyCow) +
+        Sum(n2_nother,Livestock::SmallRuminants) +
+        Sum(n2_nother,Livestock::RoughageConsuming) +
+        Sum(n2_nsolid_pig,Livestock::Pig) +
+        Sum(n2_nliquid_pig,Livestock::Pig) +
+        Sum(n2_nsolid_fattening_pig,Livestock::FatteningPigs) +
+        Sum(n2_nliquid_fattening_pig,Livestock::FatteningPigs) +
+        Sum(n2_nequides,Livestock::Equides) +
+        Sum(n2_npoultry,Livestock::Poultry); 
  
 
 +no_nlivestock
@@ -688,17 +688,17 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual NO emission from livestock from all animals.
   ++formula
         Sum(no_nsolid_cattle,Livestock::OtherCattle) +
-	Sum(no_nliquid_cattle,Livestock::OtherCattle) +
-	Sum(no_nsolid_dairycow,Livestock::DairyCow) +
-	Sum(no_nliquid_dairycow,Livestock::DairyCow) +
-	Sum(no_nother,Livestock::SmallRuminants) +
-	Sum(no_nother,Livestock::RoughageConsuming) +
-	Sum(no_nsolid_pig,Livestock::Pig) +
-	Sum(no_nliquid_pig,Livestock::Pig) +
-	Sum(no_nsolid_fattening_pig,Livestock::FatteningPigs) +
-	Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) +
-	Sum(no_nequides,Livestock::Equides) +
-	Sum(no_npoultry,Livestock::Poultry); 
+        Sum(no_nliquid_cattle,Livestock::OtherCattle) +
+        Sum(no_nsolid_dairycow,Livestock::DairyCow) +
+        Sum(no_nliquid_dairycow,Livestock::DairyCow) +
+        Sum(no_nother,Livestock::SmallRuminants) +
+        Sum(no_nother,Livestock::RoughageConsuming) +
+        Sum(no_nsolid_pig,Livestock::Pig) +
+        Sum(no_nliquid_pig,Livestock::Pig) +
+        Sum(no_nsolid_fattening_pig,Livestock::FatteningPigs) +
+        Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) +
+        Sum(no_nequides,Livestock::Equides) +
+        Sum(no_npoultry,Livestock::Poultry); 
  
 +n2o_nlivestock
   print = NOxFlux
@@ -714,17 +714,17 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N2O emission from livestock from all animals.
   ++formula
         Sum(n2o_nsolid_cattle,Livestock::OtherCattle) +
-	Sum(n2o_nliquid_cattle,Livestock::OtherCattle) +
-	Sum(n2o_nsolid_dairycow,Livestock::DairyCow) +
-	Sum(n2o_nliquid_dairycow,Livestock::DairyCow) +
-	Sum(n2o_nother,Livestock::SmallRuminants) +
-	Sum(n2o_nother,Livestock::RoughageConsuming) +
-	Sum(n2o_nsolid_pig,Livestock::Pig) +
-	Sum(n2o_nliquid_pig,Livestock::Pig) +
-	Sum(n2o_nsolid_fattening_pig,Livestock::FatteningPigs) +
-	Sum(n2o_nliquid_fattening_pig,Livestock::FatteningPigs) +
-	Sum(n2o_nequides,Livestock::Equides) +
-	Sum(n2o_npoultry,Livestock::Poultry); 
+        Sum(n2o_nliquid_cattle,Livestock::OtherCattle) +
+        Sum(n2o_nsolid_dairycow,Livestock::DairyCow) +
+        Sum(n2o_nliquid_dairycow,Livestock::DairyCow) +
+        Sum(n2o_nother,Livestock::SmallRuminants) +
+        Sum(n2o_nother,Livestock::RoughageConsuming) +
+        Sum(n2o_nsolid_pig,Livestock::Pig) +
+        Sum(n2o_nliquid_pig,Livestock::Pig) +
+        Sum(n2o_nsolid_fattening_pig,Livestock::FatteningPigs) +
+        Sum(n2o_nliquid_fattening_pig,Livestock::FatteningPigs) +
+        Sum(n2o_nequides,Livestock::Equides) +
+        Sum(n2o_npoultry,Livestock::Poultry); 
  
 
 +nh3_ngrazing

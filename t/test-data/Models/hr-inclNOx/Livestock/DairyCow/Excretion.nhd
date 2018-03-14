@@ -90,8 +90,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   value = 112
   ++units 
     en = kg N/year
-	de = kg N/Jahr
-	fr = kg N/an
+        de = kg N/Jahr
+        fr = kg N/an
   ++description
     Annual standard N excretion for a dairy cow according to
     Flisch et al. (2009).
@@ -158,12 +158,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual mean total N excreted per animal. 
 
-+n_sol_excretion	
++n_sol_excretion        
   print = 7 
   ++units
      en = kg N/year
      de = kg N/Jahr
-     fr = kg N/an	
+     fr = kg N/an       
   ++formula
 #     (Tech(share_Nsol) * Tech(standard_N_excretion)
 #       * Val(cmilk_yield, Excretion::CMilk)

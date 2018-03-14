@@ -7,7 +7,7 @@ taxonomy = Storage::Slurry::EFLiquid
 +short
 
  Calculates the emission factor for a specific slurry storage. 
-	
+        
 +description
 
 \subsubsection{References}
@@ -157,31 +157,31 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
     +++en
        <p> </p>
     +++de
-	<p>
+        <p>
            Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt 
            werden (z.B. ein neuer Typ Abdeckung). Die eingegebene Zahl entspricht der 
            Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Güllelager 
            nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar 
            aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
         </p>
-	<p>
-	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+        <p>
+           Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
            prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
            zur Emissionsminderung berücksichtigen müssen. 
         <p>
-	<p>Vorschlag für Standardwert: 0 %.</p>
+        <p>Vorschlag für Standardwert: 0 %.</p>
     +++fr
        <p>
          Ici, vous pouvez introduire l’effet d’une mesure supplémentaire limitant les 
-	 émissions (p.ex. un nouveau type de couverture). Le chiffre introduit correspond 
-	 à la réduction d’émission en pourcent (p.ex. 30%: l’émission provenant du stock 
-	 de lisier diminue de 30%). Il est recommandé de mentionner la mesure choisie dans 
-	 la colonne ‘Commentaire’ et de justifier le taux de réduction choisi.
+         émissions (p.ex. un nouveau type de couverture). Le chiffre introduit correspond 
+         à la réduction d’émission en pourcent (p.ex. 30%: l’émission provenant du stock 
+         de lisier diminue de 30%). Il est recommandé de mentionner la mesure choisie dans 
+         la colonne ‘Commentaire’ et de justifier le taux de réduction choisi.
        </p>
        <p>
          Cette fonction s’adresse principalement aux utilisateurs/trices qui font des 
-	 pronostiques d’émissions et qui doivent prendre en compte l’effet de nouvelles 
-	 technologies destinées à limiter les émissions et encore méconnues actuellement.
+         pronostiques d’émissions et qui doivent prendre en compte l’effet de nouvelles 
+         technologies destinées à limiter les émissions et encore méconnues actuellement.
        </p>
        <p>Proposition valeur standard: 0 %.</p><p> </p>
  
@@ -251,7 +251,7 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
     de =  kg N/m2/Jahr
     fr =  kg N/m2/an
   ++description
-	 
+         
 The Emission factor for uncovered storage is based on experiments of
 de Bode (1990) and Sommer et al. (1993) measuring emissions of 2.5 to
 6.9 g N m-2 day-1 for cattle slurry, for the emission of the none
@@ -352,13 +352,13 @@ T. Kupper).
     consider possible separt storage units.
   ++formula
     if ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {
-    	return Out(ef_cattle_liquid);
+        return Out(ef_cattle_liquid);
     }
     elsif ( lc In(contains_cattle_manure) eq 'no' and lc In(contains_pig_manure) eq 'yes' ) {
-    	return Out(ef_pigs_liquid);
+        return Out(ef_pigs_liquid);
     }
     elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'yes' ) {
-    	if ( Val(n_into_storage_liquid, ::Livestock) != 0) {
+        if ( Val(n_into_storage_liquid, ::Livestock) != 0) {
              return (Val(n_into_storage_liquid_pigs, ::Livestock) * Out(ef_pigs_liquid) +
                       (Val(n_into_storage_liquid, ::Livestock) - 
                        Val(n_into_storage_liquid_pigs, ::Livestock)) *  Out(ef_cattle_liquid) ) 
@@ -369,8 +369,8 @@ T. Kupper).
         }
     }
     else {
-      	if ( Val(n_into_storage_liquid, ::Livestock) != 0 ) {
-  	    writeLog({en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')'
+        if ( Val(n_into_storage_liquid, ::Livestock) != 0 ) {
+            writeLog({en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')'
                       . ' and/or "Contains pigs slurry" (' . In(contains_pig_manure) . ')' . "\n",
                   de => 'Ungültige Eingabe für "Enthält Rindergülle" (' . In(contains_cattle_manure) . ')'
                       . ' und/oder "Enthält Schweinegülle" (' . In(contains_pig_manure) . ')' . "\n",
@@ -396,7 +396,7 @@ T. Kupper).
   ++description
     Free reduction of the Emission rate for the Yard.
   ++formula
-  if(In(free_correction_factor)//0 > 0) {   	    
+  if(In(free_correction_factor)//0 > 0) {           
       writeLog({en=>"You have entered an additional emission mitigation measure for a storage of slurry of "
                     . In(free_correction_factor) 
                     . "\%!\n",
@@ -405,7 +405,7 @@ T. Kupper).
                     . "\% eingegeben!\n", 
                 fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions "
                     . "du stock de lisier de " . In(free_correction_factor) . "\%.\n" });
-	    return 1 - In(free_correction_factor)/100;
+            return 1 - In(free_correction_factor)/100;
      
   } else {
     return 1;

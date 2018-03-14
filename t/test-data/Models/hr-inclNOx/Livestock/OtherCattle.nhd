@@ -175,7 +175,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++description
    Check if number of animals <= number of animal places.
   ++formula
-	if (  Val(dimensioning_barn, OtherCattle::Housing::Type) < Val(animals, OtherCattle::Excretion) ) {
+        if (  Val(dimensioning_barn, OtherCattle::Housing::Type) < Val(animals, OtherCattle::Excretion) ) {
         writeLog({en=>"The number of available animal places must be equal or higher than the number of animals.",
                   de=>"Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
                   fr=>"Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
@@ -192,7 +192,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++description
     Annual N excreted by cattle.
   ++formula
-    Val(n_excretion, OtherCattle::Excretion); 	
+    Val(n_excretion, OtherCattle::Excretion);   
 
 +n_from_cattle
   print = 7
@@ -203,7 +203,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++description
     Annual N flux from cattle housing and yard.
   ++formula
-	Val(n_outhousing, OtherCattle::Housing) +
+        Val(n_outhousing, OtherCattle::Housing) +
         Val(n_outyard, OtherCattle::Yard); 
 
 +tan_from_cattle
@@ -215,7 +215,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++description
     Annnual N flux as TAN from cattle housing and yard.
   ++formula
-	Val(tan_outhousing, OtherCattle::Housing) +
+        Val(tan_outhousing, OtherCattle::Housing) +
         Val(tan_outyard, OtherCattle::Yard);
 
 +n_liquid_from_cattle
@@ -227,7 +227,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++description
     Annual N flux from cattle housing and yard, liquid fraction.
   ++formula
-	Val(n_outhousing_liquid, OtherCattle::Housing) +
+        Val(n_outhousing_liquid, OtherCattle::Housing) +
         Val(n_outyard_liquid, OtherCattle::Yard);
 
 +tan_liquid_from_cattle
@@ -239,9 +239,9 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++description
     Annual N flux as TAN from cattle housing and yard, liquid fraction.
   ++formula
-	Val(tan_outhousing_liquid, OtherCattle::Housing) +
+        Val(tan_outhousing_liquid, OtherCattle::Housing) +
         Val(tan_outyard_liquid, OtherCattle::Yard);
-	
+        
 +n_solid_from_cattle
   print = 7
   ++units  
@@ -251,7 +251,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++description
     Annual N flux from cattle housing and yard, solid fraction.
   ++formula
-	Val(n_outhousing_solid, OtherCattle::Housing) +
+        Val(n_outhousing_solid, OtherCattle::Housing) +
         Val(n_outyard_solid, OtherCattle::Yard);
 
 +tan_solid_from_cattle
@@ -263,8 +263,8 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++description
     Annual N flux as TAN from cattle housing and yard, solid fraction.
   ++formula
-	Val(tan_outhousing_solid, OtherCattle::Housing) +
-	Val(tan_outyard_solid, OtherCattle::Yard); 
+        Val(tan_outhousing_solid, OtherCattle::Housing) +
+        Val(tan_outyard_solid, OtherCattle::Yard); 
 
 +nh3_ncattle
   print = 5
@@ -277,7 +277,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++formula
      Val(nh3_nhousing, OtherCattle::Housing) +
      Val(nh3_nyard, OtherCattle::Yard)       +
-     Val(nh3_ngrazing, OtherCattle::Grazing);	
+     Val(nh3_ngrazing, OtherCattle::Grazing);   
 
 
 ########### Other Voltaile N Flux
@@ -291,11 +291,11 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++formula
      given ( Val(housing_type, OtherCattle::Housing::Type) ) {
             return Tech(er_n2_solid_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-	    return Tech(er_n2_solid_Slurry)                    when 'Loose_Housing_Slurry';
-	    return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Tech(er_n2_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
-	    default { return 0; }
+            return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2_solid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
       };
 
 +er_no_nsolid
@@ -306,11 +306,11 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++formula
      given ( Val(housing_type, OtherCattle::Housing::Type) ) {
             return Tech(er_no_solid_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-	    return Tech(er_no_solid_Slurry)                    when 'Loose_Housing_Slurry';
-	    return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Tech(er_no_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
-	    default { return 0; }
+            return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_no_solid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_no_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
       };
 
 +er_n2o_nsolid
@@ -321,11 +321,11 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++formula
      given ( Val(housing_type, OtherCattle::Housing::Type) ) {
             return Tech(er_n2o_solid_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-	    return Tech(er_n2o_solid_Slurry)                    when 'Loose_Housing_Slurry';
-	    return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Tech(er_n2o_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
-	    default { return 0; }
+            return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2o_solid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2o_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
       };
 
 +er_n2_nliquid
@@ -336,11 +336,11 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++formula
      given ( Val(housing_type, OtherCattle::Housing::Type) ) {
             return Tech(er_n2_liquid_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-	    return Tech(er_n2_liquid_Slurry)                    when 'Loose_Housing_Slurry';
-	    return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Tech(er_n2_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
-	    default { return 0; }
+            return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
       };
 
 +er_no_nliquid
@@ -351,11 +351,11 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++formula
      given ( Val(housing_type, OtherCattle::Housing::Type) ) {
             return Tech(er_no_liquid_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-	    return Tech(er_no_liquid_Slurry)                    when 'Loose_Housing_Slurry';
-	    return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Tech(er_no_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
-	    default { return 0; }
+            return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_no_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_no_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
       };
 
 +er_n2o_nliquid
@@ -366,11 +366,11 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   ++formula
      given ( Val(housing_type, OtherCattle::Housing::Type) ) {
             return Tech(er_n2o_liquid_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-	    return Tech(er_n2o_liquid_Slurry)                    when 'Loose_Housing_Slurry';
-	    return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Tech(er_n2o_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
-	    default { return 0; }
+            return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2o_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2o_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
       };
 
 

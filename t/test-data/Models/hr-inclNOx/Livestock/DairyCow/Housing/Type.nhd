@@ -59,16 +59,16 @@ Selects the emission rate and other correction factors for the specific housing 
        <p>Loose Housing Slurry: 35%</p> 
        <p>Loose Housing Slurry Plus Solid Manure: 11%</p>
     +++de
-	<dl>
-		<dt>Laufstall mit Produktion von Vollgülle:</dt>
-	 	<dd>Mehrraum-Laufstall, Liegefläche mit Liegeboxen</dd>
-		<dt>Laufstall mit Produktion von Gülle und Mist:</dt>
-		<dd>Mehrraum-Laufstall, Liegefläche mit Liegeboxen (Gülle und bedeutende Mengen Mist)</dd>
-		<dd>Mehrraum-Laufstall, Liegefläche als Tiefstreu/Tretmist</dd>
-		<dt>Laufstall mit Tiefstreu/Tretmist:</dt>
-		<dd> Einraum-Laufstall mit Tiefstreu/Tretmist (ausschliesslich Mist)</dd>
-	</dl>
-	<p/>
+        <dl>
+                <dt>Laufstall mit Produktion von Vollgülle:</dt>
+                <dd>Mehrraum-Laufstall, Liegefläche mit Liegeboxen</dd>
+                <dt>Laufstall mit Produktion von Gülle und Mist:</dt>
+                <dd>Mehrraum-Laufstall, Liegefläche mit Liegeboxen (Gülle und bedeutende Mengen Mist)</dd>
+                <dd>Mehrraum-Laufstall, Liegefläche als Tiefstreu/Tretmist</dd>
+                <dt>Laufstall mit Tiefstreu/Tretmist:</dt>
+                <dd> Einraum-Laufstall mit Tiefstreu/Tretmist (ausschliesslich Mist)</dd>
+        </dl>
+        <p/>
        <p>Vorschlag für Standardwerte: </p>
        <p>Im Jahr 2010 war der Anteil der Aufstallungssysteme wie folgt: </p>
        <p>Anbindestall mit Produktion von Vollgülle: 18%</p> 
@@ -167,13 +167,13 @@ Selects the emission rate and other correction factors for the specific housing 
     Emission rate for the housing type.
   ++formula
 #    Val(er_housing, 'Type::' . In(housing_type));
-	given ( $IN->{housing_type} ) {
-	    return Val(er_housing,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Val(er_housing,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-	    return Val(er_housing,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
-	    return Val(er_housing,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Val(er_housing,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
-	}
+        given ( In(housing_type) ) {
+            return Val(er_housing,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
+            return Val(er_housing,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Val(er_housing,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
+            return Val(er_housing,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Val(er_housing,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
+        }
 
 +share_liquid
   print = 10
@@ -182,13 +182,13 @@ Selects the emission rate and other correction factors for the specific housing 
   ++description
     Liquid share for the housing type.
   ++formula
-	given ( $IN->{housing_type} ) {
-	    return Val(share_liquid,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Val(share_liquid,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+        given ( In(housing_type) ) {
+            return Val(share_liquid,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
+            return Val(share_liquid,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
         return Val(share_liquid,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
-	    return Val(share_liquid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Val(share_liquid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
-	}
+            return Val(share_liquid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Val(share_liquid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
+        }
 
 +share_solid
   print = 10
@@ -198,13 +198,13 @@ Selects the emission rate and other correction factors for the specific housing 
     Solid share for the housing type.
   ++formula
 #      Val(share_solid, 'Type::' . In(housing_type));
-	given ( $IN->{housing_type} ) {
-	    return Val(share_solid,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Val(share_solid,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+        given ( In(housing_type) ) {
+            return Val(share_solid,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
+            return Val(share_solid,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
         return Val(share_solid,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
-	    return Val(share_solid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Val(share_solid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
-	}
+            return Val(share_solid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Val(share_solid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
+        }
 
 +k_area_type
   print = 255
@@ -214,13 +214,13 @@ Selects the emission rate and other correction factors for the specific housing 
     Correction factor for the housing type area.
   ++formula
 #      Val(k_area, 'Type::' . In(housing_type));
-	given ( $IN->{housing_type} ) {
-	    return Val(k_area,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
-	    return Val(k_area,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+        given ( In(housing_type) ) {
+            return Val(k_area,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
+            return Val(k_area,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
         return Val(k_area,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
-	    return Val(k_area,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-  	    return Val(k_area,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
-	}
+            return Val(k_area,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Val(k_area,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
+        }
 
 
 +area_increase
@@ -231,19 +231,19 @@ Selects the emission rate and other correction factors for the specific housing 
     Factor on what barn size does increase the regularized minimal, limited to 0.5.
   ++formula 
     if((Val(dairy_cows, ..::Excretion) < In(dimensioning_barn) ) and (Val(dairy_cows, ..::Excretion) != 0)){ 
-    	 if(In(dimensioning_barn) >= (Val(dairy_cows, ..::Excretion) * 1.5)){   
-	     return 0.5; 
-	 }
-	 else { 
+         if(In(dimensioning_barn) >= (Val(dairy_cows, ..::Excretion) * 1.5)){   
+             return 0.5; 
+         }
+         else { 
              if(Val(dairy_cows , ..::Excretion) > 0){ 
-	        return((In(dimensioning_barn) / Val(dairy_cows, ..::Excretion)) -1);
-	     }else { return 0;}
+                return((In(dimensioning_barn) / Val(dairy_cows, ..::Excretion)) -1);
+             }else { return 0;}
 
-        }  	
-		
+        }       
+                
     }
     else {
-	return 0.0;
+        return 0.0;
     };
 
 +k_area
@@ -280,19 +280,19 @@ Selects the emission rate and other correction factors for the specific housing 
   ++description
     Are feeding boxes available?
   ++formula
-	 
+         
     if(defined In(feeding_boxes) and In(feeding_boxes) eq 'yes'){ 
         if((In(housing_type) eq 'Tied_Housing_Slurry') or (In(housing_type) eq 'Tied_Housing_Slurry_Plus_Solid_Manure')){
-    	    writeLog({en=>"Feeding boxes are applicable for loose housing systems only!",
+            writeLog({en=>"Feeding boxes are applicable for loose housing systems only!",
               de=>"Fütterungsbuchten sind nur für Laufställe anwendbar!",
               fr=>"Franz.: Fütterungsbuchten sind nur für Laufställe anwendbar!"});
-	    return 0;
+            return 0;
        } 
        else{
-        	return( Tech(red_feeding_boxes));
+                return( Tech(red_feeding_boxes));
        }
     }
     else {
-	return 0;
+        return 0;
     };
 
