@@ -6,7 +6,7 @@ my $path = $*PROGRAM.parent.add('test-data/Models/run-test-no-multi');
 my $model = Agrammon::Model.new(path => $path);
 $model.load('Test');
 
-subtest 'Run without overriding any techincal values' => {
+subtest 'Run without overriding any technical values' => {
     my %outputs = $model.run(input => {
         'Test::SubModule' => {
             monkeys => 42
@@ -23,7 +23,7 @@ subtest 'Run without overriding any techincal values' => {
         'Correct result';
 }
 
-subtest 'Run with techincal values overrides' => {
+subtest 'Run with technical values overrides' => {
     my %outputs = $model.run(
         input => {
             'Test::SubModule' => {
