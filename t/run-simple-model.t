@@ -1,4 +1,5 @@
 use v6;
+use Agrammon::Inputs;
 use Agrammon::Model;
 use Test;
 
@@ -7,14 +8,10 @@ my $model = Agrammon::Model.new(path => $path);
 $model.load('Test');
 
 subtest 'Run without overriding any technical values' => {
-    my %outputs = $model.run(input => {
-        'Test::SubModule' => {
-            monkeys => 42
-        },
-        'Test' => {
-            final_add => 10
-        }
-    });
+    my $input = Agrammon::Inputs.new;
+    $input.add-single-input('Test::SubModule', 'monkeys', 42);
+    $input.add-single-input('Test', 'final_add', 10);
+    my %outputs = $model.run(:$input);
     ok %outputs<Test::SubModule>:exists, 'Have outputs hash for Test::SubModule';
     is %outputs<Test::SubModule><sub_result>, 20 * 42,
         'Correct sub_result';
@@ -24,15 +21,11 @@ subtest 'Run without overriding any technical values' => {
 }
 
 subtest 'Run with technical values overrides' => {
+    my $input = Agrammon::Inputs.new;
+    $input.add-single-input('Test::SubModule', 'monkeys', 42);
+    $input.add-single-input('Test', 'final_add', 10);
     my %outputs = $model.run(
-        input => {
-            'Test::SubModule' => {
-                monkeys => 42
-            },
-            'Test' => {
-                final_add => 10
-            }
-        },
+        :$input,
         technical => {
             'Test::SubModule' => {
                 sub_multiply => 10

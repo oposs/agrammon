@@ -1,4 +1,5 @@
 use v6;
+use Agrammon::Inputs;
 use Agrammon::ModuleBuilder;
 use Agrammon::ModuleParser;
 use Agrammon::Model::Module;
@@ -67,20 +68,20 @@ class Agrammon::Model {
         has Agrammon::Model::Module $.module;
         has ModuleRunner @.dependencies;
 
-        method run(:%input!, :%technical!) {
+        method run(:$input!, :%technical!) {
             my %outputs;
-            self!run-internal(%input, %technical, %outputs);
+            self!run-internal($input, %technical, %outputs);
             return %outputs;
         }
 
-        method !run-internal(%input, %technical, %outputs --> Nil) {
+        method !run-internal($input, %technical, %outputs --> Nil) {
             for @!dependencies -> $dep {
-                $dep!run-internal(%input, %technical, %outputs);
+                $dep!run-internal($input, %technical, %outputs);
             }
 
             my $tax = $!module.taxonomy;
             %outputs{$tax} = {};
-            my %module-input = %input{$tax};
+            my %module-input = $input.input-hash-for($tax);
             my %module-technical = $!module.technical.map({ .name => .value });
             with %technical{$tax} -> %override {
                 %module-technical ,= %override;
@@ -225,8 +226,8 @@ class Agrammon::Model {
         $module-name.subst(/'::' <.ident> '::..'/, '', :g)
     }
 
-    method run(:%input!, :%technical) {
-        $!entry-point.run(:%input, :%technical)
+    method run(Agrammon::Inputs :$input!, :%technical) {
+        $!entry-point.run(:$input, :%technical)
     }
 
     method dump {
