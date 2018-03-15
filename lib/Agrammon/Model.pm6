@@ -24,6 +24,44 @@ class X::Agrammon::Model::CircularModel is Exception {
     }
 }
 
+role X::Agrammon::Model::BadFormula is Exception {
+    has $.module;
+    has $.output;
+    method !prefix() {
+        "Output '$!output' of module '$!module' "
+    }
+}
+
+class X::Agrammon::Model::InvalidInput does X::Agrammon::Model::BadFormula {
+    has $.input;
+    method message() {
+        self!prefix ~ "uses undeclared input '$!input'"
+    }
+}
+
+class X::Agrammon::Model::InvalidTechnical does X::Agrammon::Model::BadFormula {
+    has $.technical;
+    method message() {
+        self!prefix ~ "uses undeclared technical '$!technical'"
+    }
+}
+
+class X::Agrammon::Model::InvalidOutputSymbol does X::Agrammon::Model::BadFormula {
+    has $.from;
+    has $.symbol;
+    method message() {
+        self!prefix ~ "uses undeclared output '$!symbol' from $!from"
+    }
+}
+
+class X::Agrammon::Model::InvalidOutputModule does X::Agrammon::Model::BadFormula {
+    has $.from;
+    has $.symbol;
+    method message() {
+        self!prefix ~ "tries to use '$!symbol' from unknown module $!from (missing external?)"
+    }
+}
+
 class Agrammon::Model {
     has IO::Path $.path;
     has Agrammon::Model::Module @.evaluation-order;
@@ -58,8 +96,12 @@ class Agrammon::Model {
         }
     }
 
-    method load($module-name, :%pending, :%loaded) {
+    method load($module-name --> Nil) {
+        self!load-internal($module-name);
+        self!sanity-check();
+    }
 
+    method !load-internal($module-name, :%pending, :%loaded) {
         # trying to load module while already loading it
         die X::Agrammon::Model::CircularModel.new(:module($module-name))
             if %pending{$module-name}:exists;
@@ -81,11 +123,64 @@ class Agrammon::Model {
                 !! $parent
                     ?? normalize($parent ~ '::' ~ $external-name)
                     !! $external-name;
-            self.load($include, :%pending, :%loaded);
+            self!load-internal($include, :%pending, :%loaded);
         }
         @!evaluation-order.push($module);
         %loaded{$module-name} = True;
         %pending{$module-name}:delete;
+    }
+
+    # Perform an abstract interpretation of the model, tracking outputs set,
+    # in order to check for unknown outputs and outputs used too early.
+    method !sanity-check() {
+        my %known-outputs;
+        for @!evaluation-order -> $module {
+            my %known-input := set $module.input.map(*.name);
+            my %known-technical := set $module.technical.map(*.name);
+            my $tax = $module.taxonomy;
+            %known-outputs{$tax} = {};
+
+            for $module.output -> $output (:$name, :$formula, *%) {
+                with $formula.input-used.first(* !(elem) %known-input) {
+                    die X::Agrammon::Model::InvalidInput.new(
+                        module => $module.taxonomy,
+                        output => $output.name,
+                        input => $_
+                    );
+                }
+
+                with $formula.technical-used.first(* !(elem) %known-technical) {
+                    die X::Agrammon::Model::InvalidTechnical.new(
+                        module => $module.taxonomy,
+                        output => $output.name,
+                        technical => $_
+                    );
+                }
+
+                for $formula.output-used -> $sym {
+                    with %known-outputs{$sym.module} -> %module-outputs {
+                        without %module-outputs{$sym.symbol} {
+                            die X::Agrammon::Model::InvalidOutputSymbol.new(
+                                module => $module.taxonomy,
+                                output => $output.name,
+                                from => $sym.module,
+                                symbol => $sym.symbol
+                            );
+                        }
+                    }
+                    else {
+                        die X::Agrammon::Model::InvalidOutputModule.new(
+                            module => $module.taxonomy,
+                            output => $output.name,
+                            from => $sym.module,
+                            symbol => $sym.symbol
+                        );
+                    }
+                }
+
+                %known-outputs{$tax}{$name} = True;
+            }
+        }
     }
 
     sub normalize($module-name) {
