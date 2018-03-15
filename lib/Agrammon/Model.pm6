@@ -63,8 +63,42 @@ class X::Agrammon::Model::InvalidOutputModule does X::Agrammon::Model::BadFormul
 }
 
 class Agrammon::Model {
+    my class ModuleRunner {
+        has Agrammon::Model::Module $.module;
+        has ModuleRunner @.dependencies;
+
+        method run(:%input!, :%technical!) {
+            my %outputs;
+            self!run-internal(%input, %technical, %outputs);
+            return %outputs;
+        }
+
+        method !run-internal(%input, %technical, %outputs --> Nil) {
+            for @!dependencies -> $dep {
+                $dep!run-internal(%input, %technical, %outputs);
+            }
+
+            my $tax = $!module.taxonomy;
+            %outputs{$tax} = {};
+            my %module-input = %input{$tax};
+            my %module-technical = $!module.technical.map({ .name => .value });
+            with %technical{$tax} -> %override {
+                %module-technical ,= %override;
+            }
+            for $!module.output {
+                my $env = Agrammon::Environment.new(
+                    input => %module-input,
+                    technical => %module-technical,
+                    output => %outputs
+                );
+                %outputs{$tax}{.name} = .formula.evaluate($env);
+            }
+        }
+    }
+
     has IO::Path $.path;
     has Agrammon::Model::Module @.evaluation-order;
+    has ModuleRunner $!entry-point;
   
     method file2module($file) {
         my $module = $file;
@@ -97,17 +131,17 @@ class Agrammon::Model {
     }
 
     method load($module-name --> Nil) {
-        self!load-internal($module-name);
+        $!entry-point = self!load-internal($module-name);
         self!sanity-check();
     }
 
-    method !load-internal($module-name, :%pending, :%loaded) {
+    method !load-internal($module-name, :%pending, :%loaded --> ModuleRunner) {
         # trying to load module while already loading it
         die X::Agrammon::Model::CircularModel.new(:module($module-name))
             if %pending{$module-name}:exists;
 
         # module has already been loaded
-        return if %loaded{$module-name};
+        return $_ with %loaded{$module-name};
 
         %pending{$module-name} = True;
         my $module = self.load-module($module-name);
@@ -116,6 +150,7 @@ class Agrammon::Model {
         }
         my $parent = $module.parent;
         my @externals = $module.external;
+        my @dependencies;
         for @externals -> $external {
             my $external-name = $external.name;
             my $include = $external-name.starts-with('::')
@@ -123,11 +158,14 @@ class Agrammon::Model {
                 !! $parent
                     ?? normalize($parent ~ '::' ~ $external-name)
                     !! $external-name;
-            self!load-internal($include, :%pending, :%loaded);
+            push @dependencies, self!load-internal($include, :%pending, :%loaded);
         }
         @!evaluation-order.push($module);
-        %loaded{$module-name} = True;
         %pending{$module-name}:delete;
+
+        my $evaluator = ModuleRunner.new(:$module, :@dependencies);
+        %loaded{$module-name} = $evaluator;
+        return $evaluator;
     }
 
     # Perform an abstract interpretation of the model, tracking outputs set,
@@ -188,25 +226,7 @@ class Agrammon::Model {
     }
 
     method run(:%input!, :%technical) {
-        my %outputs;
-        for @!evaluation-order -> $module {
-            my $tax = $module.taxonomy;
-            %outputs{$tax} = {};
-            my %module-input = %input{$tax};
-            my %module-technical = $module.technical.map({ .name => .value });
-            with %technical{$tax} -> %override {
-                %module-technical ,= %override;
-            }
-            for $module.output {
-                my $env = Agrammon::Environment.new(
-                    input => %module-input,
-                    technical => %module-technical,
-                    output => %outputs
-                );
-                %outputs{$tax}{.name} = .formula.evaluate($env);
-            }
-        }
-        return %outputs;
+        $!entry-point.run(:%input, :%technical)
     }
 
     method dump {
