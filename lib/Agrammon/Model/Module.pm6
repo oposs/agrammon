@@ -33,6 +33,9 @@ class Agrammon::Model::Module {
         }
     }
 
+    method is-multi() {
+        $!instances // '' eq 'multi'
+    }
 }
 
 
