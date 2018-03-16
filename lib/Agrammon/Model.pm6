@@ -70,17 +70,29 @@ class Agrammon::Model {
 
         method run(:$input!, :%technical!) {
             my %outputs;
+            my $*IN-MULTI = False;
             self!run-internal($input, %technical, %outputs);
             return %outputs;
         }
 
         method !run-internal($input, %technical, %outputs --> Nil) {
+            if $!module.is-multi {
+                my $*IN-MULTI = True;
+                for $input.inputs-list-for($!module.taxonomy) -> $multi-input {
+                    self!run-as-single($multi-input, %technical, %outputs);
+                }
+            }
+            else {
+                self!run-as-single($input, %technical, %outputs);
+            }
+        }
+
+        method !run-as-single($input, %technical, %outputs --> Nil) {
             for @!dependencies -> $dep {
                 $dep!run-internal($input, %technical, %outputs);
             }
 
             my $tax = $!module.taxonomy;
-            %outputs{$tax} = {};
             my %module-input = $input.input-hash-for($tax);
             my %module-technical = $!module.technical.map({ .name => .value });
             with %technical{$tax} -> %override {
@@ -92,7 +104,13 @@ class Agrammon::Model {
                     technical => %module-technical,
                     output => %outputs
                 );
-                %outputs{$tax}{.name} = .formula.evaluate($env);
+                my $result = .formula.evaluate($env);
+                if $*IN-MULTI {
+                    push (%outputs{$tax}{.name} //= []), $result;
+                }
+                else {
+                    %outputs{$tax}{.name} = $result;
+                }
             }
         }
     }
