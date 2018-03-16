@@ -24,8 +24,17 @@ class Agrammon::DataSource::CSV {
     method !group-input(@group) {
         my $input = Agrammon::Inputs.new;
         for @group {
-            $input.add-single-input(.[2], .[3], +.[4] // .[4]);
+            if .[2] ~~ /^ (<-[\[]>+) '[' (<-[\[]>+) ']' ['::' (.+)] $/ {
+                $input.add-multi-input(~$0, ~$1, ~($2 // ''), .[3], maybe-numify(.[4]))
+            }
+            else {
+                $input.add-single-input(.[2], .[3], maybe-numify(.[4]));
+            }
         }
         return $input;
+    }
+
+    sub maybe-numify($value) {
+        +$value // $value
     }
 }
