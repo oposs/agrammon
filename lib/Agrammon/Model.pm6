@@ -76,9 +76,13 @@ class Agrammon::Model {
         }
 
         method !run-internal($input, %technical, %outputs --> Nil) {
+            my $tax = $!module.taxonomy;
             if $!module.is-multi {
                 my $*IN-MULTI = True;
-                for $input.inputs-list-for($!module.taxonomy) -> $multi-input {
+                for $!module.output {
+                    %outputs{$tax}{.name} = [];
+                }
+                for $input.inputs-list-for($tax) -> $multi-input {
                     self!run-as-single($multi-input, %technical, %outputs);
                 }
             }

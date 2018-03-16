@@ -45,4 +45,14 @@ subtest 'Run with technical values overrides' => {
             'Correct result';
 }
 
+subtest 'Run with no instances' => {
+    my $input = Agrammon::Inputs.new;
+    $input.add-single-input('Test', 'final_add', 10);
+    my %outputs = $model.run(:$input);
+    ok %outputs<Test::SubModule>:exists, 'Have outputs hash for Test::SubModule';
+    is %outputs<Test::SubModule><sub_result>, [], 'Correct,empty, sub_result array';
+    ok %outputs<Test>:exists, 'Have outputs hash for Test';
+    is %outputs<Test><result>, 10, 'Correct result';
+}
+
 done-testing;
