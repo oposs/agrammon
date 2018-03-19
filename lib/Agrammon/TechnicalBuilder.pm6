@@ -14,5 +14,4 @@ class Agrammon::TechnicalBuilder {
     method single-line-option($/) {
         make Agrammon::Model::Technical.new( name => ~$<key>, value => ~$<value> );
     }
-
 }

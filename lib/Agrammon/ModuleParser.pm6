@@ -1,6 +1,7 @@
 use v6;
+use Agrammon::CommonParser;
 
-grammar Agrammon::ModuleParser {
+grammar Agrammon::ModuleParser does Agrammon::CommonParser {
     token TOP {
         :my $*TAXONOMY = '';
         <.blank-line>*
@@ -9,10 +10,6 @@ grammar Agrammon::ModuleParser {
         || $
         || <.panic('Confused')>
         ]
-    }
-
-    method panic($message) {
-        die "$message near " ~ self.orig.substr(self.pos, 50).perl;
     }
 
     proto token section { * }
@@ -64,65 +61,5 @@ grammar Agrammon::ModuleParser {
         | <.blank-line>
         | <tests=.option-section>
         ]*
-    }
-
-    token option-section {
-        \h* '+' \h* <name> \h* \n
-        [
-        | <.blank-line>
-        | <option=.single-line-option>
-        | <option=.subsection-map>
-        | <option=.multi-line-str-option('++')>
-        ]*
-    }
-
-    token section-heading($title) {
-        \h* '***' \h* $title \h* '***' \h* \n
-    }
-
-    token subsection-map {
-        \h* '++' \h* <key> \h* \n
-        [
-        | <value=.single-line-option>
-        | <value=.multi-line-str-option('+++')>
-        ]+
-    }
-
-    token single-line-option {
-        \h* <key> \h* '=' \h* $<value>=[\N*] [\n || $]
-    }
-
-    token multi-line-str-option($prefix) {
-        \h* $prefix \h* <key> \h* \n
-        # We want no leading lines and no trailing empty lines, but do want
-        # interior empty lines. We eat lines up until we see a "terminator",
-        # which is whitespace followed by *** (section heading) or + (next
-        # option).
-        <.blank-line>*
-        $<value>=[
-            [
-                <!before \s* ['+' || '***' || $]>
-                \N* [\n || $]
-            ]*
-        ]
-        <.blank-line>*
-    }
-
-    token key {
-        \w+
-    }
-
-    token name {
-        '::'? <.name-part> [ '::' <.name-part> ]*
-    }
-
-    token name-part {
-        <.ident> | '..'
-    }
-
-    token blank-line {
-        | \h* \n
-        | \h* '#' \N* \n
-        | \h+ $
     }
 }

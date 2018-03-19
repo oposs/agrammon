@@ -14,6 +14,7 @@
         "Agrammon::ModuleParser": "lib/Agrammon/ModuleParser.pm6",
         "Agrammon::DB::Tag": "lib/Agrammon/DB/Tag.pm6",
         "Agrammon::Formula::Parser": "lib/Agrammon/Formula/Parser.pm6",
+        "Agrammon::CommonParser": "lib/Agrammon/CommonParser.pm6",
         "Agrammon::Model::Test": "lib/Agrammon/Model/Test.pm6",
         "Agrammon::DB::Tags": "lib/Agrammon/DB/Tags.pm6",
         "Agrammon::DataSource::CSV": "lib/Agrammon/DataSource/CSV.pm6",
