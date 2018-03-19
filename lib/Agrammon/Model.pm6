@@ -122,6 +122,7 @@ class Agrammon::Model {
     has IO::Path $.path;
     has Agrammon::Model::Module @.evaluation-order;
     has ModuleRunner $!entry-point;
+    has %!output-unit-cache;
   
     method file2module($file) {
         my $module = $file;
@@ -260,4 +261,10 @@ class Agrammon::Model {
         return $output;
     }
 
+    method output-unit(Str $module, Str $output, Str $lang --> Str) {
+        %!output-unit-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .units }))
+        });
+        return %!output-unit-cache{$module}{$output}{$lang} // ''
+    }
 }
