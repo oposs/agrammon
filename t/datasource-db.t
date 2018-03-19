@@ -3,6 +3,13 @@ use Agrammon::DataSource::DB;
 use DB::Pg;
 use Test;
 
+plan 4;
+
+if %*ENV<AGRAMMON_UNIT_TEST> {
+    skip-rest 'Not a unit test';
+    exit;
+}
+
 my $db-host     = 'localhost';
 my $db-port     = '5432';
 my $db-user     = 'postgres';
@@ -60,9 +67,6 @@ transactionally {
     is @data.elems, $rowsExpected, "Found $rowsExpected rows in dataset $ag-user:$ag-dataset";
 
 }
-
-done-testing;
-
 
 
 sub prepare-test-db($user, $dataset) {

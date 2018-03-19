@@ -2,9 +2,14 @@ use v6;
 use Agrammon::Config;
 use Agrammon::DB::User;
 use DB::Pg;
-
 use Test;
+
 plan 6;
+
+if %*ENV<AGRAMMON_UNIT_TEST> {
+    skip-rest 'Not a unit test';
+    exit;
+}
 
 my $cfg-file = "t/test-data/agrammon.cfg.yaml";
 my $username = 'fritz.zaucker@oetiker.ch';
