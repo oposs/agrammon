@@ -17,6 +17,8 @@ use Test;
 
     subtest 'Data set 1', {
         isa-ok @datasets[0], Agrammon::Inputs, 'Correct type';
+        is @datasets[0].simulation-name, 'TEST', 'Correct simulation name';
+        is @datasets[0].dataset-id, 1, 'Correct data set ID';
         is-deeply @datasets[0].input-hash-for('PlantProduction::AgriculturalArea'),
             { agricultural_area => 20 },
             'Correct data for PlantProduction::AgriculturalArea';
@@ -37,6 +39,8 @@ use Test;
 
     subtest 'Data set 2', {
         isa-ok @datasets[1], Agrammon::Inputs, 'Correct type';
+        is @datasets[1].simulation-name, 'TEST', 'Correct simulation name';
+        is @datasets[1].dataset-id, 2, 'Correct data set ID';
         is-deeply @datasets[1].input-hash-for('PlantProduction::AgriculturalArea'),
         { agricultural_area => 40 },
         'Correct data for PlantProduction::AgriculturalArea';
@@ -70,6 +74,8 @@ use Test;
 
     subtest 'Data set 1', {
         isa-ok @datasets[0], Agrammon::Inputs, 'Correct type';
+        is @datasets[0].simulation-name, '2010v2.1_20120425', 'Correct simulation name';
+        is @datasets[0].dataset-id, 2, 'Correct data set ID';
         my @input-list = @datasets[0].inputs-list-for('Livestock::DairyCow');
         is @input-list.elems, 2, 'Have 2 dairy cow inputs';
         is-deeply @input-list[0].input-hash-for('Livestock::DairyCow::Excretion::CConcentrates'),
@@ -89,6 +95,8 @@ use Test;
 
     subtest 'Data set 2', {
         isa-ok @datasets[1], Agrammon::Inputs, 'Correct type';
+        is @datasets[1].simulation-name, '2010v2.1_20120425', 'Correct simulation name';
+        is @datasets[1].dataset-id, 18, 'Correct data set ID';
         my @input-list = @datasets[1].inputs-list-for('Livestock::DairyCow');
         is @input-list.elems, 2, 'Have 2 dairy cow inputs';
         is-deeply @input-list[0].input-hash-for('Livestock::DairyCow::Excretion::CConcentrates'),
