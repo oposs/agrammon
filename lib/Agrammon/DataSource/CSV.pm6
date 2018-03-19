@@ -22,7 +22,7 @@ class Agrammon::DataSource::CSV {
     }
 
     method !group-input(@group) {
-        my $input = Agrammon::Inputs.new;
+        my $input = Agrammon::Inputs.new(simulation-name => @group[0][0], dataset-id => @group[0][1]);
         for @group {
             if .[2] ~~ /^ (<-[\[]>+) '[' (<-[\[]>+) ']' ['::' (.+)] $/ {
                 $input.add-multi-input(~$0, ~$1, ~($2 // ''), .[3], maybe-numify(.[4]))

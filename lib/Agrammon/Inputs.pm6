@@ -27,6 +27,8 @@ class X::Agrammon::Inputs::Multi is Exception {
 }
 
 class Agrammon::Inputs {
+    has Str $.simulation-name;
+    has Str $.dataset-id;
     has Str $.instance-id;
     has %!single-inputs;
     has %!multi-input-lists;
@@ -69,7 +71,7 @@ class Agrammon::Inputs {
             $input = $_;
         }
         else {
-            $input = Agrammon::Inputs.new(:$instance-id);
+            $input = Agrammon::Inputs.new(:$instance-id, :$!simulation-name, :$!dataset-id);
             %!multi-input-lookup{$taxonomy}{$instance-id} = $input;
             push %!multi-input-lists{$taxonomy}, $input;
         }
