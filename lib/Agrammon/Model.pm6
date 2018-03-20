@@ -70,30 +70,37 @@ class Agrammon::Model {
 
         method run(:$input!, :%technical!) {
             my %outputs;
+            my %run-already;
             my $*IN-MULTI = False;
-            self!run-internal($input, %technical, %outputs);
+            self!run-internal($input, %technical, %outputs, %run-already);
             return %outputs;
         }
 
-        method !run-internal($input, %technical, %outputs --> Nil) {
+        method !run-internal($input, %technical, %outputs, %run-already --> Nil) {
             my $tax = $!module.taxonomy;
+            return if %run-already{$tax};
             if $!module.is-multi {
+                # Run each module once by having a fresh copy of the run-already hash
+                # instance. Then mark the whole graph as having run. Note that we do a
+                # recursive walk to set up output arrays and mark things as being run
+                # to elegantly handle the case of no instances.
                 my $*IN-MULTI = True;
-                for $!module.output {
-                    %outputs{$tax}{.name} = [];
-                }
+                self!result-arrays(%outputs);
                 for $input.inputs-list-for($tax) -> $multi-input {
-                    self!run-as-single($multi-input, %technical, %outputs);
+                    my %run-already-copy = %run-already;
+                    self!run-as-single($multi-input, %technical, %outputs, %run-already-copy);
                 }
+                self!mark-multi-run(%run-already);
             }
             else {
-                self!run-as-single($input, %technical, %outputs);
+                self!run-as-single($input, %technical, %outputs, %run-already);
+                %run-already{$tax} = True;
             }
         }
 
-        method !run-as-single($input, %technical, %outputs --> Nil) {
+        method !run-as-single($input, %technical, %outputs, %run-already --> Nil) {
             for @!dependencies -> $dep {
-                $dep!run-internal($input, %technical, %outputs);
+                $dep!run-internal($input, %technical, %outputs, %run-already);
             }
 
             my $tax = $!module.taxonomy;
@@ -102,19 +109,48 @@ class Agrammon::Model {
             with %technical{$tax} -> %override {
                 %module-technical ,= %override;
             }
-            for $!module.output {
+            for $!module.output -> $output {
+                my $name = $output.name;
                 my $env = Agrammon::Environment.new(
                     input => %module-input,
                     technical => %module-technical,
                     output => %outputs
                 );
-                my $result = .formula.evaluate($env);
+                my $result = do {
+                    CONTROL {
+                        when CX::Warn {
+                            note "Warning evaluating output '$name' in $tax: $_.message()";
+                            .resume;
+                        }
+                    }
+                    CATCH {
+                        die "Died when evaluating formula '$name' in $tax: $_.message()";
+                    }
+                    $output.formula.evaluate($env)
+                };
                 if $*IN-MULTI {
-                    push (%outputs{$tax}{.name} //= []), $result;
+                    %outputs{$tax}{$name}.push($result);
                 }
                 else {
-                    %outputs{$tax}{.name} = $result;
+                    %outputs{$tax}{$name} = $result;
                 }
+            }
+        }
+
+        method !result-arrays(%outputs --> Nil) {
+            my $tax = $!module.taxonomy;
+            for $!module.output {
+                %outputs{$tax}{.name} = [];
+            }
+            for @!dependencies -> $dep {
+                $dep!result-arrays(%outputs);
+            }
+        }
+
+        method !mark-multi-run(%run-already --> Nil) {
+            %run-already{$!module.taxonomy} = True;
+            for @!dependencies -> $dep {
+                $dep!mark-multi-run(%run-already);
             }
         }
     }
