@@ -101,7 +101,7 @@ sub run (IO::Path $path, IO::Path $input-path) {
     say "filename=$filename";
     my $fh = open $filename, :r, :!chomp
             or die "Couldn't open file $filename for reading";
-#    LEAVE $fh.close;
+    LEAVE $fh.close;
 
     my $ds = Agrammon::DataSource::CSV.new;
 
