@@ -147,7 +147,12 @@ The correction is omitted for solid manure since infiltration into soil does not
   ++description
     Correction factor of the emission rate if slurry is applied on hot days.
   ++formula
+
+     my $h  = In(appl_hotdays);
+     my $th = $TE->{'c_hotdays_'.In(appl_hotdays)};
      return $TE->{'c_hotdays_'.In(appl_hotdays)};
+
+
 
 +c_soft
   print = 15
