@@ -35,5 +35,4 @@ before_install:
   - /opt/rakudo-pkg/bin/install-zef-as-user
 
 install:
-  - find $HOME/.perl6
   - zef --debug --/test --deps-only install .
