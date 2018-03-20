@@ -200,30 +200,19 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<listop>($/) {
+        make Agrammon::Formula::CallBuiltin.new(
+            name => ~$<ident>,
+            args => $<arg>.map(*.ast)
+        );
+    }
+
     method term:sym<my>($/) {
         make Agrammon::Formula::VarDecl.new(name => ~$<variable>);
     }
 
     method term:sym<variable>($/) {
         make Agrammon::Formula::Var.new(name => ~$<variable>);
-    }
-
-    method term:sym<return>($/) {
-        make Agrammon::Formula::Return.new(
-            expression => $<EXPR> ?? $<EXPR>.ast !! Agrammon::Formula::Nil.new
-        );
-    }
-
-    method term:sym<die>($/) {
-        make Agrammon::Formula::Die.new(
-            expression => $<EXPR>.ast
-        );
-    }
-
-    method term:sym<warn>($/) {
-        make Agrammon::Formula::Warn.new(
-            expression => $<EXPR>.ast
-        );
     }
 
     method term:sym<not>($/) {

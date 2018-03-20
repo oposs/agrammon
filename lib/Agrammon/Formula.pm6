@@ -1,4 +1,5 @@
 use Agrammon::Environment;
+use Agrammon::Formula::ControlFlow;
 use Agrammon::OutputReference;
 
 role Agrammon::Formula {
@@ -22,14 +23,6 @@ role Agrammon::Formula {
 
 role Agrammon::Formula::LValue does Agrammon::Formula {
     # Just a marker role for l-values (things that can be assigned to)
-}
-
-class X::Agrammon::Formula::ReturnException is Exception {
-    has $.payload is default(Nil);
-}
-
-class X::Agrammon::Formula::SucceedException is Exception {
-    has $.payload is default(Nil);
 }
 
 class Agrammon::Formula::StatementList does Agrammon::Formula {
@@ -260,30 +253,6 @@ role Agrammon::Formula::OneExpressionBuiltin does Agrammon::Formula {
     method input-used() { $!expression.input-used }
     method technical-used() { $!expression.technical-used }
     method output-used() { $!expression.output-used }
-}
-
-class Agrammon::Formula::Return does Agrammon::Formula::OneExpressionBuiltin {
-    method evaluate(Agrammon::Environment $env) {
-        die X::Agrammon::Formula::ReturnException.new(
-            payload => $!expression.evaluate($env)
-        );
-    }
-}
-
-class X::Agrammon::Formula::Died is Exception {
-    has $.message;
-}
-
-class Agrammon::Formula::Die does Agrammon::Formula::OneExpressionBuiltin {
-    method evaluate(Agrammon::Environment $env) {
-        die X::Agrammon::Formula::Died.new(message => $!expression.evaluate($env));
-    }
-}
-
-class Agrammon::Formula::Warn does Agrammon::Formula::OneExpressionBuiltin {
-    method evaluate(Agrammon::Environment $env) {
-        warn $!expression.evaluate($env);
-    }
 }
 
 class Agrammon::Formula::Not does Agrammon::Formula::OneExpressionBuiltin {
