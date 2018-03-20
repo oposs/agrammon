@@ -1,3 +1,4 @@
+### we install our own Rakudo below
 # language: perl6
 
 # perl6:
@@ -20,6 +21,7 @@ env:
   global:
     - TMPDIR=/tmp
     - RAKUDO_PKG_URL=https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
+
 # https://docs.travis-ci.com/user/installing-dependencies/#Installing-Packages-without-an-APT-Repository
 before_install:
   - cd ${TMPDIR}
@@ -28,12 +30,11 @@ before_install:
   - cd ${TRAVIS_BUILD_DIR}
   - export PATH=$PATH:~/.perl6/bin:/opt/rakudo-pkg/bin
   - /opt/rakudo-pkg/bin/install-zef-as-user
-  # https://github.com/ugexe/zef
-#  - git clone https://github.com/ugexe/zef.git && cd zef && perl6 -Ilib bin/zef install .
+
 install:
-  - zef --debug --/test --depsonly install epoll
-  - zef --debug --/test --depsonly install .
+  - find $HOME/.perl6
+  - zef --debug --/test --deps-only install .
 
 cache:
   directories:
-  - .perl6
+  - $HOME/.perl6
