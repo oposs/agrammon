@@ -35,6 +35,7 @@ grammar Agrammon::Formula::Parser {
     }
 
     rule EXPR {
+        {} # Don't LTM-descend into EXPR
         <term> [ <infix> <term> ]*
     }
 
@@ -116,18 +117,6 @@ grammar Agrammon::Formula::Parser {
         '$' <.ident>
     }
 
-    rule term:sym<return> {
-        'return' <EXPR>?
-    }
-
-    rule term:sym<die> {
-        'die' <EXPR>
-    }
-
-    rule term:sym<warn> {
-        'warn' <EXPR>
-    }
-
     rule term:sym<not> {
         'not' <EXPR>
     }
@@ -142,6 +131,16 @@ grammar Agrammon::Formula::Parser {
 
     rule term:sym<uc> {
         'uc' <term>
+    }
+
+    token term:sym<listop> {
+        <!before < not defined lc uc >>
+        <ident>
+        [
+        | \s+ :s '(' <arg=.EXPR>* % [ ',' ] [ ')' || <.panic('Missing closing ) on call')> ]
+        | \s+ :s <arg=.EXPR>* % [ ',' ]
+        | :s <?>
+        ]
     }
 
     rule term:sym<( )> {

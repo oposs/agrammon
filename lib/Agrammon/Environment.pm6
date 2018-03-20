@@ -1,3 +1,5 @@
+use Agrammon::Formula::Builtins;
+
 class Agrammon::Environment {
     my class Scope {
         has %.variables;
@@ -24,7 +26,7 @@ class Agrammon::Environment {
     has %.technical;
     has %.output;
     has Scope $.scope .= new;
-    has %.builtins;
+    has %.builtins = get-builtins();
 
     method enter-scope(--> Nil) {
         $!scope = Scope.new(outer => $!scope)
