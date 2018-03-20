@@ -1,12 +1,20 @@
 ### we install our own Rakudo below
 # language: perl6
-
 # perl6:
 #     - '2018.01'
+###
+### Update RAKUDO_PKG_URL to the latest and greatest version available.
+###
 
-# install:
-#     - rakudobrew build-zef
-#     - zef --debug --/test --deps-only install .
+env:
+  global:
+    - TMPDIR=/tmp
+    - RAKUDO_PKG_URL=https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
+
+# cache precompiled modules
+cache:
+  directories:
+  - $HOME/.perl6
 
 services:
   - postgresql: "9.6"
@@ -16,11 +24,6 @@ before_script:
 
 script:
     PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/
-
-env:
-  global:
-    - TMPDIR=/tmp
-    - RAKUDO_PKG_URL=https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
 
 # https://docs.travis-ci.com/user/installing-dependencies/#Installing-Packages-without-an-APT-Repository
 before_install:
@@ -34,7 +37,3 @@ before_install:
 install:
   - find $HOME/.perl6
   - zef --debug --/test --deps-only install .
-
-cache:
-  directories:
-  - $HOME/.perl6
