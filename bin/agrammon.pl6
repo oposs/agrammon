@@ -6,6 +6,7 @@ use Cro::HTTP::Session::InMemory;
 use DB::Pg;
 
 use Agrammon::Config;
+use Agrammon::DataSource::CSV;
 use Agrammon::Model;
 use Agrammon::Web::Routes;
 use Agrammon::Web::SessionUser;
@@ -57,8 +58,8 @@ multi sub MAIN('web', ExistingFile $filename) {
 }
 
 #| Run the model
-multi sub MAIN('run', ExistingFile $filename) {
-    say "Will run the model; NYI";
+multi sub MAIN('run', ExistingFile $filename, ExistingFile $input) {
+    say run $filename.IO, $input.IO;
 }
 
 #| Dump model
@@ -82,8 +83,43 @@ sub USAGE() {
     USAGE
 }
 
+sub run (IO::Path $path, IO::Path $input-path) {
+    die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
+
+    my $module-path = $path.parent;
+    my $module-file = $path.basename;
+    my $module      = $path.extension('').basename;
+
+    say "module-path=$module-path";
+    my $start = now;
+    my $model = Agrammon::Model.new(path => $module-path);
+    $model.load($module);
+    my $end = now;
+    printf "Loaded $module in %.3f seconds\n", $end-$start;
+
+    my $filename = $input-path;
+    say "filename=$filename";
+    my $fh = open $filename, :r, :!chomp
+            or die "Couldn't open file $filename for reading";
+    LEAVE $fh.close;
+
+    my $ds = Agrammon::DataSource::CSV.new;
+
+    $start = now;
+    my @datasets = $ds.read($fh);
+    $end = now;
+    printf "Loaded $filename in %.3f seconds\n", $end-$start;
+    say "Found " ~ @datasets.elems ~ ' datasets';
+
+    my %outputs = $model.run(
+        input => @datasets[0]
+    );
+    dd %outputs;
+    return %outputs;
+}
+
 sub dump (IO::Path $path) {
-    die "ERROR: Dump expects a .nhd file" unless $path.extension eq 'nhd';
+    die "ERROR: dump expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
     my $module-file = $path.basename;
