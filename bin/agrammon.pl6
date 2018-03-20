@@ -91,8 +91,11 @@ sub run (IO::Path $path, IO::Path $input-path) {
     my $module      = $path.extension('').basename;
 
     say "module-path=$module-path";
+    my $start = DateTime(now);
     my $model = Agrammon::Model.new(path => $module-path);
     $model.load($module);
+    my $end = DateTime(now);
+    printf "Loaded $module in %.3f seconds\n", $end-$start;
 
     my $filename = $input-path;
     say "filename=$filename";
@@ -102,7 +105,10 @@ sub run (IO::Path $path, IO::Path $input-path) {
 
     my $ds = Agrammon::DataSource::CSV.new;
 
+    $start = DateTime.new(now);
     my @datasets = $ds.read($fh);
+    $end = DateTime.new(now);
+    printf "Loaded $filename in %.3f seconds\n", $end-$start;
     say "Found " ~ @datasets.elems ~ ' datasets';
 
     my %outputs = $model.run(
