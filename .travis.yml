@@ -30,7 +30,7 @@ before_install:
   # https://github.com/ugexe/zef
 #  - git clone https://github.com/ugexe/zef.git && cd zef && perl6 -Ilib bin/zef install .
 #install:
-#  - cd ${TRAVIS_BUILD_DIR}
+  - cd ${TRAVIS_BUILD_DIR}
 #  - zef --debug --depsonly install .
 
 #script:
