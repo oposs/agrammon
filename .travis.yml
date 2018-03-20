@@ -1,17 +1,41 @@
-language: perl6
+### we install our own Rakudo below
+# language: perl6
+# perl6:
+#     - '2018.01'
+###
+### Update RAKUDO_PKG_URL to the latest and greatest version available.
+###
 
-perl6:
-    - '2018.01'
+env:
+  global:
+    - TMPDIR=/tmp
+    - RAKUDO_PKG_URL=https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
 
-install:
-    - rakudobrew build-zef
-    - zef --debug --/test --deps-only install .
+# cache precompiled modules
+cache:
+  directories:
+  - $HOME/.perl6
 
 services:
-  - postgresql: "9.6"
+  - postgresql
+
+addons:
+  postgresql: "9.6"
 
 before_script:
   - psql -c 'create database agrammon_test;' -U postgres
 
 script:
     PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/
+
+# https://docs.travis-ci.com/user/installing-dependencies/#Installing-Packages-without-an-APT-Repository
+before_install:
+  - cd ${TMPDIR}
+  - wget -O rakudo-pkg.deb ${RAKUDO_PKG_URL}
+  - sudo dpkg -i rakudo-pkg.deb
+  - cd ${TRAVIS_BUILD_DIR}
+  - export PATH=$PATH:~/.perl6/bin:/opt/rakudo-pkg/bin
+  - /opt/rakudo-pkg/bin/install-zef-as-user
+
+install:
+  - zef --debug --/test --deps-only install .
