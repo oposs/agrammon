@@ -25,13 +25,15 @@ before_install:
   - cd ${TMPDIR}
   - wget -O rakudo-pkg.deb ${RAKUDO_PKG_URL}
   - sudo dpkg -i rakudo-pkg.deb
+  - cd ${TRAVIS_BUILD_DIR}
   - export PATH=$PATH:~/.perl6/bin:/opt/rakudo-pkg/bin
   - /opt/rakudo-pkg/bin/install-zef-as-user
   # https://github.com/ugexe/zef
 #  - git clone https://github.com/ugexe/zef.git && cd zef && perl6 -Ilib bin/zef install .
-#install:
-  - cd ${TRAVIS_BUILD_DIR}
-  - zef --debug --depsonly install .
+install:
+  - zef --debug --/test --depsonly install epoll
+  - zef --debug --/test --depsonly install .
 
-#script:
-#  - prove -v -r -e "perl6 --ll-exception -Ilib" t
+cache:
+  directories:
+  - .perl6
