@@ -43,7 +43,7 @@ Longer description. May span many lines.
 *** technical ***
 
 +standard_milk_yield
-  value = 6500
+  value = 6500 # ignore this comment
   ++units
     en = kg/year
     de = kg/Jahr
