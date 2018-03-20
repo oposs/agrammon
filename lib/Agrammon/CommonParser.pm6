@@ -18,7 +18,10 @@ role Agrammon::CommonParser {
     }
 
     token single-line-option {
-        \h* <key> \h* '=' \h* $<value>=[\N*] [\n || $]
+        \h* <key> \h* '=' \h*
+        $<value>=[[<!before \h*'#'>\N]*]
+        \h* ['#'\N*]?
+        [\n || $]
     }
     token subsection-map {
         \h* '++' \h* <key> \h* \n
