@@ -44,6 +44,16 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        de = Mutterkühe
        fr = Vaches_allaitantes
        it = suckling_cows
+    +++suckling_cows_gt700
+       en = suckling_cows
+       de = Mutterkühe_schwere_rassen_über_700kg
+       fr = Vaches_allaitantes
+       it = suckling_cows
+    +++suckling_cows_lt600
+       en = suckling_cows
+       de = Mutterkühe_leichte_rassen_unter_600kg
+       fr = Vaches_allaitantes
+       it = suckling_cows
     +++heifers_1st_yr
        en = heifers_1st_yr
        de = Aufzuchtrinder_unter_1-jährig
@@ -180,6 +190,26 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual standard N excretion for a suckling cow, according to
     Flisch et al. (2009).
 
++standard_N_excretion_suckling_cows_lt600
+  value = 72
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a suckling cow, according to
+    Flisch et al. (2009).
+
++standard_N_excretion_suckling_cows_gt700
+  value = 95
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a suckling cow, according to
+    GRUDAF 2017
+
 +standard_N_excretion_calves_suckling_cows
   value = 34
   ++units  
@@ -239,6 +269,23 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Nsol content of excreta for suckling cows. Derived from e.g.
     Peterson et al. (1998) or Burgos et al. (2005).
+    
++share_Nsol_suckling_cows_lt600
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for suckling cows. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_suckling_cows_gt700
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for suckling cows. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
 
 +share_Nsol_calves_suckling_cows
   value = 0.6

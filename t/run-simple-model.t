@@ -42,4 +42,16 @@ subtest 'Run with technical values overrides' => {
         'Correct result';
 }
 
+subtest 'Run with missing input, which should use default calculation value' => {
+    my $input = Agrammon::Inputs.new;
+    $input.add-single-input('Test', 'final_add', 10);
+    my %outputs = $model.run(:$input);
+    ok %outputs<Test::SubModule>:exists, 'Have outputs hash for Test::SubModule';
+    is %outputs<Test::SubModule><sub_result>, 20 * 5,
+            'Correct sub_result';
+    ok %outputs<Test>:exists, 'Have outputs hash for Test';
+    is %outputs<Test><result>, 100 * (20 * 5) + 10,
+            'Correct result';
+}
+
 done-testing;

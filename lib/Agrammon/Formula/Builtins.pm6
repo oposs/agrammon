@@ -13,6 +13,7 @@ sub get-builtins is export {
         },
         warn => -> *@message {
             warn @message.join || 'Warning';
-        }
+        },
+        abs => &abs
     }
 }

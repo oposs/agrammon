@@ -19,6 +19,7 @@ Longer description. May span many lines.
 
 +milk_yield
   type  = float
+   default_calc = 6000
   validator = between(4000,15000);
  ++labels
     en = Milk yield per dairy cow
