@@ -33,6 +33,7 @@ for "$test-root/CMilk.nhd", "$test-root/CMilk-crazy-ws.nhd" -> $module-file {
         isa-ok @input[0], Agrammon::Model::Input, 'Correct input model type';
         given @input[0] {
             is .name, 'milk_yield', 'Correct input name';
+            is .default-calc, 6000, 'Correct default-calc value';
             # TODO Test type once we decide how to represent it
             # TODO Test validator once we decide how to represent it
             is .labels.elems, 3, 'Have 3 input labels';

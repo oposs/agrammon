@@ -16,6 +16,7 @@ taxonomy = Test::SubModule
 
 +monkeys
   type = integer
+  default_calc = 5
   validator = ge(0)
   ++labels
     en = Monkeys

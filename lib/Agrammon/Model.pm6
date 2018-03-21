@@ -105,6 +105,11 @@ class Agrammon::Model {
 
             my $tax = $!module.taxonomy;
             my %module-input = $input.input-hash-for($tax);
+            for $!module.input -> $input {
+                with $input.default-calc {
+                    %module-input{$input.name} //= $_;
+                }
+            }
             my %module-technical = $!module.technical.map({ .name => .value });
             with %technical{$tax} -> %override {
                 %module-technical ,= %override;
