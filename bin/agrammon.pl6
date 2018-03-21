@@ -60,7 +60,7 @@ multi sub MAIN('web', ExistingFile $filename) {
 
 #| Run the model
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?) {
-    my %output = run $filename.IO, $input.IO;
+    my %output = run $filename.IO, $input.IO, $tech-file;
     for %output.keys.sort -> $key {
         say "$key:";
         for %output{$key}.keys.sort -> $var {
@@ -90,18 +90,17 @@ sub USAGE() {
     USAGE
 }
 
-sub run (IO::Path $path, IO::Path $input-path) {
+sub run (IO::Path $path, IO::Path $input-path, $tech-file) {
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
     my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
-    # pass from command line
-    my $tech-file = $module-path ~ '/technical.cfg';
+    my $tech-input = $tech-file // $module-path ~ '/technical.cfg';
     
-    my $params = timed "Load parameters from $tech-file", {
-        parse-technical( $tech-file.IO.slurp);
+    my $params = timed "Load parameters from $tech-input", {
+        parse-technical( $tech-input.IO.slurp);
     }
 
     my $model;
