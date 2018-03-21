@@ -84,12 +84,18 @@ use Test;
         is-deeply @input-list[0].input-hash-for('Livestock::DairyCow::Excretion::CFeedSummerRatio'),
                 { share_hay_summer => 100, share_maize_pellets_summer => 0 },
                 'Correct Livestock::DairyCow::Excretion::CFeedSummerRatio input';
+        is-deeply @input-list[0].input-hash-for('Livestock::DairyCow'),
+                { moo => 1 },
+                'Correct Livestock::DairyCow input';
         is-deeply @input-list[1].input-hash-for('Livestock::DairyCow::Excretion::CConcentrates'),
                 { amount_summer => 3.5, amount_winter => 3.0 },
                 'Correct Livestock::DairyCow::Excretion::CConcentrates input';
         is-deeply @input-list[1].input-hash-for('Livestock::DairyCow::Excretion::CFeedSummerRatio'),
                 { share_hay_summer => 90, share_maize_pellets_summer => 10 },
                 'Correct Livestock::DairyCow::Excretion::CFeedSummerRatio input';
+        is-deeply @input-list[1].input-hash-for('Livestock::DairyCow'),
+                { moo => 3 },
+                'Correct Livestock::DairyCow input';
     }
 
 
@@ -105,12 +111,18 @@ use Test;
         is-deeply @input-list[0].input-hash-for('Livestock::DairyCow::Excretion::CFeedSummerRatio'),
                 { share_hay_summer => 100, share_maize_pellets_summer => 0 },
                 'Correct Livestock::DairyCow::Excretion::CFeedSummerRatio input';
+        is-deeply @input-list[0].input-hash-for('Livestock::DairyCow'),
+                { moo => 5 },
+                'Correct Livestock::DairyCow input';
         is-deeply @input-list[1].input-hash-for('Livestock::DairyCow::Excretion::CConcentrates'),
                 { amount_summer => 4, amount_winter => 4 },
                 'Correct Livestock::DairyCow::Excretion::CConcentrates input';
         is-deeply @input-list[1].input-hash-for('Livestock::DairyCow::Excretion::CFeedSummerRatio'),
                 { share_hay_summer => 10, share_maize_pellets_summer => 90 },
                 'Correct Livestock::DairyCow::Excretion::CFeedSummerRatio input';
+        is-deeply @input-list[1].input-hash-for('Livestock::DairyCow'),
+                { moo => 7 },
+                'Correct Livestock::DairyCow input';
     }
 }
 
