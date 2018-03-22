@@ -97,7 +97,7 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file) {
     my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
-    my $tech-input = $tech-file // $module-path ~ '/technical.cfg';
+    my $tech-input = $tech-file // $module-path.add('technical.cfg');
     
     my $params = timed "Load parameters from $tech-input", {
         parse-technical( $tech-input.IO.slurp);
