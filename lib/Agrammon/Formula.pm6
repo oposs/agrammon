@@ -309,7 +309,14 @@ class Agrammon::Formula::Val does Agrammon::Formula {
     has Agrammon::OutputReference $.reference;
 
     method evaluate(Agrammon::Environment $env) {
-        $env.output{$!reference.module}{$!reference.symbol}
+        given $env.output{$!reference.module}{$!reference.symbol} {
+            when Array {
+                .[*-1]
+            }
+            default {
+                $_
+            }
+        }
     }
 
     method output-used() { ($!reference,) }
