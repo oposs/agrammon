@@ -85,7 +85,7 @@ class Agrammon::Model {
                 # recursive walk to set up output arrays and mark things as being run
                 # to elegantly handle the case of no instances.
                 my $*IN-MULTI = True;
-                self!result-arrays(%outputs);
+                self!result-arrays(%outputs, %run-already);
                 for $input.inputs-list-for($tax) -> $multi-input {
                     my %run-already-copy = %run-already;
                     self!run-as-single($multi-input, %technical, %outputs, %run-already-copy);
@@ -142,13 +142,14 @@ class Agrammon::Model {
             }
         }
 
-        method !result-arrays(%outputs --> Nil) {
+        method !result-arrays(%outputs, %run-already --> Nil) {
             my $tax = $!module.taxonomy;
+            return if %run-already{$tax};
             for $!module.output {
                 %outputs{$tax}{.name} = [];
             }
             for @!dependencies -> $dep {
-                $dep!result-arrays(%outputs);
+                $dep!result-arrays(%outputs, %run-already);
             }
         }
 
