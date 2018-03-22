@@ -10,6 +10,7 @@ use Agrammon::DataSource::CSV;
 use Agrammon::Model;
 use Agrammon::Web::Routes;
 use Agrammon::Web::SessionUser;
+use Agrammon::TechnicalParser;
 
 my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location 
@@ -58,8 +59,14 @@ multi sub MAIN('web', ExistingFile $filename) {
 }
 
 #| Run the model
-multi sub MAIN('run', ExistingFile $filename, ExistingFile $input) {
-    say run $filename.IO, $input.IO;
+multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?) {
+    my %output = run $filename.IO, $input.IO, $tech-file;
+    for %output.keys.sort -> $key {
+        say "$key:";
+        for %output{$key}.keys.sort -> $var {
+            say "    $var=", %output{$key}{$var};
+        }
+    }
 }
 
 #| Dump model
@@ -83,38 +90,47 @@ sub USAGE() {
     USAGE
 }
 
-sub run (IO::Path $path, IO::Path $input-path) {
+sub run (IO::Path $path, IO::Path $input-path, $tech-file) {
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
     my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
-    say "module-path=$module-path";
-    my $start = now;
-    my $model = Agrammon::Model.new(path => $module-path);
-    $model.load($module);
-    my $end = now;
-    printf "Loaded $module in %.3f seconds\n", $end-$start;
+    my $tech-input = $tech-file // $module-path.add('technical.cfg');
+    
+    my $params = timed "Load parameters from $tech-input", {
+        parse-technical( $tech-input.IO.slurp);
+    }
+
+    my $model;
+    timed "Load $module", {
+        $model = Agrammon::Model.new(path => $module-path);
+        $model.load($module);
+    }
 
     my $filename = $input-path;
-    say "filename=$filename";
     my $fh = open $filename, :r, :!chomp
             or die "Couldn't open file $filename for reading";
     LEAVE $fh.close;
 
     my $ds = Agrammon::DataSource::CSV.new;
 
-    $start = now;
-    my @datasets = $ds.read($fh);
-    $end = now;
-    printf "Loaded $filename in %.3f seconds\n", $end-$start;
+    my @datasets;
+    timed "Load $filename", {
+        @datasets = $ds.read($fh);
+    }
     say "Found " ~ @datasets.elems ~ ' datasets';
 
-    my %outputs = $model.run(
-        input => @datasets[0]
-    );
-    dd %outputs;
+    my %outputs = timed "Run $filename", {
+        $model.run(
+            input => @datasets[0],
+            technical => %($params.technical.map(-> %module {
+                                                        %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+                                                    }))
+        );
+    }
+
     return %outputs;
 }
 
@@ -128,4 +144,12 @@ sub dump (IO::Path $path) {
     my $model = Agrammon::Model.new(path => $module-path);
     $model.load($module);
     return $model.dump;
+}
+
+sub timed(Str $title, &proc) {
+    my $start = now;
+    my $ret = proc;
+    my $end = now;
+    printf "$title ran %.3f seconds\n", $end-$start;
+    return $ret;
 }
