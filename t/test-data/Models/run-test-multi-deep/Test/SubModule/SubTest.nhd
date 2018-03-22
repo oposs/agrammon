@@ -1,0 +1,36 @@
+*** general ***
+
+author   = Fritz Zaucker
+date     = 2018-03-22
+taxonomy = Test::SubModule::SubTest
+
++short
+
+  2nd level sub module for testing with multi instance models.
+
++description
+
+  2nd level multi instance test sub module.
+
+*** input ***
+
++kids
+  type = integer
+  validator = ge(0)
+  ++labels
+    en = Monkey kids
+    de = Affenkinder
+  ++units
+    en = -
+
+*** output ***
+
++kids
+  print = 7
+  ++units
+    en = monkey kids
+    de = Affenkinder
+  ++formula
+    In(kids)
+  ++description
+    Number of kids
