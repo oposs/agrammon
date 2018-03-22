@@ -1,6 +1,6 @@
 *** general ***
 
-author   = Jonathan Worthington
+author   = Jonathan Worthington and Fritz Zaucker
 date     = 2018-03-13
 taxonomy = Test::SubModule
 instances = multi
@@ -36,7 +36,7 @@ instances = multi
 
 *** external ***
 
-+SubTest::SubModule
++SubModule::SubTest
 
 *** output ***
 
@@ -46,6 +46,7 @@ instances = multi
     en = monkeys/hour
     de = affen/Stunde
   ++formula
-    Tech(sub_multiply) * (In(monkeys) + Val(kids, SubTest::SubModule))
+    warn "kids=", Val(kids, SubModule::SubTest);
+    Tech(sub_multiply) * (In(monkeys) + Val(kids, SubModule::SubTest))
   ++description
     Final result
