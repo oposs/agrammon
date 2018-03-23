@@ -467,6 +467,18 @@ subtest {
 }, 'Empty return evalutes to Nil';
 
 subtest {
+    my $f = parse-formula('return (In(agricultural_area) + 2) * 3', 'PlantProduction');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = $f.evaluate(Agrammon::Environment.new(
+            input => { agricultural_area => 42 }
+            ));
+    is $result, (42 + 2) * 3, 'Correct result from evaluation';
+}, 'The return statement does not parse according to normal function rules';
+
+subtest {
     my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
         (In(solid_digestate) - Tech(er_solid_digestate)) /
         (In(compost) - Tech(er_compost));
