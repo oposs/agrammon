@@ -21,7 +21,6 @@ lives-ok
 isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
 
 my %output;
-todo 'Some problem with aggregate values';
 lives-ok
     {
         %output = $model.run(

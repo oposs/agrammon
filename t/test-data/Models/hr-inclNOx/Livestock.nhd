@@ -120,21 +120,22 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Total annual N excreted by all animals.
   ++formula
-#    Sum(n_excretion,Livestock::OtherCattle) +
-#    Sum(n_excretion,Livestock::DairyCow) +
-#    Sum(n_excretion,Livestock::Pig) +
-#    Sum(n_excretion,Livestock::FatteningPigs) +
-#    Sum(n_excretion,Livestock::Equides) +
-#    Sum(n_excretion,Livestock::SmallRuminants) +
-#    Sum(n_excretion,Livestock::Poultry);
-    Val(n_excretion,Livestock::OtherCattle) +   # $Livestock::OtherCattle{n_excretion}
-    Val(n_excretion,Livestock::DairyCow) +
-    Val(n_excretion,Livestock::Pig) +
-    Val(n_excretion,Livestock::FatteningPigs) +
-    Val(n_excretion,Livestock::Equides) +
-    Val(n_excretion,Livestock::SmallRuminants) + # $LSR{n_excretion}
-    Val(n_excretion,Livestock::RoughageConsuming) + # $LSR{n_excretion}
-    Val(n_excretion,Livestock::Poultry);
+    Sum(n_excretion,Livestock::OtherCattle) +
+    Sum(n_excretion,Livestock::DairyCow) +
+    Sum(n_excretion,Livestock::Pig) +
+    Sum(n_excretion,Livestock::FatteningPigs) +
+    Sum(n_excretion,Livestock::Equides) +
+    Sum(n_excretion,Livestock::SmallRuminants) +
+    Sum(n_excretion,Livestock::RoughageConsuming) + # $LSR{n_excretion}
+    Sum(n_excretion,Livestock::Poultry);
+#    Val(n_excretion,Livestock::OtherCattle) +   # $Livestock::OtherCattle{n_excretion}
+#    Val(n_excretion,Livestock::DairyCow) +
+#    Val(n_excretion,Livestock::Pig) +
+#    Val(n_excretion,Livestock::FatteningPigs) +
+#    Val(n_excretion,Livestock::Equides) +
+#    Val(n_excretion,Livestock::SmallRuminants) + # $LSR{n_excretion}
+#    Val(n_excretion,Livestock::RoughageConsuming) + # $LSR{n_excretion}
+#    Val(n_excretion,Livestock::Poultry);
 
 +tan_excretion
   format= %.0f
