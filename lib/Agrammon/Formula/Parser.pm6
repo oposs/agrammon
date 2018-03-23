@@ -133,8 +133,12 @@ grammar Agrammon::Formula::Parser {
         'uc' <term>
     }
 
+    rule term:sym<return> {
+        'return' <EXPR>?
+    }
+
     token term:sym<listop> {
-        <!before < not defined lc uc >>
+        <!before < not defined lc uc return >>
         <ident>
         [
         | \s+ :s '(' <arg=.EXPR>* % [ ',' ] [ ')' || <.panic('Missing closing ) on call')> ]

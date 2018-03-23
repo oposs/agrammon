@@ -200,6 +200,13 @@ class Agrammon::Formula::Builder {
         );
     }
 
+    method term:sym<return>($/) {
+        make Agrammon::Formula::CallBuiltin.new(
+            name => 'return',
+            args => $<EXPR> ?? ($<EXPR>.ast) !! ()
+        );
+    }
+
     method term:sym<listop>($/) {
         make Agrammon::Formula::CallBuiltin.new(
             name => ~$<ident>,
