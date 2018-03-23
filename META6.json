@@ -33,6 +33,7 @@
         "Agrammon::Model::Prameters": "lib/Agrammon/Model/Parameters.pm6",
         "Agrammon::ModuleBuilder": "lib/Agrammon/ModuleBuilder.pm6",
         "Agrammon::DataSource::DB": "lib/Agrammon/DataSource/DB.pm6",
+        "Agrammon::Outputs": "lib/Agrammon/Outputs.pm6",
         "Agrammon::DB::User": "lib/Agrammon/DB/User.pm6",
         "Agrammon::Model::Output": "lib/Agrammon/Model/Output.pm6",
         "Agrammon::OutputReference": "lib/Agrammon/OutputReference.pm6",
