@@ -1,4 +1,5 @@
 use Agrammon::Formula::Builtins;
+use Agrammon::Outputs;
 
 class Agrammon::Environment {
     my class Scope {
@@ -24,7 +25,7 @@ class Agrammon::Environment {
 
     has %.input;
     has %.technical;
-    has %.output;
+    has Agrammon::Outputs::SingleOutputStorage $.output;
     has Scope $.scope .= new;
     has %.builtins = get-builtins();
 

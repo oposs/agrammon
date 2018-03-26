@@ -20,10 +20,10 @@ lives-ok
     'Parsed technical file';
 isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
 
-my %output;
+my $output;
 lives-ok
     {
-        %output = $model.run(
+        $output = $model.run(
             input => @datasets[0],
             technical => %($params.technical.map(-> %module {
                 %module.keys[0] => %(%module.values[0].map({ .name => .value }))
