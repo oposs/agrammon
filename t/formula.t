@@ -2,6 +2,7 @@ use v6;
 use Agrammon::Environment;
 use Agrammon::Formula;
 use Agrammon::Formula::Parser;
+use Agrammon::Outputs;
 use Test;
 
 subtest {
@@ -53,13 +54,9 @@ subtest {
         'Correct output used module';
     is @output-used[0].symbol, 'mineral_nitrogen_fertiliser_urea',
         'Correct output used symbol';
-    my $result = $f.evaluate(Agrammon::Environment.new(
-        output => {
-            'PlantProduction' => {
-                'mineral_nitrogen_fertiliser_urea' => 45
-            }
-        }
-    ));
+    my $output = Agrammon::Outputs.new;
+    $output.add-output('PlantProduction', 'mineral_nitrogen_fertiliser_urea', 45);
+    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
     is $result, 45, 'Correct result from evaluation';
 }, 'Val(...)';
 
@@ -76,13 +73,9 @@ subtest {
         'Correct output used module';
     is @output-used[0].symbol, 'dairy_cows',
         'Correct output used symbol';
-    my $result = $f.evaluate(Agrammon::Environment.new(
-        output => {
-            'Livestock::DairyCow::Excretion' => {
-                'dairy_cows' => 49
-            }
-        }
-    ));
+    my $output = Agrammon::Outputs.new;
+    $output.add-output('Livestock::DairyCow::Excretion', 'dairy_cows', 49);
+    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
     is $result, 49, 'Correct result from evaluation';
 }, 'Val(...) with name using ..';
 
@@ -99,13 +92,9 @@ subtest {
         'Correct output used module';
     is @output-used[0].symbol, 'dairy_cows',
         'Correct output used symbol';
-    my $result = $f.evaluate(Agrammon::Environment.new(
-        output => {
-            'Storage::Excretion' => {
-                'dairy_cows' => 10
-            }
-        }
-    ));
+    my $output = Agrammon::Outputs.new;
+    $output.add-output('Storage::Excretion', 'dairy_cows', 10);
+    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
     is $result, 10, 'Correct result from evaluation';
 }, 'Val(...) with name with leading ::';
 
@@ -160,16 +149,10 @@ subtest {
         'Correct second output used module';
     is @output-used[1].symbol, 'nh3_nrecyclingfertiliser',
         'Correct second output used symbol';
-    my $result = $f.evaluate(Agrammon::Environment.new(
-        output => {
-            'PlantProduction' => {
-                'nh3_nmineralfertiliser' => 12
-            },
-            'PlantProduction::RecyclingFertiliser' => {
-                nh3_nrecyclingfertiliser => 15
-            }
-        }
-    ));
+    my $output = Agrammon::Outputs.new;
+    $output.add-output('PlantProduction', 'nh3_nmineralfertiliser', 12);
+    $output.add-output('PlantProduction::RecyclingFertiliser', 'nh3_nrecyclingfertiliser', 15);
+    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
     is $result, 12 + 15, 'Correct result from evaluation';
 }, 'Val(...) + Val(...)';
 
@@ -541,14 +524,14 @@ subtest {
         'Correct output used module';
     is @output-used[0].symbol, 'n_sol_excretion',
         'Correct output used symbol';
+    my $output = Agrammon::Outputs.new;
     my @values = 9, 3, 27, 4;
-    my $result = $f.evaluate(Agrammon::Environment.new(
-        output => {
-            'Livestock::OtherCattle::Excretion' => {
-                'n_sol_excretion' => @values
-            }
+    for @values -> $value {
+        given $output.new-instance('Livestock::OtherCattle', 'Cow ' ~ $++) {
+            .add-output('Livestock::OtherCattle::Excretion', 'n_sol_excretion', $value);
         }
-    ));
+    }
+    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
     is $result, ([+] @values), 'Correct result from evaluation';
 }, 'Sum(...)';
 
@@ -565,13 +548,9 @@ subtest {
         'Correct output used module';
     is @output-used[0].symbol, 'mineral_nitrogen_fertiliser_urea',
         'Correct output used symbol';
-    my $result = $f.evaluate(Agrammon::Environment.new(
-        output => {
-            'PlantProduction' => {
-                'mineral_nitrogen_fertiliser_urea' => 89
-            }
-        }
-    ));
+    my $output = Agrammon::Outputs.new;
+    $output.add-output('PlantProduction', 'mineral_nitrogen_fertiliser_urea', 89);
+    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
     is $result, 89, 'Correct result from evaluation';
 }, 'Out(...)';
 

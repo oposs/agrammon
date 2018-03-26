@@ -309,14 +309,7 @@ class Agrammon::Formula::Val does Agrammon::Formula {
     has Agrammon::OutputReference $.reference;
 
     method evaluate(Agrammon::Environment $env) {
-        given $env.output{$!reference.module}{$!reference.symbol} {
-            when Array {
-                .[*-1]
-            }
-            default {
-                $_
-            }
-        }
+        $env.output.get-output($!reference.module, $!reference.symbol)
     }
 
     method output-used() { ($!reference,) }
@@ -326,14 +319,7 @@ class Agrammon::Formula::Sum does Agrammon::Formula {
     has Agrammon::OutputReference $.reference;
 
     method evaluate(Agrammon::Environment $env) {
-        given $env.output{$!reference.module}{$!reference.symbol} {
-            when Iterable {
-                .sum
-            }
-            default {
-                die "Expected multiple results for $!reference.module()::$!reference.symbol()";
-            }
-        }
+        $env.output.get-sum($!reference.module, $!reference.symbol)
     }
 
     method output-used() { ($!reference,) }
