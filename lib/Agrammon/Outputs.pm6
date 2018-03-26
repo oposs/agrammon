@@ -112,6 +112,11 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
             # Make sure it's not a bogus use of single-instance symbol,
             self.get-output($module, $name);
             die X::Agrammon::Outputs::IsSingleInstance.new(:$module, :$name);
+            CATCH {
+                when X::Agrammon::Outputs::Unset {
+                    return 0;
+                }
+            }
         }
     }
 

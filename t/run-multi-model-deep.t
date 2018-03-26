@@ -16,13 +16,17 @@ subtest 'Run without overriding any technical values' => {
     $input.add-multi-input('Test::SubModule', 'Monkey B', 'SubTest', 'kids',     3);
     $input.add-multi-input('Test::SubModule', 'Monkey C', 'SubTest', 'kids',     7);
     $input.add-single-input('Test', 'final_add', 10);
-    my %outputs = $model.run(:$input);
-    dd %outputs;
-    ok %outputs<Test::SubModule::SubTest>:exists, 'Have outputs hash for Test::SubModule::SubTest';
-    is %outputs<Test::SubModule::SubTest><kids>, [5, 3, 7], 'Correct kids array';
-    ok %outputs<Test::SubModule>:exists, 'Have outputs hash for Test::SubModule';
-    is %outputs<Test::SubModule><sub_result>, [20 * (42+5), 20 * (15+3), 20 * (98+7)],
-            'Correct sub_result array';
+    my %outputs = $model.run(:$input).get-outputs-hash;
+    is-deeply [%outputs<Test::SubModule>.sort(*.key)],
+            [
+                'Monkey A' => { 'Test::SubModule' => { sub_result => 20 * (42+5) },
+                                'Test::SubModule::SubTest' => { kids => 5 } },
+                'Monkey B' => { 'Test::SubModule' => { sub_result => 20 * (15+3) },
+                                'Test::SubModule::SubTest' => { kids => 3 } },
+                'Monkey C' => { 'Test::SubModule' => { sub_result => 20 * (98+7) },
+                                'Test::SubModule::SubTest' => { kids => 7 } },
+            ],
+            'Correct instance outputs for Test::SubModule and Test::SubModule::SubTest';
     ok %outputs<Test>:exists, 'Have outputs hash for Test';
     is %outputs<Test><result>, 100 * (20 * (42+5) + 20 * (15+3) + 20 * (98+7)) + 10,
             'Correct result';

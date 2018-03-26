@@ -3,6 +3,7 @@ use Agrammon::Inputs;
 use Agrammon::ModuleBuilder;
 use Agrammon::ModuleParser;
 use Agrammon::Model::Module;
+use Agrammon::Outputs;
 
 class X::Agrammon::Model::FileNotFound is Exception {
     has $.file;
@@ -69,38 +70,35 @@ class Agrammon::Model {
         has ModuleRunner @.dependencies;
 
         method run(:$input!, :%technical!) {
-            my %outputs;
+            my $outputs = Agrammon::Outputs.new;
             my %run-already;
-            my $*IN-MULTI = False;
-            self!run-internal($input, %technical, %outputs, %run-already);
-            return %outputs;
+            self!run-internal($input, %technical, $outputs, %run-already);
+            return $outputs;
         }
 
-        method !run-internal($input, %technical, %outputs, %run-already --> Nil) {
+        method !run-internal($input, %technical, $outputs, %run-already --> Nil) {
             my $tax = $!module.taxonomy;
             return if %run-already{$tax};
             if $!module.is-multi {
                 # Run each module once by having a fresh copy of the run-already hash
-                # instance. Then mark the whole graph as having run. Note that we do a
-                # recursive walk to set up output arrays and mark things as being run
-                # to elegantly handle the case of no instances.
-                my $*IN-MULTI = True;
-                self!result-arrays(%outputs, %run-already);
+                # instance. Then mark the whole graph as having run.
+                $outputs.declare-multi-instance($tax);
                 for $input.inputs-list-for($tax) -> $multi-input {
                     my %run-already-copy = %run-already;
-                    self!run-as-single($multi-input, %technical, %outputs, %run-already-copy);
+                    my $multi-output = $outputs.new-instance($tax, $multi-input.instance-id);
+                    self!run-as-single($multi-input, %technical, $multi-output, %run-already-copy);
                 }
                 self!mark-multi-run(%run-already);
             }
             else {
-                self!run-as-single($input, %technical, %outputs, %run-already);
+                self!run-as-single($input, %technical, $outputs, %run-already);
                 %run-already{$tax} = True;
             }
         }
 
-        method !run-as-single($input, %technical, %outputs, %run-already --> Nil) {
+        method !run-as-single($input, %technical, $outputs, %run-already --> Nil) {
             for @!dependencies -> $dep {
-                $dep!run-internal($input, %technical, %outputs, %run-already);
+                $dep!run-internal($input, %technical, $outputs, %run-already);
             }
 
             my $tax = $!module.taxonomy;
@@ -119,7 +117,7 @@ class Agrammon::Model {
                 my $env = Agrammon::Environment.new(
                     input => %module-input,
                     technical => %module-technical,
-                    output => %outputs
+                    output => $outputs
                 );
                 my $result = do {
                     CONTROL {
@@ -133,12 +131,7 @@ class Agrammon::Model {
                     }
                     $output.formula.evaluate($env)
                 };
-                if $*IN-MULTI {
-                    %outputs{$tax}{$name}.push($result);
-                }
-                else {
-                    %outputs{$tax}{$name} = $result;
-                }
+                $outputs.add-output($tax, $name, $result);
             }
         }
 
