@@ -22,6 +22,10 @@ subtest 'Multi-instance outputs' => {
     my $outputs = Agrammon::Outputs.new;
     $outputs.add-output('Visible::From::All', 'sym', 99);
 
+    throws-like { $outputs.new-instance('Multi::Instance', 'Instance 1') },
+        X::Agrammon::Outputs::NotDeclaredMultiInstance,
+        module => 'Multi::Instance';
+    $outputs.declare-multi-instance('Multi::Instance');
     my $instance-a = $outputs.new-instance('Multi::Instance', 'Instance 1');
     $instance-a.add-output('Multi::Instance::Foo', 'bar', 10);
     $instance-a.add-output('Multi::Instance::Bar', 'baz', 20);

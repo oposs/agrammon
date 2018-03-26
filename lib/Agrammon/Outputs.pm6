@@ -30,6 +30,13 @@ class X::Agrammon::Outputs::IsSingleInstance is Exception {
     }
 }
 
+class X::Agrammon::Outputs::NotDeclaredMultiInstance is Exception {
+    has $.module;
+    method message() {
+        "Must declare $!module as multi-instance before adding instances"
+    }
+}
+
 role Agrammon::Outputs::SingleOutputStorage {
     has %!outputs;
 
@@ -69,7 +76,14 @@ class Agrammon::Outputs::Instance does Agrammon::Outputs::SingleOutputStorage {
 class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
     has %!instances;
 
+    method declare-multi-instance(Str $taxonomy-prefix --> Nil) {
+        %!instances{$taxonomy-prefix} //= {};
+    }
+
     method new-instance(Str $taxonomy-prefix, Str $instance-name --> Agrammon::Outputs::Instance) {
+        without %!instances{$taxonomy-prefix} {
+            die X::Agrammon::Outputs::NotDeclaredMultiInstance.new(module => $taxonomy-prefix);
+        }
         with %!instances{$taxonomy-prefix}{$instance-name} {
             die X::Agrammon::Outputs::DuplicateInstance.new(:$taxonomy-prefix, :$instance-name);
         }

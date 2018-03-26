@@ -525,6 +525,7 @@ subtest {
     is @output-used[0].symbol, 'n_sol_excretion',
         'Correct output used symbol';
     my $output = Agrammon::Outputs.new;
+    $output.declare-multi-instance('Livestock::OtherCattle');
     my @values = 9, 3, 27, 4;
     for @values -> $value {
         given $output.new-instance('Livestock::OtherCattle', 'Cow ' ~ $++) {
