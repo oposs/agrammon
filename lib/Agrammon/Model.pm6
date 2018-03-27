@@ -84,9 +84,8 @@ class Agrammon::Model {
                 # instance. Then mark the whole graph as having run.
                 $outputs.declare-multi-instance($tax);
                 for $input.inputs-list-for($tax) -> $multi-input {
-                    my %run-already-copy = %run-already;
                     my $multi-output = $outputs.new-instance($tax, $multi-input.instance-id);
-                    self!run-as-single($multi-input, %technical, $multi-output, %run-already-copy);
+                    self!run-as-single($multi-input, %technical, $multi-output, %run-already.clone);
                 }
                 self!mark-multi-run(%run-already);
             }
