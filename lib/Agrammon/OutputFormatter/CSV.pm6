@@ -5,7 +5,7 @@ use Text::CSV;
 sub output-as-csv(Str $simulation-name, Str $dataset-id, Agrammon::Model $model,
                   Agrammon::Outputs $outputs, Str $unit-language --> Str) is export {
     my @lines;
-    my $csv = Text::CSV.new(sep => ';', eol => "\n", quote => Str);
+    my $csv = Text::CSV.new(sep => ';', eol => "\n", quote_space => False);
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         when Hash {
             for sorted-kv($_) -> $output, $value {
