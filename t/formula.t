@@ -1,9 +1,14 @@
 use v6;
 use Agrammon::Environment;
 use Agrammon::Formula;
+use Agrammon::Formula::Compiler;
 use Agrammon::Formula::Parser;
 use Agrammon::Outputs;
 use Test;
+
+sub compile-and-evaluate($formula, $env) {
+    compile-formula($formula)($env)
+}
 
 subtest {
     my $f = parse-formula('In(agricultural_area)', 'PlantProduction');
@@ -11,7 +16,7 @@ subtest {
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 42 }
     ));
     is $result, 42, 'Correct result from evaluation';
@@ -23,7 +28,7 @@ subtest {
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 42 }
     ));
     is $result, 42, 'Correct result from evaluation';
@@ -35,7 +40,7 @@ subtest {
     is-deeply $f.input-used, (), 'Correct inputs-used';
     is-deeply $f.technical-used, ('er_agricultural_area',), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         technical => { er_agricultural_area => 101 }
     ));
     is $result, 101, 'Correct result from evaluation';
@@ -56,7 +61,7 @@ subtest {
         'Correct output used symbol';
     my $output = Agrammon::Outputs.new;
     $output.add-output('PlantProduction', 'mineral_nitrogen_fertiliser_urea', 45);
-    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(:$output));
     is $result, 45, 'Correct result from evaluation';
 }, 'Val(...)';
 
@@ -75,7 +80,7 @@ subtest {
         'Correct output used symbol';
     my $output = Agrammon::Outputs.new;
     $output.add-output('Livestock::DairyCow::Excretion', 'dairy_cows', 49);
-    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(:$output));
     is $result, 49, 'Correct result from evaluation';
 }, 'Val(...) with name using ..';
 
@@ -94,7 +99,7 @@ subtest {
         'Correct output used symbol';
     my $output = Agrammon::Outputs.new;
     $output.add-output('Storage::Excretion', 'dairy_cows', 10);
-    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(:$output));
     is $result, 10, 'Correct result from evaluation';
 }, 'Val(...) with name with leading ::';
 
@@ -106,7 +111,7 @@ subtest {
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, ('er_agricultural_area',), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 3 },
         technical => { er_agricultural_area => 101 }
     ));
@@ -124,7 +129,7 @@ subtest {
     is-deeply $f.technical-used, ('er_solid_digestate', 'er_compost'),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { solid_digestate => 3, compost => 5 },
         technical => { er_solid_digestate => 10, er_compost => 4 }
     ));
@@ -152,7 +157,7 @@ subtest {
     my $output = Agrammon::Outputs.new;
     $output.add-output('PlantProduction', 'nh3_nmineralfertiliser', 12);
     $output.add-output('PlantProduction::RecyclingFertiliser', 'nh3_nrecyclingfertiliser', 15);
-    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(:$output));
     is $result, 12 + 15, 'Correct result from evaluation';
 }, 'Val(...) + Val(...)';
 
@@ -168,7 +173,7 @@ subtest {
     is-deeply $f.input-used, ('compost',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { compost => 55 }
     ));
     is $result, 55 * (55 + 55), 'Correct result from evaluation';
@@ -182,7 +187,7 @@ subtest {
     is-deeply $f.input-used, ('compost',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { compost => 55 }
     ));
     is $result, 3 * 55 + 20, 'Correct result from evaluation';
@@ -196,7 +201,7 @@ subtest {
     is-deeply $f.input-used, ('compost',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { compost => 55 }
     ));
     is $result, 2.5 * 55 + 1.0, 'Correct result from evaluation';
@@ -208,7 +213,7 @@ subtest {
     is-deeply $f.input-used, (), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new());
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new());
     is $result, 1e-8, 'Correct result from evaluation';
 }, 'Float literals';
 
@@ -220,7 +225,7 @@ subtest {
     is-deeply $f.input-used, (), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new());
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new());
     is $result, "foo\nbar!", 'Correct result from evaluation';
 }, 'Double-quoted string literals';
 
@@ -240,12 +245,12 @@ subtest {
     is-deeply $f.technical-used, ('standard_milk_yield', 'a_high', 'a_low'),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 55 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
     is $result-true, 10, 'Correct result when if condition is true';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 35 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
@@ -268,12 +273,12 @@ subtest {
     is-deeply $f.technical-used, ('standard_milk_yield', 'a_low', 'a_high'),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 55 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
     is $result-true, 10, 'Correct result when if condition is false';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 35 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
@@ -296,12 +301,12 @@ subtest {
     is-deeply $f.technical-used, ('standard_milk_yield', 'a_high', 'a_low'),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 55 },
         technical => { standard_milk_yield => 55, a_high => 10, a_low => 5 }
     ));
     is $result-true, 10, 'Correct result when if condition is true';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 35 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
@@ -324,12 +329,12 @@ subtest {
     is-deeply $f.technical-used, ('standard_milk_yield', 'a_low', 'a_high'),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 55 },
         technical => { standard_milk_yield => 55, a_high => 10, a_low => 5 }
     ));
     is $result-true, 10, 'Correct result when if condition is false';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 35 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
@@ -347,12 +352,12 @@ subtest {
     is-deeply $f.technical-used, ('standard_milk_yield', 'a_low', 'a_high'),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 55 },
         technical => { standard_milk_yield => 55, a_high => 10, a_low => 5 }
     ));
     is $result-true, 10, 'Correct result when condition is false';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 35 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
@@ -369,12 +374,12 @@ subtest {
     is-deeply $f.input-used, ('level',), 'Correct inputs-used';
     is-deeply $f.technical-used, ('a_low', 'a_high'), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { level => 'low' },
         technical => { a_high => 10, a_low => 5 }
     ));
     is $result-true, 5, 'Correct result when eq matches';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { level => 'high' },
         technical => { a_high => 10, a_low => 5 }
     ));
@@ -391,12 +396,12 @@ subtest {
     is-deeply $f.input-used, ('level',), 'Correct inputs-used';
     is-deeply $f.technical-used, ('a_high', 'a_low'), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { level => 'high' },
         technical => { a_high => 10, a_low => 5 }
     ));
     is $result-true, 10, 'Correct result when ne does not match';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { level => 'low' },
         technical => { a_high => 10, a_low => 5 }
     ));
@@ -409,7 +414,7 @@ subtest {
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 42 }
     ));
     is $result, 42, 'Correct result from evaluation';
@@ -427,12 +432,12 @@ subtest {
     is-deeply $f.technical-used, ('standard_milk_yield', 'a_low', 'a_high'),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 55 },
         technical => { standard_milk_yield => 55, a_high => 10, a_low => 5 }
     ));
     is $result-true, 10, 'When condition false, get implicit end return value';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 35 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
@@ -445,7 +450,7 @@ subtest {
     is-deeply $f.input-used, (), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new());
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new());
     nok $result.defined, 'Correct result from evaluation';
 }, 'Empty return evalutes to Nil';
 
@@ -455,7 +460,7 @@ subtest {
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
             input => { agricultural_area => 42 }
             ));
     is $result, (42 + 2) * 3, 'Correct result from evaluation';
@@ -472,7 +477,7 @@ subtest {
     is-deeply $f.technical-used, ('er_solid_digestate', 'er_compost'),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { solid_digestate => 100, compost => 13 },
         technical => { er_solid_digestate => 10, er_compost => 4 }
     ));
@@ -491,7 +496,7 @@ subtest {
     is-deeply $f.technical-used, ('er_solid_digestate',),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { solid_digestate => 3 },
         technical => { er_solid_digestate => 10 }
     ));
@@ -505,7 +510,7 @@ subtest {
         'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { solid_digestate => 3 }
     ));
     is $result, 3, 'Correct result from evaluation';
@@ -532,7 +537,7 @@ subtest {
             .add-output('Livestock::OtherCattle::Excretion', 'n_sol_excretion', $value);
         }
     }
-    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(:$output));
     is $result, ([+] @values), 'Correct result from evaluation';
 }, 'Sum(...)';
 
@@ -551,7 +556,7 @@ subtest {
         'Correct output used symbol';
     my $output = Agrammon::Outputs.new;
     $output.add-output('PlantProduction', 'mineral_nitrogen_fertiliser_urea', 89);
-    my $result = $f.evaluate(Agrammon::Environment.new(:$output));
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(:$output));
     is $result, 89, 'Correct result from evaluation';
 }, 'Out(...)';
 
@@ -567,17 +572,17 @@ subtest {
     is-deeply $f.input-used, ('level',), 'Correct inputs-used';
     is-deeply $f.technical-used, ('a_low', 'a_mid', 'a_high'), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { level => 'low' },
         technical => { a_high => 20, a_mid => 10, a_low => 5 }
     ));
     is $result, 5, 'Correct result for first when';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { level => 'high' },
         technical => { a_high => 20, a_mid => 10, a_low => 5 }
     ));
     is $result, 20, 'Correct result for final when';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { level => 'middle' },
         technical => { a_high => 20, a_mid => 10, a_low => 5 }
     ));
@@ -597,15 +602,15 @@ subtest {
     is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 1 }
     ));
     is $result, 'no', 'Correct result when false before and';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 2 }
     ));
     is $result, 'no', 'Correct result when false after and';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 3 }
     ));
     is $result, 'yes', 'Correct result when both true';
@@ -624,15 +629,15 @@ subtest {
     is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 1 }
     ));
     is $result, 'yes', 'Correct result when true before or';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 2 }
     ));
     is $result, 'yes', 'Correct result when true after or';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 3 }
     ));
     is $result, 'no', 'Correct result when both false';
@@ -651,15 +656,15 @@ subtest {
     is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 1 }
     ));
     is $result, 'no', 'Correct result when false before and';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 2 }
     ));
     is $result, 'no', 'Correct result when false after and';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 3 }
     ));
     is $result, 'yes', 'Correct result when both true';
@@ -678,15 +683,15 @@ subtest {
     is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 1 }
     ));
     is $result, 'yes', 'Correct result when true before or';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 2 }
     ));
     is $result, 'yes', 'Correct result when true after or';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 3 }
     ));
     is $result, 'no', 'Correct result when both false';
@@ -700,11 +705,11 @@ subtest {
     is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 55 }
     ));
     is $result, "yes", 'Correct result from defined when value is defined';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => Nil }
     ));
     is $result, "nope", 'Correct result from defined when value is not defined';
@@ -718,11 +723,11 @@ subtest {
     is-deeply $f.input-used, ('milk_yield',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 55 }
     ));
     is $result, 55, 'Correct result when LHS is defined';
-    $result = $f.evaluate(Agrammon::Environment.new(
+    $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => Nil }
     ));
     is $result, 1, 'Correct result when LHS is undefined';
@@ -737,7 +742,7 @@ subtest {
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
     my $calls = 0;
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         builtins => { foo => sub { $calls++; return 42 } }
     ));
     is $calls, 1, 'Built-in function was called';
@@ -753,7 +758,7 @@ subtest {
     is-deeply $f.technical-used, ('s',), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
     my @args;
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         builtins => { bar => sub ($x, $str) { push @args, ($x, $str); return $str x $x } },
         input => { n => 3 },
         technical => { s => 'foo' }
@@ -777,7 +782,7 @@ subtest {
     is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
     my @args;
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         builtins => { writeLog => sub (%h) { push @args, %h; return 'logged' } },
         input => { de => 'hallo' },
         technical => { fr => 'salut' }
@@ -801,7 +806,7 @@ subtest {
     is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
     my @args;
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         builtins => { writeLog => sub (%h) { push @args, %h; return 'logged' } },
         input => { de => 'hallo' },
         technical => { fr => 'salut' }
@@ -821,12 +826,12 @@ subtest {
     is-deeply $f.input-used, ('de',), 'Correct inputs-used';
     is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { de => 'hallo' },
         technical => { fr => 'salut' }
     ));
     is $result-true, "salut", 'Correct result when if is true';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { de => 'guten tag' },
         technical => { fr => 'salut' }
     ));
@@ -842,12 +847,12 @@ subtest {
     is-deeply $f.input-used, ('de',), 'Correct inputs-used';
     is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { de => 'guten tag' },
         technical => { fr => 'salut' }
     ));
     is $result-true, "bonjour", 'Correct result when unless is true';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { de => 'hallo' },
         technical => { fr => 'salut' }
     ));
@@ -876,7 +881,7 @@ subtest {
     my %expect = fahrzeug => 'vehicle', werkzeug => 'tool',
                  spielzeug => 'toy', foo => 'thingy';
     for %expect.kv -> $de, $expect {
-        my $result = $f.evaluate(Agrammon::Environment.new(
+        my $result = compile-and-evaluate($f, Agrammon::Environment.new(
             input => { de => $de },
         ));
         is $result, $expect, 'Correct result';
@@ -891,7 +896,7 @@ subtest {
     is-deeply $f.input-used, ('de',), 'Correct inputs-used';
     is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { de => 'tag' },
         technical => { fr => 'jour' }
     ));
@@ -906,7 +911,7 @@ subtest {
     is-deeply $f.input-used, ('de',), 'Correct inputs-used';
     is-deeply $f.technical-used, ('fr',), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { de => 'Tag' },
         technical => { fr => 'Jour' }
     ));
@@ -919,12 +924,12 @@ subtest {
     is-deeply $f.input-used, ('thing',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used (indirect no included)';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-aaa = $f.evaluate(Agrammon::Environment.new(
+    my $result-aaa = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { thing => 'aaa' },
         technical => { foo_aaa => 13, foo_bbb => 12, }
     ));
     is $result-aaa, 13, 'Correct result from evaluation (1)';
-    my $result-bbb = $f.evaluate(Agrammon::Environment.new(
+    my $result-bbb = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { thing => 'bbb' },
         technical => { foo_aaa => 13, foo_bbb => 12, }
     ));
@@ -937,7 +942,7 @@ subtest {
     is-deeply $f.input-used, (), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used (indirect no included)';
     is-deeply $f.output-used, (), 'Correct output-used';
-    throws-like { $f.evaluate(Agrammon::Environment.new()) },
+    throws-like { compile-and-evaluate($f, Agrammon::Environment.new()) },
         X::Agrammon::Formula::Died,
         message => "a painful death";
 }, 'The die built-in works';
@@ -950,7 +955,7 @@ subtest {
     is-deeply $f.output-used, (), 'Correct output-used';
     my $warning;
     {
-        $f.evaluate(Agrammon::Environment.new());
+        compile-and-evaluate($f, Agrammon::Environment.new());
         CONTROL {
             when CX::Warn {
                 $warning = .message;
@@ -967,7 +972,7 @@ subtest {
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 42 }
     ));
     is $result, 42, 'Correct result from evaluation';
@@ -979,7 +984,7 @@ subtest {
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 42 }
     ));
     is $result, 42, 'Correct result from evaluation';
@@ -1001,12 +1006,12 @@ subtest {
     is-deeply $f.technical-used, ('standard_milk_yield', 'a_low', 'a_high'),
         'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-true = $f.evaluate(Agrammon::Environment.new(
+    my $result-true = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 55 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
     is $result-true, 10, 'Correct result when if condition is true';
-    my $result-false = $f.evaluate(Agrammon::Environment.new(
+    my $result-false = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { milk_yield => 35 },
         technical => { standard_milk_yield => 45, a_high => 10, a_low => 5 }
     ));
@@ -1019,7 +1024,7 @@ subtest {
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result = $f.evaluate(Agrammon::Environment.new(
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 142 }
     ));
     is $result, 142, 'Correct result from evaluation';
@@ -1046,15 +1051,15 @@ subtest {
     is-deeply $f.input-used, ('agricultural_area',), 'Correct inputs-used';
     is-deeply $f.technical-used, (), 'Correct technical-used';
     is-deeply $f.output-used, (), 'Correct output-used';
-    my $result-first = $f.evaluate(Agrammon::Environment.new(
+    my $result-first = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 0 }
     ));
     is $result-first, "nothing", 'Correct result from first when';
-    my $result-second = $f.evaluate(Agrammon::Environment.new(
+    my $result-second = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 1 }
     ));
     is $result-second, "something", 'Correct result from second when';
-    my $result-default = $f.evaluate(Agrammon::Environment.new(
+    my $result-default = compile-and-evaluate($f, Agrammon::Environment.new(
         input => { agricultural_area => 2 }
     ));
     is $result-default, "lots", 'Correct result from second when';
