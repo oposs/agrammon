@@ -29,6 +29,10 @@ class Agrammon::Environment {
     has Scope $.scope .= new;
     has %.builtins = get-builtins();
 
+    method find-builtin($name) {
+        %!builtins{$name} // die "No such builtin function '$name'";
+    }
+
     method enter-scope(--> Nil) {
         $!scope = Scope.new(outer => $!scope)
     }

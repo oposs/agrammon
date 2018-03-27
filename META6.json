@@ -23,6 +23,7 @@
         "Agrammon::Web::Routes": "lib/Agrammon/Web/Routes.pm6",
         "Agrammon::DB::Datasets": "lib/Agrammon/DB/Datasets.pm6",
         "Agrammon::Model::Technical": "lib/Agrammon/Model/Technical.pm6",
+        "Agrammon::Formula::Compiler": "lib/Agrammon/Formula/Compiler.pm6",
         "Agrammon::Config": "lib/Agrammon/Config.pm6",
         "Agrammon::Model::Input": "lib/Agrammon/Model/Input.pm6",
         "Agrammon::Formula::Builtins": "lib/Agrammon/Formula/Builtins.pm6",
