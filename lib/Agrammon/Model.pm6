@@ -119,19 +119,16 @@ class Agrammon::Model {
             );
             for $!module.output -> $output {
                 my $name = $output.name;
-                my $result = do {
-                    CONTROL {
-                        when CX::Warn {
-                            note "Warning evaluating output '$name' in $tax: $_.message()";
-                            .resume;
-                        }
+                $outputs.add-output($tax, $name, $output.compiled-formula()($env));
+                CONTROL {
+                    when CX::Warn {
+                        note "Warning evaluating output '$name' in $tax: $_.message()";
+                        .resume;
                     }
-                    CATCH {
-                        die "Died when evaluating formula '$name' in $tax: $_.message()";
-                    }
-                    $output.compiled-formula()($env)
-                };
-                $outputs.add-output($tax, $name, $result);
+                }
+                CATCH {
+                    die "Died when evaluating formula '$name' in $tax: $_.message()";
+                }
             }
         }
 
