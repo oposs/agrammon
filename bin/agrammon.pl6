@@ -11,12 +11,15 @@ use Agrammon::Model;
 use Agrammon::Web::Routes;
 use Agrammon::Web::SessionUser;
 use Agrammon::TechnicalParser;
+use Agrammon::OutputFormatter::CSV;
+use Agrammon::OutputFormatter::Text;
 
 my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location 
 ;
 
 subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
+subset SupportedLanguage of Str where { $_ ~~ /de|en|fr/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $filename) {
@@ -59,12 +62,17 @@ multi sub MAIN('web', ExistingFile $filename) {
 }
 
 #| Run the model
-multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?) {
-    my %output = run $filename.IO, $input.IO, $tech-file;
-    for %output.keys.sort -> $key {
-        say "$key:";
-        for %output{$key}.keys.sort -> $var {
-            say "    $var=", %output{$key}{$var};
+multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?,
+               SupportedLanguage :$language = 'de', Str :$prints = 'All',
+               Bool :$csv
+              ) {
+    my %results = run $filename.IO, $input.IO, $tech-file, $language, $prints, $csv;
+    for %results.keys -> $simulation {
+        say "### Simulation $simulation";
+        say "##  Print filter: $prints";
+        for %results{$simulation}.keys.sort -> $dataset {
+            say "#   Dataset $dataset";
+            say %results{$simulation}{$dataset};
         }
     }
 }
@@ -90,7 +98,7 @@ sub USAGE() {
     USAGE
 }
 
-sub run (IO::Path $path, IO::Path $input-path, $tech-file) {
+sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv) {
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -98,40 +106,46 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file) {
     my $module      = $path.extension('').basename;
 
     my $tech-input = $tech-file // $module-path.add('technical.cfg');
-    
-    my $params = timed "Load parameters from $tech-input", {
-        parse-technical( $tech-input.IO.slurp);
+    my %technical-parameters = timed "Load parameters from $tech-input", {
+        my $params = parse-technical( $tech-input.IO.slurp );
+        %($params.technical.map(-> %module {
+                %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+        }));
     }
 
-    my $model;
-    timed "Load $module", {
-        $model = Agrammon::Model.new(path => $module-path);
-        $model.load($module);
+    my $model = timed "Load $module", {
+        Agrammon::Model.new(path => $module-path).load($module);
     }
 
     my $filename = $input-path;
     my $fh = open $filename, :r, :!chomp
             or die "Couldn't open file $filename for reading";
     LEAVE $fh.close;
-
     my $ds = Agrammon::DataSource::CSV.new;
-
-    my @datasets;
-    timed "Load $filename", {
-        @datasets = $ds.read($fh);
+    my @datasets = timed "Load $filename", {
+        $ds.read($fh);
     }
-    say "Found " ~ @datasets.elems ~ ' datasets';
+    note "Found " ~ @datasets.elems ~ ' dataset(s)';
 
-    my %outputs = timed "Run $filename", {
-        $model.run(
-            input => @datasets[0],
-            technical => %($params.technical.map(-> %module {
-                                                        %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-                                                    }))
-        );
+    my %results;
+    for @datasets -> $dataset {
+        my $outputs = timed "Run $filename", {
+            $model.run(
+                input     => $dataset,
+                technical => %technical-parameters,
+            );
+        }
+
+        my $result;
+        if ($csv) {
+            $result = output-as-csv($dataset.simulation-name, $dataset.dataset-id, $model, $outputs, $language);
+        }
+        else {
+            $result = output-as-text($model, $outputs, $language, $prints);
+        }
+        %results{$dataset.simulation-name}{$dataset.dataset-id} = $result;
     }
-
-    return %outputs;
+    return %results;
 }
 
 sub dump (IO::Path $path) {
@@ -148,8 +162,8 @@ sub dump (IO::Path $path) {
 
 sub timed(Str $title, &proc) {
     my $start = now;
-    my $ret = proc;
-    my $end = now;
-    printf "$title ran %.3f seconds\n", $end-$start;
-    return $ret;
+    my \ret   = proc;
+    my $end   = now;
+    note sprintf "$title ran %.3f seconds", $end-$start;
+    return ret;
 }
