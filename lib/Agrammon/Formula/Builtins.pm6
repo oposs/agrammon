@@ -1,12 +1,9 @@
 use Agrammon::Formula::ControlFlow;
 
 sub get-builtins is export {
-    return {
+    return INIT %(
         writeLog => -> %langMessages {
             dd %langMessages
-        },
-        return => -> $payload = Nil {
-            die X::Agrammon::Formula::ReturnException.new(:$payload);
         },
         die => -> *@message {
             die X::Agrammon::Formula::Died.new(message => @message.join || 'Died');
@@ -15,5 +12,5 @@ sub get-builtins is export {
             warn @message.join || 'Warning';
         },
         abs => &abs
-    }
+    )
 }

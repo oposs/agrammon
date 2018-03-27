@@ -2,42 +2,22 @@ use Agrammon::Formula::Builtins;
 use Agrammon::Outputs;
 
 class Agrammon::Environment {
-    my class Scope {
-        has %.variables;
-        has Scope $.outer;
+    has $.input;
+    has $.input-defaults;
+    has $.technical;
+    has $.technical-override;
+    has Agrammon::Outputs::SingleOutputStorage $.output;
+    has %.builtins;
 
-        method declare(Str $name --> Any) is rw {
-            %!variables{$name} = Any;
-        }
-
-        method lookup(Str $name --> Any) is rw {
-            if %!variables{$name}:exists {
-                %!variables{$name}
-            }
-            orwith $!outer {
-                .lookup($name)
-            }
-            else {
-                die "No such variable '$name'"
-            }
-        }
+    method get-input($name) {
+        $!input{$name} // $!input-defaults{$name}
     }
 
-    has %.input;
-    has %.technical;
-    has Agrammon::Outputs::SingleOutputStorage $.output;
-    has Scope $.scope .= new;
-    has %.builtins = get-builtins();
+    method get-technical($name) {
+        $!technical-override{$name} // $!technical{$name}
+    }
 
     method find-builtin($name) {
-        %!builtins{$name} // die "No such builtin function '$name'";
-    }
-
-    method enter-scope(--> Nil) {
-        $!scope = Scope.new(outer => $!scope)
-    }
-
-    method leave-scope(--> Nil) {
-        $!scope .= outer;
+        %!builtins{$name} // get-builtins(){$name} // die "No such builtin function '$name'";
     }
 }

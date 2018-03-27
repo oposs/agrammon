@@ -84,9 +84,8 @@ class Agrammon::Model {
                 # instance. Then mark the whole graph as having run.
                 $outputs.declare-multi-instance($tax);
                 for $input.inputs-list-for($tax) -> $multi-input {
-                    my %run-already-copy = %run-already;
                     my $multi-output = $outputs.new-instance($tax, $multi-input.instance-id);
-                    self!run-as-single($multi-input, %technical, $multi-output, %run-already-copy);
+                    self!run-as-single($multi-input, %technical, $multi-output, %run-already.clone);
                 }
                 self!mark-multi-run(%run-already);
             }
@@ -102,36 +101,25 @@ class Agrammon::Model {
             }
 
             my $tax = $!module.taxonomy;
-            my %module-input = $input.input-hash-for($tax);
-            for $!module.input -> $input {
-                with $input.default-calc {
-                    %module-input{$input.name} //= $_;
-                }
-            }
-            my %module-technical = $!module.technical.map({ .name => .value });
-            with %technical{$tax} -> %override {
-                %module-technical ,= %override;
-            }
+            my $env = Agrammon::Environment.new(
+                input => $input.input-hash-for($tax),
+                input-defaults => $!module.input-defaults,
+                technical => $!module.technical-hash,
+                technical-override => %technical{$tax},
+                output => $outputs
+            );
             for $!module.output -> $output {
                 my $name = $output.name;
-                my $env = Agrammon::Environment.new(
-                    input => %module-input,
-                    technical => %module-technical,
-                    output => $outputs
-                );
-                my $result = do {
-                    CONTROL {
-                        when CX::Warn {
-                            note "Warning evaluating output '$name' in $tax: $_.message()";
-                            .resume;
-                        }
+                $outputs.add-output($tax, $name, $output.compiled-formula()($env));
+                CONTROL {
+                    when CX::Warn {
+                        note "Warning evaluating output '$name' in $tax: $_.message()";
+                        .resume;
                     }
-                    CATCH {
-                        die "Died when evaluating formula '$name' in $tax: $_.message()";
-                    }
-                    $output.compiled-formula()($env)
-                };
-                $outputs.add-output($tax, $name, $result);
+                }
+                CATCH {
+                    die "Died when evaluating formula '$name' in $tax: $_.message()";
+                }
             }
         }
 

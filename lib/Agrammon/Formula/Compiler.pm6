@@ -41,15 +41,15 @@ multi compile(Agrammon::Formula::WhenMod $when) {
 }
 
 multi compile(Agrammon::Formula::In $in) {
-    q:c"$env.input<{$in.symbol}>"
+    q:c"$env.get-input('{$in.symbol}')"
 }
 
 multi compile(Agrammon::Formula::Tech $tech) {
-    q:c"$env.technical<{$tech.symbol}>"
+    q:c"$env.get-technical('{$tech.symbol}')"
 }
 
 multi compile(Agrammon::Formula::TechIndirect $tech) {
-    q:f"$env.technical{&compile($tech.expression)}"
+    q:f"$env.get-technical(&compile($tech.expression))"
 }
 
 multi compile(Agrammon::Formula::Val $val) {

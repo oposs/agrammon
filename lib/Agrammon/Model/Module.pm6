@@ -20,6 +20,8 @@ class Agrammon::Model::Module {
     has Agrammon::Model::Test @.tests;
     has Str $.name;
     has Str $.parent;
+    has %.input-defaults;
+    has %.technical-hash;
 
     method TWEAK {
         my $tax = $!taxonomy;
@@ -31,6 +33,8 @@ class Agrammon::Model::Module {
             $!parent = '';
             $!name   = "$tax";
         }
+        %!input-defaults = @!input.grep(*.default-calc.defined).map({ .name => .default-calc });
+        %!technical-hash = @!technical.map({ .name => .value });
     }
 
     method is-multi() {
