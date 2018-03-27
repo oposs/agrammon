@@ -41,7 +41,7 @@ multi compile(Agrammon::Formula::WhenMod $when) {
 }
 
 multi compile(Agrammon::Formula::In $in) {
-    q:c"$env.input<{$in.symbol}>"
+    q:c"$env.get-input('{$in.symbol}')"
 }
 
 multi compile(Agrammon::Formula::Tech $tech) {

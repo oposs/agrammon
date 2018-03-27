@@ -102,14 +102,9 @@ class Agrammon::Model {
             }
 
             my $tax = $!module.taxonomy;
-            my %module-input = $input.input-hash-for($tax);
-            for $!module.input -> $input {
-                with $input.default-calc {
-                    %module-input{$input.name} //= $_;
-                }
-            }
             my $env = Agrammon::Environment.new(
-                input => %module-input,
+                input => $input.input-hash-for($tax),
+                input-defaults => $!module.input-defaults,
                 technical => $!module.technical-hash,
                 technical-override => %technical{$tax},
                 output => $outputs
