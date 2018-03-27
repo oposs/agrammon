@@ -108,13 +108,10 @@ class Agrammon::Model {
                     %module-input{$input.name} //= $_;
                 }
             }
-            my %module-technical = $!module.technical.map({ .name => .value });
-            with %technical{$tax} -> %override {
-                %module-technical ,= %override;
-            }
             my $env = Agrammon::Environment.new(
                 input => %module-input,
-                technical => %module-technical,
+                technical => $!module.technical-hash,
+                technical-override => %technical{$tax},
                 output => $outputs
             );
             for $!module.output -> $output {

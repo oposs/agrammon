@@ -20,6 +20,7 @@ class Agrammon::Model::Module {
     has Agrammon::Model::Test @.tests;
     has Str $.name;
     has Str $.parent;
+    has %.technical-hash;
 
     method TWEAK {
         my $tax = $!taxonomy;
@@ -31,6 +32,7 @@ class Agrammon::Model::Module {
             $!parent = '';
             $!name   = "$tax";
         }
+        %!technical-hash = @!technical.map({ .name => .value });
     }
 
     method is-multi() {
