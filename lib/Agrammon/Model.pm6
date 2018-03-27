@@ -112,13 +112,13 @@ class Agrammon::Model {
             with %technical{$tax} -> %override {
                 %module-technical ,= %override;
             }
+            my $env = Agrammon::Environment.new(
+                input => %module-input,
+                technical => %module-technical,
+                output => $outputs
+            );
             for $!module.output -> $output {
                 my $name = $output.name;
-                my $env = Agrammon::Environment.new(
-                    input => %module-input,
-                    technical => %module-technical,
-                    output => $outputs
-                );
                 my $result = do {
                     CONTROL {
                         when CX::Warn {
