@@ -2,8 +2,8 @@ use Agrammon::Formula::Builtins;
 use Agrammon::Outputs;
 
 class Agrammon::Environment {
-    has %.input;
-    has %.technical;
+    has $.input;
+    has $.technical;
     has Agrammon::Outputs::SingleOutputStorage $.output;
     has %.builtins;
 
