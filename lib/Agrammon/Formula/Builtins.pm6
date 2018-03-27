@@ -1,7 +1,7 @@
 use Agrammon::Formula::ControlFlow;
 
 sub get-builtins is export {
-    return {
+    return INIT %(
         writeLog => -> %langMessages {
             dd %langMessages
         },
@@ -15,5 +15,5 @@ sub get-builtins is export {
             warn @message.join || 'Warning';
         },
         abs => &abs
-    }
+    )
 }
