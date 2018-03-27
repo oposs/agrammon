@@ -135,17 +135,6 @@ class Agrammon::Model {
             }
         }
 
-        method !result-arrays(%outputs, %run-already --> Nil) {
-            my $tax = $!module.taxonomy;
-            return if %run-already{$tax};
-            for $!module.output {
-                %outputs{$tax}{.name} = [];
-            }
-            for @!dependencies -> $dep {
-                $dep!result-arrays(%outputs, %run-already);
-            }
-        }
-
         method !mark-multi-run(%run-already --> Nil) {
             %run-already{$!module.taxonomy} = True;
             for @!dependencies -> $dep {
