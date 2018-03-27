@@ -135,6 +135,7 @@ class Agrammon::Model {
     has Agrammon::Model::Module @.evaluation-order;
     has ModuleRunner $!entry-point;
     has %!output-unit-cache;
+    has %!output-print-cache;
   
     method file2module($file) {
         my $module = $file;
@@ -166,9 +167,10 @@ class Agrammon::Model {
         }
     }
 
-    method load($module-name --> Nil) {
+    method load($module-name --> Agrammon::Model) {
         $!entry-point = self!load-internal($module-name);
         self!sanity-check();
+        return self;
     }
 
     method !load-internal($module-name, :%pending, :%loaded --> ModuleRunner) {
@@ -278,5 +280,12 @@ class Agrammon::Model {
             .taxonomy => %(.output.map({ .name => .units }))
         });
         return %!output-unit-cache{$module}{$output}{$lang} // ''
+    }
+
+    method output-print(Str $module, Str $output) {
+        %!output-print-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .print }))
+        });
+        return %!output-print-cache{$module}{$output} // ''
     }
 }
