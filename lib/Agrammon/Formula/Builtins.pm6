@@ -5,9 +5,6 @@ sub get-builtins is export {
         writeLog => -> %langMessages {
             dd %langMessages
         },
-        return => -> $payload = Nil {
-            die X::Agrammon::Formula::ReturnException.new(:$payload);
-        },
         die => -> *@message {
             die X::Agrammon::Formula::Died.new(message => @message.join || 'Died');
         },
