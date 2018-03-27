@@ -129,7 +129,7 @@ class Agrammon::Model {
                     CATCH {
                         die "Died when evaluating formula '$name' in $tax: $_.message()";
                     }
-                    $output.formula.evaluate($env)
+                    $output.compiled-formula()($env)
                 };
                 $outputs.add-output($tax, $name, $result);
             }

@@ -1,6 +1,7 @@
 use v6;
-use Agrammon::Model::External;
+use Agrammon::Formula::Compiler;
 use Agrammon::Formula::Parser;
+use Agrammon::Model::External;
 use Agrammon::Model::Input;
 use Agrammon::Model::Module;
 use Agrammon::Model::Output;
@@ -44,9 +45,10 @@ class Agrammon::ModuleBuilder {
             with %output-props<formula> <-> $formula {
                 with $*TAXONOMY -> $taxonomy {
                     $formula = parse-formula($formula, $taxonomy);
+                    %output-props<compiled-formula> = compile-formula($formula);
                     CATCH {
                         default {
-                            die "Error parsing formula for output '%output-props<name>' " ~
+                            die "Error compiling formula for output '%output-props<name>' " ~
                                 "in $taxonomy: $_";
                         }
                     }
