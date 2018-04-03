@@ -5,4 +5,8 @@ class Agrammon::Model::Technical {
     has Str $.description;
     has Str %.units{Str};
     has $.value;
+
+    submethod TWEAK(:$value) {
+        $!value = val($value);
+    }
 }
