@@ -53,19 +53,21 @@ class Agrammon::Outputs::Instance does Agrammon::Outputs::SingleOutputStorage {
     has Agrammon::Outputs $.parent is required;
 
     method get-output(Str $module, Str $name) {
-        if %!outputs{$module}{$name}:exists {
-            %!outputs{$module}{$name}
-        }
-        else {
-            return $!parent.get-output($module, $name);
-            CATCH {
-                when X::Agrammon::Outputs::IsMultiInstance {
-                    # Was set in another instance, but not in this one. Should never be
-                    # able to happen, but handle it just in case.
-                    die X::Agrammon::Outputs::Unset.new(:$module, :$name);
-                }
+        my $module-outputs := %!outputs{$module};
+        $module-outputs{$name}:exists
+            ?? $module-outputs{$name}
+            !! self!output-fallback($module, $name)
+    }
+
+    method !output-fallback(Str $module, Str $name) {
+        CATCH {
+            when X::Agrammon::Outputs::IsMultiInstance {
+                # Was set in another instance, but not in this one. Should never be
+                # able to happen, but handle it just in case.
+                die X::Agrammon::Outputs::Unset.new(:$module, :$name);
             }
         }
+        $!parent.get-output($module, $name)
     }
 
     method get-output-hash() {
@@ -94,6 +96,13 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
     }
 
     method get-output(Str $module, Str $name) {
+        my $module-outputs := %!outputs{$module};
+        $module-outputs{$name}:exists
+            ?? $module-outputs{$name}
+            !! self!bad-output($module, $name);
+    }
+
+    method !bad-output(Str $module, Str $name) {
         if %!outputs{$module}{$name}:exists {
             return %!outputs{$module}{$name};
         }
@@ -121,10 +130,11 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
     }
 
     method !find-instances(Str $module) {
-        for reverse [\~] $module.split(/<?before '::'>/) -> $maybe-module {
-            .return with %!instances{$maybe-module};
+        my $start = $module.chars;
+        while $start.defined {
+            .return with %!instances{$module.substr(0, $start)};
+            $start = $module.rindex('::', $start - 1);
         }
-        return Nil;
     }
 
     method get-outputs-hash() {
