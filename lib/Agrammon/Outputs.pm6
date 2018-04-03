@@ -121,10 +121,11 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
     }
 
     method !find-instances(Str $module) {
-        for reverse [\~] $module.split(/<?before '::'>/) -> $maybe-module {
-            .return with %!instances{$maybe-module};
+        my $start = $module.chars;
+        while $start.defined {
+            .return with %!instances{$module.substr(0, $start)};
+            $start = $module.rindex('::', $start - 1);
         }
-        return Nil;
     }
 
     method get-outputs-hash() {
