@@ -8,17 +8,17 @@ class Agrammon::Model::Input {
     has Str $.type;         # XXX Should be something richer than Str
     has Str $.validator;    # XXX Should be something richer than Str
     #    has Str %.labels{Str};
-    has  %.labels;
-    has  %.enum;
     #    has Str %.units{Str};
-        has  %.units;
     #    has Str %.help{Str};
+    has %.labels;
+    has %.units;
     has %.help;
     has Str @.models;
     #    has Str @.options;     # XXX set correct type: array of arrays
-    has @.options;     # XXX set correct type: array of arrays
     #    has Str @.optionsLang; # XXX set correct type: array of hashes
+    has @.options;     # XXX set correct type: array of arrays
     has @.optionsLang; # XXX set correct type: array of hashes
+    has  %.enum;
     has Int $.order;
 
     submethod TWEAK(:$default_calc, :$default_gui) {
@@ -60,8 +60,6 @@ class Agrammon::Model::Input {
                 my %optLang;
                 for @optLang -> $ol {
                     my ($l, $o) = split(/ \s* '=' \s* /, $ol);
-#                    $l.=trim;
-#                    $o.=trim;
                     $o ~~ s:g/_/ /;
                     %optLang{$l} = $o;
                 }
@@ -87,4 +85,5 @@ class Agrammon::Model::Input {
             validator   => %validator,
         )
     }
+
 }
