@@ -1,5 +1,6 @@
 use v6;
 use Agrammon::Config;
+use Agrammon::Model;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 use DB::Pg;
@@ -54,7 +55,55 @@ subtest "get-datasets()" => {
     is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
 }
 
-todo "Not implemented yet", 6;
+subtest "get-input-variables()" => {
+
+    my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
+#    my $top = 'PlantProduction';
+    my $top = 'Total';
+#    my $top = 'Livestock';
+    my $model = Agrammon::Model.new(path => $path);
+    lives-ok { $model.load($top) }, "Loaded $top";
+
+    my %input-hash = $model.get-input-variables;
+    %input-hash<dataset> = 'TEST';
+    is-deeply %input-hash.keys.sort, qw|dataset graphs inputs reports| , "Input hash has expected keys";
+
+    subtest "input variables" => {
+        with %input-hash<inputs> -> @module-inputs {
+            for @module-inputs -> @inputs {
+                for @inputs -> $input {
+                    my $var    = $input<variable>;
+                    is-deeply $input.keys.sort, qw|branch defaults gui help labels models options optionsLang order type units validator variable|,
+                        "$var has expected keys";
+                    if $var ~~ /\:\:dairy_cows/ {
+#                        dd $input;
+                        subtest "$var" => {
+                            is $input<branch>, 'true', 'branch is true';
+                            is-deeply $input<defaults>, %( calc => Any, gui => Any);
+                            is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    subtest "graphs and reports" => {
+        my @graphs = %input-hash<graphs>;
+#        dd @graphs;
+        my %graph = @graphs[0];
+        is-deeply %graph.keys.sort, qw|_order data name selector type|, "First graph has expected keys";
+        is %graph<type>, 'bar', "Graph has correct type";
+
+        my @reports = %input-hash<reports>;
+        my %report = @reports[0];
+        is-deeply %report.keys.sort, qw|_order data name selector type|, "First report has expected keys";
+        is %report<type>, 'report', "Report has correct type";
+
+    }
+}
+
+todo "Not implemented yet", 5;
 subtest "load-dataset()" => {
     flunk("Not implemented");
 }
@@ -64,10 +113,6 @@ subtest "create-dataset()" => {
 }
 
 subtest "get-tags()" => {
-    flunk("Not implemented");
-}
-
-subtest "get-input-variables()" => {
     flunk("Not implemented");
 }
 
