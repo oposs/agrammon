@@ -22,6 +22,7 @@ class Agrammon::Model::Module {
     has Str $.parent;
     has %.input-defaults;
     has %.technical-hash;
+    has $.instance-root;
 
     method TWEAK {
         my $tax = $!taxonomy;
@@ -40,6 +41,11 @@ class Agrammon::Model::Module {
     method is-multi() {
         $!instances // '' eq 'multi'
     }
+
+    method set-root(Str $root) {
+        $!instance-root = $root;
+    }
+
 }
 
 
