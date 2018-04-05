@@ -175,7 +175,7 @@ class Agrammon::Model {
         return self;
     }
 
-    method !load-internal($module-name, $root?, :%pending, :%loaded --> ModuleRunner) {
+    method !load-internal($module-name, $root?, $root-module?, :%pending, :%loaded --> ModuleRunner) {
         # trying to load module while already loading it
         die X::Agrammon::Model::CircularModel.new(:module($module-name))
             if %pending{$module-name}:exists;
@@ -190,7 +190,10 @@ class Agrammon::Model {
         }
         my $instance-root = $root;
         $instance-root //= $module.taxonomy if $module.is-multi;
-        $module.set-root($instance-root) if $instance-root;
+        my $gui-root-module = $root-module;
+        $gui-root-module = $module if $module.gui;
+        $module.set-instance-root($instance-root) if $instance-root;
+        $module.set-gui-root($gui-root-module) if $gui-root-module;
         my $parent = $module.parent;
         my @externals = $module.external;
         my @dependencies;
@@ -201,7 +204,7 @@ class Agrammon::Model {
                 !! $parent
                     ?? normalize($parent ~ '::' ~ $external-name)
                     !! $external-name;
-            push @dependencies, self!load-internal($include, $instance-root, :%pending, :%loaded);
+            push @dependencies, self!load-internal($include, $instance-root, $gui-root-module, :%pending, :%loaded);
         }
         @!evaluation-order.push($module);
         %pending{$module-name}:delete;
@@ -314,7 +317,22 @@ class Agrammon::Model {
             for $module.input -> $input {
                 
                 my %input-hash        = $input.as-hash;
-                %input-hash<gui>      = $module.gui;
+                my $gui;
+                if ($module.gui) {
+                    $gui = $module.gui;
+                }
+                else {
+                    $gui = $module.gui-root-module.gui;
+                }
+                my @gui = split(',', $gui);
+                if $module.instance-root {
+                    my $i = 0;
+                    for @gui -> $gui {
+                        @gui[$i] ~= '[]';
+                        $i++;
+                    }
+                }
+                %input-hash<gui>      = %( de => @gui[1], en => @gui[0], fr => @gui[2]);
                 %input-hash<branch>   = $module.is-multi ?? 'true' !! 'false';
                 my $tax               = $module.taxonomy;
 
