@@ -26,6 +26,10 @@ class Agrammon::DB::User does Agrammon::DB {
     has DateTime $.created;
     has Agrammon::DB::Role $.role;
 
+    method set-username(Str $username) {
+        $!username = $username;
+    }
+    
     method create-account(Str $role-name) {
         die X::Agrammon::DB::User::Exists.new(:username($!username)) if self.exists;
         
@@ -41,7 +45,7 @@ class Agrammon::DB::User does Agrammon::DB {
             my $u = $db.query(q:to/USER/, $!username, $!firstname, $!lastname, $!password, $!organisation, %r<id> );
                 INSERT INTO pers (pers_email, pers_first, pers_last,
                                   pers_password, pers_org, pers_role)
-                VALUES ($1, $2, $3, $4, $5, $6)
+                VALUES ($1, $2, $3, crypt($4, gen_salt('md5')), $5, $6)
                 RETURNING pers_id
             USER
 
@@ -72,7 +76,7 @@ class Agrammon::DB::User does Agrammon::DB {
             $!username     = $u<username>;
             $!firstname    = $u<firstname>;
             $!lastname     = $u<lastname>;
-            $!password     = $u<password>;
+#            $!password     = $u<password>;
             $!organisation = $u<organisation>;
             $!last-login   = $u<last-login>;
             $!created      = $u<created>;
@@ -99,23 +103,5 @@ class Agrammon::DB::User does Agrammon::DB {
         }
     }
 
-    method auth($username, $password) {
-        self.with-db: -> $db {
-            my %p = $db.query(q:to/PERS/, $username).hash;
-                SELECT pers_password AS password
-                  FROM pers
-                 WHERE pers_email = $1
-            PERS
-
-            if  $password eq %p<password> {
-                $!username = $username;
-                self.load;
-            }
-            else {
-                $!username = Nil;
-            }
-        }
-        return self.logged-in;
-    }
 
 }

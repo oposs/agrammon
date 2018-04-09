@@ -4,10 +4,12 @@ use Agrammon::DB::Dataset;
 use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
 use Agrammon::DB::Tags;
+use Agrammon::Model;
 use Agrammon::Web::SessionUser;
 
 class Agrammon::Web::Service {
-    has Agrammon::Config   $.cfg;
+    has Agrammon::Config $.cfg;
+    has Agrammon::Model  $.model;
 
     # return config hash as expected by Web GUI
     method get-cfg() {
@@ -45,7 +47,7 @@ class Agrammon::Web::Service {
     }
 
     method get-input-variables(Agrammon::DB::Dataset $dataset) {
-        ...
+        return Agrammon::Model
     }
 
     method get-output-variables(Agrammon::DB::Dataset $dataset) {

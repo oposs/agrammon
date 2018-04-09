@@ -173,7 +173,7 @@ class Agrammon::Model {
         return self;
     }
 
-    method !load-internal($module-name, :%pending, :%loaded --> ModuleRunner) {
+    method !load-internal($module-name, $root?, $root-module?, :%pending, :%loaded --> ModuleRunner) {
         # trying to load module while already loading it
         die X::Agrammon::Model::CircularModel.new(:module($module-name))
             if %pending{$module-name}:exists;
@@ -186,6 +186,12 @@ class Agrammon::Model {
         given $module.taxonomy -> $tax {
             die "Wrong taxonomy '$tax' in $module-name" unless $tax eq $module-name;
         }
+        my $instance-root = $root;
+        $instance-root //= $module.taxonomy if $module.is-multi;
+        my $gui-root-module = $root-module;
+        $gui-root-module = $module if $module.gui;
+        $module.set-instance-root($instance-root) if $instance-root;
+        $module.set-gui-root($gui-root-module) if $gui-root-module;
         my $parent = $module.parent;
         my @externals = $module.external;
         my @dependencies;
@@ -196,7 +202,7 @@ class Agrammon::Model {
                 !! $parent
                     ?? normalize($parent ~ '::' ~ $external-name)
                     !! $external-name;
-            push @dependencies, self!load-internal($include, :%pending, :%loaded);
+            push @dependencies, self!load-internal($include, $instance-root, $gui-root-module, :%pending, :%loaded);
         }
         @!evaluation-order.push($module);
         %pending{$module-name}:delete;
@@ -288,4 +294,97 @@ class Agrammon::Model {
         });
         return %!output-print-cache{$module}{$output} // ''
     }
+
+    method get-inputs {
+        my @inputs;
+        for self.evaluation-order -> $module {
+            my @module-inputs;
+            for $module.input -> $input {
+                
+                my %input-hash        = $input.as-hash;
+                my $gui;
+                if ($module.gui) {
+                    $gui = $module.gui;
+                }
+                else {
+                    $gui = $module.gui-root-module.gui;
+                }
+                my @gui = split(',', $gui);
+                if $module.instance-root {
+                    my $i = 0;
+                    for @gui -> $gui {
+                        @gui[$i] ~= '[]';
+                        $i++;
+                    }
+                }
+                %input-hash<gui>      = %( de => @gui[1], en => @gui[0], fr => @gui[2]);
+                %input-hash<branch>   = $module.is-multi ?? 'true' !! 'false';
+                my $tax               = $module.taxonomy;
+
+                my $root = $module.instance-root;
+                if $root {
+                    $tax ~~ s/$root/$root\[\]/;
+                }
+                %input-hash<variable> = $tax ~ '::' ~ %input-hash<variable>;
+                push @module-inputs, %input-hash;
+            }
+            push @inputs, @module-inputs;
+        }
+        return @inputs;
+    }
+
+    method get-reports {
+        return [
+            %( _order => 10,
+              data   => [
+                         %( "de" => "Fluss Stickstoff löslich Tierproduktion",
+                          "en" => "Nitrogen flux livestock",
+                          "fr" => "Flux azotés soluble production animale",
+                          "label" => "TANFlux",
+                          "subReports" => ["TANFlux"],
+                         ),
+              ],
+              "name" => "TANFlux",
+              "selector" => %(
+                    "de" => "Fluss des löslichen Stickstoffs (in kg TAN pro Jahr) -  Zusammenfassung",
+                    "en" => "Total Amoniacal Nitrogen flux Livestock (in kg TAN per year chart)",
+                    "fr" => "Flux azoté soluble (en kg de TAN par année)"
+              ),
+              "type" => "report"
+            )
+        ];
+    }
+
+    method get-graphs {
+        my @graphs = [
+            %(
+              _order => 1,
+              data   => [
+                         %("de" => "Tierproduktion",
+                          "en" => "Livestock",
+                          "fr" => "Production animale",
+                          "label" => "LivestockShare",
+                          "subReports" => ["LivestockShare"],
+                         ),
+              ],
+              name => "DistributionBarGraph",
+              selector => %(
+                    "de" => "Ammoniak Emissionen in Prozent der Gesamtemission (Balkengrafik)",
+                    "en" => "Ammonia emissions in percent of the total emission (bar chart)",
+                    "fr" => "Emissions d'ammoniaque en % des émissions totales (histogramme)"
+              ),
+              type => "bar"
+            )
+        ];
+        return @graphs;
+    }
+
+    method get-input-variables {
+        return %(
+            graphs  => self.get-graphs,
+            inputs  => self.get-inputs,
+            reports => self.get-reports,
+        );
+    }
+
 }
