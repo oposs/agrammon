@@ -101,13 +101,13 @@ class Agrammon::DB::User does Agrammon::DB {
 
     method auth($username, $password) {
         self.with-db: -> $db {
-            my %p = $db.query(q:to/PERS/, $username).hash;
-                SELECT pers_password AS password
+            my $authenticated = $db.query(q:to/PERS/, $password, $username).value;
+                SELECT (crypt($1, pers_md5password) = pers_md5password) AS authenticated)
                   FROM pers
-                 WHERE pers_email = $1
+                 WHERE pers_email = $2
             PERS
 
-            if  $password eq %p<password> {
+            if  $authenticated {
                 $!username = $username;
                 self.load;
             }
