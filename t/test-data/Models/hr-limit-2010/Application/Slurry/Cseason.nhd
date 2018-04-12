@@ -1,0 +1,167 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-05-06
+taxonomy = Application::Slurry::Cseason
+
++short
+
+ Correction factor of the standard emission rate of the season for
+ slurry application.
+
++description
+
+This process computes the correction factor for the seasons the slurry 
+is applied.
+
+  \subsubsection{References:}
+   Menzi H, Frick R, Kaufmann R 1997. Ammoniak-Emissionen in der Schweiz:
+   Ausmass und technische Beurteilung des
+   Reduktionspotentials. Eidgenössische Forschungsanstalt für
+   Agrarökologie und Landbau, Zürich-Reckenholz. 107pp. 
+
+   Frick R, Menzi H 1997. Hofdüngeranwendung: Wie Ammoniakverluste
+   vermindern? Auch einfache Massnahmen wirken. FAT Bericht Nr. 496.
+
+
+*** input ***
+ 
++appl_summer
+  models = SHL
+  type  = percent
+  default_calc = 25
+  ++labels 
+    en = Share of slurry applied June to August (in %)
+    de = Ausbringung von Gülle im Sommer (Juni, Juli, August): Anteil in Prozent
+    fr = Part de lisier épandu en été (de juin à août)(en %)
+  ++units  
+    en = %
+  ++description
+    Share of slurry applied June to August (in %).
+  ++help
+    +++en
+       <p>The categories “share of slurry applied June to August” and “share of slurry applied September to May” must add up to 100 %.</p>
+       <p>Standard value for Switzerland: 53%</p>
+    +++de
+       <p>Die Summe der Kategorien Ausbringung von Gülle im Sommer (Juni, Juli, August) und Ausbringung von Gülle von September bis und mit Mai muss 100% geben. </p>
+       <p>Vorschlag für Standardwerte: Talregion: 48%; Hügelregion: 57%; Bergregion: 60%. Durchschnitt aller Regionen: 53%.</p>
+    +++fr
+       <p>La somme des catégories‚ Part de lisier épandu en été (de juin à août)’ et‚ Part de lisier épandu de septembre à mai y c.’ doit donner 100%.  </p>
+       <p>Proposition de valeur standard: région de plaine: 48%; région de collines: 57%; région de montagne: 60%. Moyenne de toutes les régions: 53%. </p>
+ 
+ 
++appl_autumn_winter_spring
+  models = SHL
+  type  = percent
+  default_calc = 75
+  validator = between(0,100);
+  ++labels 
+    en = Share of slurry applied September to May (in %)
+    de = Ausbringung von Gülle von September bis und mit Mai: Anteil in Prozent
+    fr = Part de lisier épandu de septembre à mai y.c. (en %)
+  ++units  
+    en = %
+  ++description
+    Share of slurry applied September to May.
+  ++help
+    +++en
+       <p>The categories “share of slurry applied June to August” and “share of slurry applied September to May” must add up to 100 %.</p>
+       <p>Standard value for Switzerland: 47% (mean value Switzerland)</p>
+    +++de
+       <p>Die Summe der Kategorien Ausbringung von Gülle im Sommer (Juni, Juli, August) und Ausbringung von Gülle von September bis und mit Mai muss 100% geben. </p>
+       <p>Vorschlag für Standardwerte: Talregion: 52%; Hügelregion: 43%; Bergregion: 40%. Durchschnitt aller Regionen: 47%.</p>
+       <p>Gemäss Anhang 2.6, Ziffer 3.2.1 der Chemikalien-Risikoreduktions-Verordnung (ChemRRV), Abs. 1 dürfen stickstoffhaltige Dünger nur zu Zeiten ausgebracht werden, in denen die Pflanzen den Stickstoff aufnehmen können. Nach Abs. 2 dürfen flüssige Dünger nur ausgebracht werden, wenn der Boden saug- und aufnahmefähig ist. Sie dürfen vor allem dann nicht ausgebracht werden, wenn der Boden wassergesättigt, gefroren, schneebedeckt oder ausgetrocknet ist.</p>
+    +++fr
+       <p>
+	  La somme des catégories‚ Part de lisier épandu en été (de juin à août)’ et ‚Part de lisier 
+	  épandu de septembre à mai y c.’ doit donner 100%. 
+       </p>
+       <p>
+          Proposition de valeur standard: région de plaine: 52%; région de collines: 43%; région
+          de montagne: 40%. Moyenne de toutes les régions: 47%.
+       </p>
+       <p>
+          Selon l’annexe 2.6, chiffre 3.2.1 de l’Ord. sur la réduction des risques liés aux 
+          produits chimiques (ORRChim), paragraphe 1, l’épandage d’engrais contenant de l’azote 
+          n’est autorisé que pendant les périodes où les plantes peuvent absorber l’azote. Selon 
+          le paragraphe 2, l’épandage d’engrais liquides n’est autorisé que si le sol est apte à
+          les absorber. Ils ne doivent surtout pas être épandus lorsque le sol est saturé d’eau, 
+          gelé, couvert de neige ou desséché.
+       </p>
+
+*** technical ***
+
++c_summer
+  value = 0.15
+  ++units 
+    en = -
+  ++description
+  Correction factor for the application of slurry in summer (June to
+  August): Model calculation according to the model of Katz (Menzi et
+  al. 1997b) with meteorological data from Liebefeld 1993-2002:
+  average from March to November 12°C, 70% relative air humidity, 1.15
+  kg/m3 TAN, 30 m3/ha resulting in a loss of 50.6% TAN; summer 17.8°C
+  resulting in a loss of 56.7% TAN (+12%). Value chosen for
+  cal-culation: +15%
+    
+ 
++c_autumn_winter_spring
+  value = -0.05
+  ++units 
+    en = -
+  ++description
+  Correction factor for the application of slurry in autumn, winter and spring (Sept to May): Model calculation according to the model of Katz (Menzi et
+  al. 1997b) with meteorological data from Liebefeld 1993-2002: average
+  from March to November 12°C, 70% relative air humidity, 1.15 kg/m3
+  TAN, 30 m3/ha resulting in a loss of 50.6% TAN; spring/autumn/winter 9°C
+  resulting in a loss of 48.1% TAN (-4.8%). Value chosen for
+  calculation: -5%
+
+
+*** external ***
+
+
+*** output ***
+
++appl_summer
+  print = 22
+  ++units 
+    en = -
+  ++description
+    .
+  ++formula
+      return (In(appl_summer)/100);
+
++appl_autumn_winter_spring
+  print = 22
+  ++units 
+    en = -
+  ++description
+    .
+  ++formula
+      return (In(appl_autumn_winter_spring)/100);
+
++c_season
+  print = 15
+  ++units 
+    en = -
+  ++description
+    Correction factor of the standard emission rate depending on season of 
+    application.
+  ++formula
+    if( abs(In(appl_summer)+In(appl_autumn_winter_spring)-100) < 0.000001 ){
+    	return (1 + ( Out(appl_summer) * Tech(c_summer) +
+   	            Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
+    }
+    else {
+        writeLog({en => "Please correct accordingly: the categories of \"share of solid manure applied June to August\" "
+		        . "and \"share of solid manure applied September to May\" do not add up to 100\%!\n",
+                  de => "Bitte korrigieren: die Summe der Kategorien Ausbringung von Gülle im Sommer und von "
+                        . "September bis Mai ist nicht gleich 100\%\n",
+                  fr => "Veuillez corriger: la somme des catégories ‘Part de lisier épandu en été’ et ‘de "
+ 		        . "septembre à mai’ n’est pas égale à 100% !\n"
+                  });
+    	return (1 + ( Out(appl_summer) * Tech(c_summer) +
+         	Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
+    }
+    
