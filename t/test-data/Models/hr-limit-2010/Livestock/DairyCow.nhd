@@ -1,0 +1,139 @@
+*** general ***
+author = Agrammon Group
+date = 2008-02-29
+taxonomy = Livestock::DairyCow
+instances = multi
+gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vaches latière,Livestock::Dairy cows
+
++short
+  annual emission
+  
++ description
+  XXX
+  
+*** input ***
+
+*** external ***
+
++DairyCow::Excretion
++DairyCow::Housing::Type
++DairyCow::Housing
++DairyCow::Yard
++DairyCow::Grazing
+
+*** output ***
+
++n_check
+  print = 7
+  ++units
+    en = -
+  ++description
+   Check
+  ++formula
+    return;
+
++n_excretion
+  print = 7
+  ++units
+    en = kg N/year
+	de = kg N/Jahr
+	fr = kg N/an
+  ++description
+    Anual N excreted by dairy cows.
+  ++formula
+   Val(n_excretion, DairyCow::Excretion);
+
++n_from_dairycow
+  print = 7
+  ++units
+    en = kg N/year
+	de = kg N/Jahr
+	fr = kg N/an
+  ++description
+    Anual N flux from dairy cows housing and yard.
+  ++formula
+    Val(n_outhousing, DairyCow::Housing) +
+    Val(n_outyard, DairyCow::Yard);
+
++tan_from_dairycow
+	  print = 7
+  ++units
+    en = kg N/year
+	de = kg N/Jahr
+	fr = kg N/an
+  ++description
+    Annual N flux as TAN from dairy cow housing and yard.
+  ++formula
+      Val(tan_outhousing, DairyCow::Housing) +
+      Val(tan_outyard, DairyCow::Yard);
+
++n_liquid_from_dairycow
+  print = 7
+  ++units
+    en = kg N/year
+	de = kg N/Jahr
+	fr = kg N/an
+  ++description
+    Anual N flux from dairy cows housing and yard, liquid fraction.
+  ++formula
+    Val(n_outhousing_liquid, DairyCow::Housing) +
+    Val(n_outyard_liquid, DairyCow::Yard);
+
++tan_liquid_from_dairycow
+  print = 7
+  ++units
+    en = kg N/year
+	de = kg N/Jahr
+	fr = kg N/an
+  ++description
+    Anual N flux as TAN from dairy cows housing and yard, liquid fraction.
+  ++formula
+    Val(tan_outhousing_liquid, DairyCow::Housing) +
+    Val(tan_outyard_liquid, DairyCow::Yard);
+
++n_solid_from_dairycow
+  print = 7
+  ++units
+    en = kg N/year
+	de = kg N/Jahr
+	fr = kg N/an
+  ++description
+    Anual N flux from dairy cows housing and yard, solid fraction.
+  ++formula
+    Val(n_outhousing_solid, DairyCow::Housing) +
+    Val(n_outyard_solid, DairyCow::Yard);
+
++tan_solid_from_dairycow
+  print = 7
+  ++units
+    en = kg N/year
+	de = kg N/Jahr
+	fr = kg N/an
+  ++description
+    Anual N flux as TAN from dairy cows housing and yard, solid fraction.
+  ++formula
+    Val(tan_outhousing_solid, DairyCow::Housing) +
+    Val(tan_outyard_solid, DairyCow::Yard);
+
++nh3_ndairycow
+  print = 7
+  ++labels
+    en = Grazing, housing and yard dairy cow NH3-emissions
+	de = Weide, Stall und Laufhof MilchkÃ¼he NH3-Emission
+	fr = Vaches laitiÃ¨res Emissions de NH3 pÃ¢turage, l'Ã©table et parcours extÃ©rieur
+  ++units
+    en = kg N/year
+	de = kg N/Jahr
+	fr = kg N/an
+  ++description
+    Annual NH3 emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+    Val(nh3_nhousing, DairyCow::Housing) +
+	Val(nh3_nyard, DairyCow::Yard)       +
+	Val(nh3_ngrazing, DairyCow::Grazing);
+
+   
+
+
+
+
