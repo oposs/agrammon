@@ -1,6 +1,7 @@
 use v6;
 use Agrammon::Model::External;
 use Agrammon::Model::Input;
+use Agrammon::Model::Result;
 use Agrammon::Model::Test;
 use Agrammon::Model::Output;
 use Agrammon::Model::Technical;
@@ -18,9 +19,11 @@ class Agrammon::Model::Module {
     has Agrammon::Model::Technical @.technical;
     has Agrammon::Model::Output @.output;
     has Agrammon::Model::Test @.tests;
+    has Agrammon::Model::Result @.results;
     has Str $.name;
     has Str $.parent;
-    has %.input-defaults;
+    has %.input-defaults; # for calculations
+    has %.gui-defaults;   # for display in GUI
     has %.technical-hash;
     has $.instance-root;
     has Agrammon::Model::Module $.gui-root-module;
@@ -36,6 +39,7 @@ class Agrammon::Model::Module {
             $!name   = "$tax";
         }
         %!input-defaults = @!input.grep(*.default-calc.defined).map({ .name => .default-calc });
+        %!gui-defaults   = @!input.grep(*.default-gui.defined).map({ .name => .default-gui });
         %!technical-hash = @!technical.map({ .name => .value });
     }
 

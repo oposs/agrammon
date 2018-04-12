@@ -136,6 +136,9 @@ class Agrammon::Model {
     has ModuleRunner $!entry-point;
     has %!output-unit-cache;
     has %!output-print-cache;
+    has %!output-format-cache;
+    has %!output-labels-cache;
+    has %!output-order-cache;
   
     method file2module($file) {
         my $module = $file;
@@ -288,11 +291,39 @@ class Agrammon::Model {
         return %!output-unit-cache{$module}{$output}{$lang} // ''
     }
 
+    method output-units(Str $module, Str $output) {
+        %!output-unit-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .units }))
+        });
+        return %!output-unit-cache{$module}{$output}
+    }
+
     method output-print(Str $module, Str $output) {
         %!output-print-cache ||= @!evaluation-order.map({
             .taxonomy => %(.output.map({ .name => .print }))
         });
         return %!output-print-cache{$module}{$output} // ''
+    }
+
+    method output-format(Str $module, Str $output) {
+        %!output-format-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .format }))
+        });
+        return %!output-format-cache{$module}{$output} // ''
+    }
+
+    method output-order(Str $module, Str $output) {
+        %!output-order-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .order }))
+        });
+        return %!output-order-cache{$module}{$output} // ''
+    }
+
+    method output-labels(Str $module, Str $output) {
+        %!output-labels-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .labels }))
+        });
+        return %!output-labels-cache{$module}{$output} // ''
     }
 
     method get-inputs {
@@ -326,64 +357,70 @@ class Agrammon::Model {
                     $tax ~~ s/$root/$root\[\]/;
                 }
                 %input-hash<variable> = $tax ~ '::' ~ %input-hash<variable>;
-                push @module-inputs, %input-hash;
+                push @inputs, %input-hash;
             }
-            push @inputs, @module-inputs;
         }
         return @inputs;
     }
 
-    method get-reports {
-        return [
-            %( _order => 10,
-              data   => [
-                         %( "de" => "Fluss Stickstoff löslich Tierproduktion",
-                          "en" => "Nitrogen flux livestock",
-                          "fr" => "Flux azotés soluble production animale",
-                          "label" => "TANFlux",
-                          "subReports" => ["TANFlux"],
-                         ),
-              ],
-              "name" => "TANFlux",
-              "selector" => %(
-                    "de" => "Fluss des löslichen Stickstoffs (in kg TAN pro Jahr) -  Zusammenfassung",
-                    "en" => "Total Amoniacal Nitrogen flux Livestock (in kg TAN per year chart)",
-                    "fr" => "Flux azoté soluble (en kg de TAN par année)"
-              ),
-              "type" => "report"
-            )
-        ];
-    }
+    method get-results {
+        my (@reports, @graphs);
 
-    method get-graphs {
-        my @graphs = [
-            %(
-              _order => 1,
-              data   => [
-                         %("de" => "Tierproduktion",
-                          "en" => "Livestock",
-                          "fr" => "Production animale",
-                          "label" => "LivestockShare",
-                          "subReports" => ["LivestockShare"],
-                         ),
-              ],
-              name => "DistributionBarGraph",
-              selector => %(
-                    "de" => "Ammoniak Emissionen in Prozent der Gesamtemission (Balkengrafik)",
-                    "en" => "Ammonia emissions in percent of the total emission (bar chart)",
-                    "fr" => "Emissions d'ammoniaque en % des émissions totales (histogramme)"
-              ),
-              type => "bar"
-            )
-        ];
-        return @graphs;
-    }
+        for self.evaluation-order -> $module {
+            my @module-inputs;
+            for $module.results -> $result {
+                my $type = $result.type;
+                my %report = %(
+                    name      => $result.name,
+                    type     => $type,
+                    _order   => $result._order,
+                    selector => $result.selector,
+                );
 
-    method get-input-variables {
+                my %data = $result.data;
+                my @data;
+                for %data.keys -> $key { 
+                    my %opts = %(
+                        label      => $key,
+                        subReports => split('_', $key),
+                    );
+
+                    my $langLabels = %data{$key};
+                    my @langLabel  = split("\n", $langLabels);
+                    for @langLabel -> $ll {
+                        my ($lang, $label) = split(/ \s* '=' \s* /, $ll);
+                        %opts{$lang} = $label;
+                    }
+                    push @data, %opts;
+                }
+
+                %report<data> = @data;
+
+                if $type eq 'report' {
+                    push @reports, %report;
+                }
+                elsif $type ~~ /bar|pie/ {
+                    push @graphs, %report;
+                }
+                else {
+                    die "Unknown report type $type";
+                }
+            }
+        }
+
         return %(
-            graphs  => self.get-graphs,
+            reports => @reports,
+            graphs  => @graphs,
+        );
+    }
+    
+    method get-input-variables {
+        my %results = self.get-results;
+        
+        return %(
+            graphs  => %results<graphs>,
             inputs  => self.get-inputs,
-            reports => self.get-reports,
+            reports => %results<reports>,
         );
     }
 

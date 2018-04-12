@@ -39,6 +39,12 @@ class Agrammon::ModuleBuilder {
         });
     }
 
+    method section:sym<results>($/) {
+        make 'results' => $<results>.map({
+            Agrammon::Model::Result.new(|.ast)
+        });
+    }
+
     method section:sym<output>($/) {
         make 'output' => [$<output>.map(sub ($_) {
             my %output-props = .ast;

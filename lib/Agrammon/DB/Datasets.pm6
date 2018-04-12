@@ -4,9 +4,9 @@ use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
 
 class Agrammon::DB::Datasets does Agrammon::DB {
-    has Agrammon::DB::User $.user;
-    has Agrammon::DB::Dataset @.collection;
     has Str $.version;
+    has Agrammon::DB::User    $.user;
+    has Agrammon::DB::Dataset @.collection;
 
     method load {
         self.with-db: -> $db {
