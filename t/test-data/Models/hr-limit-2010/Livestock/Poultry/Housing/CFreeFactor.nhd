@@ -1,0 +1,94 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2013-01-04
+taxonomy = Livestock::Poultry::Housing::CFreeFactor
+
++short
+
+Selects other correction factors for the specific housing types for poultry.
+
++description
+  
+ This process selects the emission rate for the specific housing types
+ for poultry and the correction factors for the drinking system, and
+ for the manure removal interval.
+
+
+*** input ***
+
++free_correction_factor
+  models = SHL
+  type = float
+  default_calc = 0
+  default_gui = 0
+  validator = between(0,100);
+  ++labels 
+    en = Additional emission mitigation measure for the housing (see column Help)
+    de = Zusätzliche emissionsmindernde Massnahme Stall (siehe Spalte Hilfe)
+    fr = Mesure supplémentaire limitant les émissions dans les stabulations (cf. aide)
+  ++units 
+    en = %
+  ++description
+    Factor to define free.
+  ++help
+    +++en
+       <p> </p>
+    +++de
+	<p>
+	   Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme 
+	   eingesetzt werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene 
+           Zahl entspricht der Emissionsminderung in Prozent (z.B. Eingabe 30%; die Emission 
+           aus dem Stall nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der 
+           Spalte Kommentar aufzuführen und den gewählten Wert zur Emissionsminderung 
+           zu begründen.
+        </p>
+       	<p>
+	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+           zur Emissionsminderung berücksichtigen müssen. 
+        </p>
+        <p> Vorschlag für Standardwert: 0 %. </p>
+    +++fr
+        <p>
+	   Ici, vous pouvez introduire l’effet d’une mesure supplémentaire limitant les 
+	   émissions (p.ex. un nouveau type de sol limitant les émissions). Le chiffre 
+	   introduit correspond à la réduction d’émission en pourcent (p.ex. 30%: l’émission
+	   provenant de la stabulation diminue de 30%). Il est recommandé de mentionner la 
+	   mesure choisie dans la colonne ‘Commentaire’ et de justifier le taux de réduction 
+	   choisi.
+	</p>
+	<p>
+	   Cette fonction s’adresse principalement aux utilisateurs/trices qui font des 
+      	   pronostiques d’émissions et qui doivent prendre en compte l’effet de nouvelles 
+	   technologies destinées à limiter les émissions et encore méconnues actuellement.
+	</p>
+	<p>Proposition valeur standard: 0 %.</p>
+
+*** technical ***
+
+*** external ***
+
+*** output ***
+
++c_free_factor_housing
+  print = 10
+  ++units 
+    en = -
+  ++description
+    Emission rate for the housing type.
+  ++formula
+  if(In(free_correction_factor)//0 > 0) {   	    
+      writeLog({en=>"You have entered an additional emission mitigation measure for a poultry housing of " 
+      	            . In(free_correction_factor) 
+                    . "\%!\n", 
+                de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Geflügelstall von "
+	            . In(free_correction_factor) 
+                    . "\% eingegeben!\n", 
+                fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'une "
+		    . "stabulation pour volaille de " . In(free_correction_factor) . "\%.\n" });
+	    return 1 - In(free_correction_factor)/100;
+     
+  } else {
+    return 1;
+  } 

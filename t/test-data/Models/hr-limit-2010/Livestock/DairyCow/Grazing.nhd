@@ -1,0 +1,142 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2012-04-19
+taxonomy = Livestock::DairyCow::Grazing
+
++short
+
+ Computes the annual NH3 emission from grazing dairy cows.
+
++description 
+
+ This process calculates the annual NH3 emission from grazing dairy cows
+ based on the total N excreted on the pastures. The N excreted is calculated 
+ according to the time the animals spend on the pasture. It assumes that the 
+ excretions on the pasture are proportional to the time the animals are grazed.
+
+\subsubsection{References:}
+Bussink DW 1992. Ammonia volatilization from grassland receiving nitrogen
+fertilizer and rotationally grazed by dairy cattle. Fertilizer Research
+33:257-265.
+
+Bussink DW 1994. Relationship between ammonia volatilization and nitrogen
+fertilizer application rate, intake and excretion of herbage nitrogen by
+cattle on grazed swards. Fertilizer Research 38:111-121.
+
+
+Jarvis SC, Hatch DJ, Lockyer DR 1989. Ammonia fluxes from grazed grassland: annual losses from cattle production systems and their relation to nitrogen inputs. Journal of Agricultural Science 113:99-108.
+
+
+Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and dung of grazing cattle: effect of N intake. Atmospheric environment 32:295-300.
+
+
+Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammonia from urine in grass swards. Atmospheric environment 35:867-875.
+
+
+*** external ***
+
++Excretion
++GrazingInput
++Yard
+
+*** technical ***
+
++er_dairycow_grazing
+  value = 0.083
+  ++units  
+    en = -
+  ++description
+    Emission rate for the calculation of the annual NH3 emission during grazing for dairy cows. 5% Ntot (conversion with a portion of Nsol of 60%: EF 8.3% TAN; value based on Table 1 (Mean emission rate of 3.1% N excreted; range: 1.6-5.7% for grazing cows on a sward fertilized with 250 kg N/y) of Bussink (1992) and Table 3 (Mean emission rate of 3.3% N excreted; range: 0.0-7.4% for grazing cows on a sward fertilized with 250 kg N/y) of Bussink (1994)). The corresponding value is rather lower for Switzerland since the level of fertilization is lower resulting in a lower level for crude protein. The N level in the fodder of the sward fertilized with 250 kg N/y (31 g/kg d.m.; Table 4) is comparable to values common for Switzerland (Bussink (1994)). The EF chosen includes a safety margin.
+
+*** output ***
++n_into_grazing
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total N excretion during grazing for dairy cows.
+  ++formula
+    Val(n_excretion, Excretion) 
+      * (Val(grazing_days,GrazingInput) - Val(days_with_grazing_and_yard,Yard)) / 365
+      * Val(grazing_hours,GrazingInput) / 24 +
+    Val(n_excretion, Excretion)
+    * (1 - Val(share_excretion_with_grazing,Yard))
+    * Val(days_with_grazing_and_yard,Yard) / 365
+    * Val(grazing_hours,GrazingInput) / 24
+
++n_sol_into_grazing
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual soluble N (TAN) excretion during grazing for dairy cows.
+  ++formula
+    Val(n_sol_excretion, Excretion) 
+      * (Val(grazing_days,GrazingInput) - Val(days_with_grazing_and_yard,Yard)) / 365
+      * Val(grazing_hours,GrazingInput) /  24 +
+    Val(n_sol_excretion,Excretion)
+    * (1 -  Val(share_excretion_with_grazing,Yard))
+    * Val(days_with_grazing_and_yard,Yard) / 365
+    * Val(grazing_hours,GrazingInput) / 24;
+
++nh3_ngrazing
+  print = 5c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total NH3 emission from all grazing dairy cows.
+  ++formula
+    Out(n_sol_into_grazing) * Tech(er_dairycow_grazing);
+
++grazing_hours
+  print = 15
+  ++units
+     en = hours/day
+     de = Stunden/Tag
+     fr = heure/jour
+  ++description
+    Grazing hours per day.
+  ++formula
+    Val(grazing_hours,GrazingInput);
+
++nh3_ngrazing_animal
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual NH3 emission per dairy cow from grazing.
+  ++formula
+    if(  Val(dairy_cows, Excretion) != 0 ){
+        return Out(nh3_ngrazing) / Val(dairy_cows, Excretion);	
+    } else { return 0;};
+ 
++grazing_days
+  print = 15
+  ++units
+     en = days/year
+     de = Tage/Jahr
+     fr = jour/an
+  ++description
+    Grazing days per year.
+  ++formula
+    Val(grazing_days,GrazingInput);
+
++n_remain_pasture
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N input on pasture.
+  ++formula
+    Out(n_into_grazing) - Out(nh3_ngrazing);

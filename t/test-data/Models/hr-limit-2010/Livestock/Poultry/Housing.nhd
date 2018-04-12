@@ -1,0 +1,138 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-22
+taxonomy = Livestock::Poultry::Housing
+
++short
+
+  Computes the NH3 emission, the N flux into the housing and the N flux out of the house from poultry housing per year.
+
++description 
+
+  This process calculates the NH3 emission in poultry housing
+  depending on the N excretion and the housing systems. The NH3
+  emission is assumed to be proportional to the total N excretion of
+  the animals because the contaminated surfaces will primarily drive
+  emissions, which will remain active even when animals are on the
+  pasture or exercise yard.
+
+  A proportional correction is applied according to the area per
+  animal.
+
+  A correction is applied if the part of the day grazing is above a
+  defined grazing hours per days.
+
+  \subsubsection{Definition of System boundaries for the housing Process:}
+
+  For housing systems with integrated exercise yards, it is difficult to
+  distinguish between emissions from housing, exercise yard and storage. 
+  For these housingtypes the emission may be only validated for the sum of
+  housing, exercise yard and storage emission.
+
+
+*** input ***
+
+*** technical ***
+
+
+*** external ***
+
++Excretion
++Housing::Type
++Housing::AirScrubber
++Outdoor
++Housing::CFreeFactor
+
+
+*** output ***
+
++n_into_housing
+  print = 7d
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux into the housing.
+  ++formula
+    Val(n_excretion, Excretion)
+    - Val(n_excr_free_range, Outdoor);
+
++tan_into_housing
+  print = 7d
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux into the housing.
+  ++formula
+    Val(n_sol_excretion, Excretion)
+    - Val(tan_excr_free_range, Outdoor);
+
++nh3_nhousing
+  print = 5d
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual NH3 emission from poultry housing systems 
+    per animal place.
+  ++formula
+    (Val(n_excretion, Excretion) 
+       * Val(er_housing, Housing::Type)
+       * Val(c_manure_removal_interval, Housing::Type)
+       * Val(c_drinking_system, Housing::Type)
+       * Val(c_air_scrubber, Housing::AirScrubber))
+       * Val(c_free_factor_housing, Housing::CFreeFactor); 
+
++n_housing_filter
+  print = 5b
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N of NH3 emission remaining in air scrubber from poultry housing systems.
+  ++formula
+   Val(n_excretion, Excretion) 
+    * Val(er_housing, Housing::Type)
+    * Val(c_manure_removal_interval, Housing::Type)
+    * Val(c_drinking_system, Housing::Type)
+    * (1 - Val(c_air_scrubber, Housing::AirScrubber)); 
+
+
++n_outhousing
+  print = 7d
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of the housing including N remained in biotrickling filter.
+  ++formula
+    if(Val(air_scrubber, Housing::AirScrubber) eq 'acid'){
+       Out(n_into_housing) - Out(nh3_nhousing) - Out(n_housing_filter)
+    }else{
+       Out(n_into_housing) - Out(nh3_nhousing)
+    }; 
+
++tan_outhousing
+  print = 7d
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of the housing including N remained in biotrickling filter.
+  ++formula
+    if(Val(air_scrubber, Housing::AirScrubber) eq 'acid'){
+       Out(tan_into_housing) - Out(nh3_nhousing) - Out(n_housing_filter)
+    }else{
+       Out(tan_into_housing) - Out(nh3_nhousing)
+    };
+
+
+
