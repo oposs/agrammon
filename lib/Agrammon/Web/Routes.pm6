@@ -26,8 +26,20 @@ sub routes(Agrammon::Web::Service $ws) is export {
             static 'static/script', @path
         }
         
+        get -> 'source', *@path {
+            static 'static/source', @path
+        }
+        
+        get -> 'QxJqPlot/source/resource', *@path {
+            static 'static/resource', @path
+        }
+        
         get -> 'resource', *@path {
             static 'static/resource', @path
+        }
+        
+        get -> 'qooxdoo', *@path {
+            static 'static/qooxdoo', @path
         }
         
         ### cfg
@@ -88,7 +100,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
         post -> LoggedIn $user, 'get_datasets' {
             my $cfg = $ws.cfg;
             my $model-version = $cfg.model-variant; # model'SingleSHL';
-            say "model-version=", $model-version;
             my $data = $ws.get-datasets($user, $model-version);
             content 'application/json', $data;
         }
@@ -135,10 +146,10 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
         # implement/test
         post -> LoggedIn $user, 'load_dataset' {
-                ...
-            request-body -> (:$name!) {
-                my $data = $ws.load-dataset($user, $name);
-                content 'application/json', $data;
+            request-body -> %data {
+                my $dataset = %data<name>;
+                my @data = $ws.load-dataset($user, $dataset);
+                content 'application/json', @data;
             }
         }
         
@@ -224,29 +235,30 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
         # test/implement
         post -> LoggedIn $user, 'get_input_variables' {
-                ...
-            request-body -> (:$dataset!) {
-                my $data = $ws.get-input-variables($user, $dataset);
-                content 'application/json', $data;
+            #            request-body -> (:$dataset!) {
+            request-body -> %dataset {
+#                dd %dataset;
+                my %data = $ws.get-input-variables;
+                %data<dataset> = %dataset<name>;
+#                dd %data;
+                content 'application/json', %data;
             }
         }
 
         # test/implement
         post -> LoggedIn $user, 'get_output_variables' {
-                ...
-            request-body -> (:$dataset!) {
-                my $data = $ws.get-output-variables($user, $dataset);
-                content 'application/json', $data;
+            request-body -> %data {
+                my @data = $ws.get-output-variables($user, %data<dataset>);
+                content 'application/json', %( data: @data );
             }
         }
 
         ### data
         # test/implement
         post -> LoggedIn $user, 'store_data' {
-                ...
-            request-body -> (:$dataset!, :$data!) {
-                my $ret = $ws.store-data($user, $dataset, $data);
-                content 'application/json', $ret;
+            request-body -> %data {
+                my $ret = $ws.store-data($user, %data);
+                content 'application/json', %(ret => $ret);
             }
         }
 
