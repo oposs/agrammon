@@ -55,6 +55,14 @@ grammar Agrammon::ModuleParser does Agrammon::CommonParser {
         ]*
     }
 
+    token section:sym<results> {
+        <.section-heading('results')>
+        [
+        | <.blank-line>
+        | <results=.option-section>
+        ]*
+    }
+
     token section:sym<tests> {
         <.section-heading('tests')>
         [

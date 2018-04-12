@@ -1,15 +1,18 @@
 use v6;
 use Agrammon::Config;
+use Agrammon::DataSource::DB;
 use Agrammon::DB::Dataset;
 use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
 use Agrammon::DB::Tags;
 use Agrammon::Model;
+use Agrammon::OutputFormatter::GUI;
 use Agrammon::Web::SessionUser;
 
 class Agrammon::Web::Service {
     has Agrammon::Config $.cfg;
     has Agrammon::Model  $.model;
+    has %.technical-parameters;
 
     # return config hash as expected by Web GUI
     method get-cfg() {
@@ -35,7 +38,9 @@ class Agrammon::Web::Service {
     }
 
     method load-dataset(Agrammon::Web::SessionUser $user, Str $name) {
-        return Agrammon::DB::Dataset.new(:$user, :$name).load.data;
+        warn "***** load-dataset($name) not yet completely implemented (branching)";
+        my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
+        return @data;
     }
 
     method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
@@ -46,12 +51,28 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Tag.new(:$user, :$name).create;
     }
 
-    method get-input-variables(Agrammon::DB::Dataset $dataset) {
-        return Agrammon::Model
+    method get-input-variables {
+        return $!model.get-input-variables;
     }
 
-    method get-output-variables(Agrammon::DB::Dataset $dataset) {
-        ...
+    method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
+
+        my $input = Agrammon::DataSource::DB.new.read($user.username, $dataset-name);
+
+        my $outputs;
+        timed "$dataset-name", {
+            $outputs = $!model.run(
+                input     => $input,
+                technical => %!technical-parameters,
+            );
+        }
+
+        use Agrammon::OutputFormatter::Text;
+        my $result = output-as-text($!model, $outputs, 'de', 'LivestockTotal');
+        say $result;
+        my %gui-output = output-for-gui($!model, $outputs);
+        warn '**** get-output-variables() not yet completely implemented';
+        return %gui-output;
     }
 
     method create-account(Agrammon::Web::SessionUser $user, %user-data) {
@@ -65,4 +86,27 @@ class Agrammon::Web::Service {
         return $user;
     }
 
+    method store-data(Agrammon::Web::SessionUser $user, %data) {
+        my $dataset = %data<dataset_name>;
+        my $var     = %data<data_var>;
+        my $value   = %data<data_val>;
+
+        my $branches = %data<branches>;
+        my $options  = %data<options>;
+
+        my $ds = Agrammon::DB::Dataset.new(:$user, name => $dataset);
+
+        my $ret = $ds.store-input($var, $value);
+
+        warn "**** store-data(): not yet completely implemented (branch data)";
+        return 1;
+    }
+
+    sub timed(Str $title, &proc) {
+        my $start = now;
+        my \ret   = proc;
+        my $end   = now;
+        note sprintf "$title ran %.3f seconds", $end-$start;
+        return ret;
+    }
 }

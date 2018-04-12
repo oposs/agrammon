@@ -1,5 +1,6 @@
 #!/usr/bin/env perl6
 
+use lib $*PROGRAM.parent.parent.child("lib");
 use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
 use Cro::HTTP::Session::InMemory;
@@ -52,7 +53,8 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
                               
     my $ws = Agrammon::Web::Service.new(
         cfg   => $cfg,
-        model => $model
+        model => $model,
+        technical-parameters => %technical-parameters,
     );
 
     # setup and start web server
