@@ -1,4 +1,5 @@
 use v6;
+use Agrammon::Formula::Compiler;
 use Agrammon::Inputs;
 use Agrammon::ModuleBuilder;
 use Agrammon::ModuleParser;
@@ -170,6 +171,7 @@ class Agrammon::Model {
     method load($module-name --> Agrammon::Model) {
         $!entry-point = self!load-internal($module-name);
         self!sanity-check();
+        self!compile-formulas();
         return self;
     }
 
@@ -256,6 +258,19 @@ class Agrammon::Model {
 
                 %known-outputs{$tax}{$name} = True;
             }
+        }
+    }
+
+    method !compile-formulas() {
+        my @output-order;
+        my @formula-sources;
+        for @!evaluation-order.map(*.output).flat -> $output {
+            push @output-order, $output;
+            push @formula-sources, compile-formula-to-source($output.formula);
+        }
+        use MONKEY-SEE-NO-EVAL;
+        for flat @output-order Z EVAL(@formula-sources.join(',')) -> $output, $compiled {
+            $output.compiled-formula = $compiled;
         }
     }
 

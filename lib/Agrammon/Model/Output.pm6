@@ -7,5 +7,5 @@ class Agrammon::Model::Output {
     has Str $.print;        # XXX Check what type this should really be
     has Str %.units{Str};
     has Agrammon::Formula $.formula;
-    has &.compiled-formula;
+    has &.compiled-formula is rw;
 }
