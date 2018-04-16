@@ -25,8 +25,8 @@ addons:
     - postgresql-client-10
   
 before_script:
-  - psql -c 'create database agrammon_test;' -U postgres
-  - psql -U postgres -c 'create extension crypto'
+  - psql -c 'create database agrammon_test' -U postgres --port $PGPORT
+  - psql -U postgres -c 'create extension crypto' --port $PGPORT
 
 script:
     PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/
