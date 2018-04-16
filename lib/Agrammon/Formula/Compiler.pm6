@@ -7,6 +7,10 @@ sub compile-formula(Agrammon::Formula $formula --> Code) is export {
     return EVAL compile($formula);
 }
 
+sub compile-formula-to-source(Agrammon::Formula $formula --> Str) is export {
+    return compile($formula);
+}
+
 multi compile(Agrammon::Formula::Routine $r) {
     'sub ($env) { ' ~ compile($r.statements) ~ ' }';
 }
