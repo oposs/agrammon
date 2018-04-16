@@ -10,23 +10,25 @@ env:
   global:
     - TMPDIR=/tmp
     - RAKUDO_PKG_URL=https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
-    - PGPORT=5433
 
 # cache precompiled modules
 cache:
   directories:
   - $HOME/.perl6
 
-services:
-  - postgresql
+#services:
+#  - postgresql
 
 addons:
   postgresql: "10"
   apt:
     packages:
     - postgresql-10
-    - postgresql-contrib
-
+    - postgresql-client-10
+env:
+  global:
+  - PGPORT=5433
+  
 before_script:
   - psql -c 'create database agrammon_test;' -U postgres
   - psql -U postgres -c 'create extension crypto'
