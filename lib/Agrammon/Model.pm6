@@ -168,10 +168,10 @@ class Agrammon::Model {
         }
     }
 
-    method load($module-name --> Agrammon::Model) {
+    method load($module-name, :$compile-formulas = True --> Agrammon::Model) {
         $!entry-point = self!load-internal($module-name);
         self!sanity-check();
-        self!compile-formulas();
+        self!compile-formulas() if $compile-formulas;
         return self;
     }
 
