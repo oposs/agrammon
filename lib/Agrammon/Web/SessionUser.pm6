@@ -14,9 +14,10 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
             PERS
         }
 
-        #        if $!logged-in
-        self.set-username($username);
-        self.load if $!logged-in;
+        if $!logged-in {
+            self.set-username($username);
+            self.load;
+        }
         return self;
     }
 
