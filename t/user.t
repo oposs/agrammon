@@ -92,10 +92,10 @@ done-testing;
 sub prepare-test-db {
     my $db = $*AGRAMMON-DB-HANDLE;
 
-    ok my $user = $db.query(q:to/STATEMENT/).value, 'Get current_user';
-      SELECT CURRENT_USER
+    ok my $userDb = $db.query(q:to/STATEMENT/).value, 'Get current_user';
+      SELECT CURRENT_USER || '@' || current_database();
     STATEMENT
-    note "current_user=$user";
+    note "current_user/db=$userDb";
 
     ok my $extension = $db.query(q:to/STATEMENT/).hash, 'Get pgcrypto';
       SELECT * from pg_available_extensions where name = 'pgcrypto';
