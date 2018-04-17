@@ -95,8 +95,12 @@ sub prepare-test-db {
     ok my $user = $db.query(q:to/STATEMENT/).value;
       SELECT CURRENT_USER
     STATEMENT
-
     note "current_user=$user";
+
+    ok my $extension = $db.query(q:to/STATEMENT/).arrays;
+      SELECT * from pg_available_extensions where name = 'pgcrypto';
+    STATEMENT
+    diag $extension;
 
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS role (
