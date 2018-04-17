@@ -5,11 +5,13 @@
 ###
 ### Update RAKUDO_PKG_URL to the latest and greatest version available.
 ###
-
+### https://nxadm.github.io/rakudo-pkg/latest-release.html?os=ubuntu&version=14.04&arch=amd64
+### https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
 env:
   global:
     - TMPDIR=/tmp
     - RAKUDO_PKG_URL=https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
+    - PGPORT=5433
 
 # cache precompiled modules
 cache:
@@ -20,10 +22,15 @@ services:
   - postgresql
 
 addons:
-  postgresql: "9.6"
-
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+  
 before_script:
-  - psql -c 'create database agrammon_test;' -U postgres
+  - psql --command='create database agrammon_test'
+  - psql --dbname=agrammon_test --command='create extension pgcrypto'
 
 script:
     PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/

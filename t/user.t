@@ -1,10 +1,11 @@
 use v6;
 use Agrammon::Config;
 use Agrammon::DB::User;
+use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
-plan 6;
+plan 7;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -19,12 +20,11 @@ ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my $conninfo;
 if %*ENV<TRAVIS> {
-    my $db-host     = 'localhost';
-    my $db-user     = 'postgres';
-    my $db-password = '';
+    # don't use localhost with Postgresql 10 on Travis
+    my $db-user     = 'travis';
     my $db-database = 'agrammon_test';
     
-    $conninfo = "host=$db-host user=$db-user password=$db-password dbname=$db-database";
+    $conninfo = "user=$db-user dbname=$db-database";
 }
 else {
     $conninfo = $cfg.db-conninfo;
@@ -49,6 +49,7 @@ subtest 'Create user' => {
 
 transactionally {
     my $username = 'agtest';
+    my $password = 'XP';
     my $uid;
 
     ok prepare-test-db, 'Test database prepared';
@@ -59,7 +60,7 @@ transactionally {
             :firstname<XF>,
             :lastname<XL>,
             :organisation<XO>,
-            :password<XP>,
+            :$password,
         ), 'Create new user';
         ok $uid = $user.create-account('admin'), "Create account, uid=$uid";
         is $user.username, $username, "Username is $username";
@@ -71,10 +72,17 @@ transactionally {
     subtest 'load()' => {
         ok my $new-user = Agrammon::DB::User.new, "Create Agrammon::DB::User object without username";
         throws-like {$new-user.load}, X::Agrammon::DB::User::NoUsername, "No username";
-        ok $new-user = Agrammon::DB::User.new(:$username), "Create another Agrammon::DB::User object with username";
+        ok $new-user = Agrammon::DB::User.new(:$username), "Create another Agrammon::DB::User with username $username";
         ok $new-user.load,                "Load new user";
         is $new-user.username, $username, "Username is $username";
     }
+
+    subtest "auth()" => {
+        ok my $session-user = Agrammon::Web::SessionUser.new(:$username), "Create Agrammon::Web::SessionUser with username $username";
+        nok $session-user.auth($username, 'WrongPW').logged-in, "$username was not authenticated with $password";
+        ok $session-user.auth($username, $password).logged-in, "$username was authenticated with $password";
+    }
+
 }
 
 done-testing;
