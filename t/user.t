@@ -5,7 +5,7 @@ use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
-plan 7;
+plan 9;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -22,7 +22,6 @@ my $conninfo;
 if %*ENV<TRAVIS> {
     my $db-host     = 'localhost';
     my $db-user     = 'travis';
-    my $db-password = '';
     my $db-database = 'agrammon_test';
     
     $conninfo = "host=$db-host user=$db-user dbname=$db-database";
