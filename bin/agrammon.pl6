@@ -8,6 +8,7 @@ use DB::Pg;
 use Agrammon::Config;
 use Agrammon::DataSource::CSV;
 use Agrammon::Model;
+use Agrammon::ModelCache;
 use Agrammon::Web::Routes;
 use Agrammon::Web::SessionUser;
 use Agrammon::TechnicalParser;
@@ -114,7 +115,7 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
     }
 
     my $model = timed "Load $module", {
-        Agrammon::Model.new(path => $module-path).load($module);
+        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
     }
 
     my $filename = $input-path;
@@ -155,8 +156,7 @@ sub dump (IO::Path $path) {
     my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
-    my $model = Agrammon::Model.new(path => $module-path);
-    $model.load($module);
+    my $model = load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module);
     return $model.dump;
 }
 
