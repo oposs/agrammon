@@ -25,7 +25,7 @@ addons:
   
 before_script:
   - psql -c 'create database agrammon_test'
-  - psql -c 'create extension pgcrypto'
+  - psql -c 'create extension pgcrypto agrammon_test'
 
 script:
     PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/
