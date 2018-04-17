@@ -102,5 +102,48 @@ class Agrammon::DB::User does Agrammon::DB {
         }
     }
 
+    method auth($username, $password) {
+        say "username=$username, password=$password";
+        self.with-db: -> $db {
+            my %p = $db.query(q:to/PERS/, $username).hash;
+                SELECT pers_password AS password
+                  FROM pers
+                 WHERE pers_email = $1
+            PERS
+
+            if  $password eq %p<password> {
+                $!username = $username;
+                self.load;
+            }
+            else {
+                $!username = Nil;
+            }
+        }
+        say "username=$username";
+        return self.logged-in;
+    }
+
+    method change-password($old, $new) {
+        self.with-db: -> $db {
+            my %p = $db.query(q:to/PERS/, $!username).hash;
+                SELECT pers_password AS password
+                  FROM pers
+                 WHERE pers_email = $1
+            PERS
+            say "$!username: pw=%p<password>, old=$old, new=$new";
+                
+            if $old eq %p<password> {
+                my %p = $db.query(q:to/PASSWORD/, $!username, $new);
+                    UPDATE pers
+                       SET pers_password = $2
+                     WHERE pers_email    = $1
+                PASSWORD
+            }
+            else {
+#                $!username = Nil;
+            }
+        }
+        return self;
+    }
 
 }
