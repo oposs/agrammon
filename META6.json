@@ -6,7 +6,9 @@
         "Test::NoTabs",
         "YAMLish",
         "DB::Pg",
-        "Cro::HTTP"
+        "Cro::HTTP",
+        "Digest::SHA1::Native",
+        "Shell::Command"
     ],
     "provides": {
         "Agrammon::Formula": "lib/Agrammon/Formula.pm6",
@@ -22,6 +24,7 @@
         "Agrammon::OutputFormatter::CSV": "lib/Agrammon/OutputFormatter/CSV.pm6",
         "Agrammon::Web::Routes": "lib/Agrammon/Web/Routes.pm6",
         "Agrammon::DB::Datasets": "lib/Agrammon/DB/Datasets.pm6",
+        "Agrammon::ModelCache": "lib/Agrammon/ModelCache.pm6",
         "Agrammon::Model::Technical": "lib/Agrammon/Model/Technical.pm6",
         "Agrammon::Formula::Compiler": "lib/Agrammon/Formula/Compiler.pm6",
         "Agrammon::Config": "lib/Agrammon/Config.pm6",
