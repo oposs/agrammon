@@ -33,8 +33,7 @@ before_script:
   - psql --dbname=agrammon_test --command='create extension pgcrypto'
 
 script:
-#    PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/
-    PERL6LIB=lib prove -v -r --exec=perl6 t/user.t
+    PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/
 
 # https://docs.travis-ci.com/user/installing-dependencies/#Installing-Packages-without-an-APT-Repository
 before_install:

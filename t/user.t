@@ -5,7 +5,7 @@ use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
-plan 9;
+plan 7;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -20,7 +20,7 @@ ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my $conninfo;
 if %*ENV<TRAVIS> {
-    my $db-host     = 'localhost';
+    # don't use localhost with Postgresql 10 on Travis
     my $db-user     = 'travis';
     my $db-database = 'agrammon_test';
     
