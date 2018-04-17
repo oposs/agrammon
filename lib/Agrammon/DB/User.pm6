@@ -45,7 +45,7 @@ class Agrammon::DB::User does Agrammon::DB {
             my $u = $db.query(q:to/USER/, $!username, $!firstname, $!lastname, $!password, $!organisation, %r<id> );
                 INSERT INTO pers (pers_email, pers_first, pers_last,
                                   pers_password, pers_org, pers_role)
-                VALUES ($1, $2, $3, crypt($4, gen_salt('md5')), $5, $6)
+                VALUES ($1, $2, $3, crypt($4, gen_salt('bf')), $5, $6)
                 RETURNING pers_id
             USER
 
@@ -76,7 +76,6 @@ class Agrammon::DB::User does Agrammon::DB {
             $!username     = $u<username>;
             $!firstname    = $u<firstname>;
             $!lastname     = $u<lastname>;
-#            $!password     = $u<password>;
             $!organisation = $u<organisation>;
             $!last-login   = $u<last-login>;
             $!created      = $u<created>;
