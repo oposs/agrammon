@@ -24,8 +24,8 @@ addons:
   postgresql: "9.6"
   
 before_script:
-  - psql -c 'create database agrammon_test'
-  - psql -c 'create extension pgcrypto' agrammon_test
+  - psql --command='create database agrammon_test'
+  - psql --dbname=agrammon_test --command='create extension pgcrypto'
 
 script:
     PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/

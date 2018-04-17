@@ -21,7 +21,7 @@ ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 my $conninfo;
 if %*ENV<TRAVIS> {
     my $db-host     = 'localhost';
-    my $db-user     = 'postgres';
+    my $db-user     = 'travis';
     my $db-password = '';
     my $db-database = 'agrammon_test';
     
