@@ -30,6 +30,7 @@ if %*ENV<TRAVIS> {
 else {
     $conninfo = $cfg.db-conninfo;
 }
+note "conninfo=$conninfo";
 
 ok my $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 
@@ -90,6 +91,12 @@ done-testing;
 
 sub prepare-test-db {
     my $db = $*AGRAMMON-DB-HANDLE;
+
+    ok my $user = $db.query(q:to/STATEMENT/).value;
+      SELECT CURRENT_USER
+    STATEMENT
+
+    note "current_user=$user";
 
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS role (
