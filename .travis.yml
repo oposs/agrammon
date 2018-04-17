@@ -16,6 +16,9 @@ cache:
   directories:
   - $HOME/.perl6
 
+services:
+  - postgresql
+
 addons:
   postgresql: "10"
   
