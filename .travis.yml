@@ -21,7 +21,7 @@ services:
   - postgresql
 
 addons:
-  postgresql: "9.6"
+  postgresql: "10"
   
 before_script:
   - psql --command='create database agrammon_test'
