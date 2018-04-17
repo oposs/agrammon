@@ -20,8 +20,8 @@ addons:
   postgresql: "10"
   
 before_script:
-  - psql -c 'create database agrammon_test'
-  - psql -c 'create extension pgcrypto'
+  - sudo -u postgres psql -c 'create database agrammon_test'
+  - sudo -u postgres psql -c 'create extension pgcrypto'
 
 script:
     PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/
