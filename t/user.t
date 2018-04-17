@@ -25,7 +25,7 @@ if %*ENV<TRAVIS> {
     my $db-password = '';
     my $db-database = 'agrammon_test';
     
-    $conninfo = "host=$db-host user=$db-user password=$db-password dbname=$db-database";
+    $conninfo = "host=$db-host user=$db-user dbname=$db-database";
 }
 else {
     $conninfo = $cfg.db-conninfo;
