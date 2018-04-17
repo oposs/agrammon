@@ -70,9 +70,8 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
         # implement/test
         post -> LoggedIn $user, 'change_password' {
-            ...
             request-body -> (:$old!, :$new!) {
-                my $data = $ws.change-password($user, $old, $new);
+                my $data = $user.change-password($old, $new);
                 content 'application/json', $data;
             }
         }
