@@ -3,7 +3,7 @@ use Agrammon::DataSource::DB;
 use DB::Pg;
 use Test;
 
-plan 4;
+plan 6;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -44,7 +44,7 @@ if $pg-file.IO.e {
         $ag-user = $/[0];
     }
     if $pg-data ~~ /agdataset '=' (.+?) ';'/ {
-        $ag-dataset = $0;
+        $ag-dataset = "$0"; # force to string
     }
 #    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
     diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=XXX, dbdatabase=$db-database";
