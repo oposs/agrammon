@@ -44,7 +44,7 @@ if $pg-file.IO.e {
         $ag-user = $/[0];
     }
     if $pg-data ~~ /agdataset '=' (.+?) ';'/ {
-        $ag-dataset = "$0";
+        $ag-dataset = $0;
     }
 #    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
     diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=XXX, dbdatabase=$db-database";
@@ -73,8 +73,7 @@ transactionally {
     my $ds = Agrammon::DataSource::DB.new;
     isa-ok $ds, Agrammon::DataSource::DB, 'Is a DataSource::DB';
 
-#    my @data = $ds.read($ag-user, $ag-dataset);
-    #    is @data.elems, $rowsExpected, "Found $rowsExpected rows in dataset $ag-user:$ag-dataset";
+    ### TODO: check actual data
     my $dataset = $ds.read($ag-user, $ag-dataset);
     isa-ok $dataset, Agrammon::Inputs, 'Correct type';
     is $dataset.simulation-name, 'DB', 'Correct simulation name';

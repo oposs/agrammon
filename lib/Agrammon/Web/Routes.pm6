@@ -236,10 +236,8 @@ sub routes(Agrammon::Web::Service $ws) is export {
         post -> LoggedIn $user, 'get_input_variables' {
             #            request-body -> (:$dataset!) {
             request-body -> %dataset {
-#                dd %dataset;
                 my %data = $ws.get-input-variables;
                 %data<dataset> = %dataset<name>;
-#                dd %data;
                 content 'application/json', %data;
             }
         }

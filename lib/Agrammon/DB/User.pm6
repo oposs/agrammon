@@ -131,16 +131,14 @@ class Agrammon::DB::User does Agrammon::DB {
                  WHERE pers_email = $1
             PERS
             say "$!username: pw=%p<password>, old=$old, new=$new";
-                
+
+            ### TODO: adapt to encrypted passwords
             if $old eq %p<password> {
                 my %p = $db.query(q:to/PASSWORD/, $!username, $new);
                     UPDATE pers
                        SET pers_password = $2
                      WHERE pers_email    = $1
                 PASSWORD
-            }
-            else {
-#                $!username = Nil;
             }
         }
         return self;

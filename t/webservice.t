@@ -58,9 +58,7 @@ subtest "get-datasets()" => {
 subtest "get-input-variables()" => {
 
     my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
-#    my $top = 'PlantProduction';
     my $top = 'Total';
-#    my $top = 'Livestock';
     my $model = Agrammon::Model.new(path => $path);
     lives-ok { $model.load($top) }, "Loaded $top";
 
@@ -76,7 +74,6 @@ subtest "get-input-variables()" => {
                     is-deeply $input.keys.sort, qw|branch defaults gui help labels models options optionsLang order type units validator variable|,
                         "$var has expected keys";
                     if $var ~~ /\:\:dairy_cows/ {
-#                        dd $input;
                         subtest "$var" => {
                             is $input<branch>, 'true', 'branch is true';
                             is-deeply $input<defaults>, %( calc => Any, gui => Any);
@@ -90,7 +87,6 @@ subtest "get-input-variables()" => {
 
     subtest "graphs and reports" => {
         my @graphs = %input-hash<graphs>;
-#        dd @graphs;
         my %graph = @graphs[0];
         is-deeply %graph.keys.sort, qw|_order data name selector type|, "First graph has expected keys";
         is %graph<type>, 'bar', "Graph has correct type";

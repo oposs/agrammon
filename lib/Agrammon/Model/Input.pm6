@@ -7,6 +7,7 @@ class Agrammon::Model::Input {
     has     $.default-gui;
     has Str $.type;         # XXX Should be something richer than Str
     has Str $.validator;    # XXX Should be something richer than Str
+    ### TODO: those are multi-level hashes; not sure how to do the typing right
     #    has Str %.labels{Str};
     #    has Str %.units{Str};
     #    has Str %.help{Str};

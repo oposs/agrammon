@@ -16,12 +16,6 @@ class Agrammon::DB::Input does Agrammon::DB {
                                                        AND $instance_test
             INPUT
             
-#            my $results = $db.query(q:to/DATASET/, $!name);
-#                INSERT INTO tag (tag_name)
-#                VALUES ($1)
-#                RETURNING tag_id
-#            DATASET
-
             $!id = $results.value;
         }
         return self;
