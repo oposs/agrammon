@@ -1,7 +1,6 @@
 use v6;
 use Agrammon::Config;
 use Agrammon::Model;
-use Agrammon::ModelCache;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 use DB::Pg;
@@ -60,8 +59,8 @@ subtest "get-input-variables()" => {
 
     my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
     my $top = 'End';
-    my $model = load-model-using-cache($*HOME.add('.agrammon'), $path, $top);
-
+    ok my $model = Agrammon::Model.new(path => $path);
+    lives-ok { $model.load($top) }, "Load module from $top";
 
     my %input-hash = $model.get-input-variables;
     %input-hash<dataset> = 'TEST';

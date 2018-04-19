@@ -244,9 +244,8 @@ subtest 'load()' => {
             End
         |;
         given 'End' -> $module-name {
-            my $model;
-            lives-ok { $model = load-model-using-cache($*HOME.add('.agrammon'), $path, $module-name) }, "Load model from $module-name";
-
+            ok my $model = Agrammon::Model.new(path => $path);
+            $model.load($module-name);
             is $model.evaluation-order.elems, @expected.elems,
                 "Loaded @expected.elems() model file";
             my @tax = $model.evaluation-order>>.taxonomy;

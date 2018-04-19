@@ -1,14 +1,13 @@
 use Test;
 use Agrammon::DataSource::CSV;
-use Agrammon::ModelCache;
+use Agrammon::Model;
 use Agrammon::Model::Parameters;
 use Agrammon::OutputFormatter::CSV;
 use Agrammon::TechnicalParser;
 
 my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
-my $top = 'Total';
-my $model;
-lives-ok { $model = load-model-using-cache($*HOME.add('.agrammon'), $path, $top)}, "Load model from $top";
+my $model = Agrammon::Model.new(path => $path);
+lives-ok { $model.load('End') }, 'Could load module for testing';
 
 my $fh = open $*PROGRAM.parent.add('test-data/complex-model-input.csv');
 my @datasets = Agrammon::DataSource::CSV.new().read($fh);
