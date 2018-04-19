@@ -17,6 +17,7 @@ env:
 cache:
   directories:
   - $HOME/.perl6
+  - $HOME/.agrammon
 
 services:
   - postgresql
