@@ -7,13 +7,20 @@ use Agrammon::DB::User;
 use Agrammon::DB::Tags;
 use Agrammon::Model;
 use Agrammon::OutputFormatter::GUI;
+use Agrammon::Performance;
 use Agrammon::Web::SessionUser;
+use Agrammon::UI::Web;
 
 class Agrammon::Web::Service {
     has Agrammon::Config $.cfg;
     has Agrammon::Model  $.model;
     has %.technical-parameters;
+    has Agrammon::UI::Web $.ui-web;
 
+    method TWEAK {
+        $!ui-web = Agrammon::UI::Web.new(:$!model);
+    }
+    
     # return config hash as expected by Web GUI
     method get-cfg() {
         my %gui   = $!cfg.gui;
@@ -52,7 +59,7 @@ class Agrammon::Web::Service {
     }
 
     method get-input-variables {
-        return $!model.get-input-variables;
+        return $!ui-web.get-input-variables;
     }
 
     method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
@@ -62,7 +69,7 @@ class Agrammon::Web::Service {
         my $outputs;
         timed "$dataset-name", {
             $outputs = $!model.run(
-                input     => $input,
+                :$input,
                 technical => %!technical-parameters,
             );
         }
@@ -97,15 +104,8 @@ class Agrammon::Web::Service {
 
         my $ret = $ds.store-input($var, $value);
 
-        warn "**** store-data(): not yet completely implemented (branch data)";
+        warn "**** store-data(var=$var, value=$value): not yet completely implemented (branch data)";
         return 1;
     }
 
-    sub timed(Str $title, &proc) {
-        my $start = now;
-        my \ret   = proc;
-        my $end   = now;
-        note sprintf "$title ran %.3f seconds", $end-$start;
-        return ret;
-    }
 }

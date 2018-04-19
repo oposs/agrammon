@@ -15,7 +15,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     has $.data;
     has Agrammon::DB::Tag  @.tags;
     has Agrammon::DB::User $.user;
-    
+
     method create {
         self.with-db: -> $db {
             my $ds = $db.query(q:to/DATASET/, $!name, $!user.id, $!version, $!comment, $!model, $!read-only);
@@ -49,9 +49,9 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         return self;
     }
 
-    method _store-variable($var, $value) {
+    method !store-variable($var, $value) {
 
-        return unless $var and $value;
+        return unless $var and $value.defined;
         my $username = $!user.username;
         
         my $ret;
@@ -78,9 +78,9 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         return $ret;
     }
 
-    method _store-instance-variable($var, $instance, $value) {
+    method !store-instance-variable($var, $instance, $value) {
 
-        return unless $var and $value and $instance;
+        return unless $var and $value.defined and $instance;
         my $username = $!user.username;
         
         my $ret;
@@ -104,8 +104,8 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $instance = $0;
         }
 
-        my $ret = $instance ?? self._store-instance-variable($var, $instance, $value)
-                            !! self._store-variable($var, $value);
+        my $ret = $instance ?? self!store-instance-variable($var, $instance, $value)
+                            !! self!store-variable($var, $value);
         return $ret;
     }
     

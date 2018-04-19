@@ -35,16 +35,17 @@ class Agrammon::Model::Input {
         my $validator = $.validator;
         my %validator;
         if $validator {
-            $validator = $validator ~ '';
+            # TODO: do we have to handle $validator being undefined?
+            $validator = $validator;
             $validator ~~ /(.+)\((.+)\)/;
-            my $name = $0 ~ '';
+            my $name = ~$0;
             my $args = $1;
             my @args = split(',', $args);
-            %validator = %( name => $name, args => @args);
+            %validator = :$name, :@args;
         }
         my %units = %!units;
-        %units<de> = %!units<en> unless  %units<de>;
-        %units<fr> = %!units<en> unless  %units<fr>;
+        %units<de> ||= %!units<en>;
+        %units<fr> ||= %!units<en>;
 
         my @options;
         my @optionsLang;
@@ -52,11 +53,10 @@ class Agrammon::Model::Input {
 
         if %enums {
 
-            for %enums.keys -> $name {
+            for %enums.kv -> $name, $optLang {
                 my $label   = $name;
                 $label      ~~ s:g/_/ /;
                 my @opt     = [ $label, '', $name];
-                my $optLang = %enums{$name};
                 my @optLang = split("\n", $optLang);
                 my %optLang;
                 for @optLang -> $ol {

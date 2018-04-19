@@ -197,7 +197,7 @@ class Agrammon::Model {
         $gui-root-module = $module if $module.gui;
         $module.set-instance-root($instance-root) if $instance-root;
         $module.set-gui-root($gui-root-module) if $gui-root-module;
-        $module.set-root($instance-root) if $instance-root;
+        $module.set-instance-root($instance-root) if $instance-root;
         my $parent = $module.parent;
         my @externals = $module.external;
         my @dependencies;
@@ -342,102 +342,84 @@ class Agrammon::Model {
         return %!output-labels-cache{$module}{$output} // ''
     }
 
-    method get-inputs {
-        my @inputs;
-        for self.evaluation-order -> $module {
-            my @module-inputs;
-            for $module.input -> $input {
+    # method get-inputs {
+    #     my @inputs;
+    #     for self.evaluation-order -> $module {
+    #         my @module-inputs;
+    #         for $module.input -> $input {
                 
-                my %input-hash        = $input.as-hash;
-                my $gui;
-                if ($module.gui) {
-                    $gui = $module.gui;
-                }
-                else {
-                    $gui = $module.gui-root-module.gui;
-                }
-                my @gui = split(',', $gui);
-                if $module.instance-root {
-                    my $i = 0;
-                    for @gui -> $gui {
-                        @gui[$i] ~= '[]';
-                        $i++;
-                    }
-                }
-                %input-hash<gui>      = %( de => @gui[1], en => @gui[0], fr => @gui[2]);
-                %input-hash<branch>   = $module.is-multi ?? 'true' !! 'false';
-                my $tax               = $module.taxonomy;
+    #             my %input-hash = $input.as-hash;
+    #             my $gui= $module.gui || $module.gui-root-module.gui;
+    #             my @gui = split(',', $gui);
+    #             if $module.instance-root {
+    #                 # append [] to each element in the array
+    #                 @gui >>~=>> '[]';
+    #             }
+    #             %input-hash<gui>      = %( <en de fr> Z=> @gui );
+    #             %input-hash<branch>   = $module.is-multi ?? 'true' !! 'false';
+    #             my $tax               = $module.taxonomy;
 
-                my $root = $module.instance-root;
-                if $root {
-                    $tax ~~ s/$root/$root\[\]/;
-                }
-                %input-hash<variable> = $tax ~ '::' ~ %input-hash<variable>;
-                push @inputs, %input-hash;
-            }
-        }
-        return @inputs;
-    }
+    #             my $root = $module.instance-root;
+    #             if $root {
+    #                 $tax ~~ s/$root/$root\[\]/;
+    #             }
+    #             %input-hash<variable> = $tax ~ '::' ~ %input-hash<variable>;
+    #             push @inputs, %input-hash;
+    #         }
+    #     }
+    #     return @inputs;
+    # }
 
-    method get-results {
-        my (@reports, @graphs);
+    # method get-results {
+    #     my (@reports, @graphs);
 
-        for self.evaluation-order -> $module {
-            my @module-inputs;
-            for $module.results -> $result {
-                my $type = $result.type;
-                my %report = %(
-                    name      => $result.name,
-                    type     => $type,
-                    _order   => $result._order,
-                    selector => $result.selector,
-                );
+    #     for self.evaluation-order -> $module {
+    #         my @module-inputs;
+    #         for $module.results -> $result {
+    #             my $type = $result.type;
+    #             my %report = %(
+    #                 name      => $result.name,
+    #                 type     => $type,
+    #                 _order   => $result._order,
+    #                 selector => $result.selector,
+    #             );
 
-                my %data = $result.data;
-                my @data;
-                for %data.keys -> $key { 
-                    my %opts = %(
-                        label      => $key,
-                        subReports => split('_', $key),
-                    );
+    #             my %data = $result.data;
+    #             my @data;
+    #             for %data.kv -> $key, $langLabels { 
+    #                 my %opts = %(
+    #                     label      => $key,
+    #                     subReports => split('_', $key),
+    #                 );
 
-                    my $langLabels = %data{$key};
-                    my @langLabel  = split("\n", $langLabels);
-                    for @langLabel -> $ll {
-                        my ($lang, $label) = split(/ \s* '=' \s* /, $ll);
-                        %opts{$lang} = $label;
-                    }
-                    push @data, %opts;
-                }
+    #                 my @langLabel  = split("\n", $langLabels);
+    #                 for @langLabel -> $ll {
+    #                     my ($lang, $label) = split(/ \s* '=' \s* /, $ll);
+    #                     %opts{$lang} = $label;
+    #                 }
+    #                 push @data, %opts;
+    #             }
 
-                %report<data> = @data;
+    #             %report<data> = @data;
 
-                if $type eq 'report' {
-                    push @reports, %report;
-                }
-                elsif $type ~~ /bar|pie/ {
-                    push @graphs, %report;
-                }
-                else {
-                    die "Unknown report type $type";
-                }
-            }
-        }
+    #             given $type {
+    #                 when 'report'      { push @reports, %report }
+    #                 when 'bar' | 'pie' { push @graphs,  %report }
+    #                 default            { die "Unknown report type $type" }
+    #             }
+    #         }
+    #     }
 
-        return %(
-            reports => @reports,
-            graphs  => @graphs,
-        );
-    }
+    #     return %(
+    #         reports => @reports,
+    #         graphs  => @graphs,
+    #     );
+    # }
     
-    method get-input-variables {
-        my %results = self.get-results;
+    # method get-input-variables {
+    #     my %results = self.get-results;
         
-        return %(
-            graphs  => %results<graphs>,
-            inputs  => self.get-inputs,
-            reports => %results<reports>,
-        );
-    }
+    #     return %( %results, inputs => self.get-inputs );
+    # }
 
 }

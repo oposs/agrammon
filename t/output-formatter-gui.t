@@ -1,5 +1,5 @@
 use Agrammon::Model;
-use Agrammon::OutputFormatter::CSV;
+use Agrammon::OutputFormatter::GUI;
 use Test;
 
 my $test-simulation-name = '2010v2.1_20120425';
@@ -25,16 +25,6 @@ given $outputs.new-instance('Test::SubModule', 'Monkey C') {
     .add-output('Test::SubModule::SubTest', 'kids', 15);
 }
 
-my $csv = output-as-csv($test-simulation-name, $test-dataset-id, $model, $outputs, "en");
-$csv = $csv.split(/^^/).sort.join;
-is $csv, q:to/OUTPUT/, 'Correctly formed CSV output';
-    2010v2.1_20120425;2648;Test::SubModule[Monkey A]::SubTest;kids;5;monkey kids
-    2010v2.1_20120425;2648;Test::SubModule[Monkey A];sub_result;20;monkeys/hour
-    2010v2.1_20120425;2648;Test::SubModule[Monkey B]::SubTest;kids;10;monkey kids
-    2010v2.1_20120425;2648;Test::SubModule[Monkey B];sub_result;30;monkeys/hour
-    2010v2.1_20120425;2648;Test::SubModule[Monkey C]::SubTest;kids;15;monkey kids
-    2010v2.1_20120425;2648;Test::SubModule[Monkey C];sub_result;40;monkeys/hour
-    2010v2.1_20120425;2648;Test;result;142;monkeys/hour
-    OUTPUT
+# TODO
 
 done-testing;

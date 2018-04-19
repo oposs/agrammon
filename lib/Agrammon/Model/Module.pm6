@@ -47,8 +47,7 @@ class Agrammon::Model::Module {
         $!instances // '' eq 'multi'
     }
 
-    method set-instance-root(Str $root) {
-        $!instance-root = $root;
+    method set-instance-root(Str $!instance-root) {
     }
 
     method set-gui-root(Agrammon::Model::Module $root-module) {

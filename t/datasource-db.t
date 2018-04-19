@@ -44,7 +44,7 @@ if $pg-file.IO.e {
         $ag-user = $/[0];
     }
     if $pg-data ~~ /agdataset '=' (.+?) ';'/ {
-        $ag-dataset = "$0"; # force to string
+        $ag-dataset = ~$0; # force to string
     }
 #    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
     diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=XXX, dbdatabase=$db-database";

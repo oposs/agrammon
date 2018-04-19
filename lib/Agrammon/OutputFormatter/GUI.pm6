@@ -4,7 +4,7 @@ use Agrammon::Outputs;
 sub output-for-gui(Agrammon::Model $model,
                    Agrammon::Outputs $outputs) is export {
     my %output = %(
-        data => _get_data($model, $outputs),
+        data => get-data($model, $outputs),
         log  => %(),
         pid  => 333,
 ### TODO: is this still needed with the new implementation?
@@ -18,7 +18,7 @@ sub output-for-gui(Agrammon::Model $model,
 #    return ();
 #}
 
-sub _get_data($model, $outputs) {
+sub get-data($model, $outputs) {
     my @records;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         when Hash {

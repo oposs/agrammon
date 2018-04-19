@@ -43,14 +43,12 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                         $sub-var ~~ s/'::'//;
                         $var = $sub-var;
                     }
-#                    say "$tax, $instance, $sub-tax, $var, $value";
                     $input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
                 }
                 else {
                     $module-var ~~ m/(.+)'::'(.+)/;
                     my $tax     = "$0";
                     my $var     = "$1";
-#                    say "$tax, $var, $value";
                     $input.add-single-input($tax, $var, $value);
                 }
             }

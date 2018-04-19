@@ -1,6 +1,5 @@
 #!/usr/bin/env perl6
 
-use lib $*PROGRAM.parent.parent.child("lib");
 use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
 use Cro::HTTP::Session::InMemory;
@@ -10,6 +9,7 @@ use Agrammon::Config;
 use Agrammon::DataSource::CSV;
 use Agrammon::Model;
 use Agrammon::ModelCache;
+use Agrammon::Performance;
 use Agrammon::Web::Routes;
 use Agrammon::Web::SessionUser;
 use Agrammon::TechnicalParser;
@@ -26,12 +26,11 @@ subset SupportedLanguage of Str where { $_ ~~ /de|en|fr/ or note("ERROR: --langu
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, Str $tech-file?) {
     # initialization
-    my $cfg-file = $cfg-filename;
     my $cfg = Agrammon::Config.new;
-    $cfg.load($cfg-file);
+    $cfg.load($cfg-filename);
 
     my $model-path = $model-filename.IO;
-    die "ERROR: run expects a .nhd file" unless $model-path.extension eq 'nhd';
+    die "ERROR: web expects a .nhd file" unless $model-path.extension eq 'nhd';
 
     my $module-path = $model-path.parent;
     my $module-file = $model-path.basename;
@@ -51,18 +50,13 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 
     PROCESS::<$AGRAMMON-DB-CONNECTION> = DB::Pg.new(conninfo => $cfg.db-conninfo);
                               
-    my $ws = Agrammon::Web::Service.new(
-        cfg   => $cfg,
-        model => $model,
-        technical-parameters => %technical-parameters,
-    );
+    my $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters);
 
     # setup and start web server
     my $host = %*ENV<AGRAMMON_HOST> || '0.0.0.0';
     my $port = %*ENV<AGRAMMON_PORT> || 20000;
     my Cro::Service $http = Cro::HTTP::Server.new(
-        host => $host,
-        port => $port,
+        :$host, :$port,
         application => routes($ws),
         after => [
             Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
@@ -137,7 +131,6 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
     }
 
     my $model = timed "Load $module", {
-        say "calling load-model-using-cache";
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
     }
 
@@ -179,14 +172,6 @@ sub dump (IO::Path $path) {
     my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
-    my $model = load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module);
+    my $model = timed "load $module", { load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module) };
     return $model.dump;
-}
-
-sub timed(Str $title, &proc) {
-    my $start = now;
-    my \ret   = proc;
-    my $end   = now;
-    note sprintf "$title ran %.3f seconds", $end-$start;
-    return ret;
 }
