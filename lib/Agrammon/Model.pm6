@@ -197,7 +197,6 @@ class Agrammon::Model {
         $gui-root-module = $module if $module.gui;
         $module.set-instance-root($instance-root) if $instance-root;
         $module.set-gui-root($gui-root-module) if $gui-root-module;
-### ???
         $module.set-root($instance-root) if $instance-root;
         my $parent = $module.parent;
         my @externals = $module.external;

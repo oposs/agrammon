@@ -46,12 +46,8 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
     }
 
     my $model = timed "Load $module", {
-        say "calling load-model-using-cache";
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
     }
-#    my $model = timed "Load $module", {
-#        Agrammon::Model.new(path => $module-path).load($module);
-#    }
 
     PROCESS::<$AGRAMMON-DB-CONNECTION> = DB::Pg.new(conninfo => $cfg.db-conninfo);
                               
