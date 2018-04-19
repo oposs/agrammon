@@ -19,12 +19,10 @@ ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my $conninfo;
 if %*ENV<TRAVIS> {
-    my $db-host     = 'localhost';
-    my $db-user     = 'postgres';
-    my $db-password = '';
+    my $db-user     = 'travis';
     my $db-database = 'agrammon_test';
     
-    $conninfo = "host=$db-host user=$db-user password=$db-password dbname=$db-database";
+    $conninfo = "user=$db-user dbname=$db-database";
 }
 else {
     $conninfo = $cfg.db-conninfo;
