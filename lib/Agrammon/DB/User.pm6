@@ -102,40 +102,36 @@ class Agrammon::DB::User does Agrammon::DB {
         }
     }
 
-    method auth($username, $password) {
+    method password-is-valid(Str $username, Str $password) {
         self.with-db: -> $db {
-            my %p = $db.query(q:to/PERS/, $username).hash;
-                SELECT pers_password AS password
+            return $db.query(q:to/PERS/, $username, $password).value;
+            SELECT crypt($2, pers_password) = pers_password
                   FROM pers
                  WHERE pers_email = $1
             PERS
-
-            if  $password eq %p<password> {
-                $!username = $username;
-                self.load;
-            }
-            else {
-                $!username = Nil;
-            }
         }
-        return self.logged-in;
     }
 
     method change-password($old, $new) {
         self.with-db: -> $db {
-            my %p = $db.query(q:to/PERS/, $!username).hash;
-                SELECT pers_password AS password
-                  FROM pers
-                 WHERE pers_email = $1
-            PERS
 
-            ### TODO: adapt to encrypted passwords
-            if $old eq %p<password> {
-                my %p = $db.query(q:to/PASSWORD/, $!username, $new);
+           if self.password-is-valid($!username, $old) {
+                say "Old pw valid";
+                my $res = $db.query(q:to/PASSWORD/, $!username, $new);
                     UPDATE pers
-                       SET pers_password = $2
+                       SET pers_password = crypt($2, gen_salt('bf'))
                      WHERE pers_email    = $1
                 PASSWORD
+
+                if self.password-is-valid($!username, $new) {
+                    say "PW update successful";
+                }
+                else {
+                    say "PW update failed";
+                }
+            }
+            else {
+                say "Invalid old pw: $old";
             }
         }
         return self;
