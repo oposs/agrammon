@@ -12,9 +12,9 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     has Str  $.version;
     has Int  $.records;
     has DateTime $.mod-date;
+    has $.data;
     has Agrammon::DB::Tag  @.tags;
     has Agrammon::DB::User $.user;
-    has $.data;
     
     method create {
         self.with-db: -> $db {
@@ -53,7 +53,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
         return unless $var and $value;
         my $username = $!user.username;
-#        say "store_variable($!name, $username): var=$var, value=$value";
         
         my $ret;
         self.with-db: -> $db {
@@ -65,7 +64,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             SQL
 
             my $rows = $ret.rows;
-#            warn "_store-variable(UPDATE): rows=$rows";
             return $rows if $rows;
 
             $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var);
@@ -74,7 +72,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             RETURNING data_val
             SQL
             $rows = $ret.rows;
-#            warn "_store-variable(INSERT): rows=$rows";
             return $rows if $rows;
 
         }
@@ -85,7 +82,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
         return unless $var and $value and $instance;
         my $username = $!user.username;
-#        say "store_variable($!name, $username): var=$var, instance=$instance, value=$value";
         
         my $ret;
         self.with-db: -> $db {
@@ -95,7 +91,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                                                        AND data_instance = $5
             RETURNING data_val 
            SQL
-#           warn "_store-instance-variable() rows=", $ret.rows;
             
         }
         return $ret.rows;

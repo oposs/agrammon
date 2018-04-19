@@ -103,7 +103,6 @@ class Agrammon::DB::User does Agrammon::DB {
     }
 
     method auth($username, $password) {
-        say "username=$username, password=$password";
         self.with-db: -> $db {
             my %p = $db.query(q:to/PERS/, $username).hash;
                 SELECT pers_password AS password
@@ -119,7 +118,6 @@ class Agrammon::DB::User does Agrammon::DB {
                 $!username = Nil;
             }
         }
-        say "username=$username";
         return self.logged-in;
     }
 
@@ -130,7 +128,6 @@ class Agrammon::DB::User does Agrammon::DB {
                   FROM pers
                  WHERE pers_email = $1
             PERS
-            say "$!username: pw=%p<password>, old=$old, new=$new";
 
             ### TODO: adapt to encrypted passwords
             if $old eq %p<password> {

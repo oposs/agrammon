@@ -69,7 +69,6 @@ class Agrammon::Web::Service {
 
         use Agrammon::OutputFormatter::Text;
         my $result = output-as-text($!model, $outputs, 'de', 'LivestockTotal');
-        say $result;
         my %gui-output = output-for-gui($!model, $outputs);
         warn '**** get-output-variables() not yet completely implemented';
         return %gui-output;
