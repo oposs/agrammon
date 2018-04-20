@@ -41,8 +41,8 @@
         "Agrammon::DB::User": "lib/Agrammon/DB/User.pm6",
         "Agrammon::Model::Output": "lib/Agrammon/Model/Output.pm6",
         "Agrammon::OutputReference": "lib/Agrammon/OutputReference.pm6",
-        "Agrammon::DB::Dataset": "lib/Agrammon/DB/Dataset.pm6"
-        "Agrammon::Performance": "lib/Agrammon/Performance.pm6"
+        "Agrammon::DB::Dataset": "lib/Agrammon/DB/Dataset.pm6",
+        "Agrammon::Performance": "lib/Agrammon/Performance.pm6",
         "Agrammon::UI::Web": "lib/Agrammon/UI/Web.pm6"
     },
     "name": "Agrammon",
