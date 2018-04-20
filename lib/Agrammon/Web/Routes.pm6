@@ -245,7 +245,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
         post -> LoggedIn $user, 'get_output_variables' {
             request-body -> %data {
                 my @data = $ws.get-output-variables($user, %data<dataset>);
-                content 'application/json', %( data: @data );
+                content 'application/json', %( :@data );
             }
         }
 
@@ -254,7 +254,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
         post -> LoggedIn $user, 'store_data' {
             request-body -> %data {
                 my $ret = $ws.store-data($user, %data);
-                content 'application/json', %(ret => $ret);
+                content 'application/json', %( :$ret );
             }
         }
 

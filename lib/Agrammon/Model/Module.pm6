@@ -54,10 +54,6 @@ class Agrammon::Model::Module {
         $!gui-root-module = $root-module;
     }
 
-    method set-root(Str $root) {
-        $!instance-root = $root;
-    }
-
 }
 
 
