@@ -54,9 +54,8 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         return unless $var and $value.defined;
         my $username = $!user.username;
         
-        my $ret;
         self.with-db: -> $db {
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var);
+            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var);
             UPDATE data_new SET data_val = $1
              WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
                                                        AND data_instance IS NULL
@@ -73,9 +72,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             SQL
             $rows = $ret.rows;
             return $rows if $rows;
-
         }
-        return $ret;
     }
 
     method !store-instance-variable($var, $instance, $value) {
@@ -83,17 +80,25 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         return unless $var and $value.defined and $instance;
         my $username = $!user.username;
         
-        my $ret;
         self.with-db: -> $db {
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var, $instance);
+            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var, $instance);
             UPDATE data_new SET data_val = $1
              WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
                                                        AND data_instance = $5
             RETURNING data_val 
-           SQL
-            
+            SQL
+
+            my $rows = $ret.rows;
+            return $rows if $rows;
+
+            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var, $instance);
+            INSERT INTO data_new (data_dataset, data_var, data_val, data_instance)
+            VALUES (dataset_name2id($2,$3),$4,$1,$5)
+            RETURNING data_val
+            SQL
+            $rows = $ret.rows;
+            return $rows if $rows;
         }
-        return $ret.rows;
     }
     
     method store-input($var-name, $value) {
