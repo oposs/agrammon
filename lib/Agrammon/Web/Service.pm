@@ -15,12 +15,8 @@ class Agrammon::Web::Service {
     has Agrammon::Config $.cfg;
     has Agrammon::Model  $.model;
     has %.technical-parameters;
-    has Agrammon::UI::Web $.ui-web;
+    has Agrammon::UI::Web $.ui-web .= new(:$!model);
 
-    method TWEAK {
-        $!ui-web = Agrammon::UI::Web.new(:$!model);
-    }
-    
     # return config hash as expected by Web GUI
     method get-cfg() {
         my %gui   = $!cfg.gui;

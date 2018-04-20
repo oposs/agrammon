@@ -131,7 +131,7 @@ class Agrammon::DB::User does Agrammon::DB {
                 }
             }
             else {
-                say "Invalid old pw: $old";
+                warn "Invalid old pw: $old";
             }
         }
         return self;

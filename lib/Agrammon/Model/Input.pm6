@@ -35,8 +35,6 @@ class Agrammon::Model::Input {
         my $validator = $.validator;
         my %validator;
         if $validator {
-            # TODO: do we have to handle $validator being undefined?
-            $validator = $validator;
             $validator ~~ /(.+)\((.+)\)/;
             my $name = ~$0;
             my $args = $1;
@@ -51,23 +49,21 @@ class Agrammon::Model::Input {
         my @optionsLang;
         my %enums = %!enum;
 
-        if %enums {
-
-            for %enums.kv -> $name, $optLang {
-                my $label   = $name;
-                $label      ~~ s:g/_/ /;
-                my @opt     = [ $label, '', $name];
-                my @optLang = split("\n", $optLang);
-                my %optLang;
-                for @optLang -> $ol {
-                    my ($l, $o) = split(/ \s* '=' \s* /, $ol);
-                    $o ~~ s:g/_/ /;
-                    %optLang{$l} = $o;
-                }
-                push @options,     @opt;
-                push @optionsLang, %optLang;
+        for %enums.kv -> $name, $optLang {
+            my $label   = $name;
+            $label      ~~ s:g/_/ /;
+            my @opt     = [ $label, '', $name];
+            my @optLang = split("\n", $optLang);
+            my %optLang;
+            for @optLang -> $ol {
+                my ($l, $o) = split(/ \s* '=' \s* /, $ol);
+                $o ~~ s:g/_/ /;
+                %optLang{$l} = $o;
             }
+            push @options,     @opt;
+            push @optionsLang, %optLang;
         }
+
         return %(
             defaults    => %(
                 calc => $.default-calc,
