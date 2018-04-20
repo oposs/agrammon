@@ -116,12 +116,11 @@ sub routes(Agrammon::Web::Service $ws) is export {
         }
 
         ### dataset
-
+        # working/test
         post -> LoggedIn $user, 'create_dataset' {
-                ...
             request-body -> (:$name!) {
                 my $data = $ws.create-dataset($user, $name);
-                content 'application/json', $data;
+                content 'application/json', $name;
             }
         }
 
@@ -223,7 +222,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
         ### input/output
         
-        # test/implement
+        # test/implement (is this needed?)
         post -> LoggedIn $user, 'get_input' {
                 ...
             request-body -> (:$dataset!) {
@@ -232,7 +231,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
             }
         }
 
-        # test/implement
+        # working/test
         post -> LoggedIn $user, 'get_input_variables' {
             request-body -> (:name($dataset)!) {
                 say "get_input_variables(): ### dataset=$dataset";
@@ -242,7 +241,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
             }
         }
 
-        # test/implement
+        # working/test
         post -> LoggedIn $user, 'get_output_variables' {
             request-body -> %data {
                 my @data = $ws.get-output-variables($user, %data<dataset>);
@@ -251,7 +250,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
         }
 
         ### data
-        # test/implement
+        # working/test
         post -> LoggedIn $user, 'store_data' {
             request-body -> %data {
                 my $ret = $ws.store-data($user, %data);
