@@ -46,7 +46,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                         $input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
                     }
                     else {
-                        die "Mal-formed data: module-var=$module-var";
+                        die "Malformed data: module-var=$module-var";
                     }
                 }
                 else {

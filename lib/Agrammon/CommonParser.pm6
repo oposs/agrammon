@@ -59,7 +59,7 @@ role Agrammon::CommonParser {
     }
 
     token key {
-        \w+
+        <[\w+]>+
     }
 
     token blank-line {
