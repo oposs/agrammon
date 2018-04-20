@@ -35,7 +35,7 @@ taxonomy = Application::Slurry::Applrate
 
 +dilution_parts_water
   models = SHL
-  type  = float 
+  type  = float
   default_calc = 1
   validator = between(0,3);
   ++labels 

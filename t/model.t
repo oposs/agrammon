@@ -1,5 +1,6 @@
 use v6;
 use Agrammon::Model;
+use Agrammon::ModelCache;
 use Test;
 
 plan 4;
@@ -239,8 +240,10 @@ subtest 'load()' => {
             PlantProduction::RecyclingFertiliser
             PlantProduction
             Total
+            SharesByAnimalCategory
+            End
         |;
-        given 'Total' -> $module-name {
+        given 'End' -> $module-name {
             ok my $model = Agrammon::Model.new(path => $path);
             $model.load($module-name);
             is $model.evaluation-order.elems, @expected.elems,
