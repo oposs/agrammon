@@ -1,6 +1,7 @@
 use v6;
 use Agrammon::Config;
 use Agrammon::Model;
+use Agrammon::UI::Web;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 use DB::Pg;
@@ -62,7 +63,9 @@ subtest "get-input-variables()" => {
     ok my $model = Agrammon::Model.new(path => $path);
     lives-ok { $model.load($top) }, "Load module from $top";
 
-    my %input-hash = $model.get-input-variables;
+    ok my $ui-web = Agrammon::UI::Web.new(:$model);
+
+    my %input-hash = $ui-web.get-input-variables;
     %input-hash<dataset> = 'TEST';
     is-deeply %input-hash.keys.sort, qw|dataset graphs inputs reports| , "Input hash has expected keys";
 

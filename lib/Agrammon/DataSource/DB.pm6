@@ -43,11 +43,11 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $sub-var ~~ s/'::'//;
                             $var = $sub-var;
                         }
+                        $input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
                     }
                     else {
                         die "Mal-formed data: module-var=$module-var";
                     }
-                    $input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
                 }
                 else {
                     $module-var ~~ m/(.+)'::'(.+)/;
