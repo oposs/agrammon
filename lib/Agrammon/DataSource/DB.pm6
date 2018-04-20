@@ -30,18 +30,22 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                 my $instance   = .[2] // '';
 
                 if $instance {
-                    $module-var ~~ m/(.+)'[]'(.+)/;
-                    my $tax     = "$0";
-                    my $sub-var = "$1";
-                    my ($sub-tax, $var);
-                    if $sub-var ~~ m/'::'(.+)'::'(.+)/ {
-                        $sub-tax = "$0";
-                        $var     = "$1";
+                    if $module-var ~~ m/(.+)'[]'(.+)/ {
+                        my $tax     = "$0";
+                        my $sub-var = "$1";
+                        my ($sub-tax, $var);
+                        if $sub-var ~~ m/'::'(.+)'::'(.+)/ {
+                            $sub-tax = "$0";
+                            $var     = "$1";
+                        }
+                        else {
+                            $sub-tax = '';
+                            $sub-var ~~ s/'::'//;
+                            $var = $sub-var;
+                        }
                     }
                     else {
-                        $sub-tax = '';
-                        $sub-var ~~ s/'::'//;
-                        $var = $sub-var;
+                        die "Mal-formed data: module-var=$module-var";
                     }
                     $input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
                 }
