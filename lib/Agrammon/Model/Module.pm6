@@ -31,12 +31,12 @@ class Agrammon::Model::Module {
     method TWEAK {
         my $tax = $!taxonomy;
         if $tax ~~ /^(.+) '::' (.+)$/ {
-            $!parent = "$0";
-            $!name   = "$1";
+            $!parent = ~$0;
+            $!name   = ~$1;
         }
         else {
             $!parent = '';
-            $!name   = "$tax";
+            $!name   = ~$tax;
         }
         %!input-defaults = @!input.grep(*.default-calc.defined).map({ .name => .default-calc });
         %!gui-defaults   = @!input.grep(*.default-gui.defined).map({ .name => .default-gui });
@@ -47,12 +47,9 @@ class Agrammon::Model::Module {
         $!instances // '' eq 'multi'
     }
 
-    method set-instance-root(Str $!instance-root) {
-    }
+    method set-instance-root(Str $!instance-root) {}
 
-    method set-gui-root(Agrammon::Model::Module $root-module) {
-        $!gui-root-module = $root-module;
-    }
+    method set-gui-root(Agrammon::Model::Module $!gui-root-module) {}
 
 }
 
