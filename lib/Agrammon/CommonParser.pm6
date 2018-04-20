@@ -32,8 +32,6 @@ role Agrammon::CommonParser {
         ]+
     }
 
-    # XXX how can I allow + in subsection headers (level +++ would be ok)???
-    #     This might be too general here
     token multi-line-str-option($prefix) {
         \h* $prefix \h* <key> \h* \n
         # We want no leading lines and no trailing empty lines, but do want
