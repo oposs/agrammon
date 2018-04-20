@@ -137,6 +137,9 @@ class Agrammon::Model {
     has ModuleRunner $!entry-point;
     has %!output-unit-cache;
     has %!output-print-cache;
+    has %!output-format-cache;
+    has %!output-labels-cache;
+    has %!output-order-cache;
   
     method file2module($file) {
         my $module = $file;
@@ -175,7 +178,7 @@ class Agrammon::Model {
         return self;
     }
 
-    method !load-internal($module-name, :%pending, :%loaded --> ModuleRunner) {
+    method !load-internal($module-name, $root?, $root-module?, :%pending, :%loaded --> ModuleRunner) {
         # trying to load module while already loading it
         die X::Agrammon::Model::CircularModel.new(:module($module-name))
             if %pending{$module-name}:exists;
@@ -188,6 +191,12 @@ class Agrammon::Model {
         given $module.taxonomy -> $tax {
             die "Wrong taxonomy '$tax' in $module-name" unless $tax eq $module-name;
         }
+        my $instance-root = $root;
+        $instance-root //= $module.taxonomy if $module.is-multi;
+        my $gui-root-module = $root-module;
+        $gui-root-module = $module if $module.gui;
+        $module.set-instance-root($instance-root) if $instance-root;
+        $module.set-gui-root($gui-root-module) if $gui-root-module;
         my $parent = $module.parent;
         my @externals = $module.external;
         my @dependencies;
@@ -198,7 +207,7 @@ class Agrammon::Model {
                 !! $parent
                     ?? normalize($parent ~ '::' ~ $external-name)
                     !! $external-name;
-            push @dependencies, self!load-internal($include, :%pending, :%loaded);
+            push @dependencies, self!load-internal($include, $instance-root, $gui-root-module, :%pending, :%loaded);
         }
         @!evaluation-order.push($module);
         %pending{$module-name}:delete;
@@ -297,10 +306,39 @@ class Agrammon::Model {
         return %!output-unit-cache{$module}{$output}{$lang} // ''
     }
 
+    method output-units(Str $module, Str $output) {
+        %!output-unit-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .units }))
+        });
+        return %!output-unit-cache{$module}{$output}
+    }
+
     method output-print(Str $module, Str $output) {
         %!output-print-cache ||= @!evaluation-order.map({
             .taxonomy => %(.output.map({ .name => .print }))
         });
         return %!output-print-cache{$module}{$output} // ''
     }
+
+    method output-format(Str $module, Str $output) {
+        %!output-format-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .format }))
+        });
+        return %!output-format-cache{$module}{$output} // ''
+    }
+
+    method output-order(Str $module, Str $output) {
+        %!output-order-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .order }))
+        });
+        return %!output-order-cache{$module}{$output} // ''
+    }
+
+    method output-labels(Str $module, Str $output) {
+        %!output-labels-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => .labels }))
+        });
+        return %!output-labels-cache{$module}{$output} // ''
+    }
+
 }

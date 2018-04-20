@@ -3,7 +3,7 @@
 # perl6:
 #     - '2018.01'
 ###
-### Update RAKUDO_PKG_URL to the latest and greatest version available.
+### Update RAKUDO_PKG_URL to the latest version available.
 ###
 ### https://nxadm.github.io/rakudo-pkg/latest-release.html?os=ubuntu&version=14.04&arch=amd64
 ### https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
