@@ -244,8 +244,8 @@ sub routes(Agrammon::Web::Service $ws) is export {
         # working/test
         post -> LoggedIn $user, 'get_output_variables' {
             request-body -> %data {
-                my @data = $ws.get-output-variables($user, %data<dataset>);
-                content 'application/json', %( :@data );
+                my %output = $ws.get-output-variables($user, %data<dataset>);
+                content 'application/json', %output;
             }
         }
 
