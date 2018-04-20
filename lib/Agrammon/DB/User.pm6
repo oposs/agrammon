@@ -124,17 +124,17 @@ class Agrammon::DB::User does Agrammon::DB {
                 PASSWORD
 
                 if self.password-is-valid($!username, $new) {
-                    say "PW update successful";
+                    return 'PW update successful';
                 }
                 else {
-                    say "PW update failed";
+                    return 'PW update failed';
                 }
             }
             else {
                 warn "Invalid old pw: $old";
             }
         }
-        return self;
+        return 'Invalid password';
     }
 
 }
