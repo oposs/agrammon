@@ -1,0 +1,172 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-22
+taxonomy = Livestock::SmallRuminants::Grazing
+
++short
+  Computes the annual NH3 emission from grazing goats, fattening sheep, and milksheep. 
+
++description 
+
+ This process calculates the annual NH3 emission from grazing goats, fattening sheep and milksheep based on the
+ total N excreted on the pastures. The N excreted is calculated according to
+ the time the animals spend on the pasture. It assumes that the excretions on
+ the pasture are proportional to the time the animals are grazed.
+
+\subsubsection{References:}
+Bussink DW 1992. Ammonia volatilization from grassland receiving nitrogen
+fertilizer and rotationally grazed by dairy cattle. Fertilizer Research
+33:257-265.
+
+Bussink DW 1994. Relationship between ammonia volatilization and nitrogen
+fertilizer application rate, intake and excretion of herbage nitrogen by
+cattle on grazed swards. Fertilizer Research 38:111-121.
+
+
+Jarvis SC, Hatch DJ, Lockyer DR 1989. Ammonia fluxes from grazed grassland: annual losses from cattle production systems and their relation to nitrogen inputs. Journal of Agricultural Science 113:99-108.
+
+
+Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and dung of grazing cattle: effect of N intake. Atmospheric environment 32:295-300.
+
+
+Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammonia from urine in grass swards. Atmospheric environment 35:867-875.
+
+
+*** external ***
+
++Excretion
+
+*** technical ***
+
++er_small_ruminants_grazing
+  value = 0.125
+  ++units  
+    en = -
+  ++description
+    Emission rate for the calculation of the annual NH3 emission during grazing of small ruminants. The emission rate is derived from Bussink et al. (1992, 1994), Jarvis et al. (1989), Peterson et al. (1998) and Ross and Jarvis (2001).
+   (taking into account the generally low fertilization rate of Swiss pastures.)
+
+
+*** input ***
+
++grazing_days
+  type  = integer
+  validator = between(0,365);
+  ++labels 
+    en = Grazing days per year
+    de = Jährliche Weidetage
+    fr = Jours de pâturage par an
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average grazing days per year.
+  ++help
+    +++en
+       <p>Standard values for Switzerland: 220 days per year for sheep and 200 days per year for goats, respectively</p>
+    +++de
+       <p>Anzahl Weidetage ohne Alpung im Sömmerungsgebiet</p>
+       <p>Vorschlag für Standardwerte: 220 Tage pro Jahr für Schafe und Tage 200 pro Jahr für Ziegen (Durchschnittswert Tal-, Hügel- und Bergregion). Diese Zahlen beziehen sich auf die Anzahl Weidetage auf dem Heimbetrieb. Darin ist die Weide der Alpung im Sömmerungsgebiet nicht eingeschlossen.</p>
+    +++fr
+       <p>Nombre de jours de pâturage sans la période d’estivage</p>
+       <p>Proposition de valeurs standard: 220 jours par an pour les moutons et 200 jours par an pour les chèvres (valeur moyenne pour les régions de plaine, de collines et de montagne). Ces chiffres se rapportent au nombre de jours de pâturage sur l’exploitation de base. Ils ne comprennent pas le pâturage dans les alpages des exploitations d’estivage.</p>
+
++grazing_hours
+  type  = float
+  validator = between(0,24);
+  ++labels 
+    en = Grazing hours per day
+    de = Tägliche Weidestunden
+    fr = Heures de pâturage par jour
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average grazing hours per day.
+  ++help
+    +++en
+       <p>Standard values for Switzerland: 15 hours per day for sheep and 6 hours per day for goats, respectively</p>
+    +++de
+       <p>Anzahl Weidestunden ohne Alpung im Sömmerungsgebiet</p>
+       <p>Vorschlag für Standardwerte: 15 Stunden pro Tag für Schafe und 6 Stunden pro Tag für Ziegen. Diese Zahlen beziehen sich auf die Anzahl Weidestunden auf dem Heimbetrieb. Darin ist die Weide der Alpung im Sömmerungsgebiet nicht eingeschlossen.</p>
+    +++fr
+       <p>Nombre d’heures de pâturage, sans la période d’estivage</p>
+       <p>Proposition de valeurs standard: 15 heures par jour pour les moutons et 6 heures par jour pour les chèvres. Ces chiffres se rapportent au nombre d’heures de pâturage sur l’exploitation de base. Ils ne comprennent pas le pâturage dans les alpages des exploitations d’estivage.</p>
+
+
+*** output ***
+
++n_into_grazing
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N excretion during grazing for small ruminants.
+  ++formula
+    Val(n_excretion,Excretion) 
+      * In(grazing_days)  / 365
+      * In(grazing_hours) /  24;
+
++n_sol_into_grazing
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual solable N (TAN) excretion during grazing for small ruminants.
+  ++formula
+    Val(n_sol_excretion,Excretion) 
+      * In(grazing_days)  / 365
+      * In(grazing_hours) /  24;
+
++nh3_ngrazing
+  print = 5e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual NH3 emission from small ruminants from grazing.
+  ++formula
+    Out(n_sol_into_grazing)
+    * Tech(er_small_ruminants_grazing);
+
++grazing_hours
+  print = 15
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Grazing hours per day.
+  ++formula
+    In(grazing_hours);
+ 
++grazing_days
+  print = 15
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Grazing days per year.
+  ++formula
+    In(grazing_days);
+
+
++n_remain_pasture
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N input on pastures.
+  ++formula
+    Out(n_into_grazing) - Out(nh3_ngrazing);

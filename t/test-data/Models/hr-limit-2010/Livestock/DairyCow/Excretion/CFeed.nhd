@@ -1,0 +1,73 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-19
+taxonomy = Livestock::DairyCow::Excretion::CFeed
+
++short
+
+Computes the correction factor for the annual N excretion of a dairy
+cow as a function of the summer and winter feed ration, and the amount
+and type of concentrates used.
+
+
++description
+
+ This process accounts for the fact, that special rations can result in higher or lower N excretions as compared to standard excretions from Flisch et al. (2009). A differentiated consideration of the duration of the summer and winter feeding period according to farm location (altitude etc.) is possible but was not implemented for the emission inventory.
+\subsubsection{References:}
+Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
+
+
+*** input ***
+
++ignore
+  type  = enum{ignore}
+  ++labels 
+    en = ignore
+    de = ignorieren
+  ++units  
+    en = -
+  ++description
+    Just a work around for modules without input parameters.
+
+*** technical ***
+
++d_summer
+    value = 0.55
+    ++units 
+      en = -
+    ++description
+      Duration of summer feeding period (200 days). 
+      Average for different altitude zones.
+
++d_winter
+    value = 0.45
+    ++units 
+      en = -
+    ++description
+      Duration of the winter feeding period (165 days).
+      Average for different altitude zones.
+	
+
+*** external ***
+
++CFeedSummerRatio
++CFeedWinterRatio
++CConcentrates
+
+*** output ***
+
++c_feed_ration
+  print = 15
+  ++units 
+    en = -
+  ++description
+    Feed ration correction factor for annual N excretion.
+  ++formula
+          1 + 
+	 (Tech(d_summer) * Val(c_summer_ration, CFeedSummerRatio) + 
+          Tech(d_winter) * Val(c_winter_ration, CFeedWinterRatio) +
+          Tech(d_summer) * Val(c_concentrates_summer, CConcentrates) +
+          Tech(d_winter) * Val(c_concentrates_winter, CConcentrates)
+	  );
+
