@@ -3,7 +3,7 @@ use Agrammon::DataSource::DB;
 use DB::Pg;
 use Test;
 
-plan 4;
+plan 6;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -44,11 +44,11 @@ if $pg-file.IO.e {
         $ag-user = $/[0];
     }
     if $pg-data ~~ /agdataset '=' (.+?) ';'/ {
-        $ag-dataset = $/[0];
+        $ag-dataset = ~$0; # force to string
     }
 #    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
     diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=XXX, dbdatabase=$db-database";
-    diag "aguser=$ag-user, agdataset=$ag-dataset";
+    diag "ag-user=$ag-user, ag-dataset=$ag-dataset";
 }
 
 my $conninfo;
@@ -73,9 +73,12 @@ transactionally {
     my $ds = Agrammon::DataSource::DB.new;
     isa-ok $ds, Agrammon::DataSource::DB, 'Is a DataSource::DB';
 
-    my @data = $ds.read($ag-user, $ag-dataset);
-    is @data.elems, $rowsExpected, "Found $rowsExpected rows in dataset $ag-user:$ag-dataset";
-
+    ### TODO: check actual data
+    my $dataset = $ds.read($ag-user, $ag-dataset);
+    isa-ok $dataset, Agrammon::Inputs, 'Correct type';
+    is $dataset.simulation-name, 'DB', 'Correct simulation name';
+    is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
+    
 }
 
 

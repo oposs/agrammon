@@ -102,5 +102,39 @@ class Agrammon::DB::User does Agrammon::DB {
         }
     }
 
+    method password-is-valid(Str $username, Str $password) {
+        self.with-db: -> $db {
+            return $db.query(q:to/PERS/, $username, $password).value;
+            SELECT crypt($2, pers_password) = pers_password
+                  FROM pers
+                 WHERE pers_email = $1
+            PERS
+        }
+    }
+
+    method change-password($old, $new) {
+        self.with-db: -> $db {
+
+           if self.password-is-valid($!username, $old) {
+                say "Old pw valid";
+                my $res = $db.query(q:to/PASSWORD/, $!username, $new);
+                    UPDATE pers
+                       SET pers_password = crypt($2, gen_salt('bf'))
+                     WHERE pers_email    = $1
+                PASSWORD
+
+                if self.password-is-valid($!username, $new) {
+                    return 'PW update successful';
+                }
+                else {
+                    return 'PW update failed';
+                }
+            }
+            else {
+                warn "Invalid old pw: $old";
+            }
+        }
+        return 'Invalid password';
+    }
 
 }

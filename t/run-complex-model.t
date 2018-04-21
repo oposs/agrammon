@@ -7,7 +7,7 @@ use Agrammon::TechnicalParser;
 
 my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
 my $model = Agrammon::Model.new(path => $path);
-lives-ok { $model.load('Total') }, 'Could load module for testing';
+lives-ok { $model.load('End') }, 'Could load module for testing';
 
 my $fh = open $*PROGRAM.parent.add('test-data/complex-model-input.csv');
 my @datasets = Agrammon::DataSource::CSV.new().read($fh);

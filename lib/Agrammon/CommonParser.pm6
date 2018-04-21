@@ -23,6 +23,7 @@ role Agrammon::CommonParser {
         \h* ['#'\N*]?
         [\n || $]
     }
+
     token subsection-map {
         \h* '++' \h* <key> \h* \n
         [
@@ -56,7 +57,7 @@ role Agrammon::CommonParser {
     }
 
     token key {
-        \w+
+        <[\w+]>+
     }
 
     token blank-line {
