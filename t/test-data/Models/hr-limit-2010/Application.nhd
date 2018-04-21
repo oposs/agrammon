@@ -1,0 +1,131 @@
+ *** general ***
+
+author   = Agrammon Group
+date     = 2008-05-07
+taxonomy = Application
+gui      = Application,Hofdüngerausbringung,Epandage,Application
+
++short
+
+  Computes the annual NH3 emission from application.
+  
++description 
+
+  This process summarizes the contribution of the individual manure systems 
+  to the total NH3 emission from manure application.
+
+\subsubsection{Differences to DYNAMO}
+     
+ The categories "Soil absorptive" and "application before rain" are omitted 
+ since the practice is unknown and experimental results are not available 
+ (according to the decision of the steering group from 02/07/2007).
+     
+ The distinction between the categories incorporation of solid manure by 
+ chisel plough or plough are omitted since the difference is unclear 
+ (according to the decision of the steering group from 02/07/2007).
+  
+ The category "rapid incorporation" is replaced by "application manure" since 
+ slurry is hardly incorporated in Switzerland. The entire category is adapted 
+ to UNECE (2007) including new categories. 
+
+*** external ***
+
++Storage
++Application::Slurry
++Application::SolidManure
+
+
+
+*** output ***
+
++nh3_napplication
+  format = %.0f
+  print = LivestockSummary
+  ++labels 
+    sort = 840
+    en = Application NH3-Emissions
+    de = Hofdüngerausbringung NH3-Emission
+    fr = Emission de NH3 Epandage des engrais de ferme
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from manure application.
+  ++formula
+    Val(nh3_nliquid, Application::Slurry) +
+    Val(nh3_nsolid, Application::SolidManure)
+   
++nh3_napplication_solid
+  format = %.0f
+  print = LivestockSummaryPlus
+  ++labels 
+    sort = 842
+    en = _Application solid NH3-Emissions
+    de = _Hofdüngerausbringung fest NH3-Emission
+    fr = _Emission de NH3 Epandage des engrais de ferme solides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid manure application.
+  ++formula
+    Val(nh3_nsolid, Application::SolidManure);
+
++nh3_napplication_liquid
+  format = %.0f
+  print = LivestockSummaryPlus
+  ++labels 
+    sort = 841
+    en = _Application liquid NH3-Emissions
+    de = _Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Emission de NH3 Epandage des engrais de ferme liquides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from liquid manure application.
+  ++formula
+    Val(nh3_nliquid, Application::Slurry);   
+
++n_out_application
+  format = %.0f
+  print = FluxSummaryLivestock
+  ++labels
+    sort = 110
+    en = Total N out of application
+    de = Total N aus der Hofdüngerausbringung
+    fr = N total provenant de l'Epandage des engrais de ferme
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of the application. 
+  ++formula
+    Val(n_into_application, Storage) - 
+    (Val(nh3_nliquid, Application::Slurry) +
+    Val(nh3_nsolid, Application::SolidManure) )
+
++tan_out_application
+  format = %.0f
+  print = TANFlux
+  ++labels 
+    sort = 321
+    en = Total TAN out of application
+    de = Total NlÃ¶s aus der Hofdüngerausbringung
+    fr = TAN total provenant de l'Epandage des engrais de ferme
+  ++units  
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
+  ++description
+    Annual TAN flux out of the application. 
+  ++formula
+    Val(tan_into_application, Storage) - 
+    (Val(nh3_nliquid, Application::Slurry) +
+    Val(nh3_nsolid, Application::SolidManure) )
+
+
