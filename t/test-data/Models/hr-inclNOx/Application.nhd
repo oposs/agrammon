@@ -60,7 +60,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   format = %.0f
   print = NOxFlux
   ++labels 
-    sort = 840
+    sort = 810
     en = Application N2-Emissions
     de = Hofdüngerausbringung N2-Emission
     fr = Emission de N2 Epandage des engrais de ferme
@@ -71,13 +71,14 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual N2 emission from manure application.
   ++formula
-    Val(n2_nsolid, Application::SolidManure)
+    Val(n2_nsolid, Application::SolidManure) +
+    Val(n2_nliquid, Application::Slurry)
 
 +no_napplication
   format = %.0f
   print = NOxFlux
   ++labels 
-    sort = 840
+    sort = 820
     en = Application NO-Emissions
     de = Hofdüngerausbringung NO-Emission
     fr = Emission de NO Epandage des engrais de ferme
@@ -88,13 +89,14 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual NO emission from manure application.
   ++formula
-    Val(no_nsolid, Application::SolidManure)
+    Val(no_nsolid, Application::SolidManure)+
+    Val(no_nliquid, Application::Slurry)
 
 +n2o_napplication
   format = %.0f
   print = NOxFlux
   ++labels 
-    sort = 840
+    sort = 830
     en = Application N2O-Emissions
     de = Hofdüngerausbringung N2O-Emission
     fr = Emission de N2O Epandage des engrais de ferme
@@ -105,8 +107,8 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual N2O emission from manure application.
   ++formula
-    Val(n2o_nsolid, Application::SolidManure)
-
+    Val(n2o_nsolid, Application::SolidManure)+
+    Val(n2o_nliquid, Application::Slurry)
 
 +nh3_napplication_solid
   format = %.0f
