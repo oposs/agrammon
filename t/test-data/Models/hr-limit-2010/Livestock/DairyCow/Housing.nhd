@@ -1,0 +1,184 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2012-05-06
+taxonomy = Livestock::DairyCow::Housing
+
++short
+
+  Computes the annual NH3 emission from dairy cow housing systems.
+
++description 
+
+  This process calculates the NH3 emission in dairy cow housing
+  depending on the N excretion and the housing systems. The NH3
+  emission is assumed to be proportional to the total N excretion of
+  the animals because the contaminated surfaces will primarily drive
+  emission, which will remain active even when animals are on the
+  pasture or exercise yard.
+
+  A proportional correction is applied according to the area per
+  animal.
+
+  A correction is applied if the part of the day grazing is above a
+  defined grazing hours per days.
+
+  \subsubsection{Definition of System boundaries for the housing Process:}
+
+  For housing systems with integrated exercise yards, it is difficult to
+  distinguish between emissions from housing, exercise yard and storage. 
+  For these housingtypes the emission may be only validated for the sum of
+  housing, exercise yard and storage emission.
+  
+*** input ***
+
+*** external ***
+
++Excretion
++Housing::Type
++Housing::Floor
++Housing::ClimateAir
++Housing::CFreeFactor
++Yard
++Grazing
++Housing::KGrazing
+
+*** output ***
+
++n_into_housing
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux into the house.
+  ++formula
+    if( Val(n_excretion, Excretion) > (Val(n_into_grazing, Grazing) + Val(n_into_yard, Yard)) ) {
+      Val(n_excretion, Excretion) 
+          - Val(n_into_grazing, Grazing)
+	  - Val(n_into_yard, Yard); 
+    } else { return 0; }
+
++n_sol_into_housing
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN into the house.
+  ++formula
+    if( Val(n_sol_excretion, Excretion) > (Val(n_sol_into_grazing, Grazing) + Val(n_sol_into_yard, Yard)) ) {
+    	Val(n_sol_excretion, Excretion)
+           - Val(n_sol_into_grazing, Grazing)
+           - Val(n_sol_into_yard, Yard); 
+    } else { return 0; }
+
++nh3_nhousing
+  print = 5c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual NH3 emission from dairy cow housing systems per animal place.
+  ++formula
+   Out(n_sol_into_housing) 
+    * Val(k_grazing, Housing::KGrazing) 
+    * Val(er_housing, Housing::Type) 
+    * Val(k_area, Housing::Type) 
+    * (
+      (1 - Val(c_feeding_boxes, Housing::Type) )
+      * (1 - Val(c_UNECE, Housing::Floor) )
+      * (1 - Val(c_housing_floor, Housing::Floor) )
+      * (1 - Val(c_housing_climate, Housing::ClimateAir) )
+      * (1 - Val(c_housing_air, Housing::ClimateAir) )
+    )
+    * Val(c_free_factor_housing, Housing::CFreeFactor) ;
+ 
++n_outhousing
+  print = 7c 
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux out of the housing.
+  ++formula
+    if( (Out(n_into_housing) - Out(nh3_nhousing)) > 0) {
+    	Out(n_into_housing) - Out(nh3_nhousing);
+    } else { return 0; }
+
++tan_outhousing
+  print = 9c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of the housing.
+  ++formula
+    if( (Out(n_sol_into_housing) - Out(nh3_nhousing)) > 0) {
+    	Out(n_sol_into_housing) - Out(nh3_nhousing);
+    } else { return 0; }
+
++share_tan_out
+  print = 8c
+  ++units
+     en = -	
+  ++description 
+    Share of TAN for interface to storage, the same share is assumed for 
+    solid and liquid parts of output. Mineralization and immobilization
+    are considerd in the storage module.
+  ++formula
+    if(  Out(n_outhousing) != 0 ){
+ 		Out(tan_outhousing) / Out(n_outhousing)
+    }else{0};
+
++n_outhousing_liquid
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of housing, slurry or liquid fraction of manure from 
+    dairy cows.
+  ++formula
+    Out(n_outhousing) * Val(share_liquid, Housing::Type);
+
++tan_outhousing_liquid
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of housing, slurry or liquid fraction of manure
+    from dairy cows.
+  ++formula
+    Out(n_outhousing) * Val(share_liquid, Housing::Type) * Out(share_tan_out);
+
++n_outhousing_solid
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of housing from solid fraction of manure.
+  ++formula
+    Out(n_outhousing) * ( 1 - Val(share_liquid, Housing::Type) );
+
++tan_outhousing_solid
+  print = 7c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of housing from solid fraction of manure.
+  ++formula
+    Out(n_outhousing) * ( 1 - Val(share_liquid, Housing::Type) ) * Out(share_tan_out);
+ 

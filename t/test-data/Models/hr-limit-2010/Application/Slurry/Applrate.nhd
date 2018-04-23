@@ -1,0 +1,124 @@
+*** general ***
+
+author   = Agrammon Group	
+date     = 2008-05-01
+taxonomy = Application::Slurry::Applrate
+
++short
+
+ Correction factor taking into account the slurry application rate per ha
+ and the TAN content of the slurry as compared to the emission rate occurring
+ with a standard application rate of 30 m3 and a TAN content of 1.15 kg N
+ /m3.
+
++description
+ 
+ This process computes the correction factor as a function of the application
+ rate and the TAN content of the slurry. The equation has been described by
+ Menzi et al. (1998). The correction factor is calculated based on the slurry
+ application rate per ha and the TAN content of the slurry compared to the
+ emission rate occurring with a standard application rate of 30 m3 and a TAN
+ content of 1.15 kg N / m3.
+
+ 
+ \subsubsection{References:}
+  Menzi H, Katz, P E, Fahrni M, Neftel A, Frick R 1998. A simple empirical model
+  based on regression analysis to estimate ammonia emissions after manure
+  application. Atmospheric Environment 32: 301-307.
+
+ \begin{todo}{Haral Menzi}{}
+  Please confirm, as description was not finished by Beat Reidy, appl\_rate
+  and tan was not included in calculation.
+ \end{todo}
+ 
+*** input ***
+
++dilution_parts_water
+  models = SHL
+  type  = float
+  default_calc = 1
+  validator = between(0,3);
+  ++labels 
+    en = Dilution of slurry (liters of water added to one liter of fresh excreta)
+    de = Gülleverdünnung (Liter Wasser pro Liter unverdünnter Gülle)
+    fr = Dilution du lisier (litres d'eau par litre de lisier non diluÃ©)
+  ++units
+    en = 1:x
+  ++description
+   Specific slurry dilution. TAN contents have been calculated based on a
+   standard dilution of 1:1 with a TAN content of 1.15 kg N /m3.  
+  ++help
+    +++en
+       <p>Standard value for Switzerland: 1 part undiluted slurry to 1 part water</p>
+    +++de
+       <p>Vorschlag für Standardwert: 1:1</p>
+    +++fr
+       <p>Proposition de valeur standard: 1:1</p>
+
++appl_rate
+  models = SHL
+  type  = float
+  default_calc = 30
+  validator = between(10,120); 
+  ++labels 
+    en = Mean dose per application
+    de = Mittlere Ausbringungsmenge pro Gabe
+    fr = QuantitÃ© moyenne Ã©pandue par application
+  ++units
+    en = m3/ha
+  ++description
+    Application rate, mean volume of slurry applied on a ha per deployment.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: 30 m<sup>3</sup></p>
+    +++de
+       <p>Vorschlag für Standardwert: 30 m<sup>3</sup></p>
+    +++fr
+       <p>Proposition de valeur standard: 30 m<sup>3</sup></p>
+
+ 
+*** technical ***
+
++norm_er
+  value = 0.5
+  ++units 
+    en = -
+  ++description
+    Standard emission of 50% of the applied TAN calculated based on an
+    equation published by Menzi et al (1998) using a TAN standard of 1.15 
+    kg / m3 for an 1:1 dilution, with application rate (AR) standard of 30 m3 / ha and average 
+    swiss meteorological conditions ( T=12 C, humitity=70%):
+    ((19.41 * TAN-standard + 4.2 * 1.102 - 9.51) * (0.0214 * AR-standard + 0.36) / (AR-standard * TAN-standard)))
+   
+
+*** external ***
+
+
+*** output ***
+
++TAN_content
+  print = 15
+  ++units 
+    en = -
+  ++description
+    TAN content of the slurry compared to the emission rate occuring with a
+    standard application rate of 30 m3 and a TAN content of 1.15 kg N / m3.
+  ++formula
+    2.3*(1/(In(dilution_parts_water)+1));
+ 
++c_app
+  print = 15
+  format= %.5f
+  ++units 
+    en = -
+  ++description
+    Correction factor taking into account the slurry application rate per 
+    ha and the TAN content of the slurry.
+  ++formula
+    if( (In(appl_rate) * Out(TAN_content)) > 0 ){
+       ( ( ( 19.41 * Out(TAN_content) + 4.2 * 1.102 - 9.51) * 
+       (In(appl_rate) * 0.0214 + 0.36)) /
+       (In(appl_rate) * Out(TAN_content)) - Tech(norm_er));
+    }else{ return 1; }
+    
+ 

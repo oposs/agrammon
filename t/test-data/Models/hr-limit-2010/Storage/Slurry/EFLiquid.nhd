@@ -1,0 +1,413 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-04-22
+taxonomy = Storage::Slurry::EFLiquid
+
++short
+
+ Calculates the emission factor for a specific slurry storage. 
+	
++description
+
+\subsubsection{References}
+
+UNECE 2007. Guidance document on control techniques for preventing and
+abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
+
+ De Bode MJC, 1990. Vergleich der Ammoniakemissionen aus verschiedenen
+ Flüssigmistlagersystemen. In: Ammoniak in der Umwelt. Hrsg.: KTBL und
+ VDI, Münster(D), 34:1-13.
+
+ Sommer SG, Christensen BT, Nielsen NE, Schjorring JK, 1993. Ammonia
+ volatilization during storage of cattle and pig slurry - effect of
+ surface cover. Journal of Agricultural Science 121:63-71.
+
+
+*** input ***
+
++cover_type 
+  type = enum
+  ++enum
+    +++uncovered
+       en = uncovered
+       de = ungedeckt
+       fr = découvert
+       it = uncovered
+    +++solid_cover
+       en = solid_cover
+       de = feste_Abdeckung_(_Beton_,_Holz_)
+       fr = Couverture_en_dur
+       it = solid_cover
+    +++perforated_cover
+       en = perforated_cover
+       de = perforierte_Abdeckung
+       fr = Couverture_perforée
+       it = perforated_cover
+    +++tent
+       en = tent
+       de = Folien_Folienzelt
+       fr = Bâche_Tente
+       it = tent
+    +++floating_cover
+       en = floating_cover
+       de = Schwimmfolie
+       fr = Bâche_flottante
+       it = floating_cover
+    +++natural_crust
+       en = natural_crust
+       de = natürliche_Schwimmschicht
+       fr = Couche_flottante_naturelle
+       it = natural_crust
+  ++labels 
+    en = Type of cover
+    de = Abdeckung des Güllelagers
+    fr = Type de couverture du stock de lisier
+  ++units  
+    en = -
+  ++description
+    Cover type of liquid storage. 
+  ++help
+    +++en
+       <p>If a farm has several slurry stores with different covers, for each cover type a store must be created. </p>
+       <p></p>
+    +++de
+       <p>Wenn mehrere Lager mit unterschiedlicher Abdeckung vorhanden sind, für jeden Typ Abdeckung ein Lager mit dem entsprechenden Volumen erstellen.</p>
+       <p>Perforierte Abdeckung: nur anwendbar in Kombination mit einem Laufhof mit perforierter Abdeckung.</p>
+       <p>Vorschlag für Standardwerte:</p>
+       <p>Erstellung von 3 Güllelagern, welche folgende prozentualen Anteile des gesamten berechneten Gülleanfalls aufnehmen: feste Abdeckung (Beton, Holz): 70 %,  ungedeckt: 15 % und perforierte Abdeckung: 15 % </p>
+    +++fr
+       <p>S’il existe plusieurs stocks avec des couvertures différentes, introduire pour chaque type de couverture un stock avec le volume correspondant. </p>
+       <p>Proposition de valeur standard:</p>
+       <p>Création de 3 stocks de lisiers avec les capacités suivantes (en % de la production totale de lisier): couverture en dur (béton, bois): 70%, découvert: 15% et couverture perforée: 15%.</p>
+
+
++contains_cattle_manure
+   type = enum
+   ++labels
+     en = Contains cattle slurry
+     de = Enthält Rindergülle
+     fr = Contient du lisier de bovin
+   ++enum
+     +++yes
+        en = yes
+        de = Ja
+        fr = Oui
+     +++no
+        en = no
+        de = Nein
+        fr = Non
+  ++units  
+    en = -
+   ++description 
+     Describes if the specific storage contains cattle manure.
+   ++help
+     +++en
+        <p>Standard value for Switzerland: yes</p>
+     +++de
+        <p>Vorschlag für Standardwert: Ja</p>
+     +++fr
+        <p>Proposition de valeur standard: oui </p>
+
+
++contains_pig_manure
+   type=enum
+   ++labels 
+     en = Contains pigs slurry
+     de = Enthält Schweinegülle
+     fr = Contient du lisier de porc
+   ++enum
+     +++yes
+        en = yes
+        de = Ja
+        fr = Oui
+     +++no
+        en = no
+        de = Nein
+        fr = Non
+   ++units  
+     en = -
+   ++description 
+     Describes if the specific storage contains pig manure.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: yes</p>
+    +++de
+       <p>Vorschlag für Standardwert: Ja</p>
+     +++fr
+        <p>Proposition de valeur standard: oui </p>
+
+
+
++free_correction_factor
+  models = SHL
+  type = float
+  default_calc = 0
+  default_gui = 0
+  validator = between(0,100);
+  ++labels 
+    en = Additional emission mitigation measure
+    de = Zusätzliche emissionsmindernde Massnahme Güllelager (siehe Spalte Hilfe)
+    fr = Mesure supplémentaire limitant les émissions dues au stockage du lisier (cf. aide)
+  ++units 
+    en = %
+  ++description
+    Factor to define free ?
+  ++help
+    +++en
+       <p> </p>
+    +++de
+	<p>
+           Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt 
+           werden (z.B. ein neuer Typ Abdeckung). Die eingegebene Zahl entspricht der 
+           Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Güllelager 
+           nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar 
+           aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
+        </p>
+	<p>
+	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+           zur Emissionsminderung berücksichtigen müssen. 
+        <p>
+	<p>Vorschlag für Standardwert: 0 %.</p>
+    +++fr
+       <p>
+         Ici, vous pouvez introduire l’effet d’une mesure supplémentaire limitant les 
+	 émissions (p.ex. un nouveau type de couverture). Le chiffre introduit correspond 
+	 à la réduction d’émission en pourcent (p.ex. 30%: l’émission provenant du stock 
+	 de lisier diminue de 30%). Il est recommandé de mentionner la mesure choisie dans 
+	 la colonne ‘Commentaire’ et de justifier le taux de réduction choisi.
+       </p>
+       <p>
+         Cette fonction s’adresse principalement aux utilisateurs/trices qui font des 
+	 pronostiques d’émissions et qui doivent prendre en compte l’effet de nouvelles 
+	 technologies destinées à limiter les émissions et encore méconnues actuellement.
+       </p>
+       <p>Proposition valeur standard: 0 %.</p><p> </p>
+ 
+*** technical ***
+
++ef_cattle_uncovered
+  value =  2.19
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    The emission factor for uncovered storage is based on experiments of de Bode (1990) and Sommer et al. (1993) measuring emissions of 2.5 to 6.9 g N m-2 day-1 for cattle slurry, for the emission of the none coverd a mean of the higher values is assumed. -> Assumption: 6.0 gN m-2 day-1 resp. 2.19 kg N /m2 /yr according to the results of the decision of the session of 10 April 208 (participants: C. Bonjour, C. Leuenbergern, M. Raaflaub, H. Menzi, T. Kupper).
+
++ef_cattle_solid_cover
+  value =  0.219
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for solid covered storage based on ef_cattle_uncovered with a reduction of 90%. 
+    UNECE (2007) p 13 does suggest a reduction of 80%. 
+    Since covers of storages are more tight in Switzerland a reduction of 90% was choosen.
+
++ef_cattle_tent
+  value =  0.876
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for tent covered storage (ef_cattle_uncovered with a reduction of 60%) differs to the UNECE (2007) p.13 reference (ef_cattle_uncovered with a reduction of 80% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that tent covered storage emit more ammonia then assumed by UNECE.
+
++ef_cattle_floating_cover
+  value =  0.438
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for floating covered storage (sheeting may be a type of plastic, canvas or other suitable material) (ef_cattle_uncovered with a reduction of 80%) differs to the UNECE (2007) p.13 referrence (ef_cattle_uncovered with a reduction of 60% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that floating covered storage emit less ammonia then assumed by UNECE.
+
++ef_cattle_perforated_cover
+  value =  1.314
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for perforated_cover storage based on ef_cattle_uncovered with a reduction of 40% after UNECE (2007) p 13. 
+
++ef_cattle_natural_crust
+  value =  1.314
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for a natural crust covered storage based on ef_cattle_uncovered with a reduction of 40% after UNECE (2007) p 13. 
+
+## Pigs
++ef_pig_uncovered
+  value = 2.92
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+	 
+The Emission factor for uncovered storage is based on experiments of
+de Bode (1990) and Sommer et al. (1993) measuring emissions of 2.5 to
+6.9 g N m-2 day-1 for cattle slurry, for the emission of the none
+coverd a mean of the higher values is assumed. Assumption: 8.0 gN m-2
+day-1 resp. 2.92 kgN m-2 /yr according to the report "Abklärungen zur
+Klasierung von Stallsystemen und Hofdüngerlagern bezüglich der
+Ammoniak-Emissionen" and the decision of the session of 10 April 208
+(participants: C. Bonjour, C. Leuenbergern, M. Raaflaub, H. Menzi,
+T. Kupper).
+
++ef_pig_solid_cover
+  value = 0.292
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for solid coverd storage based on ef_pig_uncovered with a reduction of 90%. UNECE (2007) p 13 does suggest a reduction of 80%.Since covers of storages are more tight in Switzerland a reduction of 90% was choosen.
+
++ef_pig_tent
+  value = 1.168
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for tent covered storage (ef_pig_uncovered with a reduction of 60%) differs to the UNECE (2007) p.13 referrence (ef_pig_uncovered with a reduction of 80% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that tent covered storage emit more ammonia then assumed by UNECE.
+
++ef_pig_floating_cover
+  value = 0.584
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for floating covered storage (sheeting may be a type of plastic, canvas or other suitable material) (ef_pig_uncovered with a reduction of 80%) differs to the UNECE (2007) p.13 referrence (ef_pig_uncovered with a reduction of 60% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that floating covered storage emit less ammonia then assumed by UNECE. 
+
++ef_pig_perforated_cover
+  value = 1.752
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for perforated_cover storage based on ef_pig_uncovered with a reduction of 40% after UNECE (2007) p 13.
+
++ef_pig_natural_crust
+  value = 1.752
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for a natural crust covered storage (e.g. chopped straw, peat, bark, LECA balls, ect.)based on ef_pig_uncovered with a reduction of 40% after UNECE (2007) p 13. 
+
+
+*** external ***
+
++::Livestock
+
+*** output ***
+
++ef_cattle_liquid
+  print = 20
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor of a specific liquid storage for cattle.
+  ++formula
+#    my $key = "ef_cattle_" . In(cover_type);
+#    return Tech($key);
+     return $TE->{'ef_cattle_'.In(cover_type)};
+    
++ef_pigs_liquid
+  print = 20
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor of a specific liquid storage for pig.
+  ++formula
+#    my $key = "ef_pig_" . In(cover_type);
+#    return Tech($key);
+     return $TE->{'ef_pig_'.In(cover_type)};
+ 
++ef_liquid
+  unit  =  kg N /m2 /a
+  print = 15
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor of a specific liquid storage, if storage conatains cattle and pig manure,
+    a maen distribution depending on the n flow into liqud storage is assumed. Which does not 
+    consider possible separt storage units.
+  ++formula
+    if ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {
+    	return Out(ef_cattle_liquid);
+    }
+    elsif ( lc In(contains_cattle_manure) eq 'no' and lc In(contains_pig_manure) eq 'yes' ) {
+    	return Out(ef_pigs_liquid);
+    }
+    elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'yes' ) {
+    	if ( Val(n_into_storage_liquid, ::Livestock) != 0) {
+             return (Val(n_into_storage_liquid_pigs, ::Livestock) * Out(ef_pigs_liquid) +
+                      (Val(n_into_storage_liquid, ::Livestock) - 
+                       Val(n_into_storage_liquid_pigs, ::Livestock)) *  Out(ef_cattle_liquid) ) 
+                    / Val(n_into_storage_liquid, ::Livestock) 
+        }
+        else {
+             return (Out(ef_cattle_liquid) + Out(ef_pigs_liquid) )/2;
+        }
+    }
+    else {
+      	if ( Val(n_into_storage_liquid, ::Livestock) != 0 ) {
+  	    writeLog({en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')'
+                      . ' and/or "Contains pigs slurry" (' . In(contains_pig_manure) . ')' . "\n",
+                  de => 'Ungültige Eingabe für "Enthält Rindergülle" (' . In(contains_cattle_manure) . ')'
+                      . ' und/oder "Enthält Schweinegülle" (' . In(contains_pig_manure) . ')' . "\n",
+                  fr => 'Entrée non valable pour "Contient du lisier de bovin" (' . In(contains_cattle_manure) . ') '
+                      . ' et/ou "Contient du lisier de porc" (' . In(contains_pig_manure) . ')' . "\n"});
+
+             return (Val(n_into_storage_liquid_pigs, ::Livestock) * Out(ef_pigs_liquid) +
+                      (Val(n_into_storage_liquid, ::Livestock) - 
+                       Val(n_into_storage_liquid_pigs, ::Livestock)) *  Out(ef_cattle_liquid) ) 
+                    / Val(n_into_storage_liquid, ::Livestock) 
+        }
+        else {
+             # Although it does not matter give mean as result
+             return (Out(ef_cattle_liquid) + Out(ef_pigs_liquid) )/2;
+        }
+    }
+
+
++c_free_factor_storage_slurry
+  print = 10
+  ++units 
+    en = -
+  ++description
+    Free reduction of the Emission rate for the Yard.
+  ++formula
+  if(In(free_correction_factor)//0 > 0) {   	    
+      writeLog({en=>"You have entered an additional emission mitigation measure for a storage of slurry of "
+                    . In(free_correction_factor) 
+                    . "\%!\n",
+                de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für ein Güllelager von "
+                    . In(free_correction_factor) 
+                    . "\% eingegeben!\n", 
+                fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions "
+                    . "du stock de lisier de " . In(free_correction_factor) . "\%.\n" });
+	    return 1 - In(free_correction_factor)/100;
+     
+  } else {
+    return 1;
+  } 
