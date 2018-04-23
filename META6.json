@@ -44,7 +44,8 @@
         "Agrammon::DB::Dataset": "lib/Agrammon/DB/Dataset.pm6",
         "Agrammon::Performance": "lib/Agrammon/Performance.pm6",
         "Agrammon::UI::Web": "lib/Agrammon/UI/Web.pm6",
-        "Agrammon::UI::CommandLine": "lib/Agrammon/UI/CommandLine.pm6"
+        "Agrammon::UI::CommandLine": "lib/Agrammon/UI/CommandLine.pm6",
+        "Agrammon::Formula::LogCollector": "lib/Agrammon/Formula/LogCollector.pm6"
     },
     "name": "Agrammon",
     "description": "Simulation model for calculating ammonia emissions from agriculture.",
