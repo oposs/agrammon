@@ -123,28 +123,6 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description 
    Emission rate for  manure of broilers and turkeys based on EAGER workshop, January 2008: 6% Ntot, converted using Nsol 60% and emission factor of 10%.
 
-
-+er_n2
-  value = 0.025
-  ++units  
-    en = -
-  ++description 
-   Emission rate poultry for N2 poultry manure based on Ntot
-
-+er_no
-  value = 0.001
-  ++units  
-    en = -
-  ++description 
-   Emission rate poultry for N2 poultry manure based on Ntot
-
-+er_n2o
-  value = 0.001
-  ++units  
-    en = -
-  ++description 
-   Emission rate poultry for N2 poultry manure based on Ntot
-
 +c_droppings_mist_covered_basin
   value = 0.75
   ++units  
@@ -210,40 +188,6 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++formula
        (Tech(er_layers_growers_other_poultry) * Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) * (1-(In(share_applied_direct_poultry_manure)/100)) * Out(c_covered_basin)* Out(c_free_factor_storage_poultrymanure) );
 
-+n2_npoultry_layers_growers_other_poultry
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from poultry manure storage.
-  ++formula
-    Tech(er_n2) * Val(n_into_storage_poultry_layers_growers_other_poultry,::Livestock);
-
-+no_npoultry_layers_growers_other_poultry
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NO emission from poultry manure storage.
-  ++formula
-    Tech(er_no) * Val(n_into_storage_poultry_layers_growers_other_poultry,::Livestock);
-
-+n2o_npoultry_layers_growers_other_poultry
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N20 emission from poultry manure storage.
-  ++formula
-    Tech(er_n2o) * Val(n_into_storage_poultry_layers_growers_other_poultry,::Livestock);
-
-
 
 +nh3_npoultry_turkeys_broilers
   print = 7
@@ -256,40 +200,6 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++formula
        return (Tech(er_turkeys_broilers) * Val(tan_into_storage_poultry_turkeys_broilers,::Livestock) * (1-(In(share_applied_direct_poultry_manure)/100))* Out(c_covered_basin) * Out(c_free_factor_storage_poultrymanure));
 
-+n2_npoultry_turkeys_broilers
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from poultry manure storage.
-  ++formula
-     Tech(er_n2) * Val(n_into_storage_poultry_turkeys_broilers,::Livestock);
-
-+no_npoultry_turkeys_broilers
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NO emission from poultry manure storage.
-  ++formula
-     Tech(er_no) * Val(n_into_storage_poultry_turkeys_broilers,::Livestock);
-
-+n2o_npoultry_turkeys_broilers
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2O emission from poultry manure storage.
-  ++formula
-     Tech(er_n2o) * Val(n_into_storage_poultry_turkeys_broilers,::Livestock);
-
-
 +nh3_npoultry
   print = 1a
   ++units  
@@ -300,40 +210,6 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
     Annual NH3 emission from poultry manure storage.
   ++formula
     Out(nh3_npoultry_layers_growers_other_poultry) + Out(nh3_npoultry_turkeys_broilers); 
-
-+n2_npoultry
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from poultry manure storage.
-  ++formula
-    Out(n2_npoultry_layers_growers_other_poultry) + Out(n2_npoultry_turkeys_broilers); 
-
-+no_npoultry
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NO emission from poultry manure storage.
-  ++formula
-    Out(no_npoultry_layers_growers_other_poultry) + Out(n2o_npoultry_turkeys_broilers); 
-
-+n2o_npoultry
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2O emission from poultry manure storage.
-  ++formula
-    Out(n2o_npoultry_layers_growers_other_poultry) + Out(n2o_npoultry_turkeys_broilers); 
-
 
 #### immobilization
     
@@ -385,8 +261,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
     Annual N flux out of storage for manure application.
   ++formula
     Val(n_into_storage_poultry_layers_growers_other_poultry,::Livestock) -
-    Out(nh3_npoultry_layers_growers_other_poultry) - Out(n2_npoultry_layers_growers_other_poultry) -
-    Out(no_npoultry_layers_growers_other_poultry) - Out(n2o_npoultry_layers_growers_other_poultry);
+    Out(nh3_npoultry_layers_growers_other_poultry)
 
 +n_into_application_turkeys_broilers
   print = 7
@@ -397,9 +272,8 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_poultry_turkeys_broilers,::Livestock) -
-    Out(nh3_npoultry_turkeys_broilers) - Out(n2_npoultry_turkeys_broilers) -
-    Out(no_npoultry_turkeys_broilers) - Out(n2o_npoultry_turkeys_broilers);
+    Val(n_into_storage_poultry_turkeys_broilers,::Livestock)
+    - Out(nh3_npoultry_turkeys_broilers)
 
 +n_into_application
   print = PoultryFlux
@@ -415,9 +289,8 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_poultry,::Livestock) -
-    Out(nh3_npoultry)- Out(n2_npoultry) -
-    Out(no_npoultry) - Out(n2o_npoultry);
+    Val(n_into_storage_poultry,::Livestock)
+    - Out(nh3_npoultry)
 
 +tan_into_application_layers_growers_other_poultry
   print = 7
@@ -430,9 +303,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++formula
     Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) -
     Out(immobilization_poultry_layers_growers_other_poultry) -
-    Out(nh3_npoultry_layers_growers_other_poultry) - Out(n2_npoultry_layers_growers_other_poultry) -
-    Out(no_npoultry_layers_growers_other_poultry) - Out(n2o_npoultry_layers_growers_other_poultry);
-
+    Out(nh3_npoultry_layers_growers_other_poultry)
 
 +tan_into_application_turkeys_broilers
   print = 7
@@ -443,10 +314,9 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual N flux as TAN out of storage for manure application.
   ++formula
-    Val(tan_into_storage_poultry_turkeys_broilers,::Livestock) -
-    Out(immobilization_poultry_turkeys_broilers) -
-    Out(nh3_npoultry_turkeys_broilers) - Out(n2_npoultry_turkeys_broilers) -
-    Out(no_npoultry_turkeys_broilers) - Out(n2o_npoultry_turkeys_broilers);
+    Val(tan_into_storage_poultry_turkeys_broilers,::Livestock)
+    - Out(immobilization_poultry_turkeys_broilers)
+    - Out(nh3_npoultry_turkeys_broilers)
 
 +tan_into_application
   print = 4a
@@ -457,10 +327,6 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual N flux as TAN out of storage for manure application.
   ++formula
-    Val(tan_into_storage_poultry,::Livestock) -
-    Out(immobilization_poultry) -
-    Out(nh3_npoultry) - Out(n2_npoultry) -
-    Out(no_npoultry) - Out(n2o_npoultry);
-
-
-
+    Val(tan_into_storage_poultry,::Livestock)
+    - Out(immobilization_poultry)
+    - Out(nh3_npoultry)
