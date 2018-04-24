@@ -48,6 +48,7 @@ for "$test-root/CMilk.nhd", "$test-root/CMilk-crazy-ws.nhd" -> $module-file {
             is .help.keys.sort, <de en fr>, 'Correct help keys';
             is .help<fr>, '<p>Proposition de valeur standard: 6500 kg par an </p>',
                 'Correct help value';
+            nok .is-branch, 'This is not a branch input';
         }
 
         my @technical = $model.technical;
@@ -154,6 +155,19 @@ subtest "Loading $module-file" => {
     isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
     ok $model.instances eq 'multi', 'DairyCow.nhd is multi';
     ok $model.gui eq 'Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vaches latière,Livestock::Dairy cows', 'DairyCow.nhd has correct gui parameter';
+}
+
+$module-file = "$test-root/Models/hr-limit-2010/Livestock/Poultry/Excretion.nhd";
+subtest "Loading $module-file" => {
+    my $parsed = Agrammon::ModuleParser.parsefile(
+        $module-file,
+        actions => Agrammon::ModuleBuilder
+    );
+    ok $parsed, "Successfully parsed $module-file";
+    my $model = $parsed.ast;
+    isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
+    nok $model.input[0].is-branch, 'First input is not a branch';
+    ok $model.input[1].is-branch, 'First input is a branch';
 }
 
 done-testing;
