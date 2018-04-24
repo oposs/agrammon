@@ -305,6 +305,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Annual N remaining free_range (on pasture, etc.).
   ++formula
-    Out(n_excr_free_range) - Out(nh3_nfree_range);
+    Out(n_excr_free_range)
+    - Out(nh3_nfree_range) - Out(no_nfree_range) - Out(n2o_nfree_range);
 
  
