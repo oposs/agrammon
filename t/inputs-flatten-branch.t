@@ -25,6 +25,20 @@ given Agrammon::Inputs::Distribution.new -> $dist {
                         'volume', { quiet => 50, medium => 30, loud => 20 })
             },
             'Can add second flattened input';
+    throws-like
+            {
+                $dist.add-multi-input-flattened('Foo::Bar', 'Instance B', 'Baz',
+                        'something', { quiet => 60, medium => 30, loud => 20 })
+            },
+            X::Agrammon::Inputs::Distribution::BadSum,
+            'Flattened input must sum to 100 (1)';
+    throws-like
+            {
+                $dist.add-multi-input-flattened('Foo::Bar', 'Instance B', 'Baz',
+                        'something', { quiet => 30, medium => 30, loud => 20 })
+            },
+            X::Agrammon::Inputs::Distribution::BadSum,
+            'Flattened input must sum to 100 (2)';
 
     lives-ok
             {
@@ -53,6 +67,20 @@ given Agrammon::Inputs::Distribution.new -> $dist {
             },
             X::Agrammon::Inputs::Distribution::AlreadyBranched,
             'Cannot add flattend input that covers a branched input';
+    throws-like
+            {
+                $dist.add-multi-input-branched('Foo::Bar', 'Instance C', 'Baz',
+                        'aaa', 'bbb', [[20, 10, 30],[30, 20, 10]])
+            },
+            X::Agrammon::Inputs::Distribution::BadSum,
+            'Branch matrix must sum to 100 (1)';
+    throws-like
+            {
+                $dist.add-multi-input-branched('Foo::Bar', 'Instance C', 'Baz',
+                        'aaa', 'bbb', [[10, 5, 10],[10, 20, 10]])
+            },
+            X::Agrammon::Inputs::Distribution::BadSum,
+            'Branch matrix must sum to 100 (2)';
 }
 
 done-testing;

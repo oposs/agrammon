@@ -102,6 +102,16 @@ class X::Agrammon::Inputs::Distribution::AlreadyBranched is Exception {
     }
 }
 
+class X::Agrammon::Inputs::Distribution::BadSum is Exception {
+    has Str $.what;
+    has Str $.taxonomy;
+    has Str $.instance-id;
+    has Str $.input-name;
+    method message() {
+        "$!what.tclc() does not sum to 100 for instance $!instance-id of $!input-name in $!taxonomy"
+    }
+}
+
 #| A set of inputs, some of which may be a statistical distribution through either the
 #| flattening or branching approach. Can produce an C<Agrammon::Inputs> object given a
 #| model (the model being needed to understand which input to distribute).
@@ -127,6 +137,12 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
     method add-multi-input-flattened(Str $taxonomy, Str $instance-id, Str $sub-taxonomy,
             Str $input-name, %value-percentages --> Nil) {
         self!ensure-no-dupe($taxonomy, $instance-id, $sub-taxonomy, $input-name);
+        unless %value-percentages.values.sum == 100 {
+            die X::Agrammon::Inputs::Distribution::BadSum.new:
+                    :what('flattened values'),
+                    :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
+                    :$instance-id, :$input-name;
+        }
         %!flattened-by-taxonomy{$taxonomy}.push: Flattened.new:
                 :$instance-id, :$sub-taxonomy, :$input-name, :%value-percentages;
     }
@@ -135,6 +151,12 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
             Str $input-name-a, Str $input-name-b, @matrix --> Nil) {
         for $input-name-a, $input-name-b {
             self!ensure-no-dupe($taxonomy, $instance-id, $sub-taxonomy, $_);
+        }
+        unless @matrix.map(*.sum).sum == 100 {
+            die X::Agrammon::Inputs::Distribution::BadSum.new:
+                    :what('branch matrix'),
+                    :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
+                    :$instance-id, :input-name("$input-name-a/$input-name-b");
         }
         %!branched-by-taxonomy{$taxonomy}.push: Branched.new:
                 :$instance-id, :$sub-taxonomy, :$input-name-a, :$input-name-b, :@matrix;
