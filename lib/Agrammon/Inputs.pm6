@@ -193,28 +193,21 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
 
     method !distribute(Str $taxonomy, Str $instance-id, Str $dist-over, @distribute,
             Agrammon::Inputs $target --> Nil) {
-        # Get instance input data.
+        # Get instance input data, and remove the instance we'll distribute.
         my $dist-instance = %!multi-input-lookup{$taxonomy}{$instance-id};
         my %instance-input := $dist-instance!input-hash;
+        %!multi-input-lookup{$taxonomy}{$instance-id}:delete;
+        if %!multi-input-lists{$taxonomy} -> @filter {
+            @filter .= grep(* !=== $dist-instance);
+        }
 
-        # Break up distribution input value into number of parts, accounting for the values
-        # being percentages.
-        my $parts = @distribute.elems;
+        # Get details of the field we distribute over, and remove it.
         my $dist-name = $dist-over.substr($dist-over.rindex('::') + 2);
         my $dist-taxonomy = $dist-over.substr(0, $dist-over.chars - ($dist-name.chars + 2));
         my $dist-sub-taxonomy = $dist-taxonomy eq $taxonomy
                 ?? ''
                 !! $dist-taxonomy.substr($taxonomy.chars + 2);
         my $dist-total = %instance-input{$dist-taxonomy}{$dist-name};
-        my $per-part = $dist-total / ($parts * 100);
-
-        # Remove the instance that we'll be distributing.
-        %!multi-input-lookup{$taxonomy}{$instance-id}:delete;
-        if %!multi-input-lists{$taxonomy} -> @filter {
-            @filter .= grep(* !=== $dist-instance);
-        }
-
-        # Remove the distributed field.
         %instance-input{$dist-taxonomy}{$dist-name}:delete;
 
         # Create distributed instances.
@@ -226,7 +219,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         for @flattened[0].value-percentages.sort(*.key).map(*.kv).flat -> $enum, $value {
             my $dist-instance-id = "$instance-id {$instance-number++}";
             $target.add-multi-input($taxonomy, $dist-instance-id, $dist-sub-taxonomy, $dist-name,
-                    ($value * $per-part).narrow);
+                    (($value / 100) * $dist-total).narrow);
             $target.add-multi-input($taxonomy, $dist-instance-id, @flattened[0].sub-taxonomy,
                     @flattened[0].input-name, $enum);
             self!copy-instance-input($taxonomy, $dist-instance-id, %instance-input, $target);
