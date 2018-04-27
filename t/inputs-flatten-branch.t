@@ -86,24 +86,33 @@ given Agrammon::Inputs::Distribution.new -> $dist {
 subtest '1 flattened input' => {
     given Agrammon::Inputs::Distribution.new -> $dist {
         $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'dist-me', 1000);
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'simple', 42);
         $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-a',
                 {x => 30, y => 20, z => 50 });
+        $dist.add-multi-input('Test::Base', 'Instance A', 'AnotherSub', 'simple', 101);
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Retained', 'simple', 13);
         my $inputs = $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
         my @instances = $inputs.inputs-list-for('Test::Base');
         is @instances.elems, 3, 'Produced 3 instances from the distribution';
         @instances .= sort(*.input-hash-for('Test::Base::AnotherSub').<flat-a>);
         is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
-                { dist-me => 300 }, 'Correct distribution value for first flattened input';
+                { dist-me => 300, simple => 42 }, 'Correct distribution value for first flattened input';
         is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub'),
-                { flat-a => 'x' }, 'Correct enum value for first flattened input';
+                { flat-a => 'x', simple => 101 }, 'Correct enum value for first flattened input';
+        is-deeply @instances[0].input-hash-for('Test::Base::Retained'),
+                { simple => 13 }, 'Non-distributed instance data is retained';
         is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
-                { dist-me => 200 }, 'Correct distribution value for second flattened input';
+                { dist-me => 200, simple => 42 }, 'Correct distribution value for second flattened input';
         is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
-                { flat-a => 'y' }, 'Correct enum value for second flattened input';
+                { flat-a => 'y', simple => 101 }, 'Correct enum value for second flattened input';
+        is-deeply @instances[1].input-hash-for('Test::Base::Retained'),
+                { simple => 13 }, 'Non-distributed instance data is retained';
         is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
-                { dist-me => 500 }, 'Correct distribution value for third flattened input';
+                { dist-me => 500, simple => 42 }, 'Correct distribution value for third flattened input';
         is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
-                { flat-a => 'z' }, 'Correct enum value for third flattened input';
+                { flat-a => 'z', simple => 101 }, 'Correct enum value for third flattened input';
+        is-deeply @instances[2].input-hash-for('Test::Base::Retained'),
+                { simple => 13 }, 'Non-distributed instance data is retained';
     }
 }
 

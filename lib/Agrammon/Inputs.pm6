@@ -214,6 +214,9 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
             @filter .= grep(* !=== $dist-instance);
         }
 
+        # Remove the distributed field.
+        %instance-input{$dist-taxonomy}{$dist-name}:delete;
+
         # Create distributed instances.
         my @flattened = @distribute.grep(Flattened);
         my @branched = @distribute.grep(Branched);
@@ -226,6 +229,18 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                     ($value * $per-part).narrow);
             $target.add-multi-input($taxonomy, $dist-instance-id, @flattened[0].sub-taxonomy,
                     @flattened[0].input-name, $enum);
+            self!copy-instance-input($taxonomy, $dist-instance-id, %instance-input, $target);
+        }
+    }
+
+    method !copy-instance-input($base-taxonomy, $instance-id, %input, $target) {
+        for %input.kv -> $taxonomy, %taxonomy-inputs {
+            my $sub-taxonomy = $taxonomy eq $base-taxonomy
+                    ?? ''
+                    !! $taxonomy.substr($base-taxonomy.chars + 2);
+            for %taxonomy-inputs.kv -> $name, $value {
+                $target.add-multi-input($base-taxonomy, $instance-id, $sub-taxonomy, $name, $value);
+            }
         }
     }
 
