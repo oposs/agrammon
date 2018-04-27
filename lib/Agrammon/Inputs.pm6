@@ -200,6 +200,16 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                 self!distribute($taxonomy, $instance-id, %dist-map{$taxonomy}, @distribute, $inputs);
             }
         }
+        for %!multi-input-lookup.kv -> $taxonomy, %instances {
+            for %instances.kv -> $instance-id, $instance {
+                self!copy-instance-input($taxonomy, $instance-id, $instance!input-hash(), $inputs);
+            }
+        }
+        for %!single-inputs.kv -> $taxonomy, %inputs {
+            for %inputs.kv -> $input-name, $value {
+                $inputs.add-single-input($taxonomy, $input-name, $value);
+            }
+        }
         return $inputs;
     }
 

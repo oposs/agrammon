@@ -214,4 +214,38 @@ subtest '3 flattened inputs' => {
     }
 }
 
+subtest 'Non-flattened instances and non-instance data exist in produced model' => {
+    given Agrammon::Inputs::Distribution.new -> $dist {
+        $dist.add-single-input('Test', 'foo', 99);
+        $dist.add-single-input('Test::Pub', 'bar', 'beer');
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'dist-me', 1000);
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'simple', 42);
+        $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-a',
+                {x => 30, y => 70 });
+        $dist.add-multi-input('Test::Base', 'Instance B', 'Sub', 'dist-me', 400);
+        $dist.add-multi-input('Test::Base', 'Instance B', 'Sub', 'simple', 101);
+        $dist.add-multi-input('Test::Base', 'Instance B', 'AnotherSub', 'flat-a', 'z');
+        my $inputs = $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+        my @instances = $inputs.inputs-list-for('Test::Base');
+        is @instances.elems, 3, 'Produced 2 instances from the distribution and retained 1 other';
+        @instances .= sort(*.input-hash-for('Test::Base::AnotherSub').<flat-a>);
+        is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
+                { dist-me => 300, simple => 42 }, 'Correct distribution value for first flattened input';
+        is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'x' }, 'Correct enum value for first flattened input';
+        is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
+                { dist-me => 700, simple => 42 }, 'Correct distribution value for second flattened input';
+        is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'y' }, 'Correct enum value for second flattened input';
+        is @instances[2].instance-id, 'Instance B', 'Correct instance ID of carried instance';
+        is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
+                { dist-me => 400, simple => 101 }, 'Correct distribution value for carried instance';
+        is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'z' }, 'Correct enum value for carried instance';
+        is-deeply $inputs.input-hash-for('Test'), { foo => 99 }, 'Single input is copied to input model (1)';
+        is-deeply $inputs.input-hash-for('Test::Pub'), { bar => 'beer' },
+                'Single input is copied to input model (2)';
+    }
+}
+
 done-testing;
