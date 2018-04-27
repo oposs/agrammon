@@ -131,17 +131,21 @@ class X::Agrammon::Inputs::Distribution::MissingDistributionValue is Exception {
 #| flattening or branching approach. Can produce an C<Agrammon::Inputs> object given a
 #| model (the model being needed to understand which input to distribute).
 class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
+    #| A member of the product calculation for a generated input. This abstracts the
+    #| differences between a flattened input (one field) and a branched input (2 fields).
     my class DistributionProductElement {
         has %.values;
         has $.percentage;
     }
 
+    #| The things flattened and branched inputs have in common.
     my role Distributable {
         has $.sub-taxonomy;
         method distributes-input(Str $name --> Bool) { ... }
         method distribution-products(--> Iterable) { ... }
     }
 
+    #| A flattened input, with details of the distribution.
     my class Flattened does Distributable {
         has $.input-name;
         has %.value-percentages;
@@ -153,6 +157,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         }
     }
 
+    #| A branched input, with details of the matrix.
     my class Branched does Distributable {
         has $.input-name-a;
         has $.input-name-b;
