@@ -116,23 +116,25 @@ class X::Agrammon::Inputs::Distribution::BadSum is Exception {
 #| flattening or branching approach. Can produce an C<Agrammon::Inputs> object given a
 #| model (the model being needed to understand which input to distribute).
 class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
-    my class Flattened {
-        has $.instance-id;
+    my role Distributable {
         has $.sub-taxonomy;
-        has $.input-name;
-        has %.value-percentages;
+        method distributes-input(Str $name --> Bool) { ... }
     }
 
-    my class Branched {
-        has $.instance-id;
-        has $.sub-taxonomy;
+    my class Flattened does Distributable {
+        has $.input-name;
+        has %.value-percentages;
+        method distributes-input(Str $name --> Bool) { $name eq $!input-name }
+    }
+
+    my class Branched does Distributable {
         has $.input-name-a;
         has $.input-name-b;
         has @.matrix;
+        method distributes-input(Str $name --> Bool) { so $name eq $!input-name-a | $!input-name-b }
     }
 
-    has Array[Flattened] %!flattened-by-taxonomy;
-    has Array[Branched] %!branched-by-taxonomy;
+    has %!distributed-by-taxonomy;
 
     method add-multi-input-flattened(Str $taxonomy, Str $instance-id, Str $sub-taxonomy,
             Str $input-name, %value-percentages --> Nil) {
@@ -143,8 +145,8 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                     :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
                     :$instance-id, :$input-name;
         }
-        %!flattened-by-taxonomy{$taxonomy}.push: Flattened.new:
-                :$instance-id, :$sub-taxonomy, :$input-name, :%value-percentages;
+        %!distributed-by-taxonomy{$taxonomy}{$instance-id}.push: Flattened.new:
+                :$sub-taxonomy, :$input-name, :%value-percentages;
     }
 
     method add-multi-input-branched(Str $taxonomy, Str $instance-id, Str $sub-taxonomy,
@@ -158,26 +160,76 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                     :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
                     :$instance-id, :input-name("$input-name-a/$input-name-b");
         }
-        %!branched-by-taxonomy{$taxonomy}.push: Branched.new:
-                :$instance-id, :$sub-taxonomy, :$input-name-a, :$input-name-b, :@matrix;
+        %!distributed-by-taxonomy{$taxonomy}{$instance-id}.push: Branched.new:
+                :$sub-taxonomy, :$input-name-a, :$input-name-b, :@matrix;
     }
 
     method !ensure-no-dupe(Str $taxonomy, Str $instance-id, Str $sub-taxonomy, Str $input-name --> Nil) {
-        if %!flattened-by-taxonomy{$taxonomy} -> @check {
-            with @check.first({ .instance-id eq $instance-id && .sub-taxonomy eq $sub-taxonomy &&
-                    .input-name eq $input-name }) {
-                die X::Agrammon::Inputs::Distribution::AlreadyFlattened.new:
-                        :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
-                        :$instance-id, :$input-name;
+        if %!distributed-by-taxonomy{$taxonomy}{$instance-id} -> @check {
+            with @check.first({ .sub-taxonomy eq $sub-taxonomy && .distributes-input($input-name) }) {
+                when Flattened {
+                    die X::Agrammon::Inputs::Distribution::AlreadyFlattened.new:
+                            :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
+                            :$instance-id, :$input-name;
+                }
+                when Branched {
+                    die X::Agrammon::Inputs::Distribution::AlreadyBranched.new:
+                            :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
+                            :$instance-id, :$input-name;
+                }
             }
         }
-        if %!branched-by-taxonomy{$taxonomy} -> @check {
-            with @check.first({ .instance-id eq $instance-id && .sub-taxonomy eq $sub-taxonomy &&
-                    .input-name-a | .input-name-b eq $input-name }) {
-                die X::Agrammon::Inputs::Distribution::AlreadyBranched.new:
-                        :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
-                        :$instance-id, :$input-name;
+    }
+
+    method to-inputs(%dist-map) {
+        my $inputs = Agrammon::Inputs.new;
+        for %!distributed-by-taxonomy.kv -> $taxonomy, %instances {
+            for %instances.kv -> $instance-id, @distribute {
+                self!distribute($taxonomy, $instance-id, %dist-map{$taxonomy}, @distribute, $inputs);
             }
         }
+        return $inputs;
+    }
+
+    method !distribute(Str $taxonomy, Str $instance-id, Str $dist-over, @distribute,
+            Agrammon::Inputs $target --> Nil) {
+        # Get instance input data.
+        my $dist-instance = %!multi-input-lookup{$taxonomy}{$instance-id};
+        my %instance-input := $dist-instance!input-hash;
+
+        # Break up distribution input value into number of parts, accounting for the values
+        # being percentages.
+        my $parts = @distribute.elems;
+        my $dist-name = $dist-over.substr($dist-over.rindex('::') + 2);
+        my $dist-taxonomy = $dist-over.substr(0, $dist-over.chars - ($dist-name.chars + 2));
+        my $dist-sub-taxonomy = $dist-taxonomy eq $taxonomy
+                ?? ''
+                !! $dist-taxonomy.substr($taxonomy.chars + 2);
+        my $dist-total = %instance-input{$dist-taxonomy}{$dist-name};
+        my $per-part = $dist-total / ($parts * 100);
+
+        # Remove the instance that we'll be distributing.
+        %!multi-input-lookup{$taxonomy}{$instance-id}:delete;
+        if %!multi-input-lists{$taxonomy} -> @filter {
+            @filter .= grep(* !=== $dist-instance);
+        }
+
+        # Create distributed instances.
+        my @flattened = @distribute.grep(Flattened);
+        my @branched = @distribute.grep(Branched);
+        die "NYI" unless @flattened == 1;
+        die "NYI" unless @branched == 0;
+        my $instance-number = 1;
+        for @flattened[0].value-percentages.sort(*.key).map(*.kv).flat -> $enum, $value {
+            my $dist-instance-id = "$instance-id {$instance-number++}";
+            $target.add-multi-input($taxonomy, $dist-instance-id, $dist-sub-taxonomy, $dist-name,
+                    ($value * $per-part).narrow);
+            $target.add-multi-input($taxonomy, $dist-instance-id, @flattened[0].sub-taxonomy,
+                    @flattened[0].input-name, $enum);
+        }
+    }
+
+    method !input-hash() {
+        %!single-inputs
     }
 }
