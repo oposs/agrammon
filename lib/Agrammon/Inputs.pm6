@@ -116,15 +116,26 @@ class X::Agrammon::Inputs::Distribution::BadSum is Exception {
 #| flattening or branching approach. Can produce an C<Agrammon::Inputs> object given a
 #| model (the model being needed to understand which input to distribute).
 class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
+    my class DistributionProductElement {
+        has %.values;
+        has $.percentage;
+    }
+
     my role Distributable {
         has $.sub-taxonomy;
         method distributes-input(Str $name --> Bool) { ... }
+        method distribution-products(--> Iterable) { ... }
     }
 
     my class Flattened does Distributable {
         has $.input-name;
         has %.value-percentages;
         method distributes-input(Str $name --> Bool) { $name eq $!input-name }
+        method distribution-products(--> Iterable) {
+            %!value-percentages.kv.map: -> $value, $percentage {
+                DistributionProductElement.new(:values{ $!input-name => $value }, :$percentage)
+            }
+        }
     }
 
     my class Branched does Distributable {
@@ -132,6 +143,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         has $.input-name-b;
         has @.matrix;
         method distributes-input(Str $name --> Bool) { so $name eq $!input-name-a | $!input-name-b }
+        method distribution-products(--> Iterable) { !!! }
     }
 
     has %!distributed-by-taxonomy;
@@ -213,15 +225,17 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         # Create distributed instances.
         my @flattened = @distribute.grep(Flattened);
         my @branched = @distribute.grep(Branched);
-        die "NYI" unless @flattened == 1;
         die "NYI" unless @branched == 0;
         my $instance-number = 1;
-        for @flattened[0].value-percentages.sort(*.key).map(*.kv).flat -> $enum, $value {
+        for cross(@flattened.map(*.distribution-products)) -> $products {
             my $dist-instance-id = "$instance-id {$instance-number++}";
+            my $comp-percentage = [*] $products.map(*.percentage / 100);
             $target.add-multi-input($taxonomy, $dist-instance-id, $dist-sub-taxonomy, $dist-name,
-                    (($value / 100) * $dist-total).narrow);
-            $target.add-multi-input($taxonomy, $dist-instance-id, @flattened[0].sub-taxonomy,
-                    @flattened[0].input-name, $enum);
+                    ($comp-percentage * $dist-total).narrow);
+            for flat $products.map(*.values.kv) -> $input-name, $enum {
+                $target.add-multi-input($taxonomy, $dist-instance-id, @flattened[0].sub-taxonomy,
+                        $input-name, $enum);
+            }
             self!copy-instance-input($taxonomy, $dist-instance-id, %instance-input, $target);
         }
     }
