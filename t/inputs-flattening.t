@@ -83,6 +83,28 @@ given Agrammon::Inputs::Distribution.new -> $dist {
             'Branch matrix must sum to 100 (2)';
 }
 
+throws-like
+        {
+            given Agrammon::Inputs::Distribution.new -> $dist {
+                $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-a',
+                        {x => 30, y => 20, z => 50 });
+                $dist.to-inputs({});
+            }
+        },
+        X::Agrammon::Inputs::Distribution::MissingDistributionInput,
+        'It is an error if the distribution input is missing';
+throws-like
+        {
+            given Agrammon::Inputs::Distribution.new -> $dist {
+                $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-a',
+                        {x => 30, y => 20, z => 50 });
+                $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+                CATCH { .note }
+            }
+        },
+        X::Agrammon::Inputs::Distribution::MissingDistributionValue,
+        'It is an error if the distribution value is missing';
+
 subtest '1 flattened input' => {
     given Agrammon::Inputs::Distribution.new -> $dist {
         $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'dist-me', 1000);

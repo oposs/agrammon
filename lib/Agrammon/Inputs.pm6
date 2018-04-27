@@ -112,6 +112,21 @@ class X::Agrammon::Inputs::Distribution::BadSum is Exception {
     }
 }
 
+class X::Agrammon::Inputs::Distribution::MissingDistributionInput is Exception {
+    has $.taxonomy;
+    method message() {
+        "Flattened or branched taxonomy $!taxonomy has no input field defined to distribute"
+    }
+}
+
+class X::Agrammon::Inputs::Distribution::MissingDistributionValue is Exception {
+    has $.taxonomy;
+    has $.input-name;
+    method message() {
+        "No input value for '$!input-name' of $!taxonomy, which is used for flattening or branching"
+    }
+}
+
 #| A set of inputs, some of which may be a statistical distribution through either the
 #| flattening or branching approach. Can produce an C<Agrammon::Inputs> object given a
 #| model (the model being needed to understand which input to distribute).
@@ -196,6 +211,9 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
     method to-inputs(%dist-map) {
         my $inputs = Agrammon::Inputs.new;
         for %!distributed-by-taxonomy.kv -> $taxonomy, %instances {
+            unless %dist-map{$taxonomy}:exists {
+                die X::Agrammon::Inputs::Distribution::MissingDistributionInput.new(:$taxonomy);
+            }
             for %instances.kv -> $instance-id, @distribute {
                 self!distribute($taxonomy, $instance-id, %dist-map{$taxonomy}, @distribute, $inputs);
             }
@@ -217,7 +235,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
             Agrammon::Inputs $target --> Nil) {
         # Get instance input data, and remove the instance we'll distribute.
         my $dist-instance = %!multi-input-lookup{$taxonomy}{$instance-id};
-        my %instance-input := $dist-instance!input-hash;
+        my %instance-input := $dist-instance ?? $dist-instance!input-hash !! {};
         %!multi-input-lookup{$taxonomy}{$instance-id}:delete;
         if %!multi-input-lists{$taxonomy} -> @filter {
             @filter .= grep(* !=== $dist-instance);
@@ -229,8 +247,13 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         my $dist-sub-taxonomy = $dist-taxonomy eq $taxonomy
                 ?? ''
                 !! $dist-taxonomy.substr($taxonomy.chars + 2);
-        my $dist-total = %instance-input{$dist-taxonomy}{$dist-name};
-        %instance-input{$dist-taxonomy}{$dist-name}:delete;
+        my $dist-total = do with %instance-input{$dist-taxonomy}{$dist-name}:delete {
+            $_
+        }
+        else {
+            die X::Agrammon::Inputs::Distribution::MissingDistributionValue.new:
+                    taxonomy => $dist-taxonomy, input-name => $dist-name;
+        }
 
         # Create distributed instances.
         my @flattened = @distribute.grep(Flattened);
