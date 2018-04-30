@@ -160,7 +160,9 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
     #| A branched input, with details of the matrix.
     my class Branched does Distributable {
         has $.input-name-a;
+        has @.input-values-a;
         has $.input-name-b;
+        has @.input-values-b;
         has @.matrix;
         method distributes-input(Str $name --> Bool) { so $name eq $!input-name-a | $!input-name-b }
         method distribution-products(--> Iterable) { !!! }
@@ -182,7 +184,8 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
     }
 
     method add-multi-input-branched(Str $taxonomy, Str $instance-id, Str $sub-taxonomy,
-            Str $input-name-a, Str $input-name-b, @matrix --> Nil) {
+            Str $input-name-a, @input-values-a, Str $input-name-b, @input-values-b,
+            @matrix --> Nil) {
         for $input-name-a, $input-name-b {
             self!ensure-no-dupe($taxonomy, $instance-id, $sub-taxonomy, $_);
         }
@@ -193,7 +196,8 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                     :$instance-id, :input-name("$input-name-a/$input-name-b");
         }
         %!distributed-by-taxonomy{$taxonomy}{$instance-id}.push: Branched.new:
-                :$sub-taxonomy, :$input-name-a, :$input-name-b, :@matrix;
+                :$sub-taxonomy, :$input-name-a, :@input-values-a,
+                :$input-name-b, :@input-values-b, :@matrix;
     }
 
     method !ensure-no-dupe(Str $taxonomy, Str $instance-id, Str $sub-taxonomy, Str $input-name --> Nil) {
