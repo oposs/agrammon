@@ -127,6 +127,20 @@ class X::Agrammon::Inputs::Distribution::MissingDistributionValue is Exception {
     }
 }
 
+class X::Agrammon::Inputs::Distribution::BadBranchMatrix is Exception {
+    has Str $.taxonomy;
+    has Str $.instance-id;
+    has Str $.input-name-a;
+    has Str $.input-name-b;
+    has Int $.expected-rows;
+    has Int $.expected-cols;
+    has @.bad-matrix;
+    method message() {
+        "Bad matrix '@!bad-matrix.perl()' for $!instance-id of $!input-name-a/$!input-name-b in $!taxonomy; " ~
+                "expected $!expected-rows rows and $!expected-cols columns"
+    }
+}
+
 #| A set of inputs, some of which may be a statistical distribution through either the
 #| flattening or branching approach. Can produce an C<Agrammon::Inputs> object given a
 #| model (the model being needed to understand which input to distribute).
@@ -188,6 +202,12 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
             @matrix --> Nil) {
         for $input-name-a, $input-name-b {
             self!ensure-no-dupe($taxonomy, $instance-id, $sub-taxonomy, $_);
+        }
+        unless @matrix.elems == @input-values-a && all(@matrix>>.elems) == @input-values-b {
+            die X::Agrammon::Inputs::Distribution::BadBranchMatrix.new:
+                :$taxonomy, :$instance-id, :$input-name-a, :$input-name-b,
+                :expected-rows(@input-values-a.elems), :expected-cols(@input-values-b.elems),
+                :bad-matrix(@matrix);
         }
         unless @matrix.map(*.sum).sum == 100 {
             die X::Agrammon::Inputs::Distribution::BadSum.new:

@@ -54,6 +54,42 @@ given Agrammon::Inputs::Distribution.new -> $dist {
             },
             X::Agrammon::Inputs::Distribution::BadSum,
             'Branch matrix must sum to 100 (2)';
+    throws-like
+            {
+                $dist.add-multi-input-branched('Foo::Bar', 'Instance C', 'Baz',
+                        'aaa', <x y>, 'bbb', <x y z>,
+                        [[20, 10, 15],[30, 10, 12],[1,1,1]])
+            },
+            X::Agrammon::Inputs::Distribution::BadBranchMatrix,
+            expected-rows => 2, expected-cols => 3,
+            'Wrong number of rows is reported (1)';
+    throws-like
+            {
+                $dist.add-multi-input-branched('Foo::Bar', 'Instance C', 'Baz',
+                        'aaa', <x y>, 'bbb', <x y z>,
+                        [[20, 50, 30],])
+            },
+            X::Agrammon::Inputs::Distribution::BadBranchMatrix,
+            expected-rows => 2, expected-cols => 3,
+            'Wrong number of rows is reported (2)';
+    throws-like
+            {
+                $dist.add-multi-input-branched('Foo::Bar', 'Instance C', 'Baz',
+                        'aaa', <x y>, 'bbb', <x y z>,
+                        [[20, 30],[30, 20]])
+            },
+            X::Agrammon::Inputs::Distribution::BadBranchMatrix,
+            expected-rows => 2, expected-cols => 3,
+            'Wrong number of columns is reported (1)';
+    throws-like
+            {
+                $dist.add-multi-input-branched('Foo::Bar', 'Instance C', 'Baz',
+                        'aaa', <x y>, 'bbb', <x y z>,
+                        [[10,10,10,20],[10,10,10,20]])
+            },
+            X::Agrammon::Inputs::Distribution::BadBranchMatrix,
+            expected-rows => 2, expected-cols => 3,
+            'Wrong number of columns is reported (2)';
 }
 
 done-testing;
