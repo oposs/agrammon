@@ -179,7 +179,15 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         has @.input-values-b;
         has @.matrix;
         method distributes-input(Str $name --> Bool) { so $name eq $!input-name-a | $!input-name-b }
-        method distribution-products(--> Iterable) { !!! }
+        method distribution-products(--> Iterable) {
+            gather for @!input-values-a.kv -> $i, $value-a {
+                for @!input-values-b.kv -> $j, $value-b {
+                    take DistributionProductElement.new:
+                        values => { $!input-name-a => $value-a, $!input-name-b => $value-b },
+                        percentage => @!matrix[$i;$j];
+                }
+            }
+        }
     }
 
     has %!distributed-by-taxonomy;
@@ -285,17 +293,14 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         }
 
         # Create distributed instances.
-        my @flattened = @distribute.grep(Flattened);
-        my @branched = @distribute.grep(Branched);
-        die "NYI" unless @branched == 0;
         my $instance-number = 1;
-        for cross(@flattened.map(*.distribution-products)) -> $products {
+        for cross(@distribute.map(*.distribution-products)) -> $products {
             my $dist-instance-id = "$instance-id {$instance-number++}";
             my $comp-percentage = [*] $products.map(*.percentage / 100);
             $target.add-multi-input($taxonomy, $dist-instance-id, $dist-sub-taxonomy, $dist-name,
                     ($comp-percentage * $dist-total).narrow);
             for flat $products.map(*.values.kv) -> $input-name, $enum {
-                $target.add-multi-input($taxonomy, $dist-instance-id, @flattened[0].sub-taxonomy,
+                $target.add-multi-input($taxonomy, $dist-instance-id, @distribute[0].sub-taxonomy,
                         $input-name, $enum);
             }
             self!copy-instance-input($taxonomy, $dist-instance-id, %instance-input, $target);
