@@ -19,7 +19,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                                  
             my @rows = $results.arrays;
 
-            my $input = Agrammon::Inputs.new(
+            my $dist-input = Agrammon::Inputs::Distribution.new(
                 simulation-name => 'DB',
                 dataset-id      => $dataset
             );
@@ -43,7 +43,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $sub-var ~~ s/'::'//;
                             $var = $sub-var;
                         }
-                        $input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
+                        $dist-input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
                     }
                     else {
                         die "Malformed data: module-var=$module-var";
@@ -53,10 +53,10 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                     $module-var ~~ m/(.+)'::'(.+)/;
                     my $tax     = "$0";
                     my $var     = "$1";
-                    $input.add-single-input($tax, $var, $value);
+                    $dist-input.add-single-input($tax, $var, $value);
                 }
             }
-            return $input;
+            return $dist-input.to-inputs({});
         }
     }
 
