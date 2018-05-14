@@ -4,7 +4,7 @@ use Agrammon::Inputs;
 
 class Agrammon::DataSource::DB does Agrammon::DB {
     
-    method read($user, Str $dataset) {
+    method read($user, Str $dataset, %distribution-map) {
         self.with-db: -> $db {
 
             my $results = $db.query(q:to/STATEMENT/, $user, $dataset);
@@ -56,7 +56,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                     $dist-input.add-single-input($tax, $var, $value);
                 }
             }
-            return $dist-input.to-inputs({});
+            return $dist-input.to-inputs(%distribution-map);
         }
     }
 

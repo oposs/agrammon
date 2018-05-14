@@ -74,7 +74,7 @@ transactionally {
     isa-ok $ds, Agrammon::DataSource::DB, 'Is a DataSource::DB';
 
     ### TODO: check actual data
-    my $dataset = $ds.read($ag-user, $ag-dataset);
+    my $dataset = $ds.read($ag-user, $ag-dataset, {});
     isa-ok $dataset, Agrammon::Inputs, 'Correct type';
     is $dataset.simulation-name, 'DB', 'Correct simulation name';
     is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
