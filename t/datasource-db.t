@@ -66,7 +66,7 @@ ok my $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 
 transactionally {
 
-    ok prepare-test-db($ag-user, $ag-dataset), 'Test database prepared';
+    lives-ok { prepare-test-db-single-data($ag-user, $ag-dataset) }, 'Test database prepared';
 
     my $rowsExpected = 6;
 
@@ -78,13 +78,40 @@ transactionally {
     isa-ok $dataset, Agrammon::Inputs, 'Correct type';
     is $dataset.simulation-name, 'DB', 'Correct simulation name';
     is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
-    
 }
 
-
-sub prepare-test-db($user, $dataset) {
+sub prepare-test-db-single-data($user, $dataset) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
+    prepare-test-db-schema($db, $user);
+
+    my $userId = $db.query(q:to/STATEMENT/, $user).value;
+    SELECT pers_email2id($1)
+    STATEMENT
+
+    $db.query(q:to/STATEMENT/, $dataset, $userId);
+    INSERT INTO dataset (dataset_name, dataset_pers)
+    VALUES ($1, $2);
+    STATEMENT
+
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
+    SELECT dataset_name2id($1, $2)
+    STATEMENT
+
+    my $sth = $db.prepare(q:to/STATEMENT/);
+    INSERT INTO data_new (data_dataset, data_var, data_val)
+    VALUES ($1, $2, $3)
+    STATEMENT
+
+    $sth.execute($datasetId, 'PlantProduction::AgriculturalArea::agricultural_area', 22);
+    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_urea', 0);
+    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_except_urea', 400);
+    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::compost', 0);
+    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::solid_digestate', 0);
+    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::liquid_digestate', 0);
+}
+
+sub prepare-test-db-schema($db, $user) {
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS pers (
         pers_id       SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
@@ -140,33 +167,6 @@ sub prepare-test-db($user, $dataset) {
     INSERT INTO pers (pers_email, pers_first, pers_last, pers_password)
          VALUES ($1, 'X', 'X', 'X')
     STATEMENT
-
-    my $userId = $db.query(q:to/STATEMENT/, $user).value;
-    SELECT pers_email2id($1)
-    STATEMENT
-
-    $db.query(q:to/STATEMENT/, $dataset, $userId);
-    INSERT INTO dataset (dataset_name, dataset_pers)
-    VALUES ($1, $2);
-    STATEMENT
-
-    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
-    SELECT dataset_name2id($1, $2)
-    STATEMENT
-    
-    my $sth = $db.prepare(q:to/STATEMENT/);
-        INSERT INTO data_new (data_dataset, data_var, data_val)
-        VALUES ($1, $2, $3)
-    STATEMENT
-
-    $sth.execute($datasetId, 'PlantProduction::AgriculturalArea::agricultural_area', 22);
-    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_urea', 0);
-    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_except_urea', 400);
-    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::compost', 0);
-    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::solid_digestate', 0);
-    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::liquid_digestate', 0);
-
-    return 1;
 }
 
 
