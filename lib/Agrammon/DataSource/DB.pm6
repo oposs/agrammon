@@ -3,6 +3,13 @@ use Agrammon::DB;
 use Agrammon::Inputs;
 
 class Agrammon::DataSource::DB does Agrammon::DB {
+    my class Flattened {
+        has Str $.taxonomy;
+        has Str $.instance-id;
+        has Str $.sub-taxonomy;
+        has Str $.input-name;
+        has %.value-percentages;
+    }
     
     method read($user, Str $dataset, %distribution-map) {
         self.with-db: -> $db {
@@ -24,10 +31,14 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                 dataset-id      => $dataset
             );
 
+            my @flattend-to-add;
+
             for @rows {
                 my $module-var = .[0];
                 my $value      = maybe-numify(.[1]) // '';
                 my $instance   = .[2] // '';
+                state $flattend-prefix = '';
+                state Flattened $current-flattened;
 
                 if $instance {
                     if $module-var ~~ m/(.+)'[]'(.+)/ {
@@ -43,7 +54,24 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $sub-var ~~ s/'::'//;
                             $var = $sub-var;
                         }
-                        $dist-input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
+
+                        if $value eq 'flattened' {
+                            $flattend-prefix = $var;
+                            $current-flattened = Flattened.new:
+                                    taxonomy => $tax,
+                                    instance-id => $instance,
+                                    sub-taxonomy => $sub-tax,
+                                    input-name => $var;
+                            push @flattend-to-add, $current-flattened;
+                        }
+                        elsif $flattend-prefix && $var.starts-with($flattend-prefix ~ '_flattened') {
+                            my $key = $var.substr(($flattend-prefix ~ '_flattened00_').chars);
+                            $current-flattened.value-percentages{$key} = $value;
+                        }
+                        else {
+                            $dist-input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
+                            $flattend-prefix = '';
+                        }
                     }
                     else {
                         die "Malformed data: module-var=$module-var";
@@ -56,6 +84,12 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                     $dist-input.add-single-input($tax, $var, $value);
                 }
             }
+
+            for @flattend-to-add {
+                $dist-input.add-multi-input-flattened(.taxonomy, .instance-id, .sub-taxonomy,
+                        .input-name, .value-percentages);
+            }
+
             return $dist-input.to-inputs(%distribution-map);
         }
     }
