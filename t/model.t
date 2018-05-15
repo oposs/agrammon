@@ -3,7 +3,7 @@ use Agrammon::Model;
 use Agrammon::ModelCache;
 use Test;
 
-plan 4;
+plan 5;
 
 subtest "Helper function" => {
     
@@ -269,6 +269,15 @@ subtest 'dump()' => {
         $model.load($module);
         is $model.dump, $output-expected, 'Output as expected';
     }
+}
+
+subtest 'Model calculates distribution map correctly' => {
+    my $path = $*PROGRAM.parent.add('test-data/Models/run-test-multi-deep');
+    my $model = Agrammon::Model.new(path => $path);
+    $model.load('Test');
+    is-deeply $model.distribution-map,
+            { 'Test::SubModule' => 'Test::SubModule::SubTest::kids' },
+            'Correct distribution map indicating what to branch over';
 }
 
 done-testing;

@@ -3,7 +3,7 @@ use Agrammon::DataSource::DB;
 use DB::Pg;
 use Test;
 
-plan 6;
+plan 20;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -65,26 +65,115 @@ else {
 ok my $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 
 transactionally {
-
-    ok prepare-test-db($ag-user, $ag-dataset), 'Test database prepared';
-
-    my $rowsExpected = 6;
+    lives-ok { prepare-test-db-single-data($ag-user, $ag-dataset) }, 'Test database prepared';
 
     my $ds = Agrammon::DataSource::DB.new;
     isa-ok $ds, Agrammon::DataSource::DB, 'Is a DataSource::DB';
 
     ### TODO: check actual data
-    my $dataset = $ds.read($ag-user, $ag-dataset);
+    my $dataset = $ds.read($ag-user, $ag-dataset, {});
     isa-ok $dataset, Agrammon::Inputs, 'Correct type';
     is $dataset.simulation-name, 'DB', 'Correct simulation name';
     is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
-    
 }
 
+transactionally {
+    lives-ok { prepare-test-db-flattened-data($ag-user, $ag-dataset) }, 'Flattened test database prepared';
 
-sub prepare-test-db($user, $dataset) {
+    my $ds = Agrammon::DataSource::DB.new;
+    my $dataset = $ds.read($ag-user, $ag-dataset, { 'Test::Base' => 'Test::Base::Sub::dist-me' });
+    isa-ok $dataset, Agrammon::Inputs, 'Correct type';
+    is $dataset.simulation-name, 'DB', 'Correct simulation name';
+    is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
+
+    my @instances = $dataset.inputs-list-for('Test::Base');
+    is @instances.elems, 3, 'Produced 3 instances from the distribution loaded from DB';
+    @instances .= sort(*.input-hash-for('Test::Base::AnotherSub').<flat-a>);
+    is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
+            { dist-me => 300, simple => 42 }, 'Correct distribution value for first flattened input';
+    is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub'),
+            { flat-a => 'x', simple => 101 }, 'Correct enum value for first flattened input';
+    is-deeply @instances[0].input-hash-for('Test::Base::Retained'),
+            { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+    is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
+            { dist-me => 200, simple => 42 }, 'Correct distribution value for second flattened input';
+    is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
+            { flat-a => 'y', simple => 101 }, 'Correct enum value for second flattened input';
+    is-deeply @instances[1].input-hash-for('Test::Base::Retained'),
+            { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+    is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
+            { dist-me => 500, simple => 42 }, 'Correct distribution value for third flattened input';
+    is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
+            { flat-a => 'z', simple => 101 }, 'Correct enum value for third flattened input';
+    is-deeply @instances[2].input-hash-for('Test::Base::Retained'),
+            { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+}
+
+sub prepare-test-db-single-data($user, $dataset) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
+    prepare-test-db-schema($db, $user);
+
+    my $userId = $db.query(q:to/STATEMENT/, $user).value;
+    SELECT pers_email2id($1)
+    STATEMENT
+
+    $db.query(q:to/STATEMENT/, $dataset, $userId);
+    INSERT INTO dataset (dataset_name, dataset_pers)
+    VALUES ($1, $2);
+    STATEMENT
+
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
+    SELECT dataset_name2id($1, $2)
+    STATEMENT
+
+    my $sth = $db.prepare(q:to/STATEMENT/);
+    INSERT INTO data_new (data_dataset, data_var, data_val)
+    VALUES ($1, $2, $3)
+    STATEMENT
+
+    $sth.execute($datasetId, 'PlantProduction::AgriculturalArea::agricultural_area', 22);
+    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_urea', 0);
+    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_except_urea', 400);
+    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::compost', 0);
+    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::solid_digestate', 0);
+    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::liquid_digestate', 0);
+}
+
+sub prepare-test-db-flattened-data($user, $dataset) {
+    my $db = $*AGRAMMON-DB-HANDLE;
+
+    prepare-test-db-schema($db, $user);
+
+    my $userId = $db.query(q:to/STATEMENT/, $user).value;
+    SELECT pers_email2id($1)
+    STATEMENT
+
+    $db.query(q:to/STATEMENT/, $dataset, $userId);
+    INSERT INTO dataset (dataset_name, dataset_pers)
+    VALUES ($1, $2);
+    STATEMENT
+
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
+    SELECT dataset_name2id($1, $2)
+    STATEMENT
+
+    my $sth = $db.prepare(q:to/STATEMENT/);
+    INSERT INTO data_new (data_dataset, data_instance, data_var, data_val)
+    VALUES ($1, $2, $3, $4)
+    STATEMENT
+
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Sub::dist-me', 1000);
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Sub::simple', 42);
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a', 'flattened');
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened00_x', 30);
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened01_y', 20);
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened02_z', 50);
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::simple', 101);
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Retained::simple', 13);
+}
+
+sub prepare-test-db-schema($db, $user) {
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS pers (
         pers_id       SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
@@ -140,33 +229,6 @@ sub prepare-test-db($user, $dataset) {
     INSERT INTO pers (pers_email, pers_first, pers_last, pers_password)
          VALUES ($1, 'X', 'X', 'X')
     STATEMENT
-
-    my $userId = $db.query(q:to/STATEMENT/, $user).value;
-    SELECT pers_email2id($1)
-    STATEMENT
-
-    $db.query(q:to/STATEMENT/, $dataset, $userId);
-    INSERT INTO dataset (dataset_name, dataset_pers)
-    VALUES ($1, $2);
-    STATEMENT
-
-    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
-    SELECT dataset_name2id($1, $2)
-    STATEMENT
-    
-    my $sth = $db.prepare(q:to/STATEMENT/);
-        INSERT INTO data_new (data_dataset, data_var, data_val)
-        VALUES ($1, $2, $3)
-    STATEMENT
-
-    $sth.execute($datasetId, 'PlantProduction::AgriculturalArea::agricultural_area', 22);
-    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_urea', 0);
-    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_except_urea', 400);
-    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::compost', 0);
-    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::solid_digestate', 0);
-    $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::liquid_digestate', 0);
-
-    return 1;
 }
 
 

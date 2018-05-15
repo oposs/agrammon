@@ -246,7 +246,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
     }
 
     method to-inputs(%dist-map) {
-        my $inputs = Agrammon::Inputs.new;
+        my $inputs = Agrammon::Inputs.new(:$!simulation-name, :$!dataset-id);
         for %!distributed-by-taxonomy.kv -> $taxonomy, %instances {
             unless %dist-map{$taxonomy}:exists {
                 die X::Agrammon::Inputs::Distribution::MissingDistributionInput.new(:$taxonomy);
