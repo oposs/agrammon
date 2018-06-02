@@ -60,7 +60,8 @@ class Agrammon::Web::Service {
 
     method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
 
-        my $input = Agrammon::DataSource::DB.new.read($user.username, $dataset-name);
+        my $input = Agrammon::DataSource::DB.new.read($user.username, $dataset-name,
+                $!model.distribution-map);
 
         my $outputs;
         timed "$dataset-name", {

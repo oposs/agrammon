@@ -16,6 +16,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 
 *** input ***
 
+
 +ignore
   type  = enum{ignore}
   ++labels 
@@ -26,6 +27,29 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description 
     Just a work around for modules without input parameters.
 
+*** technical ***
+
++er_n2
+  value = 0.025
+  ++units
+    en = -
+  ++description
+   Emission rate poultry for N2 poultry manure based on Ntot
+
++er_no
+  value = 0.001
+  ++units
+    en = -
+  ++description
+   Emission rate poultry for N2 poultry manure based on Ntot
+
++er_n2o
+  value = 0.001
+  ++units
+    en = -
+  ++description
+   Emission rate poultry for N2 poultry manure based on Ntot
+
 *** external ***
 
 +Poultry::Excretion
@@ -34,6 +58,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 
 
 *** output ***
+
 
 +n_excretion_layers_growers_other_poultry
   print = 7
@@ -79,6 +104,42 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++formula
     Val(n_excretion, Poultry::Excretion); 
 
++n2_npoultry
+  print = 5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from poultry production (housing and outdoor).
+  ++formula
+    Val(n_into_housing, Poultry::Housing) * Tech(er_n2)
+
++no_npoultry
+  print = 5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from poultry production housing.
+    (outdoor not included)
+  ++formula
+    Val(n_into_housing, Poultry::Housing) * Tech(er_no)
+
++n2o_npoultry
+  print = 5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2O emission from poultry production housing.
+    (outdorr not included)
+  ++formula
+    Val(n_into_housing, Poultry::Housing) * Tech(er_n2o)
+
+
 +n_from_poultry_layers_growers_other_poultry
   print = 7
   ++units  
@@ -121,7 +182,9 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual N flux from poultry housing.
   ++formula
-    Val(n_outhousing, Poultry::Housing); 
+    Val(n_outhousing, Poultry::Housing)
+    - Out(n2_npoultry) - Out(no_npoultry)
+    - Out(n2o_npoultry)
 
 +tan_from_poultry_layers_growers_other_poultry
   print = 7
@@ -135,7 +198,9 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
         if( Val(animalcategory, Poultry::Excretion) eq 'layers'  
             || Val(animalcategory, Poultry::Excretion) eq 'growers' 
             ||  Val(animalcategory, Poultry::Excretion) eq 'other_poultry'){
-        Val(tan_outhousing, Poultry::Housing);
+        Val(tan_outhousing, Poultry::Housing)
+        - Out(n2_npoultry) - Out(no_npoultry)
+        - Out(n2o_npoultry);
     }else{
         return(0);
     }; 
@@ -149,9 +214,11 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual N flux from poultry housing.
   ++formula
-        if( Val(animalcategory, Poultry::Excretion) eq 'turkeys'  
+    if( Val(animalcategory, Poultry::Excretion) eq 'turkeys'
         || Val(animalcategory, Poultry::Excretion) eq 'broilers'){
-        Val(tan_outhousing, Poultry::Housing);
+        Val(tan_outhousing, Poultry::Housing)
+        - Out(n2_npoultry) - Out(no_npoultry)
+        - Out(n2o_npoultry);
     }else{
         return(0);
     }; 
@@ -165,7 +232,9 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual N flux from poultry housing.
   ++formula 
-    Val(tan_outhousing, Poultry::Housing);
+    Val(tan_outhousing, Poultry::Housing)
+    - Out(n2_npoultry) - Out(no_npoultry)
+    - Out(n2o_npoultry);
 
 +nh3_npoultry_layers_growers_other_poultry
   print = 5
@@ -214,36 +283,4 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
     Val(nh3_nhousing, Poultry::Housing) +
     Val(nh3_nfree_range, Poultry::Outdoor);
          
-+n2_npoultry
-  print = 5
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from poultry production (housing and outdoor).
-  ++formula
-    Val(n2_nfree_range, Poultry::Outdoor);
 
-         
-+no_npoultry
-  print = 5
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from poultry production (housing and outdoor).
-  ++formula
-    Val(no_nfree_range, Poultry::Outdoor);
-         
-+n2o_npoultry
-  print = 5
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2O emission from poultry production (housing and outdoor).
-  ++formula
-    Val(n2o_nfree_range, Poultry::Outdoor);

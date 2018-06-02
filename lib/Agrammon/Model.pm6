@@ -140,6 +140,7 @@ class Agrammon::Model {
     has %!output-format-cache;
     has %!output-labels-cache;
     has %!output-order-cache;
+    has $!distribution-map-cache;
   
     method file2module($file) {
         my $module = $file;
@@ -341,4 +342,32 @@ class Agrammon::Model {
         return %!output-labels-cache{$module}{$output} // ''
     }
 
+    method distribution-map() {
+        $!distribution-map-cache ||= %(gather {
+            sub walk-to-instance(ModuleRunner $current) {
+                if $current.module.is-multi {
+                    walk-instance($current, $current.module.taxonomy);
+                }
+                else {
+                    for $current.dependencies {
+                        walk-to-instance($_);
+                    }
+                }
+            }
+            sub walk-instance(ModuleRunner $current, Str $base) {
+                for $current.module.input {
+                    if .is-branch {
+                        take $base => $current.module.taxonomy ~ '::' ~ .name;
+                        return True;
+                    }
+                }
+                for $current.dependencies {
+                    return True if walk-instance($_, $base);
+                }
+                return False;
+            }
+            walk-to-instance($!entry-point);
+        });
+        %$!distribution-map-cache
+    }
 }

@@ -162,8 +162,14 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vaches lat
   ++units
     en = -
   ++description
-   Check
+   Check if number of animals <= number of animal places.
   ++formula
+        if (  Val(dimensioning_barn, DairyCow::Housing::Type) < Val(dairy_cows, DairyCow::Excretion) ) {
+        writeLog({en=>"The number of available animal places must be equal or higher than the number of animals.",
+                  de=>"Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+                  fr=>"Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+                 });
+    }
     return;
 
 +n_excretion
