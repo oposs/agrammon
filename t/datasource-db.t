@@ -3,7 +3,7 @@ use Agrammon::DataSource::DB;
 use DB::Pg;
 use Test;
 
-plan 20;
+plan 37;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -109,6 +109,44 @@ transactionally {
             { simple => 13 }, 'Non-distributed instance data was correctly loaded';
 }
 
+transactionally {
+    lives-ok { prepare-test-db-branched-data($ag-user, $ag-dataset) }, 'Branched test database prepared';
+
+    my $ds = Agrammon::DataSource::DB.new;
+    my $dataset = $ds.read($ag-user, $ag-dataset, { 'Test::Base' => 'Test::Base::Sub::dist-me' });
+    isa-ok $dataset, Agrammon::Inputs, 'Correct type';
+    is $dataset.simulation-name, 'DB', 'Correct simulation name';
+    is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
+
+    my @instances = $dataset.inputs-list-for('Test::Base');
+    is @instances.elems, 6, 'Produced 6 instances from the distribution loaded from DB';
+    @instances .= sort({ .<flat-b>, .<flat-a> given .input-hash-for('Test::Base::AnotherSub') });
+    is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
+            { dist-me => 120, simple => 42 }, 'Correct distribution value for first branched input';
+    is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub'),
+            { flat-a => 'x', flat-b => 'a', simple => 101 }, 'Correct enum value for first branched input';
+    is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
+            { dist-me => 80, simple => 42 }, 'Correct distribution value for second branched input';
+    is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
+            { flat-a => 'y', flat-b => 'a', simple => 101 }, 'Correct enum value for second branched input';
+    is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
+            { dist-me => 200, simple => 42 }, 'Correct distribution value for third branched input';
+    is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
+            { flat-a => 'z', flat-b => 'a', simple => 101 }, 'Correct enum value for third branched input';
+    is-deeply @instances[3].input-hash-for('Test::Base::Sub'),
+            { dist-me => 180, simple => 42 }, 'Correct distribution value for fourth branched input';
+    is-deeply @instances[3].input-hash-for('Test::Base::AnotherSub'),
+            { flat-a => 'x', flat-b => 'b', simple => 101 }, 'Correct enum value for fourth branched input';
+    is-deeply @instances[4].input-hash-for('Test::Base::Sub'),
+            { dist-me => 120, simple => 42 }, 'Correct distribution value for fifth branched input';
+    is-deeply @instances[4].input-hash-for('Test::Base::AnotherSub'),
+            { flat-a => 'y', flat-b => 'b', simple => 101 }, 'Correct enum value for fifth branched input';
+    is-deeply @instances[5].input-hash-for('Test::Base::Sub'),
+            { dist-me => 300, simple => 42 }, 'Correct distribution value for sixth branched input';
+    is-deeply @instances[5].input-hash-for('Test::Base::AnotherSub'),
+            { flat-a => 'z', flat-b => 'b', simple => 101 }, 'Correct enum value for sixth branched input';
+};
+
 sub prepare-test-db-single-data($user, $dataset) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
@@ -171,6 +209,46 @@ sub prepare-test-db-flattened-data($user, $dataset) {
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened02_z', 50);
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::simple', 101);
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Retained::simple', 13);
+}
+
+sub prepare-test-db-branched-data($user, $dataset) {
+    my $db = $*AGRAMMON-DB-HANDLE;
+
+    prepare-test-db-schema($db, $user);
+
+    my $userId = $db.query(q:to/STATEMENT/, $user).value;
+    SELECT pers_email2id($1)
+    STATEMENT
+
+    $db.query(q:to/STATEMENT/, $dataset, $userId);
+    INSERT INTO dataset (dataset_name, dataset_pers)
+    VALUES ($1, $2);
+    STATEMENT
+
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
+    SELECT dataset_name2id($1, $2)
+    STATEMENT
+
+    my $sth-data = $db.prepare(q:to/STATEMENT/);
+    INSERT INTO data_new (data_dataset, data_instance, data_var, data_val)
+    VALUES ($1, $2, $3, $4)
+    RETURNING data_id;
+    STATEMENT
+
+    my $sth-branch = $db.prepare(q:to/STATEMENT/);
+    INSERT INTO branches (branches_var, branches_data, branches_options)
+    VALUES ($1, $2, $3)
+    STATEMENT
+
+    $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::Sub::dist-me', 1000);
+    $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::Sub::simple', 42);
+    given $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a', 'branched').value -> $id {
+        $sth-branch.execute($id, '{12,18,8,12,20,30}', '{x,y,z}');
+    };
+    given $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-b', 'branched').value -> $id {
+        $sth-branch.execute($id, '{12,18,8,12,20,30}', '{a,b}');
+    };
+    $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::simple', 101);
 }
 
 sub prepare-test-db-schema($db, $user) {
