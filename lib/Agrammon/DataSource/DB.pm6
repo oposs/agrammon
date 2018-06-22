@@ -10,6 +10,17 @@ class Agrammon::DataSource::DB does Agrammon::DB {
         has Str $.input-name;
         has %.value-percentages;
     }
+
+    my class Branched {
+        has Str $.taxonomy;
+        has Str $.instance-id;
+        has Str $.sub-taxonomy;
+        has Str $.input-name-a;
+        has Str @.input-values-a;
+        has Str $.input-name-b is rw;
+        has Str @.input-values-b is rw;
+        has @.matrix is rw;
+    }
     
     method read($user, Str $dataset, %distribution-map) {
         self.with-db: -> $db {
@@ -32,13 +43,15 @@ class Agrammon::DataSource::DB does Agrammon::DB {
             );
 
             my @flattend-to-add;
+            my @branched-to-add;
 
-            for @rows {
-                my $module-var = .[0];
-                my $value      = maybe-numify(.[1]) // '';
-                my $instance   = .[2] // '';
+            for @rows -> @row {
+                my $module-var = @row[0];
+                my $value      = maybe-numify(@row[1]) // '';
+                my $instance   = @row[2] // '';
                 state $flattend-prefix = '';
                 state Flattened $current-flattened;
+                state Branched $current-branched;
 
                 if $instance {
                     if $module-var ~~ m/(.+)'[]'(.+)/ {
@@ -55,6 +68,11 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $var = $sub-var;
                         }
 
+
+                        if $current-branched && $value ne 'branched' {
+                            die "Missing second step of branched input";
+                        }
+
                         if $value eq 'flattened' {
                             $flattend-prefix = $var;
                             $current-flattened = Flattened.new:
@@ -68,6 +86,25 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             my $key = $var.substr(($flattend-prefix ~ '_flattened00_').chars);
                             $current-flattened.value-percentages{$key} = $value;
                         }
+                        elsif $value eq 'branched' {
+                            if $current-branched {
+                                given $current-branched {
+                                    .input-name-b = $var;
+                                    .input-values-b = @row[4].list;
+                                    .matrix = @row[3].rotor(@row[4].elems);
+                                }
+                                push @branched-to-add, $current-branched;
+                                $current-branched = Nil;
+                            }
+                            else {
+                                $current-branched = Branched.new:
+                                        taxonomy => $tax,
+                                        instance-id => $instance,
+                                        sub-taxonomy => $sub-tax,
+                                        input-name-a => $var,
+                                        input-values-a => @row[4].list;
+                            }
+                        }
                         else {
                             $dist-input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
                             $flattend-prefix = '';
@@ -78,6 +115,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                     }
                 }
                 else {
+                    die "Missing second step of branched input" if $current-branched;
                     $module-var ~~ m/(.+)'::'(.+)/;
                     my $tax     = "$0";
                     my $var     = "$1";
@@ -88,6 +126,10 @@ class Agrammon::DataSource::DB does Agrammon::DB {
             for @flattend-to-add {
                 $dist-input.add-multi-input-flattened(.taxonomy, .instance-id, .sub-taxonomy,
                         .input-name, .value-percentages);
+            }
+            for @branched-to-add {
+                $dist-input.add-multi-input-branched(.taxonomy, .instance-id, .sub-taxonomy,
+                        .input-name-a, .input-values-a, .input-name-b, .input-values-b, .matrix);
             }
 
             return $dist-input.to-inputs(%distribution-map);
