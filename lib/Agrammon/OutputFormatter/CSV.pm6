@@ -1,35 +1,28 @@
 use Agrammon::Model;
 use Agrammon::Outputs;
-use Text::CSV;
 
 sub output-as-csv(Str $simulation-name, Str $dataset-id, Agrammon::Model $model,
                   Agrammon::Outputs $outputs, Str $unit-language --> Str) is export {
-    my @lines;
-    my $csv = Text::CSV.new(sep => ';', eol => "\n", quote_space => False);
-    for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
-        when Hash {
-            for sorted-kv($_) -> $output, $value {
-                $csv.combine($simulation-name, $dataset-id, $module, $output, $value,
-                        $model.output-unit($module, $output, $unit-language));
-                push @lines, $csv.string;
+    return (gather for $outputs.get-outputs-hash.sort(*.key) {
+        my $module = .key;
+        if .value.isa(Hash) {
+            for .value.sort(*.key) {
+                take ($simulation-name, $dataset-id, $module, .key, .value,
+                        $model.output-unit($module, .key, $unit-language)).join(';');
             }
         }
-        when Array {
-            for sorted-kv($_) -> $instance-id, %instance-outputs {
-                for sorted-kv(%instance-outputs) -> $fq-name, %values {
+        else {
+            for .value.sort(*.key) {
+                my $instance-id = .key;
+                for .value.sort(*.key) {
+                    my $fq-name = .key;
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
-                    for sorted-kv(%values) -> $output, $value {
-                        $csv.combine($simulation-name, $dataset-id, $q-name, $output, $value,
-                                $model.output-unit($fq-name, $output, $unit-language));
-                        push @lines, $csv.string;
+                    for .value.sort(*.key) {
+                        take ($simulation-name, $dataset-id, $q-name, .key, .value // '',
+                                $model.output-unit($fq-name, .key, $unit-language)).join(';');
                     }
                 }
             }
         }
-    }
-    return @lines.join;
-}
-
-sub sorted-kv($_) {
-    .sort(*.key).map({ |.kv })
+    }).join("\n") ~ "\n";
 }
