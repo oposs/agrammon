@@ -10,6 +10,7 @@ use Agrammon::ModelCache;
 use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
+use Agrammon::ResultCollector;
 use Agrammon::TechnicalParser;
 use Agrammon::Web::Routes;
 use Agrammon::Web::SessionUser;
@@ -37,9 +38,9 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 #| Run the model
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?,
                SupportedLanguage :$language = 'de', Str :$prints = 'All',
-               Bool :$csv
+               Bool :$csv, Int :$batch=1, Int :$degree=4
               ) is export {
-    my %results = run $filename.IO, $input.IO, $tech-file, $language, $prints, $csv;
+    my %results = run $filename.IO, $input.IO, $tech-file, $language, $prints, $csv, $batch, $degree;
     for %results.keys -> $simulation {
         say "### Simulation $simulation";
         say "##  Print filter: $prints";
@@ -83,7 +84,7 @@ sub dump (IO::Path $path) is export {
     return $model.dump;
 }
 
-sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv)  is export {
+sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv, $batch, $degree)  is export {
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -104,13 +105,14 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
 
     my $filename = $input-path;
     my $fh = open $filename, :r, :!chomp
-            or die "Couldn't open file $filename for reading";
+          or die "Couldn't open file $filename for reading";
     LEAVE $fh.close;
     my $ds = Agrammon::DataSource::CSV.new;
 
+    my $rc = Agrammon::ResultCollector.new;
     my %results;
     my $n = 0;
-    for $ds.read($fh) -> $dataset {
+    race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
         my $outputs = timed "$n: Run $filename", {
             $model.run(
                 input     => $dataset,
@@ -126,11 +128,11 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
             else {
                 $result = output-as-text($model, $outputs, $language, $prints);
             }
-            %results{$dataset.simulation-name}{$dataset.dataset-id} = $result;
+            $rc.add-result($dataset.simulation-name, $dataset.dataset-id, $result);
         }
         $n++;
     }
-    return %results;
+    return $rc.results;
 }
 
 sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
