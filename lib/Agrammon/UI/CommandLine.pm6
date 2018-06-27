@@ -107,28 +107,28 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
             or die "Couldn't open file $filename for reading";
     LEAVE $fh.close;
     my $ds = Agrammon::DataSource::CSV.new;
-    my @datasets = timed "Load $filename", {
-        $ds.read($fh);
-    }
-    note "Found " ~ @datasets.elems ~ ' dataset(s)';
 
     my %results;
-    for @datasets -> $dataset {
-        my $outputs = timed "Run $filename", {
+    my $n = 0;
+    for $ds.read($fh) -> $dataset {
+        my $outputs = timed "$n: Run $filename", {
             $model.run(
                 input     => $dataset,
                 technical => %technical-parameters,
             );
         }
 
-        my $result;
-        if ($csv) {
-            $result = output-as-csv($dataset.simulation-name, $dataset.dataset-id, $model, $outputs, $language);
+        timed "Create output", {
+            my $result;
+            if ($csv) {
+                $result = output-as-csv($dataset.simulation-name, $dataset.dataset-id, $model, $outputs, $language);
+            }
+            else {
+                $result = output-as-text($model, $outputs, $language, $prints);
+            }
+            %results{$dataset.simulation-name}{$dataset.dataset-id} = $result;
         }
-        else {
-            $result = output-as-text($model, $outputs, $language, $prints);
-        }
-        %results{$dataset.simulation-name}{$dataset.dataset-id} = $result;
+        $n++;
     }
     return %results;
 }
