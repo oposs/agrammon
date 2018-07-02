@@ -38,9 +38,9 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 #| Run the model
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?,
                SupportedLanguage :$language = 'de', Str :$prints = 'All',
-               Bool :$csv, Int :$batch=1, Int :$degree=4
+               Bool :$csv, Int :$batch=1, Int :$degree=4, Int :$max-runs
               ) is export {
-    my %results = run $filename.IO, $input.IO, $tech-file, $language, $prints, $csv, $batch, $degree;
+    my %results = run $filename.IO, $input.IO, $tech-file, $language, $prints, $csv, $batch, $degree, $max-runs;
     for %results.keys -> $simulation {
         say "### Simulation $simulation";
         say "##  Print filter: $prints";
@@ -84,7 +84,7 @@ sub dump (IO::Path $path) is export {
     return $model.dump;
 }
 
-sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv, $batch, $degree)  is export {
+sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv, $batch, $degree, $max-runs)  is export {
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -110,10 +110,12 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
     my $ds = Agrammon::DataSource::CSV.new;
 
     my $rc = Agrammon::ResultCollector.new;
+    my atomicint $n = 0;
     my %results;
-    my $n = 0;
-    race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
-        my $outputs = timed "$n: Run $filename", {
+    RACE: race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
+        my $my-n = ++⚛$n;
+
+        my $outputs = timed "$my-n: Run $filename", {
             $model.run(
                 input     => $dataset,
                 technical => %technical-parameters,
@@ -130,7 +132,10 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
             }
             $rc.add-result($dataset.simulation-name, $dataset.dataset-id, $result);
         }
-        $n++;
+        if $max-runs and $my-n == $max-runs {
+            note "Finished after $my-n datasets";
+            last RACE;
+        };
     }
     return $rc.results;
 }
