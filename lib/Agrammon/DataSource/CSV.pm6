@@ -1,14 +1,12 @@
 use v6;
 use Agrammon::Inputs;
-use Text::CSV;
 
 class Agrammon::DataSource::CSV {
     method read($fh) {
-        my $csv = Text::CSV.new(sep => ";");
         return gather {
             my $prev;
             my @group;
-            while $csv.getline($fh) -> @row {
+            for $fh.lines.map(*.split(';')) -> @row {
                 $prev //= @row[1];
                 if $prev && @row[1] ne $prev {
                     take self!group-input(@group);
