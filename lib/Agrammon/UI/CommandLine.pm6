@@ -104,7 +104,7 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
     }
 
     my $filename = $input-path;
-    my $fh = open $filename, :r, :!chomp
+    my $fh = open $filename, :r
           or die "Couldn't open file $filename for reading";
     LEAVE $fh.close;
     my $ds = Agrammon::DataSource::CSV.new;
@@ -112,7 +112,8 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
     my $rc = Agrammon::ResultCollector.new;
     my atomicint $n = 0;
     my %results;
-    RACE: race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
+    my class X::EarlyFinish is Exception {}
+    race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
         my $my-n = ++⚛$n;
 
         my $outputs = timed "$my-n: Run $filename", {
@@ -134,10 +135,13 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
         }
         if $max-runs and $my-n == $max-runs {
             note "Finished after $my-n datasets";
-            last RACE;
+            die X::EarlyFinish.new;
         };
     }
     return $rc.results;
+    CATCH {
+        when X::EarlyFinish { return $rc.results }
+    }
 }
 
 sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
