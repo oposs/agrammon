@@ -18,8 +18,8 @@ my $cfg = Agrammon::Config.new;
 ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my $conninfo;
-if %*ENV<TRAVIS> {
-    my $db-user     = 'travis';
+if %*ENV<GITHUB_ACTIONS> {
+    my $db-user     = 'github';
     my $db-database = 'agrammon_test';
     
     $conninfo = "user=$db-user dbname=$db-database";
