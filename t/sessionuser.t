@@ -19,7 +19,7 @@ ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my $conninfo;
 if %*ENV<GITHUB_ACTIONS> {
-    my $db-user     = 'github';
+    my $db-user     = 'postgres';
     my $db-database = 'agrammon_test';
     
     $conninfo = "user=$db-user dbname=$db-database";
