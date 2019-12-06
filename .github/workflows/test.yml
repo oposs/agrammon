@@ -1,0 +1,12 @@
+n: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test Agrammon6
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Run tests
+      id: tests
+      uses: JJ/raku-container-action@master
