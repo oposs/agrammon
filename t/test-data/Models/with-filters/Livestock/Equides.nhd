@@ -1,0 +1,194 @@
+*** general ***
+
+author    = Agrammon Group
+date      = 2017-07-12
+taxonomy  = Livestock::Equides
+instances = multi
+gui       = Livestock::Equides,Tierhaltung::Pferde und andere Equiden,Production animale::Chevaux et autres équidés,Livestock::Horses and other equids
+
++short
+  Collects the annual emission of NH3 and the N flux for equides.
+
++description 
+
+This process summarizes the annual emission of NH3 for equides from housing, yard 
+and grazing. Further it summarizes the annual N flux from the housing to the storage for equides.
+
+*** input ***
+
++ignore
+  type  = enum{ignore}
+  ++labels 
+    en = ignore
+  ++units  
+    en = -
+  ++description
+    Just a work around for modules without input parameters.
+
+*** technical ***
+
++er_n2_nsolid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_nsolid
+  value = 0.01
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_nsolid
+  value = 0.01
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
+*** external ***
+
++Equides::Excretion
++Equides::Housing
++Equides::Yard
++Equides::Grazing
+
+*** output ***
+
++n_excretion
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+   Annual N excreted by equides.
+  ++formula
+       Val(n_excretion, Equides::Excretion);
+
++n_from_equides
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from equides housing and yard.
+  ++formula
+       Val(n_outhousing, Equides::Housing) +
+        Val(n_outyard, Equides::Yard);
+
++tan_from_equides
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from dairy cow housing and yard.
+  ++formula
+       Val(tan_outhousing, Equides::Housing) +
+        Val(tan_outyard, Equides::Yard);
+
++n_liquid_from_equides
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from equides housing and yard, liquid fraction.
+  ++formula
+      Val(n_outhousing_liquid, Equides::Housing) +
+       Val(n_outyard_liquid, Equides::Yard);
+
++tan_liquid_from_equides
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from dairy cow housing and yard, liquid fraction.
+  ++formula
+       Val(tan_outhousing_liquid, Equides::Housing) +
+        Val(tan_outyard_liquid, Equides::Yard);
+
++n_solid_from_equides
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from equides housing and yard, solid fraction.
+  ++formula
+       Val(n_outhousing_solid, Equides::Housing) +
+        Val(n_outyard_solid, Equides::Yard);
+
++tan_solid_from_equides
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from equides housing and yard, solid fraction.
+  ++formula
+       Val(tan_outhousing_solid, Equides::Housing) +
+       Val(tan_outyard_solid, Equides::Yard);
+
++nh3_nequides
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from equides housing, yard and grazing (production).
+  ++formula
+       Val(nh3_nhousing, Equides::Housing) + 
+       Val(nh3_nyard, Equides::Yard)       +
+       Val(nh3_ngrazing, Equides::Grazing);
+
+
++n2_nequides
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from equides housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Equides::Housing) + Val(n_into_yard, Equides::Yard)
+     ) *  Tech(er_n2_nsolid);
+         
+
++no_nequides
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NO emission from equides housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Equides::Housing) + Val(n_into_yard, Equides::Yard)
+     ) *  Tech(er_no_nsolid);
+
+         
+
++n2o_nequides
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2O emission from equides housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Equides::Housing) + Val(n_into_yard, Equides::Yard)
+     ) *  Tech(er_n2o_nsolid);

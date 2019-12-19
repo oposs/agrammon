@@ -1,0 +1,2395 @@
+
+*** general ***
+
+author   = Agrammon Group 
+date     = 2009-04-22
+taxonomy = SummaryByAnimalCategory
+
+
++short
+
+ Collects the annual NH3 emission by Animalcategories
+
++description 
+
+
+*** external ***
+
++Livestock
+#  aggregate=SUM
++Livestock::DairyCow
+  aggregate=SUM
++Livestock::DairyCow::Excretion
+  aggregate=SUM
++Livestock::DairyCow::Housing
+  aggregate=SUM
++Livestock::DairyCow::Yard
+  aggregate=SUM
++Livestock::DairyCow::Grazing
+  aggregate=SUM
+
++Livestock::OtherCattle
+  aggregate=SUM
++Livestock::OtherCattle::Excretion
+  aggregate=SUM
++Livestock::OtherCattle::Housing
+  aggregate=SUM
++Livestock::OtherCattle::Yard
+  aggregate=SUM
++Livestock::OtherCattle::Grazing
+  aggregate=SUM
+
++Livestock::Pig
+  aggregate=SUM
++Livestock::Pig::Excretion
+  aggregate=SUM
++Livestock::Pig::Housing
+  aggregate=SUM
++Livestock::Pig::Grazing
+  aggregate=SUM
+
++Livestock::FatteningPigs
+  aggregate=SUM
++Livestock::FatteningPigs::Excretion
+  aggregate=SUM
++Livestock::FatteningPigs::Housing
+  aggregate=SUM
++Livestock::FatteningPigs::Grazing
+  aggregate=SUM
+
++Livestock::Poultry
+  aggregate=SUM
++Livestock::Poultry::Excretion
+  aggregate=SUM
++Livestock::Poultry::Housing
+  aggregate=SUM
++Livestock::Poultry::Outdoor
+  aggregate=SUM
+
++Livestock::Equides
+  aggregate=SUM
++Livestock::Equides::Excretion
+  aggregate=SUM
++Livestock::Equides::Housing
+  aggregate=SUM
++Livestock::Equides::Yard
+  aggregate=SUM
++Livestock::Equides::Grazing
+  aggregate=SUM
+
++Livestock::SmallRuminants
+  aggregate=SUM
++Livestock::SmallRuminants::Excretion
+  aggregate=SUM
++Livestock::SmallRuminants::Housing
+  aggregate=SUM
++Livestock::SmallRuminants::Grazing
+  aggregate=SUM
+
++Storage
++Storage::Slurry
+  aggregate=SUM
++Storage::SolidManure
++Storage::SolidManure::Poultry
++Storage::SolidManure::Solid
+
++Application
++Application::SolidManure
++Application::SolidManure::Poultry
++Application::SolidManure::Solid
+
+
+
+*** output ***
+
+
+##### Dairy Cow
+
++n_excretion_dairycow
+  format= %.0f
+  print = DairyCowFlux
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all dairy cows.
+  ++formula
+    Sum(n_excretion, Livestock::DairyCow);
+
+
++nh3_ndairycow_grazing
+  format= %.0f
+  print = DairyCowSummary
+  ++labels
+    sort = 101
+    en = Grazing dairy cows NH3-emissions
+    de = Milchkühe Weide NH3-Emission
+    fr = Vaches laitières Emission de NH3 Pâturage 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from dairy cows grazing areas.
+  ++formula
+     Sum(nh3_ngrazing, Livestock::DairyCow::Grazing);
+ 
+
++nh3_ndairycow_housing_and_yard
+  format= %.0f
+  print = DairyCowSummary
+  ++labels
+    sort = 102
+    en = Housing and yard dairy cows NH3-Emissions
+    de = Milchkühe Stall und Laufhof NH3-Emission
+    fr = Vaches laitières Emission de NH3 Stabulation et parcours extérieur 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from dairy cows from all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::DairyCow::Housing) +
+   Sum(nh3_nyard, Livestock::DairyCow::Yard);
+
+
++share_storage_solid_dairycow
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage solid dairy cow
+    de = Milchkühe Anteile Lagerinput fest
+    fr = Vaches laitières Part Stockage solide 
+  ++units
+    en = %
+  ++description
+    Share input Storage dairy cow
+  ++formula
+   if(Val(tan_into_storage_solid_dairycows_cattle, Livestock) >0){
+      Sum(tan_solid_from_dairycow, Livestock::DairyCow) / Val(tan_into_storage_solid_dairycows_cattle, Livestock);
+   }else{0;};
+
+
++share_application_solid_dairycow
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Application solid dairy cow  
+    de = Milchkühe Anteile Ausbringung fest
+    fr = Vaches laitières Part Epandage solide
+  ++units
+    en = %
+  ++description
+    Share input Storage dairy cow
+  ++formula
+   if( Val(tan_into_storage_solid_dairycows_cattle, Livestock)  > 0 ){
+      Sum(tan_solid_from_dairycow, Livestock::DairyCow) 
+      / ( Val(tan_into_storage_solid_dairycows_cattle, Livestock) );
+   }else{0;};
+
+
++sum_weight_application_slurry
+  format= %.2f
+  print = 44
+  ++labels
+    en = Sum of weighting factor for  Application Slurry
+    de = Milchkühe Anteile Ausbringung fest
+    fr = Vaches laitières Part Epandage solide 
+  ++units
+    en = %
+  ++description
+    Sum of weight factor for slurry application between pigs and Cattle 
+  ++formula
+   ( Val(n_into_storage_liquid_pigs, Livestock)*0.35 +
+      (Val(n_into_storage_liquid, Livestock) - Val(n_into_storage_liquid_pigs, Livestock))*0.5 );
+  
+
++share_storage_liquid_dairycow
+  format= %.2f
+  print = 44
+  ++labels
+    en =  Share input Storage liquid dairy cow
+    de = Milchkühe Anteile Lagerinput flüssig
+    fr = Vaches laitières Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input Storage dairy cow
+  ++formula
+   if(Val(n_into_storage_liquid, Livestock) >0){
+      Sum(n_liquid_from_dairycow, Livestock::DairyCow) / Val(n_into_storage_liquid, Livestock);
+   }else{0;};
+ 
+
++share_application_liquid_dairycow
+  format= %.2f
+  print = 44
+  ++labels
+    en =  Share input Storage liquid dairy cow
+    de = Milchkühe Anteile Lagerinput flüssig
+    fr =  Vaches laitières Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input Storage dairy cow
+  ++formula
+   if(Out(sum_weight_application_slurry) >0){
+      Sum(n_liquid_from_dairycow, Livestock::DairyCow)*0.5 / Out(sum_weight_application_slurry);
+   }else{0;};
+
+
++nh3_ndairycow_storage_solid
+  format= %.0f
+  print = DairyCowSummary
+  ++labels
+    sort = 132
+    en = _Storage solid dairy cows NH3-Emissions
+    de = _Milchkühe Hofdüngerlager fest NH3-Emission
+    fr = _Vaches laitières Emission de NH3 Stockage des engrais de ferme solides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_solid_dairycow) *  Val(nh3_nsolid_dairycows_cattle, Storage::SolidManure::Solid);
+
+
++nh3_ndairycow_storage_liquid
+  format= %.0f
+  print = DairyCowSummary
+  ++labels
+    sort = 131
+    en = _Storage liquid dairy cows NH3-Emissions
+    de = _Milchkühe Hofdüngerlager flüssig NH3-Emission
+    fr = _Vaches laitières Emission de NH3 Stockage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_liquid_dairycow) *  Val(nh3_nstorage_liquid, Storage);
+
+
++nh3_ndairycow_storage
+  format= %.0f
+  print = DairyCowSummary
+  ++labels
+    sort = 130
+    en = Storage dairy cows NH3-Emissions
+    de = Milchkühe Hofdüngerlager NH3-Emission
+    fr = Vaches laitières Emission de NH3 Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_ndairycow_storage_liquid) + Out(nh3_ndairycow_storage_solid);
+
+
++nh3_ndairycow_application_solid
+  format= %.0f
+  print = DairyCowSummary
+  ++labels 
+    sort = 142
+    en = _Application solid dairy cows NH3-Emissions
+    de = _Milchkühe Hofdüngerausbringung fest NH3-Emission
+    fr = _Vaches laitières Emission de NH3 Epandage des engrais de ferme solides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_solid_dairycow) *  Val(nh3_nsolid_dairycows_cattle, Application::SolidManure::Solid);
+
+
++nh3_ndairycow_application_liquid
+  format= %.0f
+  print = DairyCowSummary
+  ++labels
+    sort = 141
+    en = _Application liquid dairy cows NH3-Emissions
+    de = _Milchkühe Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Vaches laitières Emission de NH3 Epandage des engrais de ferme liquides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_liquid_dairycow) *  Val(nh3_napplication_liquid, Application);
+
+
++nh3_ndairycow_application
+  format= %.0f
+  print = DairyCowSummary
+  ++labels
+    sort = 140
+    en = Application dairy cows NH3-Emissions
+    de = Milchkühe Hofdüngerausbringung NH3-Emission	
+    fr = Vaches laitières Emission de NH3 Epandage des engrais de ferme  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_ndairycow_application_liquid) +  Out(nh3_ndairycow_application_solid);
+
+
++nh3_ndairycow_total
+  format= %.0f
+  print = DairyCowTotal
+  ++labels
+    sort = 190
+    en = Dairy cows NH3-Emissions
+    de = Milchkühe NH3-Emission
+    fr = Vaches laitières Emission de NH3  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from dairycow ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_ndairycow_grazing) + Out(nh3_ndairycow_housing_and_yard) + Out(nh3_ndairycow_storage) + Out(nh3_ndairycow_application);
+   
+
+
+## Other Cattle
+
++n_excretion_othercattle
+  format= %.0f
+  print = OtherCattleFlux
+  ++labels 
+    en =  Excretion other cattle
+    de = Ausscheidung übriges Rindvieh
+    fr = Déjections Autres bovins 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all other cattle.
+  ++formula
+    Sum(n_excretion, Livestock::OtherCattle); 
+
+
++nh3_nothercattle_grazing
+  format= %.0f
+  print = OtherCattleSummary
+  ++labels
+    sort = 210
+    en = Grazing other cattle NH3-Emissions
+    de = Übriges Rindvieh Weide NH3-Emission
+    fr = Autres bovins Emission de NH3 Pâturage 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from other cattle grazing areas.
+  ++formula
+     Sum(nh3_ngrazing, Livestock::OtherCattle::Grazing) ;
+ 
+
++nh3_nothercattle_housing_and_yard
+  format= %.0f
+  print = OtherCattleSummary
+  ++labels
+    sort = 220
+    en = Housing and yard other cattle NH3-Emissions
+    de = Übriges Rindvieh Stall und Laufhof NH3-Emission
+    fr = Autres bovins Emission de NH3 Stabulation et parcours extérieur  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from cattle from all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::OtherCattle::Housing) +  
+   Sum(nh3_nyard, Livestock::OtherCattle::Yard);
+
+
++share_storage_solid_othercattle
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input storage solid other cattle
+    de = Übriges Rindvieh Anteile Lagerinput fest
+    fr = Autres bovins Part Stockage solide
+  ++units
+    en = %
+  ++description
+    Share input storage other cattle
+  ++formula
+    if(Val(tan_into_storage_solid_dairycows_cattle, Livestock) >0){
+       Sum(tan_solid_from_cattle, Livestock::OtherCattle) / Val(tan_into_storage_solid_dairycows_cattle, Livestock);
+     }else{0;};
+
+
++share_storage_liquid_othercattle
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input storage liquid other cattle
+    de = Übriges Rindvieh Anteile Lagerinput flüssig
+    fr = Autres bovins Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input storage other cattle
+  ++formula
+    if(Val(n_into_storage_liquid, Livestock) >0){
+       Sum(n_liquid_from_cattle, Livestock::OtherCattle) / Val(n_into_storage_liquid, Livestock);
+     }else{0;};
+
+
++share_application_solid_othercattle
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input storage other cattle 
+    de = Übriges Rindvieh Anteile Lagerinput
+    fr = Autres bovins Part Epandage solide  
+  ++units
+    en = %
+  ++description
+    Share input storage other cattle
+  ++formula
+   if( Val(tan_into_storage_solid_dairycows_cattle, Livestock) > 0 ){
+      Sum(tan_solid_from_cattle, Livestock::OtherCattle) 
+      / Val(tan_into_storage_solid_dairycows_cattle, Livestock);
+     }else{0;};
+
+
++share_application_liquid_othercattle
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage liquid other cattle
+    de = Übriges Rindvieh Anteile Gewicht Ausbringemissionen flüssig Lager
+    fr = Autres bovins Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input Storage dairy cow
+  ++formula
+   if(Out(sum_weight_application_slurry) >0){
+      Sum(n_liquid_from_cattle, Livestock::OtherCattle)*0.5 / Out(sum_weight_application_slurry);
+   }else{0;};
+
+
++nh3_nothercattle_storage_solid
+  format= %.0f
+  print = OtherCattleSummary
+  ++labels 
+    sort = 232
+    en = _Storage solid other cattle NH3-Emissions
+    de = _Übriges Rindvieh Hofdüngerlager fest NH3-Emission
+    fr = _Autres bovins Emission de NH3 Stockage des engrais de ferme solide 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to tan input of animalcategory in storage)
+  ++formula
+   Out(share_storage_solid_othercattle) *  Val(nh3_nsolid_dairycows_cattle, Storage::SolidManure::Solid);
+
+
++nh3_nothercattle_storage_liquid
+  format= %.0f
+  print = OtherCattleSummary
+  ++labels
+    sort = 231
+    en = _Storage liquid other cattle NH3-Emissions
+    de = _Übriges Rindvieh Hofdüngerlager flüssig NH3-Emission
+    fr = _Autres bovins Emission de NH3 Stockage des engrais de ferme liquide 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_liquid_othercattle) *  Val(nh3_nstorage_liquid, Storage);
+
+
++nh3_nothercattle_storage
+  format= %.0f
+  print = OtherCattleSummary
+  ++labels
+    sort = 230
+    en = Storage other cattle NH3-Emissions
+    de = Übriges Rindvieh Hofdüngerlager NH3-Emission
+    fr = Autres bovins Emission de NH3 Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nothercattle_storage_solid) + Out(nh3_nothercattle_storage_liquid);
+
+
++nh3_nothercattle_application_solid
+  format= %.0f
+  print = OtherCattleSummary
+  ++labels
+    sort = 242 
+    en = _Application solid other cattle NH3-Emissions
+    de = _Übriges Rindvieh Hofdüngerausbringung fest NH3-Emission
+    fr = _Autres bovins Emission de NH3 Epandage des engrais de ferme solides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_solid_othercattle) *  Val(nh3_nsolid_dairycows_cattle, Application::SolidManure::Solid);
+
+
++nh3_nothercattle_application_liquid
+  format= %.0f
+  print = OtherCattleSummary
+  ++labels 
+    sort = 241
+    en = _Application liquid other cattle NH3-Emissions
+    de = _Übriges Rindvieh Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Autres bovins Emission de NH3 Epandage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_liquid_othercattle) *  Val(nh3_napplication_liquid, Application);
+
+
++nh3_nothercattle_application
+  format= %.0f
+  print = OtherCattleSummary
+  ++labels 
+    sort = 240
+    en = Application other cattle NH3-Emissions
+    de = Übriges Rindvieh Hofdüngerausbringung NH3-Emission
+    fr = Autres bovins Emission de NH3 Epandage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nothercattle_application_solid) + Out(nh3_nothercattle_application_liquid);
+
+
++nh3_nothercattle_total
+  format= %.0f
+  print = OtherCattleTotal
+  ++labels
+    sort = 290
+    en = Other cattle NH3-Emission
+    de = Übriges Rindvieh NH3-Emission
+    fr = Autres bovins Emission de NH3
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from other cattle ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nothercattle_grazing) + Out(nh3_nothercattle_housing_and_yard) + Out(nh3_nothercattle_storage) + Out(nh3_nothercattle_application);
+   
+
+###### Cattle: dairy cows plus other cattle #############################################################
+
++n_excretion_cattle
+  format= %.0f
+  print = CattleFlux
+  ++labels
+    en = Excretion cattle
+    de = Ausscheidung Rinder
+    fr = Déjections Bovins 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all cattle (dairy cows and other cattle).
+  ++formula
+    Sum(n_excretion, Livestock::OtherCattle) +
+    Sum(n_excretion, Livestock::DairyCow); 
+
+
++nh3_ncattle_grazing
+  format= %.0f
+  print = CattleSummary
+  ++labels
+    sort = 101
+    en = Grazing cattle NH3-Emissions
+    de = Rinder Weide NH3-Emission
+    fr = Bovins Emission de NH3 Pâturage 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from cattle grazing areas.
+  ++formula
+     Sum(nh3_ngrazing, Livestock::OtherCattle::Grazing) +
+     Sum(nh3_ngrazing, Livestock::DairyCow::Grazing) ;
+ 
+
++nh3_ncattle_housing_and_yard
+  format= %.0f
+  print = CattleSummary
+  ++labels
+    sort = 102
+    en = Housing and yard cattle NH3-Emissions
+    de = Rinder Stall und Laufhof NH3-Emission
+    fr = Bovins Emission de NH3 Stabulation et parcours extérieur  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from cattle from all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::OtherCattle::Housing) +  
+   Sum(nh3_nhousing, Livestock::DairyCow::Housing)  +
+   Sum(nh3_nyard, Livestock::OtherCattle::Yard) +
+   Sum(nh3_nyard, Livestock::DairyCow::Yard);
+
+
++share_storage_cattle
+  format= %.0f
+  print = 44
+  ++labels
+    en = Share input storage cattle 
+    de = Rinder Anteile Lagerinput
+    fr = Bovins Part Stockage   
+  ++units
+    en = %
+  ++description
+    Share input Storage cattle
+  ++formula
+   if(Val(n_into_storage, Livestock) >0){
+   ( Sum(n_from_dairycow, Livestock::DairyCow) +
+     Sum(n_from_cattle, Livestock::OtherCattle) ) / Val(n_into_storage, Livestock);
+   }else{0;};
+
+
++share_storage_solid_cattle
+  format= %.0f
+  print = 44
+  ++labels
+    en = Share input storage solid cattle
+    de = Rinder Anteile Lagerinput fest
+    fr = Bovins Part Stockage solide 
+  ++units
+    en = %
+  ++description
+    Share input Storage solid cattle
+  ++formula
+   if(Val(n_into_storage_solid, Livestock) >0){
+      ( Sum(n_solid_from_dairycow, Livestock::DairyCow) +
+     Sum(n_solid_from_cattle, Livestock::OtherCattle) ) / Val(n_into_storage_solid, Livestock);
+   }else{0;};
+
+
++share_storage_liquid_cattle
+  format= %.0f
+  print = 44
+  ++labels 
+    en = Share input storage liquid cattle
+    de = Rinder Anteile Lagerinput flüssig
+    fr = Bovins Part Stockage liquide 
+  ++units
+    en = %
+  ++description
+    Share input Storage liquid cattle
+  ++formula
+   if(Val(n_into_storage_liquid, Livestock) >0){
+      ( Sum(n_liquid_from_dairycow, Livestock::DairyCow) +
+     Sum(n_liquid_from_cattle, Livestock::OtherCattle) ) / Val(n_into_storage_liquid, Livestock);
+   }else{0;};
+
+
++nh3_ncattle_storage_liquid
+  format= %.0f
+  print = CattleSummary
+  ++labels 
+    sort = 103
+    en = _Storage liquid cattle NH3-Emissions
+    de = _Rinder Hofdüngerlager flüssig NH3-Emission
+    fr = _Bovins Emission de NH3 Stockage des engrais de ferme liquides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nothercattle_storage_liquid) + Out(nh3_ndairycow_storage_liquid);
+
+
++nh3_ncattle_storage_solid
+  format= %.0f
+  print = CattleSummary
+  ++labels
+    sort = 103
+    en = _Storage solid cattle NH3-Emissions
+    de = _Rinder Hofdüngerlager fest NH3-Emission
+    fr = _Bovins Emission de NH3 Stockage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nothercattle_storage_solid) + Out(nh3_ndairycow_storage_solid);
+
+
++nh3_ncattle_storage
+  format= %.0f
+  print = CattleSummary
+  ++labels
+    sort = 103
+    en = Storage cattle NH3-Emissions
+    de = Rinder Hofdüngerlager NH3-Emission
+    fr = Bovins Emission de NH3 Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_ncattle_storage_liquid) +  Out(nh3_ncattle_storage_solid);
+
+
++nh3_ncattle_application_solid
+  format= %.0f
+  print = CattleSummary
+  ++labels
+    sort = 104
+    en = _Application solid cattle NH3-Emissions
+    de = _Rinder Hofdüngerausbringung fest NH3-Emission
+    fr = _Bovins Emission de NH3 Epandage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nothercattle_application_solid) + Out(nh3_ndairycow_application_solid);
+
+
++nh3_ncattle_application_liquid
+  format= %.0f
+  print = CattleSummary
+  ++labels
+    sort = 104
+    en = _Application liquid cattle NH3-Emissions
+    de = _Rinder Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Bovins Emission de NH3 Epandage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_ndairycow_application_liquid) + Out(nh3_nothercattle_application_liquid) ;
+
+
++nh3_ncattle_application
+  format= %.0f
+  print = CattleSummary
+  ++labels
+    sort = 104
+    en = Application cattle NH3-Emissions
+    de = Rinder Hofdüngerausbringung NH3-Emission
+    fr = Bovins Emission de NH3 Epandage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_ncattle_application_solid) + Out(nh3_ncattle_application_liquid);
+
+
++nh3_ncattle_total
+  format= %.0f
+  print = CattleTotal
+  ++labels
+    sort = 109
+    en = Cattle NH3-Emissions
+    de = Rindvieh NH3-Emission
+    fr = Bovins Emission de NH3 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from cattle ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_ncattle_grazing) + Out(nh3_ncattle_housing_and_yard) + Out(nh3_ncattle_storage) + Out(nh3_ncattle_application);
+   
+
+
+#### OtherPig: modul name "pig" ########################################################################
+
+
++n_excretion_otherpig
+  format= %.0f
+  print = OtherPigFlux
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all other pigs.
+  ++formula
+    Sum(n_excretion, Livestock::Pig); 
+
+
++nh3_notherpig_grazing
+  format= %.0f
+  print = OtherPigSummary
+  ++labels
+    sort = 401
+    en = Grazing other pigs NH3-Emissions
+    de = Zuchtschweine Weide NH3-Emission
+    fr = Porcs d'élevage Emission de NH3 Pâturage  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from other pigs grazing areas.
+  ++formula
+     Sum(nh3_ngrazing, Livestock::Pig::Grazing) ;
+ 
+
++nh3_notherpig_housing_and_yard
+  format= %.0f
+  print = OtherPigSummary
+  ++labels
+    sort = 420
+    en = Housing and yard other pigs NH3-Emissions
+    de = Zuchtschweine Stall und Laufhof NH3-Emission
+    fr = Porcs d'élevage Emission de NH3 Stabulation et parcours extérieur 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from other pigs form all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::Pig::Housing) ;
+
+
++share_storage_solid_otherpig
+  format= %.2f
+  print = 44
+  ++labels 
+    en = Share input Storage solid other pigs
+    de = Zuchtschweine Anteile Lagerinput fest
+    fr = Porcs d'élevage Part Stockage solide  
+  ++units
+    en = %
+  ++description
+    Share input storage solid pigs
+  ++formula
+  if( Val(tan_into_storage_solid_pigs, Livestock) >0 ){
+    Sum(tan_solid_from_pig, Livestock::Pig) / Val(tan_into_storage_solid_pigs, Livestock);
+  }else{0;};
+
+
++share_storage_liquid_otherpig
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage liquid other pigs
+    de = Zuchtschweine Anteile Lagerinput flüssig
+    fr = Porcs d'élevage Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input storage liquid pigs
+  ++formula
+  if( Val(n_into_storage_liquid, Livestock) >0 ){
+    Sum(n_liquid_from_pig, Livestock::Pig) / Val(n_into_storage_liquid, Livestock);
+  }else{0;};
+
+
++share_application_solid_otherpig
+  format= %.2f
+  print = 44
+  ++labels 
+    en = Share input Storage solid other pigs
+    de = Zuchtschweine Anteile Lagerinput fest
+    fr = Porcs d'élevage Part Epandage solide 
+  ++units
+    en = %
+  ++description
+    Share input storage solid pigs
+  ++formula
+  if( Val(tan_into_storage_solid_pigs, Livestock) >0 ){
+    Sum(tan_solid_from_pig, Livestock::Pig) 
+      / Val(tan_into_storage_solid_pigs, Livestock) ;
+   }else{0;};
+
+
++share_application_liquid_otherpig
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage liquid other pigs
+    de = Zuchtschweine Anteile Gewicht Ausbringemissionen flüssig Lager
+    fr = Porcs d'élevage Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input Storage dairy cow
+  ++formula
+   if(Out(sum_weight_application_slurry) >0){
+      Sum(n_liquid_from_pig, Livestock::Pig)*0.35 / Out(sum_weight_application_slurry);
+   }else{0;};
+
+
++nh3_notherpig_storage_solid
+  format= %.0f
+  print = OtherPigSummary
+  ++labels
+    sort = 432
+    en = _Storage solid other pigs NH3-Emissions
+    de = _Zuchtschweine Hofdüngerlager fest NH3-Emission
+    fr = _Porcs d'élevage Emission de NH3 Stockage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_solid_otherpig) * Val(nh3_nsolid_pigs, Storage::SolidManure::Solid);
+
+
++nh3_notherpig_storage_liquid
+  format= %.0f
+  print = OtherPigSummary
+  ++labels
+    sort = 431
+    en = _Storage liquid other pigs NH3-Emissions
+    de = _Zuchtschweine Hofdüngerlager flüssig NH3-Emission
+    fr = _Porcs d'élevage Emission de NH3 Stockage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_liquid_otherpig) *  Val(nh3_nstorage_liquid, Storage);
+
+
++nh3_notherpig_storage
+  format= %.0f
+  print = OtherPigSummary
+  ++labels
+    sort = 430
+    en = Storage other pigs NH3-Emissions
+    de = Zuchtschweine Hofdüngerlager NH3-Emission
+    fr = Porcs d'élevage Emission de NH3 Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_notherpig_storage_liquid) + Out(nh3_notherpig_storage_solid);
+
+
++nh3_notherpig_application_solid
+  format= %.0f
+  print = OtherPigSummary
+  ++labels
+    sort = 442
+    en = _Application solid other pigs NH3-Emissions
+    de = _Zuchtschweine Hofdüngerausbringung fest NH3-Emission
+    fr = _Porcs d'élevage Emission de NH3 Epandage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_solid_otherpig) *   Val(nh3_nsolid_pigs, Application::SolidManure::Solid);
+
+
++nh3_notherpig_application_liquid
+  format= %.0f
+  print = OtherPigSummary
+  ++labels
+    sort = 441
+    en = _Application liquid other pigs NH3-Emissions
+    de = _Zuchtschweine Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Porcs d'élevage Emission de NH3 Epandage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_liquid_otherpig) *  Val(nh3_napplication_liquid, Application);
+
+
++nh3_notherpig_application
+  format= %.0f
+  print = OtherPigSummary
+  ++labels
+    sort = 440
+    en = Application other pigs NH3-Emissions
+    de = Zuchtschweine Hofdüngerausbringung NH3-Emission
+    fr = Porcs d'élevage Emission de NH3 Epandage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_notherpig_application_liquid) + Out(nh3_notherpig_application_solid);
+
+
++nh3_notherpig_total
+  format= %.0f
+  print = OtherPigTotal
+  ++labels
+    sort = 490
+    en = Other pigs NH3-Emissions
+    de = Zuchtschweine NH3-Emission
+    fr = Porcs d'élevage Emission de NH3 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from pig ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_notherpig_grazing) + Out(nh3_notherpig_housing_and_yard) + Out(nh3_notherpig_storage) + Out(nh3_notherpig_application);
+   
+
+
+#### FatteningPig ########################################################################################
+
+
++n_excretion_fatteningpig
+  format= %.0f
+  print = FatteningPigFlux
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by fattening pigs.
+  ++formula
+    Sum(n_excretion, Livestock::FatteningPigs) ;
+
+
++nh3_nfatteningpig_grazing
+  format= %.0f
+  print = FatteningPigSummary
+  ++labels 
+    sort = 310
+    en = Grazing fattening pigs NH3-Emissions
+    de = Mastschweine Weide NH3-Emission
+    fr = Porcs à l'engrais Emission de NH3 Pâturage 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from fattening pigs grazing areas.
+  ++formula
+     Sum(nh3_ngrazing, Livestock::FatteningPigs::Grazing) ;
+ 
+
++nh3_nfatteningpig_housing_and_yard
+  format= %.0f
+  print = FatteningPigSummary
+  ++labels 
+    sort = 320
+    en = Housing and yard fattening pigs NH3-Emissions
+    de = Mastschweine Stall und Laufhof NH3-Emission
+    fr = Porcs à l'engrais Emission de NH3 Stabulation et parcours extérieur 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from fattening pigs from all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::FatteningPigs::Housing) ;
+
+
++share_storage_solid_fatteningpig
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage solid fattening pigs
+    de = Mastschweine Anteile Lagerinput fest
+    fr = Porcs à l'engrais Part Stockage solide 
+  ++units
+    en = %
+  ++description
+    Share input storage solid pigs
+  ++formula
+   if( Val(tan_into_storage_solid_pigs, Livestock)>0){
+       Sum(tan_solid_from_fattening_pig, Livestock::FatteningPigs)  / Val(tan_into_storage_solid_pigs, Livestock);
+   }else{0;};
+
+
++share_storage_liquid_fatteningpig
+  format= %.2f
+  print = 44
+  ++labels 
+    en = Share input Storage liquid fattening pigs
+    de = Mastschweine Anteile Lagerinput flüssig
+    fr = Porcs à l'engrais Part Stockage liquide 
+  ++units
+    en = %
+  ++description
+    Share input storage liquid pigs
+  ++formula
+   if( Val(n_into_storage_liquid, Livestock)>0){
+       Sum(n_liquid_from_fattening_pig, Livestock::FatteningPigs) 
+      / Val(n_into_storage_liquid, Livestock);
+   }else{0;};
+
+
++share_application_solid_fatteningpig
+  format= %.2f
+  print = 44
+  ++labels 
+    en = Share input Application solid fattening pigs
+    de = Mastschweine Anteile Ausbringung fest
+    fr = Porcs à l'engrais Part Epandage solide  
+  ++units
+    en = %
+  ++description
+    Share input storage solid pigs
+  ++formula
+   if( Val(tan_into_storage_solid_pigs, Livestock) > 0){
+       Sum(tan_solid_from_fattening_pig, Livestock::FatteningPigs) 
+      / Val(tan_into_storage_solid_pigs, Livestock);
+   }else{0;};
+
+
++share_application_liquid_fatteningpig
+  format= %.2f
+  print = 44
+  ++labels 
+    en = Share input Storage liquid fattening pigs
+    de = Mastschweine Anteile Gewicht Ausbringemissionen flüssig Lager
+    fr = Porcs à l'engrais Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input Storage dairy cow
+  ++formula
+   if(Out(sum_weight_application_slurry) >0){
+      Sum(n_liquid_from_fattening_pig, Livestock::FatteningPigs)*0.35 / Out(sum_weight_application_slurry);
+   }else{0;};
+
+
++nh3_nfatteningpig_storage_solid
+  format= %.0f
+  print = FatteningPigSummary
+  ++labels
+    sort = 332
+    en = _Storage solid fattening pigs NH3-Emissions
+    de = _Mastschweine Hofdüngerlager fest NH3-Emission
+    fr = _Porcs à l'engrais Emission de NH3 Stockage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_solid_fatteningpig) *  Val(nh3_nsolid_pigs, Storage::SolidManure::Solid);
+
+
++nh3_nfatteningpig_storage_liquid
+  format= %.0f
+  print = FatteningPigSummary
+  ++labels
+    sort = 331
+    en = _Storage liquid fattening pigs NH3-Emissions
+    de = _Mastschweine Hofdüngerlager flüssig NH3-Emission
+    fr = _Porcs à l'engrais Emission de NH3 Stockage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_liquid_fatteningpig) *  Val(nh3_nstorage_liquid, Storage);
+
+
++nh3_nfatteningpig_storage
+  format= %.0f
+  print = FatteningPigSummary
+  ++labels
+    sort = 330
+    en = Storage fattening pigs NH3-Emissions
+    de = Mastschweine Hofdüngerlager NH3-Emission
+    fr = Porcs à l'engrais Emission de NH3 Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nfatteningpig_storage_solid) + Out(nh3_nfatteningpig_storage_liquid);
+
+
++nh3_nfatteningpig_application_solid
+  format= %.0f
+  print = FatteningPigSummary
+  ++labels
+    sort = 342
+    en = _Application solid fattening pigs NH3-Emissions
+    de = _Mastschweine Hofdüngerausbringung fest NH3-Emission
+    fr = _Porcs à l'engrais Emission de NH3 Epandage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_solid_fatteningpig) * Val(nh3_nsolid_pigs, Application::SolidManure::Solid);
+
+
++nh3_nfatteningpig_application_liquid
+  format= %.0f
+  print = FatteningPigSummary
+  ++labels
+    sort = 341
+    en = _Application liquid fattening pigs NH3-Emissions
+    de = _Mastschweine Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Porcs à l'engrais Emission de NH3 Epandage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application liquid(estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_liquid_fatteningpig) *  Val(nh3_napplication_liquid, Application);
+
+
++nh3_nfatteningpig_application
+  format= %.0f
+  print = FatteningPigSummary
+  ++labels
+    sort = 340
+    en = Application fattening pigs NH3-Emissions
+    de = Mastschweine Hofdüngerausbringung NH3-Emission
+    fr = Porcs à l'engrais Emission de NH3 Epandage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nfatteningpig_application_solid) + Out(nh3_nfatteningpig_application_liquid);
+
+
++nh3_nfatteningpig_total
+  format= %.0f
+  print = FatteningPigTotal
+  ++labels
+    sort = 390
+    en = Fattening pigs NH3-Emissions
+    de = Mastschweine NH3-Emission
+    fr = Porcs à l'engrais Emission de NH3 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from pig ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nfatteningpig_grazing) + Out(nh3_nfatteningpig_housing_and_yard) + Out(nh3_nfatteningpig_storage) + Out(nh3_nfatteningpig_application);
+   
+
+#### Pig: pig and fattening pigs #########################################################################
+
+
++n_excretion_pig
+  format= %.0f
+  print = PigFlux
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all pigs (pigs and fattening pigs).
+  ++formula
+    Sum(n_excretion, Livestock::Pig) +
+    Sum(n_excretion, Livestock::FatteningPigs);
+
+
++nh3_npig_grazing
+  format= %.0f
+  print = PigSummary
+  ++labels
+    sort = 210
+    en = Grazing pigs NH3-Emissions
+    de = Schweine Weide NH3-Emission
+    fr = Porcs Emission de NH3 Pâturage  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from all pigs grazing areas.
+  ++formula
+     Sum(nh3_ngrazing, Livestock::Pig::Grazing) +
+     Sum(nh3_ngrazing, Livestock::FatteningPigs::Grazing);
+ 
+
++nh3_npig_housing_and_yard
+  format= %.0f
+  print = PigSummary
+  ++labels 
+    sort = 220
+    en = Housing and yard all pigs NH3-Emissions
+    de = Schweine Stall und Laufhof NH3-Emission
+    fr = Porcs Emission de NH3 Stabulation et parcours extérieur  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from all pigs from all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::Pig::Housing) +  
+   Sum(nh3_nhousing, Livestock::FatteningPigs::Housing) ;
+
+
++share_storage_pig
+  format= %.0f
+  print = 44
+  ++labels 
+    en = Share input Storage pigs
+    de = Schweine Anteile Lagerinput
+    fr = Porcs Part Stockage  
+  ++units
+    en = %
+  ++description
+    Share input storage all pigs
+  ++formula
+  if( Val(n_into_storage, Livestock) > 0){
+    ( Sum(n_from_pig, Livestock::Pig) +
+    Sum(n_from_fattening_pig, Livestock::FatteningPigs) ) / Val(n_into_storage, Livestock);
+  } else {0;};
+
+
++share_storage_solid_pig
+  format= %.0f
+  print = 44
+  ++labels
+    en = Share input Storage solid pigs
+    de = Schweine Anteile Lagerinput fest
+    fr = Porcs Part Stockage solide  
+  ++units
+    en = %
+  ++description
+    Share input storage solid all pigs
+  ++formula
+  if( Val(n_into_storage_solid, Livestock) > 0){
+   ( Sum(n_solid_from_pig, Livestock::Pig) +
+   Sum(n_solid_from_fattening_pig, Livestock::FatteningPigs) ) / Val(n_into_storage_solid, Livestock);
+  } else {0;};
+
+
++share_storage_liquid_pig
+  format= %.0f
+  print = 44
+  ++labels
+    en = Share input Storage liquid pigs
+    de = Schweine Anteile Lagerinput flüssig
+    fr = Porcs Part Stockage liquide 
+  ++units
+    en = %
+  ++description
+    Share input storage liquid all pigs
+  ++formula
+  if( Val(n_into_storage_liquid, Livestock) > 0){
+   ( Sum(n_liquid_from_pig, Livestock::Pig) +
+   Sum(n_liquid_from_fattening_pig, Livestock::FatteningPigs) ) / Val(n_into_storage_liquid, Livestock);
+  } else {0;};
+
+
++nh3_npig_storage_solid
+  format= %.0f
+  print = PigSummary
+  ++labels 
+    sort = 230
+    en = _Storage solid pigs NH3-Emissions
+    de = _Schweine Hofdüngerlager fest NH3-Emission
+    fr = _Porcs Emission de NH3 Stockage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage solid(estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nfatteningpig_storage_solid)  +  Out(nh3_notherpig_storage_solid);
+
+
++nh3_npig_storage_liquid
+  format= %.0f
+  print = PigSummary
+  ++labels
+    sort = 230
+    en = _Storage liquid pigs NH3-Emissions
+    de = _Schweine Hofdüngerlager flüssig NH3-Emission
+    fr = _Porcs Emission de NH3 Stockage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nfatteningpig_storage_liquid)  +  Out(nh3_notherpig_storage_liquid);
+
+
++nh3_npig_storage
+  format= %.0f
+  print = PigSummary
+  ++labels 
+    sort = 230
+    en = Storage pigs NH3-Emissions
+    de = Schweine Hofdüngerlager NH3-Emission
+    fr = Porcs Emission de NH3 Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+  Out(nh3_npig_storage_solid) + Out(nh3_npig_storage_liquid);
+
+
++nh3_npig_application_solid
+  format= %.0f
+  print = PigSummary
+  ++labels
+    sort = 240
+    en = _Application solid pigs NH3-Emissions
+    de = _Schweine Hofdüngerausbringung fest NH3-Emission 
+    fr = _Porcs Emission de NH3 Epandage des engrais de ferme solides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_notherpig_application_solid) + Out(nh3_nfatteningpig_application_solid);
+
+
++nh3_npig_application_liquid
+  format= %.0f
+  print = PigSummary
+  ++labels
+    sort = 240
+    en = _Application liquid pigs NH3-Emissions
+    de = _Schweine Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Porcs Emission de NH3 Epandage des engrais de ferme liquides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_notherpig_application_liquid) + Out(nh3_nfatteningpig_application_liquid);
+
+
++nh3_npig_application
+  format= %.0f
+  print = PigSummary
+  ++labels 
+    sort = 240
+    en = Application pigs NH3-Emissions
+    de = Schweine Hofdüngerausbringung NH3-Emission
+    fr = Porcs Emission de NH3 Epandage des engrais de ferme  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nfatteningpig_application)  +  Out(nh3_notherpig_application);
+
+
++nh3_npig_total
+  format= %.0f
+  print = PigTotal
+  ++labels 
+    sort = 290
+    en = Pig NH3-Emissions
+    de = Schweine NH3-Emission
+    fr = Porcs Emission de NH3
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from pig ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_npig_grazing) + Out(nh3_npig_housing_and_yard) + Out(nh3_npig_storage) + Out(nh3_npig_application);
+   
+
+######  Poultry  ######################################################################
+
+
++n_excretion_poultry
+  format= %.0f
+  print = PoultryFlux
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all poultry animals.
+  ++formula
+    Sum(n_excretion, Livestock::Poultry) ;
+
+
++nh3_npoultry_grazing
+  format= %.0f
+  print = PoultrySummary
+  ++labels
+    sort = 510
+    en = Grazing poultry NH3-Emissions
+    de = Geflügel Weide NH3-Emission
+    fr = Volaille Emission de NH3 Pâturage 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from poultry grazing areas.
+  ++formula
+     Sum(nh3_nfree_range, Livestock::Poultry::Outdoor);
+ 
+
++nh3_npoultry_housing_and_yard
+  format= %.0f
+  print = PoultrySummary
+  ++labels 
+    sort = 520
+    en = Housing and yard poultry NH3-Emissions
+    de = Geflügel Stall und Laufhof NH3-Emission
+    fr = Volaille Emission de NH3 Stabulation et parcours extérieur 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from poultry from all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::Poultry::Housing); 
+
+
++nh3_npoultry_storage
+  format= %.0f
+  print = PoultrySummary
+  ++labels 
+    sort = 530
+    en =  Storage poultry NH3-Emissions
+    de =  Geflügel Hofdüngerlager NH3-Emission
+    fr =  Volaille Emission de NH3 Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage 
+  ++formula
+   Val(nh3_npoultry, Storage::SolidManure::Poultry);
+
+
++nh3_npoultry_application
+  format= %.0f
+  print = PoultrySummary
+  ++labels 
+    sort = 540
+    en = Application poultry NH3-Emissions
+    de = Geflügel Hofdüngerausbringung NH3-Emission
+    fr = Volaille Emission de NH3 Epandage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application 
+  ++formula
+   Val(nh3_npoultry, Application::SolidManure::Poultry);
+   
+
++nh3_npoultry_total
+  format= %.0f
+  print = PoultryTotal
+  ++labels
+    sort = 590
+    en = Poultry NH3-Emissions
+    de = Geflügel NH3-Emission
+    fr = Volaille Emission de NH3
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from pig ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_npoultry_grazing) + Out(nh3_npoultry_housing_and_yard) + Out(nh3_npoultry_storage) + Out(nh3_npoultry_application);
+   
+
+######  Equides, SmallRuminants  ######################################################################
+
+
++n_excretion_other
+  format= %.0f
+  print = OtherFlux
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all equides and small ruminants.
+  ++formula
+    Sum(n_excretion, Livestock::Equides) +
+    Sum(n_excretion, Livestock::SmallRuminants);
+
+
++nh3_nother_grazing
+  format= %.0f
+  print = OtherSummary
+  ++labels 
+    sort = 610
+    en = Grazing equides and small ruminants NH3-Emissions
+    de = Pferde und Kleinwiederkäuer Weide NH3-Emission
+    fr = Equidés et petits ruminants Emission de NH3 Pâturage 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from equides and small ruminants grazing areas.
+  ++formula
+     Sum(nh3_ngrazing, Livestock::Equides::Grazing) +
+     Sum(nh3_ngrazing, Livestock::SmallRuminants::Grazing);
+ 
+
++nh3_nother_housing_and_yard
+  format= %.0f
+  print = OtherSummary
+  ++labels 
+    sort = 620
+    en = Housing and yard equides and small ruminants NH3-Emissions
+    de = Pferde und Kleinwiederkäuer Stall und Laufhof NH3-Emission
+    fr = Equidés et petits ruminants Emission de NH3 Stabulation et parcours extérieur 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from equides and small ruminants from all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::SmallRuminants::Housing) +  
+   Sum(nh3_nhousing, Livestock::Equides::Housing) +  
+   Sum(nh3_nyard, Livestock::Equides::Yard);
+
+
++share_storage_other
+  format= %.3f
+  print = 44
+  ++labels 
+    en = Share input Storage equides and small ruminants
+    de = Pferde und Kleinwiederkäuer Anteile Lagerinput
+    fr = Equidés et petits ruminants Part Stockage 
+  ++units
+    en = %
+  ++description
+    Share input storage equides and small ruminats
+  ++formula
+   if( Val(n_into_storage, Livestock) > 0 ){
+    ( Sum(n_from_equides, Livestock::Equides) + 
+    Sum(n_from_other, Livestock::SmallRuminants) ) / Val(n_into_storage, Livestock);
+   }else{0;};
+
+
++share_storage_solid_other
+  format= %.3f
+  print = 44
+  ++labels 
+    en = Share input Storage solid equides and small ruminants
+    de = Pferde und Kleinwiederkäuer Anteile Lagerinput fest
+    fr = Equidés et petits ruminants Part Stockage solide
+  ++units
+    en = %
+  ++description
+    Share input storage solid equides and small ruminats
+  ++formula
+   if( Val(n_into_storage_solid, Livestock) > 0 ){
+    ( Sum(n_solid_from_equides, Livestock::Equides) + 
+    Sum(n_solid_from_other, Livestock::SmallRuminants) ) / Val(n_into_storage_solid, Livestock);
+   }else{0;};
+
+
++share_storage_liquid_other
+  format= %.3f
+  print = 44
+  ++labels 
+    en = Share input Storage liquid equides and small ruminants
+    de = Pferde und Kleinwiederkäuer Anteile Lagerinput flüssig
+    fr = Equidés et petits ruminants Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input storage liquid equides and small ruminats
+  ++formula
+   if( Val(n_into_storage_liquid, Livestock) > 0 ){
+    ( Sum(n_liquid_from_equides, Livestock::Equides) + 
+    Sum(n_liquid_from_other, Livestock::SmallRuminants) ) / Val(n_into_storage_liquid, Livestock);
+   }else{0;};
+
+
++nh3_nother_storage_solid
+  format= %.0f
+  print = OtherSummary
+  ++labels 
+    sort = 632
+    en = _Storage solid equides and small ruminants NH3-Emissions
+    de = _Pferde und Kleinwiederkäuer Hofdüngerlager fest NH3-Emission
+    fr = _Equidés et petits ruminants Emission de NH3 Stockage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_solid_other) *  Val(nh3_nstorage_solid, Storage);
+
+
++nh3_nother_storage_liquid
+  format= %.0f
+  print = OtherSummary
+  ++labels 
+    sort = 631
+    en = _Storage liquid equides and small ruminants NH3-Emissions
+    de = _Pferde und Kleinwiederkäuer Hofdüngerlager flüssig NH3-Emission	
+    fr = _Equidés et petits ruminants Emission de NH3 Stockage des engrais de ferme liquides  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_liquid_other) *  Val(nh3_nstorage_liquid, Storage);
+
+
++nh3_nother_storage
+  format= %.0f
+  print = OtherSummary
+  ++labels 
+    sort = 630
+    en = Storage equides and small ruminants NH3-Emissions
+    de = Pferde und Kleinwiederkäuer Hofdüngerlager NH3-Emission
+    fr = Equidés et petits ruminants Emission de NH3 Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nother_storage_liquid) + Out(nh3_nother_storage_solid);
+
+
++nh3_nother_application_solid
+  format= %.0f
+  print = OtherSummary
+  ++labels 
+    sort = 640
+    en = _Application solid equides and small ruminants NH3-Emissions
+    de = _Pferde und Kleinwiederkäuer Hofdüngerausbringung fest NH3-Emission
+    fr = _Equidés et petits ruminants Emission de NH3 Epandage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Val(nh3_nsolid_horses_otherequides_smallruminants, Application::SolidManure::Solid);
+
+
++nh3_nother_application_liquid
+  format= %.0f
+  print = OtherSummary
+  ++labels 
+    sort = 640
+    en = _Application liquid equides and small ruminants NH3-Emissions
+    de = _Pferde und Kleinwiederkäuer Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Equidés et petits ruminants Emission de NH3 Epandage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   0;
+
+
++nh3_nother_application
+  format= %.0f
+  print = OtherSummary
+  ++labels
+    sort = 640 
+    en = Application equides and small ruminants NH3-Emissions
+    de = Pferde und Kleinwiederkäuer Hofdüngerausbringung NH3-Emission
+    fr = Equidés et petits ruminants Emission de NH3 Epandage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nother_application_solid) + Out(nh3_nother_application_liquid);
+
+
++nh3_nother_total
+  format= %.0f
+  print = OtherTotal
+  ++labels 
+    sort = 690
+    en = Equides and small ruminant NH3-Emissions
+    de = Pferde und Kleinwiederkäuer NH3-Emission
+    fr = Equidés et petits ruminants Emission de NH3 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from other ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nother_grazing) + Out(nh3_nother_housing_and_yard) + Out(nh3_nother_storage) + Out(nh3_nother_application);
+   
+
+######  Equides  ######################################################################
+
+
++n_excretion_equides
+  format= %.0f
+  print = EquidesFlux
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all equides.
+  ++formula
+    Sum(n_excretion, Livestock::Equides) 
+
+
++nh3_nequides_grazing
+  format= %.0f
+  print = EquidesSummary
+  ++labels
+    sort = 610
+    en = Grazing equides NH3-Emissions
+    de = Pferde und andere Equiden Weide NH3-Emission
+    fr = Chevaux et autres équidés Emission de NH3 Pâturage 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from equides grazing areas.
+  ++formula
+     Sum(nh3_ngrazing, Livestock::Equides::Grazing) 
+
+
++nh3_nequides_housing_and_yard
+  format= %.0f
+  print = EquidesSummary
+  ++labels
+    sort = 620
+    en = Housing and yard equides NH3-Emissions
+    de = Pferde und andere Equiden Stall und Laufhof NH3-Emission
+    fr = Chevaux et autres équidés Emission de NH3 Stabulation et parcours extérieur 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from equides from all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::Equides::Housing) +  
+   Sum(nh3_nyard, Livestock::Equides::Yard);
+
+
++share_storage_solid_equides
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage solid equides
+    de = Pferde und andere Equiden Anteile Lagerinput fest
+    fr = Chevaux et autres équidés Part Stockage solide 
+  ++units
+    en = %
+  ++description
+    Share input storage solid equides
+  ++formula
+    if( Val(tan_into_storage_solid_horses_otherequides_smallruminants, Livestock) >0 ){
+    	 Sum(tan_solid_from_equides, Livestock::Equides) / Val(tan_into_storage_solid_horses_otherequides_smallruminants, Livestock);
+    }else{0;};
+
+
++share_storage_liquid_equides
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage liquid equides
+    de = Pferde und andere Equiden Anteile Lagerinput flüssig
+    fr = Chevaux et autres équidés Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input storage liquid equides
+  ++formula
+    if( Val(n_into_storage_liquid, Livestock) >0 ){
+    	Sum(n_liquid_from_equides, Livestock::Equides) / Val(n_into_storage_liquid, Livestock);
+    }else{0;};
+ 
+
++share_application_liquid_equides
+  format= %.2f
+  print = 44
+  ++labels 
+    en = Share input Storage liquid dairy cow
+    de = Milchkühe Anteile Lagerinput flüssig
+    fr = Vaches laitières Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input Storage dairy cow
+  ++formula
+   if(Out(sum_weight_application_slurry) >0){
+      Sum(n_liquid_from_equides, Livestock::Equides)*0.5 / Out(sum_weight_application_slurry);
+   }else{0;};
+
+
++nh3_nequides_storage_solid
+  format= %.0f
+  print = EquidesSummary
+  ++labels
+    sort = 632
+    en = _Storage solid equides NH3-Emissions
+    de = _Pferde und andere Equiden Hofdüngerlager fest NH3-Emission
+    fr = _Chevaux et autres équidés Emission de NH3 Stockage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_solid_equides) *  Val(nh3_nsolid_horses_otherequides_smallruminants, Storage::SolidManure::Solid);
+
+
++nh3_nequides_storage_liquid
+  format= %.0f
+  print = EquidesSummary
+  ++labels 
+    sort = 631
+    en = _Storage liquid equides NH3-Emissions
+    de = _Pferde und andere Equiden Hofdüngerlager flüssig NH3-Emission
+    fr = _Chevaux et autres équidés Emission de NH3 Stockage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_liquid_equides) *  Val(nh3_nstorage_liquid, Storage);
+
+
++nh3_nequides_storage
+  format= %.0f
+  print = EquidesSummary
+  ++labels 
+    sort = 630
+    en = Storage equides NH3-Emissions
+    de = Pferde und andere Equiden Hofdüngerlager NH3-Emission
+    fr = Chevaux et autres équidés Emission de NH3 Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nequides_storage_solid) + Out(nh3_nequides_storage_liquid);
+
+
++nh3_nequides_application_solid
+  format= %.0f
+  print = EquidesSummary
+  ++labels
+    sort = 642
+    en = _Application solid equides NH3-Emissions
+    de = _Pferde und andere Equiden Hofdüngerausbringung fest NH3-Emission
+    fr = _Chevaux et autres équidés Emission de NH3 Epandage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_solid_equides) *  Val(nh3_nsolid_horses_otherequides_smallruminants, Application::SolidManure::Solid);
+ 
+
++nh3_nequides_application_liquid
+  format= %.0f
+  print = EquidesSummary
+  ++labels
+    sort = 641
+    en = _Application liquid equides NH3-Emissions
+    de = _Pferde und andere Equiden Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Chevaux et autres équidés Emission de NH3 Epandage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_liquid_equides) *  Val(nh3_napplication_liquid, Application);
+
+
++nh3_nequides_application
+  format= %.0f
+  print = EquidesSummary
+  ++labels
+    sort = 640
+    en = Application equides NH3-Emissions
+    de = Pferde und andere Equiden Hofdüngerausbringung NH3-Emission
+    fr = Chevaux et autres équidés Emission de NH3 Epandage des engrais de ferme  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nequides_application_solid) + Out(nh3_nequides_storage_liquid);
+ 
+
++nh3_nequides_total
+  format= %.0f
+  print = EquidesTotal
+  ++labels
+    sort = 690
+    en = Equides NH3-Emissions
+    de = Pferde und andere Equiden NH3-Emission
+    fr = Chevaux et autres équidés Emission de NH3
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from equides ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nequides_grazing) + Out(nh3_nequides_housing_and_yard) + Out(nh3_nequides_storage) + Out(nh3_nequides_application);
+   
+  
+
+######  SmallRuminants  ######################################################################
+
+
++n_excretion_small_ruminants
+  format= %.0f
+  print = SmallRuminantsFlux
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all small ruminants.
+  ++formula
+    Sum(n_excretion, Livestock::SmallRuminants) 
+
+
++nh3_nsmall_ruminant_grazing
+  format= %.0f
+  print = SmallRuminantSummary
+  ++labels
+    sort = 701
+    en = Grazing small ruminants NH3-Emissions
+    de = Kleinwiederkäuer Weide NH3-Emission
+    fr = Petits ruminants Emission de NH3 Pâturage 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from small ruminants grazing areas.
+  ++formula
+     Sum(nh3_ngrazing, Livestock::SmallRuminants::Grazing) 
+ 
+
++nh3_nsmall_ruminant_housing_and_yard
+  format= %.0f
+  print = SmallRuminantSummary
+  ++labels
+    sort = 702
+    en = Housing and yard small ruminants NH3-Emissions
+    de = Kleinwiederkäuer Stall und Laufhof NH3-Emission
+    fr = Petits ruminants Emission de NH3 Stabulation et parcours extérieur 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from small ruminants from all housings and yards.
+  ++formula
+   Sum(nh3_nhousing, Livestock::SmallRuminants::Housing) 
+
+
++share_storage_solid_small_ruminant
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage solid small ruminants  
+    de = Kleinwiederkäuer Anteile Lagerinput fest
+    fr = Petits ruminants Part Stockage solide
+  ++units
+    en = %
+  ++description
+    Share input storage solid small ruminants
+  ++formula
+    if(  Val(tan_into_storage_solid_horses_otherequides_smallruminants, Livestock) >0 ){
+    	Sum(tan_solid_from_other, Livestock::SmallRuminants)  /  Val(tan_into_storage_solid_horses_otherequides_smallruminants, Livestock);
+    }else{0;};
+
+
++share_storage_liquid_small_ruminant
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage liquid small ruminants ;\ 
+    de = Kleinwiederkäuer Anteile Lagerinput flüssig;\
+    fr = Petits ruminants Part Stockage liquide } 
+  ++units
+    en = %
+  ++description
+    Share input storage liquid small ruminants
+  ++formula
+    if( Val(n_into_storage_liquid, Livestock) >0 ){
+       Sum(n_liquid_from_other, Livestock::SmallRuminants)  / Val(n_into_storage_liquid, Livestock);
+    }else{0;};
+
+
++share_application_liquid_small_ruminant
+  format= %.2f
+  print = 44
+  ++labels
+    en = Share input Storage liquid small ruminants
+    de = Kleinwiederkäuer Anteile Lagerinput flüssig
+    fr = Petits ruminants Part Stockage liquide
+  ++units
+    en = %
+  ++description
+    Share input Storage dairy cow
+  ++formula
+   if(Out(sum_weight_application_slurry) >0){
+      Sum(n_liquid_from_other, Livestock::SmallRuminants)*0.5 / Out(sum_weight_application_slurry);
+   }else{0;};
+
+
++nh3_nsmall_ruminant_storage_solid
+  format= %.0f
+  print = SmallRuminantSummary
+  ++labels
+    sort = 732
+    en = _Storage solid small ruminants NH3-Emissions
+    de = _Kleinwiederkäuer Hofdüngerlager fest NH3-Emission
+    fr = _Petits ruminants Emission de NH3  Stockage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_solid_small_ruminant) *  Val(nh3_nsolid_horses_otherequides_smallruminants, Storage::SolidManure::Solid);
+
+
++nh3_nsmall_ruminant_storage_liquid
+  format= %.0f
+  print = SmallRuminantSummary
+  ++labels
+    sort = 731
+    en = _Storage liquid small ruminants NH3-Emissions
+    de = _Kleinwiederkäuer Hofdüngerlager flüssig NH3-Emission
+    fr = _Petits ruminants Emission de NH3 Stockage des engrais de ferme liquides  
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_liquid_small_ruminant) *  Val(nh3_nstorage_liquid, Storage);
+
+
++nh3_nsmall_ruminant_storage
+  format= %.0f
+  print = SmallRuminantSummary
+  ++labels
+    sort = 730
+    en = Storage small ruminants NH3-Emissions
+    de = Kleinwiederkäuer Hofdüngerlager NH3-Emission
+    fr = Petits ruminants Emission de NH3  Stockage des engrais de ferme 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nsmall_ruminant_storage_liquid) +  Out(nh3_nsmall_ruminant_storage_solid);
+
+
++nh3_nsmall_ruminant_application_solid
+  format= %.0f
+  print = SmallRuminantSummary
+  ++labels 
+    sort = 742
+    en = _Application solid small ruminants NH3-Emissions
+    de = _Kleinwiederkäuer Hofdüngerausbringung fest NH3-Emission
+    fr = _Petits ruminants Emission de NH3  Epandage des engrais de ferme solides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application solid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_storage_solid_small_ruminant) *   Val(nh3_nsolid_horses_otherequides_smallruminants, Application::SolidManure::Solid);
+
+
++nh3_nsmall_ruminant_application_liquid
+  format= %.0f
+  print = SmallRuminantSummary
+  ++labels 
+    sort = 741
+    en = _Application liquid small ruminants NH3-Emissions
+    de = _Kleinwiederkäuer Hofdüngerausbringung flüssig NH3-Emission
+    fr = _Petits ruminants Emission de NH3 Epandage des engrais de ferme liquides 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application liquid (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(share_application_liquid_small_ruminant) *  Val(nh3_napplication_liquid, Application);
+
+
++nh3_nsmall_ruminant_application
+  format= %.0f
+  print = SmallRuminantSummary
+  ++labels
+    sort = 740
+    en = Application small ruminants NH3-Emissions
+    de = Kleinwiederkäuer Hofdüngerausbringung NH3-Emission
+    fr = Petits ruminants Emission de NH3  Epandage des engrais de ferme
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nsmall_ruminant_application_solid) + Out(nh3_nsmall_ruminant_application_liquid);
+
+   
++nh3_nsmall_ruminant_total
+  format= %.0f 
+  print = SmallRuminantTotal
+  ++labels
+    sort = 790
+    en = Small ruminants NH3-Emissions
+    de = Kleinwiederkäuer NH3-Emission
+    fr = Petits ruminants Emission de NH3
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from equides ( Application and storage, estimation proportional to input of animalcategory in storage)
+  ++formula
+   Out(nh3_nsmall_ruminant_grazing) + Out(nh3_nsmall_ruminant_housing_and_yard) + Out(nh3_nsmall_ruminant_storage) + Out(nh3_nsmall_ruminant_application);
+
+   
+  
