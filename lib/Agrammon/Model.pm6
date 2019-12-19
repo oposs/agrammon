@@ -3,6 +3,7 @@ use Agrammon::Formula::Compiler;
 use Agrammon::Inputs;
 use Agrammon::ModuleBuilder;
 use Agrammon::ModuleParser;
+use Agrammon::Model::FilterSet;
 use Agrammon::Model::Module;
 use Agrammon::Outputs;
 
@@ -69,6 +70,13 @@ class Agrammon::Model {
     my class ModuleRunner {
         has Agrammon::Model::Module $.module;
         has ModuleRunner @.dependencies;
+        has Agrammon::Model::FilterSet $!filter-set;
+
+        submethod TWEAK(--> Nil) {
+            if $!module.is-multi {
+                $!filter-set .= new(:$!module, :dependencies(@!dependencies.map(*.module)));
+            }
+        }
 
         method run(:$input!, :%technical!) {
             my $outputs = Agrammon::Outputs.new;
@@ -85,7 +93,8 @@ class Agrammon::Model {
                 # instance. Then mark the whole graph as having run.
                 $outputs.declare-multi-instance($tax);
                 for $input.inputs-list-for($tax) -> $multi-input {
-                    my $multi-output = $outputs.new-instance($tax, $multi-input.instance-id);
+                    my %filters := $!filter-set.filters-for($multi-input);
+                    my $multi-output = $outputs.new-instance($tax, $multi-input.instance-id, :%filters);
                     self!run-as-single($multi-input, %technical, $multi-output, %run-already.clone);
                 }
                 self!mark-multi-run(%run-already);
