@@ -18,10 +18,10 @@ class Agrammon::Model::Input {
     #    has Str @.options;     # XXX set correct type: array of arrays
     #    has Str @.optionsLang; # XXX set correct type: array of hashes
     has @.options;     # XXX set correct type: array of arrays
-    has @.optionsLang; # XXX set correct type: array of hashes
+    has @.options-lang; # XXX set correct type: array of hashes
     has  %.enum;
     has Int $.order;
-    has Bool $!branch;
+    has Bool $!branch = False;
 
     submethod TWEAK(:$default_calc, :$default_gui, :$branch) {
         with $default_calc {
@@ -37,7 +37,7 @@ class Agrammon::Model::Input {
         }
     }
 
-    method is-branch(--> Bool) { so $!branch }
+    method is-branch(--> Bool) { $!branch }
 
     method as-hash {
         my $validator = $.validator;
@@ -54,22 +54,22 @@ class Agrammon::Model::Input {
         %units<fr> ||= %!units<en>;
 
         my @options;
-        my @optionsLang;
+        my @options-lang;
         my %enums = %!enum;
 
         for %enums.kv -> $name, $optLang {
             my $label   = $name;
             $label      ~~ s:g/_/ /;
             my @opt     = [ $label, '', $name];
-            my @optLang = split("\n", $optLang);
-            my %optLang;
-            for @optLang -> $ol {
+            my @opt-lang = split("\n", $optLang);
+            my %opt-lang;
+            for @opt-lang -> $ol {
                 my ($l, $o) = split(/ \s* '=' \s* /, $ol);
                 $o ~~ s:g/_/ /;
-                %optLang{$l} = $o;
+                %opt-lang{$l} = $o;
             }
             push @options,     @opt;
-            push @optionsLang, %optLang;
+            push @options-lang, %opt-lang;
         }
 
         return %(
@@ -82,7 +82,7 @@ class Agrammon::Model::Input {
             labels      => %!labels,
             models      => @!models || @("all"),
             options     => @options,
-            optionsLang => @optionsLang,
+            optionsLang => @options-lang,
             order       => $!order // 500000,
             type        => $!type,
             units       => %units,

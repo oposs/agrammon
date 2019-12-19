@@ -28,7 +28,7 @@ class Agrammon::Model::Module {
     has $.instance-root;
     has Agrammon::Model::Module $.gui-root-module;
 
-    method TWEAK {
+    submethod TWEAK {
         my $tax = $!taxonomy;
         if $tax ~~ /^(.+) '::' (.+)$/ {
             $!parent = ~$0;

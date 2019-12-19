@@ -1,6 +1,7 @@
 # Agrammon
 
 ## The simulation model
+
 Ammonia volatilisation is a significant source of nitrogen (N) loss in
 agriculture.  Almost one-third of the N load of farmyard manure is lost this
 way, resulting in both a financial loss as well as diminished productivity
@@ -19,6 +20,14 @@ Environment (FOEN)](https://www.bafu.admin.ch/bafu/en/home.html).
 
 Please see the [Agrammon website](https://www.agrammon.ch) for more details.
 
-## Port to Perl6
+## Port to Raku
 
-The existing Agrammon web application is being ported to Perl6.
+This is a port of the existing Agrammon web application to Raku. It is complete enough to
+run models from the command line, however the web UI related parts, user management, and
+so forth are still to be ported.
+
+## Running tests
+
+To only run unit tests, set `AGRAMMON_UNIT_TEST=1` in the environment. The integration
+tests currently have quite some setup dependencies; this should be addressed in the
+future.

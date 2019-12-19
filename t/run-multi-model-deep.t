@@ -4,7 +4,7 @@ use Agrammon::Model;
 use Test;
 
 my $path = $*PROGRAM.parent.add('test-data/Models/run-test-multi-deep');
-my $model = Agrammon::Model.new(path => $path);
+my $model = Agrammon::Model.new(:$path);
 $model.load('Test');
 
 subtest 'Run without overriding any technical values' => {
