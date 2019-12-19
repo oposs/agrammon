@@ -22,8 +22,9 @@ class Agrammon::Model::Input {
     has  %.enum;
     has Int $.order;
     has Bool $!branch = False;
+    has Bool $!filter = False;
 
-    submethod TWEAK(:$default_calc, :$default_gui, :$branch) {
+    submethod TWEAK(:$default_calc, :$default_gui, :$branch, :$filter) {
         with $default_calc {
             $!default-calc = val($_);
         }
@@ -35,9 +36,16 @@ class Agrammon::Model::Input {
                 $!branch = True;
             }
         }
+        with $filter {
+            if .lc eq 'true' {
+                $!filter = True;
+            }
+        }
     }
 
     method is-branch(--> Bool) { $!branch }
+
+    method is-filter(--> Bool) { $!filter }
 
     method as-hash {
         my $validator = $.validator;
