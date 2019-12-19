@@ -1,6 +1,7 @@
 # Agrammon
 
 ## The simulation model
+
 Ammonia volatilisation is a significant source of nitrogen (N) loss in
 agriculture.  Almost one-third of the N load of farmyard manure is lost this
 way, resulting in both a financial loss as well as diminished productivity
@@ -19,6 +20,6 @@ Environment (FOEN)](https://www.bafu.admin.ch/bafu/en/home.html).
 
 Please see the [Agrammon website](https://www.agrammon.ch) for more details.
 
-## Port to Perl6
+## Port to Raku
 
-The existing Agrammon web application is being ported to Perl6.
+This is a port of the existing Agrammon web application to Raku.
