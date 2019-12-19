@@ -21,7 +21,7 @@ class Agrammon::Model::Input {
     has @.optionsLang; # XXX set correct type: array of hashes
     has  %.enum;
     has Int $.order;
-    has Bool $!branch;
+    has Bool $!branch = False;
 
     submethod TWEAK(:$default_calc, :$default_gui, :$branch) {
         with $default_calc {
@@ -37,7 +37,7 @@ class Agrammon::Model::Input {
         }
     }
 
-    method is-branch(--> Bool) { so $!branch }
+    method is-branch(--> Bool) { $!branch }
 
     method as-hash {
         my $validator = $.validator;
