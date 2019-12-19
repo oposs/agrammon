@@ -1,0 +1,403 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2012-05-08
+taxonomy = Livestock::OtherCattle::GrazingInput
+
++short
+
+ Input parameters for Grazing
+
++description
+
+ Input parameters for Grazing, as it is used also in Yard in separete Module.
+
+*** input ***
+
++grazing_days
+  type  = integer
+  validator = between(0,270);
+  ++labels 
+    en = Grazing days per year
+    de = Jährliche Weidetage
+    fr = Jours de pâturage par an
+  ++units
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average grazing days per year.
+  ++help
+    +++en
+       <p>Standard values for Switzerland</p>
+     <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" >
+             Grazing days per year<br/> 
+           </td> 
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+ 	     Suckling cows
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+             Heifers 1st year
+          </td>
+          <td align="center" > 140 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Heifers 2nd year
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Heifers 3rd year
+          </td>
+          <td align="center" > 160 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Fattening calves
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Calves of suckling cows
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Beef cattle *
+          </td>
+          <td align="center" > 170* </td>
+	 </tr>
+      </table>
+      <p> * Only applicable for farms with pasture fattening. About 50 % of the animals do not have access to pastures.
+      </p>
+    
+    +++de
+       <p>Diese Zahl bezieht sich auf die Anzahl Weidetage auf dem Heimbetrieb. Darin ist die Weide der Alpung im Sömmerungsgebiet nicht eingeschlossen.</p>
+       <p>Vorschlag für Standardwerte:</p>
+     <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" >
+             Jährliche Weidetage <br/> (Durchschnitt Tal-, Hügel- <br/> und Bergregion)
+           </td> 
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+ 	     Mutterkühe
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+             Aufzuchtrinder unter 1-jährig
+          </td>
+          <td align="center" > 140 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder 1- bis 2-jährig
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder über 2-jährig
+          </td>
+          <td align="center" > 160 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Mastkälber
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Mutterkuhkälber
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Masttiere Rindviehmast *
+          </td>
+          <td align="center" > 170* </td>
+	 </tr>
+      </table>
+      <p> * Nur für Betriebe anwendbar, die Weidemast betreiben. Rund 50 % der Masttiere werden nicht geweidet.
+      </p>
+    +++fr
+       <p>Ces chiffres se rapportent au nombre de jours de pâturage sur l’exploitation de base. Ils ne comprennent pas le pâturage dans les alpages des exploitations d’estivage.</p>
+       <p>Propositions de valeurs standard:</p>
+     <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" >
+             Nombre de jours de pâturage par an  <br/>(Moyenne régions de plaine, collines et montagne) 
+           </td> 
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+ 	     Vaches allaitantes
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+             Remontes de moins d’un an
+          </td>
+          <td align="center" > 140 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Remontes âgées entre 1 et 2 ans
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Remontes âgées de plus de 2 ans
+          </td>
+          <td align="center" > 160 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Veaux à l’engrais
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Veaux de vaches allaitantes
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Bovins à l’engrais *
+          </td>
+          <td align="center" > 170* </td>
+	 </tr>
+      </table>
+       <p>* Seul. valable pour les exploitations qui pratiquent l’engraissement au pâturage. Env. 50% des animaux à l’engrais ne vont pas au pâturage. </p>
+
+
++grazing_hours
+  type  = float
+  validator = between(0,24);
+  ++labels 
+    en = Grazing hours per day
+    de = Tägliche Weidestunden
+    fr = Heures de pâturage par jour
+  ++units
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average grazing hours per day.
+  ++help
+    +++en
+       <p>Standard values for Switzerland</p>
+      <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" >
+             Grazing hours per day
+           </td> 
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+ 	     Suckling cows
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+             Heifers 1st year
+          </td>
+          <td align="center" > 12 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Heifers 2nd year
+          </td>
+          <td align="center" > 17 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Heifers 3rd year
+          </td>
+          <td align="center" > 15 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Fattening calves
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Calves of suckling cows
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Beef cattle *
+          </td>
+          <td align="center" > 16* </td>
+	 </tr>
+      </table>
+      <p> * Only applicable for farms with pasture fattening. About 50 % of the animals do not have access to pastures. 
+      </p>
+    +++de 
+       <p>Diese Zahl bezieht sich auf die Anzahl Weidestunden auf
+       dem Heimbetrieb. Darin ist die Weide der Alpung im
+       Sömmerungsgebiet nicht eingeschlossen.</p>
+
+       <p>Vorschlag für Standardwerte</p>
+      <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" >
+             Anzahl Weidestunden
+           </td> 
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+ 	     Mutterkühe
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+             Aufzuchtrinder unter 1-jährig
+          </td>
+          <td align="center" > 12 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder 1- bis 2-jährig
+          </td>
+          <td align="center" > 17 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder über 2-jährig
+          </td>
+          <td align="center" > 15 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Mastkälber
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Mutterkuhkälber
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Masttiere Rindviehmast *
+          </td>
+          <td align="center" > 16* </td>
+	 </tr>
+      </table>
+      <p> * Nur für Betriebe anwendbar, die Weidemast betreiben. Rund 50 % der Masttiere werden nicht geweidet.
+      </p>
+    +++fr
+       <p>Ces chiffres se rapportent au nombre d’heures de pâturage sur l’exploitation de base. Ils ne comprennent pas le pâturage dans les alpages des exploitations d’estivage. </p>
+
+       <p>Propositions de valeurs standard</p>
+      <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+	 <tr>
+           <td>&#160;</td>
+	   <td align="center" >
+             Heures de pâturage par jour
+           </td> 
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+ 	     Vaches allaitantes
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+             Remontes de moins d’un an
+          </td>
+          <td align="center" > 12 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Remontes âgées entre 1 et 2 ans
+          </td>
+          <td align="center" > 17 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Remontes âgées de plus de 2 ans
+          </td>
+          <td align="center" > 15 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Veaux à l’engrais
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Veaux de vaches allaitantes
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+	  <td align="left" valign="top" cellspacing="0">
+            Bovins à l’engrais *
+          </td>
+          <td align="center" > 16* </td>
+	 </tr>
+      </table>
+      <p> * Seul. valable pour les exploitations qui pratiquent l’engraissement au pâturage. Env. 50% des animaux à l’engrais ne vont pas au pâturage. </p>
+
+
+*** output ***
+
++grazing_hours
+  print = 15
+  ++units
+     en = hours/day
+     de = Stunden/Tag
+     fr = heure/jour
+  ++description
+    Grazing hours per day.
+  ++formula
+    In(grazing_hours);
+
++grazing_days
+  print = 15
+  ++units
+     en = days/year
+     de = Tage/Jahr
+     fr = jour/an
+  ++description
+    Grazing days per year.
+  ++formula
+    In(grazing_days);
+

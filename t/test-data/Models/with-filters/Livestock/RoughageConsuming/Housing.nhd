@@ -1,0 +1,236 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2012-05-06
+taxonomy = Livestock::RoughageConsuming::Housing
+
++short
+  Computes the annual NH3 emission from small ruminant housing systems.
+
++description 
+
+  This process calculates the NH3 emission in small ruminants housing
+  depending on the N excretion and the housing systems. The NH3
+  emission is assumed to be proportional to the total N excretion of
+  the animals because the contaminated surfaces will primarily drive
+  emissions, which will remain active even when animals are on the
+  pasture or exercise yard.
+
+  A proportional correction is applied according to the area per
+  animal.
+
+  A correction is applied if the part of the day grazing is above a
+  defined grazing hours per days.
+
+  \subsubsection{Definition of System boundaries for the housing Process:}
+
+  For housing systems with integrated exercise yards, it is difficult to
+  distinguish between emissions from housing, exercise yard and storage. 
+  For these housingtypes the emission may be only validated for the sum of
+  housing, exercise yard and storage emission.
+
+*** input ***
+
++free_correction_factor
+  models = SHL
+  type = float
+  default_calc = 0
+  default_gui = 0
+  validator = between(0,100);
+  ++labels 
+    en = Additional emission mitigation measure for the housing (see column Help)
+    de = Zusätzliche emissionsmindernde Massnahme Stall (siehe Spalte Hilfe)
+    fr = Mesure supplémentaire limitant les émissions dans les stabulations (cf. aide)
+  ++units 
+    en = %
+  ++description
+    Factor to define free.
+  ++help
+    +++en
+       <p> </p>
+    +++de
+	<p>
+	   Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme 
+	   eingesetzt werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene 
+           Zahl entspricht der Emissionsminderung in Prozent (z.B. Eingabe 30%; die Emission 
+           aus dem Stall nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der 
+           Spalte Kommentar aufzuführen und den gewählten Wert zur Emissionsminderung 
+           zu begründen.
+        </p>
+       	<p>
+	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+           zur Emissionsminderung berücksichtigen müssen. 
+        </p>
+        <p> Vorschlag für Standardwert: 0 %. </p>
+    +++fr
+        <p>
+	  Ici, vous pouvez introduire l’effet d’une mesure supplémentaire limitant les 
+	  émissions (p.ex. un nouveau type de sol limitant les émissions). Le chiffre 
+	  introduit correspond à la réduction d’émission en pourcent (p.ex. 30%: l’émission 
+	  provenant de la stabulation diminue de 30%). Il est recommandé de mentionner la 
+	  mesure choisie dans la colonne ‘Commentaire’ et de justifier le taux de réduction 
+	  choisi.
+	</p>
+	<p>
+	  Cette fonction s’adresse principalement aux utilisateurs/trices qui font des 
+	  pronostiques d’émissions et qui doivent prendre en compte l’effet de nouvelles 
+	  technologies destinées à limiter les émissions et encore méconnues actuellement.
+	</p>
+	<p>Proposition valeur standard: 0 %.</p>
+
+*** technical ***
+
++er_housing
+  value = 0.11
+  ++units  
+    en = -
+  ++description
+    Emission rate for loose housing with liquid, solid manure system is assumed (for TAN 0.275 and Nsol 40%).
+
+
+*** external ***
+
++Excretion
++Grazing
++Housing::KGrazing
+
+*** output ***
+
++c_free_factor_housing
+  print = 10
+  ++units 
+    en = -
+  ++description
+    Free reduction of the Emission rate for the Yard.
+  ++formula
+  if(In(free_correction_factor)//0 > 0) {   	    
+      writeLog({en=>"You have entered an additional emission mitigation measure for a housing of the category small ruminants of " 
+      	            . In(free_correction_factor) 
+                    . "\%\n", 
+                de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Stall der Kategorie andere Raufutter verzehrer von "
+                    . In(free_correction_factor) 
+                    . "\%eingegeben.\n", 
+                fr=> "Vous avez introduit une mesure supplémentaire limitant les émissions dans les "
+		     . "stabulations de la catégorie de other roughage consumation de " . In(free_correction_factor) 
+                     . "\%.\n"});
+	    return 1 - In(free_correction_factor)/100;
+     
+  } else {
+    return 1;
+  } 
+
+
++n_into_housing
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux into the house.
+  ++formula
+    if( Val(n_excretion, Excretion) > Val(n_into_grazing, Grazing)  ) {
+      Val(n_excretion, Excretion) 
+          - Val(n_into_grazing, Grazing);
+    } else { return 0; }
+
++n_sol_into_housing
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN into the house.
+  ++formula
+    if( Val(n_sol_excretion, Excretion) > Val(n_sol_into_grazing, Grazing) ) {
+    	Val(n_sol_excretion, Excretion)
+           - Val(n_sol_into_grazing, Grazing);
+    } else { return 0; }
+
++nh3_nhousing
+  print = 5e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual NH3 emission from small ruminants housing systems 
+    per animal place.
+  ++formula
+   Out(n_sol_into_housing) 
+    * Val(k_grazing, Housing::KGrazing) 
+    * Tech(er_housing) 
+    * Out(c_free_factor_housing) ;
+
++n_outhousing
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of the housing.
+  ++formula
+    if( (Out(n_into_housing) - Out(nh3_nhousing)) > 0) {
+    	Out(n_into_housing) - Out(nh3_nhousing);
+    } else { return 0; }
+
++tan_outhousing
+  print = 9e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of the housing.
+  ++formula
+    if( (Out(n_sol_into_housing) - Out(nh3_nhousing)) > 0) {
+    	Out(n_sol_into_housing) - Out(nh3_nhousing);
+    } else { return 0; }
+
++n_outhousing_liquid
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of housing, slurry or liquid fraction of N flux.
+  ++formula
+    0
+
++tan_outhousing_liquid
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of housing, slurry or liquid fraction of N flux.
+  ++formula
+    0
+
++n_outhousing_solid
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of housing, manure fraction of N flux.
+  ++formula
+    Out(n_outhousing); 
+
++tan_outhousing_solid
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of housing, manure fraction of N flux. 
+  ++formula
+    Out(tan_outhousing);
+ 

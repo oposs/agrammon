@@ -1,0 +1,286 @@
+*** general ***
+
+author    = Agrammon Group
+date      = 2008-02-22
+taxonomy  = Livestock::Poultry
+instances = multi 
+gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volaille,Livestock::Poultry
+
++short
+ Collects the emission of NH3, the N excretion, and the N flux for the diffrent poultry categories per year.
+
++description
+ 
+ This process summarizes the annual emission of NH3, the annual N excretion, and the annual N flux for different poultry categories from housing and outdoor.
+
+
+*** input ***
+
+
++ignore
+  type  = enum{ignore}
+  ++labels 
+    en = ignore
+    de = ignorieren
+  ++units  
+    en = -
+  ++description 
+    Just a work around for modules without input parameters.
+
+*** technical ***
+
++er_n2
+  value = 0.025
+  ++units
+    en = -
+  ++description
+   Emission rate poultry for N2 poultry manure based on Ntot
+
++er_no
+  value = 0.001
+  ++units
+    en = -
+  ++description
+   Emission rate poultry for N2 poultry manure based on Ntot
+
++er_n2o
+  value = 0.001
+  ++units
+    en = -
+  ++description
+   Emission rate poultry for N2 poultry manure based on Ntot
+
+*** external ***
+
++Poultry::Excretion
++Poultry::Outdoor
++Poultry::Housing
+
+
+*** output ***
+
+
++n_excretion_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by poultry.
+  ++formula
+    if (Val(animalcategory, Poultry::Excretion) eq 'layers' 
+    || Val(animalcategory, Poultry::Excretion) eq 'growers'  
+    || Val(animalcategory, Poultry::Excretion) eq 'other_poultry'){
+        Val(n_excretion, Poultry::Excretion);
+    }else{
+        return(0);
+    }; 
+
++n_excretion_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by poultry.
+  ++formula
+    if( Val(animalcategory, Poultry::Excretion ) eq 'turkeys' 
+    || Val(animalcategory, Poultry::Excretion ) eq 'broilers'){
+        Val(n_excretion, Poultry::Excretion);
+    }else{
+        return(0);
+    };
+
++n_excretion
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by poultry.
+  ++formula
+    Val(n_excretion, Poultry::Excretion); 
+
++n2_npoultry
+  print = 5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from poultry production (housing and outdoor).
+  ++formula
+    Val(n_into_housing, Poultry::Housing) * Tech(er_n2)
+
++no_npoultry
+  print = 5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from poultry production housing.
+    (outdoor not included)
+  ++formula
+    Val(n_into_housing, Poultry::Housing) * Tech(er_no)
+
++n2o_npoultry
+  print = 5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2O emission from poultry production housing.
+    (outdorr not included)
+  ++formula
+    Val(n_into_housing, Poultry::Housing) * Tech(er_n2o)
+
+
++n_from_poultry_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from poultry housing.
+  ++formula
+    if( Val(animalcategory, Poultry::Excretion) eq 'layers'  
+        || Val(animalcategory, Poultry::Excretion) eq 'growers' 
+        ||  Val(animalcategory, Poultry::Excretion) eq 'other_poultry'){
+        Val(n_outhousing, Poultry::Housing);
+    }else{
+        return(0);
+    }; 
+
++n_from_poultry_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from poultry housing.
+  ++formula
+    if( Val(animalcategory,Poultry::Excretion) eq 'turkeys'  
+        || Val(animalcategory,Poultry::Excretion) eq 'broilers') {
+        Val(n_outhousing, Poultry::Housing);
+    }else{
+        return(0);
+    }; 
+
++n_from_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from poultry housing.
+  ++formula
+    Val(n_outhousing, Poultry::Housing)
+    - Out(n2_npoultry) - Out(no_npoultry)
+    - Out(n2o_npoultry)
+
++tan_from_poultry_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from poultry housing.
+  ++formula
+        if( Val(animalcategory, Poultry::Excretion) eq 'layers'  
+            || Val(animalcategory, Poultry::Excretion) eq 'growers' 
+            ||  Val(animalcategory, Poultry::Excretion) eq 'other_poultry'){
+        Val(tan_outhousing, Poultry::Housing)
+        - Out(n2_npoultry) - Out(no_npoultry)
+        - Out(n2o_npoultry);
+    }else{
+        return(0);
+    }; 
+
++tan_from_poultry_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from poultry housing.
+  ++formula
+    if( Val(animalcategory, Poultry::Excretion) eq 'turkeys'
+        || Val(animalcategory, Poultry::Excretion) eq 'broilers'){
+        Val(tan_outhousing, Poultry::Housing)
+        - Out(n2_npoultry) - Out(no_npoultry)
+        - Out(n2o_npoultry);
+    }else{
+        return(0);
+    }; 
+
++tan_from_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from poultry housing.
+  ++formula 
+    Val(tan_outhousing, Poultry::Housing)
+    - Out(n2_npoultry) - Out(no_npoultry)
+    - Out(n2o_npoultry);
+
++nh3_npoultry_layers_growers_other_poultry
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from poultry production (housing and outdoor).
+  ++formula
+    if( Val(animalcategory, Poultry::Excretion ) eq 'layers' 
+    || Val(animalcategory, Poultry::Excretion ) eq 'growers' 
+    ||  Val(animalcategory, Poultry::Excretion ) eq 'other_poultry'){
+    Val(nh3_nhousing, Poultry::Housing) +
+    Val(nh3_nfree_range, Poultry::Outdoor);
+    }else{
+        return(0);
+    }; 
+
++nh3_npoultry_turkeys_broilers
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from poultry production (housing and outdoor).
+  ++formula
+    if( Val(animalcategory, Poultry::Excretion ) eq 'turkeys' 
+    || Val(animalcategory, Poultry::Excretion ) eq 'broilers'){
+    Val(nh3_nhousing, Poultry::Housing) +
+    Val(nh3_nfree_range, Poultry::Outdoor);
+    }else{
+        return(0);
+    }; 
+
++nh3_npoultry
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from poultry production (housing and outdoor).
+  ++formula
+    Val(nh3_nhousing, Poultry::Housing) +
+    Val(nh3_nfree_range, Poultry::Outdoor);
+         
+

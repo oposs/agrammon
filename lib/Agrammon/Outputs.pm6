@@ -50,6 +50,7 @@ class Agrammon::Outputs { ... }
 class Agrammon::Outputs::Instance does Agrammon::Outputs::SingleOutputStorage {
     has Str $.taxonomy-prefix is required;
     has Str $.instance-name is required;
+    has %.filters;
     has Agrammon::Outputs $.parent is required;
 
     method get-output(Str $module, Str $name) {
@@ -82,14 +83,14 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
         %!instances{$taxonomy-prefix} //= {};
     }
 
-    method new-instance(Str $taxonomy-prefix, Str $instance-name --> Agrammon::Outputs::Instance) {
+    method new-instance(Str $taxonomy-prefix, Str $instance-name, :%filters --> Agrammon::Outputs::Instance) {
         without %!instances{$taxonomy-prefix} {
             die X::Agrammon::Outputs::NotDeclaredMultiInstance.new(module => $taxonomy-prefix);
         }
         with %!instances{$taxonomy-prefix}{$instance-name} {
             die X::Agrammon::Outputs::DuplicateInstance.new(:$taxonomy-prefix, :$instance-name);
         }
-        given Agrammon::Outputs::Instance.new(:$taxonomy-prefix, :$instance-name, :parent(self)) -> $instance {
+        given Agrammon::Outputs::Instance.new(:$taxonomy-prefix, :$instance-name, :parent(self), :%filters) -> $instance {
             %!instances{$taxonomy-prefix}{$instance-name} = $instance;
             return $instance;
         }
@@ -106,7 +107,7 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
         if %!outputs{$module}{$name}:exists {
             return %!outputs{$module}{$name};
         }
-        orwith self!find-instances($module) {
+        orwith self.find-instances($module) {
             .get-output($module, $name) with .values.first; # Will throw if symbol fully unknown
             die X::Agrammon::Outputs::IsMultiInstance.new(:$module, :$name);
         }
@@ -114,7 +115,7 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
     }
 
     method get-sum(Str $module, Str $name) {
-        with self!find-instances($module) {
+        with self.find-instances($module) {
             [+] .values.map({ .get-output($module, $name) })
         }
         else {
@@ -129,7 +130,7 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
         }
     }
 
-    method !find-instances(Str $module) {
+    method find-instances(Str $module) {
         my $start = $module.chars;
         while $start.defined {
             .return with %!instances{$module.substr(0, $start)};

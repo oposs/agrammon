@@ -1,0 +1,173 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-03-30
+taxonomy = Application::SolidManure::Poultry
+
+
++short
+
+ Computes the annual NH3 emission from poultry manure application.
+	
++description 
+
+This process computes the annual average NH3 emission from poultry
+manure application. The standard emission factor is corrected according 
+to the TAN content and the application rate, the application technology, 
+the crops to which the manure is applied, respected soft measures 
+during application and the application season, the time lag between 
+application and incorporation, the incorporation technology used, 
+and the proportion of solid manure that is applied on hot days.
+
+The correction factor are based on the same input parameters 
+as the application for solid manure.
+
+
+\subsubsection{References:}
+
+Menzi H, Keller M, Katz P, Fahrni M, Neftel A 1997. Ammoniakverluste
+nach der Anwendung von Mist. Agrarforschung 4:328-331.
+
+ Menzi H, Katz P, Frick R, Fahrni M, Keller M 1997: Ammonia emissions
+ following the application of solid manure to grassland. In: Jarvis
+ S.C. and Pain B.F. (Eds.): "Nitrogen Emissions from Grassland", CAB,
+ 265-274.
+
+  \begin{todo}{Cyrill Bonjour}{}
+     Add correct calculation based on Ntot and TAN!
+  \end{todo}
+
+*** input ***
+
+*** technical ***
+
++er_App_manure
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Not considerd relevant
+
+
++er_n2_App_manure
+  value = 0.4
+  ++units  
+    en = -
+  ++description
+  Emission rate for manure application. Based on EAGER Review on Solid Manure,
+  Webb et al. (2012), Emission based on TAN content of solid manure.
+
++er_no_App_manure
+  value = 0.0055
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Stehfest, Bouwman 2006
+
+
++er_n2o_App_manure
+  value = 0.01
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
+
+
+*** external ***
+
++::Storage
++::Storage::SolidManure
++::Storage::SolidManure::Poultry
++Poultry::CincorpTime
++Cseason
++CfreeFactor
+
+*** output ***
+
++nh3_npoultry
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NH3 emission from solid manure application.
+  ++formula
+    Tech(er_App_manure) 
+     * Val(tan_into_application, ::Storage::SolidManure::Poultry)
+     * Val(c_incorp_time, Poultry::CincorpTime)
+     * Val(c_season, Cseason)
+     * Val(c_free_factor_application_solidmanure, CfreeFactor);
+
++n2_npoultry
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    N2 emission from solid manure application.
+  ++formula
+    Tech(er_n2_App_manure) 
+     * Val(n_into_application, ::Storage::SolidManure::Poultry)
+
++no_npoultry
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NO emission from solid manure application.
+  ++formula
+    Tech(er_no_App_manure) 
+     * Val(n_into_application, ::Storage::SolidManure::Poultry)
+
++n2o_npoultry
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    N2O emission from solid manure application.
+  ++formula
+    Tech(er_n2o_App_manure) 
+     * Val(n_into_application, ::Storage::SolidManure::Poultry)
+
+
++n_frompoultry
+  print = PoultryFlux
+  ++labels
+    sort = 500
+    en = Poultry N potentialy availabel for Plants
+    de = Geflügel N Pflanzen verfügbar
+    fr = Volaille N disponible pour les plantes 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    N flux out of solid manure application.
+  ++formula
+    Val(n_into_application, ::Storage::SolidManure::Poultry) -
+           Out(nh3_npoultry);
+
++tan_frompoultry
+  print = PoultryFlux
+  ++labels
+    sort = 500
+    en = Poultry N potentialy availabel for Plants
+    de = Geflügel N Pflanzen verfügbar
+    fr = Volaille N disponible pour les plantes 
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    TAN flux out of solid manure application.
+  ++formula
+    Val(tan_into_application, ::Storage::SolidManure::Poultry) -
+           Out(nh3_npoultry);
+    
+    

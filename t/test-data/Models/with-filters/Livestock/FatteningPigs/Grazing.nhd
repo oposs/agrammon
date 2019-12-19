@@ -1,0 +1,180 @@
+*** general ***
+
+author   = Agrammon Group 
+date     = 2017-07-10
+taxonomy = Livestock::FatteningPigs::Grazing
+
++short
+
+ Computes the annual NH3 emission from grazing fattening pigs.
+
++description 
+
+ This process calculates the annual NH3 emission from grazing fattening pigs 
+ based on the
+  N excreted on the pastures. The N excreted is calculated according to
+ the time the animals spend on the pasture. It assumes that the excretions on
+ the pasture are proportional to the time the animals are grazed.
+
+\subsubsection{References:}
+Bussink DW 1992. Ammonia volatilization from grassland receiving nitrogen
+fertilizer and rotationally grazed by dairy cattle. Fertilizer Research
+33:257-265.
+
+Bussink DW 1994. Relationship between ammonia volatilization and nitrogen
+fertilizer application rate, intake and excretion of herbage nitrogen by
+cattle on grazed swards. Fertilizer Research 38:111-121.
+
+Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
+
+Jarvis SC, Hatch DJ, Lockyer DR 1989. Ammonia fluxes from grazed grassland: annual losses from cattle production systems and their relation to nitrogen inputs. Journal of Agricultural Science 113:99-108.
+
+Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and dung of grazing cattle: effect of N intake. Atmospheric environment 32:295-300.
+
+Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammonia from urine in grass swards. Atmospheric environment 35:867-875.
+
+
+
+*** external ***
+
++Excretion
++Housing::Type
+
+*** technical ***
+
++er_fattening_pig_grazing
+  value = 0.2
+  ++units  
+    en = -
+  ++description
+    Emission rate for the calculation of the annual NH3 emission during grazing for fattening pigs. Sommer et al. (2001) give a yearly volatilization loss from one sow with piglets of 4.8 kg N resulting in a loss of 20% TAN assuming an N excretion/sow/y of 35 kg N (Flisch et al. (2009)).
+
++er_n2_fattening_pig_grazing
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Not considerd relevant
+
++er_no_fattening_pig_grazing
+  value = 0.0055
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Stehfest, Bouwman 2006
+
++er_n2o_fattening_pig_grazing
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
+
+*** input ***
+
++ignore
+  type  = enum{ignore}
+  ++labels 
+    en = ignore
+    de = ignorieren
+  ++units  
+    en = -
+  ++description
+    Just a work around for modules without input parameters.
+
+
+*** output ***
+
++share_grazing
+  print = 25
+  ++units  
+    en = -
+  ++description
+    Share of N excretion during outdoor activities for a defined animal category.
+    If fattening pig housing type is 'Outdoor' 100% is assumed.
+  ++formula
+    if(Val(housing_type,Housing::Type) eq 'Outdoor'){
+        return 1;
+    }else {
+        return 0;  # no correction
+    };
+
+
++n_into_grazing
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N excretion during grazing for fattening pigs.
+  ++formula
+    Val(n_excretion,Excretion) * Out(share_grazing);
+
++n_sol_into_grazing
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual soluble N (TAN) excretion during grazing for fattening pigs.
+  ++formula
+    Val(n_sol_excretion,Excretion)  * Out(share_grazing);
+ 
++nh3_ngrazing
+  print = 5b
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual NH3 emission from all fattening pigs from grazing.
+  ++formula
+    Out(n_sol_into_grazing) * Tech(er_fattening_pig_grazing); 
+
++n2_ngrazing
+  print = 5c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total N2 emission from all grazing dairy cows.
+  ++formula
+    Out(n_into_grazing) * Tech(er_n2_fattening_pig_grazing);
+
++no_ngrazing
+  print = 5c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total N2 emission from all grazing dairy cows.
+  ++formula
+    Out(n_into_grazing) * Tech(er_no_fattening_pig_grazing);
+
++n2o_ngrazing
+  print = 5c
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total N2O emission from all grazing dairy cows.
+  ++formula
+    Out(n_into_grazing) * Tech(er_n2o_fattening_pig_grazing);
+
++n_remain_pasture
+  print = 8
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N input on pastures.
+  ++formula
+    Out(n_into_grazing) -
+    Out(nh3_ngrazing) - Out(n2_ngrazing) -
+    Out(no_ngrazing) - Out(n2o_ngrazing);
