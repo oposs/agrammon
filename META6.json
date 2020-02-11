@@ -48,6 +48,7 @@
     "Agrammon::OutputFormatter::CSV": "lib/Agrammon/OutputFormatter/CSV.pm6",
     "Agrammon::OutputReference": "lib/Agrammon/OutputReference.pm6",
     "Agrammon::Outputs": "lib/Agrammon/Outputs.pm6",
+    "Agrammon::Outputs::FilterGroupCollection": "lib/Agrammon/Outputs/FilterGroupCollection.pm6",
     "Agrammon::Performance": "lib/Agrammon/Performance.pm6",
     "Agrammon::UI::CommandLine": "lib/Agrammon/UI/CommandLine.pm6",
     "Agrammon::UI::Web": "lib/Agrammon/UI/Web.pm6",
