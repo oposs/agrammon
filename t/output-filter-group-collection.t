@@ -42,6 +42,23 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
     }
 }
 
+{
+    my $group-a = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 4, {ac => 'pink cow'} => 7, {ac => 'blue cow'} => 31];
+    my $group-b = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 10, {ac => 'green cow'} => 5, {ac => 'green cow'} => 9];
+    given $group-a.apply-pairwise($group-b, &[+], 0) {
+        isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
+                'Applying a pairwise operation produces a new filter group collection';
+        is +$group-a, 42, 'First original group unchanged';
+        is +$group-b, 24, 'Second original group unchanged';
+        is +$_, 42 + 24, 'Total numeric value after pairwise operation is correct';
+        is-deeply norm(.results-by-filter-group),
+                norm([{ac => 'blue cow'} => 45, { ac => 'pink cow' } => 7, { ac => 'green cow' } => 14]),
+                'Correct results by filter group after pairwise operation';
+    }
+}
+
 #| Put filter pairs in a normal order, so we needn't worry about ordering when writing tests.
 sub norm(@pairs) {
     [@pairs.sort(*.key.values.sort.join)]

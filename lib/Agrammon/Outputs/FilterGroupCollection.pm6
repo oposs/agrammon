@@ -56,4 +56,41 @@ class Agrammon::Outputs::FilterGroupCollection {
     method scale(Numeric $factor --> Agrammon::Outputs::FilterGroupCollection) {
         self.bless: instances => %!values-by-filter.map({ .key => $factor * .value })
     }
+
+    #| Apply an operation pairwise between this group collection and another one, returning a
+    #| new group collection as the result. When a group exists in collections, then the operation
+    #| is applied to their values. When a group exists on only one side, the base value is used.
+    method apply-pairwise(Agrammon::Outputs::FilterGroupCollection $other, &operation, Numeric $base) {
+        # Process those groups existing on both sides or only the other side.
+        my @result-instances;
+        my Bool %seen-from-this-instance{FilterKey};
+        for $other!internal-values-by-filter -> $their-elem {
+            my $their-key = $their-elem.key;
+            with %!values-by-filter{$their-key} -> $our-value {
+                # Exists on both sides.
+                @result-instances.push: $their-key => operation($our-value, $their-elem.value);
+                %seen-from-this-instance{$their-key} = True;
+            }
+            else {
+                # Exists only on their side.
+                @result-instances.push: $their-key => operation($base, $their-elem.value);
+            }
+        }
+
+        # We now look for anything that only existed on our side.
+        if %seen-from-this-instance.elems < %!values-by-filter.elems {
+            for %!values-by-filter -> $our-elem {
+                unless %seen-from-this-instance{$our-elem.key} {
+                    @result-instances.push: $our-elem.key => operation($our-elem.value, $base);
+                }
+            }
+        }
+
+        Agrammon::Outputs::FilterGroupCollection.new(instances => @result-instances)
+    }
+
+    #| Private accessor to get internal representation of another collection.
+    method !internal-values-by-filter() {
+        %!values-by-filter
+    }
 }
