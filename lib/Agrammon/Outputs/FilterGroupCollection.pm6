@@ -48,4 +48,12 @@ class Agrammon::Outputs::FilterGroupCollection {
     method results-by-filter-group() {
         [%!values-by-filter.map({ .key.filters => .value })]
     }
+
+    #| Produce a new filter group collection which has the values of this one scaled by
+    #| the specified factor. This can be used to implement `scalar * group`, `group * scalar`
+    #| (these two just commute), and `group / scalar` (by passing in `1 / scalar` as the
+    #| factor).
+    method scale(Numeric $factor --> Agrammon::Outputs::FilterGroupCollection) {
+        self.bless: instances => %!values-by-filter.map({ .key => $factor * .value })
+    }
 }

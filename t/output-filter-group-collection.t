@@ -28,6 +28,20 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
     }
 }
 
+{
+    my $group = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 4, {ac => 'pink cow'} => 7, {ac => 'blue cow'} => 31];
+    given $group.scale(2) {
+        isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
+                'Get another filter group back after scaling';
+        is +$group, 42, 'Original filter group is not changed in place';
+        is +$_, 84, 'Total numeric value is correct after scaling';
+        is-deeply norm(.results-by-filter-group),
+                norm([{ac => 'blue cow'} => 70, { ac => 'pink cow' } => 14]),
+                'Correct results by filter group after scaling';
+    }
+}
+
 #| Put filter pairs in a normal order, so we needn't worry about ordering when writing tests.
 sub norm(@pairs) {
     [@pairs.sort(*.key.values.sort.join)]
