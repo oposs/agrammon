@@ -106,7 +106,7 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
     my $filename = $input-path;
     my $fh = open $filename, :r
           or die "Couldn't open file $filename for reading";
-    LEAVE $fh.close;
+    LEAVE $fh.?close;
     my $ds = Agrammon::DataSource::CSV.new;
 
     my $rc = Agrammon::ResultCollector.new;
