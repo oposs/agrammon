@@ -39,6 +39,11 @@ class Agrammon::Outputs::FilterGroupCollection {
         self.bless: instances => @instances.map({ FilterKey.new(filters => .key) => +.value })
     }
 
+    #| Check if the collection has any filters.
+    method has-filters(--> Bool) {
+        so %!values-by-filter.keys.first(*.filters.elems)
+    }
+
     #| Get the overall total value.
     method Numeric() {
         %!values-by-filter.values.sum

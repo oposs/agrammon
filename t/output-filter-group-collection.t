@@ -2,6 +2,7 @@ use Agrammon::Outputs::FilterGroupCollection;
 use Test;
 
 given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
+    nok .has-filters, 'Scalar value has no filters';
     is +$_, 0, 'Can construct a collection from a scalar value and it numifies back to that';
     is-deeply .results-by-filter-group,
             [{} => 0],
@@ -11,6 +12,7 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
 {
     my @instances = {} => 4, {} => 7, {} => 31;
     given Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs(@instances) {
+        nok .has-filters, 'If all filters are empty, it has no filters';
         is +$_, 42, 'Total numeric value is correct when constructed from filter to value pairs';
         is-deeply .results-by-filter-group,
                 [{} => 42],
@@ -21,6 +23,7 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
 {
     my @instances = {ac => 'blue cow'} => 4, {ac => 'pink cow'} => 7, {ac => 'blue cow'} => 31;
     given Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs(@instances) {
+        ok .has-filters, 'With filter values set, the collection has filters';
         is +$_, 42, 'Total numeric value is correct when different filters exist';
         is-deeply norm(.results-by-filter-group),
                 norm([{ac => 'blue cow'} => 35, { ac => 'pink cow' } => 7]),
