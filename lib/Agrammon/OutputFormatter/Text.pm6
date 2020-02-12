@@ -1,9 +1,8 @@
 use Agrammon::Model;
 use Agrammon::Outputs;
 
-sub output-as-text(Agrammon::Model $model,
-                   Agrammon::Outputs $outputs, Str $unit-language,
-                   Str $prints --> Str) is export {
+sub output-as-text(Agrammon::Model $model, Agrammon::Outputs $outputs, Str $language,
+                   Str $prints, Bool $include-filters --> Str) is export {
     my @lines;
     my @print-set = $prints.split(',');
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
@@ -16,7 +15,11 @@ sub output-as-text(Agrammon::Model $model,
                 my $var-print = $model.output-print($module, $output) ~ ',All';
                 if $var-print.split(',') ∩ @print-set {
                     $n++;
-                    push @module-lines, "    $output = $val " ~ $model.output-unit($module, $output, $unit-language);
+                    my $unit = $model.output-unit($module, $output, $language);
+                    push @module-lines, "    $output = $val $unit";
+                    if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
+                        render-filters(@module-lines, $value, $unit, "    ");
+                    }
                 }
             }
         }
@@ -30,8 +33,12 @@ sub output-as-text(Agrammon::Model $model,
                         my $var-print = $model.output-print($module, $output) ~ ',All';
                         if $var-print.split(',') ∩ @print-set {
                             $n++;
-                            push @module-lines, "        $output = $val " ~ $model.output-unit($module, $output, $unit-language);
-                       }
+                            my $unit = $model.output-unit($module, $output, $language);
+                            push @module-lines, "        $output = $val $unit";
+                            if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
+                                render-filters(@module-lines, $value, $unit, "    ");
+                            }
+                        }
                     }
                 }
             }
@@ -48,6 +55,23 @@ multi sub flat-value($value) {
 }
 multi sub flat-value(Agrammon::Outputs::FilterGroupCollection $collection) {
     +$collection
+}
+
+sub render-filters(@module-lines, Agrammon::Outputs::FilterGroupCollection $collection,
+        $unit, $prefix) {
+    my @results = $collection.results-by-filter-group;
+    my $longest-filter = @results.map({ .key.map({ .key.chars + .value.chars }) }).flat.max + 1;
+    for @results {
+        my %filters := .key;
+        my $value := .value;
+        my @filters = %filters.map: { .key ~ '=' ~ .value };
+        for @filters.kv -> $idx, $filter-id {
+            my $padding = ' ' x $longest-filter - $filter-id.chars;
+            push @module-lines, $idx == 0
+                    ?? "$prefix  * $filter-id$padding    $value $unit"
+                    !! "$prefix    $filter-id";
+        }
+    }
 }
 
 sub sorted-kv($_) {
