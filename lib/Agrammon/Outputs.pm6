@@ -1,3 +1,5 @@
+use Agrammon::Outputs::FilterGroupCollection;
+
 class X::Agrammon::Outputs::Unset is Exception {
     has $.module is required;
     has $.name is required;
@@ -116,7 +118,8 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
 
     method get-sum(Str $module, Str $name) {
         with self.find-instances($module) {
-            [+] .values.map({ .get-output($module, $name) })
+            Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+                .values.map({ .filters => .get-output($module, $name) })
         }
         else {
             # Make sure it's not a bogus use of single-instance symbol,

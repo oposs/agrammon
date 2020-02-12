@@ -38,9 +38,10 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 #| Run the model
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?,
                SupportedLanguage :$language = 'de', Str :$prints = 'All',
-               Bool :$csv, Int :$batch=1, Int :$degree=4, Int :$max-runs
+               Bool :$csv, Bool :$include-filters, Int :$batch=1, Int :$degree=4, Int :$max-runs
               ) is export {
-    my %results = run $filename.IO, $input.IO, $tech-file, $language, $prints, $csv, $batch, $degree, $max-runs;
+    my %results = run $filename.IO, $input.IO, $tech-file, $language, $prints, $csv, $include-filters,
+            $batch, $degree, $max-runs;
     for %results.keys -> $simulation {
         say "### Simulation $simulation";
         say "##  Print filter: $prints";
@@ -84,7 +85,8 @@ sub dump (IO::Path $path) is export {
     return $model.dump;
 }
 
-sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv, $batch, $degree, $max-runs)  is export {
+sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv, Bool $include-filters,
+        $batch, $degree, $max-runs) is export {
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -106,7 +108,7 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
     my $filename = $input-path;
     my $fh = open $filename, :r
           or die "Couldn't open file $filename for reading";
-    LEAVE $fh.close;
+    LEAVE $fh.?close;
     my $ds = Agrammon::DataSource::CSV.new;
 
     my $rc = Agrammon::ResultCollector.new;
@@ -126,10 +128,11 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
         timed "Create output", {
             my $result;
             if ($csv) {
+                die "CSV output including filters is not yet supported" if $include-filters;
                 $result = output-as-csv($dataset.simulation-name, $dataset.dataset-id, $model, $outputs, $language);
             }
             else {
-                $result = output-as-text($model, $outputs, $language, $prints);
+                $result = output-as-text($model, $outputs, $language, $prints, $include-filters);
             }
             $rc.add-result($dataset.simulation-name, $dataset.dataset-id, $result);
         }
