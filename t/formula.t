@@ -538,7 +538,7 @@ subtest {
         }
     }
     my $result = compile-and-evaluate($f, Agrammon::Environment.new(:$output));
-    is $result, ([+] @values), 'Correct result from evaluation';
+    is +$result, ([+] @values), 'Correct result from evaluation';
 }, 'Sum(...)';
 
 subtest {

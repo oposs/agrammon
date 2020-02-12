@@ -44,6 +44,11 @@ class Agrammon::Outputs::FilterGroupCollection {
         %!values-by-filter.values.sum
     }
 
+    #| Get the overall total value.
+    method Real() {
+        self.Numeric.Real
+    }
+
     #| Get a list of pairs mapping filter groups into the total value for that group.
     method results-by-filter-group() {
         [%!values-by-filter.map({ .key.filters => .value })]
