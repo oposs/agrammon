@@ -12,7 +12,7 @@ sub output-as-text(Agrammon::Model $model,
         push @module-lines, $module;
         when Hash {
             for sorted-kv($_) -> $output, $value {
-                my $val = $value // 'UNDEFINED';
+                my $val = flat-value($value // 'UNDEFINED');
                 my $var-print = $model.output-print($module, $output) ~ ',All';
                 if $var-print.split(',') ∩ @print-set {
                     $n++;
@@ -26,7 +26,7 @@ sub output-as-text(Agrammon::Model $model,
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
                     push @module-lines, "    $q-name";
                     for sorted-kv(%values) -> $output, $value {
-                        my $val = $value // 'UNDEFINED';
+                        my $val = flat-value($value // 'UNDEFINED');
                         my $var-print = $model.output-print($module, $output) ~ ',All';
                         if $var-print.split(',') ∩ @print-set {
                             $n++;
@@ -41,6 +41,13 @@ sub output-as-text(Agrammon::Model $model,
         }
     }
     return @lines.join("\n");
+}
+
+multi sub flat-value($value) {
+    $value
+}
+multi sub flat-value(Agrammon::Outputs::FilterGroupCollection $collection) {
+    +$collection
 }
 
 sub sorted-kv($_) {
