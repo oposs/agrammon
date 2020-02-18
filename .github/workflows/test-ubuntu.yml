@@ -60,21 +60,21 @@ jobs:
       run: sudo sed -i -e 's|/usr/bin/env perl6|/opt/rakudo-pkg/bin/raku|' /opt/rakudo-pkg/bin/zef && cat /opt/rakudo-pkg/bin/zef
 
     - name: Cache
-      id: raku-module-cache
+      id: agrammon-cache
       uses: actions/cache@v1
       with:
         path: /home/runner/.raku
         key: ${{ matrix.os }}-agrammon-${{ hashFiles('META6.json') }}
 
     - name: Install Raku modules
-#      if: steps.raku-module-cache.outputs.cache-hit != 'true'
+      if: steps.agrammon-cache.outputs.cache-hit != 'true'
       run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only --install-to=/home/runner/.raku install .
 
     - name: Raku path
       run: /opt/rakudo-pkg/bin/zef locate DB::Pg
 
     - name: Run tests
-      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ # t/user.t
+      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ t/user.t
       env:
         PERL6LIB: lib
         POSTGRES_HOST: localhost
