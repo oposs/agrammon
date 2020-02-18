@@ -38,24 +38,30 @@ jobs:
         key: ${{ matrix.os }}-raku
 
     - name: Update keys
+      if: steps.raku-cache.outputs.cache-hit != 'true'
       run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
     - name: Update source list
+      if: steps.raku-cache.outputs.cache-hit != 'true'
       run: echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" | sudo tee -a /etc/apt/sources.list.d/rakudo-pkg.list
     - name: Install Raku
+      if: steps.raku-cache.outputs.cache-hit != 'true'
       run: sudo apt-get update && sudo apt-get install rakudo-pkg
     - name: Fix zef
+      if: steps.raku-cache.outputs.cache-hit != 'true'
       run: sudo sed -i -e 's|/usr/bin/env perl6|/opt/rakudo-pkg/bin/raku|' /opt/rakudo-pkg/bin/zef && cat /opt/rakudo-pkg/bin/zef
 
-    - name: Cache
-      id: raku-module-cache
-      uses: actions/cache@v1
-      with:
-        path: /home/runner/.raku
-        key: ${{ matrix.os }}-raku-${{ hashFiles('META6.json') }}
+#    - name: Cache
+#      id: raku-module-cache
+#      uses: actions/cache@v1
+#      with:
+#        path: /home/runner/.raku
+#        key: ${{ matrix.os }}-raku-${{ hashFiles('META6.json') }}
 
     - name: Install Raku modules
+      if: steps.raku-cache.outputs.cache-hit != 'true'
       run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only install .
-    - name: Raku path
+
+- name: Raku path
       run: /opt/rakudo-pkg/bin/zef locate DB::Pg
 
 #    - name: Run tests
