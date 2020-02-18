@@ -35,7 +35,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: /opt/rakudo-pkg
-        key: ${{ matrix.os }}-raku-${{ hashFiles('META6.json') }}
+        key: ${{ matrix.os }}-raku-modules-${{ hashFiles('META6.json') }}
 
     - name: Update keys
       if: steps.raku-cache.outputs.cache-hit != 'true'
