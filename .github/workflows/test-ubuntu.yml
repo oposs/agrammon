@@ -1,12 +1,12 @@
 on:
   push:
-    branches:
-    - master
+#    branches:
+#    - master
     paths-ignore:
     - '**.md'
   pull_request:
-    branches:
-    - master
+#    branches:
+#    - master
     paths-ignore:
     - '**.md'
 
@@ -38,8 +38,8 @@ jobs:
            && echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" \
               | sudo tee -a /etc/apt/sources.list.d/rakudo-pkg.list \
           && sudo apt-get update && sudo apt-get install rakudo-pkg
-    -name: Install Raku modules
+    - name: Install Raku modules
       run: zef --debug --/test --deps-only install .
-    -name: Run tests
+    - name: Run tests
       run: prove -v -r --exec=perl6 t/ xt/
       env: PERL6LIB: lib
