@@ -64,7 +64,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: /home/runner/.raku
-        key: ${{ matrix.os }}-agrammon-${{ hashFiles('META6.json') }}
+        key: ${{ matrix.os }}-agrammon-cache-${{ hashFiles('META6.json') }}
 
     - name: Install Raku modules
       if: steps.agrammon-cache.outputs.cache-hit != 'true'
