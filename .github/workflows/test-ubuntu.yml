@@ -58,7 +58,7 @@ jobs:
         key: ${{ matrix.os }}-agrammon-${{ hashFiles('META6.json') }}
 
     - name: Install Raku modules
-      if: steps.raku-module-cache.outputs.cache-hit != 'true'
+#      if: steps.raku-module-cache.outputs.cache-hit != 'true'
       run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only install .
 
     - name: Raku path
