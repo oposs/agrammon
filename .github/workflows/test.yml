@@ -19,7 +19,7 @@ jobs:
     - name: Hello world
       uses: actions/hello-world-javascript-action@v1
       with:
-      who-to-greet: 'Fritz the cat'
+        who-to-greet: 'Fritz the cat'
       id: hello
     # This step prints an output (time) from the previous step's action.
     - name: Echo the greeting's time
