@@ -6,7 +6,7 @@ my $test-simulation-name = '2010v2.1_20120425';
 my $test-dataset-id = '2648';
 
 my $path = $*PROGRAM.parent.add('test-data/Models/run-test-multi-deep');
-my $model = Agrammon::Model.new(path => $path);
+my $model = Agrammon::Model.new(:$path);
 $model.load('Test');
 
 my $outputs = Agrammon::Outputs.new;

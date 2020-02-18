@@ -22,8 +22,9 @@ sub get-data($model, $outputs) {
     my @records;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         when Hash {
-            for sorted-kv($_) -> $output, $value {
+            for sorted-kv($_) -> $output, $raw-value {
                 my $format = $model.output-format($module, $output);
+                my $value = flat-value($raw-value);
                 my $formattedValue = $format ?? sprintf($format, $value)
                                              !! $value;
                 push @records, %(
@@ -42,8 +43,9 @@ sub get-data($model, $outputs) {
             for sorted-kv($_) -> $instance-id, %instance-outputs {
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
-                    for sorted-kv(%values) -> $output, $value {
+                    for sorted-kv(%values) -> $output, $raw-value {
                         my $format = $model.output-format($fq-name, $output);
+                        my $value = flat-value($raw-value);
                         my $formattedValue = $format ?? sprintf($format, $value)
                                                      !! $value;
                         push @records, %(
@@ -63,6 +65,13 @@ sub get-data($model, $outputs) {
         }
     }
     return @records;
+}
+
+multi sub flat-value($value) {
+    $value
+}
+multi sub flat-value(Agrammon::Outputs::FilterGroupCollection $collection) {
+    +$collection
 }
 
 sub sorted-kv($_) {

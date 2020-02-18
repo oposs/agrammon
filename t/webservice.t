@@ -60,7 +60,7 @@ subtest "get-input-variables()" => {
 
     my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
     my $top = 'End';
-    ok my $model = Agrammon::Model.new(path => $path);
+    ok my $model = Agrammon::Model.new(:$path);
     lives-ok { $model.load($top) }, "Load module from $top";
 
     ok my $ui-web = Agrammon::UI::Web.new(:$model);

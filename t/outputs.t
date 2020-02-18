@@ -61,9 +61,9 @@ subtest 'Multi-instance outputs' => {
     is $instance-b.get-output('Visible::From::All', 'sym'), 99,
         'Can access symbol from first instance from an outer single-instance module';
 
-    is $outputs.get-sum('Multi::Instance::Foo', 'bar'), 10 + 50, 'Can get sum of multi-instance outputs (1)';
-    is $outputs.get-sum('Multi::Instance::Bar', 'baz'), 20 + 60, 'Can get sum of multi-instance outputs (2)';
-    is $outputs.get-sum('Multi::Instance', 'wat'), 30 + 70, 'Can get sum of multi-instance outputs (3)';
+    is +$outputs.get-sum('Multi::Instance::Foo', 'bar'), 10 + 50, 'Can get sum of multi-instance outputs (1)';
+    is +$outputs.get-sum('Multi::Instance::Bar', 'baz'), 20 + 60, 'Can get sum of multi-instance outputs (2)';
+    is +$outputs.get-sum('Multi::Instance', 'wat'), 30 + 70, 'Can get sum of multi-instance outputs (3)';
 
     throws-like { $outputs.get-output('Multi::Instance::Foo', 'bar') },
         X::Agrammon::Outputs::IsMultiInstance,

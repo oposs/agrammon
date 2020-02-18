@@ -6,7 +6,7 @@ sub load-model-using-cache(IO() $cache-dir, IO() $path, $module) is export {
     my $hash = hash-path($path).trans('0'..'9' => 'A'..'J');
     my $cached = $cache-dir.IO.add("$hash.pm6");
     unless $cached.e {
-        my $m = Agrammon::Model.new(path => $path, :!compile-formulas);
+        my $m = Agrammon::Model.new(:$path, :!compile-formulas);
         $m.load($module);
         mkdir $cache-dir;
         spurt $cached, q:c:to/MODULE/;

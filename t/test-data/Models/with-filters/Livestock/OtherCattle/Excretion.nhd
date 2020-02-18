@@ -1,0 +1,370 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-28
+taxonomy = Livestock::OtherCattle::Excretion
+#instances = many
+
+
++short
+
+Computes the annual N excretion of cattle (apart from dairy cows) as a 
+function of the feed ration.
+
++description
+
+This process calculates the annual N excretion of a number of cattle as a function of the supplied feed ration.
+The standard N excretion was taken from the official Swiss fertilizer 
+guidelines. The Nsol content of the excreta is based on e.g. Peterson et al.
+(1998) or Burgos et al. (2005). These values were compiled on the basis of
+official feeding recommendations (Flisch et al. 2009) by H. Menzi. A detailed
+documentation will be prepared in the framework of the new revision of the
+document in the course of summer 2007.
+
+\subsubsection{References:}
+Burgos SA, Robinson PH, Fadel JG, DePeters EJ 2005. Ammonia volatilization
+potential: Prediction of urinary urea nitrogen output on lactating dairy
+cows. Agriculture, Ecosystems and Environment 111:261-269.
+
+
+Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and
+dung of grazing cattle: effect of N intake. Atmospheric environment
+32:295-300.
+
+Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
+
+
+*** input ***
+
++animalcategory
+  type = enum
+  ++enum
+    +++suckling_cows
+       en = suckling_cows
+       de = Mutterkühe
+       fr = Vaches_allaitantes
+       it = suckling_cows
+    +++suckling_cows_gt700
+       en = suckling_cows
+       de = Mutterkühe_schwere_rassen_über_700kg
+       fr = Vaches_allaitantes
+       it = suckling_cows
+    +++suckling_cows_lt600
+       en = suckling_cows
+       de = Mutterkühe_leichte_rassen_unter_600kg
+       fr = Vaches_allaitantes
+       it = suckling_cows
+    +++heifers_1st_yr
+       en = heifers_1st_yr
+       de = Aufzuchtrinder_unter_1-jährig
+       fr = Remontes_d'élevage_âgées_de_moins_d'un_an
+       it = heifers_1st_yr
+    +++heifers_2nd_yr
+       en = heifers_2nd_yr
+       de = Aufzuchtrinder_1-_bis_2-jährig
+       fr = Remontes_d'élevage_âgées_entre_1_et_2_ans
+       it = heifers_2nd_yr
+    +++heifers_3rd_yr
+       en = heifers_3rd_yr
+       de = Aufzuchtrinder_über_2-jährig
+       fr = Remontes_d'élevage_âgées_de_plus_de_2_ans
+       it = heifers_3rd_yr
+    +++fattening_calves
+       en = fattening_calves
+       de = Mastkälber
+       fr = Veaux_à_l'engrais
+       it = fattening_calves
+    +++calves_suckling_cows
+       en = calves_suckling_cows
+       de = Mutterkuhkälber
+       fr = Veaux_de_vaches_allaitantes
+       it = calves_suckling_cows
+    +++beef_cattle
+       en = beef_cattle
+       de = Masttiere_Rindviehmast
+       fr = Bovins_à_l'engrais
+       it = beef_cattle
+  ++labels
+    en = Animal category
+    de = Tierkategorie
+    fr = Catégorie d'animaux
+  ++units  
+    en = -
+  ++description
+    Animal category (suckling cows, 1 year old heifers, 2 years old heifers, 3 years old heifers, fattening calves, calves of suckling cows, beef cattle).
+  ++help
+    +++en
+       <p>Growing bulls can be entered in the corresponding category of heifers. Breeding bulls must be entered in the category heifers over two years.</p>
+    +++de
+       <p>Ammenkühe werden unter der Kategorie Mutterkühe eingetragen.</p>
+       <p>Zu den Kategorien der Aufzuchtrinder zählen die Remonten der Milchkühe und der Mutterkühe. Aufzuchtkälber gehören zur Kategorie Aufzuchtrinder unter 1-jährig. Stiere zur Aufzucht können in der entsprechenden Alterskategorie der Aufzuchtrinder eingetragen werden. Zuchtstiere werden unter Aufzuchtrinder über 2-jährig eingetragen.</p>
+       <p>Masttiere Rindviehmast: sämtliche Masttiere inkl. Vormastkälber.</p>
+    +++fr
+       <p>Les vaches mères sont introduites dans la catégorie ‚Vaches allaitantes’.</p>
+       <p>La catégorie ‚Remontes’ se compose des remontes pour vaches laitières et pour vaches allaitantes. Les veaux d’élevage appartiennent à la catégorie ‚Remontes de moins d’un an’. Les taurillons d’élevage peuvent être mentionnés dans les remontes, dans la catégorie d’âge correspondante. Les taureaux d’élevage sont à mentionner dans la catégorie ‚Remontes âgés de plus de 2 ans’. </p>
+       <p>Bovins à l’engrais: tous les animaux d’engraissement, y c. les veaux destinés à l’engraissement. </p>
+
+
++animals
+  type = integer
+  validator = ge(0)
+  branch = true
+  ++labels
+    en = Number of animals
+    de = Anzahl Tiere
+    fr = Nombre d'animaux
+  ++units  
+    en = -
+  ++description
+    Number of animals for the selected type in barn.
+  ++help
+    +++en 
+       <p></p>
+    +++de 
+       <p></p>
+    +++fr 
+       <p></p>
+
+*** technical ***
+
+### standard_N_excretion
+
++standard_N_excretion_heifers_1st_yr
+  value = 25
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a 1 year old heifer, according to
+    Flisch et al. (2009).
+
++standard_N_excretion_heifers_2nd_yr
+  value = 40
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a 2 year old heifer, according to
+    Flisch et al. (2009).
+
++standard_N_excretion_heifers_3rd_yr
+  value = 55
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a 3 year old heifer, according to
+    Flisch et al. (2009).
+
++standard_N_excretion_beef_cattle
+  value = 33
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a beefcattle, according to
+    Flisch et al. (2009).
+
++standard_N_excretion_fattening_calves
+  value = 13
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a fatteningcalves, according to
+    Flisch et al. (2009).
+
+
++standard_N_excretion_suckling_cows
+  value = 80
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a suckling cow, according to
+    Flisch et al. (2009).
+
++standard_N_excretion_suckling_cows_lt600
+  value = 72
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a suckling cow, according to
+    Flisch et al. (2009).
+
++standard_N_excretion_suckling_cows_gt700
+  value = 95
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a suckling cow, according to
+    GRUDAF 2017
+
++standard_N_excretion_calves_suckling_cows
+  value = 34
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for calves of suckling cows, according to
+    Flisch et al. (2009).
+
+###  share_Nsol
+
++share_Nsol_heifers_1st_yr
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for 1 year old heifers. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_heifers_2nd_yr
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for 2 years old heifers. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_heifers_3rd_yr
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for 3 years old heifers. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_beef_cattle
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for beefcattle. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_fattening_calves
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for fatteningcalves. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_suckling_cows
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for suckling cows. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+    
++share_Nsol_suckling_cows_lt600
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for suckling cows. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_suckling_cows_gt700
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for suckling cows. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
+
++share_Nsol_calves_suckling_cows
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for suckling cows. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
+*** external ***
+
+
+*** output ***
+
++standard_N_excretion
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for specified animal category according to
+    Flisch et al. (2009).
+  ++formula
+#    my $key = "standard_N_excretion_" . In(animalcategory);
+#    return Tech($key);
+   return $TE->{'standard_N_excretion_'.In(animalcategory)};
+
++share_Nsol
+  print = 7
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for a specific cattle category. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+  ++formula
+#    my $key = "share_Nsol_" . In(animalcategory);
+#    return Tech($key);
+   return $TE->{'share_Nsol_'.In(animalcategory)};
+
+
++n_excretion
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N excreted by an animalgroup of selected cattle category.
+  ++formula
+    Out(standard_N_excretion) * In(animals); 
+
++n_excretion_animal
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual mean total N excreted of an animal of selected cattle category.
+  ++formula
+    Out(standard_N_excretion); 
+
++n_sol_excretion	
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual soluble N excreted by an animalgroup of selected cattle category.	
+  ++formula
+     Out(share_Nsol) * Out(n_excretion);
+
++animals
+  print = 9
+  ++units  
+    en = -
+  ++description
+    Number of animals for the selected cattle category in barn.
+  ++formula
+    In(animals);

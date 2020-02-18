@@ -9,7 +9,7 @@ subtest "Helper function" => {
     
     my $path = $*PROGRAM.parent.add('test-data/');
     given 'Livestock::DairyCow::Excretion::CMilk' -> $module-name {
-	ok my $model = Agrammon::Model.new(path => $path);
+	ok my $model = Agrammon::Model.new(:$path);
         is $model.module2file($module-name),
             $path ~ 'Livestock/DairyCow/Excretion/CMilk.nhd',
             "module2file(): convert module $module-name to file";
@@ -22,14 +22,14 @@ subtest "loadModule()" => {
 
     my $path = $*PROGRAM.parent.add('test-data/');
     given 'CMilk' -> $module-name {
-        ok my $model = Agrammon::Model.new(path => $path);
+        ok my $model = Agrammon::Model.new(:$path);
         ok my $module = $model.load-module($module-name), "Load module $module-name";
         is $module.input[0].name, 'milk_yield', "Found input milk_yield";
     }
 
     given 'CMilk' -> $module-name {
         chmod 0, $path ~ $module-name ~ '.nhd';
-        ok my $model = Agrammon::Model.new(path => $path);
+        ok my $model = Agrammon::Model.new(:$path);
         throws-like { $model.load-module($module-name) },
                       X::Agrammon::Model::FileNotReadable,
                       "Cannot load module $module-name from read-only file";
@@ -37,7 +37,7 @@ subtest "loadModule()" => {
     }
 
     given 'CMilk_notExists' -> $module-name {
-        ok my $model = Agrammon::Model.new(path => $path);
+        ok my $model = Agrammon::Model.new(:$path);
         throws-like { $model.load-module($module-name) },
                     X::Agrammon::Model::FileNotFound,
                     "Cannot load module $module-name from none-existing file";
@@ -45,14 +45,14 @@ subtest "loadModule()" => {
 
     $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
     given 'Livestock' -> $module-name {
-        ok my $model = Agrammon::Model.new(path => $path);
+        ok my $model = Agrammon::Model.new(:$path);
         my $module = $model.load-module($module-name);
         is $module.parent, '', "Module $module-name has no parent";
         is $module.name, $module-name, "Module $module-name has name $module-name";
     }
 
     given 'Livestock::DairyCow::Excretion::CMilk' -> $module-name {
-        ok my $model = Agrammon::Model.new(path => $path);
+        ok my $model = Agrammon::Model.new(:$path);
         my $module = $model.load-module($module-name);
         is $module.parent,
             'Livestock::DairyCow::Excretion',
@@ -76,7 +76,7 @@ subtest 'load()' => {
             Simple
         |;
         given 'Simple' -> $module-name {
-            ok my $model = Agrammon::Model.new(path => $path);
+            ok my $model = Agrammon::Model.new(:$path);
             $model.load($module-name);
             is $model.evaluation-order.elems, @expected.elems,
                 "Loaded {@expected.elems} model files";
@@ -88,13 +88,13 @@ subtest 'load()' => {
     subtest 'circular model detection' => {
         my $path = $*PROGRAM.parent.add('test-data/Models/test_circular/');
         given 'Circular' -> $module-name {
-            ok my $model = Agrammon::Model.new(path => $path);
+            ok my $model = Agrammon::Model.new(:$path);
             throws-like { $model.load($module-name) },
                           X::Agrammon::Model::CircularModel,
                           "Circular model $module-name";
         }
         given 'Simple' -> $module-name {
-            ok my $model = Agrammon::Model.new(path => $path);
+            ok my $model = Agrammon::Model.new(:$path);
             throws-like { $model.load($module-name) },
                           X::Agrammon::Model::CircularModel,
                           "Circular model $module-name";
@@ -113,7 +113,7 @@ subtest 'load()' => {
             Livestock::DairyCow::Excretion
         |;
         given 'Livestock::DairyCow::Excretion' -> $module-name {
-            ok my $model = Agrammon::Model.new(path => $path);
+            ok my $model = Agrammon::Model.new(:$path);
             $model.load($module-name);
             is $model.evaluation-order.elems, 6, "Loaded 6 model file";
             my @tax = $model.evaluation-order>>.taxonomy;
@@ -244,7 +244,7 @@ subtest 'load()' => {
             End
         |;
         given 'End' -> $module-name {
-            ok my $model = Agrammon::Model.new(path => $path);
+            ok my $model = Agrammon::Model.new(:$path);
             $model.load($module-name);
             is $model.evaluation-order.elems, @expected.elems,
                 "Loaded @expected.elems() model file";
@@ -265,7 +265,7 @@ subtest 'dump()' => {
         Simple::Sub1a
         OUTPUT
     given 'Simple' -> $module {
-        ok my $model = Agrammon::Model.new(path => $path);
+        ok my $model = Agrammon::Model.new(:$path);
         $model.load($module);
         is $model.dump, $output-expected, 'Output as expected';
     }
@@ -273,7 +273,7 @@ subtest 'dump()' => {
 
 subtest 'Model calculates distribution map correctly' => {
     my $path = $*PROGRAM.parent.add('test-data/Models/run-test-multi-deep');
-    my $model = Agrammon::Model.new(path => $path);
+    my $model = Agrammon::Model.new(:$path);
     $model.load('Test');
     is-deeply $model.distribution-map,
             { 'Test::SubModule' => 'Test::SubModule::SubTest::kids' },
