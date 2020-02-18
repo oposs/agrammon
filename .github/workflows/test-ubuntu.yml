@@ -38,12 +38,11 @@ jobs:
     - name: Touching
       run: sudo touch TEST && ls -l
     - name: Create sources dir
-      run: sudo mkdir -p /etc/apt/sources.list.d && sudo ls -ld /etc/apt/sources.list.d \
-           && whoami && touch TEST && ls -l TEST
+      run: sudo mkdir -p /etc/apt/sources.list.d && sudo ls -ld /etc/apt/sources.list.d
     - name: Update keys
       run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
     - name: Update source list
-      run: sudo echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" >> /etc/apt/sources.list.d/rakudo-pkg.list
+      run: echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" | sudo tee -a /etc/apt/sources.list.d/rakudo-pkg.list
     - name: Install Raku
       run: sudo apt-get update && sudo apt-get install rakudo-pkg
     - name: Install Raku modules
