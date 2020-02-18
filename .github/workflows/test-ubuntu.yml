@@ -33,14 +33,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1     
+    - name: Update keys
+      run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
+    - name: Update source list
+      run: echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" | sudo tee -a /etc/apt/sources.list.d/rakudo-pkg.list
     - name: Install Raku
-      run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61 \
-           && echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" \
-              | sudo tee -a /etc/apt/sources.list.d/rakudo-pkg.list \
-          && sudo apt-get update && sudo apt-get install rakudo-pkg
+      run: sudo apt-get update && sudo apt-get install rakudo-pkg
     - name: Install Raku modules
-      run: zef --debug --/test --deps-only install .
+      run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only install .
     - name: Run tests
-      run: prove -v -r --exec=perl6 t/ xt/
+      run: prove -v -r --exec=/opt/rakudo-pkg/bin/perl6 t/ xt/
       env:
         PERL6LIB: lib
