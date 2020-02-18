@@ -45,6 +45,8 @@ jobs:
       run: echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" | sudo tee -a /etc/apt/sources.list.d/rakudo-pkg.list
     - name: Install Raku
       run: sudo apt-get update && sudo apt-get install rakudo-pkg
+    - name: Fix zef
+      run: sudo sed -i -e 's|/usr/bin/env perl6|/opt/rakudo-pkg/bin/raku|' /opt/rakudo-pkg/bin/zef && cat /opt/rakudo-pkg/bin/zef
     - name: Install Raku modules
       run: zef --debug --/test --deps-only install .
       env:
