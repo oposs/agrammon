@@ -31,7 +31,7 @@ jobs:
       uses: actions/checkout@v1     
 
     - name: Create Agrammon DB
-      run: psql -h localhost -p $POSTGRES_PORT --command='create database agrammon_test' && psql -h localhost -p $POSTGRES_PORT --dbname=agrammon_test --command='create extension pgcrypto'
+      run: psql -h localhost -p $POSTGRES_PORT -U postgres -c 'create database agrammon_test' && psql -h localhost -p $POSTGRES_PORT -U postgres --dbname=agrammon_test -c 'create extension pgcrypto'
       env:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
