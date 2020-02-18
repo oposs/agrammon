@@ -48,9 +48,7 @@ jobs:
     - name: Fix zef
       run: sudo sed -i -e 's|/usr/bin/env perl6|/opt/rakudo-pkg/bin/raku|' /opt/rakudo-pkg/bin/zef && cat /opt/rakudo-pkg/bin/zef
     - name: Install Raku modules
-      run: zef --debug --/test --deps-only install .
-      env:
-        PATH: /opt/rakudo-pkg/bin
+      run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only install .
     - name: Run tests
       run: prove -v -r --exec=raku t/ xt/
       env:
