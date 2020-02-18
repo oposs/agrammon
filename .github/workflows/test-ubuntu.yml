@@ -64,9 +64,9 @@ jobs:
     - name: Raku path
       run: /opt/rakudo-pkg/bin/zef locate DB::Pg
 
-#    - name: Run tests
-#      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku t/ xt/
-#      env:
-#        PERL6LIB: lib
-#        POSTGRES_HOST: localhost
-#        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+    - name: Run tests
+      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/
+      env:
+        PERL6LIB: lib
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
