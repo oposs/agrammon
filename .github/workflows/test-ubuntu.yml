@@ -42,4 +42,5 @@ jobs:
       run: zef --debug --/test --deps-only install .
     - name: Run tests
       run: prove -v -r --exec=perl6 t/ xt/
-      env: PERL6LIB: lib
+      env:
+        PERL6LIB: lib
