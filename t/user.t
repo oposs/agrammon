@@ -25,7 +25,8 @@ if %*ENV<GITHUB_ACTIONS> {
     my $db-database = 'agrammon_test';
     my $db-host     = 'localhost';
     
-    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password";
+    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
+    dd $conninfo;
 }
 else {
     $conninfo = $cfg.db-conninfo;
