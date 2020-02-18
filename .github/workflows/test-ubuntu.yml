@@ -74,7 +74,7 @@ jobs:
       run: /opt/rakudo-pkg/bin/zef locate DB::Pg
 
     - name: Run tests
-      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ t/user.t
+      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ t/
       env:
         PERL6LIB: lib
         POSTGRES_HOST: localhost

@@ -17,8 +17,8 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
 my $cfg-file = "t/test-data/agrammon.cfg.yaml";
 my $username = 'fritz.zaucker@oetiker.ch';
 
-if %*ENV<TRAVIS> {
-    skip-rest('Not set up for Travis yet');
+if %*ENV<GITHUB_ACTIONS> {
+    skip-rest('Not set up for GITHUB ACTIONS yet');
     exit;
 }
 
