@@ -19,12 +19,13 @@ my $cfg = Agrammon::Config.new;
 ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my $conninfo;
-if %*ENV<TRAVIS> {
-    # don't use localhost with Postgresql 10 on Travis
-    my $db-user     = 'travis';
+if %*ENV<GITHUB_ACTIONS> {
+    my $db-user     = 'postgres';
+    my $db-password = 'postgres';
     my $db-database = 'agrammon_test';
+    my $db-host     = 'localhost'
     
-    $conninfo = "user=$db-user dbname=$db-database";
+    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password";
 }
 else {
     $conninfo = $cfg.db-conninfo;
