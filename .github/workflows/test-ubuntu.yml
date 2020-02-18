@@ -35,6 +35,10 @@ jobs:
       uses: actions/checkout@v1     
     - name: Update keys
       run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
+    - name: Who am i
+      run: whoami && touch TEST && ls -l TEST
+    - name: Touching
+      run: touch TEST && ls -l
     - name: Create sources dir
       run: sudo mkdir -p /etc/apt/sources.list.d && sudo ls -ld /etc/apt/sources.list.d \
            && whoami && touch TEST && ls -l TEST
