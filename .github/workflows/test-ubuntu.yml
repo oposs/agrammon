@@ -29,12 +29,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1     
-#    - name: Who am i
-#      run: whoami && pwd
-#    - name: Touching
-#      run: sudo touch TEST && ls -l
-#    - name: Create sources dir
-#      run: sudo mkdir -p /etc/apt/sources.list.d && sudo ls -ld /etc/apt/sources.list.d
+
+    - name: Cache
+      id: raku-cache
+      uses: actions/cache@v1
+      with:
+        path: /opt/rakudo-pkg
+        key: ${{ matrix.os }}-raku
+
     - name: Update keys
       run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
     - name: Update source list
@@ -43,8 +45,17 @@ jobs:
       run: sudo apt-get update && sudo apt-get install rakudo-pkg
     - name: Fix zef
       run: sudo sed -i -e 's|/usr/bin/env perl6|/opt/rakudo-pkg/bin/raku|' /opt/rakudo-pkg/bin/zef && cat /opt/rakudo-pkg/bin/zef
+
+    - name: Cache
+      id: raku-module-cache
+      uses: actions/cache@v1
+      with:
+        path: .raku
+        key: ${{ matrix.os }}-raku-${{ hashFiles('META6.json') }}
+
     - name: Install Raku modules
       run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only install .
+
     - name: Run tests
       run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku t/ xt/
       env:
