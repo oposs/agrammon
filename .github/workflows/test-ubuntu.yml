@@ -30,6 +30,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1     
 
+    - name: Create Agrammon DB
+      run: psql --command='create database agrammon_test' && psql --dbname=agrammon_test --command='create extension pgcrypto'
+      env:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: postgres
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+
     - name: Cache
       id: raku-cache
       uses: actions/cache@v1
