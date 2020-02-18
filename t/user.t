@@ -26,7 +26,6 @@ if %*ENV<GITHUB_ACTIONS> {
     my $db-host     = 'localhost';
     
     $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
-    dd $conninfo;
 }
 else {
     $conninfo = $cfg.db-conninfo;
