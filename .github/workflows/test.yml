@@ -5,6 +5,7 @@
 #  pull_request:
 #    paths-ignore:
 #      - '**.md'
+# hopefully disables this
 on: [never]
 
 jobs:
