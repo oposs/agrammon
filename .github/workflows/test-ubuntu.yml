@@ -50,15 +50,15 @@ jobs:
       if: steps.raku-cache.outputs.cache-hit != 'true'
       run: sudo sed -i -e 's|/usr/bin/env perl6|/opt/rakudo-pkg/bin/raku|' /opt/rakudo-pkg/bin/zef && cat /opt/rakudo-pkg/bin/zef
 
-#    - name: Cache
-#      id: raku-module-cache
-#      uses: actions/cache@v1
-#      with:
-#        path: /home/runner/.raku
-#        key: ${{ matrix.os }}-raku-${{ hashFiles('META6.json') }}
+    - name: Cache
+      id: raku-module-cache
+      uses: actions/cache@v1
+      with:
+        path: /home/runner/.raku
+        key: ${{ matrix.os }}-agrammon-${{ hashFiles('META6.json') }}
 
     - name: Install Raku modules
-      if: steps.raku-cache.outputs.cache-hit != 'true'
+      if: steps.raku-module-cache.outputs.cache-hit != 'true'
       run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only install .
 
     - name: Raku path
