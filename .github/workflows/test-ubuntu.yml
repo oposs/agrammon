@@ -36,12 +36,15 @@ jobs:
     - name: Update keys
       run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
     - name: Update source list
-      run: echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" | sudo tee -a /etc/apt/sources.list.d/rakudo-pkg.list
+      run: echo "sudo deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" >> /etc/apt/sources.list.d/rakudo-pkg.list
     - name: Install Raku
       run: sudo apt-get update && sudo apt-get install rakudo-pkg
     - name: Install Raku modules
-      run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only install .
+      run: zef --debug --/test --deps-only install .
+      env:
+        PATH: /opt/rakudo-pkg/bin
     - name: Run tests
-      run: prove -v -r --exec=/opt/rakudo-pkg/bin/perl6 t/ xt/
+      run: prove -v -r --exec=raku t/ xt/
       env:
         PERL6LIB: lib
+        PATH: /opt/rakudo-pkg/bin
