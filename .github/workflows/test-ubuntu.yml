@@ -1,12 +1,8 @@
 on:
   push:
-#    branches:
-#    - master
     paths-ignore:
     - '**.md'
   pull_request:
-#    branches:
-#    - master
     paths-ignore:
     - '**.md'
 
@@ -33,12 +29,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1     
-    - name: Who am i
-      run: whoami && pwd
-    - name: Touching
-      run: sudo touch TEST && ls -l
-    - name: Create sources dir
-      run: sudo mkdir -p /etc/apt/sources.list.d && sudo ls -ld /etc/apt/sources.list.d
+#    - name: Who am i
+#      run: whoami && pwd
+#    - name: Touching
+#      run: sudo touch TEST && ls -l
+#    - name: Create sources dir
+#      run: sudo mkdir -p /etc/apt/sources.list.d && sudo ls -ld /etc/apt/sources.list.d
     - name: Update keys
       run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
     - name: Update source list
@@ -50,7 +46,6 @@ jobs:
     - name: Install Raku modules
       run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only install .
     - name: Run tests
-      run: prove -v -r --exec=raku t/ xt/
+      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku t/ xt/
       env:
         PERL6LIB: lib
-        PATH: /opt/rakudo-pkg/bin
