@@ -23,7 +23,7 @@ if %*ENV<GITHUB_ACTIONS> {
     my $db-user     = 'postgres';
     my $db-password = 'postgres';
     my $db-database = 'agrammon_test';
-    my $db-host     = 'localhost'
+    my $db-host     = 'localhost';
     
     $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password";
 }
