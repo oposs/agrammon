@@ -33,8 +33,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1     
-    - name: Update keys
-      run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
     - name: Who am i
       run: whoami && pwd
     - name: Touching
@@ -42,6 +40,8 @@ jobs:
     - name: Create sources dir
       run: sudo mkdir -p /etc/apt/sources.list.d && sudo ls -ld /etc/apt/sources.list.d \
            && whoami && touch TEST && ls -l TEST
+    - name: Update keys
+      run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
     - name: Update source list
       run: sudo echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" >> /etc/apt/sources.list.d/rakudo-pkg.list
     - name: Install Raku
