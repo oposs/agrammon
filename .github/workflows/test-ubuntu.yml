@@ -30,6 +30,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1     
 
+    - name: Create Agrammon DB
+      run: psql --command='create database agrammon_test' && psql --dbname=agrammon_test --command='create extension pgcrypto'
+      env:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: postgres
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+
     - name: Cache
       id: raku-cache
       uses: actions/cache@v1
@@ -58,7 +67,7 @@ jobs:
         key: ${{ matrix.os }}-agrammon-${{ hashFiles('META6.json') }}
 
     - name: Install Raku modules
-      if: steps.raku-module-cache.outputs.cache-hit != 'true'
+#      if: steps.raku-module-cache.outputs.cache-hit != 'true'
       run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only --install-to=/home/runner/.raku install .
 
     - name: Raku path
