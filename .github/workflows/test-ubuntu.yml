@@ -24,9 +24,12 @@ jobs:
                 - ubuntu-16.04
                 # - windows-latest
 
+            raku:
+                - '2020.01'
+
         fail-fast: false
 
-    name: Raku ${RAKU_VERSION} on ${{ matrix.os }}
+    name: Raku ${{ matrix.raku }} on ${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
 
@@ -34,7 +37,7 @@ jobs:
     # networking so you access them via localhost rather than the service name
     services:
       postgres:
-        image: postgres:12.2
+        image: postgres:10.8
         env:
           POSTGRES_DB: postgres
         ports:
@@ -48,8 +51,8 @@ jobs:
       uses: actions/checkout@v1     
 
     - name: Create Agrammon DB
-      run: psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -c 'create database agrammon_test' \
-           && psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER --dbname=agrammon_test -c 'create extension pgcrypto'
+      run:
+          psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -c 'create database agrammon_test' && psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER --dbname=agrammon_test -c 'create extension pgcrypto'
       env:
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 
@@ -58,35 +61,13 @@ jobs:
       uses: actions/cache@v1
       with:
           path: /opt/rakudo-pkg
-          key: ${{ matrix.os }}-raku-${RAKU_VERSION}-${{ hashFiles('/opt/rakudo-pkg/include/moar/config.h') }}
+          key: ${{ matrix.os }}-raku-${{ matrix.raku }}
 
-    - name: Install Raku-${RAKU_VERSION}
+    - name: Install Raku ${{ matrix.raku }}
       if: steps.raku-cache.outputs.cache-hit != 'true'
-      run: cd ${TMPDIR} \
-           && wget -O rakudo-pkg.deb ${RAKUDO_PKG_URL} \
-           && sudo dpkg -i rakudo-pkg.deb \
-           /opt/rakudo-pkg/bin/raku -v
+      run: cd $TMPDIR && wget -O rakudo-pkg.deb $RAKUDO_PKG_URL && sudo dpkg -i rakudo-pkg.deb && /opt/rakudo-pkg/bin/raku -v
       env:
-          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${RAKU_VERSION}-01/rakudo-pkg-Ubuntu16.04_${RAKU_VERSION}-01_amd64.deb
-
-# https://github.com/nxadm/rakudo-pkg/releases/download/v2019.11/rakudo-pkg-Ubuntu16.04_2019.11-01_amd64.deb
-# https://github.com/nxadm/rakudo-pkg/releases/download/v2020.01/rakudo-pkg-Ubuntu16.04_2020.01-01_amd64.deb
-# cd ${TMPDIR}
-# wget -O rakudo-pkg.deb ${RAKUDO_PKG_URL}
-# sudo dpkg -i rakudo-pkg.deb
-#  - cd ${TRAVIS_BUILD_DIR}
-#  - export PATH=$PATH:~/.perl6/bin:/opt/rakudo-pkg/bin
-#  - /opt/rakudo-pkg/bin/install-zef-as-user
-
-#    - name: Update keys
-#      if: steps.raku-cache.outputs.cache-hit != 'true'
-#      run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
-#    - name: Update source list
-#      if: steps.raku-cache.outputs.cache-hit != 'true'
-#      run: echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" | sudo tee -a /etc/apt/sources.list.d/rakudo-pkg.list
-#    - name: Install Raku
-#      if: steps.raku-cache.outputs.cache-hit != 'true'
-#      run: sudo apt-get update && sudo apt-get install rakudo-pkg
+          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-Ubuntu16.04_${{ matrix.raku }}-01_amd64.deb
 
     # don't depend on PATH setting
     - name: Fix zef
@@ -98,14 +79,14 @@ jobs:
       uses: actions/cache@v1
       with:
           path: /home/runner/.raku
-          key: ${{ matrix.os }}-agrammon-${RAKU_VERSION}-${{ hashFiles('META6.json') }}
+          key: ${{ matrix.os }}-agrammon-${{ matrix.raku}}-${{ hashFiles('META6.json') }}
 
     - name: zef store cache
       id: zef-cache
       uses: actions/cache@v1
       with:
           path: /home/runner/.zef/store
-          key: ${{ matrix.os }}-zef-${RAKU_VERSION}-${{ hashFiles('META6.json') }}
+          key: ${{ matrix.os }}-zef-${{ matrix.raku}}-${{ hashFiles('META6.json') }}
 
     - name: Install Raku modules
       if: steps.agrammon-cache.outputs.cache-hit != 'true' && steps.zef-cache.outputs.cache-hit != 'true'
@@ -115,7 +96,7 @@ jobs:
       run: /opt/rakudo-pkg/bin/zef locate DB::Pg
 
     - name: Run tests
-      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ t/
+      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ t/user.t
       env:
           PERL6LIB: lib
           POSTGRES_HOST: localhost
