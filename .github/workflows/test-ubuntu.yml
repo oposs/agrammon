@@ -11,9 +11,9 @@ on:
 jobs:
 
   env:
-    TMPDIR_PATH=/tmp
-    POSTGRES_USER: postgres
-    POSTGRES_HOST: localhost
+    - TMPDIR_PATH: /tmp
+    - POSTGRES_USER: postgres
+    - POSTGRES_HOST: localhost
 
   build:
 
@@ -38,7 +38,7 @@ jobs:
       postgres:
         image: postgres:12.2
         env:
-          POSTGRES_DB: postgres
+          - POSTGRES_DB: postgres
         ports:
         # will assign a random free host port
         - 5432/tcp
@@ -53,7 +53,7 @@ jobs:
       run: psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -c 'create database agrammon_test' \
            && psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER --dbname=agrammon_test -c 'create extension pgcrypto'
       env:
-        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+        - POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 
     - name: Raku cache
       id: raku-cache
@@ -119,6 +119,6 @@ jobs:
     - name: Run tests
       run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ t/
       env:
-        PERL6LIB: lib
-        POSTGRES_HOST: localhost
-        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+        - PERL6LIB: lib
+        - POSTGRES_HOST: localhost
+        - POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
