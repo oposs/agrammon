@@ -47,6 +47,11 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
+    - name: rakudo-pkg version
+      env:
+          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-{{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
+      run: RAKU=`echo $RAKUDO_PKG_URL | sed -e 's/ubuntu-/Ubuntu/'` echo $RAKU
+
     - name: Checkout
       uses: actions/checkout@v1     
 
@@ -62,11 +67,6 @@ jobs:
       with:
           path: /opt/rakudo-pkg
           key: ${{ matrix.os }}-raku-${{ matrix.raku }}
-
-    - name: rakudo-pkg version
-      env:
-          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-{{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
-      run: echo $RAKUDO_PKG_URL | sed -e 's/ubuntu-/Ubuntu/'
 
     - name: Install Raku ${{ matrix.raku }}
       if: steps.raku-cache.outputs.cache-hit != 'true'
