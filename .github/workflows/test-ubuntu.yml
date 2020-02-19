@@ -8,13 +8,13 @@ on:
     paths-ignore:
     - '**.md'
 
-jobs:
+env:
+  TMPDIR_PATH: /tmp
+  POSTGRES_USER: postgres
+  POSTGRES_HOST: localhost
+  RAKU_VERSION: 2020.01
 
-  env:
-    TMPDIR_PATH: /tmp
-    POSTGRES_USER: postgres
-    POSTGRES_HOST: localhost
-    RAKU_VERSION: 2020.01
+jobs:
 
   build:
 
