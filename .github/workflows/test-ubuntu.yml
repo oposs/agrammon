@@ -22,7 +22,7 @@ jobs:
         matrix:
             os:
                 - ubuntu-16.04
-                # - windows-latest
+                # - macos-latest
 
             raku:
                 - '2020.01'
@@ -47,6 +47,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
+
     - name: Checkout
       uses: actions/checkout@v1     
 
@@ -63,14 +64,14 @@ jobs:
           path: /opt/rakudo-pkg
           key: ${{ matrix.os }}-raku-${{ matrix.raku }}
 
-    - name: Install Raku ${{ matrix.raku }}
+    - name: Install Rakudo ${{ matrix.raku }} package
       if: steps.raku-cache.outputs.cache-hit != 'true'
-      run: cd $TMPDIR && wget -O rakudo-pkg.deb $RAKUDO_PKG_URL && sudo dpkg -i rakudo-pkg.deb && /opt/rakudo-pkg/bin/raku -v
+      run: cd $TMPDIR && wget -O rakudo-pkg.deb `echo $RAKUDO_PKG_URL | sed -e 's/ubuntu-/Ubuntu/'` && sudo dpkg -i rakudo-pkg.deb && /opt/rakudo-pkg/bin/raku -v
       env:
-          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-Ubuntu16.04_${{ matrix.raku }}-01_amd64.deb
+          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-${{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
 
     # don't depend on PATH setting
-    - name: Fix zef
+    - name: Patch zef path
       if: steps.raku-cache.outputs.cache-hit != 'true'
       run: sudo sed -i -e 's|/usr/bin/env perl6|/opt/rakudo-pkg/bin/raku|' /opt/rakudo-pkg/bin/zef && cat /opt/rakudo-pkg/bin/zef
 
@@ -81,23 +82,22 @@ jobs:
           path: /home/runner/.raku
           key: ${{ matrix.os }}-agrammon-${{ matrix.raku}}-${{ hashFiles('META6.json') }}
 
-    - name: zef store cache
+    - name: Zef store cache
       id: zef-cache
       uses: actions/cache@v1
       with:
           path: /home/runner/.zef/store
           key: ${{ matrix.os }}-zef-${{ matrix.raku}}-${{ hashFiles('META6.json') }}
 
-    - name: Install Raku modules
+    - name: Install raku modules
       if: steps.agrammon-cache.outputs.cache-hit != 'true' && steps.zef-cache.outputs.cache-hit != 'true'
       run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only --install-to=/home/runner/.raku install .
 
-    - name: Raku install dir
-      run: /opt/rakudo-pkg/bin/zef locate DB::Pg
+#    - name: Raku install dir
+#      run: /opt/rakudo-pkg/bin/zef locate DB::Pg
 
     - name: Run tests
       run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ t/user.t
       env:
           PERL6LIB: lib
-          POSTGRES_HOST: localhost
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
