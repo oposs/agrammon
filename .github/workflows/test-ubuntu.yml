@@ -51,8 +51,8 @@ jobs:
       uses: actions/checkout@v1     
 
     - name: Create Agrammon DB
-      run: psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -c 'create database agrammon_test' \
-           && psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER --dbname=agrammon_test -c 'create extension pgcrypto'
+      run: psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -c 'create database agrammon_test' && \
+           psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER --dbname=agrammon_test -c 'create extension pgcrypto'
       env:
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 
