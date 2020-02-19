@@ -12,7 +12,7 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
     exit;
 }
 
-my $cfg-file = "t/test-data/agrammon.cfg.yaml";
+my $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
 my $username = 'fritz.zaucker@oetiker.ch';
 
 my $cfg = Agrammon::Config.new;
