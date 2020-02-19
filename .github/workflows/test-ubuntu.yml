@@ -10,19 +10,19 @@ on:
 
 jobs:
 
-    env:
-        TMPDIR_PATH: /tmp
-        POSTGRES_USER: postgres
-        POSTGRES_HOST: localhost
-        RAKU_VERSION: 2020.01
+  env:
+    TMPDIR_PATH: /tmp
+    POSTGRES_USER: postgres
+    POSTGRES_HOST: localhost
+    RAKU_VERSION: 2020.01
 
-    build:
+  build:
 
-        strategy:
-            matrix:
-                os:
-                    - ubuntu-16.04
-                    # - windows-latest
+    strategy:
+        matrix:
+            os:
+                - ubuntu-16.04
+                # - windows-latest
 
         fail-fast: false
 
@@ -58,7 +58,7 @@ jobs:
       uses: actions/cache@v1
       with:
           path: /opt/rakudo-pkg
-          key: ${{ matrix.os }}-raku-${RAKU_VERSION}}-${{ hashFiles('/opt/rakudo-pkg/include/moar/config.h') }}
+          key: ${{ matrix.os }}-raku-${RAKU_VERSION}-${{ hashFiles('/opt/rakudo-pkg/include/moar/config.h') }}
 
     - name: Install Raku-${RAKU_VERSION}
       if: steps.raku-cache.outputs.cache-hit != 'true'
