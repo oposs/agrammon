@@ -50,7 +50,7 @@ jobs:
     - name: rakudo-pkg version
       env:
           RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-{{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
-      run: RAKU=`echo $RAKUDO_PKG_URL | sed -e 's/ubuntu-/Ubuntu/'` echo $RAKU
+      run: export RAKU=`echo $RAKUDO_PKG_URL | sed -e 's/ubuntu-/Ubuntu/'` && echo $RAKU
 
     - name: Checkout
       uses: actions/checkout@v1     
