@@ -58,9 +58,9 @@ jobs:
       uses: actions/cache@v1
       with:
           path: /opt/rakudo-pkg
-          key: ${{ matrix.os }}-raku-${{ RAKU_VERSION }}-${{ hashFiles('/opt/rakudo-pkg/include/moar/config.h') }}
+          key: ${{ matrix.os }}-raku-$RAKU_VERSION-${{ hashFiles('/opt/rakudo-pkg/include/moar/config.h') }}
 
-    - name: Install Raku-${{ RAKU_VERSION }}
+    - name: Install Raku-$RAKU_VERSION
       if: steps.raku-cache.outputs.cache-hit != 'true'
       run: cd ${TMPDIR} \
            && wget -O rakudo-pkg.deb ${RAKUDO_PKG_URL} \
@@ -99,14 +99,14 @@ jobs:
       uses: actions/cache@v1
       with:
           path: /home/runner/.raku
-          key: ${{ matrix.os }}-agrammon-${RAKU_VERSION}-${{ hashFiles('META6.json') }}
+          key: ${{ matrix.os }}-agrammon-$RAKU_VERSION-${{ hashFiles('META6.json') }}
 
     - name: zef store cache
       id: zef-cache
       uses: actions/cache@v1
       with:
           path: /home/runner/.zef/store
-          key: ${{ matrix.os }}-zef-${RAKU_VERSION}-${{ hashFiles('META6.json') }}
+          key: ${{ matrix.os }}-zef-$RAKU_VERSION-${{ hashFiles('META6.json') }}
 
     - name: Install Raku modules
       if: steps.agrammon-cache.outputs.cache-hit != 'true' && steps.zef-cache.outputs.cache-hit != 'true'
