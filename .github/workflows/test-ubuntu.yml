@@ -22,7 +22,7 @@ jobs:
         matrix:
             os:
                 - ubuntu-16.04
-                # - windows-latest
+                # - macos-latest
 
             raku:
                 - '2020.01'
@@ -65,9 +65,9 @@ jobs:
 
     - name: Install Raku ${{ matrix.raku }}
       if: steps.raku-cache.outputs.cache-hit != 'true'
-      run: cd $TMPDIR && wget -O rakudo-pkg.deb $RAKUDO_PKG_URL && sudo dpkg -i rakudo-pkg.deb && /opt/rakudo-pkg/bin/raku -v
+      run: cd $TMPDIR && wget -O rakudo-pkg.deb `echo $RAKUDO_PKG_URL | sed -e 's/ubuntu-/Ubuntu/'` && sudo dpkg -i rakudo-pkg.deb && /opt/rakudo-pkg/bin/raku -v
       env:
-          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-Ubuntu16.04_${{ matrix.raku }}-01_amd64.deb
+          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-{{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
 
     # don't depend on PATH setting
     - name: Fix zef
