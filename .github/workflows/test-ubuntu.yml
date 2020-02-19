@@ -36,7 +36,7 @@ jobs:
       postgres:
         image: postgres:12.2
         env:
-          - POSTGRES_DB: postgres
+          POSTGRES_DB: postgres
         ports:
         # will assign a random free host port
         - 5432/tcp
