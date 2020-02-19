@@ -24,7 +24,7 @@ jobs:
                     # - windows-latest
 
                 raku:
-                    - 2020.01
+                    - '2020.01'
 
         fail-fast: false
 
