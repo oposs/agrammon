@@ -63,6 +63,11 @@ jobs:
           path: /opt/rakudo-pkg
           key: ${{ matrix.os }}-raku-${{ matrix.raku }}
 
+    - name: rakudo-pkg version
+      run: echo $RAKUDO_PKG_URL
+      env:
+          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-{{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
+
     - name: Install Raku ${{ matrix.raku }}
       if: steps.raku-cache.outputs.cache-hit != 'true'
       run: cd $TMPDIR && wget -O rakudo-pkg.deb `echo $RAKUDO_PKG_URL | sed -e 's/ubuntu-/Ubuntu/'` && sudo dpkg -i rakudo-pkg.deb && /opt/rakudo-pkg/bin/raku -v
