@@ -49,7 +49,7 @@ jobs:
     steps:
     - name: rakudo-pkg version
       env:
-          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-{{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
+          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-${{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
       run: echo $RAKUDO_PKG_URL && export RAKU=`echo $RAKUDO_PKG_URL | sed -e 's/ubuntu-/Ubuntu/'` && echo $RAKU
 
     - name: Checkout
@@ -72,7 +72,7 @@ jobs:
       if: steps.raku-cache.outputs.cache-hit != 'true'
       run: cd $TMPDIR && wget -O rakudo-pkg.deb `echo $RAKUDO_PKG_URL | sed -e 's/ubuntu-/Ubuntu/'` && sudo dpkg -i rakudo-pkg.deb && /opt/rakudo-pkg/bin/raku -v
       env:
-          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-{{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
+          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku}}/rakudo-pkg-${{ matrix.os }}_${{ matrix.raku }}-01_amd64.deb
 
     # don't depend on PATH setting
     - name: Fix zef
