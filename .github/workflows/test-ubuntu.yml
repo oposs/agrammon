@@ -10,23 +10,24 @@ on:
 
 jobs:
 
-  env:
-    - TMPDIR_PATH: /tmp
-    - POSTGRES_USER: postgres
-    - POSTGRES_HOST: localhost
+    env:
+        TMPDIR_PATH: /tmp
+        POSTGRES_USER: postgres
+        POSTGRES_HOST: localhost
 
-  build:
+    build:
 
-    strategy:
-      matrix:
-        os:
-          - ubuntu-16.04
-          # - windows-latest
+        strategy:
+            matrix:
+                os:
+                    - ubuntu-16.04
+                    # - windows-latest
 
-        raku:
-          - 2020.01
+                raku:
+                    - 2020.01
 
-    fail-fast: false
+        fail-fast: false
+
 
     name: Raku ${{ matrix.raku }} on ${{ matrix.os }}
 
@@ -53,14 +54,14 @@ jobs:
       run: psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -c 'create database agrammon_test' \
            && psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER --dbname=agrammon_test -c 'create extension pgcrypto'
       env:
-        - POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 
     - name: Raku cache
       id: raku-cache
       uses: actions/cache@v1
       with:
-        path: /opt/rakudo-pkg
-        key: ${{ matrix.os }}-raku-${{ matrix.raku }}-${{ hashFiles('/opt/rakudo-pkg/include/moar/config.h') }}
+          path: /opt/rakudo-pkg
+          key: ${{ matrix.os }}-raku-${{ matrix.raku }}-${{ hashFiles('/opt/rakudo-pkg/include/moar/config.h') }}
 
     - name: Install Raku-${{ matrix.raku }}
       if: steps.raku-cache.outputs.cache-hit != 'true'
@@ -69,7 +70,7 @@ jobs:
            && sudo dpkg -i rakudo-pkg.deb \
            /opt/rakudo-pkg/bin/raku -v
       env:
-          RAKUDO_PKG_URL=https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku }}-01/rakudo-pkg-Ubuntu16.04_${{ matrix.raku }}-01_amd64.deb
+          RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v${{ matrix.raku }}-01/rakudo-pkg-Ubuntu16.04_${{ matrix.raku }}-01_amd64.deb
 
 # https://github.com/nxadm/rakudo-pkg/releases/download/v2019.11/rakudo-pkg-Ubuntu16.04_2019.11-01_amd64.deb
 # https://github.com/nxadm/rakudo-pkg/releases/download/v2020.01/rakudo-pkg-Ubuntu16.04_2020.01-01_amd64.deb
@@ -99,15 +100,15 @@ jobs:
       id: agrammon-cache
       uses: actions/cache@v1
       with:
-        path: /home/runner/.raku
-        key: ${{ matrix.os }}-agrammon-${{ matrix.raku }}-${{ hashFiles('META6.json') }}
+          path: /home/runner/.raku
+          key: ${{ matrix.os }}-agrammon-${{ matrix.raku }}-${{ hashFiles('META6.json') }}
 
     - name: zef store cache
       id: zef-cache
       uses: actions/cache@v1
       with:
-        path: /home/runner/.zef/store
-        key: ${{ matrix.os }}-zef-${{ matrix.raku }}-${{ hashFiles('META6.json') }}
+          path: /home/runner/.zef/store
+          key: ${{ matrix.os }}-zef-${{ matrix.raku }}-${{ hashFiles('META6.json') }}
 
     - name: Install Raku modules
       if: steps.agrammon-cache.outputs.cache-hit != 'true' && steps.zef-cache.outputs.cache-hit != 'true'
@@ -119,6 +120,6 @@ jobs:
     - name: Run tests
       run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ t/
       env:
-        - PERL6LIB: lib
-        - POSTGRES_HOST: localhost
-        - POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          PERL6LIB: lib
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
