@@ -61,7 +61,8 @@ jobs:
       uses: actions/cache@v1
       with:
           path: /opt/rakudo-pkg
-          key: ${{ matrix.os }}-raku-${{ matrix.raku}}-${{ hashFiles('/opt/rakudo-pkg/include/moar/config.h') }}
+          key: ${{ matrix.os }}-raku-${{ matrix.raku }}
+#          key: ${{ matrix.os }}-raku-${{ matrix.raku }}-${{ hashFiles('/opt/rakudo-pkg/include/moar/config.h') }}
 
     - name: Install Raku ${{ matrix.raku }}
       if: steps.raku-cache.outputs.cache-hit != 'true'
