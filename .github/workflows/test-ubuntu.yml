@@ -25,7 +25,8 @@ jobs:
                 # - macos-latest
 
             raku:
-                - '2020.01'
+                - '2019.07.1'
+#                - '2020.01'
 
         fail-fast: false
 
@@ -91,13 +92,13 @@ jobs:
 
     - name: Install raku modules
       if: steps.agrammon-cache.outputs.cache-hit != 'true' && steps.zef-cache.outputs.cache-hit != 'true'
-      run: /opt/rakudo-pkg/bin/zef --debug --/test --deps-only --install-to=/home/runner/.raku install .
+      run: mkdir -p /home/runner/.raku && /opt/rakudo-pkg/bin/zef --debug --/test --deps-only --install-to=/home/runner/.raku install .
 
 #    - name: Raku install dir
 #      run: /opt/rakudo-pkg/bin/zef locate DB::Pg
 
     - name: Run tests
-      run: /usr/bin/prove -v -r --exec=/opt/rakudo-pkg/bin/raku xt/ t/user.t
+      run: /usr/bin/prove -v -r --exec="/opt/rakudo-pkg/bin/raku -Iinst#$HOME/.raku" xt/ t/
       env:
           PERL6LIB: lib
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
