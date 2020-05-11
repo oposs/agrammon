@@ -688,6 +688,17 @@ ALTER TABLE ONLY public.tagds
 ALTER TABLE ONLY public.tagds
     ADD CONSTRAINT tagds_tagds_tag_fkey FOREIGN KEY (tagds_tag) REFERENCES public.tag(tag_id) ON DELETE CASCADE;
 
+--
+-- Name: data_new; Type: TABLE; Schema: public; Owner: agrammon
+--
+
+CREATE TABLE public.session (
+    session_id TEXT PRIMARY KEY,
+    session_state TEXT,
+    session_expiration TIMESTAMP
+);
+
+ALTER TABLE public.sessions OWNER TO agrammon;
 
 --
 -- Name: FUNCTION tag_name2id(username text, name text); Type: ACL; Schema: public; Owner: agrammon
@@ -807,6 +818,11 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.tagds TO agrammon_user;
 
 GRANT ALL ON SEQUENCE public.tagds_tagds_id_seq TO agrammon_user;
 
+--
+-- Name: TABLE session; Type: ACL; Schema: public; Owner: agrammon
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.session TO agrammon_user;
 
 --
 -- PostgreSQL database dump complete
