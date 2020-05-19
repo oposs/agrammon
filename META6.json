@@ -7,6 +7,7 @@
     "Fritz Zaucker <fritz.zaucker@oetiker.ch>",
     "Jonathan Worthington <jonathan@edument.se>"
   ],
+  "auth": "Oetiker+Partner",
   "depends": [
     "Text::CSV",
     "Test::NoTabs",
@@ -14,8 +15,11 @@
     "DB::Pg",
     "Cro::HTTP",
     "Digest::SHA1::Native",
-    "Shell::Command"
+    "Shell::Command",
+    "Cro::HTTP::Session::Pg"
   ],
+  "build-depends": [],
+  "test-depends": [],
   "provides": {
     "Agrammon::CommonParser": "lib/Agrammon/CommonParser.pm6",
     "Agrammon::Config": "lib/Agrammon/Config.pm6",
@@ -53,7 +57,8 @@
     "Agrammon::UI::CommandLine": "lib/Agrammon/UI/CommandLine.pm6",
     "Agrammon::UI::Web": "lib/Agrammon/UI/Web.pm6",
     "Agrammon::Web::Routes": "lib/Agrammon/Web/Routes.pm6",
-    "Agrammon::Web::Service": "lib/Agrammon/Web/Service.pm6"
+    "Agrammon::Web::Service": "lib/Agrammon/Web/Service.pm6",
+    "Agrammon::Web::SessionStore": "lib/Agrammon/Web/SessionStore.pm6"
   },
   "resources": [],
   "license": "Artistic-2.0",

@@ -15,4 +15,11 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
         return self;
     }
 
+    method to-json() {
+        { :$!logged-in, :$.username }
+    }
+
+    method from-json((:$logged-in = False, :$username = Str)) {
+        self.new(:$logged-in, :$username).load
+    }
 }

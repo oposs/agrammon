@@ -13,6 +13,7 @@ use Agrammon::Performance;
 use Agrammon::ResultCollector;
 use Agrammon::TechnicalParser;
 use Agrammon::Web::Routes;
+use Agrammon::Web::SessionStore;
 use Agrammon::Web::SessionUser;
 
 
@@ -158,13 +159,13 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
 
     my $module-path = $model-path.parent;
     my $module-file = $model-path.basename;
-    my $module      = $model-path.IO.extension('').basename;
+    my $module = $model-path.IO.extension('').basename;
 
     my $tech-input = $tech-file // $module-path.add('technical.cfg');
     my %technical-parameters = timed "Load parameters from $tech-input", {
-        my $params = parse-technical( $tech-input.IO.slurp );
+        my $params = parse-technical($tech-input.IO.slurp);
         %($params.technical.map(-> %module {
-                %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
         }));
     }
 
@@ -172,25 +173,24 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
     }
 
-    PROCESS::<$AGRAMMON-DB-CONNECTION> = DB::Pg.new(conninfo => $cfg.db-conninfo);
-                              
+    my $db = DB::Pg.new(conninfo => $cfg.db-conninfo);
+    PROCESS::<$AGRAMMON-DB-CONNECTION> = $db;
+
     my $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters);
 
     # setup and start web server
     my $host = %*ENV<AGRAMMON_HOST> || '0.0.0.0';
     my $port = %*ENV<AGRAMMON_PORT> || 20000;
     my Cro::Service $http = Cro::HTTP::Server.new(
-        :$host, :$port,
-        application => routes($ws),
-        after => [
-            Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
-        ],
-        before => [
-            Cro::HTTP::Session::InMemory[Agrammon::Web::SessionUser].new(
-                expiration  => Duration.new(60 * 15),
-            )
-        ]
-    );
+            :$host, :$port,
+            application => routes($ws),
+            after => [
+                Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
+            ],
+            before => [
+                Agrammon::Web::SessionStore.new(:$db)
+            ]
+            );
     $http.start;
     say "Listening at http://$host:$port";
     return $http;
