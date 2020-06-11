@@ -16,7 +16,8 @@
     "Cro::HTTP",
     "Digest::SHA1::Native",
     "Shell::Command",
-    "Cro::HTTP::Session::Pg"
+    "Cro::HTTP::Session::Pg",
+    "OO::Monitors"
   ],
   "build-depends": [],
   "test-depends": [],
@@ -53,6 +54,7 @@
     "Agrammon::OutputReference": "lib/Agrammon/OutputReference.pm6",
     "Agrammon::Outputs": "lib/Agrammon/Outputs.pm6",
     "Agrammon::Outputs::FilterGroupCollection": "lib/Agrammon/Outputs/FilterGroupCollection.pm6",
+    "Agrammon::OutputsCache": "lib/Agrammon/OutputsCache.pm6",
     "Agrammon::Performance": "lib/Agrammon/Performance.pm6",
     "Agrammon::UI::CommandLine": "lib/Agrammon/UI/CommandLine.pm6",
     "Agrammon::UI::Web": "lib/Agrammon/UI/Web.pm6",

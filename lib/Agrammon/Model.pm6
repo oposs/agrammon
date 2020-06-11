@@ -297,7 +297,7 @@ class Agrammon::Model {
         $module-name.subst(/'::' <.ident> '::..'/, '', :g)
     }
 
-    method run(Agrammon::Inputs :$input!, :%technical) {
+    method run(Agrammon::Inputs :$input!, :%technical --> Agrammon::Outputs) {
         $!entry-point.run(:$input, :%technical)
     }
 
