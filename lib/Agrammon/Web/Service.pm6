@@ -6,6 +6,7 @@ use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
 use Agrammon::DB::Tags;
 use Agrammon::Model;
+use Agrammon::OutputsCache;
 use Agrammon::OutputFormatter::GUI;
 use Agrammon::Performance;
 use Agrammon::Web::SessionUser;
@@ -16,6 +17,7 @@ class Agrammon::Web::Service {
     has Agrammon::Model  $.model;
     has %.technical-parameters;
     has Agrammon::UI::Web $.ui-web .= new(:$!model);
+    has Agrammon::OutputsCache $!outputs-cache .= new;
 
     # return config hash as expected by Web GUI
     method get-cfg() {
@@ -59,16 +61,14 @@ class Agrammon::Web::Service {
     }
 
     method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
-
-        my $input = Agrammon::DataSource::DB.new.read($user.username, $dataset-name,
-                $!model.distribution-map);
-
-        my $outputs;
-        timed "$dataset-name", {
-            $outputs = $!model.run(
-                :$input,
-                technical => %!technical-parameters,
-            );
+        my $outputs = $!outputs-cache.get-or-calculate: $user.username, $dataset-name, -> {
+            my $input = Agrammon::DataSource::DB.new.read($user.username, $dataset-name,
+                    $!model.distribution-map);
+            timed "$dataset-name", {
+                $!model.run:
+                        :$input,
+                        technical => %!technical-parameters;
+            }
         }
 
         use Agrammon::OutputFormatter::Text;
@@ -100,6 +100,8 @@ class Agrammon::Web::Service {
         my $ds = Agrammon::DB::Dataset.new(:$user, name => $dataset);
 
         my $ret = $ds.store-input($var, $value);
+
+        $!outputs-cache.invalidate($user.username, $dataset);
 
         warn "**** store-data(var=$var, value=$value): not yet completely implemented (branch data)";
         return 1;
