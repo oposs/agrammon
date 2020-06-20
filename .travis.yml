@@ -5,12 +5,11 @@
 ###
 ### Update RAKUDO_PKG_URL to the latest version available.
 ###
-### https://nxadm.github.io/rakudo-pkg/latest-release.html?os=ubuntu&version=14.04&arch=amd64
-### https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
+### https://github.com/nxadm/rakudo-pkg/releases
 env:
   global:
     - TMPDIR=/tmp
-    - RAKUDO_PKG_URL=https://github.com/nxadm/rakudo-pkg/releases/download/v2018.03-01/rakudo-pkg-Ubuntu14.04_2018.03-01_amd64.deb
+    - RAKUDO_PKG_URL=https://github.com/nxadm/rakudo-pkg/releases/download/v2020.05.1/rakudo-pkg-Ubuntu20.04_2020.05.1-01_amd64.deb
     - PGPORT=5433
 
 # cache precompiled modules
@@ -22,11 +21,11 @@ services:
   - postgresql
 
 addons:
-  postgresql: "10"
+  postgresql: "12"
   apt:
     packages:
-    - postgresql-10
-    - postgresql-client-10
+    - postgresql-12
+    - postgresql-client-12
   
 before_script:
   - psql --command='create database agrammon_test'
@@ -35,8 +34,12 @@ before_script:
 script:
     PERL6LIB=lib prove -v -r --exec=perl6 t/ xt/
 
+# https://stackoverflow.com/questions/61734368/postgresql-12-on-travis-ci-taking-5-minutes-to-startup
 # https://docs.travis-ci.com/user/installing-dependencies/#Installing-Packages-without-an-APT-Repository
 before_install:
+  - sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/12/main/postgresql.conf
+  - sudo cp /etc/postgresql/{9.3,12}/main/pg_hba.conf
+  - sudo pg_ctlcluster 12 main restart
   - cd ${TMPDIR}
   - wget -O rakudo-pkg.deb ${RAKUDO_PKG_URL}
   - sudo dpkg -i rakudo-pkg.deb
