@@ -35,7 +35,7 @@ steps:
           - 5432
       - environment:
           - POSTGRES_USER: agrammon
-          - POSTGRES_DB: agrammon_ci,
+          - POSTGRES_DB: agrammon_ci
           - POSTGRES_PASSWORD: agrammonATwork
 
   commands:
