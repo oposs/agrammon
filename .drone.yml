@@ -3,6 +3,16 @@ kind: pipeline
 name: agrammon
 
 steps:
+- name: build docker image
+- image: docker
+- pull: always
+- volumes:
+    - name: dockersock
+    - path: /var/run/docker.sock
+- commands
+    - docker build -t agrammon-runner -f dev/Dockerfile-ubuntu:18.04
+    - docker tag agrammon-runner agrammon-runner:latest
+
 # - name: frontend
 #   image: oposs/agrammon-dev:latest
 #   pull: always
