@@ -26,7 +26,7 @@ steps:
 #       - /home/agrammon/entrypoint.sh test-frontend
 
 - name: backend
-  image: oposs/agrammon-dev:latest
+  image: agrammon-dev:latest
   pull: always
   commands:
       - chown -R agrammon:agrammon /drone/src
