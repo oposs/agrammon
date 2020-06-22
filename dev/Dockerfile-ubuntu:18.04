@@ -1,0 +1,31 @@
+FROM ubuntu:18.04
+ARG raku_version
+
+ENV RAKU_VERSION=$raku_version
+
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get upgrade -yq && \
+    apt-get install --no-install-recommends -yq \
+        apt-utils && \
+    apt-get install --no-install-recommends -yq \
+        ca-certificates \
+       	curl \
+        git \
+        lsb-release \
+        gnupg \
+        && \
+    curl https://dl-ssl.google.com/linux/linux_signing_key.pub | \
+         apt-key add - && \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61 && \
+    echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" | tee -a /etc/apt/sources.list.d/rakudo-pkg.list && \
+    apt-get update && \
+    apt-get install --no-install-recommends -yq \
+            rakudo-pkg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+#RUN git clone --depth=1 https://github.com/qooxdoo/qooxdoo.git /opt/qooxdoo-sdk
+
+ENV PATH $PATH:/opt/rakudo-pkg/bin:/opt/rakudo-pkg/share/perl6/site/bin
