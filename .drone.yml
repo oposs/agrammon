@@ -26,12 +26,22 @@ steps:
 #       - /home/agrammon/entrypoint.sh test-frontend
 
 - name: backend
-  image: agrammon-dev:latest
+  image: agrammon-runner:latest
   pull: always
+  services:
+      - name: database
+      - image: postgres
+      - ports:
+          - 5432
+      - environment:
+          - POSTGRES_USER: agrammon
+          - POSTGRES_DB: agrammon_ci,
+          - POSTGRES_PASSWORD: agrammonATwork
+
   commands:
       - chown -R agrammon:agrammon /drone/src
       - export AGRAMMON_DIR=/drone/src
-      - export AGRAMMON_CONFIG=/drone/src/t/test-data/etc-frontend-tests/agrammon.cfg
+      - export AGRAMMON_CONFIG=/drone/src/t/test-data/etc-backend-tests/agrammon.cfg
       - TEST_JOBS=4
       - pwd
       - ls $AGRAMMON_DIR
