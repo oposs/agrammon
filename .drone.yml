@@ -1,6 +1,7 @@
 ---
 kind: pipeline
 name: agrammon
+type: docker
 
 steps:
 - name: build docker image
