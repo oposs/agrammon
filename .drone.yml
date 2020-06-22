@@ -9,7 +9,7 @@ steps:
 - volumes:
     - name: dockersock
     - path: /var/run/docker.sock
-- commands
+- commands:
     - docker build -t agrammon-runner -f dev/Dockerfile-ubuntu:18.04 .
     - docker tag agrammon-runner agrammon-runner:latest
 
