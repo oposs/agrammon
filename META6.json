@@ -9,15 +9,16 @@
   ],
   "auth": "Oetiker+Partner",
   "depends": [
+    "Cro::HTTP",
+    "Cro::HTTP::Session::Pg",
+    "DB::Pg",
+    "Digest::SHA1::Native",
+    "OO::Monitors",
+    "Shell::Command",
+    "Spreadsheet::XLSX"
     "Text::CSV",
     "Test::NoTabs",
     "YAMLish",
-    "DB::Pg",
-    "Cro::HTTP",
-    "Digest::SHA1::Native",
-    "Shell::Command",
-    "Cro::HTTP::Session::Pg",
-    "OO::Monitors"
   ],
   "build-depends": [],
   "test-depends": [],
