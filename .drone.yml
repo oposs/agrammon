@@ -1,0 +1,37 @@
+---
+kind: pipeline
+name: agrammon
+
+steps:
+# - name: frontend
+#   image: oposs/agrammon-dev:latest
+#   pull: always
+#   privileged: true
+#   commands:
+#       - ln -s /home/agrammon/node_modules /drone/src/frontend/
+#       - chown -R agrammon:agrammon /drone/src
+#       - export AGRAMMON_DIR=/drone/src
+#       - export AGRAMMON_CONFIG=/drone/src/t/test-data/etc-frontend-tests/agrammon.cfg
+#       - /home/agrammon/entrypoint.sh qx package migrate
+#       - /home/agrammon/entrypoint.sh test-frontend
+
+- name: backend
+  image: oposs/agrammon-dev:latest
+  pull: always
+  commands:
+      - chown -R agrammon:agrammon /drone/src
+      - export AGRAMMON_DIR=/drone/src
+      - export AGRAMMON_CONFIG=/drone/src/t/test-data/etc-frontend-tests/agrammon.cfg
+      - TEST_JOBS=4
+      - pwd
+      - ls $AGRAMMON_DIR
+      - RAKUDOLIB=lib prove -v -r --exec=raku t/config.t
+
+- name: complete
+  image: alpine
+  # depends_on: [ frontend, backend ]
+  depends_on: [ backend ]
+  commands:
+    - echo "ALL DONE."
+
+# END
