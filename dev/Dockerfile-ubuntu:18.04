@@ -16,6 +16,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         lsb-release \
         gnupg \
         build-essential \
+        libxml2 \
+        libxml2-dev \
         && \
     curl https://dl-ssl.google.com/linux/linux_signing_key.pub | \
          apt-key add - && \
