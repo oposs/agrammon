@@ -15,10 +15,10 @@
     "Digest::SHA1::Native",
     "OO::Monitors",
     "Shell::Command",
-    "Spreadsheet::XLSX"
+    "Spreadsheet::XLSX",
     "Text::CSV",
     "Test::NoTabs",
-    "YAMLish",
+    "YAMLish"
   ],
   "build-depends": [],
   "test-depends": [],
