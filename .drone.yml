@@ -53,9 +53,11 @@ steps:
       RAKUDOLIB: lib
 
   commands:
-      - ls $AGRAMMON_DIR
+      - ls -al $AGRAMMON_DIR
       - zef --debug --/test --deps-only install .
       - zef locate YAMLish
+      - ls -al /
+      - ls -al /opt/rakudo-pkg/
       - prove -v -r --exec=raku t/config.t
 
 # - name: store-raku-cache
