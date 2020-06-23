@@ -55,7 +55,22 @@ steps:
   commands:
       - ls $AGRAMMON_DIR
       - zef --debug --/test --deps-only install .
+      - zef locate YAMLish
       - prove -v -r --exec=raku t/config.t
+
+# - name: store-raku-cache
+#   image: meltwater/drone-cache:dev
+#   pull: never
+#   settings:
+#       backend: filesystem
+#       rebuild: true
+# #      cache_key: pkg +"-"+env.key+"-cpan-{{ checksum \"" +pkg +"/cpanfile\" }}",
+#       archive_format: gzip
+#       mount:
+#           - pkg +"/thirdparty"
+#       volumes":
+#           -name: cache
+#            path: /tmp/cache
 
 # - name: complete
 #   image: alpine
