@@ -3,16 +3,25 @@ kind: pipeline
 name: agrammon
 type: docker
 
+services:
+    - name: database
+      image: postgres
+      ports:
+        - 5432
+      environment:
+        POSTGRES_USER: agrammon
+        POSTGRES_DB: agrammon_ci
+        POSTGRES_PASSWORD: agrammonATwork
+
 steps:
-- name: build docker image
-- image: docker
-- pull: always
-- volumes:
+- name: buildDockerImage
+  image: docker
+  pull: always
+  volumes:
     - name: dockersock
     - path: /var/run/docker.sock
-- commands:
-    - docker build -t agrammon-runner -f dev/Dockerfile-ubuntu:18.04 .
-    - docker tag agrammon-runner agrammon-runner:latest
+  commands:
+    - docker build -t agrammon-runner:latest -f dev/Dockerfile-ubuntu:18.04 .
 
 # - name: frontend
 #   image: oposs/agrammon-dev:latest
@@ -26,33 +35,25 @@ steps:
 #       - /home/agrammon/entrypoint.sh qx package migrate
 #       - /home/agrammon/entrypoint.sh test-frontend
 
+
 - name: backend
   image: agrammon-runner:latest
   pull: always
-  services:
-      - name: database
-      - image: postgres
-      - ports:
-          - 5432
-      - environment:
-          - POSTGRES_USER: agrammon
-          - POSTGRES_DB: agrammon_ci
-          - POSTGRES_PASSWORD: agrammonATwork
-
+  depends_on:
+      - buildDockerImage
   commands:
-      - chown -R agrammon:agrammon /drone/src
       - export AGRAMMON_DIR=/drone/src
       - export AGRAMMON_CONFIG=/drone/src/t/test-data/etc-backend-tests/agrammon.cfg
-      - TEST_JOBS=4
+      - export TEST_JOBS=4
       - pwd
       - ls $AGRAMMON_DIR
       - RAKUDOLIB=lib prove -v -r --exec=raku t/config.t
 
-- name: complete
-  image: alpine
-  # depends_on: [ frontend, backend ]
-  depends_on: [ backend ]
-  commands:
-    - echo "ALL DONE."
+# - name: complete
+#   image: alpine
+#   # depends_on: [ frontend, backend ]
+#   depends_on: [ backend ]
+#   commands:
+#     - echo "ALL DONE."
 #
 # END
