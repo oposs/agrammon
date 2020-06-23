@@ -15,6 +15,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         git \
         lsb-release \
         gnupg \
+        build-essential \
         && \
     curl https://dl-ssl.google.com/linux/linux_signing_key.pub | \
          apt-key add - && \
