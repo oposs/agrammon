@@ -29,7 +29,7 @@ steps:
     - docker build -t agrammon-runner:latest -f dev/Dockerfile-ubuntu:18.04 .
 
 # - name: frontend
-#   image: oposs/agrammon-dev:latest
+#   image: oposs/agrammon-runner:latest
 #   privileged: true
 #   commands:
 #       - ln -s /home/agrammon/node_modules /drone/src/frontend/
@@ -41,9 +41,10 @@ steps:
 
 
 - name: backend
-#  image: agrammon-runner:latest
+  image: agrammon-runner:latest
   depends_on:
       - buildDockerImage
+  privileged: true
   commands:
       - export AGRAMMON_DIR=/drone/src
       - export AGRAMMON_CONFIG=/drone/src/t/test-data/etc-backend-tests/agrammon.cfg
