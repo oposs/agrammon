@@ -58,6 +58,7 @@ steps:
       - zef locate YAMLish
       - ls -al /
       - ls -al /opt/rakudo-pkg/
+      - ls -l $HOME
       - prove -v -r --exec=raku t/config.t
 
 # - name: store-raku-cache
