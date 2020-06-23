@@ -46,11 +46,11 @@ steps:
   depends_on:
       - buildDockerImage
   privileged: true
-environment:
-    - AGRAMMON_DIR: /drone/src
-    - AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
-    - TEST_JOBS: 4
-    - RAKUDOLIB: lib
+  environment:
+      - AGRAMMON_DIR: /drone/src
+      - AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
+      - TEST_JOBS: 4
+      - RAKUDOLIB: lib
 
   commands:
       - ls $AGRAMMON_DIR
