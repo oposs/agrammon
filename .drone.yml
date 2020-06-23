@@ -30,7 +30,6 @@ steps:
 
 # - name: frontend
 #   image: oposs/agrammon-dev:latest
-#   pull: always
 #   privileged: true
 #   commands:
 #       - ln -s /home/agrammon/node_modules /drone/src/frontend/
@@ -42,7 +41,7 @@ steps:
 
 
 - name: backend
-  image: agrammon-runner:latest
+#  image: agrammon-runner:latest
   depends_on:
       - buildDockerImage
   commands:
