@@ -42,6 +42,7 @@ steps:
 
 - name: backend
   image: agrammon-runner:latest
+  pull: never
   depends_on:
       - buildDockerImage
   privileged: true
