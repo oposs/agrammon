@@ -46,13 +46,16 @@ steps:
   depends_on:
       - buildDockerImage
   privileged: true
+environment:
+    - AGRAMMON_DIR: /drone/src
+    - AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
+    - TEST_JOBS: 4
+    - RAKUDOLIB: lib
+
   commands:
-      - export AGRAMMON_DIR=/drone/src
-      - export AGRAMMON_CONFIG=/drone/src/t/test-data/etc-backend-tests/agrammon.cfg
-      - export TEST_JOBS=4
-      - pwd
       - ls $AGRAMMON_DIR
-      - RAKUDOLIB=lib prove -v -r --exec=raku t/config.t
+      - zef --debug --/test --deps-only install .
+      - prove -v -r --exec=raku t/config.t
 
 # - name: complete
 #   image: alpine
