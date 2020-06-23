@@ -22,7 +22,6 @@ volumes:
 steps:
 - name: buildDockerImage
   image: docker
-  pull: always
   volumes:
     - name: dockersock
       path: /var/run/docker.sock
@@ -44,7 +43,6 @@ steps:
 
 - name: backend
   image: agrammon-runner:latest
-  pull: always
   depends_on:
       - buildDockerImage
   commands:
