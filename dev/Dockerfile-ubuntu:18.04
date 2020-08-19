@@ -3,7 +3,7 @@ ARG raku_version
 
 ENV RAKU_VERSION=$raku_version
 
-RUN echo "RAKU_VERSION=$RAKU_VERSION" \
+RUN echo "RAKU_VERSION=$RAKU_VERSION" && \
     export DEBIAN_FRONTEND=noninteractive && \
     sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list && \
     apt-get update && \
