@@ -28,9 +28,10 @@ steps:
   commands:
     - IMG=agrammon-runner-ubuntu:18.04
     - SHA=$( sha1sum dev/Dockerfile-ubuntu:18.04 | awk '{print $1}')
-    - test $(docker images $IMG:$SUM -q ) = "" || exit 0
-    - docker build -t $IMG:$SUM -f dev/Dockerfile-ubuntu:18.04 dev
-    - docker tag $IMG:SUM $IMG:latest
+    - echo IMG=$IMG SHA=$SHA
+    - test $(docker images $IMG:$SHA -q ) = "" || exit 0
+    - docker build -t $IMG:$SHA -f dev/Dockerfile-ubuntu:18.04 dev
+    - docker tag $IMG:$SHA $IMG:latest
 
 # - name: frontend
 #   image: oposs/agrammon-runner:latest
