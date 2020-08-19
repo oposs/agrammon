@@ -59,6 +59,7 @@ steps:
 
   commands:
       - ls -al $AGRAMMON_DIR
+      - raku -v
       - zef --debug --/test --deps-only install .
       - zef locate YAMLish
       - ls -al /
