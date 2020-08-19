@@ -9,7 +9,7 @@ RUN echo "RAKU_VERSION=$RAKU_VERSION" && \
     apt-get update && \
     apt-get upgrade -yq && \
     apt-get install --no-install-recommends -yq \
-        apt-utils && \
+        apt-utils \
         build-essential \
         ca-certificates \
        	curl \
