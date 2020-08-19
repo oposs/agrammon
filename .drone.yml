@@ -26,7 +26,11 @@ steps:
     - name: dockersock
       path: /var/run/docker.sock
   commands:
-    - docker build -t agrammon-runner:latest -f dev/Dockerfile-ubuntu:18.04 .
+    - IMG=agrammon-runner-ubuntu:18.04
+    - SHA=$( sha1sum dev/Dockerfile-ubuntu:18.04 | awk '{print $1}')
+    - test $(docker images $IMG:$SUM -q ) = "" || exit 0
+    - docker build -t $IMG:$SUM -f dev/Dockerfile-ubuntu:18.04 dev
+    - docker tag $IMG:SUM $IMG:latest
 
 # - name: frontend
 #   image: oposs/agrammon-runner:latest
