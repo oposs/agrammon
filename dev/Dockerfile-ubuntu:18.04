@@ -41,7 +41,7 @@ RUN pwd && \
     zef --deps-only --debug --/test --install-to=site install . && \
     zef --installed list
 
-#RUN apt-cache search libpq-dev
-#RUN apt-get install --no-install-recommends -yq libpq-dev
+RUN apt-get update &&\
+    apt-get install --no-install-recommends -yq postgresql-client
 
 #RUN git clone --depth=1 https://github.com/qooxdoo/qooxdoo.git /opt/qooxdoo-sdk
