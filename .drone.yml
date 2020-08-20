@@ -71,7 +71,7 @@ steps:
       AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
       TEST_JOBS: 4
       RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
-      LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu
+      LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu
   commands:
 #      - ls -al $AGRAMMON_DIR
       - raku -v
