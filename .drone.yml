@@ -85,6 +85,7 @@ steps:
       - cd $AGRAMMON_DIR
 #      - prove -v -r --exec=raku t/config.t
       - echo $LD_LIBRARY_PATH
+      - ln -s /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/libpq.so
       - prove -v -r --exec=raku t/datasource-db.t
 #      - prove -v -r --exec=raku t
 
