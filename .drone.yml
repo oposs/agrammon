@@ -70,7 +70,7 @@ steps:
       AGRAMMON_DIR: /drone/src
       AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
       TEST_JOBS: 4
-      RAKUDOLIB: /opt/rakudo-pkg/share/perl6/site:lib
+      RAKUDOLIB: lib
   commands:
       - ls -al $AGRAMMON_DIR
       - raku -v
