@@ -11,7 +11,7 @@ services:
       environment:
         POSTGRES_USER: postgres
         POSTGRES_DB: test
-#        POSTGRES_PASSWORD: postgres
+        POSTGRES_PASSWORD: postgres
 
 volumes:
     - name: dockersock
@@ -71,6 +71,7 @@ steps:
       AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
       TEST_JOBS: 4
       RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
+
   commands:
 #      - ls -al $AGRAMMON_DIR
       - raku -v
@@ -83,7 +84,7 @@ steps:
 #      - find / |grep libpq.so
       - cd $AGRAMMON_DIR
       - sleep 15
-      - psql -U postgres -d test -h database
+      - POSTGRES_HOST_AUTH_METHOD=trust psql -U postgres -d test -h database
 #      -c 'select now()'
 #      - prove -v -r --exec=raku t/config.t
 #      - ln -s /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/libpq.so
