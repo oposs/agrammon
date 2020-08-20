@@ -57,8 +57,8 @@ steps:
       mount:
           - /opt/rakudo-pkg/share
       volumes:
-          -name: cache
-           path: /tmp/cache
+          - name: cache
+            path: /tmp/cache
 
 - name: backend
   image: agrammon-runner:latest
@@ -94,8 +94,8 @@ steps:
       mount:
           - /opt/rakudo-pkg/share
       volumes:
-          -name: cache
-           path: /tmp/cache
+          - name: cache
+            path: /tmp/cache
 
 # - name: complete
 #   image: alpine
