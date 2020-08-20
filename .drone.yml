@@ -27,7 +27,7 @@ steps:
       path: /var/run/docker.sock
   commands:
     - IMG=agrammon-runner-ubuntu-18.04
-    - SHA=$( sha1sum dev/Dockerfile-ubuntu:18.04 | awk '{print $1}')
+    - SHA=$( cat dev/Dockerfile-ubuntu:18.04 dev/META6.json| shasum -a 1 -U |awk '{print $1}')
     - echo IMG=$IMG SHA=$SHA
     - test "$(docker images $IMG:$SHA -q)" = "" || exit 0
     - docker build -t $IMG:$SHA -f dev/Dockerfile-ubuntu:18.04 dev
