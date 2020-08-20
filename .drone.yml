@@ -44,21 +44,21 @@ steps:
 #       - /home/agrammon/entrypoint.sh qx package migrate
 #       - /home/agrammon/entrypoint.sh test-frontend
 
-- name: restore-raku-cache
-  image: meltwater/drone-cache:dev
-  pull: always
-  depends_on:
-      - buildDockerImage
-  settings:
-      backend: filesystem
-      restore: true
-      cache_key: opt-rakudo-pkg-share-$( checksum $AGRAMMON_DIR/META6.json)
-      archive_format: gzip
-      mount:
-          - /opt/rakudo-pkg/share
-      volumes:
-          - name: cache
-            path: /tmp/cache
+# - name: restore-raku-cache
+#   image: meltwater/drone-cache:dev
+#   pull: always
+#   depends_on:
+#       - buildDockerImage
+#   settings:
+#       backend: filesystem
+#       restore: true
+#       cache_key: opt-rakudo-pkg-share-$( checksum $AGRAMMON_DIR/META6.json)
+#       archive_format: gzip
+#       mount:
+#           - /opt/rakudo-pkg/share
+#       volumes:
+#           - name: cache
+#             path: /tmp/cache
 
 - name: backend
   image: agrammon-runner:latest
@@ -75,27 +75,27 @@ steps:
       - ls -al $AGRAMMON_DIR
       - raku -v
       - zef --debug --/test --deps-only install .
-#      - zef locate YAMLish
-#      - ls -al /
-#      - ls -al /opt/rakudo-pkg/
-#      - ls -al $HOME
+      - zef locate YAMLish
+      - ls -al /
+      - ls -al /opt/rakudo-pkg/
+      - ls -al $HOME
       - prove -v -r --exec=raku t/config.t
 
-- name: store-raku-cache
-  image: meltwater/drone-cache:dev
-  pull: never
-  depends_on:
-      - backend
-  settings:
-      backend: filesystem
-      rebuild: true
-      cache_key: opt-rakudo-pkg-share-$( checksum $AGRAMMON_DIR/META6.json)
-      archive_format: gzip
-      mount:
-          - /opt/rakudo-pkg/share
-      volumes:
-          - name: cache
-            path: /tmp/cache
+# - name: store-raku-cache
+#   image: meltwater/drone-cache:dev
+#   pull: never
+#   depends_on:
+#       - backend
+#   settings:
+#       backend: filesystem
+#       rebuild: true
+#       cache_key: opt-rakudo-pkg-share-$( checksum $AGRAMMON_DIR/META6.json)
+#       archive_format: gzip
+#       mount:
+#           - /opt/rakudo-pkg/share
+#       volumes:
+#           - name: cache
+#             path: /tmp/cache
 
 # - name: complete
 #   image: alpine

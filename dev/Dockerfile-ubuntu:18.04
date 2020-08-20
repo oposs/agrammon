@@ -29,6 +29,14 @@ RUN echo "RAKU_VERSION=$RAKU_VERSION" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+COPY META6.json /tmp/
+
+RUN pwd && \
+    ls -al && \
+    cd /tmp && \
+    zef --deps-only --/test --install-to=site install . && \
+    zef --installed list
+
 #RUN git clone --depth=1 https://github.com/qooxdoo/qooxdoo.git /opt/qooxdoo-sdk
 
 ENV PATH $PATH:/opt/rakudo-pkg/bin:/opt/rakudo-pkg/share/perl6/site/bin
