@@ -9,9 +9,9 @@ services:
       ports:
         - 5432
       environment:
-        POSTGRES_USER: agrammon
-        POSTGRES_DB: agrammon_ci
-        POSTGRES_PASSWORD: agrammonATwork
+        POSTGRES_USER: postgres
+        POSTGRES_DB: agrammon_test
+        POSTGRES_PASSWORD: postgres
 
 volumes:
     - name: dockersock
@@ -83,7 +83,7 @@ steps:
       - find / |grep libpq.so
       - cd $AGRAMMON_DIR
       - sleep 15
-      - psql -c 'select now()'
+#      - psql -c 'select now()'
 #      - prove -v -r --exec=raku t/config.t
 #      - ln -s /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/libpq.so
       - prove -v -r --exec=raku t/datasource-db.t
