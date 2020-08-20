@@ -41,6 +41,6 @@ RUN pwd && \
     zef --deps-only --debug --/test --install-to=site install . && \
     zef --installed list
 
-#RUN git clone --depth=1 https://github.com/qooxdoo/qooxdoo.git /opt/qooxdoo-sdk
+RUN apt-get install libpq-dev
 
-ENV PATH $PATH:/opt/rakudo-pkg/bin:/opt/rakudo-pkg/share/perl6/site/bin
+#RUN git clone --depth=1 https://github.com/qooxdoo/qooxdoo.git /opt/qooxdoo-sdk
