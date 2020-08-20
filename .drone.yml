@@ -80,6 +80,7 @@ steps:
 #      - ls -al /opt/rakudo-pkg/
       - ls -al $HOME
       - cd $AGRAMMON_DIR
+      - echo $RAKUDOLIB
       - prove -v -r --exec=raku t/config.t
 
 # - name: store-raku-cache
