@@ -44,6 +44,21 @@ steps:
 #       - /home/agrammon/entrypoint.sh qx package migrate
 #       - /home/agrammon/entrypoint.sh test-frontend
 
+- name: restore-raku-cache
+  image: meltwater/drone-cache:dev
+  pull: always
+  depends_on:
+      - buildDockerImage
+  settings:
+      backend: filesystem
+      restore: true
+      cache_key: opt-rakudo-pkg-share-$( checksum $AGRAMMON_DIR/META6.json)
+      archive_format: gzip
+      mount:
+          - /opt/rakudo-pkg/share
+      volumes:
+          -name: cache
+           path: /tmp/cache
 
 - name: backend
   image: agrammon-runner:latest
@@ -56,9 +71,8 @@ steps:
       AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
       TEST_JOBS: 4
       RAKUDOLIB: lib
-
   commands:
-#      - ls -al $AGRAMMON_DIR
+      - ls -al $AGRAMMON_DIR
       - raku -v
       - zef --debug --/test --deps-only install .
 #      - zef locate YAMLish
@@ -67,19 +81,21 @@ steps:
 #      - ls -al $HOME
       - prove -v -r --exec=raku t/config.t
 
-# - name: store-raku-cache
-#   image: meltwater/drone-cache:dev
-#   pull: never
-#   settings:
-#       backend: filesystem
-#       rebuild: true
-# #      cache_key: pkg +"-"+env.key+"-cpan-{{ checksum \"" +pkg +"/cpanfile\" }}",
-#       archive_format: gzip
-#       mount:
-#           - pkg +"/thirdparty"
-#       volumes":
-#           -name: cache
-#            path: /tmp/cache
+- name: store-raku-cache
+  image: meltwater/drone-cache:dev
+  pull: never
+  depends_on:
+      - backend
+  settings:
+      backend: filesystem
+      rebuild: true
+      cache_key: opt-rakudo-pkg-share-$( checksum $AGRAMMON_DIR/META6.json)
+      archive_format: gzip
+      mount:
+          - /opt/rakudo-pkg/share
+      volumes:
+          -name: cache
+           path: /tmp/cache
 
 # - name: complete
 #   image: alpine
