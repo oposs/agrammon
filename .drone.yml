@@ -61,7 +61,7 @@ steps:
 #             path: /tmp/cache
 
 - name: backend
-  image: agrammon-runner:latest
+  image: agrammon-runner-ubuntu-18.04:latest
   pull: never
   depends_on:
       - buildDockerImage
