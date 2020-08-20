@@ -41,6 +41,7 @@ RUN pwd && \
     zef --deps-only --debug --/test --install-to=site install . && \
     zef --installed list
 
-RUN apt-get install libpq-dev
+#RUN apt-cache search libpq-dev
+#RUN apt-get install --no-install-recommends -yq libpq-dev
 
 #RUN git clone --depth=1 https://github.com/qooxdoo/qooxdoo.git /opt/qooxdoo-sdk
