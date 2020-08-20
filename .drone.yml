@@ -70,17 +70,17 @@ steps:
       AGRAMMON_DIR: /drone/src
       AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
       TEST_JOBS: 4
-      RAKUDOLIB: /opt/rakudo-pkg/share/perl6/site,lib
+      RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
   commands:
-      - ls -al $AGRAMMON_DIR
+#      - ls -al $AGRAMMON_DIR
       - raku -v
 #      - zef --debug --/test --deps-only install .
-#      - zef locate YAMLish
-      - ls -al /
+      - echo $RAKULIB
+      - zef locate YAMLish
+#      - ls -al /
 #      - ls -al /opt/rakudo-pkg/
-      - ls -al $HOME
+#      - ls -al $HOME
       - cd $AGRAMMON_DIR
-      - echo $RAKUDOLIB
       - prove -v -r --exec=raku t/config.t
 
 # - name: store-raku-cache
