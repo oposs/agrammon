@@ -83,8 +83,9 @@ steps:
 #      - ls -al $HOME
 #      - find / |grep libpq.so
       - cd $AGRAMMON_DIR
-      - sleep 15
-      - POSTGRES_HOST_AUTH_METHOD=trust psql -U postgres -d test -h database
+      - sleep 5
+      - echo postgres > $HOME/.pgpass
+      - psql -U postgres -d test -h database
 #      -c 'select now()'
 #      - prove -v -r --exec=raku t/config.t
 #      - ln -s /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/libpq.so
