@@ -84,7 +84,7 @@ steps:
 #      - find / |grep libpq.so
       - cd $AGRAMMON_DIR
       - sleep 5
-      - echo postgres > $HOME/.pgpass
+      - echo '*:*:*:postgres:postgres > $HOME/.pgpass
       - chmod 0600 $HOME/.pgpass
       - psql -U postgres -d test -h database
 #      -c 'select now()'
