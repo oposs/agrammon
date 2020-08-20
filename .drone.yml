@@ -80,6 +80,7 @@ steps:
 #      - ls -al /opt/rakudo-pkg/
       - ls -al $HOME
       - prove -v -r --exec=raku t/config.t
+      - ls -al $HOME
 
 # - name: store-raku-cache
 #   image: meltwater/drone-cache:dev
