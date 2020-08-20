@@ -16,6 +16,7 @@ RUN echo "RAKU_VERSION=$RAKU_VERSION" && \
         git \
         gnupg \
         perl \
+        libpq \
         libssl-dev \
         libxml2 \
         libxml2-dev \
