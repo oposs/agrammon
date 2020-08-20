@@ -86,8 +86,7 @@ steps:
       - sleep 5
       - echo '*:*:*:postgres:postgres' > $HOME/.pgpass
       - chmod 0600 $HOME/.pgpass
-      - psql -U postgres -d test -h database
-#      -c 'select now()'
+      - psql -U postgres -d test -h database -c 'select now()'
 #      - prove -v -r --exec=raku t/config.t
 #      - ln -s /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/libpq.so
 #      - prove -v -r --exec=raku t/datasource-db.t
