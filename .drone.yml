@@ -6,8 +6,8 @@ type: docker
 services:
     - name: dbhostname
       image: postgres
-      ports:
-        - 5432
+#      ports:
+#        - 5432
       environment:
         POSTGRES_USER: postgres
         POSTGRES_DB: agrammon_test
