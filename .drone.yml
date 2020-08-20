@@ -83,7 +83,7 @@ steps:
 #      - find / |grep libpq.so
       - cd $AGRAMMON_DIR
       - sleep 5
-      - psql -h dbhostname -U postgres -c 'select now()'
+      - psql -h dbhostname -U postgres -d agrammon_test -c 'select now()'
 #      - prove -v -r --exec=raku t/config.t
 #      - ln -s /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/libpq.so
 #      - prove -v -r --exec=raku t/datasource-db.t
