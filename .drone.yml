@@ -75,6 +75,7 @@ steps:
   commands:
       - raku -v
       - cd $AGRAMMON_DIR
+      - ls -al $AGRAMMON_DIR/dev
 #      - echo '*:*:*:postgres:postgres' > $HOME/.pgpass
       - chmod 0600 $PGPASSFILE
       - ls -al $AGRAMMON_DIR/dev
