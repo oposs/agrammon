@@ -73,11 +73,11 @@ steps:
       RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
       PGPASSFILE: $AGRAMMON_DIR/dev/pgpass
   commands:
-      - ls -al $AGRAMMON_DIR/dev
       - raku -v
       - cd $AGRAMMON_DIR
 #      - echo '*:*:*:postgres:postgres' > $HOME/.pgpass
-#      - chmod 0600 $HOME/.pgpass
+      - chmod 0600 $PGPASSFILE
+      - ls -al $AGRAMMON_DIR/dev
       - psql -U postgres -d agrammon_test -h database -c 'select now()'
 #      - prove -v -r --exec=raku t/config.t
 #      - prove -v -r --exec=raku t/datasource-db.t
