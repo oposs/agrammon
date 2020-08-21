@@ -6,8 +6,6 @@ type: docker
 services:
     - name: dbhost
       image: postgres
-#      ports:
-#        - 5432
       environment:
         POSTGRES_USER: postgres
         POSTGRES_DB: agrammon_test
@@ -17,7 +15,6 @@ volumes:
     - name: dockersock
       host:
           path: /var/run/docker.sock
-
 
 steps:
 - name: buildDockerImage
@@ -32,6 +29,26 @@ steps:
     - docker build -t $IMG:$SHA -f dev/Dockerfile-ubuntu:18.04 dev
     - docker tag $IMG:$SHA $IMG:latest
 
+- name: backend
+  image: agrammon-runner-ubuntu-18.04:latest
+  pull: never
+  depends_on:
+      - buildDockerImage
+  privileged: true
+  environment:
+      AGRAMMON_DIR: /drone/src
+      AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
+      TEST_JOBS: 4
+      RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
+      PGPASSFILE: /drone/src/dev/pgpass
+  commands:
+#      - raku -v
+      - cd $AGRAMMON_DIR
+#      - chmod 0600 $PGPASSFILE
+#      - psql -U postgres -d agrammon_test -h dbhost -c 'select now()'
+      - prove -v -r --exec=raku t
+
+### caching and frontend tests not configured yet
 # - name: frontend
 #   image: oposs/agrammon-runner:latest
 #   privileged: true
@@ -58,28 +75,6 @@ steps:
 #       volumes:
 #           - name: cache
 #             path: /tmp/cache
-
-- name: backend
-  image: agrammon-runner-ubuntu-18.04:latest
-  pull: never
-  depends_on:
-      - buildDockerImage
-  privileged: true
-  environment:
-      AGRAMMON_DIR: /drone/src
-      AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
-      TEST_JOBS: 4
-      RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
-      PGPASSFILE: /drone/src/dev/pgpass
-  commands:
-      - raku -v
-      - cd $AGRAMMON_DIR
-#      - chmod 0600 $PGPASSFILE
-#      - psql -U postgres -d agrammon_test -h dbhost -c 'select now()'
-#      - prove -v -r --exec=raku t/config.t
-#      - prove -v -r --exec=raku t/datasource-db.t
-      - prove -v -r --exec=raku t
-#      - env
 
 # - name: store-raku-cache
 #   image: meltwater/drone-cache:dev
