@@ -71,12 +71,11 @@ steps:
       AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
       TEST_JOBS: 4
       RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
-      PGPASSFILE: $AGRAMMON_DIR/dev/pgpass
+      PGPASSFILE: /drone/src/dev/pgpass
   commands:
       - raku -v
       - cd $AGRAMMON_DIR
       - ls -al $AGRAMMON_DIR/dev
-#      - echo '*:*:*:postgres:postgres' > $HOME/.pgpass
       - echo $PGPASSFILE
       - chmod 0600 $PGPASSFILE
       - ls -al $AGRAMMON_DIR/dev
