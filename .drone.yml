@@ -4,7 +4,7 @@ name: agrammon
 type: docker
 
 services:
-    - name: database
+    - name: dbhost
       image: postgres
 #      ports:
 #        - 5432
@@ -75,11 +75,11 @@ steps:
       - raku -v
       - cd $AGRAMMON_DIR
       - chmod 0600 $PGPASSFILE
-      - psql -U postgres -d agrammon_test -h database -c 'select now()'
-#      - prove -v -r --exec=raku t/config.t
-#      - prove -v -r --exec=raku t/datasource-db.t
+      - psql -U postgres -d agrammon_test -h dbhost -c 'select now()'
+      - prove -v -r --exec=raku t/config.t
+      - prove -v -r --exec=raku t/datasource-db.t
 #      - prove -v -r --exec=raku t
-      - env
+#      - env
 
 # - name: store-raku-cache
 #   image: meltwater/drone-cache:dev

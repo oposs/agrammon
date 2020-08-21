@@ -52,12 +52,20 @@ if $pg-file.IO.e {
 }
 
 my $conninfo;
-if %*ENV<GITHUB_ACTIONS> {
+if %*ENV<DRONE_REPO> {
+    my $db-user     = 'postgres';
+    my $db-password = 'postgres';
+    my $db-database = 'agrammon_test';
+    my $db-host     = 'dbhost';
+
+    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
+}
+elsif %*ENV<GITHUB_ACTIONS> {
     my $db-user     = 'postgres';
     my $db-password = 'postgres';
     my $db-database = 'agrammon_test';
     my $db-host     = 'localhost';
-    
+
     $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
 }
 else {
@@ -282,7 +290,7 @@ sub prepare-test-db-schema($db, $user) {
         data_val        TEXT,                                    -- Value of Agrammon variable
         data_instance_order integer,
         data_comment  TEXT
-    )                
+    )
     STATEMENT
 
     $db.query(q:to/STATEMENT/);
