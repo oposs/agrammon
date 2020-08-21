@@ -14,7 +14,7 @@ my $db-host     = 'localhost';
 my $db-port     = '5432';
 my $db-user     = 'postgres';
 my $db-database = 'agrammon_test';
-my $db-password = '';
+my $db-password = 'postgres';
 my $ag-user     = 'test@agrammon.ch';
 my $ag-dataset  = 'Agrammon6Testing';
 
@@ -47,7 +47,7 @@ if $pg-file.IO.e {
         $ag-dataset = ~$0; # force to string
     }
 #    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
-    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=XXX, dbdatabase=$db-database";
+    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=****, dbdatabase=$db-database";
     diag "ag-user=$ag-user, ag-dataset=$ag-dataset";
 }
 
