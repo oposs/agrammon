@@ -1,0 +1,47 @@
+FROM ubuntu:18.04
+ARG raku_version
+
+ENV RAKU_VERSION=$raku_version
+
+RUN echo "RAKU_VERSION=$RAKU_VERSION" && \
+    export DEBIAN_FRONTEND=noninteractive && \
+    sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get upgrade -yq && \
+    apt-get install --no-install-recommends -yq \
+        apt-utils \
+        build-essential \
+        ca-certificates \
+       	curl \
+        git \
+        gnupg \
+        perl \
+        libpq-dev \
+        libssl-dev \
+        libxml2 \
+        libxml2-dev \
+        lsb-release \
+        && \
+    curl https://dl-ssl.google.com/linux/linux_signing_key.pub | \
+         apt-key add - && \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61 && \
+    echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" | tee -a /etc/apt/sources.list.d/rakudo-pkg.list && \
+    apt-get update && \
+    apt-get install --no-install-recommends -yq rakudo-pkg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV PATH $PATH:/opt/rakudo-pkg/bin:/opt/rakudo-pkg/share/perl6/site/bin
+
+COPY META6.json /tmp/
+
+RUN pwd && \
+    ls -al && \
+    cd /tmp && \
+    zef --deps-only --debug --/test --install-to=site install . && \
+    zef --installed list
+
+RUN apt-get update &&\
+    apt-get install --no-install-recommends -yq postgresql-client
+
+#RUN git clone --depth=1 https://github.com/qooxdoo/qooxdoo.git /opt/qooxdoo-sdk

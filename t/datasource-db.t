@@ -14,7 +14,7 @@ my $db-host     = 'localhost';
 my $db-port     = '5432';
 my $db-user     = 'postgres';
 my $db-database = 'agrammon_test';
-my $db-password = '';
+my $db-password = 'postgres';
 my $ag-user     = 'test@agrammon.ch';
 my $ag-dataset  = 'Agrammon6Testing';
 
@@ -47,17 +47,25 @@ if $pg-file.IO.e {
         $ag-dataset = ~$0; # force to string
     }
 #    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
-    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=XXX, dbdatabase=$db-database";
+    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=****, dbdatabase=$db-database";
     diag "ag-user=$ag-user, ag-dataset=$ag-dataset";
 }
 
 my $conninfo;
-if %*ENV<GITHUB_ACTIONS> {
+if %*ENV<DRONE_REPO> {
+    my $db-user     = 'postgres';
+    my $db-password = 'postgres';
+    my $db-database = 'agrammon_test';
+    my $db-host     = 'dbhost';
+
+    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password";
+}
+elsif %*ENV<GITHUB_ACTIONS> {
     my $db-user     = 'postgres';
     my $db-password = 'postgres';
     my $db-database = 'agrammon_test';
     my $db-host     = 'localhost';
-    
+
     $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
 }
 else {
@@ -282,7 +290,7 @@ sub prepare-test-db-schema($db, $user) {
         data_val        TEXT,                                    -- Value of Agrammon variable
         data_instance_order integer,
         data_comment  TEXT
-    )                
+    )
     STATEMENT
 
     $db.query(q:to/STATEMENT/);

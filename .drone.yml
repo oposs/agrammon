@@ -1,0 +1,102 @@
+---
+kind: pipeline
+name: agrammon
+type: docker
+
+services:
+    - name: dbhost
+      image: postgres
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_DB: agrammon_test
+        POSTGRES_PASSWORD: postgres
+
+volumes:
+    - name: dockersock
+      host:
+          path: /var/run/docker.sock
+
+steps:
+- name: buildDockerImage
+  image: docker
+  volumes:
+    - name: dockersock
+      path: /var/run/docker.sock
+  commands:
+    - IMG=agrammon-runner-ubuntu-18.04
+    - SHA=$( cat dev/Dockerfile-ubuntu:18.04 dev/META6.json| sha1sum |awk '{print $1}')
+    - test "$(docker images $IMG:$SHA -q)" = "" || exit 0
+    - docker build -t $IMG:$SHA -f dev/Dockerfile-ubuntu:18.04 dev
+    - docker tag $IMG:$SHA $IMG:latest
+
+- name: backend
+  image: agrammon-runner-ubuntu-18.04:latest
+  pull: never
+  depends_on:
+      - buildDockerImage
+  privileged: true
+  environment:
+      AGRAMMON_DIR: /drone/src
+      AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
+      TEST_JOBS: 4
+      RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
+      PGPASSFILE: /drone/src/dev/pgpass
+  commands:
+#      - raku -v
+      - cd $AGRAMMON_DIR
+#      - chmod 0600 $PGPASSFILE
+#      - psql -U postgres -d agrammon_test -h dbhost -c 'select now()'
+      - prove -v -r --exec=raku t
+
+### caching and frontend tests not configured yet
+# - name: frontend
+#   image: oposs/agrammon-runner:latest
+#   privileged: true
+#   commands:
+#       - ln -s /home/agrammon/node_modules /drone/src/frontend/
+#       - chown -R agrammon:agrammon /drone/src
+#       - export AGRAMMON_DIR=/drone/src
+#       - export AGRAMMON_CONFIG=/drone/src/t/test-data/etc-frontend-tests/agrammon.cfg
+#       - /home/agrammon/entrypoint.sh qx package migrate
+#       - /home/agrammon/entrypoint.sh test-frontend
+
+# - name: restore-raku-cache
+#   image: meltwater/drone-cache:dev
+#   pull: always
+#   depends_on:
+#       - buildDockerImage
+#   settings:
+#       backend: filesystem
+#       restore: true
+#       cache_key: opt-rakudo-pkg-share-$( checksum $AGRAMMON_DIR/META6.json)
+#       archive_format: gzip
+#       mount:
+#           - /opt/rakudo-pkg/share
+#       volumes:
+#           - name: cache
+#             path: /tmp/cache
+
+# - name: store-raku-cache
+#   image: meltwater/drone-cache:dev
+#   pull: never
+#   depends_on:
+#       - backend
+#   settings:
+#       backend: filesystem
+#       rebuild: true
+#       cache_key: opt-rakudo-pkg-share-$( checksum $AGRAMMON_DIR/META6.json)
+#       archive_format: gzip
+#       mount:
+#           - /opt/rakudo-pkg/share
+#       volumes:
+#           - name: cache
+#             path: /tmp/cache
+
+# - name: complete
+#   image: alpine
+#   # depends_on: [ frontend, backend ]
+#   depends_on: [ backend ]
+#   commands:
+#     - echo "ALL DONE."
+#
+# END
