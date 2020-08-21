@@ -77,6 +77,7 @@ steps:
       - cd $AGRAMMON_DIR
       - ls -al $AGRAMMON_DIR/dev
 #      - echo '*:*:*:postgres:postgres' > $HOME/.pgpass
+      - echo $PGPASSFILE
       - chmod 0600 $PGPASSFILE
       - ls -al $AGRAMMON_DIR/dev
       - psql -U postgres -d agrammon_test -h database -c 'select now()'
