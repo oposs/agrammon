@@ -58,7 +58,7 @@ if %*ENV<DRONE_REPO> {
     my $db-database = 'agrammon_test';
     my $db-host     = 'dbhost';
 
-    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
+    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password";
 }
 elsif %*ENV<GITHUB_ACTIONS> {
     my $db-user     = 'postgres';
