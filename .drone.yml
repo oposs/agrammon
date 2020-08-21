@@ -12,6 +12,7 @@ services:
         POSTGRES_USER: postgres
         POSTGRES_DB: agrammon_test
         POSTGRES_PASSWORD: postgres
+        PGPASSFILE: /drone/src/dev/pgpass
 
 volumes:
     - name: dockersock
