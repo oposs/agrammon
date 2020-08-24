@@ -6,7 +6,7 @@ use Test;
 plan 5;
 
 subtest "Helper function" => {
-    
+
     my $path = $*PROGRAM.parent.add('test-data/');
     given 'Livestock::DairyCow::Excretion::CMilk' -> $module-name {
 	ok my $model = Agrammon::Model.new(:$path);
@@ -32,7 +32,7 @@ subtest "loadModule()" => {
         ok my $model = Agrammon::Model.new(:$path);
         throws-like { $model.load-module($module-name) },
                       X::Agrammon::Model::FileNotReadable,
-                      "Cannot load module $module-name from read-only file";
+                      "Cannot load module $module-name from unreadable file";
         chmod 0o644, $path ~ $module-name ~ '.nhd';
     }
 
@@ -63,7 +63,7 @@ subtest "loadModule()" => {
 }
 
 
-subtest 'load()' => { 
+subtest 'load()' => {
 
     subtest 'Simple model loading' => {
         my $path = $*PROGRAM.parent.add('test-data/Models/test_simple/');
@@ -120,7 +120,7 @@ subtest 'load()' => {
             is-deeply @tax, @expected,'Load order as expected';
         }
     }
-    
+
     subtest 'hr-inclNOx model full loading' => {
         diag "Testing hr-inclNOx full";
         my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
