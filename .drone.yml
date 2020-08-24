@@ -44,6 +44,7 @@ steps:
   commands:
 #      - raku -v
       - cd $AGRAMMON_DIR
+      - chmod 0600 $PGPASSFILE
       - psql -U postgres -h dbhost -c "CREATE USER agrammon PASSWORD 'agrammonATwork'"
       - psql -U postgres -h dbhost --file=/drone/src/t/test-data/agrammon_test.dump.sql
       - prove -v -r --exec=raku t
