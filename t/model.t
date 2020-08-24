@@ -27,7 +27,11 @@ subtest "loadModule()" => {
         is $module.input[0].name, 'milk_yield', "Found input milk_yield";
     }
 
-    if not %*ENV<DRONE_REPO> {
+    if %*ENV<DRONE_REPO> {
+        todo "Check unreadable file on Drone", 1;
+        flunk('chmod does not work');
+    }
+    else {
         given 'CMilk' -> $module-name {
             chmod 0, $path ~ $module-name ~ '.nhd';
             ok my $model = Agrammon::Model.new(:$path);
