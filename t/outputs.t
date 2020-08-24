@@ -74,23 +74,26 @@ subtest 'Multi-instance outputs' => {
         module => 'Visible::From::All',
         name => 'sym';
 
-    is-deeply $outputs.get-outputs-hash(),
-        {
-            'Visible::From::All' => { sym => 99 },
-             'Multi::Instance' => [
-                 'Instance 1' => {
-                     'Multi::Instance::Foo' => { bar => 10 },
-                     'Multi::Instance::Bar' => { baz => 20 },
-                     'Multi::Instance' => { 'wat' => 30 }
-                 },
-                 'Instance 2' => {
-                     'Multi::Instance::Foo' => { bar => 50 },
-                     'Multi::Instance::Bar' => { baz => 60 },
-                     'Multi::Instance' => { 'wat' => 70 }
-                 }
-             ]
-        },
-        'Getting multi-instance outputs works';
+    given $outputs.get-outputs-hash() -> %outputs {
+        %outputs<Multi::Instance> = [%outputs<Multi::Instance>.sort(*.key)];
+        is-deeply %outputs,
+            {
+                'Visible::From::All' => { sym => 99 },
+                 'Multi::Instance' => [
+                     'Instance 1' => {
+                         'Multi::Instance::Foo' => { bar => 10 },
+                         'Multi::Instance::Bar' => { baz => 20 },
+                         'Multi::Instance' => { 'wat' => 30 }
+                     },
+                     'Instance 2' => {
+                         'Multi::Instance::Foo' => { bar => 50 },
+                         'Multi::Instance::Bar' => { baz => 60 },
+                         'Multi::Instance' => { 'wat' => 70 }
+                     }
+                 ]
+            },
+            'Getting multi-instance outputs works';
+    }
 }
 
 done-testing;
