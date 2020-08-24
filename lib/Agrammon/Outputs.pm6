@@ -139,6 +139,7 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
             .return with %!instances{$module.substr(0, $start)};
             $start = $module.rindex('::', $start - 1);
         }
+        Nil
     }
 
     method get-outputs-hash() {
