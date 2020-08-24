@@ -28,8 +28,8 @@ subtest "loadModule()" => {
     }
 
     if %*ENV<DRONE_REPO> {
-        todo "Check unreadable file on Drone", 1;
-        flunk('chmod does not work');
+        todo "chmod does not work on Drone", 1;
+        flunk("Cannot load module $module-name from unreadable file");
     }
     else {
         given 'CMilk' -> $module-name {
