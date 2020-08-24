@@ -6,7 +6,7 @@ use Test;
 plan 5;
 
 subtest "Helper function" => {
-    
+
     my $path = $*PROGRAM.parent.add('test-data/');
     given 'Livestock::DairyCow::Excretion::CMilk' -> $module-name {
 	ok my $model = Agrammon::Model.new(:$path);
@@ -28,12 +28,18 @@ subtest "loadModule()" => {
     }
 
     given 'CMilk' -> $module-name {
-        chmod 0, $path ~ $module-name ~ '.nhd';
-        ok my $model = Agrammon::Model.new(:$path);
-        throws-like { $model.load-module($module-name) },
-                      X::Agrammon::Model::FileNotReadable,
-                      "Cannot load module $module-name from read-only file";
-        chmod 0o644, $path ~ $module-name ~ '.nhd';
+        if %*ENV<DRONE_REPO> {
+            todo "chmod does not work on Drone", 1;
+            flunk("Cannot load module $module-name from unreadable file");
+        }
+        else {
+            chmod 0, $path ~ $module-name ~ '.nhd';
+            ok my $model = Agrammon::Model.new(:$path);
+            throws-like { $model.load-module($module-name) },
+                          X::Agrammon::Model::FileNotReadable,
+                          "Cannot load module $module-name from unreadable file";
+            chmod 0o644, $path ~ $module-name ~ '.nhd';
+        }
     }
 
     given 'CMilk_notExists' -> $module-name {
@@ -63,7 +69,7 @@ subtest "loadModule()" => {
 }
 
 
-subtest 'load()' => { 
+subtest 'load()' => {
 
     subtest 'Simple model loading' => {
         my $path = $*PROGRAM.parent.add('test-data/Models/test_simple/');
@@ -120,7 +126,7 @@ subtest 'load()' => {
             is-deeply @tax, @expected,'Load order as expected';
         }
     }
-    
+
     subtest 'hr-inclNOx model full loading' => {
         diag "Testing hr-inclNOx full";
         my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');

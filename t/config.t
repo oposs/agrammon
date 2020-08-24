@@ -12,10 +12,10 @@ my %config-expected = (
         mojo_secret => "MyCookieSecret",
     },
     Database => {
-        name     => 'agrammon_dev',
-        host     => 'erika.oetiker.ch',
+        name     => 'agrammon_test',
+        host     => 'localhost',
         user     => 'agrammon',
-        password => "agrammon@work",
+        password => "agrammonATwork",
     },
     GUI => {
         variant => "Single",

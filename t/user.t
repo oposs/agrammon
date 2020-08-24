@@ -19,12 +19,12 @@ my $cfg = Agrammon::Config.new;
 ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my $conninfo;
-if %*ENV<GITHUB_ACTIONS> {
+if %*ENV<DRONE_REPO> {
     my $db-user     = 'postgres';
     my $db-password = 'postgres';
     my $db-database = 'agrammon_test';
-    my $db-host     = 'localhost';
-    
+    my $db-host     = 'dbhost';
+
     $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
 }
 else {
@@ -113,7 +113,7 @@ sub prepare-test-db {
         $sth.execute(1, 'user');
         $sth.execute(2, 'support');
     }
-    
+
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS pers (
         pers_id         SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
@@ -121,7 +121,7 @@ sub prepare-test-db {
         pers_first      TEXT NOT NULL CHECK (pers_first != ''),  -- First Name of Person
         pers_last       TEXT NOT NULL CHECK (pers_last != ''),   -- Last Name of Person
         pers_password   TEXT NOT NULL,                           -- Password
-        pers_org        TEXT NOT NULL,                           -- Organisation  
+        pers_org        TEXT NOT NULL,                           -- Organisation
         pers_last_login TIMESTAMP WITHOUT TIME ZONE,
         pers_created    TIMESTAMP WITHOUT TIME ZONE,
         pers_role       INTEGER NOT NULL REFERENCES role(role_id) DEFAULT 1

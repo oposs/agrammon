@@ -37,15 +37,17 @@ steps:
   privileged: true
   environment:
       AGRAMMON_DIR: /drone/src
-      AGRAMMON_CONFIG: /drone/src/t/test-data/etc-backend-tests/agrammon.cfg
-      TEST_JOBS: 4
-      RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
+      AGRAMMON_CFG: /drone/src/t/test-data/agrammon.cfg.drone.yaml
       PGPASSFILE: /drone/src/dev/pgpass
+      RAKULIB: /opt/rakudo-pkg/share/perl6/site,lib
   commands:
-#      - raku -v
+      - raku -v
       - cd $AGRAMMON_DIR
-#      - chmod 0600 $PGPASSFILE
-#      - psql -U postgres -d agrammon_test -h dbhost -c 'select now()'
+      - chmod 0600 $PGPASSFILE
+      - psql -U postgres -h dbhost -c "CREATE USER agrammon PASSWORD 'agrammonATwork'"  > /dev/null
+      - psql -U postgres -h dbhost -c "CREATE GROUP agrammon_user USER agrammon"        > /dev/null
+      - psql -U postgres -h dbhost -c "CREATE EXTENSION pgcrypto" agrammon_test         > /dev/null
+      - psql -U postgres -h dbhost --file=/drone/src/t/test-data/agrammon_test.dump.sql agrammon_test > /dev/null
       - prove -v -r --exec=raku t
 
 ### caching and frontend tests not configured yet
@@ -56,7 +58,7 @@ steps:
 #       - ln -s /home/agrammon/node_modules /drone/src/frontend/
 #       - chown -R agrammon:agrammon /drone/src
 #       - export AGRAMMON_DIR=/drone/src
-#       - export AGRAMMON_CONFIG=/drone/src/t/test-data/etc-frontend-tests/agrammon.cfg
+#       - export AGRAMMON_CONFIG=/drone/src/t/test-data/agrammon.cfg.drone.yaml
 #       - /home/agrammon/entrypoint.sh qx package migrate
 #       - /home/agrammon/entrypoint.sh test-frontend
 
