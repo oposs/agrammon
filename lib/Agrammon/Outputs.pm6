@@ -106,14 +106,12 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
     }
 
     method !bad-output(Str $module, Str $name) {
-        if %!outputs{$module}{$name}:exists {
-            return %!outputs{$module}{$name};
-        }
-        orwith self.find-instances($module) {
-            .get-output($module, $name) with .values.first; # Will throw if symbol fully unknown
+        with self.find-instances($module) {
             die X::Agrammon::Outputs::IsMultiInstance.new(:$module, :$name);
         }
-        die X::Agrammon::Outputs::Unset.new(:$module, :$name);
+        else {
+            die X::Agrammon::Outputs::Unset.new(:$module, :$name);
+        }
     }
 
     method get-sum(Str $module, Str $name) {
