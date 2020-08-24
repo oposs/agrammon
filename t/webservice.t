@@ -17,11 +17,6 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
 my $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
 my $username = 'fritz.zaucker@oetiker.ch';
 
-if %*ENV<GITHUB_ACTIONS> {
-    skip-rest('Not set up for GITHUB ACTIONS yet');
-    exit;
-}
-
 my $*AGRAMMON-DB-CONNECTION;
 my ($ws, $user);
 subtest "Setup" => {
@@ -78,7 +73,7 @@ subtest "get-input-variables()" => {
                 if $var ~~ /'::dairy_cows'/ {
                     dd $input;
                     subtest "$var" => {
-# TODO: needs fixing                        
+# TODO: needs fixing
 #                        is $input<branch>, 'true', 'branch is true';
                         is-deeply $input<defaults>, %( calc => Any, gui => Any);
                         is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
