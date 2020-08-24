@@ -5,8 +5,8 @@ General:
     mojo_secret: MyCookieSecret
 
 Database:
-    name:     agrammon_test
-    host:     localhost
+    name:     agrammon_ci
+    host:     dbhost
     user:     agrammon
     password: agrammonATwork
 
