@@ -1,0 +1,652 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-04-22
+taxonomy = Storage::SolidManure::Solid
+
++short
+
+ Computes the annual NH3 emission from solid manure storages.
+	
++description 
+
+ This process calculates the annual NH3 emission from solid manure
+ storage, considering a mean emission rate on TAN flux in solid storage.
+
+
+*** input ***
+
++share_applied_direct_cattle_other_manure
+  type = percent
+  ++labels 
+    en = Share of cattle manure applied to land without storage
+    de = Anteil von direkt ohne Lagerung ausgebrachtem Mist von Rindvieh
+    fr = Part du fumier de bovins épandu directement sans stockage
+  ++units 
+    en = % 
+  ++description
+  Share of cattles, equides and small ruminants manure applied to land without storage.
+  ++help
+    +++en
+       <p>Share of cattles, equides and small ruminants manure applied to land without storage</p>
+       <p>Standard value for Switzerland: 25 % </p>
+    +++de
+       <p>
+         Anteil von direkt ohne Lagerung ausgebrachtem Rindermist.
+         Hier sind eingeschlossen: Pferdemist und Mist von Kleinwiederkäuern. 
+       </p>
+       <p>Vorschlag für Standardwert: 25%</p>
+    +++fr
+       <p>Part du fumier de bovins, chevaux, autres équides et petits ruminants  épandu directement sans stockage </p>
+       <p>Proposition de valeur standard: 25% </p>
+
++share_covered_basin_cattle_manure
+  type  = percent
+  ++labels 
+    en = Share of cattle manure covered during storage
+    de = Anteil von gedeckt gelagertem Mist von Rindvieh
+    fr = Part du fumier de bovins stocké qui est couvert
+  ++units 
+    en = % 
+  ++description
+    Share of droppings or mist from cattle stored in covered basin.
+  ++help
+    +++en
+
+      <p>Covered storage means a solid cover (e.g. a closed store) or
+      another cover such as a plastic sheet.</p>
+      <p>Standard value for Switzerland: 0%</p>
+    +++de
+       <p>Hier sind eingeschlossen: Pferdemist und Mist von Kleinwiederkäuern </p>
+       <p>
+         Abdeckungen, welche den Luftaustausch zwischen der Oberfläche des Mistlagers 
+         und der Umgebungsluft unterbinden, wie z.B. ein geschlossener Behälter oder 
+         eine andere Abdeckung wie eine reissfeste Folie.
+       </p>
+       <p>Vorschlag für Standardwert: 0%</p>
+    +++fr
+       <p>Ici, le fumier produit par les chevaux et autre équidés et les petits ruminants est inclu.</p>
+       <p>Cette part comprend le fumier stocké sous une couverture en dur, dans le sens d'un contenant fermé, ou sous un autre type de couverture, p.ex. une bâche.</p> 
+       <p>Proposition de valeur standard: 0% </p>
+
+
+  
++free_correction_factor_cattle_manure
+  models = SHL
+  type = float
+  default_calc = 0
+  default_gui = 0
+  validator = between(-100,100);
+  ++labels 
+    en = Additional emission mitigation measure for cattle manure storage
+    de = Zusätzliche emissionsmindernde Massnahme Mist Rindvieh (siehe Spalte Hilfe)
+    fr = Mesure supplémentaire limitant les émissions dues au stockage du fumier de bovins (cf. aide)
+  ++units 
+    en = %
+  ++description
+    Factor to define free ?
+  ++help
+    +++en
+        <p>The emission reduction of a new technique can be entered
+           (e.g. a new type of cover). The number entered corresponds
+           to the emission reduction in percent (e.g. 30%; the
+           emission from the manure storage decreases by 30%). It is
+           recommended to mention the selected measure in the column
+           comment and to justify the number selected for emission
+           reduction.</p>
+        <p>This option mainly targets users who predict emissions and
+        are obliged to consider the effects of new and actually
+        unknown techniques.</p>
+    +++de
+	<p>
+           Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt 
+           werden (z.B. ein neuer Typ Abdeckung). Die eingegebene Zahl entspricht 
+ 	   der  Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem 
+	   Mistlager nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der 
+	   Spalte Kommentar aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
+        </p>
+	<p>
+	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+           zur Emissionsminderung berücksichtigen müssen. 
+        <p>
+	<p>Vorschlag für Standardwert: 0 %.</p>
+    +++fr
+       <p>
+	  Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les 
+	  émissions (p.ex. un nouveau type de couverture). Le chiffre introduit correspond 
+	  à la réduction d'émission en pourcent (p.ex. 30%: l'émission provenant du stock 
+	  de fumier diminue de 30%). Il est recommandé de mentionner la mesure choisie dans 
+	  la colonne ‘Commentaire' et de justifier le taux de réduction choisi.
+       </p>
+       <p>
+          Cette fonction s'adresse principalement aux utilisateurs/trices qui font des 
+	  pronostiques d'émissions et qui doivent prendre en compte l'effet de nouvelles 
+	  technologies destinées à limiter les émissions et encore méconnues actuellement.
+       </p>
+       <p>Proposition valeur standard: 0 %.</p>
+
++share_applied_direct_pig_manure
+  type = percent
+  ++labels 
+    en = Share of pig manure applied to land without storage
+    de = Anteil von direkt ohne Lagerung ausgebrachtem Schweinemist
+    fr = Part du fumier de porcs épandu directement sans stockage
+  ++units 
+    en = % 
+  ++description
+  Share of pig manure applied to land without storage.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: 0%</p>
+    +++de
+       <p>Vorschlag für Standardwert: 0%</p>
+    +++fr
+       <p>Proposition de valeur standard: 0% </p>
+
+
++share_covered_basin_pig_manure
+  type  = percent
+  ++labels 
+    en = Share of pig manure covered during storage
+    de = Anteil von gedeckt gelagertem Schweinemist
+    fr = Part du fumier de porcs stocké qui est couvert
+  ++units 
+    en = % 
+  ++description
+    Share of droppings or mist from pigs stored in covered basin.
+  ++help
+    +++en
+      <p>Covered storage means a solid cover (e.g. a closed store) or
+         another cover such as a plastic sheet.
+      <p>Standard value for Switzerland: 0%</p>
+    +++de
+       <p>
+         Abdeckungen, welche den Luftaustausch zwischen der Oberfläche des 
+         Mistlagers und der Umgebungsluft unterbinden, wie z.B. ein geschlossener 
+         Behälter oder eine andere Abdeckung wie eine reissfeste Folie.
+       </p>
+       <p>Vorschlag für Standardwert: 0%</p>
+    +++fr
+       <p>Cette part comprend le fumier stocké sous une couverture en dur, dans le sens d'un contenant fermé, ou sous un autre type de couverture, p.ex. une bâche. </p>
+       <p>Proposition de valeur standard: 0% </p>
+
++free_correction_factor_pig_manure
+  models = SHL
+  type = float
+  default_calc = 0
+  default_gui = 0
+  validator = between(-100,100);
+  ++labels 
+    en = Additional emission mitigation measure for pig manure storage
+    de = Zusätzliche emissionsmindernde Massnahme Schweinemist (siehe Spalte Hilfe)
+    fr = Mesure supplémentaire limitant les émissions dues au stockage du fumier de porcs (cf. aide)
+  ++units 
+    en = %
+  ++description
+    Factor to define free ?
+  ++help
+    +++en
+       <p>The emission reduction of a new technique can be entered (e.g. a new type of cover). The number entered corresponds to the emission reduction in percent (e.g. 30%; the emission from the manure storage decreases by 30%). It is recommended to mention the selected measure in the column comment and to justify the  number selected for emission reduction.</p>
+       <p>
+This option mainly targets users who predict emissions and are obliged to consider the effects of new and actually unknown techniques.</p>
+    +++de
+	<p>
+           Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt 
+           werden (z.B. ein neuer Typ Abdeckung). Die eingegebene Zahl entspricht 
+ 	   der  Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem 
+	   Mistlager nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der 
+	   Spalte Kommentar aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
+        </p>
+	<p>
+	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+           zur Emissionsminderung berücksichtigen müssen. 
+        <p>
+	<p>Vorschlag für Standardwert: 0 %.</p>
+    +++fr
+       <p>
+	  Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les 
+	  émissions (p.ex. un nouveau type de couverture). Le chiffre introduit correspond 
+	  à la réduction d'émission en pourcent (p.ex. 30%: l'émission provenant du stock 
+	  de fumier diminue de 30%). Il est recommandé de mentionner la mesure choisie dans 
+	  la colonne ‘Commentaire' et de justifier le taux de réduction choisi.
+       </p>
+       <p>
+          Cette fonction s'adresse principalement aux utilisateurs/trices qui font des 
+	  pronostiques d'émissions et qui doivent prendre en compte l'effet de nouvelles 
+	  technologies destinées à limiter les émissions et encore méconnues actuellement.
+       </p>
+       <p>Proposition valeur standard: 0 %.</p>
+
+*** technical ***
+
++er_tan_pigs
+  value = 0.5
+  ++units 
+    en = -
+  ++description 
+  The value has been derived from the Eager workshop, January 2008: (additional explanation following)
+
++er_tan_cattle_other
+  unit = -
+  value = 0.3 
+  ++units 
+    en = -
+  ++description 
+  The value has been derived from the Eager workshop, January 2008: (additional explanation following)
+
++immobilizationrate_solid
+  value = 0.4	      
+  ++units 
+    en = -
+  ++description
+    A netto immobilization of 40% from NSol/TAN to Norg is assuemd, according to the GAS_EM Model
+  
++c_covered_basin_cattle_manure
+  value = 0.5
+  ++units  
+    en = -
+  ++description
+    Reduction of emission rate for manure of cattle stored in covered basin Chadwick (2005); Sagoo et al. (2006)
+    (Defra WA 716, 1999).
+  
++c_covered_basin_pig_manure
+  value = 0.75
+  ++units  
+    en = -
+  ++description
+    Reduction of emission rate for manure of pigs stored in covered basin, Sagoo et al. (2006, 2007).
+  
+
+*** external ***
+
++::Livestock
+
+*** output ***
+
++n_check_cattle
+  print = 7
+  ++units
+    en = -
+  ++description
+   Check shares of directly applied and covered storage of cattle manure
+  ++formula
+        if (  (In(share_applied_direct_cattle_other_manure) + In(share_covered_basin_cattle_manure)) > 100  ) {
+        writeLog({en=>"The sum of share of cattle manure applied to land without storage and share of cattle manure covered during storage must be equal or lower than 100 %",
+                  de=>"Die Summe von Anteil von direkt ohne Lagerung ausgebrachtem Mist von Rindvieh und Anteil von gedeckt gelagertem Mist von Rindvieh darf maximal 100 % betragen",
+                  fr=>"La somme de part du fumier de bovins épandu directement sans stockage et de part du fumier de bovins stocké qui est couvert ne peut être supérieur à 100 %"
+                 });
+    }
+    return;
+
++n_check_pigs
+  print = 7
+  ++units
+    en = -
+  ++description
+   Check shares of directly applied and covered storage of pig manure
+  ++formula
+        if (  (In(share_applied_direct_pig_manure) + In(share_covered_basin_pig_manure)) > 100  ) {
+        writeLog({en=>"The sum of share of cattle manure applied to land without storage and share of cattle manure covered during storage must be equal or lower than 100 %",
+                  de=>"Die Summe von Anteil von direkt ohne Lagerung ausgebrachtem Schweinemist und Anteil von gedeckt gelagertem Schweinemist darf maximal 100 % betragen",
+                  fr=>"La somme de part du fumier de porcs épandu directement sans stockage et de part du fumier de porcs stocké qui est couvert ne peut être supérieur à 100 %"
+                 });
+    }
+    return;
+
++c_free_factor_storage_solidmanure_cattle
+  print = 10
+  ++units 
+    en = -
+  ++description
+    Free reduction of the Emission rate for the Yard Storage, cattle manure.
+  ++formula
+  if(In(free_correction_factor_cattle_manure)//0 != 0) {
+      writeLog({en=>"You have entered an additional emission mitigation measure for a storage of cattle solid manure of"
+                    . In(free_correction_factor_cattle_manure) 
+                    . "\%!\n", 
+                de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für das Mistlager der Rinder von"
+                    . In(free_correction_factor_cattle_manure) 
+                    . "\% eingegeben!\n", 
+                fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions du "
+                    . "stock de fumier des porcs de " . In(free_correction_factor_cattle_manure) 
+                    . "\%.\n" 
+                });
+	    return 1 - In(free_correction_factor_cattle_manure)/100;
+     
+  } else {
+    return 1;
+  } 
+
+
+
++c_free_factor_storage_solidmanure_pig
+  print = 10
+  ++units 
+    en = -
+  ++description
+    Free reduction of the Emission rate for Storage Pig manure.
+  ++formula
+  if(In(free_correction_factor_pig_manure)//0 != 0) {
+      writeLog({en=>"You have entered an additional emission mitigation measure for a storage of pigs solid manure of"
+                    . In(free_correction_factor_cattle_manure) 
+                    . "\%!\n", 
+                de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für das Mistlager der Schweine von" 
+	            . In(free_correction_factor_pig_manure) 
+                    . "\% eingegeben!\n", 
+                fr=>"'Vous avez introduit une mesure supplémentaire limitant les émissions du "
+                    . "stock de fumier des bovins de" . In(free_correction_factor_pig_manure) 
+                    . "\%.\n" 
+               });
+      return 1 - In(free_correction_factor_pig_manure)/100;
+     
+  } else {
+    return 1;
+  } 
+
+
+
++c_covered_basin_cattle
+  print = 10
+  ++units  
+    en = -
+  ++description
+    Correction factor for manure of cattle stored in coverd basin.
+  ++formula
+    	1 - ( Tech(c_covered_basin_cattle_manure) * In(share_covered_basin_cattle_manure)/100 );
+
++c_covered_basin_pig
+  print = 10
+  ++units  
+    en = -
+  ++description
+    Correction factor for manure of pigs stored in coverd basin.
+  ++formula
+    	1 - ( Tech(c_covered_basin_pig_manure) * In(share_covered_basin_pig_manure)/100 );
+
++tan_into_storage_pigs
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Val(tan_into_storage_solid_pigs, ::Livestock) * (1-(In(share_applied_direct_pig_manure)/100));
+
++n_into_storage_pigs
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Val(n_into_storage_solid_pigs, ::Livestock) * (1-(In(share_applied_direct_pig_manure)/100));
+
++tan_into_storage_dairycows_cattle
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Val(tan_into_storage_solid_dairycows_cattle, ::Livestock) * (1-(In(share_applied_direct_cattle_other_manure)/100));
+
++n_into_storage_dairycows_cattle
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Val(n_into_storage_solid_dairycows_cattle, ::Livestock) * (1-(In(share_applied_direct_cattle_other_manure)/100));
+    
+
++tan_into_storage_horses_otherequides_smallruminants
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Val(tan_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) * (1- (In(share_applied_direct_cattle_other_manure)/100) );
+
++n_into_storage_horses_otherequides_smallruminants
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Val(n_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) * (1- (In(share_applied_direct_cattle_other_manure)/100) );
+
+
++nh3_nsolid_dairycows_cattle
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Tech(er_tan_cattle_other) * Out(tan_into_storage_dairycows_cattle) * Out(c_covered_basin_cattle) 
+    * Out(c_free_factor_storage_solidmanure_cattle) ;
+
++nh3_nsolid_pigs
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Tech(er_tan_pigs) * Out(tan_into_storage_pigs)* Out(c_covered_basin_pig) 
+    * Out(c_free_factor_storage_solidmanure_pig);
+
++nh3_nsolid_horses_otherequides_smallruminants
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Tech(er_tan_cattle_other) * Out(tan_into_storage_horses_otherequides_smallruminants)
+    * Out(c_free_factor_storage_solidmanure_cattle); 
+
+
++nh3_nsolid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Out(nh3_nsolid_dairycows_cattle) +
+    Out(nh3_nsolid_pigs) +
+    Out(nh3_nsolid_horses_otherequides_smallruminants);
+
++immobilization_horses_otherequides_smallruminants
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in solid manure storage.
+  ++formula
+    Tech(immobilizationrate_solid) * 
+    ( Out(tan_into_storage_horses_otherequides_smallruminants)
+      - Out(nh3_nsolid_horses_otherequides_smallruminants) )
+
++immobilization_dairycows_cattle
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in solid manure storage.
+  ++formula
+    Tech(immobilizationrate_solid) * 
+    ( Out(tan_into_storage_dairycows_cattle)
+      - Out(nh3_nsolid_dairycows_cattle) )
+
++immobilization_pigs
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in solid manure storage.
+  ++formula
+    Tech(immobilizationrate_solid) * 
+    ( Out(tan_into_storage_pigs)
+      - Out(nh3_nsolid_pigs) )
+
++immobilization
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in solid manure storage.
+  ++formula
+    Out(immobilization_pigs) +
+    Out(immobilization_dairycows_cattle) +
+    Out(immobilization_horses_otherequides_smallruminants);
+
++n_into_application_dairycows_cattle
+  print = 3a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_solid_dairycows_cattle, ::Livestock) -
+    Val(nxox_nsolid_dairycows_cattle, ::Livestock) -
+    Out(nh3_nsolid_dairycows_cattle);
+
++tan_into_application_dairycows_cattle
+  print = 3a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_solid_dairycows_cattle, ::Livestock) -
+    Val(nxox_nsolid_dairycows_cattle, ::Livestock) -
+    Out(nh3_nsolid_dairycows_cattle) -
+    Out(immobilization_dairycows_cattle);
+
++n_into_application_pigs
+  print = 3a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_solid_pigs, ::Livestock) -
+    Val(nxox_nsolid_pigs, ::Livestock) -
+    Out(nh3_nsolid_pigs)
+
++tan_into_application_pigs
+  print = 3a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_solid_pigs, ::Livestock) -
+    Val(nxox_nsolid_pigs, ::Livestock) -
+    Out(nh3_nsolid_pigs) -
+    Out(immobilization_pigs);
+
++n_into_application_horses_otherequides_smallruminants
+  print = 3a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) - 
+    Val(nxox_nsolid_equides_other, ::Livestock) -
+    Out(nh3_nsolid_horses_otherequides_smallruminants);
+
++tan_into_application_horses_otherequides_smallruminants
+  print = 3a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) - 
+    Val(nxox_nsolid_equides_other, ::Livestock) -
+    Out(nh3_nsolid_horses_otherequides_smallruminants) -
+    Out(immobilization_horses_otherequides_smallruminants);
+
+
++n_into_application_manure
+  print = 3a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_solid, ::Livestock) -
+    Val(nxox_nsolid, ::Livestock) -
+    Out(nh3_nsolid);
+
++tan_into_application
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_solid, ::Livestock) -
+    Val(nxox_nsolid, ::Livestock) -
+    Out(nh3_nsolid) -
+    Out(immobilization );
+
+
+    
+
+
+
+

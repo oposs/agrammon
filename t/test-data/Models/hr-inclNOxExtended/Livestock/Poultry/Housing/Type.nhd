@@ -1,0 +1,515 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-19
+taxonomy = Livestock::Poultry::Housing::Type
+
++short
+
+Selects the emission rate and other correction factors for the specific housing types for poultry.
+
++description
+  
+ This process selects the emission rate for the specific housing types for poultry and the correction factors for the drinking system, and for the manure removal interval.
+
+ \subsubsection{References}
+UNECE 2007. Guidance document on control techniques for preventing and abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
+Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Menden B, Döhler H, Dämmgen U 2009. Comparison of models used for national agricultural ammonia emission inventories in Europe: litter-based manure systems. Atmospheric Environment 40, 1632-1640.
+
+
+
+*** input ***
+
++housing_type
+  type  = enum
+  ++enum
+    +++manure_belt_with_manure_belt_drying_system
+        en = manure_belt_with_manure_belt_drying_system
+	de = Kotbandentmistung_mit_Kotbandtrocknung
+	fr = Tapis_d'évacuation_du_fumier_avec_séchage_sur_tapis_à_fiente
+	it = manure_belt_with_manure_belt_drying_system
+    +++manure_belt_without_manure_belt_drying_system
+        en = manure_belt_without_manure_belt_drying_system
+	de = Kotbandentmistung_ohne_Kotbandtrocknung
+	fr = Tapis_d'évacuation_du_fumier_sans_séchage_sur_tapis_à_fiente
+	it = manure_belt_without_manure_belt_drying_system
+    +++deep_pit
+        en = deep_pit
+	de = Kotgrube
+	fr = Fosse_à_déjections
+	it = deep_pit
+    +++deep_litter
+        en = deep_litter
+	de = Bodenhaltung
+	fr = Litière_profonde
+	it = deep_litter
+  ++labels 
+    en = Housing system
+    de = Aufstallung
+    fr = Type de stabulation
+  ++units  
+    en = -
+  ++description
+    Type of housing.
+  ++help
+    +++en
+       <p>Standard values for Switzerland:</p>
+       <p>Layers: Manure belt without manure belt drying system</p>
+       <p>Growers: Manure belt without manure belt drying system</p>
+       <p>Broilers: Deep litter</p>
+       <p>Turkeys: Deep litter</p>
+       <p>Other poultry: Deep litter</p>
+    +++de
+       <p>Kotbandentmistung ohne Kotbandtrocknung: System mit Kotbändern unter der Aufstallung, welche den Kot in einen Behälter ausserhalb des Stalls transportieren.</p>
+       <p>Kotgrube: System, bei welchem sich der Kot unterhalb der Aufstallung über eine längere Zeit ansammelt. Die Lagerung von Mist oder Kot in einem gedeckten Behälter ausserhalb des Stalls fällt nicht unter diese Kategorie.</p>
+       <p>Kotbandentmistung mit Kotbandtrocknung: wie Kotbandentmistung ohne Kotbandtrocknung; zusätzlich wird der Mist mittels Belüftung rasch auf ca. 60% TS getrocknet</p>
+       <p>Bodenhaltung: System mit eingestreuter Fläche. Bodenhaltung ist das übliche System für kleinere Bestände.</p>
+       <p>Vorschlag für Standardwerte:</p>
+       <p>Legehennen: Kotbandentmistung ohne Kotbandtrocknung für Bestände von mehr als 500 Tieren; andernfalls: Bodenhaltung</p>
+       <p>Junghennen: Kotbandentmistung ohne Kotbandtrocknung für Bestände von mehr als 500 Tieren; andernfalls: Bodenhaltung</p>
+       <p>Mastpoulets: Bodenhaltung</p>
+       <p>Masttruten: Bodenhaltung</p>
+       <p>Anderes Geflügel: Bodenhaltung</p>
+    +++fr
+       <p>Tapis d'évacuation du fumier sans séchage sur tapis à fientes: système comportant des tapis sous la stabulation qui évacuent le fumier dans un contenant à l'extérieur du poulailler. </p>
+       <p>Tapis d'évacuation du fumier avec séchage sur tapis à fientes: comme tapis d'évacuation du fumier sans séchage sur tapis à fientes. En outre, les fientes sont rapidement séchées sur le tapis à un taux d'env. 60% de MS grâce à une ventilation permanente </p>
+       <p>Fosse à déjections: système dans lequel le fumier s'accumule pendant un certain temps sous la stabulation. Le stockage du fumier ou des déjections dans un contenant couvert à l'extérieur du poulailler n'est pas compris dans cette catégorie. </p>
+       <p>Litière profonde: système comprenant une surface recouverte de litière. C'est le système usuel pour les cheptels de petite taille. </p>
+       <p>Propositions de valeurs standard:</p>
+       <p>Poules pondeuses: tapis d'évacuation du fumier sans séchage sur tapis à fientes</p>
+       <p>Poulettes: tapis d'évacuation du fumier sans séchage sur tapis à fientes</p>
+       <p>Poulets à l'engrais: litière profonde</p>
+       <p>Dindes: litière profonde</p>
+       <p>Autre volaille: litière profonde</p>
+
+
++manure_removal_interval
+  type  = enum
+  ++enum
+    +++less_than_twice_a_month
+        en = less_than_twice_a_month
+	de = weniger_als_2_mal_pro_Monat
+	fr = moins_de_2_fois_par_mois
+	it = less_than_twice_a_month
+    +++twice_a_month
+        en = twice_a_month
+	de = zweimal_pro_Monat
+	fr = 2_fois_par_mois
+	it = twice_a_month
+    +++3_to_4_times_a_month
+        en = 3_to_4_times_a_month
+	de = 3_bis_4_mal_pro_Monat
+	fr = 3_à_4_fois_par_mois
+	it = 3_to_4_times_a_month
+    +++more_than_4_times_a_month
+        en = more than 4 times a month but less than once a day
+	de = Mehr_als_4_mal_pro_Monat_bis_weniger_als_1_mal_pro_Tag
+	fr = plus_de_4_fois_par_mois_et_moins_d'une_fois_par_jour
+	it = more_than_4_times_a_month_and_less_than_once_a_day
+    +++once_a_day
+        en = once_a_day
+	de = 1_mal_pro_Tag
+	fr = une_fois_par_jour
+	it = once_a_day
+    +++no_manure_belt
+        en = no_manure_belt
+	de = keine_Kotbandentmistung
+	fr = pas_de_tapis_d'évacuation
+	it = no_manure_belt
+  ++labels 
+    en = Manure removal interval (manure belts)
+    de = Entmistungsintervall bei Kotbandentmistung
+    fr = Fréquence d'évacuation du fumier par le tapis
+  ++units  
+    en = -
+  ++description
+    Manure removal interval by manure belt.
+  ++help
+    +++en
+       <p>Manure belt drying systems:</p>
+       <p>Manure belt drying systems dry the manure by aeration until a dry matter content of about 60 % is obtained.</p>
+       <p>Standard values for Switzerland:</p>
+       <p>Layers: 3 to 4 times a month</p>
+       <p>Growers: twice a month</p>
+    +++de
+       <p>Kotbandtrockung:</p>
+       <p>Mist muss trocken sein und in geschlossenem Behälter oder mit dichter Folie abgedeckt gelagert werden </p>
+       <p>Vorschlag für Standardwerte:</p>
+       <p>3 bis 4 Mal pro Monat für Legehennen</p>
+       <p>2 Mal pro Monat für Junghennen</p>
+    +++fr
+       <p>Séchage forcé du fumier sur le tapis d'évacuation:</p>
+       <p>Avec ce système, les fientes sont rapidement séchées sur le tapis à un taux d'env. 60% de MS grâce à une ventilation permanente.</p>
+       <p>Proposition de valeurs standard:</p>
+       <p>3 à 4 fois par mois pour les poules pondeuses</p>
+       <p>2 fois par mois pour les poulettes</p>
+
++drinking_system
+  type  = enum
+  ++enum
+    +++drinking_nipples
+        en = Non-leaking drinking system
+	de = Nicht_tropfendes_Tränkesystem
+	fr = Abreuvoir_empêchant_les_fuites
+	it = drinking_nipples
+    +++bell_drinkers
+        en = bell_drinkers
+	de = Wasserbehälter
+	fr = Abreuvoir_à_bol
+	it = bell_drinkers 
+  ++labels 
+    en = Drinking system
+    de = Tränkesystem
+    fr = Type d'abreuvoir
+  ++units  
+    en = -
+  ++description
+    Type of drinking system.
+  ++help
+    +++en
+       <p>Standard values for Switzerland:</p>
+       <p>Layers: drinking nipples for 50 animals or more and bell drinkers for less than 50 animals</p>
+       <p>Growers: drinking nipples</p>
+       <p>Broilers: drinking nipples</p>
+       <p>Turkeys: bell drinkers</p>
+       <p>Other poultry: bell drinkers </p>
+    +++de
+       <p>Vorschlag für Standardwerte:</p>
+       <p>Legehennen: Nippeltränke für Bestände ab 50 Tieren</p>
+       <p>Legehennen: Wasserbehälter für Bestände von weniger als 50 Tieren</p>
+       <p>Junghennen: Nippeltränke</p>
+       <p>Mastpoulets: Nippeltränke</p>
+       <p>Masttruten: Wasserbehälter</p>
+       <p>Anderes Geflügel: Wasserbehälter</p>
+       <p>Falls Cuptränken vorhanden sind: Nippeltränke auswählen</p>
+    +++fr
+       <p>Proposition de valeurs standard:</p>
+       <p>Poules pondeuses: Abreuvoir à sucette pour un cheptel supérieur à 50 animaux; abreuvoir à bol pour un cheptel inférieur à 50 animaux</p>
+       <p>Poulettes: Abreuvoir à sucette</p>
+       <p>Poulets à l'engrais: Abreuvoir à sucette</p>
+       <p>Dindes: Abreuvoir à bol</p>
+       <p>Autre volaille: Abreuvoir à bol</p>
+       <p>Dans le cas d'abreuvoirs à godets, choisir ‚Abreuvoir à sucette' </p>
+
+
+*** technical ***
+
++er_housing_layers_growers_manure_belt_without_manure_belt_drying_system
+  value = 0.15
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry housing type, based on EAGER workshop January 2007: 15% of Ntot, converted using 60% Nsol and the emission rate of 25% based on TAN.
+
+
++er_housing_layers_growers_manure_belt_with_manure_belt_drying_system
+  value = 0.06
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry housing type, based on EAGER workshop January 2007: 6% of Ntot, converted using 60% Nsol and the emission rate of 10% based on TAN.
+
+
++er_housing_layers_growers_deep_pit
+  value = 0.30
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry housing type, based on EAGER workshop January 2007, UNECE 2007: 30% of Ntot, converted using 60% Nsol and the emission rate of 50% based on TAN.
+
++er_housing_layers_growers_deep_litter
+  value = 0.30
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry housing type, based on EAGER workshop January 2007, UNECE 2007: 30% of Ntot, converted using 60% Nsol and the emission rate of 50% based on TAN.
+
++er_housing_other_deep_litter
+  value = 0.12
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry housing type, based on Reidy et al. (2009): 12% of Ntot, converted using 60% Nsol and the emission rate of 20% based on TAN.
+
++c_manure_removal_interval_less_than_twice_a_month
+  value = 1.2
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
+
++c_manure_removal_interval_twice_a_month
+  value = 1.0
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
+
++c_manure_removal_interval_3_to_4_times_a_month
+  value = 0.8
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
+
++c_manure_removal_interval_more_than_4_times_a_month
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
+
++c_manure_removal_interval_once_a_day
+  value = 0.4
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
+
++c_drinking_nipples
+  value = 1.0
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry drinking type standard version.
+
++c_bell_drinkers
+  value = 1.2
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry drinking type additional emission. Empirical assumption by Reidy/Menzi. 
+  \\TODO: Give better description!
+
+
+
+*** external ***
+
++..::Excretion
+
+
+*** output ***
+
++er_housing
+  print = 10
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry housing type.
+  ++formula
+    if (Val(animalcategory, ..::Excretion) eq "layers"){
+        if (In(housing_type) eq "manure_belt_without_manure_belt_drying_system"){
+   	        return Tech(er_housing_layers_growers_manure_belt_without_manure_belt_drying_system);
+        } 
+        elsif (In(housing_type) eq "manure_belt_with_manure_belt_drying_system"){
+            return Tech(er_housing_layers_growers_manure_belt_with_manure_belt_drying_system);
+      	} 
+        elsif (In(housing_type) eq "deep_pit"){
+            return Tech(er_housing_layers_growers_deep_pit);
+      	} 
+        elsif(In(housing_type) eq "deep_litter"){
+     	    return Tech(er_housing_layers_growers_deep_litter);
+        }
+	}
+    elsif (Val(animalcategory, ..::Excretion) eq "growers"){
+    	if (In(housing_type) eq "manure_belt_without_manure_belt_drying_system"){
+       	  	return Tech(er_housing_layers_growers_manure_belt_without_manure_belt_drying_system);
+       	}
+	elsif (In(housing_type) eq "manure_belt_with_manure_belt_drying_system"){
+            return Tech(er_housing_layers_growers_manure_belt_with_manure_belt_drying_system);
+      	} 
+        elsif (In(housing_type) eq "deep_pit"){
+      	    return Tech(er_housing_layers_growers_deep_pit);
+        } 
+        elsif(In(housing_type) eq "deep_litter"){
+     	    return Tech(er_housing_layers_growers_deep_litter);
+        }
+    }
+    elsif (Val(animalcategory, ..::Excretion) eq "broilers"){
+        if (In(housing_type) eq "manure_belt_without_manure_belt_drying_system"){
+	        writeLog({en => "The category manure belt without manure belt drying system is not valid, please select the housing system deep litter for broilers.",
+                          de => "Für Mastpoulets ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung " . 
+                            "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      	  fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
+                            . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
+			    });
+    	    return Tech(er_housing_other_deep_litter);
+        } 
+        elsif (In(housing_type) eq "manure_belt_with_manure_belt_drying_system") {
+	        writeLog({en => "Manure belt with manure belt drying system not valid, please select deep litter as housing type for broilers.",
+                      de => "Für Mastpoulets ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung " .
+                            "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
+                            . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
+			    });
+      	    return Tech(er_housing_other_deep_litter);
+      	}  
+        elsif (In(housing_type) eq "deep_pit") {
+	        writeLog({en => "Deep pit not valid, please select deep litter as housing type for broilers.",
+                      de => "Für Mastpoulets ist Kotgrube als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung. " . 
+                            "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
+		            . "fosse à déjections. Choisissez plutôt ‘Litière profonde'."
+                         });
+      	    return Tech(er_housing_other_deep_litter);
+      	} 
+        elsif (In(housing_type) eq "deep_litter"){
+            return Tech(er_housing_other_deep_litter);
+        }
+    }
+    elsif (Val(animalcategory, ..::Excretion) eq "turkeys"){
+        if (In(housing_type) eq "manure_belt_without_manure_belt_drying_system"){
+	        writeLog({en => "Manure belt without manure belt drying system not valid, please select deep litter as housing type for turkeys.",
+                      de => "Für Masttruten ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung " . 
+                            "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour des dindes à l‘engrais, il n'est pas prévu de stabulation avec "
+		            . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
+                         });
+    	    return Tech(er_housing_other_deep_litter);
+        } 
+        elsif (In(housing_type) eq "manure_belt_with_manure_belt_drying_system") {
+
+	        writeLog({en => "Manure belt with manure belt drying system not valid, please select deep litter as housing type for turkeys.",
+                      de => "Für Masttruten ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung " . 
+                            "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour des dindes à l‘engrais, il n'est pas prévu de stabulation avec "
+		            . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
+                         });
+      	    return Tech(er_housing_other_deep_litter);
+        } 
+        elsif (In(housing_type) eq "deep_pit"){
+      	    writeLog({en => "Deep pit not valid, please select deep litter as housing type for turkeys.",
+                      de => "Für Masttruten ist Kotgrube als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung. " . 
+                            "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour des dindes à l‘engrais, il n'est pas prévu de stabulation avec "
+                            . "fosse à déjections. Choisissez plutôt ‘Litière profonde'."
+                      });
+      	    return Tech(er_housing_other_deep_litter);
+      	} 
+        elsif (In(housing_type) eq "deep_litter"){
+     	    return Tech(er_housing_other_deep_litter);
+        } 
+        else {
+       		writeLog({en => "Invalid 'manure removal interval' entered!",
+                          de => "Ungültiges Entmistungsintervall eingegeben!",
+                          fr => "La fréquence d'évacuation du fumier n'est pas valable !",
+                         });
+       		return 0;
+        } 
+    }
+    elsif (Val(animalcategory, ..::Excretion) eq "other_poultry"){
+        if (In(housing_type) eq "manure_belt_without_manure_belt_drying_system"){
+	        writeLog({en => "Manure belt without manure belt drying system not valid, please select deep litter as housing type for other poultry.",
+                      de => "Für \"Anderes_Geflügel\" ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung " . 
+                            "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour \"autre volaille\", il n'est pas prévu de stabulation avec "
+                            . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."		      
+                      });
+    	    return Tech(er_housing_other_deep_litter);
+        } 
+        elsif (In(housing_type) eq "manure_belt_with_manure_belt_drying_system") {
+	        writeLog({en => "Manure  belt  with  manure  belt  drying  system not valid, please select deep  litter as housing type for other  poultry.",
+                      de => "Für \"Anderes_Geflügel\" ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung " . 
+                            "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour \"autre volaille\", il n'est pas prévu de stabulation avec "
+                            . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
+			    });
+      	    return Tech(er_housing_other_deep_litter);
+       	} 
+        elsif (In(housing_type) eq "deep_pit"){
+      	    writeLog({en => "Deep pit not valid, please select deep litter as housing type for other_poultry.",
+                      de => "Für \"Anderes_Geflügel\" ist Kotgrube als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung. " . 
+                            "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour \"autre volaille\", il n'est pas prévu de stabulation avec "
+                            . "fosse à déjections. Choisissez plutôt ‘Litière profonde'."
+		      });
+      	    return Tech(er_housing_other_deep_litter);
+      	} 
+        elsif (In(housing_type) eq "deep_litter"){
+     	    return Tech(er_housing_other_deep_litter);
+        }
+        else {
+       	 	writeLog({en => "Invalid 'manure removal interval'  entered!",
+                          de => "Ungültiges Entmistungsintervall eingegeben!",
+                          fr => "La fréquence d'évacuation du fumier n'est pas valable !",
+		         });
+       		return 0;
+        }  
+    }
+
++c_manure_removal_interval
+  print = 10
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry housing type.
+  ++formula
+    if ( (In(housing_type) eq "manure_belt_without_manure_belt_drying_system") 
+         or (In(housing_type) eq "manure_belt_with_manure_belt_drying_system")) {
+       if (In(manure_removal_interval) eq "less_than_twice_a_month"){
+         return Tech(c_manure_removal_interval_less_than_twice_a_month);
+      } elsif(In(manure_removal_interval) eq "twice_a_month"){
+         return Tech(c_manure_removal_interval_twice_a_month);
+      } elsif(In(manure_removal_interval) eq "3_to_4_times_a_month"){
+         return Tech(c_manure_removal_interval_3_to_4_times_a_month);
+      } elsif(In(manure_removal_interval) eq "more_than_4_times_a_month"){
+         return Tech(c_manure_removal_interval_more_than_4_times_a_month);
+      } elsif(In(manure_removal_interval) eq "once_a_day"){
+         return Tech(c_manure_removal_interval_once_a_day);
+      } elsif(In(manure_removal_interval) eq "no_manure_belt") {
+         writeLog({en => "The category 'No manure belt' is not applicable for housing systems with a manure belt!",
+                   de => "Kategorie 'keine Kotbandentmistung', ist nicht erlaubt bei Aufstallung, Kotbandentmistung!",
+                   fr => "La catégorie ‘Pas de tapis d'évacuation' n'est pas valable pour une "
+		         . "stabulation avec tapis d'évacuation du fumier!",
+		  });
+         return Tech(c_manure_removal_interval_twice_a_month);  # default no correctios
+         }
+     } 
+	else{                                           # Housing Type deep pit or deep litter
+		if( not (In(manure_removal_interval) eq "no_manure_belt") ){
+        	writeLog({en => "Please enter under manure removal interval 'No manure belt' in combination with the housing systems deep pit or deep litter!",
+                  	  de => "Bitte wählen Sie unter Entmistungsintervall 'keine Kotbandentmistung' in Kombination mit der Aufstallung, Bodenhaltung oder Kotgrube!",
+	                  fr => "Sous ‘Fréquence d'évacuation du fumier', veuillez choisir la catégorie "
+               		        . "‘Pas de tapis d'évacuation' en combinaison avec la stabulation ‘Litière "
+                                . "profonde' ou ‘Fosse à déjections' !",
+	      	        });
+        }
+		return 1; # default no correctios
+     }
+
++c_drinking_system
+  print = 10
+  ++units  
+    en = -
+  ++description
+    Correction factor for poultry drinking station.
+  ++formula
+    if (In(drinking_system) eq "drinking_nipples"){
+       return Tech(c_drinking_nipples);
+    } elsif(In(drinking_system) eq "bell_drinkers"){
+       return Tech(c_bell_drinkers);
+    }else {
+       writeLog({en => "Invalid 'drinking_system' entered!",
+                 de => "Ungültiges Tränkesystem eingegeben!",
+                 en => "Ce type d'abreuvoir n'est pas valable !",
+		 });
+       return 1.0;
+    }
+
++housing_type
+  print = 15
+  ++units  
+    en = -
+  ++description
+    Housing type (needed in other modules).
+  ++formula
+    In(housing_type);
+
++drinking_system
+  print = 15
+  ++units  
+    en = -
+  ++description
+    Drinking system.
+  ++formula
+    In(drinking_system);

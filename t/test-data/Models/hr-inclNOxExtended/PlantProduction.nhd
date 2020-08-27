@@ -1,0 +1,95 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-05-07
+taxonomy = PlantProduction
+gui      = PlantProduction,Pflanzenbau,Production végétale,Plant production
+
++short
+
+  Computes the annual NH3 emission from plant production.
+  
++description 
+
+  This process summarizes the contribution of the plant production 
+  to the total NH3 emission.
+
+\subsubsection{Differences to DYNAMO}
+     
+
+*** external ***
+
++PlantProduction::MineralFertiliser
++PlantProduction::RecyclingFertiliser
+
+
+*** output ***
+
++nh3_nplantproduction
+  format= %.0f
+  print = PlantProductionTotal
+  ++labels 
+    sort = 999
+    en = Total Plantproduction NH3-Emissions
+    de = Total Pflanzenproduktion NH3-Emission
+    fr = Emission de NH3 Total Production végétale
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from plant production.
+  ++formula
+    Val(nh3_nmineralfertiliser, PlantProduction::MineralFertiliser) +
+    Val(nh3_nrecyclingfertiliser, PlantProduction::RecyclingFertiliser) 
+
++compost 
+  format= %.0f
+  print= FluxSummaryPlantProductionPlus
+  ++labels 
+    sort = 113
+    en = Amount of compost (t fresh matter per year)
+    de = Kompost (t Frischsubstanz pro Jahr)
+    fr = Compost (en t matière fraîche par an)
+  ++units  
+    en = t/year
+    de = t/Jahr
+    fr = t/an
+  ++description
+    Amount of compost in t per year.
+  ++formula
+    Val(compost, PlantProduction::RecyclingFertiliser);
+ 
++solid_digestate
+  format= %.0f
+  print= FluxSummaryPlantProductionPlus
+  ++labels
+    sort = 114
+    en = Amount of solid digestate (t fresh matter per year)
+    de = Festes Gärgut (t Frischsubstanz pro Jahr)
+    fr = Quantité de digestats solides issus d'installations industrielles (en t matière fraîche par an) 
+  ++units  
+    en = t/year
+    de = t/Jahr
+    fr = t/an
+  ++description
+    Amount of Solid digestate in t per year.
+  ++formula
+    Val(solid_digestate, PlantProduction::RecyclingFertiliser);
+
++liquid_digestate
+  format= %.0f
+  print= FluxSummaryPlantProductionPlus
+  ++labels 
+    sort = 115
+    en = Amount of liquid digestate (m3 per year)
+    de = Flüssiges Gärgut (m3 pro Jahr)
+    fr = Quantité de digestats liquides issus d'installations industrielles (en m3 par an)
+  ++units  
+    en = m3/year
+    de = m3/Jahr
+    fr = m3/an
+  ++description
+    Amount of liquid digestate in m3 per year.
+  ++formula
+    Val(liquid_digestate, PlantProduction::RecyclingFertiliser);

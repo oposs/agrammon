@@ -1,0 +1,325 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-22
+taxonomy = Livestock::Poultry::Excretion
+
++short
+
+Computes the annual N excretion of the different poultry categories.
+
++description
+
+This process calculates the annual N excretion of the different poultry categories. The standard N excretion was taken from the official Swiss fertilizer 
+guidelines. The Nsol content of the excreta is based on e.g. Peterson et al.
+(1998) or Burgos et al. (2005). These values were compiled on the basis of
+official feeding recommendations (Flisch et al. (2009)) by H. Menzi.
+
+\subsubsection{References:}
+Burgos SA, Robinson PH, Fadel JG, DePeters EJ 2005. Ammonia volatilization
+potential: Prediction of urinary urea nitrogen output on lactating dairy
+cows. Agriculture, Ecosystems and Environment 111:261-269.
+
+
+Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and
+dung of grazing cattle: effect of N intake. Atmospheric environment
+32:295-300.
+
+Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
+
+
+*** input ***
+
++animalcategory
+  type = enum
+  ++enum
+    +++layers
+       en = layers
+       de = Legehennen
+       fr = Poules_pondeuses
+       it = layers
+    +++growers
+       en = growers
+       de = Junghennen
+       fr = Poulettes
+       it = growers
+    +++broilers
+       en = broilers
+       de = Mastpoulets
+       fr = Poulets_à_l'engrais
+       it = broilers
+    +++turkeys
+       en = turkeys
+       de = Masttruten
+       fr = Dindes
+       it = turkeys
+    +++other_poultry
+       en = other_poultry
+       de = Anderes_Geflügel
+       fr = Autre_volaille
+       it = other_poultry
+  ++labels
+    en = Animal category
+    de = Tierkategorie
+    fr = Catégorie d'animaux
+  ++units  
+    en = -
+  ++description
+    Poultry category (layers, growers, broilers, turkeys, and other poultry).
+  ++help
+    +++en
+       <p> </p>
+    +++de
+       <p> </p>
+    +++fr
+       <p> </p>
+
++animals
+  type = integer
+  validator = ge(0)
+  branch = true
+  ++labels
+    en= Number of animals
+    de = Anzahl Tiere
+    fr = Nombre d'animaux
+  ++units  
+    en = -
+  ++description
+    Number of poultry animals for the selected type in barn.
+  ++help
+    +++en
+       <p> </p>
+    +++de
+       <p> </p>
+    +++fr
+       <p> </p>
+
++inp_n_excretion
+  type = text
+  default_calc = Standard
+  default_gui  = Standard
+  ++labels
+    en = N excretion
+    de = N Ausscheidung
+    fr = Excrétions azotées
+  ++units 
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for poultry
+  ++help
+    +++en 
+       <p>If "Standard" is selected the standard value for the
+          nitrogen excretion according to PRIF 2017 is applied (Richner
+          et al., 2017) is applied (PRIF: Principles of Agricultural Crop
+          Fertilisation in Switzerland). If a number is entered, a value
+          for the nitrogen excretion can be selected by the user.</p>
+       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+          pp. 4/1-4/23.</p>      
+    +++de 
+       <p>Bei Auswahl «Standard» wird der Richtwert für die
+          Stickstoffausscheidung gemäss GRUD 2017 (Richner et al., 2017)
+          verwendet. Bei Eingabe einer Zahl kann der Wert für die
+          Stickstoffausscheidung selbst gewählt werden.</p>
+       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+          pp. 4/1-4/23.</p>      
+    +++fr 
+       <p>Si "Standard" est introduisé, la valeur de référence pour
+          les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
+          est utilisée (PRIF: « Principes de la fertilisation des
+          cultures agricoles en Suisse » ). Si un nombre est introduisé
+          une valeur pour les excrétions azotées peut être déterminée par
+          l'utilisateur/-trice.</p>
+       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+          pp. 4/1-4/23.</p>      
+
+
+*** technical ***
+
+### standard_N_excretion
+
++standard_N_excretion_layers
+  value = 0.80
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for poultry category (layers) according to 
+    Flisch et al. (2009).
+
++standard_N_excretion_growers
+  value = 0.31
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for poultry category (growers) according to
+    a decission of the Group suisse bilanz.
+
++standard_N_excretion_broilers
+  value = 0.45
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for poultry category (broilers) according to
+    Flisch et al. (2009).
+
++standard_N_excretion_turkeys
+  value = 1.4
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for poultry category according (turkeys) to
+    Flisch et al. (2009).
+
++standard_N_excretion_other_poultry
+  value = 0.56
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for other poultry category according to
+    Flisch et al. (2009).
+
+###
+
++share_Nsol_layers
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for layers. Derived from e.g.
+    TODO
+
++share_Nsol_growers
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for growers. Derived from e.g.
+    TODO
+
++share_Nsol_broilers
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for broilers. Derived from e.g.
+    TODO
+
++share_Nsol_turkeys
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for turkeys. Derived from e.g.
+    TODO
+
++share_Nsol_other_poultry
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for other poultry. Derived from e.g.
+    TODO
+
+
+*** external ***
+
+
+*** output ***
+
++standard_N_excretion
+  print = 7d
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for specified poultry category according to
+    Flisch et al. (2009).
+  ++formula
+    my $cat = In(animalcategory);
+    my $key = "standard_N_excretion_$cat";
+    my $exc = $TE->{$key};
+    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+    if (($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
+        writeLog({
+            en => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+            de => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+            fr => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+        });
+    }
+    return $exc;
+
++share_Nsol
+  print = 7
+  ++units  
+    en = -
+  ++description
+    Nsol content of excreta for a specific poultry category. Derived from e.g.
+    TODO
+  ++formula
+    #my $key = "share_Nsol_" . In(animalcategory);
+    #return Tech($key);
+    return $TE->{'share_Nsol_'.In(animalcategory)};
+
++n_excretion
+  print = 7d
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by a specified number of animals.
+  ++formula
+    Out(standard_N_excretion) * In(animals);
+
++tan_excretion	
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual soluble N excreted by an animalgroup of selected poultry category.	
+  ++formula
+     Out(share_Nsol) * Out(n_excretion) 
+
++animals
+  print = 9
+  ++units  
+    en = -
+  ++description
+    Number of poultry animals for the selected type in barn.
+  ++formula
+    In(animals);
+
++animalcategory
+  print = 9
+  ++units  
+    en = -
+  ++description
+    Poultry category (layers, growers, broilers, turkeys, and other poultry).
+  ++formula
+    In(animalcategory);

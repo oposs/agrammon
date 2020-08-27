@@ -1,0 +1,368 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-05-27
+taxonomy = Storage::SolidManure::Poultry
+
++short
+
+ Computes the annual NH3 emission from poultry manure storages.
+	
++description 
+
+ This process calculates the annual NH3 emission from poultry manure
+ storage, considering a mean emission rate on TAN flux in storage.
+
+\subsubsection{References}
+
+European Agricultural Gaseous Emissions Inventory Researchers Network
+- EAGER workshop, January 2008.
+
+*** input ***
+
++share_applied_direct_poultry_manure
+  type  = percent
+  ++labels 
+    en = Share of poultry manure applied to land without storage
+    de = Anteil von direkt ohne Lagerung ausgebrachtem Geflügelmist
+    fr = Part des fientes ou du fumier de volaille épandu directement sans stockage
+  ++units 
+    en = % 
+  ++description
+  Share of poultry manure applied to land without storage.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: 12 %</p>
+    +++de
+       <p>Vorschlag für Standardwert: 12%</p>
+    +++fr
+       <p>Proposition de valeur standard: 12%</p>
+
+
++share_covered_basin  
+  type  = percent
+  ++labels 
+    en = Share of poultry manure covered during storage
+    de = Anteil von gedeckt gelagertem Kot oder Mist aus der Geflügelhaltung
+    fr = Part des fientes ou du fumier de volaille stockés qui sont couverts
+  ++units 
+    en = % 
+  ++description
+    Share of droppings or mist from poultry stored in covered basin.
+  ++help
+    +++en
+
+      <p>Covered storage means a solid cover (e.g. a closed store) or
+      another cover such as a plastic sheet.</p>
+     <p>Standard value for Switzerland: 70%</p>
+    +++de
+       <p>Als Abdeckung gilt eine feste Abdeckung, im Sinne eines geschlossenen Behälters oder eine andere Abdeckung wie z.B. eine Folie.Abdeckungen, welche den Luftaustausch zwischen der Oberfläche des Mistlagers und der Umgebungsluft unterbinden, wie z.B. ein geschlossener Behälter oder eine andere Abdeckung wie eine reissfeste Folie.</p>
+       <p>Vorschlag für Standardwert: 70%</p>
+    +++fr
+       <p>Cette part comprend les fientes ou le fumier stocké sous une couverture en dur, dans le sens d'un contenant fermé, ou sous un autre type de couverture, p.ex. une bâche. </p>
+       <p>Proposition de valeur standard: 70%</p>
+
+ 
++free_correction_factor
+  models = SHL
+  type = float
+  default_calc = 0
+  default_gui = 0
+  validator = between(-100,100);
+  ++labels 
+    en = Additional emission mitigation measure
+    de = Zusätzliche emissionsmindernde Massnahme Geflügelmist (siehe Spalte Hilfe)
+    fr = Mesure supplémentaire limitant les émissions dues au stockage des fientes ou du fumier de volaille (cf. aide)
+  ++units 
+    en = %
+  ++description
+    Factor to define free ?
+  ++help
+    +++en
+        <p>The emission reduction of a new technique can be entered
+        (e.g. a new type of cover). The number entered corresponds to
+        the emission reduction in percent (e.g. 30%; the emission from
+        the manure storage decreases by 30%). It is recommended to
+        mention the selected measure in the column comment and to
+        justify the number selected for emission reduction.</p>
+        <p>This option mainly targets users who predict emissions and are
+        obliged to consider the effects of new and actually unknown
+        techniques.</p>
+   +++de
+	<p>
+           Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt 
+           werden (z.B. ein neuer Typ Abdeckung). Die eingegebene Zahl entspricht 
+ 	   der  Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem 
+	   Mistlager nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der 
+	   Spalte Kommentar aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
+        </p>
+	<p>
+	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+           zur Emissionsminderung berücksichtigen müssen. 
+        <p>
+	<p>Vorschlag für Standardwert: 0 %.</p>
+    +++fr
+	<p>
+	  Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les 
+	  émissions (p.ex. un nouveau type de couverture). Le chiffre introduit correspond 
+	  à la réduction d'émission en pourcent (p.ex. 30%: l'émission provenant du stock 
+	  de fumier diminue de 30%). Il est recommandé de mentionner la mesure choisie dans 
+	  la colonne ‘Commentaire' et de justifier le taux de réduction choisi.
+	</p>
+	<p>
+	  Cette fonction s'adresse principalement aux utilisateurs/trices qui font des 
+	  pronostiques d'émissions et qui doivent prendre en compte l'effet de nouvelles 
+	  technologies destinées à limiter les émissions et encore méconnues actuellement.
+	</p>
+	<p>Proposition valeur standard: 0 %.</p>
+
+*** technical ***
+
++er_layers_growers_other_poultry
+  value = 0.25
+  ++units  
+    en = -
+  ++description 
+   Emission rate for layers, growers and other poultry for manure (deep pit, deep litter) and droppings (manure belt)(based on EAGER workshop, January 2008: 15% Ntot, converted using Nsol 60% and emission factor of 25%.
+
++er_turkeys_broilers
+  value = 0.1
+  ++units  
+    en = -
+  ++description 
+   Emission rate for  manure of broilers and turkeys based on EAGER workshop, January 2008: 6% Ntot, converted using Nsol 60% and emission factor of 10%.
+
++c_droppings_mist_covered_basin
+  value = 0.75
+  ++units  
+    en = -
+  ++description
+    Reduction of emission rate for the droppings or mist stored in covered basin for poultry.
+  
++immobilizationrate_poultry
+  value = 0	      
+  ++units  
+    en = -
+  ++description
+    No Immobilization is taken into account.
+
+*** external ***
+
++::Livestock
+
+*** output ***
+
++c_covered_basin
+  print = 10
+  ++units  
+    en = -
+  ++description
+    Correction factor for storage droppings or mist in coverd basin.
+  ++formula
+    	1 - ( Tech(c_droppings_mist_covered_basin) * In(share_covered_basin)/100 );
+
+
++c_free_factor_storage_poultrymanure
+  print = 10
+  ++units 
+    en = -
+  ++description
+    Free reduction of the Emission rate for the Yard.
+  ++formula
+  if(In(free_correction_factor)//0 != 0) {
+      writeLog({en=>"You have entered an additional emission mitigation measure for a storage of poultry manure of " 
+                    . In(free_correction_factor) 
+                    . " \%!\n", 
+                de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für das Geflügelmistlager von "
+                    . In(free_correction_factor) 
+                    . "\% eingegeben!\n", 
+                fr=> "Vous avez introduit une mesure supplémentaire limitant les émissions du stock "
+                     . "de fumier de volaille de " . In(free_correction_factor) . "\%.\n" 
+               });
+	    return 1 - In(free_correction_factor)/100;
+     
+  } else {
+    return 1;
+  } 
+
+
++nh3_npoultry_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from poultry manure storage.
+  ++formula
+       (Tech(er_layers_growers_other_poultry) * Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) * (1-(In(share_applied_direct_poultry_manure)/100)) * Out(c_covered_basin)* Out(c_free_factor_storage_poultrymanure) );
+
+
++nh3_npoultry_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from poultry manure storage.
+  ++formula
+       return (Tech(er_turkeys_broilers) * Val(tan_into_storage_poultry_turkeys_broilers,::Livestock) * (1-(In(share_applied_direct_poultry_manure)/100))* Out(c_covered_basin) * Out(c_free_factor_storage_poultrymanure));
+
++nh3_npoultry
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from poultry manure storage.
+  ++formula
+    Out(nh3_npoultry_layers_growers_other_poultry) + Out(nh3_npoultry_turkeys_broilers); 
+
+#### immobilization
+    
++immobilization_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in poultry manure storage.
+  ++formula
+    Tech(immobilizationrate_poultry) * 
+    ( Val(tan_into_storage_poultry,::Livestock) - Out(nh3_npoultry) )
+
++immobilization_poultry_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in poultry manure storage.
+  ++formula
+    Tech(immobilizationrate_poultry) * 
+    ( Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) - Out(nh3_npoultry_layers_growers_other_poultry ) )
+
++immobilization_poultry_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in poultry manure storage.
+  ++formula
+    Tech(immobilizationrate_poultry) * 
+    ( Val(tan_into_storage_poultry_turkeys_broilers,::Livestock) - Out(nh3_npoultry_turkeys_broilers) )
+
+#### output 
+
+
+
+
+
+
++n_check
+  print = 7
+  ++units
+    en = -
+  ++description
+   Check shares of directly applied and covered storage of poultry manure
+  ++formula
+        if (  (In(share_applied_direct_poultry_manure) + In(share_covered_basin)) > 100  ) {
+        writeLog({en=>"The sum of Share of poultry manure applied to land without storage and Share of poultry manure covered during storage must be equal or lower than 100 %",
+                  de=>"Die Summe von Anteil von direkt ohne Lagerung ausgebrachtem Geflügelmist und Anteil von gedeckt gelagertem Kot oder Mist aus der Geflügelhaltung darf maximal 100 % betragen",
+                  fr=>"La somme de Part des fientes ou du fumier de volaille épandu directement sans stockage et de Part des fientes ou du fumier de volaille stockés qui sont couverts ne peut être supérieur à 100 %"
+                 });
+    }
+    return;
+
++n_into_application_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_poultry_layers_growers_other_poultry,::Livestock) -
+    Val(nxox_nsolid_layers_growers_other_poultry,::Livestock) - 
+    Out(nh3_npoultry_layers_growers_other_poultry)
+
++n_into_application_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_poultry_turkeys_broilers,::Livestock) -
+    Val(nxox_nsolid_turkeys_broilers, ::Livestock) -
+    Out(nh3_npoultry_turkeys_broilers)
+
++n_into_application
+  print = PoultryFlux
+  ++labels
+    sort = 500
+    en = Poultry N into Application
+    de = Geflügel N Fluss in die Ausbringung
+    fr = Volaille Flux de N dans l'épandage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_poultry,::Livestock) -
+    Val(nxox_nsolid_poultry, ::Livestock) -
+    Out(nh3_npoultry)
+
++tan_into_application_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) -
+    Out(immobilization_poultry_layers_growers_other_poultry) -
+    Out(nh3_npoultry_layers_growers_other_poultry) -
+    Val(nxox_nsolid_poultry, ::Livestock) 
+
++tan_into_application_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_poultry_turkeys_broilers,::Livestock)
+    - Val(nxox_nsolid_turkeys_broilers, ::Livestock) 
+    - Out(immobilization_poultry_turkeys_broilers)
+    - Out(nh3_npoultry_turkeys_broilers)
+
++tan_into_application
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_poultry,::Livestock)
+    - Out(immobilization_poultry)
+    - Val(nxox_nsolid_poultry, ::Livestock) 
+    - Out(nh3_npoultry)

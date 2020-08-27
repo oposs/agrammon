@@ -1,0 +1,183 @@
+*** general ***
+
+author    = Agrammon Group
+date      = 2017-07-12
+taxonomy  = Livestock::SmallRuminants
+instances = multi
+gui       = Livestock::SmallRuminants,Tierhaltung::Kleinwiederkäuer,Production animale::Petits ruminants,Livestock::Small ruminants
+
++short
+
+ Collects the annual emission of NH3 and the N flux for goats, fattening sheep and milksheep.
+
++description 
+ 
+ Summarizes the annual emission of NH3 for goats, fattening sheep and milksheep from housing, yard and grazing.
+Summarizes the annual N flux from housing to the storage for goats, fattening sheep and milksheep.
+             
+  \begin{todo}{Cyrill Bonjour}{}
+     Give a better description.
+  \end{todo}
+
+
+*** technical ***
+
++er_n2_nsolid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_nsolid
+  value = 0.01
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_nsolid
+  value = 0.01
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
+*** external ***
+
++SmallRuminants::Excretion
++SmallRuminants::Housing
++SmallRuminants::Grazing
+
+*** output ***
+
++animalcategory
+  print = 7
+  ++units  
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, SmallRuminants::Excretion);
+
++n_excretion
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by other animals.
+  ++formula
+       Val(n_excretion, SmallRuminants::Excretion); 
+
++n_from_other
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from other animals housing.
+  ++formula
+       Val(n_outhousing, SmallRuminants::Housing);
+
++tan
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from other animals housing.
+  ++formula
+       Val(tan_outhousing, SmallRuminants::Housing);
+
++n_liquid_from_other
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from other animals housing, liquid fraction.
+  ++formula
+       Val(n_outhousing_liquid, SmallRuminants::Housing); 
+
++tan_liquid
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from other animals housing, liquid fraction.
+  ++formula
+       Val(tan_outhousing_liquid, SmallRuminants::Housing); 
+
++n_solid_from_other
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from other animals housing, solid fraction.
+  ++formula
+       Val(n_outhousing_solid, SmallRuminants::Housing);
+
++tan_solid
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from other animals housing, solid fraction.
+  ++formula
+       Val(tan_outhousing_solid, SmallRuminants::Housing); 
+
++nh3_nother
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from other animals housing and grazing.
+  ++formula
+       Val(nh3_nhousing, SmallRuminants::Housing) +
+       Val(nh3_ngrazing, SmallRuminants::Grazing);
+         
++n2_nsolid
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from other animals housing and grazing.
+  ++formula
+    Val(n_into_housing, SmallRuminants::Housing) * Tech(er_n2_nsolid);
+         
++no_nsolid
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NO emission from other animals housing and grazing.
+  ++formula
+       Val(n_into_housing, SmallRuminants::Housing) * Tech(er_no_nsolid);
+         
++n2o_nsolid
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2O emission from other animals housing and grazing.
+  ++formula
+       Val(n_into_housing, SmallRuminants::Housing) * Tech(er_n2o_nsolid);

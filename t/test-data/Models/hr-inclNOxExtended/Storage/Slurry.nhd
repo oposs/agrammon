@@ -1,0 +1,232 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-05-20
+taxonomy = Storage::Slurry
+instances = multi
+gui       = Storage::Slurry,Hofdüngerlager::Gülle,Stockage::Lisier,Storage::Slurry
+
++short
+
+ Describes a single liquid manuare storage.
+        
++description 
+
+  This Process calculates the annual NH3 emission from a single liquid manuare
+  storage, considering a specific emission factor.
+
+
+ \subsubsection{References}
+ De Bode MJC, 1990. Vergleich der Ammoniakemissionen aus verschiedenen Flüssigmistlagersystemen. In: Ammoniak in der Umwelt. Hrsg.: KTBL und VDI, Münster, 34:1-13.
+Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass und technische Beurteilung des Reduktionspotentials. Eidgenössische Forschungsanstalt für Agrarökologie und Landbau, Zürich-Reckenholz. 107pp.
+ Sommer SG, Christensen BT, Nielsen NE, Schjorring JK, 1993. Ammonia volatilization during storage of cattle and pig slurry - effect of surface cover. Journal of Agricultural Science 121:63-71.
+
+
+
+*** input ***
+
++volume
+  type  = float
+  branch = true
+  ++labels
+    en = Volume of slurry store (without channels and gutters)
+    de = Volumen des Güllelagers
+    fr = Volume du stock de lisier (sans les canaux)
+  ++units 
+    en = m3
+  ++description
+    Volume of slurry store. 
+  ++help
+    +++en
+       <p></p>
+    +++de
+       <p>Volumen des Güllelagers ohne Güllelager und Kanäle unter perforierten Böden von Ställen (z.B. perforierte Laufgänge und Fressplätze von Boxenlaufställen, Schwemmkanäle in Anbindeställen) angeben. </p>
+       <p>Vorschlag für Standardwerte: Berechnung des Volumen des Güllelagers mittels Güllenanfall nach GRUDAF (Verdünnung 1:1; Lagerdauer: 5 Monate für Talregion, 6 Monate für Hügelregion und 7 Monate für Bergregion)</p>
+    +++fr
+       <p>Mentionner le volume du stock de lisier sans compter les caniveaux sous les grilles ni les canaux sous les sols perforés des stabulations (p.ex. couloirs de déplacement et places d'affouragement perforés) </p>
+       <p>Proposition de valeur standard: calcul du volume du stock de lisier à l'aide de la production de lisier d'après Grudaf (dilution 1:1; durée de stockage: 5 mois pour les régions de plaine, 6 pour les régions de collines et 7 pour les régions de montagne)</p>
+
++depth
+  type  = float
+  validator = between(0,7);
+  ++labels 
+    en = Depth of slurry store
+    de = Tiefe des Güllelagers
+    fr = Profondeur du stock de lisier
+  ++units 
+    en = m
+  ++description
+    Depth of slurry store.
+  ++help
+    +++en
+       <p>Standard value for Switzerland 2.5 m</p>
+    +++de
+       <p>Vorschlag für Standardwert: 2.5 m</p>
+    +++fr
+       <p>Proposition de valeur standard: 2.5 m</p>
+
++mixing_frequency
+  models = SHL
+  type = enum
+#  default_calc = 7_to_12_times_per_year 
+  ++enum
+    +++at_most_2_times_per_year
+       en = at_most_2_times_per_year
+       de = maximal_2_mal_jährlich
+       fr = au_maximum_2_fois_par_an
+       it = at_most_2_times_per_year
+    +++3_to_6_times_per_year
+       en = 3_to_6_times_per_year
+       de = 3_bis_6_mal_pro_Jahr
+       fr = 3_à_6_fois_par_an
+       it = 3_to_6_times_per_year
+    +++7_to_12_times_per_year
+       en = 7_to_12_times_per_year
+       de = 7_bis_12_mal_pro_Jahr
+       fr = 7_à_12_fois_par_an
+       it = 7_to_12_times_per_year
+    +++13_to_20_times_per_year
+       en = 13_to_20_times_per_year
+       de = 13_bis_20_mal_pro_Jahr
+       fr = 13_à_20_fois_par_an
+       it = 13_to_20_times_per_year
+    +++21_to_30_times_per_year
+       en = 21_to_30_times_per_year
+       de = 21_bis_30_mal_pro_Jahr
+       fr = 21_à_30_fois_par_an
+       it = 21_to_30_times_per_year
+    +++more_than_30_times_per_year
+       en = more_than_30_times_per_year
+       de = mehr_als_30_mal_pro_Jahr
+       fr = plus_que_30_fois_par_an
+       it = more_than_30_times_per_year
+  ++labels 
+    en = Frequency of slurry mixing
+    de = Häufigkeit Aufrühren des Güllelagers
+    fr = Fréquence de brassage du stock de lisier par an
+  ++units 
+    en = -
+  ++description
+    Frequency of mixing of slurry store.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: 7 to 12 times per year</p>
+    +++de
+       <p>Vorschlag für Standardwert: 7 bis 12 mal pro Jahr</p>
+    +++fr
+       <p>Proposition de valeur standard: 7-12 fois par an</p>
+
+
+
+*** technical ***
+
++c_mixing_at_most_2_times_per_year
+  value =  0.9
+  ++units 
+    en = -
+  ++description
+    Correction for mixingfrequency in slurry storage. 
+    Based on DeBode(1990), Sommer et al.(1993), Menzi et al. (1997a)
+
++c_mixing_1_to_2_times_per_year
+  value =  0.9
+  ++units 
+    en = -
+  ++description
+    Correction for mixingfrequency in slurry storage. 
+    Based on DeBode(1990), Sommer et al.(1993), Menzi et al. (1997a)
+
++c_mixing_3_to_6_times_per_year
+  value =  0.95
+  ++units 
+    en = -
+  ++description
+    Correction for mixingfrequency in slurry storage. 
+    Based on DeBode(1990), Sommer et al.(1993), Menzi et al. (1997a)
+
++c_mixing_7_to_12_times_per_year
+  value =  1
+  ++units 
+    en = -
+  ++description
+    Correction for mixingfrequency in slurry storage. 
+    Default or Basis value
+
++c_mixing_13_to_20_times_per_year
+  value =  1.1
+  ++units 
+    en = -
+  ++description
+    Correction for mixingfrequency in slurry storage. 
+    Empirical Estimation Reidy/Menzi
+
++c_mixing_21_to_30_times_per_year
+  value =  1.2
+  ++units 
+    en = -
+  ++description
+    Correction for mixingfrequency in slurry storage. 
+    Empirical Estimation Reidy/Menzi 
+
+
++c_mixing_more_than_30_times_per_year
+  value =  1.3
+  ++units 
+    en = -
+  ++description
+    Correction for mixingfrequency in slurry storage.  
+
+
+
+*** external ***
+
++Slurry::EFLiquid
+
+*** output ***
+
++c_mixing
+  print = 20
+  ++units 
+    en = -
+  ++description
+    Correction factor for number of mixing frequency in storage, accoording to 
+    selected levels.
+  ++formula
+    my $mixing = In(mixing_frequency) // '7_to_12_times_per_year';
+    return $TE->{"c_mixing_$mixing"};
+     
++surface_area
+  print = 15
+  label = Surface area of slurry storage
+  type  = float
+  ++units 
+    en = m2
+  ++description
+    Surface area of slurry storage. 
+  ++formula
+    if (not defined In(depth) or In(depth) <= 0) {
+        return 0;
+    }
+    else {
+        return In(volume) / In(depth); 
+    }
+
++nh3_nliquid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from slurry storage.
+  ++formula
+    Val(ef_liquid, Slurry::EFLiquid) * Out(surface_area) * Out(c_mixing)
+    * Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;
+
++volume
+  ++units  
+    en = m3
+  ++description
+    Volume of Storage.
+  ++formula
+    In(volume)
