@@ -53,13 +53,13 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Number of dairy cows in barn.
   ++help
-    +++en 
+    +++en
        <p>Actual number of animals in the barn.</p>
-    +++de 
+    +++de
        <p>Tatsächliche Anzahl Tiere im Stall.</p>
-    +++fr 
+    +++fr
        <p>Nombre effectif d'animaux dans la stabulation.</p>
-        
+
 +inp_n_excretion
   models = SHL
   type = text
@@ -69,12 +69,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = N excretion for dairy cows
     de = N Ausscheidung
     fr = Excrétions azotées
-  ++units 
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual standard N excretion for a dairy cow 
+    Annual standard N excretion for a dairy cow
   ++help
     +++en
        <p>If "Standard" is selected the standard value for the
@@ -87,8 +87,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
           Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
           die Düngung landwirtschaftlicher Kulturen in der Schweiz /
           GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>      
-    +++de 
+          pp. 4/1-4/23.</p>
+    +++de
        <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD
           2017 (Richner et al., 2017) verwendet. Bei Eingabe einer Zahl kann der Wert für die
           Stickstoffausscheidung selbst gewählt werden.</p>
@@ -116,7 +116,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion
   value = 112
-  ++units 
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -134,8 +134,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +feed_influence_on_Nsol
   value = 1
-  ++units 
-    en = kg Nsol/kg N 
+  ++units
+    en = kg Nsol/kg N
   ++description
     Proportion of N (calculated from feed ration correction) excreted as
     Nsol. Derived from e.g. Peterson et al. (1998).
@@ -155,7 +155,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++formula
     my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+#6    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     if ( ($exc < 0.25 * Tech(standard_N_excretion)) or ($exc > 1.75 * Tech(standard_N_excretion))) {
         writeLog({
             en => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
@@ -163,13 +164,13 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
             fr => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
         });
     }
-    $exc *= Val(cmilk_yield,   Excretion::CMilk)
+    $exc = $exc * Val(cmilk_yield,   Excretion::CMilk)
           * Val(c_feed_ration, Excretion::CFeed)
           * In(dairy_cows);
     return $exc;
 
   ++description
-    Annual total N excreted by a specified number of animals. 
+    Annual total N excreted by a specified number of animals.
 
 +n_excretion_animal
   print = 7
@@ -179,12 +180,13 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++formula
     my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
-    $exc * 
-    Val(cmilk_yield, Excretion::CMilk) *
-    Val(c_feed_ration, Excretion::CFeed);
+#6    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
+    return $exc *
+        Val(cmilk_yield, Excretion::CMilk) *
+        Val(c_feed_ration, Excretion::CFeed);
   ++description
-    Annual mean total N excreted per animal. 
+    Annual mean total N excreted per animal.
 
 +n_excretion_test
   print = 7
@@ -194,22 +196,24 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
      fr = kg N/an
   ++formula
     my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+#6    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     return $exc;
-    
-  ++description
-    Annual mean total N excreted per animal. 
 
-+tan_excretion        
-  print = 7 
+  ++description
+    Annual mean total N excreted per animal.
+
++tan_excretion
+  print = 7
   ++units
     en = kg N/year
     de = kg N/Jahr
-    fr = kg N/an       
+    fr = kg N/an
   ++formula
      my $exc = Tech(standard_N_excretion);
-     $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
-     (Tech(share_Nsol) * $exc
+#6     $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
+    (Tech(share_Nsol) * $exc
                        * Val(cmilk_yield, Excretion::CMilk)
                        * In(dairy_cows)
      ) +
@@ -217,7 +221,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
                                 * Val(cmilk_yield, Excretion::CMilk)
      ) * Tech(feed_influence_on_Nsol);
   ++description
-    Annual soluble N excreted by a specified number of animals. 
+    Annual soluble N excreted by a specified number of animals.
 
 +dairy_cows
   print = 9
@@ -230,7 +234,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +animalcategory
   print = 9
-  ++units  
+  ++units
     en = -
   ++description
     Animal category (needed only for Detail Report)

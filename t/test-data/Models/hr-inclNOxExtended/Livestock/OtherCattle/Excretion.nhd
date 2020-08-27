@@ -8,13 +8,13 @@ taxonomy = Livestock::OtherCattle::Excretion
 
 +short
 
-Computes the annual N excretion of cattle (apart from dairy cows) as a 
+Computes the annual N excretion of cattle (apart from dairy cows) as a
 function of the feed ration.
 
 +description
 
 This process calculates the annual N excretion of a number of cattle as a function of the supplied feed ration.
-The standard N excretion was taken from the official Swiss fertilizer 
+The standard N excretion was taken from the official Swiss fertilizer
 guidelines. The Nsol content of the excreta is based on e.g. Peterson et al.
 (1998) or Burgos et al. (2005). These values were compiled on the basis of
 official feeding recommendations (Flisch et al. 2009) by H. Menzi. A detailed
@@ -88,7 +88,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = Animal category
     de = Tierkategorie
     fr = Catégorie d'animaux
-  ++units  
+  ++units
     en = -
   ++description
     Animal category (suckling cows, 1 year old heifers, 2 years old heifers, 3 years old heifers, fattening calves, calves of suckling cows, beef cattle).
@@ -113,16 +113,16 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = Number of animals
     de = Anzahl Tiere
     fr = Nombre d'animaux
-  ++units  
+  ++units
     en = -
   ++description
     Number of animals for the selected type in barn.
   ++help
-    +++en 
+    +++en
        <p></p>
-    +++de 
+    +++de
        <p></p>
-    +++fr 
+    +++fr
        <p></p>
 
 +inp_n_excretion
@@ -134,14 +134,14 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = N excretion
     de = N Ausscheidung
     fr = Excrétions azotées
-  ++units 
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual standard N excretion for a dairy cow 
+    Annual standard N excretion for a dairy cow
   ++help
-    +++en 
+    +++en
        <p>If "Standard" is selected the standard value for the
           nitrogen excretion according to PRIF 2017 is applied (Richner
           et al., 2017) is applied (PRIF: Principles of Agricultural Crop
@@ -153,7 +153,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       landwirtschaftlicher Kulturen in der Schweiz / GRUD
       2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
       pp. 4/1-4/23.</p>
-+++de 
++++de
        <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD
           2017 (Richner et al., 2017) verwendet. Bei Eingabe einer Zahl kann der Wert für die
           Stickstoffausscheidung selbst gewählt werden.</p>
@@ -162,8 +162,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
           Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
           die Düngung landwirtschaftlicher Kulturen in der Schweiz /
           GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>      
-    +++fr 
+          pp. 4/1-4/23.</p>
+    +++fr
        <p>Si "Standard" est introduisé, la valeur de référence pour les excrétions azotées d'après PRIF 2017 (Richner et al., 2017) est utilisée (PRIF: « Principes de la fertilisation des cultures agricoles en Suisse » ). Si un nombre est introduisé une valeur  pour les excrétions azotées peut être déterminée par l'utilisateur/-trice.</p>
       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/23.</p>
 
@@ -173,7 +173,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_heifers_1st_yr
   value = 25
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -183,7 +183,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_heifers_2nd_yr
   value = 40
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -193,7 +193,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_heifers_3rd_yr
   value = 55
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -203,7 +203,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_beef_cattle
   value = 33
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -213,7 +213,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_fattening_calves
   value = 13
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -224,7 +224,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_suckling_cows
   value = 80
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -234,7 +234,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_suckling_cows_lt600
   value = 72
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -244,7 +244,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_suckling_cows_gt700
   value = 95
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -254,7 +254,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_calves_suckling_cows
   value = 34
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -266,7 +266,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_heifers_1st_yr
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for 1 year old heifers. Derived from e.g.
@@ -274,7 +274,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_heifers_2nd_yr
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for 2 years old heifers. Derived from e.g.
@@ -282,7 +282,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_heifers_3rd_yr
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for 3 years old heifers. Derived from e.g.
@@ -290,7 +290,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_beef_cattle
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for beefcattle. Derived from e.g.
@@ -298,7 +298,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_fattening_calves
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for fatteningcalves. Derived from e.g.
@@ -306,15 +306,15 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_suckling_cows
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for suckling cows. Derived from e.g.
     Peterson et al. (1998) or Burgos et al. (2005).
-    
+
 +share_Nsol_suckling_cows_lt600
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for suckling cows. Derived from e.g.
@@ -322,7 +322,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_suckling_cows_gt700
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for suckling cows. Derived from e.g.
@@ -331,7 +331,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_calves_suckling_cows
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for suckling cows. Derived from e.g.
@@ -344,7 +344,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion
   print = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -353,9 +353,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Flisch et al. (2009).
   ++formula
     my $cat = In(animalcategory);
-    my $key = "standard_N_excretion_$cat";
+#6    my $key = "standard_N_excretion_$cat";
+    my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
-    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+#6    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     if ( ($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
         writeLog({
             en => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
@@ -367,54 +369,54 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol
   print = 7
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for a specific cattle category. Derived from e.g.
     Peterson et al. (1998) or Burgos et al. (2005).
   ++formula
-#    my $key = "share_Nsol_" . In(animalcategory);
-#    return Tech($key);
-   return $TE->{'share_Nsol_'.In(animalcategory)};
+    my $key = "share_Nsol_" . In(animalcategory);
+#6    return Tech($key);
+    return $TE->{$key};
 
 
 +n_excretion
   print = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual total N excreted by an animalgroup of selected cattle category.
   ++formula
-    Out(standard_N_excretion) * In(animals); 
-   
+    Out(standard_N_excretion) * In(animals);
+
 
 +n_excretion_animal
   print = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual mean total N excreted of an animal of selected cattle category.
   ++formula
-    Out(standard_N_excretion); 
+    Out(standard_N_excretion);
 
-+tan_excretion	
++tan_excretion
   print = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual soluble N excreted by an animalgroup of selected cattle category.	
+    Annual soluble N excreted by an animalgroup of selected cattle category.
   ++formula
      Out(share_Nsol) * Out(n_excretion);
 
 +animals
   print = 9
-  ++units  
+  ++units
     en = -
   ++description
     Number of animals for the selected cattle category in barn.
@@ -423,7 +425,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +animalcategory
   print = 9
-  ++units  
+  ++units
     en = -
   ++description
     Animal category
