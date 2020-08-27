@@ -527,7 +527,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Walther et al. (2001).
   ++formula
     my $exc = Tech(standard_N_excretion_fattening_pigs);
-#6    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
     $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     if ( ($exc < 0.25 * Tech(standard_N_excretion_fattening_pigs)) or ($exc > 1.75 * Tech(standard_N_excretion_fattening_pigs)) ) {
         writeLog({

@@ -155,7 +155,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++formula
     my $exc = Tech(standard_N_excretion);
-#6    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
     $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     if ( ($exc < 0.25 * Tech(standard_N_excretion)) or ($exc > 1.75 * Tech(standard_N_excretion))) {
         writeLog({
@@ -180,7 +179,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++formula
     my $exc = Tech(standard_N_excretion);
-#6    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
     $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     return $exc *
         Val(cmilk_yield, Excretion::CMilk) *
@@ -196,7 +194,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
      fr = kg N/an
   ++formula
     my $exc = Tech(standard_N_excretion);
-#6    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
     $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     return $exc;
 
@@ -211,7 +208,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++formula
      my $exc = Tech(standard_N_excretion);
-#6     $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
     $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     (Tech(share_Nsol) * $exc
                        * Val(cmilk_yield, Excretion::CMilk)

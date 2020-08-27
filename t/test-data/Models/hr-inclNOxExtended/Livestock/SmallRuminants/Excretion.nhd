@@ -214,10 +214,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Flisch et al. (2009).
   ++formula
     my $cat = In(animalcategory);
-#6    my $key = "standard_N_excretion_$cat";
     my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
-#6    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
     $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     if ( ($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
         writeLog({
@@ -237,7 +235,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Peterson et al. (1998) or Burgos et al. (2005).
   ++formula
     my $key = "share_Nsol_" . In(animalcategory);
-#6    return Tech($key);
     return $TE->{$key};
 
 +n_excretion
