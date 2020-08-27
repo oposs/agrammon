@@ -1,0 +1,82 @@
+
+*** general ***
+
+author   = Agrammon Group 
+date     = 2018-10-06
+taxonomy = ReportConfig
+gui      = ReportConfig,ReportConfig,ReportConfig,ReportConfig
+
++short
+
+Config infos for reporting.
+
++description 
+
+Config infos for reporting.
+
+*** output ***
+
++animalcategory_order
+  print=never
+  ++units
+    en = -
+  ++description
+    Helper for DetailReport
+  ++formula
+    return {
+        DairyCow => {
+            DairyCow => 0,
+        },
+        OtherCattle => {
+            suckling_cows_lt600  => 0,
+            suckling_cows        => 1,
+            suckling_cows_gt700  => 2,
+            heifers_1st_yr       => 3,
+            heifers_2nd_yr       => 4,
+            heifers_3rd_yr       => 5,
+            fattening_calves     => 6,
+            calves_suckling_cows => 7,
+            beef_cattle          => 8,
+        },
+        Pig => {
+            nursing_sows              => 0,
+            dry_sows                  => 1,
+            gilts                     => 2,
+            weaned_piglets_up_to_25kg => 3,
+            boars                     => 4,
+        },
+        FatteningPigs => {
+            FatteningPigs => 0,
+        },
+        Poultry => {
+            layers        => 0,
+            growers       => 1,
+            broilers      => 2,
+            turkeys       => 3,
+            other_poultry => 4,
+        },
+        Equides => {
+            horses_older_than_3yr   => 0, 
+            horses_younger_than_3yr => 1,
+            mules                   => 2,
+            ponies_and_asses        => 3,
+        },
+        SmallRuminants => {
+            fattening_sheep => 0,
+            milksheep       => 1,
+            goats           => 2,
+        },
+        RoughageConsuming => {
+            fallow_deer             => 0,
+            red_deer                => 1,
+            wapiti                  => 2,
+            bison_older_than_3yr    => 3,
+            bison_younger_than_3yr  => 4,
+            lama_older_than_2yr     => 5,
+            lama_younger_than_2yr   => 6,
+            alpaca_older_than_2yr   => 7,
+            alpaca_younger_than_2yr => 8,
+            rabbit_doe_kits         => 9,
+            rabbit_young            => 10,
+        },
+    };

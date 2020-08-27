@@ -1,0 +1,97 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-04-18
+taxonomy = Livestock::DairyCow::Housing::Type::Loose_Housing_Deep_Litter
+
++short
+
+Describes correction factors for the loose housing deep litter system for dairy cows.
+
++description
+ 
+ This process describes the correction factors for the loose housing deep litter system for dairy cows such as the housing specific emission rate, the area per animal correction, the liquid share and solid share.
+
+\subsubsection{References:}
+ UNECE 2007. Guidance document on control techniques for preventing and abating 
+ emissions of ammonia. UNECE executive body for the 
+ convention on long-range transboundary air pollution, Working Group on 
+ Strategies and Review, EB.AIR/WH.5/2007/13/ 16 July 2007, Genf. 35p.
+
+
+*** input ***
+
++ignore
+  type  = enum{ignore}
+  ++labels 
+    en = ignore
+    de = ignorieren
+  ++units  
+    en = -
+  ++description
+    Just a work around for modules without input parameters.
+
+*** technical ***
+
++er
+  value = 0.183
+  ++units  
+    en = -
+  ++description
+    Emission rate for the loose housing deep litter system for dairy cows.  According to the consensus obtained in the workshop at ART Tänikon 02/11/07: 11% Ntot; convered using Nsol of 60% and the emission rate of 18.3% based on TAN. Reference value UNECE(2007): 11 kg NH3 = 8% TAN.
+    
++share_liquid
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    For the loose housing deep litter system 100% of the manure goes into
+    the solid manure storage/application.
+
++k_area
+  value = .5
+  ++units  
+    en = -
+  ++description
+   According to the consensus obtained in the workshop at ART Tänikon 02/11/07: it is assumed that additional surfaces are entirely used since barriers are hardly fea-sible. The emission is increased by 5% per 10% of additional surfaces up to a maximum of 50% additional surface.
+
+
+*** external ***
+
+*** output ***
+    
++er_housing
+  print = 15
+  ++units  
+    en = -
+  ++description
+    Emission rate for specific housing type.
+  ++formula
+    Tech(er);
+
++share_liquid
+  print = 15
+  ++units  
+    en = -
+  ++description
+    Part of Ntot flowing into liquid storage for selected housing type.
+  ++formula
+    Tech(share_liquid);
+
++share_solid
+  print = 15
+  ++units  
+    en = -
+  ++description
+     Share of solid manure of Ntot for selected housing type.
+  ++formula
+    1-Tech(share_liquid);
+
++k_area
+  print = 15
+  ++units  
+    en = -
+  ++description
+    Correction factor for area per animal.
+  ++formula
+    Tech(k_area);

@@ -1,0 +1,66 @@
+# äöü
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-05-07
+taxonomy = Total
+
++short
+
+  Summarize the Annual emissions from an Farm.
+  
++description 
+
+  This process summarizes the contribution of the individual Modules 
+  to the total NH3 emission from a farm.
+
+*** external ***
+
++Livestock
++Storage
++Application
++SummaryByAnimalCategory
++DetailsByAnimalCategory
++PlantProduction
+
+*** output ***
+
++nh3_nanimalproduction
+  format= %.0f
+  print = LivestockTotal
+  ++labels
+    sort = 890
+    en = Total Animalproduction NH3-Emissions
+    de = Total Tierproduktion NH3-Emission
+    fr = Emission de NH3 Total Production animale
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from farm.
+  ++formula
+    Val(nh3_napplication, Application) +
+    Val(nh3_nstorage, Storage) +
+    Val(nh3_nlivestock, Livestock) 
+
++nh3_ntotal
+  format= %.0f
+  print = FullTotal
+  ++labels
+    sort = 999
+    en = Total NH3-Emissions
+    de = Total NH3-Emission
+    fr = Emission de NH3 Total
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from farm.
+  ++formula
+    Val(nh3_napplication, Application) +
+    Val(nh3_nstorage, Storage) +
+    Val(nh3_nlivestock, Livestock) +
+    Val(nh3_nplantproduction, PlantProduction) 
+

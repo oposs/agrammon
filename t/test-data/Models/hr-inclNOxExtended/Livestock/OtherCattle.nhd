@@ -1,0 +1,496 @@
+# äöü
+*** general ***
+author    = Agrammon Group
+date      = 2017-07-12
+taxonomy  = Livestock::OtherCattle
+instances = multi
+gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production animale::Autres bovins,Livestock::Other cattle
+
++short
+  Collects the annual emission of NH3 and the N flux for cattle 
+ (apart from dairy cows).
+
++description 
+  This process summarizes the annual emission of NH3 for cattle (apart from dairy cows) 
+  from housing, yard and grazing. Further it summarizes the annual N flux from housing and yard to the storage for cattle.
+*** input ***
+
++ignore
+  type  = enum{ignore}
+  ++labels 
+    en = ignore
+  ++units  
+    en = -
+  ++description
+    Just a work around for modules without input parameters.
+
+
+*** technical ***
+
++er_n2_solid_Slurry
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_solid_Slurry_Plus_Solid_Manure
+  value = 0.025
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_solid_Solid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_liquid_Slurry
+  value = 0.02
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_liquid_Slurry_Plus_Solid_Manure
+  value = 0.02
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_liquid_Solid
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
+
+
++er_no_solid_Slurry
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_solid_Slurry_Plus_Solid_Manure
+  value = 0.025
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_solid_Solid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_liquid_Slurry
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_liquid_Slurry_Plus_Solid_Manure
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_liquid_Solid
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
+
+
+
++er_n2o_solid_Slurry
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_solid_Slurry_Plus_Solid_Manure
+  value = 0.025
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_solid_Solid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_liquid_Slurry
+  value = 0.02
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_liquid_Slurry_Plus_Solid_Manure
+  value = 0.02
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_liquid_Solid
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
+*** external ***
+
++OtherCattle::Excretion
++OtherCattle::Housing::Type
++OtherCattle::Housing
++OtherCattle::Yard
++OtherCattle::Grazing
+
+
+*** output ***
+
++n_check
+  print=all
+  ++units 
+    en = -
+  ++description
+   Check if number of animals <= number of animal places.
+  ++formula
+    if (  Val(dimensioning_barn, OtherCattle::Housing::Type) < Val(animals, OtherCattle::Excretion) ) {
+        writeLog({en=>"The number of available animal places must be equal or higher than the number of animals.",
+                  de=>"Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+                  fr=>"Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+                 }); 
+    }
+    return;
+
++animalcategory
+  print = 7
+  ++units  
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, OtherCattle::Excretion);
+
++n_excretion
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by cattle.
+  ++formula
+    Val(n_excretion, OtherCattle::Excretion);  
+
++n_from_cattle
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from cattle housing and yard.
+  ++formula
+       Val(n_outhousing, OtherCattle::Housing) +
+        Val(n_outyard, OtherCattle::Yard); 
+
++tan
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annnual N flux as TAN from cattle housing and yard.
+  ++formula
+       my $tan =  Val(tan_outhousing, OtherCattle::Housing) +
+                  Val(tan_outyard, OtherCattle::Yard);
+       my $cat = Val(animalcategory, OtherCattle::Excretion);
+#       say "******tan(OtherCattle, $cat)=", $tan;
+       return $tan;
+
++n_liquid_from_cattle
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from cattle housing and yard, liquid fraction.
+  ++formula
+       Val(n_outhousing_liquid, OtherCattle::Housing) +
+        Val(n_outyard_liquid, OtherCattle::Yard);
+
++tan_liquid
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from cattle housing and yard, liquid fraction.
+  ++formula
+        my $tan_liquid = Val(tan_outhousing_liquid, OtherCattle::Housing) +
+                         Val(tan_outyard_liquid, OtherCattle::Yard);
+        my $cat = Val(animalcategory, OtherCattle::Excretion);
+#        say "******tan_liquid(OtherCattle, $cat)=", $tan_liquid;
+        return $tan_liquid;
+                
+        
++n_solid_from_cattle
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from cattle housing and yard, solid fraction.
+  ++formula
+       Val(n_outhousing_solid, OtherCattle::Housing) +
+        Val(n_outyard_solid, OtherCattle::Yard);
+
++tan_solid
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from cattle housing and yard, solid fraction.
+  ++formula
+       my $tan_solid = Val(tan_outhousing_solid, OtherCattle::Housing) +
+                 Val(tan_outyard_solid, OtherCattle::Yard);
+        my $cat = Val(animalcategory, OtherCattle::Excretion);
+#        say "******tan_liquid(OtherCattle, $cat)=", $tan_solid;
+        return $tan_solid;
+                 
+
++nh3_ncattle
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from cattle housing, yard and grazing (production).
+  ++formula
+     Val(nh3_nhousing, OtherCattle::Housing) +
+     Val(nh3_nyard, OtherCattle::Yard)       +
+     Val(nh3_ngrazing, OtherCattle::Grazing);
+
+########### Other Voltaile N Flux
+
+
++er_n2_nsolid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from cattles housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, OtherCattle::Housing::Type) ) {
+            return Tech(er_n2_solid_Slurry)                    when 'Tied_Housing_Slurry';
+            return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2_solid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
+      };
+
++er_no_nsolid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from cattles housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, OtherCattle::Housing::Type) ) {
+            return Tech(er_no_solid_Slurry)                    when 'Tied_Housing_Slurry';
+            return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_no_solid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_no_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
+      };
+
++er_n2o_nsolid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from cattles housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, OtherCattle::Housing::Type) ) {
+            return Tech(er_n2o_solid_Slurry)                    when 'Tied_Housing_Slurry';
+            return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2o_solid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2o_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
+      };
+
++er_n2_nliquid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from cattles housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, OtherCattle::Housing::Type) ) {
+            return Tech(er_n2_liquid_Slurry)                    when 'Tied_Housing_Slurry';
+            return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
+      };
+
++er_no_nliquid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from cattles housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, OtherCattle::Housing::Type) ) {
+            return Tech(er_no_liquid_Slurry)                    when 'Tied_Housing_Slurry';
+            return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_no_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_no_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
+      };
+
++er_n2o_nliquid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from cattles housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, OtherCattle::Housing::Type) ) {
+            return Tech(er_n2o_liquid_Slurry)                    when 'Tied_Housing_Slurry';
+            return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2o_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+            return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+            return Tech(er_n2o_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+            default { return 0; }
+      };
+
+
++n2_nsolid
+  print = 5
+  ++labels
+     en = housing, yard and storage cattle N2-emissions
+        de = Weide, Stall und Laufhof Übriges Rindvieh N2-Emission
+        fr = Autres bovins Emissions de N2 pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from cattle housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, OtherCattle::Housing) * (1-Val(share_liquid, OtherCattle::Housing::Type) ) 
+     ) * Out(er_n2_nsolid);
+
++no_nsolid
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NO emission from cattle housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, OtherCattle::Housing) * (1-Val(share_liquid, OtherCattle::Housing::Type) ) 
+     ) * Out(er_no_nsolid);
+
++n2o_nsolid
+  print = 5  print = 7
+  ++labels
+    en = housing, yard and storage cattle N2O-emissions
+    de = Stall, Laufhof und Lager andere Rinder N2O-Emission
+    fr = Autres bovins Emissions de N2O pâturage, l'étable et parcours extérieur
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2o emission from cattle housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, OtherCattle::Housing) * (1-Val(share_liquid, OtherCattle::Housing::Type) ) 
+     ) * Out(er_n2o_nsolid);
+
++n2_nliquid
+  print = 5
+  ++labels
+     en = housing, yard and storage cattle N2-emissions
+        de = Weide, Stall und Laufhof Übriges Rindvieh N2-Emission
+        fr = Autres bovins Emissions de N2 pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2 emission from cattle housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, OtherCattle::Housing) * Val(share_liquid, OtherCattle::Housing::Type)  +
+       Val(n_into_yard, OtherCattle::Yard)
+     ) * Out(er_n2_nliquid);
+
++no_nliquid
+  print = 5
+  ++labels
+    en = housing, yard and storage cattle NO-emissions
+        de = Weide, Stall und Laufhof Rinder NO-Emission
+        fr = Autres bovins Emissions de NO pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NO emission from cattle housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, OtherCattle::Housing) * Val(share_liquid, OtherCattle::Housing::Type)  +
+       Val(n_into_yard, OtherCattle::Yard)
+     ) * Out(er_no_nliquid); 
+
++n2o_nliquid
+  print = 5
+  ++labels
+    en = housing, yard and storage cattle N2O-emissions
+    de = Weide, Stall und Laufhof Rinder N2O-Emission
+    fr = Autres bovins Emissions de N2O pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2o emission from cattle housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, OtherCattle::Housing) * Val(share_liquid, OtherCattle::Housing::Type)  +
+       Val(n_into_yard, OtherCattle::Yard)
+     ) *  Out(er_n2o_nliquid);

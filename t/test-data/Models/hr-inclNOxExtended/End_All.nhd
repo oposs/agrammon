@@ -1,0 +1,320 @@
+# äöü
+*** general ***
+
+author   = Agrammon Group 
+date     = 2009-04-22
+taxonomy = End
+
++short
+
+Dummy Module marking the startpoint for the Model Parser
+
++description 
+
+
+
+*** external ***
+
++Total
++SharesByAnimalCategory
+
+*** output ***
+
+*** results ***
+
++DetailsSorted
+      type = report
+  selector = {en: Emission and flux details (in kg N per year),\
+              de: Emissionen und Flüsse detailliert (in kg N pro Jahr),\
+	      fr: Emission et flux en detail (en kg de N par année)}
+      data = {\
+              DetailsEmissionsNH3,  en: Details NH3 emissions,  de: Details NH3 Emissionen,  fr: Détails NH3 emissions;\
+              DetailsEmissionsN2O,  en: Details N2O emissions,  de: Details N2O Emissionen,  fr: Détails N2O emissions;\
+              DetailsEmissionsNO,   en: Details NO emissions,   de: Details NO Emissionen,   fr: Détails NO emissions;\
+              DetailsEmissionsN2,   en: Details N2 emissions,   de: Details N2 Emissionen,   fr: Détails N2 emissions;\
+              DetailsFluxNtot,      en: Details Ntot flux,      de: Details Ntot Fluss,      fr: Détails Ntot flux;\
+              DetailsFluxTAN,       en: Details TAN flux,       de: Details TAN Fluss,       fr: Détails TAN flux;\
+             }
+
+#              DetailsFluxN2O,       en: Details N2O flux,       de: Details N2O Fluss,      fr: Détails N2O flux;\
+#              DetailsFluxNO,        en: Details NO flux,        de: Details NO Fluss,      fr: Détails NO flux;\
+#              DetailsFluxN2,        en: Details N2 flux,        de: Details N2 Fluss,      fr: Détails N2 flux;\
+#              DetailsStorageEmissionsNH3,  en: Details NH3 emissions,  de: Details NH3 Emissionen,  fr: Détails NH3 emissions;\
+#              DetailsStorageEmissionsN2O,  en: Details N2O emissions,  de: Details N2O Emissionen,  fr: Détails N2O emissions;\
+#              DetailsStorageEmissionsNO,   en: Details NO emissions,   de: Details NO Emissionen,   fr: Détails NO emissions;\
+#              DetailsStorageEmissionsN2,   en: Details N2 emissions,   de: Details N2 Emissionen,   fr: Détails N2 emissions;\
+#              DetailsStorageEmissionsNtot, en: Details Ntot emissions ???, de: Details Ntot Emissionen ???, fr: Détails Ntot emissions;\
+
+
++DetailsEmissions
+      type = report
+  selector = {en: Emission details (in kg N per year),\
+              de: Emissionen detailliert (in kg N pro Jahr),\
+	      fr: Emission en detail (en kg de N par année)}
+      data = {\
+              DetailsEmissionsNH3,  en: Details NH3 emissions,  de: Details NH3 Emissionen,  fr: Détails NH3 emissions;\
+              DetailsEmissionsN2O,  en: Details N2O emissions,  de: Details N2O Emissionen,  fr: Détails N2O emissions;\
+              DetailsEmissionsNO,   en: Details NO emissions,   de: Details NO Emissionen,   fr: Détails NO emissions;\
+              DetailsEmissionsN2,   en: Details N2 emissions,   de: Details N2 Emissionen,   fr: Détails N2 emissions;\
+             }
+
++DetailsFluxes
+      type = report
+  selector = {en: Flux details (in kg N per year),\
+              de: Flüsse detailliert (in kg N pro Jahr),\
+	      fr: Flux en detail (en kg de N par année)}
+      data = {\
+              DetailsFluxNtot,      en: Details Ntot flux,      de: Details Ntot Fluss,      fr: Détails Ntot flux;\
+              DetailsFluxTAN,       en: Details TAN flux,       de: Details TAN Fluss,       fr: Détails TAN flux;\
+             }
+
++DetailsFluxNtot
+      type = report
+  selector = {en: Flux Ntot details (in kg N per year),\
+              de: Flüsse Ntot detailliert (in kg N pro Jahr),\
+	      fr: Flux Ntot en detail (en kg de N par année)}
+      data = {\
+              DetailsFluxNtot,  en: Details Ntot flux,         de: Details Ntot Fluss,                fr: Détails Ntot flux;\
+              RemainCattle,     en: DairyCowCattle Ntot flux,  de: DairyCowCattle Details Ntot Fluss, fr: Détails Ntot flux;\
+             }
+
++DetailsFluxTAN
+      type = report
+  selector = {en: Flux TAN details (in kg N per year),\
+              de: Flüsse TAN detailliert (in kg N pro Jahr),\
+	      fr: Flux TAN en detail (en kg de N par année)}
+      data = {\
+              DetailsFluxTAN,       en: Details TAN flux,       de: Details TAN Fluss,       fr: Détails TAN flux;\
+             }
+
+### +Details
+###       type = report
+###   selector = {en: Details by animal category (in kg N per year),\
+###               de: Details nach Tierart (in kg N pro Jahr),\
+### 	      fr: Details par catégorie d'animaux (en kg de N par année)}
+###       data = {\
+###               DetailsAll, en: Details All Animal Categories, de: Details alle Tierkategorien, fr: Détails tout les animeaux;\
+###               DairyCowSummary, en: Summary Dairy cows, de: Zusammenfassung Milchkühe, fr: Résumé Vâches laitières;\
+###               DetailsDairyCow, en: Details Dairy Cows, de: Details Milchkühe, fr: Détails Vâches laitières;\
+###               OtherCattleSummary, en: Summary Other cattle, de: Zusammenfassung Übriges Rindvieh, fr: Résumé Autres bovins;\
+###               DetailsOtherCattle, en: Details Other Cattle, de: Details Übriges Rindvieh, fr: Détails Autres bovins;\
+###               PigSummary, en: Summary Pigs, de: Zusammenfassung Schweine, fr: Résumé Porcs;\
+###               DetailsPig, en: Details Pigs, de: Details Schweine, fr: Détails Porcs;\
+###               PoultrySummary, en: Summary Poultry, de: Zusammenfassung Geflügel, fr: Résumé Volaille;\
+###               DetailsPoultry, en: Details Poultry, de: Details Geflügel, fr: Détails Volaille;\
+###               EquidesSummary, en: Summary Equides, de: Zusammenfassung Pferde und andere Equiden, fr: Résumé Chevaux et autres équidés;\
+###               DetailsEquides, en: Details Equides, de: Details Pferde und andere Equiden, fr: Détails Chevaux et autres équidés;\
+###               SmallRuminantSummary, en: Summary SmallRuminants, de: Zusammenfassung Kleinwiederkäuer, fr: Résumé Petits ruminants;\
+###               DetailsSmallRuminants, en: Details SmallRuminants, de: Details Kleinwiederkäuer, fr: Détails Petits ruminants;\
+###               RoughageConsumingSummary, en: Summary Roughage Consuming, de: Zusammenfassung Andere Raufutterverzehrer, fr: Résumé Autre consommant des fourrages gross;\
+###               DetailsRoughageConsuming, en: Details Other Roughage Consuming, de: Details Andere Raufutterverzehrer, fr: Détails Autre consommant des fourrages gross;\
+###               }
+
+
++KtLU
+      type = report
+  selector = {en: Berechnung Baugesuch Kanton Luzern - Ammonia emissions (in kg N per year),\
+              de: Berechnung Baugesuch Kanton Luzern - Ammoniak-Emissionen (in kg N pro Jahr),\   
+              fr: Baugesuch Kanton Luzern 0 Emissions d'ammoniaque (en kg de N par année)}
+      data = {LivestockSummary+LivestockSummaryPlus+LivestockTotal, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionSummary+PlantProductionTotal, en: Plant production, de: Pflanzenbau, fr: Production végétale;\
+              FullTotal, en: Total, de: Total, fr: Total}
+
++Summary
+      type = report
+  selector = {en: Ammonia emissions (in kg N per year) - summary,\
+              de: Ammoniak-Emissionen (in kg N pro Jahr) - Zusammenfassung,\
+	      fr: Emissions d'ammoniaque (en kg de N par année) - résumé}
+      data = {LivestockSummary+LivestockSummaryPlus+LivestockTotal, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionSummary+PlantProductionTotal, en: Plant production, de: Pflanzenbau, fr: Production végétale;\
+              FullTotal, en: Total, de: Total, fr: Total}
+
++SummaryShort
+      type = report
+  selector = {en: Ammonia emissions (in kg N per year) - summary short,\
+              de: Ammoniak-Emissionen (in kg N pro Jahr) - Kurzzusammenfassung,\
+	      fr: Emissions d'ammoniaque (en kg de N par année) - résumé minimal}
+      data = {LivestockSummary+LivestockTotal, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionSummary, en: Plant production, de: Pflanzenbau, fr: Production végétale;\
+              FullTotal, en: Total, de: Total, fr: Total}
+
++AnimalEmissions
+      type = report
+  selector = {en: Ammonia emissions (in kg N per year) for animal species - summarized,\
+              de: Ammoniak-Emissionen (in kg N pro Jahr) pro Tierkategorie - Zusammenfassung,\
+	      fr: Emissions d'ammoniaque (en kg de N par année) par catégorie d'animaux - résumé}
+     data =  {CattleSummary,  en: Cattle, de: Rindvieh, fr: Bétail bovin;\
+              PigSummary,     en: Pigs,   de: Schweine, fr: Porcs;\
+              PoultrySummary, en: Poultry, de: Geflügel, fr: Volaille;\
+              OtherSummary,   en: Other animals, de: Übrige Tierarten, fr: Autres animaux;\
+              LivestockSummary+LivestockSummaryPlus+LivestockTotal, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionSummary+PlantProductionTotal, en: Plant production, de: Pflanzenbau, fr: Production végétale;\
+              FullTotal, en: Total, de: Total, fr: Total}
+
++AnimalEmissionsDetailed
+      type = report
+  selector = {en: Ammonia emissions (in kg N per year) for animal species - detailed,\
+              de:  Ammoniak-Emissionen (in kg N pro Jahr) pro Tierkategorie - detailliert,\
+	      fr: Emissions d'ammoniaque (en kg N par année) par catégorie d'animaux - détails}
+      data = {DairyCowSummary, en: Dairy cows, de: Milchkühe, fr: Vâches laitières;\
+              OtherCattleSummary, en: Other cattle, de: Übriges Rindvieh, fr: Autres bovins;\
+              FatteningPigSummary, en: Fattening pigs, de: Mastschweine, fr: Porcs à l'engrais;\
+              OtherPigSummary, en: Other pigs, de: Zuchtschweine, fr: Porcs d'élevage;\
+              PoultrySummary,  en: Poultry, de: Geflügel, fr: Volaille;\
+              EquidesSummary, en: Equides, de: Pferde und andere Equiden, fr: Chevaux et autres équidés;\
+              SmallRuminantSummary, en: Small ruminants, de: Kleinwiederkäuer, fr: Petits ruminants;\
+              RoughageConsumingSummary, en: Summary Roughage Consuming, de: Andere Raufutterverzehrer, fr: Autre consommant des fourrages gross;\
+              LivestockSummary+LivestockSummaryPlus+LivestockTotal, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionSummary+PlantProductionTotal, en: Plant production, de: Pflanzenbau, fr: Production végétale;\
+              FullTotal, en: Total, de: Total, fr: Total}
+
++Distribution
+      type = report
+  selector = {en: Ammonia emissions in percent of the total emission,\
+              de: Ammoniak Emissionen in Prozent der Gesamtemission,\
+	      fr: Emissions d'ammoniaque en % des émissions totales}
+      data = {LivestockShare+LivestockTotalShare, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionShare+PlantProductionTotalShare, en: Plant production, de: Pflanzenbau, fr: Production végétale;\
+              FullTotalShare, en: Total, de: Total, fr: Total}
+
++DistributionAnimals
+      type = report
+  selector = {en: Ammonia emissions in percent of the total emission for animal species - summarized,\
+              de: Ammoniak Emissionen in Prozent der Gesamtemission pro Tierkategorie - Zusammenfassung,\
+	      fr: Emissions d'ammoniaque en % des émissions totales par catégorie d'animaux - résumé}
+      data = {CattleShare, en: Cattle, de: Rindvieh, fr: Bétail bovin;\
+              PigShare, en: Pigs,   de: Schweine, fr: Porcs;\
+              PoultryShare, en: Poultry, de: Geflügel, fr: Volaille;\
+              OtherShare, en: Others, de: Übrige Tierarten, fr: Autres animaux;\
+              LivestockShare+LivestockTotalShare, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionShare+PlantProdcutionTotalShare, en: Plant production, de: Pflanzenbau, fr: Production végétale;\
+              FullTotalShare, en: Total, de: Total, fr: Total}
+
++DistributionAnimalsDetailed
+      type = report
+  selector = {en: Ammonia emissions in percent of the total emission for animal species - detailed,\
+              de:  Ammoniak Emissionen in Prozent der Gesamtemission pro Tierkategorie - detailliert,\
+	      fr: Emissions d'ammoniaque en % des émissions totales par catégorie d'animaux -détails}
+      data = {DairyCowShare, en: Dairy cows, de: Milchkühe, fr: Vâches laitières;\
+              OtherCattleShare, en: Other cattle, de: Übriges Rindvieh, fr: Autres bovins;\
+              FatteningPigShare, en: Fattening pigs, de: Mastschweine, fr: Porcs à l'engrais;\
+              OtherPigShare, en: Other pigs, de: Zuchtschweine, fr: Porcs d'élevage;\
+              PoultryShare, en: Poultry, de: Geflügel, fr: Volaille;\
+              EquidesShare, en: Equides, de: Pferde und andere Equiden, fr: Chevaux et autres équidés;\
+              SmallRuminantShare, en: Small ruminants, de: Kleinwiederkäuer, fr: Petits ruminants;\
+              LivestockShare+LivestockTotalShare, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionShare+PlantProductionTotalShare, en: Plant production, de: Pflanzenbau, fr: Production végétale;\
+              FullTotalShare, en: Total, de: Total, fr: Total}
+
++FluxSummary
+      type = report
+  selector = {en: Nitrogen flux (in kg N per year) - summary,\
+              de: Stickstoff Fluss  (in kg N pro Jahr) - Zusammenfassung,\
+	      fr: Flux azoté (en kg de N par année) - résumé}
+      data = {FluxSummaryLivestock, en: Nitrogen flux livestock , de: Stickstoff Flüsse Tierproduktion, fr: Flux azotés production animale;\
+      	      FluxSummaryPlantProduction, en: Nitrogen flux plant production, de: Stickstoff Flüsse Pflanzenbau, fr: Flux azotés production végétale}
+
++TANFlux
+      type = report
+  selector = {en: Total Amoniacal Nitrogen flux Livestock (in kg TAN per year) ,\
+              de: Fluss des löslichen Stickstoffs (in kg TAN pro Jahr) -  Zusammenfassung ,\
+	      fr: Flux azoté soluble (en kg de TAN par année)}
+      data = {TANFlux, en: Nitrogen flux livestock , de: Fluss Stickstoff löslich Tierproduktion, fr: Flux azotés soluble production animale}
+
+
++NOxFlux
+      type = report
+  selector = {en: Total Nitrogen flux Livestock N2 NO and N2O (in kg TAN per year) ,\
+              de: Fluss des Stickstoffs N2 NO und N2O (in kg TAN pro Jahr) -  Zusammenfassung ,\
+	      fr: Flux azoté soluble N2, NO et N2O (en kg de TAN par année)}
+      data = {NOxFlux, en: Nitrogen flux livestock, de: Fluss Stickstoff löslich Tierproduktion, fr: Flux azotés soluble production animale}
+
+
++TotalAnimals
+      type = report
+  selector = {en: Total ammonia emissions (in kg N per year) by animal species,\
+              de: Ammoniak Gesamtemissionen (in kg N pro Jahr) pro Tierkategorie,\
+	      fr: Emissions totales d'ammoniaque (en kg de N par année) par catégorie d'animaux}
+      data = {DairyCowTotal, en: Dairy cows, de: Milchkühe, fr: Vâches laitières;\
+              OtherCattleTotal, en: Other cattle, de: Übriges Rindvieh, fr: Autres bovins;\
+              FatteningPigTotal, en: Fattening pigs, de: Mastschweine, fr: Porcs à l'engrais;\
+              OtherPigTotal, en: Other pigs, de: Zuchtschweine, fr: Porcs d'élevage;\
+              PoultryTotal, en: Poultry, de: Geflügel, fr: Volaille;\
+              EquidesTotal, en: Equides, de: Pferde und andere Equiden, fr: Chevaux et autres équidés;\
+              SmallRuminantTotal, en: Small ruminants, de: Kleinwiederkäuer, fr: Petits ruminants;\
+              LivestockTotal, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionTotal, en: Plant production, de: Pflanzenbau, fr: Production végétale;\
+              FullTotal, en: Total, de: Total, fr: Total}
+
++PlantProduction
+      type = report
+  selector = {en: Plant production emissions (in kg N per year) for animal species - summarized,\
+              de: Pflanzenbau-Emissionen (in kg N pro Jahr),\
+	      fr: Emission de NH3 de production végétale}
+     data =  {PlantProductionDetails, en: Mineral fertilisers, de: Mineraldünger, fr: Engrais minéraux;\
+              PlantProductionSummary, en: Subtotal, de: Zwischensumme, fr: Subtotal;\
+              PlantProductionTotal, en: Total, de: Total, fr: Total}
+              
++SummaryBarGraph
+      type = bar
+  selector = {en: Ammonia emissions (in kg N per year) - summary (bar chart),\
+              de: Ammoniak Emissionen (in kg N pro Jahr) - Zusammenfassung (Balkengrafik),\
+	      fr: Emissions d'ammoniaque (en kg de N par année) - résumé (histogramme)}
+      data = {LivestockSummary, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionSummary, en: Plant production, de: Pflanzenbau, fr: Production}
+
++SummaryPieGraph
+      type = pie
+  selector = {en: Ammonia emissions (in kg N per year) - summary (pie chart),\
+              de: Ammoniak Emissionen (in kg N pro Jahr) - Zusammenfassung (Kuchengrafik),\
+	      fr: Emissions d'ammoniaque (en kg de N par année) - résumé (graphique en secteurs)}
+      data = {LivestockSummary, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionSummary, en: Plant production, de: Pflanzenbau, fr: Production végétale}
+
+
++AnimalEmissionsTotalBarGraph
+      type = bar
+  selector = {en: Ammonia emissions (in kg N per year) for animal species - detailed (bar chart),\
+              de: Ammoniak-Emissionen (in kg N pro Jahr) pro Tierkategorie - detailliert (Balkengrafik),\
+	      fr: Emissions d'ammoniaque (en kg de N par année) par catégorie d'animaux -détails (histogramme)}
+      data = {DairyCowTotal, en: Dairy cows, de: Milchkühe, r: Vâches laitières;\
+              OtherCattleTotal, en: Other cattle, de: Übriges Rindvieh, fr: Autres bovins;\
+              FatteningPigTotal, en: Fattening pigs, de: Mastschweine, fr: Porcs à l'engrais;\
+              OtherPigTotal, en: Other pigs, de: Zuchtschweine, fr: Porcs d'élevage;\
+              PoultryTotal,  en: Poultry, de: Geflügel, fr: Volaille;\
+              EquidesTotal, en: Equides, de: Pferde und andere Equiden, fr: Chevaux et autres équidés;\
+              SmallRuminantTotal, en: Small ruminants, de: Kleinwiederkäuer, fr: Petits ruminants;\
+              PlantProductionTotal, en: Plant production, de: Pflanzenbau, fr: Production végétale}
+              
+
++AnimalEmissionsTotalPieGraph
+      type = pie
+  selector = {en: Total ammonia emissions (in kg N per year) by animal species  (pie chart),\
+              de: Ammoniak Gesamtemissionen (in kg N pro Jahr) pro Tierkategorie (Kuchengrafik),\
+	      fr: Emissions totales d'ammonianque (en kg de N par année) par catégorie d'animaux -détails (graphique en secteurs)}
+      data = {DairyCowTotal, en: Dairy cows, de: Milchkühe, fr: Vâches laitières;\
+              OtherCattleTotal, en: Other cattle, de: Übriges Rindvieh, fr: Autres bovins;\
+              FatteningPigTotal, en: Fattening pigs, de: Mastschweine, fr: Porcs à l'engrais;\
+              OtherPigTotal, en: Other pigs, de: Zuchtschweine, fr: Porcs d'élevage;\
+              PoultryTotal,  en: Poultry, de: Geflügel, fr: Volaille;\
+              EquidesTotal, en: Equides, de: Pferde und andere Equiden, fr: Chevaux et autres équidés;\
+              SmallRuminantTotal, en: Small ruminants, de: Kleinwiederkäuer, fr: Petits ruminants;\
+              PlantProductionTotal, en: Plant production, de: Pflanzenbau, fr: Production végétale}
+
+
+
++DistributionBarGraph
+      type = bar
+  selector = {en: Ammonia emissions in percent of the total emission (bar chart),\
+              de: Ammoniak Emissionen in Prozent der Gesamtemission (Balkengrafik),\
+	      fr: Emissions d'ammoniaque en % des émissions totales (histogramme)}
+      data = {LivestockShare, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionShare, en: Plant production, de: Pflanzenbau, fr: Production végétale}
+
++DistributionPieGraph
+      type = pie
+  selector = {en: Ammonia emissions in percent of the total emission (pie chart),\
+              de: Ammoniak Emissionen in Prozent der Gesamtemission (Kuchengrafik),\
+	      fr: Emissions d'ammoniaque en % des émissions totales (graphique en secteur)}
+      data = {LivestockShare, en: Livestock, de: Tierproduktion, fr: Production animale;\
+              PlantProductionShare, en: Plant production, de: Pflanzenbau, fr: Production végétale}
