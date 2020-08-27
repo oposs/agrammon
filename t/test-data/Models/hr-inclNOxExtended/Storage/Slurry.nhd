@@ -9,8 +9,8 @@ gui       = Storage::Slurry,Hofdüngerlager::Gülle,Stockage::Lisier,Storage::Sl
 +short
 
  Describes a single liquid manuare storage.
-        
-+description 
+
++description
 
   This Process calculates the annual NH3 emission from a single liquid manuare
   storage, considering a specific emission factor.
@@ -32,10 +32,10 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     en = Volume of slurry store (without channels and gutters)
     de = Volumen des Güllelagers
     fr = Volume du stock de lisier (sans les canaux)
-  ++units 
+  ++units
     en = m3
   ++description
-    Volume of slurry store. 
+    Volume of slurry store.
   ++help
     +++en
        <p></p>
@@ -49,11 +49,11 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
 +depth
   type  = float
   validator = between(0,7);
-  ++labels 
+  ++labels
     en = Depth of slurry store
     de = Tiefe des Güllelagers
     fr = Profondeur du stock de lisier
-  ++units 
+  ++units
     en = m
   ++description
     Depth of slurry store.
@@ -68,7 +68,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
 +mixing_frequency
   models = SHL
   type = enum
-#  default_calc = 7_to_12_times_per_year 
+#  default_calc = 7_to_12_times_per_year
   ++enum
     +++at_most_2_times_per_year
        en = at_most_2_times_per_year
@@ -100,11 +100,11 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
        de = mehr_als_30_mal_pro_Jahr
        fr = plus_que_30_fois_par_an
        it = more_than_30_times_per_year
-  ++labels 
+  ++labels
     en = Frequency of slurry mixing
     de = Häufigkeit Aufrühren des Güllelagers
     fr = Fréquence de brassage du stock de lisier par an
-  ++units 
+  ++units
     en = -
   ++description
     Frequency of mixing of slurry store.
@@ -122,59 +122,59 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
 
 +c_mixing_at_most_2_times_per_year
   value =  0.9
-  ++units 
+  ++units
     en = -
   ++description
-    Correction for mixingfrequency in slurry storage. 
+    Correction for mixingfrequency in slurry storage.
     Based on DeBode(1990), Sommer et al.(1993), Menzi et al. (1997a)
 
 +c_mixing_1_to_2_times_per_year
   value =  0.9
-  ++units 
+  ++units
     en = -
   ++description
-    Correction for mixingfrequency in slurry storage. 
+    Correction for mixingfrequency in slurry storage.
     Based on DeBode(1990), Sommer et al.(1993), Menzi et al. (1997a)
 
 +c_mixing_3_to_6_times_per_year
   value =  0.95
-  ++units 
+  ++units
     en = -
   ++description
-    Correction for mixingfrequency in slurry storage. 
+    Correction for mixingfrequency in slurry storage.
     Based on DeBode(1990), Sommer et al.(1993), Menzi et al. (1997a)
 
 +c_mixing_7_to_12_times_per_year
   value =  1
-  ++units 
+  ++units
     en = -
   ++description
-    Correction for mixingfrequency in slurry storage. 
+    Correction for mixingfrequency in slurry storage.
     Default or Basis value
 
 +c_mixing_13_to_20_times_per_year
   value =  1.1
-  ++units 
+  ++units
     en = -
   ++description
-    Correction for mixingfrequency in slurry storage. 
+    Correction for mixingfrequency in slurry storage.
     Empirical Estimation Reidy/Menzi
 
 +c_mixing_21_to_30_times_per_year
   value =  1.2
-  ++units 
+  ++units
     en = -
   ++description
-    Correction for mixingfrequency in slurry storage. 
-    Empirical Estimation Reidy/Menzi 
+    Correction for mixingfrequency in slurry storage.
+    Empirical Estimation Reidy/Menzi
 
 
 +c_mixing_more_than_30_times_per_year
   value =  1.3
-  ++units 
+  ++units
     en = -
   ++description
-    Correction for mixingfrequency in slurry storage.  
+    Correction for mixingfrequency in slurry storage.
 
 
 
@@ -186,34 +186,35 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
 
 +c_mixing
   print = 20
-  ++units 
+  ++units
     en = -
   ++description
-    Correction factor for number of mixing frequency in storage, accoording to 
+    Correction factor for number of mixing frequency in storage, accoording to
     selected levels.
   ++formula
     my $mixing = In(mixing_frequency) // '7_to_12_times_per_year';
-    return $TE->{"c_mixing_$mixing"};
-     
+    # return $TE->{"c_mixing_$mixing"};
+    return $TE->{'c_mixing_' . $mixing};
+
 +surface_area
   print = 15
   label = Surface area of slurry storage
   type  = float
-  ++units 
+  ++units
     en = m2
   ++description
-    Surface area of slurry storage. 
+    Surface area of slurry storage.
   ++formula
     if (not defined In(depth) or In(depth) <= 0) {
         return 0;
     }
     else {
-        return In(volume) / In(depth); 
+        return In(volume) / In(depth);
     }
 
 +nh3_nliquid
   print = 1a
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -224,7 +225,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     * Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;
 
 +volume
-  ++units  
+  ++units
     en = m3
   ++description
     Volume of Storage.

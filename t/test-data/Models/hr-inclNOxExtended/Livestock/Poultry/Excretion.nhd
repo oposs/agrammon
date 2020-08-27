@@ -10,7 +10,7 @@ Computes the annual N excretion of the different poultry categories.
 
 +description
 
-This process calculates the annual N excretion of the different poultry categories. The standard N excretion was taken from the official Swiss fertilizer 
+This process calculates the annual N excretion of the different poultry categories. The standard N excretion was taken from the official Swiss fertilizer
 guidelines. The Nsol content of the excreta is based on e.g. Peterson et al.
 (1998) or Burgos et al. (2005). These values were compiled on the basis of
 official feeding recommendations (Flisch et al. (2009)) by H. Menzi.
@@ -62,7 +62,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = Animal category
     de = Tierkategorie
     fr = Catégorie d'animaux
-  ++units  
+  ++units
     en = -
   ++description
     Poultry category (layers, growers, broilers, turkeys, and other poultry).
@@ -82,7 +82,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en= Number of animals
     de = Anzahl Tiere
     fr = Nombre d'animaux
-  ++units  
+  ++units
     en = -
   ++description
     Number of poultry animals for the selected type in barn.
@@ -102,14 +102,14 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = N excretion
     de = N Ausscheidung
     fr = Excrétions azotées
-  ++units 
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual standard N excretion for poultry
   ++help
-    +++en 
+    +++en
        <p>If "Standard" is selected the standard value for the
           nitrogen excretion according to PRIF 2017 is applied (Richner
           et al., 2017) is applied (PRIF: Principles of Agricultural Crop
@@ -120,8 +120,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
           Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
           die Düngung landwirtschaftlicher Kulturen in der Schweiz /
           GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>      
-    +++de 
+          pp. 4/1-4/23.</p>
+    +++de
        <p>Bei Auswahl «Standard» wird der Richtwert für die
           Stickstoffausscheidung gemäss GRUD 2017 (Richner et al., 2017)
           verwendet. Bei Eingabe einer Zahl kann der Wert für die
@@ -131,8 +131,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
           Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
           die Düngung landwirtschaftlicher Kulturen in der Schweiz /
           GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>      
-    +++fr 
+          pp. 4/1-4/23.</p>
+    +++fr
        <p>Si "Standard" est introduisé, la valeur de référence pour
           les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
           est utilisée (PRIF: « Principes de la fertilisation des
@@ -144,7 +144,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
           Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
           die Düngung landwirtschaftlicher Kulturen in der Schweiz /
           GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>      
+          pp. 4/1-4/23.</p>
 
 
 *** technical ***
@@ -153,17 +153,17 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_layers
   value = 0.80
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual standard N excretion for poultry category (layers) according to 
+    Annual standard N excretion for poultry category (layers) according to
     Flisch et al. (2009).
 
 +standard_N_excretion_growers
   value = 0.31
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -173,7 +173,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_broilers
   value = 0.45
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -183,7 +183,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_turkeys
   value = 1.4
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -193,7 +193,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_other_poultry
   value = 0.56
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -205,7 +205,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_layers
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for layers. Derived from e.g.
@@ -213,7 +213,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_growers
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for growers. Derived from e.g.
@@ -221,7 +221,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_broilers
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for broilers. Derived from e.g.
@@ -229,7 +229,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_turkeys
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for turkeys. Derived from e.g.
@@ -237,7 +237,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_other_poultry
   value = 0.6
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for other poultry. Derived from e.g.
@@ -251,7 +251,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion
   print = 7d
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -260,9 +260,9 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Flisch et al. (2009).
   ++formula
     my $cat = In(animalcategory);
-    my $key = "standard_N_excretion_$cat";
+    my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
-    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     if (($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
         writeLog({
             en => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
@@ -274,19 +274,17 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol
   print = 7
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta for a specific poultry category. Derived from e.g.
     TODO
   ++formula
-    #my $key = "share_Nsol_" . In(animalcategory);
-    #return Tech($key);
     return $TE->{'share_Nsol_'.In(animalcategory)};
 
 +n_excretion
   print = 7d
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -295,20 +293,20 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++formula
     Out(standard_N_excretion) * In(animals);
 
-+tan_excretion	
++tan_excretion
   print = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual soluble N excreted by an animalgroup of selected poultry category.	
+    Annual soluble N excreted by an animalgroup of selected poultry category.
   ++formula
-     Out(share_Nsol) * Out(n_excretion) 
+     Out(share_Nsol) * Out(n_excretion)
 
 +animals
   print = 9
-  ++units  
+  ++units
     en = -
   ++description
     Number of poultry animals for the selected type in barn.
@@ -317,7 +315,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +animalcategory
   print = 9
-  ++units  
+  ++units
     en = -
   ++description
     Poultry category (layers, growers, broilers, turkeys, and other poultry).

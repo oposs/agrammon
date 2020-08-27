@@ -11,7 +11,7 @@ Computes the annual N excretion of goats, fattening sheep and milksheep.
 
 +description
 
-This process calculated the annual N excretion of small ruminats. The standard N excretion was taken from the official Swiss fertilizer 
+This process calculated the annual N excretion of small ruminats. The standard N excretion was taken from the official Swiss fertilizer
 guidelines. The Nsol content of the excreta is based on e.g. Peterson et al.
 (1998) or Burgos et al. (2005). These values were compiled on the basis of
 official feeding recommendations (Flisch et al. 2009) by H. Menzi.
@@ -49,7 +49,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        fr = Wapiti; mère plus petits jusqu'à 16 mois
        it = Wapito
     +++bison_older_than_3yr
-       en = Bison older than 3yr 
+       en = Bison older than 3yr
        de = Bison über 3-jährig
        fr = Bison de plus de 3 ans
        it = Bison older than 3yr
@@ -88,12 +88,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        de = Kaninchen: Jungtiere ab ca. 35 Tagen
        fr = Lapin: lapereau à partir de 35 jours
        it = Young rabbit older than 35 days
-  
+
  ++labels
     en = Animal category
     de = Tierkategorie
     fr = Catégorie d'animaux
-  ++units  
+  ++units
     en = -
   ++description
     Animal category (Fattening sheep, milksheep and goats).
@@ -107,7 +107,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        einzutragen. Die Remontierung von Zuchttieren, die Ausmast der
        übrigen Jungtiere und der Anteil der Böcke sind bei den
        Muttertieren eingeschlossen.</p>
-       
+
     +++fr
       <p>N'introduire ici que les animaux en lactation pour toutes les
          catégories. La remonte des animaux d'élevage, l'engraissement
@@ -118,11 +118,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   type = integer
   validator = ge(0)
   branch = true
-  ++labels 
+  ++labels
     en = Number of animals
     de = Anzahl Tiere
     fr = Nombre d'animaux
-  ++units  
+  ++units
     en = -
   ++description
     Number of other animals for the selected type in barn.
@@ -146,14 +146,14 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = N excretion
     de = N Ausscheidung
     fr = Excrétions azotées
-  ++units 
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual standard N excretion for a dairy cow 
+    Annual standard N excretion for a dairy cow
   ++help
-    +++en 
+    +++en
        <p>If "Standard" is selected the standard value for the
           nitrogen excretion according to PRIF 2017 is applied (Richner
           et al., 2017) is applied (PRIF: Principles of Agricultural Crop
@@ -164,8 +164,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
           Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
           die Düngung landwirtschaftlicher Kulturen in der Schweiz /
           GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>      
-    +++de 
+          pp. 4/1-4/23.</p>
+    +++de
        <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD
           2017 (Richner et al., 2017) verwendet. Bei Eingabe einer Zahl kann der Wert für die
           Stickstoffausscheidung selbst gewählt werden.</p>
@@ -174,8 +174,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
           Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
           die Düngung landwirtschaftlicher Kulturen in der Schweiz /
           GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>      
-    +++fr 
+          pp. 4/1-4/23.</p>
+    +++fr
        <p>Si "Standard" est introduisé, la valeur de référence pour
           les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
           est utilisée (PRIF: « Principes de la fertilisation des
@@ -187,7 +187,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
           Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
           die Düngung landwirtschaftlicher Kulturen in der Schweiz /
           GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>      
+          pp. 4/1-4/23.</p>
 
 *** technical ***
 
@@ -196,87 +196,87 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_fallow_deer
   value = 20
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual standard N excretion for fallow deer according to
 	Agridea, BLW (2014)
- 
+
 +standard_N_excretion_red_deer
   value = 40
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual standard N excretion for according to
 	Agridea, BLW (2014)
- 
+
 +standard_N_excretion_wapiti
   value = 80
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual standard N excretion for according to
 	Agridea, BLW (2014)
- 
+
 +standard_N_excretion_bison_older_than_3yr
   value = 60
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual standard N excretion for according to
 	Agridea, BLW (2014)
- 
+
 +standard_N_excretion_bison_younger_than_3yr
   value = 20
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual standard N excretion for according to
 	Agridea, BLW (2014)
- 
+
 +standard_N_excretion_lama_older_than_2yr
   value = 20
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual standard N excretion for lama older than 2 years according to
 	Agridea, BLW (2014)
- 
+
 +standard_N_excretion_lama_younger_than_2yr
   value = 17
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual standard N excretion for lama younger than 2 yearsaccording to
 	Agridea, BLW (2014)
- 
+
 +standard_N_excretion_alpaca_older_than_2yr
   value = 11
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual standard N excretion for alpaca older than 2 years according to
 	Agridea, BLW (2014)
- 
+
 +standard_N_excretion_alpaca_younger_than_2yr
   value = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -286,7 +286,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_rabbit_doe_kits
   value = 2.6
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -296,7 +296,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion_rabbit_young
   value = 0.79
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -304,96 +304,96 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual standard N excretion for young rabbit ( older than 35 day)  according to
     Agridea, BLW (2014)
 
- 
+
 ###  share_Nsol
 
 
 +share_Nsol_fallow_deer
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from goats.
-    Assumtion by Menzi, Reidy 2004, 
+    Assumtion by Menzi, Reidy 2004,
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_red_deer
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from goats.
-    Assumtion by Menzi, Reidy 2004, 
+    Assumtion by Menzi, Reidy 2004,
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_wapiti
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from goats.
-    Assumtion by Menzi, Reidy 2004, 
+    Assumtion by Menzi, Reidy 2004,
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_bison_older_than_3yr
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from goats.
-    Assumtion by Menzi, Reidy 2004, 
+    Assumtion by Menzi, Reidy 2004,
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_bison_younger_than_3yr
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from goats.
-    Assumtion by Menzi, Reidy 2004, 
+    Assumtion by Menzi, Reidy 2004,
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_lama_older_than_2yr
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from goats.
-    Assumtion by Menzi, Reidy 2004, 
+    Assumtion by Menzi, Reidy 2004,
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_lama_younger_than_2yr
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from goats.
-    Assumtion by Menzi, Reidy 2004, 
+    Assumtion by Menzi, Reidy 2004,
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_alpaca_older_than_2yr
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from goats.
-    Assumtion by Menzi, Reidy 2004, 
+    Assumtion by Menzi, Reidy 2004,
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_alpaca_younger_than_2yr
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from goats.
-    Assumtion by Menzi, Reidy 2004, 
+    Assumtion by Menzi, Reidy 2004,
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 
 
 +share_Nsol_rabbit_doe_kits
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from rabbit doe including kits.
@@ -402,7 +402,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol_rabbit_young
   value = 0.4
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta from young rabbit (older aprox 35 day).
@@ -417,7 +417,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +standard_N_excretion
   print = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -426,9 +426,9 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Flisch et al. (2009).
   ++formula
     my $cat = In(animalcategory);
-    my $key = "standard_N_excretion_$cat";
+    my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
-    $exc = In(inp_n_excretion) unless In(inp_n_excretion) =~ /^standard$/i or not defined In(inp_n_excretion);
+    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     if ( ($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
         writeLog({
             en => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
@@ -440,41 +440,39 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +share_Nsol
   print = 7
-  ++units  
+  ++units
     en = -
   ++description
     Nsol content of excreta of small ruminants. Derived from e.g.
     Peterson et al. (1998) or Burgos et al. (2005).
   ++formula
-#    my $key = "share_Nsol_" . In(animalcategory);
-#    return Tech($key);
     return $TE->{'share_Nsol_'.In(animalcategory)};
 
 +n_excretion
   print = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N excreted by a specified number of small ruminants. 
+    Annual N excreted by a specified number of small ruminants.
   ++formula
     Out(standard_N_excretion) * In(animals);
 
-+tan_excretion	
++tan_excretion
   print = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
     Annual soluble N excreted by a specified number of small ruminants.
   ++formula
-     Out(share_Nsol) * Out(n_excretion); 
+     Out(share_Nsol) * Out(n_excretion);
 
 +animals
   print = 9
-  ++units  
+  ++units
     en = -
   ++description
     Number of small ruminants for the selected type in barn.
@@ -483,7 +481,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +animalcategory
   print = 9
-  ++units  
+  ++units
     en = -
   ++description
     Animal category
