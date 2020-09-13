@@ -11,12 +11,15 @@
   "depends": [
     "Cro::HTTP",
     "Cro::HTTP::Session::Pg",
+    "Cro::HTTP::Test",
     "DB::Pg",
     "Digest::SHA1::Native",
     "OO::Monitors",
     "Shell::Command",
     "Spreadsheet::XLSX",
     "Text::CSV",
+    "Test",
+    "Test::Mock",
     "Test::NoTabs",
     "YAMLish"
   ],
