@@ -140,7 +140,11 @@ subtest 'Load branch data' => {
 subtest 'Store branch data' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_branch_data', {
+<<<<<<< HEAD
             test post(json => { data => %( :x(1), :y(2) ), :dataset-name('DatasetC') }),
+=======
+            test post(json => { data => %( :x(1), :y(2) ), :datasetName('DatasetC') }),
+>>>>>>> Add route tests and reorganize routes
                 status => 200,
                 json   => { stored => 1 }, # check what we really expect
         };
@@ -164,7 +168,11 @@ subtest 'Rename instance' => {
 subtest 'Order instances' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/order_instances', {
+<<<<<<< HEAD
             test post(json => { instances => ('InstC', 'InstD'),  :dataset-name('DatasetA')}),
+=======
+            test post(json => { instances => ('InstC', 'InstD'),  :datasetName('DatasetA')}),
+>>>>>>> Add route tests and reorganize routes
                 status => 200,
                 json   => { sorted => 1 },
         };
@@ -179,7 +187,11 @@ done-testing;
 
 =COPYRIGHT Copyright (c) 2020 by OETIKER+PARTNER AG. All rights reserved.
 
+<<<<<<< HEAD
 =AUTHOR S<Fritz Zaucker E<lt>fritz.zaucker@oetiker.chE<gt>>
+=======
+=AUTHOR S<Fritz WorthZauckerington E<lt>fritz.zaucker@oetiker.chE<gt>>
+>>>>>>> Add route tests and reorganize routes
 
 See C<git blame> for other contributors.
 

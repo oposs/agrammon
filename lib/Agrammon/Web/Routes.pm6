@@ -5,6 +5,7 @@ use Cro::HTTP::Router;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 
+<<<<<<< HEAD
 subset LoggedIn of Agrammon::Web::SessionUser where .logged-in;
 
 sub routes(Agrammon::Web::Service $ws) is export {
