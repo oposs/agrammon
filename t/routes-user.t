@@ -33,7 +33,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         reset-password => -> $email, $password, $key {
             %( reset => 1 )
         },
-        change-password => -> $oldPassword, $newPassword {
+        change-password => -> $old-password, $new-password {
             %( changed => 1 )
         },
         create-account => -> $user, %data {
@@ -57,7 +57,7 @@ subtest 'Reset password' => {
 subtest 'Change password' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/change_password', {
-            test post(json => { :oldPassword('old'),  :newPassword('new') }),
+            test post(json => { :old-password('old'),  :new-password('new') }),
                 status => 200,
                 json   => { changed => 1 },
         };
