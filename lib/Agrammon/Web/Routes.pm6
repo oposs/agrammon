@@ -186,7 +186,7 @@ sub user-routes(Agrammon::Web::Service $ws) {
 
         # implement/test
         post -> LoggedIn $user, 'change_password' {
-            request-body -> (:$old-password!, :$new-password!) {
+            request-body -> (:oldPassword($old-password)!, :newPassword($new-password)!) {
                 my $data = $ws.change-password($old-password, $new-password);
                 content 'application/json', $data;
             }

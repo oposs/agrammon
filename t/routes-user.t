@@ -57,7 +57,7 @@ subtest 'Reset password' => {
 subtest 'Change password' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/change_password', {
-            test post(json => { :old-password('old'),  :new-password('new') }),
+            test post(json => { :oldPassword('old'),  :newPassword('new') }),
                 status => 200,
                 json   => { changed => 1 },
         };
