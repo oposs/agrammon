@@ -152,13 +152,13 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Total annual TAN excreted by all animals.
   ++formula
-    Sum(n_sol_excretion,Livestock::OtherCattle::Excretion ) +
-    Sum(n_sol_excretion,Livestock::DairyCow::Excretion ) +
-    Sum(n_sol_excretion,Livestock::Pig::Excretion ) +
-    Sum(n_sol_excretion,Livestock::FatteningPigs::Excretion ) +
-    Sum(n_sol_excretion,Livestock::Equides::Excretion ) +
-    Sum(n_sol_excretion,Livestock::SmallRuminants::Excretion) +
-    Sum(n_sol_excretion,Livestock::RoughageConsuming::Excretion) +
+    Sum(n_sol_excretion,Livestock::OtherCattle::Excretion ) P+
+    Sum(n_sol_excretion,Livestock::DairyCow::Excretion ) P+
+    Sum(n_sol_excretion,Livestock::Pig::Excretion ) P+
+    Sum(n_sol_excretion,Livestock::FatteningPigs::Excretion ) P+
+    Sum(n_sol_excretion,Livestock::Equides::Excretion ) P+
+    Sum(n_sol_excretion,Livestock::SmallRuminants::Excretion) P+
+    Sum(n_sol_excretion,Livestock::RoughageConsuming::Excretion) P+
     Sum(n_sol_excretion,Livestock::Poultry::Excretion);
 
 +n_into_storage

@@ -115,16 +115,32 @@ multi compile(Agrammon::Formula::BinOp::Divide $op) {
     q:c"({compile($op.left)}) / ({compile($op.right)})"
 }
 
+multi compile(Agrammon::Formula::BinOp::DividePairwise $op) {
+    q:c"$env.find-builtin('dividePairwise')(({compile($op.left)}), ({compile($op.right)}))"
+}
+
 multi compile(Agrammon::Formula::BinOp::Multiply $op) {
     q:c"({compile($op.left)}) * ({compile($op.right)})"
+}
+
+multi compile(Agrammon::Formula::BinOp::MultiplyPairwise $op) {
+    q:c"$env.find-builtin('multiplyPairwise')(({compile($op.left)}), ({compile($op.right)}))"
 }
 
 multi compile(Agrammon::Formula::BinOp::Add $op) {
     q:c"({compile($op.left)}) + ({compile($op.right)})"
 }
 
+multi compile(Agrammon::Formula::BinOp::AddPairwise $op) {
+    q:c"$env.find-builtin('addPairwise')(({compile($op.left)}), ({compile($op.right)}))"
+}
+
 multi compile(Agrammon::Formula::BinOp::Subtract $op) {
     q:c"({compile($op.left)}) - ({compile($op.right)})"
+}
+
+multi compile(Agrammon::Formula::BinOp::SubtractPairwise $op) {
+    q:c"$env.find-builtin('subtractPairwise')(({compile($op.left)}), ({compile($op.right)}))"
 }
 
 multi compile(Agrammon::Formula::BinOp::Concatenate $op) {

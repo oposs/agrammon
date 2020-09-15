@@ -310,16 +310,32 @@ class Agrammon::Formula::Builder {
         make Agrammon::Formula::BinOp::Divide;
     }
 
+    method infix:sym<P/>($/) {
+        make Agrammon::Formula::BinOp::DividePairwise;
+    }
+
     method infix:sym<*>($/) {
         make Agrammon::Formula::BinOp::Multiply;
+    }
+
+    method infix:sym<P*>($/) {
+        make Agrammon::Formula::BinOp::MultiplyPairwise;
     }
 
     method infix:sym<+>($/) {
         make Agrammon::Formula::BinOp::Add;
     }
 
+    method infix:sym<P+>($/) {
+        make Agrammon::Formula::BinOp::AddPairwise;
+    }
+
     method infix:sym<->($/) {
         make Agrammon::Formula::BinOp::Subtract;
+    }
+
+    method infix:sym<P->($/) {
+        make Agrammon::Formula::BinOp::SubtractPairwise;
     }
 
     method infix:sym<.>($/) {
