@@ -27,7 +27,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         load-branch-data => ( 1, 2 )
     },
     overriding => {
-        store-input-comment => -> $user, $variable, $comment {
+        store-input-comment => -> $user, $dataset, $variable, $comment {
             %( name => $variable)
         },
         delete-data => -> $user, $name {

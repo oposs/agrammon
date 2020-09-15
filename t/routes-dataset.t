@@ -61,6 +61,12 @@ my $fake-store = mocked(Agrammon::Web::Service,
         store-dataset-comment => -> $user, $name, $comment {
             %( name => $name)
         },
+        delete-datasets => -> $user, @datasets {
+            %( deleted => @datasets.elems);
+        },
+        send-datasets => -> $user, @datasets {
+            %( sent => @datasets.elems);
+        }
     }
 );
 
@@ -115,7 +121,7 @@ subtest 'Set tag' => {
 subtest 'Remove tag' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/remove_tag', {
-            test post(json => { datasets => ('DatasetA', 'DatasetB]'), :tag('TagC') }),
+            test post(json => { datasets => ('DatasetA', 'DatasetB'), :tag('TagC') }),
                 status => 200,
                 json   => { :tags(2) },
         };
@@ -228,6 +234,31 @@ subtest 'Get all datasets' => {
             *.called('get-datasets', times => 1);
     }
 }
+
+subtest 'Send datasets' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/send_datasets', {
+            test post(json => { datasets => ( 'DatasetC', 'DatasetD' ) }  ),
+                status => 200,
+                json   => { :sent(2) },
+        };
+        check-mock $fake-store,
+            *.called('send-datasets', times => 1);
+    }
+}
+
+subtest 'Delete datasets' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/delete_datasets', {
+            test post(json => { datasets => ( 'DatasetC', 'DatasetD' ) } ),
+                status => 200,
+                json   => { :deleted(2) },
+        };
+        check-mock $fake-store,
+            *.called('delete-datasets', times => 1);
+    }
+}
+
 
 done-testing;
 

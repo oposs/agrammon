@@ -38,6 +38,18 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Datasets.new(:$user, :$version).load.list;
     }
 
+    method delete-datasets(Agrammon::Web::SessionUser $user, @datasets) {
+        return @datasets.elems;
+        # return Agrammon::DB::Datasets.new(:$user, :$version).load.list;
+    }
+
+    # return list of datasets as expected by Web GUI
+    method send-datasets(Agrammon::Web::SessionUser $user, @datasets) {
+        return @datasets.elems;
+#        return Agrammon::DB::Datasets.new(:$user, :$version).load.list;
+    }
+
+
     method load-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         warn "***** load-dataset($name) not yet completely implemented (branching)";
         my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;

@@ -72,15 +72,18 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         }
 
         post -> LoggedIn $user, 'delete_datasets' {
-            ...
-            my $data = $ws.delete-datasets($user);
-            content 'application/json', $data;
+            request-body -> (:@datasets!) {
+                my $data = $ws.delete-datasets($user, @datasets);
+                content 'application/json', $data;
+            }
         }
 
         post -> LoggedIn $user, 'send_datasets' {
-            ...
-            my $data = $ws.send-datasets($user);
-            content 'application/json', $data;
+            request-body -> (:@datasets!) {
+                dd 'datasets=' ~ @datasets;
+                my $data = $ws.send-datasets($user, @datasets);
+                content 'application/json', $data;
+            }
         }
 
         ### dataset
