@@ -15,15 +15,6 @@ sub make-fake-auth($role) {
     )
 }
 
-# my $fake-user = %( :id(1), :username('foor@bar.ch'), );
-
-# my $fake-tag-a = %( :id(42), :name('TagA'), :user($fake-user));
-# my $fake-tag-b = %( :id(43), :name('TagB'), :user($fake-user));
-
-# my $fake-dataset-a = %( :id(42), :name('DatasetA'), :user($fake-user));
-# my $fake-dataset-b = %( :id(43), :name('DatasetB'), :user($fake-user));
-
-
 my $role = 'user';
 my $fake-auth = make-fake-auth($role);
 
@@ -188,7 +179,7 @@ done-testing;
 
 =COPYRIGHT Copyright (c) 2020 by OETIKER+PARTNER AG. All rights reserved.
 
-=AUTHOR S<Fritz WorthZauckerington E<lt>fritz.zaucker@oetiker.chE<gt>>
+=AUTHOR S<Fritz Zaucker E<lt>fritz.zaucker@oetiker.chE<gt>>
 
 See C<git blame> for other contributors.
 

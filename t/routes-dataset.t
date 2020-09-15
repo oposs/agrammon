@@ -235,7 +235,7 @@ done-testing;
 
 =COPYRIGHT Copyright (c) 2020 by OETIKER+PARTNER AG. All rights reserved.
 
-=AUTHOR S<Fritz WorthZauckerington E<lt>fritz.zaucker@oetiker.chE<gt>>
+=AUTHOR S<Fritz Zaucker E<lt>fritz.zaucker@oetiker.chE<gt>>
 
 See C<git blame> for other contributors.
 
