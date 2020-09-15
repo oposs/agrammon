@@ -245,5 +245,19 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         return $ret;
     }
 
+    method rename-instance($old-instance, $new-instance, $pattern) {
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $new-instance, $!id, "\%$pattern\%", $old-instance);
+            UPDATE data_new set data_instance = $1
+             WHERE data_dataset = $2
+               AND data_var LIKE $3
+               AND data_instance = $4
+            RETURNING data_val
+            SQL
+
+            my $rows = $ret.rows;
+            return $rows;
+        }
+    }
 
 }

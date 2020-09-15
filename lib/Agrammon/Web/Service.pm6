@@ -172,10 +172,8 @@ class Agrammon::Web::Service {
         # return @data;
     }
 
-    method rename-instance(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
-        ...
-        # my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
-        # return @data;
+    method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $pattern) {
+        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.rename-instance($old-instance, $new-instance, $pattern);
     }
 
     method order-instances(Agrammon::Web::SessionUser $user, @instances, Str $datasetName) {

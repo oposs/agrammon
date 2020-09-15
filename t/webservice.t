@@ -7,7 +7,9 @@ use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
-# plan 9;
+# FIX ME: use separate test database
+
+plan 26;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -44,6 +46,7 @@ subtest "get-cfg()" => {
 
 transactionally {
 #{
+
     subtest "create-dataset" => {
         ok my $dataset = $ws.create-dataset($user, "MyTestDataset"), "Create dataset";
         is $dataset.name, "MyTestDataset", "Dataset has correct name";
@@ -53,12 +56,13 @@ transactionally {
         my $model-version = 'SingleSHL';
         ok my $datasets = $ws.get-datasets($user, $model-version), "Get $model-version datasets";
         isa-ok $datasets, 'Array', 'Got datasets Array';
-        is $datasets.elems, 8,  "Found 8 datasets";
+
+        ok $datasets.elems >= 8, "Found right number of datasets";
         isa-ok my $dataset = $datasets[0], 'List', 'Got dataset List';
         is $dataset[0], 'MyTestDataset', 'First dataset has name MyTestDataset';
         is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
-
         $dataset = $datasets[7];
+
         is $dataset[0], 'Agrammon6Testing', 'Last dataset has name Agrammon6Testing';
     }
 
@@ -140,17 +144,17 @@ transactionally {
         );
         ok $ws.store-data($user, %data), "Data stored";
     }
-#flunk "delete-data";
 
+    subtest "rename-instance" => {
+        ok my $ret = $ws.rename-instance(
+            $user, 'TestSingle',
+            'MKühe', 'Milchkühe',
+            'Livestock::DairyCow[]'
+        ), "Rename instance";
+    }
 
 }
 
-# subtest "get-input-variables" => {
-#         ok my $inputs = $ws.get-input-variables, "Get inputs";
-#         dd $inputs;
-# }
-
-done-testing; exit;
 
 subtest "Get model data" => {
 
@@ -220,22 +224,22 @@ subtest "Get model data" => {
         is %report<type>, 'report', "Report has correct type";
 
     }
+
 }
 
 
-todo "Not implemented yet", 10;
+todo "Not implemented yet", 7;
 
 flunk "get-output-variables";
 
 flunk "reset-password";
 
-
 flunk "submit-dataset";
 
+flunk "delete-data";
 flunk "load-branch-data";
 flunk "store-branch-data";
 
-flunk "rename-instance";
 flunk "order-instances";
 
 done-testing;
