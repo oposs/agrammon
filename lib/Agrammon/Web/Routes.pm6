@@ -5,11 +5,12 @@ use Cro::HTTP::Router;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 
+subset LoggedIn of Agrammon::Web::SessionUser where .logged-in;
+
 sub routes(Agrammon::Web::Service $ws) is export {
-    subset LoggedIn of Agrammon::Web::SessionUser where .logged-in;
 
     # Fix for Agrammon
-    # my $root = $app ~~ Easii::Application::Development ?? 'frontend/source-output' !! 'qx-build';
+    # my $root = $app ~~ Agrammon::Application::Development ?? 'frontend/source-output' !! 'qx-build';
     my $root = '';
     route {
         include static-content($root);
