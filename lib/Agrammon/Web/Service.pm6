@@ -45,12 +45,13 @@ class Agrammon::Web::Service {
     }
 
     method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
-        return Agrammon::DB::Dataset.new(:$user, :$name).create;
+        my $model = self.cfg.model-variant; # model 'SingleSHL';
+        my $version = '2.0-stage';
+        return Agrammon::DB::Dataset.new(:$user, :$name, :$model, :$version).create;
     }
 
     method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
-        ...
-        # return Agrammon::DB::Dataset.new(:$user, :name($old)).rename($new);
+        return Agrammon::DB::Dataset.new(:$user, :name($old)).rename($new);
     }
 
     method submit-dataset(Agrammon::Web::SessionUser $user, Str $name, Str $mail) {
@@ -59,8 +60,7 @@ class Agrammon::Web::Service {
     }
 
     method store-dataset-comment(Agrammon::Web::SessionUser $user, Str $name, Str $comment) {
-        ...
-        # return Agrammon::DB::Dataset.new(:$user, :$name).store-comment($comment);
+        return Agrammon::DB::Dataset.new(:$user, :$name).store-comment($comment);
     }
 
     method get-tags(Agrammon::Web::SessionUser $user) {
@@ -72,23 +72,19 @@ class Agrammon::Web::Service {
     }
 
     method delete-tag(Agrammon::Web::SessionUser $user, Str $name) {
-        ...
         return Agrammon::DB::Tag.new(:$user, :$name).delete;
     }
 
     method rename-tag(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
-        ...
-        return Agrammon::DB::Tag.new(:$user, :$old).rename($new);
+        return Agrammon::DB::Tag.new(:$user, :name($old)).rename($new);
     }
 
     method set-tag(Agrammon::Web::SessionUser $user, Str $datasetName, Str $tagName) {
-        ...
-        return Agrammon::DB::Dataset.new(:$user, :$datasetName).set-tag($tagName);
+        return Agrammon::DB::Dataset.new(:$user, :name($datasetName)).lookup.set-tag($tagName);
     }
 
     method remove-tag(Agrammon::Web::SessionUser $user, Str $datasetName, Str $tagName) {
-        ...
-        return Agrammon::DB::Dataset.new(:$user, :$datasetName).remove-tag($tagName);
+        return Agrammon::DB::Dataset.new(:$user, :name($datasetName)).lookup.remove-tag($tagName);
     }
 
     method get-input-variables {
@@ -113,16 +109,12 @@ class Agrammon::Web::Service {
         return %gui-output;
     }
 
-    method create-account(Agrammon::Web::SessionUser $user, %user-data) {
-        my $newUser = Agrammon::DB::User.new(%user-data);
-        $newUser.create;
-        return $newUser;
+    method create-account(Agrammon::Web::SessionUser $user, $user-data) {
+        return Agrammon::DB::User.new(|$user-data);
     }
 
-    method change-password(Agrammon::Web::SessionUser $user, Str $oldPassword, Str $newPassword) {
-        ...
-        $user.change-password($oldPassword, $newPassword);
-        return $user;
+    method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password) {
+        return $user.change-password($old-password, $new-password);
     }
 
     method reset-password(Agrammon::Web::SessionUser $user, Str $email, Str $password, Str $key) {
@@ -149,14 +141,12 @@ class Agrammon::Web::Service {
         return 1;
     }
 
-    method store-variable-comment(Agrammon::Web::SessionUser $user, Str $name, Str $comment) {
-        ...
-        # return Agrammon::DB::Dataset.new(:$user, :$name).store-comment($comment);
+    method store-input-comment(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $var-name, Str $comment) {
+        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.store-input-comment($var-name, $comment);
     }
 
-    method delete-data(Agrammon::Web::SessionUser $user, Str $name) {
-        ...
-        # return Agrammon::DB::Tag.new(:$user, :$name).delete;
+    method delete-data(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $var-name) {
+        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.delete-input($var-name);
     }
 
     method load-branch-data(Agrammon::Web::SessionUser $user, Str $name) {

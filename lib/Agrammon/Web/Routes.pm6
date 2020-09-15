@@ -5,7 +5,6 @@ use Cro::HTTP::Router;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 
-<<<<<<< HEAD
 subset LoggedIn of Agrammon::Web::SessionUser where .logged-in;
 
 sub routes(Agrammon::Web::Service $ws) is export {
@@ -279,8 +278,10 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'store_variable_comment' {
-            request-body -> (:$name!, :$comment!) {
-                my $data = $ws.store-variable-comment($user, $name, $comment);
+            # request-body -> (:$name!, :%data!) {
+            request-body -> (:$dataset, :$variable, :$comment) {
+                dd "DATA=", %data;
+                my $data = $ws.store-input-comment($user, %data<dataset>, %data<variable>, %data<comment>);
                 content 'application/json', $data;
             }
         }

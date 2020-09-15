@@ -7,7 +7,7 @@ use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
-plan 9;
+# plan 9;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -42,20 +42,121 @@ subtest "get-cfg()" => {
     is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
 }
 
-subtest "get-datasets()" => {
-    my $model-version = 'SingleSHL';
-    ok my $datasets = $ws.get-datasets($user, $model-version), "Get $model-version datasets";
-    isa-ok $datasets, 'Array', 'Got datasets Array';
-    isa-ok my $dataset = $datasets[0], 'List', 'Got dataset List';
-    is $dataset[0], 'TestSingle', 'First dataset has name TestSingle';
-    is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
+transactionally {
+#{
+    subtest "create-dataset" => {
+        ok my $dataset = $ws.create-dataset($user, "MyTestDataset"), "Create dataset";
+        is $dataset.name, "MyTestDataset", "Dataset has correct name";
+    }
+
+    subtest "get-datasets()" => {
+        my $model-version = 'SingleSHL';
+        ok my $datasets = $ws.get-datasets($user, $model-version), "Get $model-version datasets";
+        isa-ok $datasets, 'Array', 'Got datasets Array';
+        is $datasets.elems, 8,  "Found 8 datasets";
+        isa-ok my $dataset = $datasets[0], 'List', 'Got dataset List';
+        is $dataset[0], 'MyTestDataset', 'First dataset has name MyTestDataset';
+        is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
+
+        $dataset = $datasets[7];
+        is $dataset[0], 'Agrammon6Testing', 'Last dataset has name Agrammon6Testing';
+    }
+
+    subtest "change-password" => {
+        ok $ws.change-password($user, "test12", "test34"), 'Password update sucessful';
+        nok $ws.change-password($user, "test12", "test34"), 'Password update failed';
+    }
+
+    subtest "create-account" => {
+        my $userData = \(
+            :username('foo@bar.ch'),
+            :firstname('Erika'),
+            :lastname('Mustermann'),
+            :password('myPass'),
+            :organisation('Org'),
+        );
+        ok my $newUser = $ws.create-account($user, $userData), "Create new account";
+        is $newUser.username, 'foo@bar.ch', 'User has expected username';
+    }
+
+    subtest "rename-dataset" => {
+        ok my $newDataset = $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset'), "Rename dataset";
+        is $newDataset.name, 'MyNewTestDataset', 'Dataset has expected name';
+    }
+
+    subtest "create-tag" => {
+        ok my $tag = $ws.create-tag($user, "00MyTestTag"), "Create tag";
+        is $tag.name, "00MyTestTag", "Tag has correct name";
+    }
+
+    subtest "rename-tag" => {
+        ok my $newTag = $ws.rename-tag($user, '00MyTestTag', '00MyNewTestTag'), "Rename tag";
+        is $newTag.name, '00MyNewTestTag', 'Tag has expected name';
+    }
+
+     subtest "get-tags()" => {
+        ok my $tags = $ws.get-tags($user), "Get tags";
+        # isa-ok $tags, 'Array', 'Got tags Array';
+        is $tags.elems, 12,  "Found 12 tags";
+        # isa-ok my $tag = $tags[0], 'List', 'Got tag List';
+        is $tags[0], '00MyNewTestTag', 'First tag has name 00MyNewTestTag';
+        # dd $tags;
+    }
+
+
+    subtest "set-tag" => {
+        ok my $dataset = $ws.set-tag($user, 'MyNewTestDataset', '00MyNewTestTag'), "Set tag";
+    }
+
+    subtest "remove-tag" => {
+        ok my $dataset = $ws.remove-tag($user, 'MyNewTestDataset', '00MyNewTestTag'), "Remove tag";
+    }
+
+    subtest "delete-tag" => {
+        ok my $tag = $ws.delete-tag($user, 'MyNewTestTag'), "Delete tag";
+    }
+
+    subtest "store-dataset-comment" => {
+        ok my $comment = $ws.store-dataset-comment($user, 'MyNewTestDataset', 'MyComment'), "Store dataset comment";
+    }
+
+    subtest "store-input-comment" => {
+        my $dataset-name = 'MyNewTestDataset';
+        my $var-name     = 'Application::Slurry::Csoft::appl_evening';
+        my $comment      = 'MyComment';
+        ok my $newComment = $ws.store-input-comment($user, $dataset-name, $var-name, $comment), "Store input comment";
+    }
+
+    subtest "load-dataset" => {
+        my @data = $ws.load-dataset($user, 'Agrammon6Testing');
+        # dd @data;
+    };
+
+    subtest "store-data" => {
+        my %data = %(
+            :dataset_name('MyNewTestDataset'),
+            :data_var('PlantProduction::AgriculturalArea::agricultural_area'),
+            :data_val(42)
+        );
+        ok $ws.store-data($user, %data), "Data stored";
+    }
+#flunk "delete-data";
+
+
 }
 
-subtest "get-input-variables()" => {
+# subtest "get-input-variables" => {
+#         ok my $inputs = $ws.get-input-variables, "Get inputs";
+#         dd $inputs;
+# }
+
+done-testing; exit;
+
+subtest "Get model data" => {
 
     my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
     my $top = 'End';
-    ok my $model = Agrammon::Model.new(:$path);
+    ok my $model = Agrammon::Model.new(:$path), "Load model";
     lives-ok { $model.load($top) }, "Load module from $top";
 
     ok my $ui-web = Agrammon::UI::Web.new(:$model);
@@ -64,14 +165,14 @@ subtest "get-input-variables()" => {
     %input-hash<dataset> = 'TEST';
     is-deeply %input-hash.keys.sort, qw|dataset graphs inputs reports| , "Input hash has expected keys";
 
-    subtest "input variables" => {
+    subtest "get-input-variables" => {
         with %input-hash<inputs> -> @module-inputs {
             for @module-inputs -> $input {
                 my $var    = $input<variable>;
                 is-deeply $input.keys.sort, qw|branch defaults enum gui help labels models options optionsLang order type units validator variable|,
                           "$var has expected keys";
                 if $var ~~ /'::dairy_cows'/ {
-                    dd $input;
+                    # dd $input;
                     subtest "$var" => {
 # TODO: needs fixing
 #                        is $input<branch>, 'true', 'branch is true';
@@ -82,6 +183,29 @@ subtest "get-input-variables()" => {
             }
         }
     };
+
+#    subtest "get-output-variables" => {
+#        my %outputs = $model.run(:$input).get-outputs-hash();
+#        dd %outputs;
+
+#         with %input-hash<outputs> -> @module-inputs {
+#             for @module-inputs -> $input {
+#                 my $var    = $input<variable>;
+#                 is-deeply $input.keys.sort, qw|branch defaults enum gui help labels models options optionsLang order type units validator variable|,
+#                           "$var has expected keys";
+#                 if $var ~~ /'::dairy_cows'/ {
+#                     dd $input;
+#                     subtest "$var" => {
+# # TODO: needs fixing
+# #                        is $input<branch>, 'true', 'branch is true';
+#                         is-deeply $input<defaults>, %( calc => Any, gui => Any);
+#                         is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
+#                     }
+#                 }
+#             }
+#         }
+#    };
+
 
     subtest "graphs and reports" => {
         my $graphs = %input-hash<graphs>;
@@ -98,26 +222,27 @@ subtest "get-input-variables()" => {
     }
 }
 
-todo "Not implemented yet", 5;
-subtest "load-dataset()" => {
-    flunk("Not implemented");
-}
 
-subtest "create-dataset()" => {
-    flunk("Not implemented");
-}
+todo "Not implemented yet", 10;
 
-subtest "get-tags()" => {
-    flunk("Not implemented");
-}
+flunk "get-output-variables";
 
-subtest "get-output-variables()" => {
-    flunk("Not implemented");
-}
+flunk "reset-password";
 
-subtest "create-account()" => {
-    flunk("Not implemented");
-}
 
+flunk "submit-dataset";
+
+flunk "load-branch-data";
+flunk "store-branch-data";
+
+flunk "rename-instance";
+flunk "order-instances";
 
 done-testing;
+
+sub transactionally(&test) {
+    my $*AGRAMMON-DB-HANDLE = my $db = $*AGRAMMON-DB-CONNECTION.db;
+    $db.begin;
+    test($db);
+    $db.finish;
+}

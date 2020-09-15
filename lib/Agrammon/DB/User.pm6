@@ -29,10 +29,10 @@ class Agrammon::DB::User does Agrammon::DB {
     method set-username(Str $username) {
         $!username = $username;
     }
-    
+
     method create-account(Str $role-name) {
         die X::Agrammon::DB::User::Exists.new(:username($!username)) if self.exists;
-        
+
         self.with-db: -> $db {
             my %r = $db.query(q:to/ROLE/, $role-name).hash;
                 SELECT role_id   AS id,
@@ -70,7 +70,7 @@ class Agrammon::DB::User does Agrammon::DB {
                   FROM pers
                  WHERE pers_email = $1
             USER
-                
+
             # how can this be done more compactly
             $!id           = $u<id>;
             $!username     = $u<username>;
@@ -90,7 +90,7 @@ class Agrammon::DB::User does Agrammon::DB {
         }
         return self;
     }
-    
+
     method exists {
         self.with-db: -> $db {
             my $uid = $db.query(q:to/USER/, $!username).value;
@@ -116,6 +116,30 @@ class Agrammon::DB::User does Agrammon::DB {
         self.with-db: -> $db {
 
            if self.password-is-valid($!username, $old) {
+                my $res = $db.query(q:to/PASSWORD/, $!username, $new);
+                    UPDATE pers
+                       SET pers_password = crypt($2, gen_salt('bf'))
+                     WHERE pers_email    = $1
+                PASSWORD
+
+                my $valid = self.password-is-valid($!username, $new);
+                if not $valid {
+                    warn 'PW update failed';
+                }
+                return $valid;
+            }
+            else {
+                warn "Invalid old pw: $old";
+            }
+        }
+        return False;
+    }
+
+    method reset-password($old, $new) {
+        ...
+        self.with-db: -> $db {
+
+           if self.password-is-valid($!username, $old) {
                 say "Old pw valid";
                 my $res = $db.query(q:to/PASSWORD/, $!username, $new);
                     UPDATE pers
@@ -123,18 +147,20 @@ class Agrammon::DB::User does Agrammon::DB {
                      WHERE pers_email    = $1
                 PASSWORD
 
-                if self.password-is-valid($!username, $new) {
-                    return 'PW update successful';
+                my $valid = self.password-is-valid($!username, $new);
+                if $valid {
+                    warn 'PW update successful';
                 }
                 else {
-                    return 'PW update failed';
+                    warn 'PW update failed';
                 }
+                return $valid;
             }
             else {
                 warn "Invalid old pw: $old";
             }
         }
-        return 'Invalid password';
+        return False;
     }
 
 }
