@@ -698,7 +698,7 @@ CREATE TABLE public.session (
     session_expiration TIMESTAMP
 );
 
-ALTER TABLE public.sessions OWNER TO agrammon;
+ALTER TABLE public.session OWNER TO agrammon;
 
 --
 -- Name: FUNCTION tag_name2id(username text, name text); Type: ACL; Schema: public; Owner: agrammon
