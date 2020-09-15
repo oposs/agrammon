@@ -38,7 +38,7 @@ COPY META6.json /tmp/
 RUN pwd && \
     ls -al && \
     cd /tmp && \
-    zef --deps-only --debug --/test --install-to=site install . && \
+    zef --deps-only --test-depends --debug --/test --install-to=site install . && \
     zef --installed list
 
 RUN apt-get update &&\
