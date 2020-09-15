@@ -285,7 +285,17 @@ class Agrammon::Formula::BinOp::Divide does Agrammon::Formula::BinOp {
     method assoc() { 'left' }
 }
 
+class Agrammon::Formula::BinOp::DividePairwise does Agrammon::Formula::BinOp {
+    method prec() { 'u=' }
+    method assoc() { 'left' }
+}
+
 class Agrammon::Formula::BinOp::Multiply does Agrammon::Formula::BinOp {
+    method prec() { 'u=' }
+    method assoc() { 'left' }
+}
+
+class Agrammon::Formula::BinOp::MultiplyPairwise does Agrammon::Formula::BinOp {
     method prec() { 'u=' }
     method assoc() { 'left' }
 }
@@ -295,7 +305,17 @@ class Agrammon::Formula::BinOp::Add does Agrammon::Formula::BinOp {
     method assoc() { 'left' }
 }
 
+class Agrammon::Formula::BinOp::AddPairwise does Agrammon::Formula::BinOp {
+    method prec() { 't=' }
+    method assoc() { 'left' }
+}
+
 class Agrammon::Formula::BinOp::Subtract does Agrammon::Formula::BinOp {
+    method prec() { 't=' }
+    method assoc() { 'left' }
+}
+
+class Agrammon::Formula::BinOp::SubtractPairwise does Agrammon::Formula::BinOp {
     method prec() { 't=' }
     method assoc() { 'left' }
 }

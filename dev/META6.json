@@ -18,13 +18,14 @@
     "Shell::Command",
     "Spreadsheet::XLSX",
     "Text::CSV",
-    "Test",
-    "Test::Mock",
-    "Test::NoTabs",
     "YAMLish"
   ],
   "build-depends": [],
-  "test-depends": [],
+  "test-depends": [
+    "Cro::HTTP::Test",
+    "Test::Mock",
+    "Test::NoTabs"
+  ],
   "provides": {
     "Agrammon::CommonParser": "lib/Agrammon/CommonParser.pm6",
     "Agrammon::Config": "lib/Agrammon/Config.pm6",

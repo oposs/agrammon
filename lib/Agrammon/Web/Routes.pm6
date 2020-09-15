@@ -5,11 +5,12 @@ use Cro::HTTP::Router;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 
+subset LoggedIn of Agrammon::Web::SessionUser where .logged-in;
+
 sub routes(Agrammon::Web::Service $ws) is export {
-    subset LoggedIn of Agrammon::Web::SessionUser where .logged-in;
 
     # Fix for Agrammon
-    # my $root = $app ~~ Easii::Application::Development ?? 'frontend/source-output' !! 'qx-build';
+    # my $root = $app ~~ Agrammon::Application::Development ?? 'frontend/source-output' !! 'qx-build';
     my $root = '';
     route {
         include static-content($root);
@@ -185,8 +186,8 @@ sub user-routes(Agrammon::Web::Service $ws) {
 
         # implement/test
         post -> LoggedIn $user, 'change_password' {
-            request-body -> (:$oldPassword!, :$newPassword!) {
-                my $data = $ws.change-password($oldPassword, $newPassword);
+            request-body -> (:oldPassword($old-password)!, :newPassword($new-password)!) {
+                my $data = $ws.change-password($old-password, $new-password);
                 content 'application/json', $data;
             }
         }
@@ -301,8 +302,8 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'store_branch_data' {
-            request-body -> (:%data!, :$datasetName!) {
-                my $data = $ws.store-branch-data($user, %data, $datasetName);
+            request-body -> (:%data!, :$dataset-name!) {
+                my $data = $ws.store-branch-data($user, %data, $dataset-name);
                 content 'application/json', $data;
             }
         }
@@ -317,8 +318,8 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'order_instances' {
-            request-body -> (:@instances, :$datasetName!) {
-                my $data = $ws.order-instances($user, @instances, $datasetName);
+            request-body -> (:@instances, :$dataset-name!) {
+                my $data = $ws.order-instances($user, @instances, $dataset-name);
                 content 'application/json', $data;
             }
         }

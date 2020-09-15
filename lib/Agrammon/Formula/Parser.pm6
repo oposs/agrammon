@@ -212,9 +212,13 @@ grammar Agrammon::Formula::Parser {
 
     proto token infix { * }
     token infix:sym</> { '/' }
+    token infix:sym<P/> { 'P/' }
     token infix:sym<*> { '*' }
+    token infix:sym<P*> { 'P*' }
     token infix:sym<+> { '+' }
+    token infix:sym<P+> { 'P+' }
     token infix:sym<-> { '-' }
+    token infix:sym<P-> { 'P-' }
     token infix:sym<.> { '.' }
     token infix:sym<=> { '=' }
     token infix:sym<< > >> { '>' }

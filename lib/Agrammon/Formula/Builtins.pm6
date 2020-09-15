@@ -1,4 +1,5 @@
 use Agrammon::Formula::ControlFlow;
+use Agrammon::Outputs;
 
 sub get-builtins is export {
     return INIT %(
@@ -13,6 +14,52 @@ sub get-builtins is export {
         warn => -> *@message {
             warn @message.join || 'Warning';
         },
-        abs => &abs
+        abs => &abs,
+        # Turn a filter group into a simple scalar value
+        scalar => &filter-group-scalar,
+        # Scale all values in a filter group by the given multiplier
+        scale => -> $filter-group, $multiplier {
+            die "scale operator expects a filter group as its first argument"
+                    unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
+            $filter-group.scale(+$multiplier)
+        },
+        # P+ compiles into this
+        addPairwise => -> $a, $b {
+            my $ag = as-filter-group($a);
+            my $bg = as-filter-group($b);
+            $ag.apply-pairwise($b, &[+], 0)
+        },
+        # P- compiles into this
+        subtractPairwise => -> $a, $b {
+            my $ag = as-filter-group($a);
+            my $bg = as-filter-group($b);
+            $ag.apply-pairwise($b, &[-], 0)
+        },
+        # P/ compiles into this
+        dividePairwise => -> $a, $b {
+            my $ag = as-filter-group($a);
+            my $bg = as-filter-group($b);
+            $ag.apply-pairwise($b, &[/], 1)
+        },
+        # P* compiles into this
+        multiplyPairwise => -> $a, $b {
+            my $ag = as-filter-group($a);
+            my $bg = as-filter-group($b);
+            $ag.apply-pairwise($b, &[*], 0)
+        },
     )
+}
+
+multi as-filter-group(Agrammon::Outputs::FilterGroupCollection $group) {
+    $group
+}
+multi as-filter-group(Any $value) {
+    Agrammon::Outputs::FilterGroupCollection.from-scalar($value)
+}
+
+multi filter-group-scalar(Agrammon::Outputs::FilterGroupCollection $group) {
+    $group.Numeric
+}
+multi filter-group-scalar(Any $value) {
+    $value
 }

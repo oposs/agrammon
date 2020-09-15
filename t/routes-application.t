@@ -15,15 +15,6 @@ sub make-fake-auth($role) {
     )
 }
 
-# my $fake-user = %( :id(1), :username('foor@bar.ch'), );
-
-# my $fake-tag-a = %( :id(42), :name('TagA'), :user($fake-user));
-# my $fake-tag-b = %( :id(43), :name('TagB'), :user($fake-user));
-
-# my $fake-dataset-a = %( :id(42), :name('DatasetA'), :user($fake-user));
-# my $fake-dataset-b = %( :id(43), :name('DatasetB'), :user($fake-user));
-
-
 my $role = 'user';
 my $fake-auth = make-fake-auth($role);
 
@@ -45,10 +36,10 @@ my $fake-store = mocked(Agrammon::Web::Service,
         rename-instance => -> $user, $old, $new {
             %( name => $new)
         },
-        order-instances => -> $user, @instances, $datasetName {
+        order-instances => -> $user, @instances, $dataset-name {
             %( sorted => 1 )
         },
-        store-branch-data => -> $user, %data, $datasetName {
+        store-branch-data => -> $user, %data, $dataset-name {
             %( stored => 1 )
         },
     }
@@ -149,7 +140,7 @@ subtest 'Load branch data' => {
 subtest 'Store branch data' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_branch_data', {
-            test post(json => { data => %( :x(1), :y(2) ), :datasetName('DatasetC') }),
+            test post(json => { data => %( :x(1), :y(2) ), :dataset-name('DatasetC') }),
                 status => 200,
                 json   => { stored => 1 }, # check what we really expect
         };
@@ -173,7 +164,7 @@ subtest 'Rename instance' => {
 subtest 'Order instances' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/order_instances', {
-            test post(json => { instances => ('InstC', 'InstD'),  :datasetName('DatasetA')}),
+            test post(json => { instances => ('InstC', 'InstD'),  :dataset-name('DatasetA')}),
                 status => 200,
                 json   => { sorted => 1 },
         };
@@ -188,7 +179,7 @@ done-testing;
 
 =COPYRIGHT Copyright (c) 2020 by OETIKER+PARTNER AG. All rights reserved.
 
-=AUTHOR S<Fritz WorthZauckerington E<lt>fritz.zaucker@oetiker.chE<gt>>
+=AUTHOR S<Fritz Zaucker E<lt>fritz.zaucker@oetiker.chE<gt>>
 
 See C<git blame> for other contributors.
 
