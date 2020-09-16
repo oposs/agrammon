@@ -281,7 +281,6 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'store_variable_comment' {
-            # request-body -> (:$name!, :%data!) {
             request-body -> (:$dataset, :$variable, :$comment) {
                 my $data = $ws.store-input-comment($user, $dataset, $variable, $comment);
                 content 'application/json', $data;
@@ -290,9 +289,9 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'delete_data' {
-            request-body -> (:$name!) {
+            request-body -> %data {
                 my $ret = $ws.delete-data($user, %data);
-                content 'application/json', %( : $ret );
+                content 'application/json', %( :$ret );
             }
         }
 
