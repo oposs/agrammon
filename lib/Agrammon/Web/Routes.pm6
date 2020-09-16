@@ -87,7 +87,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         }
 
         ### dataset
-        # working/test
+        # test
         post -> LoggedIn $user, 'create_dataset' {
             request-body -> (:$name!) {
                 my $data = $ws.create-dataset($user, $name);
@@ -95,7 +95,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # implement/test
+        # test
         post -> LoggedIn $user, 'rename_dataset' {
             request-body -> (:$old!, :$new!) {
                 my $data = $ws.rename-dataset($user, $old, $new);
@@ -111,7 +111,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # implement/test
+        # test
         post -> LoggedIn $user, 'load_dataset' {
             request-body -> (:name($dataset)!) {
                 say "#### load_dataset(): dataset=$dataset";
@@ -120,7 +120,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
+        # test
         post -> LoggedIn $user, 'store_dataset_comment' {
             request-body -> (:$name!, :$comment!) {
                 my $data = $ws.store-dataset-comment($user, $name, $comment);
@@ -129,12 +129,13 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         }
 
         ### tags
+        # test
         post -> LoggedIn $user, 'get_tags' {
             my $data = $ws.get-tags($user);
             content 'application/json', $data;
         }
 
-        # test/implement
+        # test
         post -> LoggedIn $user, 'create_tag' {
             request-body -> (:$name!) {
                 my $data = $ws.create-tag($user, $name);
@@ -142,7 +143,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
+        # test
         post -> LoggedIn $user, 'set_tag' {
             request-body -> (:@datasets!, :$tag!) {
                 my $data = $ws.set-tag($user, @datasets, $tag);
@@ -150,7 +151,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
+        # test
         post -> LoggedIn $user, 'remove_tag' {
             request-body -> (:@datasets!, :$tag!) {
                 my $data = $ws.remove-tag($user, @datasets, $tag);
@@ -158,7 +159,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
+        # test
         post -> LoggedIn $user, 'delete_tag' {
             request-body -> (:$name!) {
                 my $data = $ws.delete-tag($user, $name);
@@ -166,7 +167,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
+        # test
         post -> LoggedIn $user, 'rename_tag' {
             request-body -> (:$old!, :$new!) {
                 my $data = $ws.rename-tag($user, $old, $new);
@@ -174,7 +175,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
+        # test
         post -> LoggedIn $user, 'new_tag' {
             request-body -> (:$name!) {
                 my $data = $ws.create-tag($user, $name);
@@ -187,7 +188,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
 sub user-routes(Agrammon::Web::Service $ws) {
     route {
 
-        # implement/test
+        # test
         post -> LoggedIn $user, 'change_password' {
             request-body -> (:oldPassword($old-password)!, :newPassword($new-password)!) {
                 my $data = $ws.change-password($old-password, $new-password);
@@ -203,7 +204,7 @@ sub user-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # implement/test
+        # test
         post -> LoggedIn $user, 'create_account' {
             request-body -> %user-data {
                 my $data = $ws.create-account($user, %user-data);
@@ -236,6 +237,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         ### cfg
+        # working
         post -> 'get_cfg' {
             my %cfg = $ws.get-cfg;
             content 'application/json', %cfg;
@@ -252,7 +254,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
         #     }
         # }
 
-        # working/test
+        # test
         post -> LoggedIn $user, 'get_input_variables' {
             request-body -> (:name($dataset)!) {
                 say "get_input_variables(): ### dataset=$dataset";
@@ -262,7 +264,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # working/test
+        # test
         post -> LoggedIn $user, 'get_output_variables' {
             request-body -> %data {
                 my %output = $ws.get-output-variables($user, %data<dataset>);
@@ -271,7 +273,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         ### data
-        # working/test
+        # test
         post -> LoggedIn $user, 'store_data' {
             request-body -> %data {
                 my $ret = $ws.store-data($user, %data);
@@ -279,7 +281,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
+        # test
         post -> LoggedIn $user, 'store_variable_comment' {
             request-body -> (:$dataset, :$variable, :$comment) {
                 my $data = $ws.store-input-comment($user, $dataset, $variable, $comment);
@@ -311,7 +313,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
+        # test
         post -> LoggedIn $user, 'rename_instance' {
             request-body -> (:datasetName($dataset-name)!, :oldInstance($old-instance)!, :newInstance($new-instance)!, :$pattern!) {
                 my $data = $ws.rename-instance($user, $dataset-name, $old-instance, $new-instance, $pattern);
