@@ -11,17 +11,21 @@
   "depends": [
     "Cro::HTTP",
     "Cro::HTTP::Session::Pg",
+    "Cro::HTTP::Test",
     "DB::Pg",
     "Digest::SHA1::Native",
     "OO::Monitors",
     "Shell::Command",
     "Spreadsheet::XLSX",
     "Text::CSV",
-    "Test::NoTabs",
     "YAMLish"
   ],
   "build-depends": [],
-  "test-depends": [],
+  "test-depends": [
+    "Cro::HTTP::Test",
+    "Test::Mock",
+    "Test::NoTabs"
+  ],
   "provides": {
     "Agrammon::CommonParser": "lib/Agrammon/CommonParser.pm6",
     "Agrammon::Config": "lib/Agrammon/Config.pm6",

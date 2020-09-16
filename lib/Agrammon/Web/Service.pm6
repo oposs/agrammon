@@ -38,10 +38,6 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Datasets.new(:$user, :$version).load.list;
     }
 
-    method get-tags(Agrammon::Web::SessionUser $user) {
-        return Agrammon::DB::Tags.new(:$user).load.list;
-    }
-
     method load-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         warn "***** load-dataset($name) not yet completely implemented (branching)";
         my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
@@ -52,8 +48,47 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Dataset.new(:$user, :$name).create;
     }
 
+    method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
+        ...
+        # return Agrammon::DB::Dataset.new(:$user, :name($old)).rename($new);
+    }
+
+    method submit-dataset(Agrammon::Web::SessionUser $user, Str $name, Str $mail) {
+        ...
+        # return Agrammon::DB::Dataset.new(:$user, :$name).submit($mail);
+    }
+
+    method store-dataset-comment(Agrammon::Web::SessionUser $user, Str $name, Str $comment) {
+        ...
+        # return Agrammon::DB::Dataset.new(:$user, :$name).store-comment($comment);
+    }
+
+    method get-tags(Agrammon::Web::SessionUser $user) {
+        return Agrammon::DB::Tags.new(:$user).load.list;
+    }
+
     method create-tag(Agrammon::Web::SessionUser $user, Str $name) {
         return Agrammon::DB::Tag.new(:$user, :$name).create;
+    }
+
+    method delete-tag(Agrammon::Web::SessionUser $user, Str $name) {
+        ...
+        return Agrammon::DB::Tag.new(:$user, :$name).delete;
+    }
+
+    method rename-tag(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
+        ...
+        return Agrammon::DB::Tag.new(:$user, :$old).rename($new);
+    }
+
+    method set-tag(Agrammon::Web::SessionUser $user, Str $datasetName, Str $tagName) {
+        ...
+        return Agrammon::DB::Dataset.new(:$user, :$datasetName).set-tag($tagName);
+    }
+
+    method remove-tag(Agrammon::Web::SessionUser $user, Str $datasetName, Str $tagName) {
+        ...
+        return Agrammon::DB::Dataset.new(:$user, :$datasetName).remove-tag($tagName);
     }
 
     method get-input-variables {
@@ -84,8 +119,15 @@ class Agrammon::Web::Service {
         return $newUser;
     }
 
-    method change-password(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
-        $user.change-password($old, $new);
+    method change-password(Agrammon::Web::SessionUser $user, Str $oldPassword, Str $newPassword) {
+        ...
+        $user.change-password($oldPassword, $newPassword);
+        return $user;
+    }
+
+    method reset-password(Agrammon::Web::SessionUser $user, Str $email, Str $password, Str $key) {
+        ...
+        $user.reset-password($email, $password);
         return $user;
     }
 
@@ -105,6 +147,39 @@ class Agrammon::Web::Service {
 
         warn "**** store-data(var=$var, value=$value): not yet completely implemented (branch data)";
         return 1;
+    }
+
+    method store-variable-comment(Agrammon::Web::SessionUser $user, Str $name, Str $comment) {
+        ...
+        # return Agrammon::DB::Dataset.new(:$user, :$name).store-comment($comment);
+    }
+
+    method delete-data(Agrammon::Web::SessionUser $user, Str $name) {
+        ...
+        # return Agrammon::DB::Tag.new(:$user, :$name).delete;
+    }
+
+    method load-branch-data(Agrammon::Web::SessionUser $user, Str $name) {
+        ...
+        # my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
+        # return @data;
+    }
+    method store-branch-data(Agrammon::Web::SessionUser $user, %data, Str $name) {
+        ...
+        # my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
+        # return @data;
+    }
+
+    method rename-instance(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
+        ...
+        # my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
+        # return @data;
+    }
+
+    method order-instances(Agrammon::Web::SessionUser $user, @instances, Str $datasetName) {
+        ...
+        # my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
+        # return @data;
     }
 
 }
