@@ -291,8 +291,8 @@ sub application-routes(Agrammon::Web::Service $ws) {
         # test/implement
         post -> LoggedIn $user, 'delete_data' {
             request-body -> (:$name!) {
-                my $data = $ws.delete-data($user, $name);
-                content 'application/json', $data;
+                my $ret = $ws.delete-data($user, %data);
+                content 'application/json', %( : $ret );
             }
         }
 

@@ -31,6 +31,7 @@ class Agrammon::DB::User does Agrammon::DB {
     }
 
     method create-account(Str $role-name) {
+        warn "*** create account";
         die X::Agrammon::DB::User::Exists.new(:username($!username)) if self.exists;
 
         self.with-db: -> $db {
@@ -48,10 +49,9 @@ class Agrammon::DB::User does Agrammon::DB {
                 VALUES ($1, $2, $3, crypt($4, gen_salt('bf')), $5, $6)
                 RETURNING pers_id
             USER
-
             $!id = $u.value;
         }
-        return $!id;
+        return self;
     }
 
     method load {
@@ -135,32 +135,29 @@ class Agrammon::DB::User does Agrammon::DB {
         return False;
     }
 
-    method reset-password($old, $new) {
-        ...
+    method password-key-is-valid(Str $password, Str $key) {
+        warn "TODO: Password hash check missing";
+        return $key;
+    }
+
+
+    method reset-password($username, $password, $key) {
         self.with-db: -> $db {
 
-           if self.password-is-valid($!username, $old) {
-                say "Old pw valid";
-                my $res = $db.query(q:to/PASSWORD/, $!username, $new);
+            if self.password-key-is-valid($username, $key) {
+                my $res = $db.query(q:to/PASSWORD/, $username, $password);
                     UPDATE pers
                        SET pers_password = crypt($2, gen_salt('bf'))
                      WHERE pers_email    = $1
                 PASSWORD
 
-                my $valid = self.password-is-valid($!username, $new);
-                if $valid {
-                    warn 'PW update successful';
-                }
-                else {
-                    warn 'PW update failed';
-                }
-                return $valid;
+                return $res;
             }
             else {
-                warn "Invalid old pw: $old";
+                warn "Invalid password key";
             }
         }
-        return False;
+        return;
     }
 
 }

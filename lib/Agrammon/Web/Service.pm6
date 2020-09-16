@@ -122,7 +122,7 @@ class Agrammon::Web::Service {
     }
 
     method create-account(Agrammon::Web::SessionUser $user, $user-data) {
-        return Agrammon::DB::User.new(|$user-data);
+        return Agrammon::DB::User.new(|$user-data).create-account('user');
     }
 
     method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password) {
@@ -130,12 +130,11 @@ class Agrammon::Web::Service {
     }
 
     method reset-password(Agrammon::Web::SessionUser $user, Str $email, Str $password, Str $key) {
-        ...
-        $user.reset-password($email, $password);
-        return $user;
+        return $user.reset-password($email, $password, $key);
     }
 
     method store-data(Agrammon::Web::SessionUser $user, %data) {
+
         my $dataset = %data<dataset_name>;
         my $var     = %data<data_var>;
         my $value   = %data<data_val>;
@@ -143,7 +142,7 @@ class Agrammon::Web::Service {
         my $branches = %data<branches>;
         my $options  = %data<options>;
 
-        my $ds = Agrammon::DB::Dataset.new(:$user, name => $dataset);
+        my $ds = Agrammon::DB::Dataset.new(:$user, :name($dataset));
 
         my $ret = $ds.store-input($var, $value);
 
@@ -157,8 +156,10 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.store-input-comment($var-name, $comment);
     }
 
-    method delete-data(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $var-name) {
-        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.delete-input($var-name);
+    method delete-data(Agrammon::Web::SessionUser $user, %data) {
+        my $dataset-name = %data<dataset_name>;
+        my $var-name     = %data<pattern>;
+        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).delete-input($var-name);
     }
 
     method load-branch-data(Agrammon::Web::SessionUser $user, Str $name) {

@@ -174,62 +174,8 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $instance = $0;
         }
 
-        my $ret = $instance ?? self!store-instance-variable-comment($var, $instance, $comment)
-                            !! self!store-variable-comment($var, $comment);
-        return $ret;
-    }
-
-
-    method !store-variable($var, $value) {
-
-        return unless $var and $value.defined;
-        my $username = $!user.username;
-
-        self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var);
-            UPDATE data_new SET data_val = $1
-             WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
-                                                       AND data_instance IS NULL
-            RETURNING data_val
-            SQL
-
-            my $rows = $ret.rows;
-            return $rows if $rows;
-
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var);
-            INSERT INTO data_new (data_dataset, data_var, data_val)
-            VALUES (dataset_name2id($2,$3),$4,$1)
-            RETURNING data_val
-            SQL
-            $rows = $ret.rows;
-            return $rows if $rows;
-        }
-    }
-
-    method !store-instance-variable($var, $instance, $value) {
-
-        return unless $var and $value.defined and $instance;
-        my $username = $!user.username;
-
-        self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var, $instance);
-            UPDATE data_new SET data_val = $1
-             WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
-                                                       AND data_instance = $5
-            RETURNING data_val
-            SQL
-
-            my $rows = $ret.rows;
-            return $rows if $rows;
-
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var, $instance);
-            INSERT INTO data_new (data_dataset, data_var, data_val, data_instance)
-            VALUES (dataset_name2id($2,$3),$4,$1,$5)
-            RETURNING data_val
-            SQL
-            $rows = $ret.rows;
-            return $rows if $rows;
-        }
+        return $instance ?? self!store-instance-variable-comment($var, $instance, $comment)
+                         !! self!store-variable-comment($var, $comment);
     }
 
     method store-input($var-name, $value) {
@@ -240,9 +186,56 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $instance = $0;
         }
 
-        my $ret = $instance ?? self!store-instance-variable($var, $instance, $value)
-                            !! self!store-variable($var, $value);
-        return $ret;
+        return $instance ?? self!delete-instance-variable($var, $instance)
+                         !! self!delete-variable($var);
+    }
+
+    method !delete-variable($var) {
+
+        return unless $var;
+        my $username = $!user.username;
+
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $username, $!name, $var);
+            DELETE FROM data_new
+             WHERE data_dataset=dataset_name2id($1,$2) AND data_var=$3
+                                                       AND data_instance IS NULL
+            RETURNING data_val
+            SQL
+
+            my $rows = $ret.rows;
+            return $rows if $rows;
+        }
+    }
+
+    method !delete-instance-variable($var, $instance) {
+
+        return unless $var and $instance;
+        my $username = $!user.username;
+
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $username, $!name, $var, $instance);
+            DELETE FROM data_new
+             WHERE data_dataset=dataset_name2id($1,$2) AND data_var=$3
+                                                       AND data_instance = $4
+            RETURNING data_val
+            SQL
+
+            my $rows = $ret.rows;
+            return $rows if $rows;
+        }
+    }
+
+    method delete-input($var-name) {
+        my $instance;
+
+        my $var = $var-name;
+        if $var ~~ s/\[(.+)\]/[]/ {
+            $instance = $0;
+        }
+
+        return $instance ?? self!delete-instance-variable($var, $instance)
+                         !! self!delete-variable($var);
     }
 
     method rename-instance($old-instance, $new-instance, $pattern) {
@@ -255,8 +248,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             RETURNING data_val
             SQL
 
-            my $rows = $ret.rows;
-            return $rows;
+            return $ret.rows;
         }
     }
 

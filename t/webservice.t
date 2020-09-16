@@ -45,7 +45,6 @@ subtest "get-cfg()" => {
 }
 
 transactionally {
-#{
 
     subtest "create-dataset" => {
         ok my $dataset = $ws.create-dataset($user, "MyTestDataset"), "Create dataset";
@@ -66,6 +65,11 @@ transactionally {
         is $dataset[0], 'Agrammon6Testing', 'Last dataset has name Agrammon6Testing';
     }
 
+    subtest "rename-dataset" => {
+        ok my $newDataset = $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset'), "Rename dataset";
+        is $newDataset.name, 'MyNewTestDataset', 'Dataset has expected name';
+    }
+
     subtest "change-password" => {
         ok $ws.change-password($user, "test12", "test34"), 'Password update sucessful';
         nok $ws.change-password($user, "test12", "test34"), 'Password update failed';
@@ -80,12 +84,7 @@ transactionally {
             :organisation('Org'),
         );
         ok my $newUser = $ws.create-account($user, $userData), "Create new account";
-        is $newUser.username, 'foo@bar.ch', 'User has expected username';
-    }
-
-    subtest "rename-dataset" => {
-        ok my $newDataset = $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset'), "Rename dataset";
-        is $newDataset.name, 'MyNewTestDataset', 'Dataset has expected name';
+        is $newUser.username, 'foo@bar.ch', "User has expected username";
     }
 
     subtest "create-tag" => {
@@ -136,15 +135,6 @@ transactionally {
         # dd @data;
     };
 
-    subtest "store-data" => {
-        my %data = %(
-            :dataset_name('MyNewTestDataset'),
-            :data_var('PlantProduction::AgriculturalArea::agricultural_area'),
-            :data_val(42)
-        );
-        ok $ws.store-data($user, %data), "Data stored";
-    }
-
     subtest "rename-instance" => {
         ok my $ret = $ws.rename-instance(
             $user, 'TestSingle',
@@ -153,8 +143,49 @@ transactionally {
         ), "Rename instance";
     }
 
-}
 
+    subtest "store-data" => {
+        my %data = %(
+            :dataset_name('MyNewTestDataset'),
+            :data_var('PlantProduction::AgriculturalArea::agricultural_area'),
+            :data_val(42)
+        );
+        ok $ws.store-data($user, %data), "Simple input stored";
+
+        %data = %(
+            :dataset_name('MyNewTestDataset'),
+            :data_var('Livestock::DairyCow[MK]::Excretion::dairy_cows'),
+            :data_val(42)
+        );
+        ok $ws.store-data($user, %data), "Instance input stored";
+    }
+
+    # TODO: replace with deletion of real data and check for deleted rows
+    subtest "delete-data" => {
+        my %data = %(
+            :dataset_name('MyNewTestDataset'),
+            :pattern('PlantProduction::AgriculturalArea::agricultural_area'), # var name
+        );
+        lives-ok { $ws.delete-data($user, %data) }, "Simple input deleted";
+        todo "Needs deletion of existing data", 1;
+        ok $ws.delete-data($user, %data), "Simple input deleted";
+
+        %data = %(
+            :dataset_name('MyNewTestDataset'),
+            :pattern('Livestock::DairyCow[MK]::Excretion::dairy_cows'), # var name
+            :instance('MK'),
+        );
+        lives-ok { $ws.delete-data($user, %data) }, "Instance input deleted";
+        todo "Needs deletion of existing data", 1;
+        ok $ws.delete-data($user, %data), "Instance input deleted";
+    }
+
+    subtest "reset-password" => {
+        ok  $ws.reset-password($user, 'foo@bar.ch', "test12", "hash"), 'Password reset sucessful';
+        nok $ws.reset-password($user, 'foo@bar.ch', "test34", ""),     'Password reset without key fails';
+    }
+
+}
 
 subtest "Get model data" => {
 
@@ -228,15 +259,12 @@ subtest "Get model data" => {
 }
 
 
-todo "Not implemented yet", 7;
+todo "Not implemented yet", 5;
 
 flunk "get-output-variables";
 
-flunk "reset-password";
-
 flunk "submit-dataset";
 
-flunk "delete-data";
 flunk "load-branch-data";
 flunk "store-branch-data";
 
