@@ -314,7 +314,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'rename_instance' {
-            request-body -> (:$dataset-name!, :$old-instance!, :$new-instance!, :$pattern!) {
+            request-body -> (:datasetName($dataset-name)!, :oldInstance($old-instance)!, :newInstance($new-instance)!, :$pattern!) {
                 my $data = $ws.rename-instance($user, $dataset-name, $old-instance, $new-instance, $pattern);
                 content 'application/json', $data;
             }
