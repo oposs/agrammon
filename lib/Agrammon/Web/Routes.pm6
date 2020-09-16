@@ -305,7 +305,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'store_branch_data' {
-            request-body -> (:%data!, :$dataset-name!) {
+            request-body -> (:%data!, :datasetName($dataset-name)!) {
                 my $data = $ws.store-branch-data($user, %data, $dataset-name);
                 content 'application/json', $data;
             }
@@ -321,7 +321,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'order_instances' {
-            request-body -> (:@instances, :$dataset-name!) {
+            request-body -> (:@instances, :datasetName($dataset-name)!) {
                 my $data = $ws.order-instances($user, @instances, $dataset-name);
                 content 'application/json', $data;
             }
