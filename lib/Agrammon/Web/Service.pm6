@@ -67,8 +67,7 @@ class Agrammon::Web::Service {
     }
 
     method submit-dataset(Agrammon::Web::SessionUser $user, Str $name, Str $mail) {
-        ...
-        # return Agrammon::DB::Dataset.new(:$user, :$name).submit($mail);
+        return Agrammon::DB::Dataset.new(:$user, :$name).lookup.submit($mail);
     }
 
     method store-dataset-comment(Agrammon::Web::SessionUser $user, Str $name, Str $comment) {
@@ -91,12 +90,12 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Tag.new(:$user, :name($old)).rename($new);
     }
 
-    method set-tag(Agrammon::Web::SessionUser $user, Str $datasetName, Str $tagName) {
-        return Agrammon::DB::Dataset.new(:$user, :name($datasetName)).lookup.set-tag($tagName);
+    method set-tag(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $tag-name) {
+        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.set-tag($tag-name);
     }
 
-    method remove-tag(Agrammon::Web::SessionUser $user, Str $datasetName, Str $tagName) {
-        return Agrammon::DB::Dataset.new(:$user, :name($datasetName)).lookup.remove-tag($tagName);
+    method remove-tag(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $tag-name) {
+        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.remove-tag($tag-name);
     }
 
     method get-input-variables {
@@ -163,24 +162,19 @@ class Agrammon::Web::Service {
     }
 
     method load-branch-data(Agrammon::Web::SessionUser $user, Str $name) {
-        ...
-        # my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
-        # return @data;
+        return Agrammon::DB::Dataset.new(:$user, :$name).lookup.load-branch-data;
     }
-    method store-branch-data(Agrammon::Web::SessionUser $user, %data, Str $name) {
-        ...
-        # my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
-        # return @data;
+
+    method store-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
+        return Agrammon::DB::Dataset.new(:$user, :$name).store-branch-data(%data);
     }
 
     method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $pattern) {
         return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.rename-instance($old-instance, $new-instance, $pattern);
     }
 
-    method order-instances(Agrammon::Web::SessionUser $user, @instances, Str $datasetName) {
-        ...
-        # my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
-        # return @data;
+    method order-instances(Agrammon::Web::SessionUser $user, Str $dataset-name, @instances) {
+        return Agrammon::DB::Dataset.new(:$user, :$dataset-name).lookup.order-instances(@instances);
     }
 
 }

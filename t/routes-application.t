@@ -30,13 +30,13 @@ my $fake-store = mocked(Agrammon::Web::Service,
         store-input-comment => -> $user, $dataset, $variable, $comment {
             %( name => $variable)
         },
-        delete-data => -> $user, $name {
-            %( name => $name)
+        delete-data => -> $user, %data {
+            %( deleted => 1)
         },
         rename-instance => -> $user, $dataset-name, $old-instance, $new-instance, $pattern {
             %( name => $new-instance)
         },
-        order-instances => -> $user, @instances, $dataset-name {
+        order-instances => -> $user, $dataset-name, @instances {
             %( sorted => 1 )
         },
         store-branch-data => -> $user, %data, $dataset-name {
@@ -118,7 +118,7 @@ subtest 'Delete data' => {
         test-given '/delete_data', {
             test post(json => { :name('x') }),
                 status => 200,
-                json   => { name => 'x' },
+                json   => { deleted => 1 },
         };
         check-mock $fake-store,
             *.called('delete-data', times => 1);
@@ -140,7 +140,7 @@ subtest 'Load branch data' => {
 subtest 'Store branch data' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_branch_data', {
-            test post(json => { data => %( :x(1), :y(2) ), :dataset-name('DatasetC') }),
+            test post(json => { :datasetName('DatasetC'), data => %( :x(1), :y(2) ) }),
                 status => 200,
                 json   => { stored => 1 }, # check what we really expect
         };
@@ -164,7 +164,7 @@ subtest 'Rename instance' => {
 subtest 'Order instances' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/order_instances', {
-            test post(json => { instances => ('InstC', 'InstD'),  :dataset-name('DatasetA')}),
+            test post(json => { :datasetName('DatasetA'), instances => ('InstC', 'InstD') }),
                 status => 200,
                 json   => { sorted => 1 },
         };

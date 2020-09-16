@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 26;
+plan 25;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -68,6 +68,10 @@ transactionally {
     subtest "rename-dataset" => {
         ok my $newDataset = $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset'), "Rename dataset";
         is $newDataset.name, 'MyNewTestDataset', 'Dataset has expected name';
+    }
+
+    subtest "submit-dataset" => {
+        ok $ws.submit-dataset($user, 'MyTestDataset', 'foo@bar.ch'), "Submit dataset";
     }
 
     subtest "change-password" => {
@@ -132,7 +136,6 @@ transactionally {
 
     subtest "load-dataset" => {
         my @data = $ws.load-dataset($user, 'Agrammon6Testing');
-        # dd @data;
     };
 
     subtest "rename-instance" => {
@@ -143,6 +146,10 @@ transactionally {
         ), "Rename instance";
     }
 
+    subtest "order-instances" => {
+        my @instances = 'InstA', 'InstB';
+        ok $ws.order-instances($user, 'Agrammon6Testing', @instances), "Order instances";
+    };
 
     subtest "store-data" => {
         my %data = %(
@@ -185,6 +192,15 @@ transactionally {
         nok $ws.reset-password($user, 'foo@bar.ch', "test34", ""),     'Password reset without key fails';
     }
 
+    subtest "load-branch-data" => sub {
+        return $ws.load-branch-data($user, 'MyTestDataset');
+    }
+    
+    subtest "store-branch-data" => sub {
+        return $ws.store-branch-data($user, 'MyTestDataset', %( :x(1), :y(2) ) );
+    }
+
+    
 }
 
 subtest "Get model data" => {
@@ -219,7 +235,12 @@ subtest "Get model data" => {
         }
     };
 
-#    subtest "get-output-variables" => {
+# TODO: fix
+    todo "Not implemented yet", 1;
+    subtest "get-output-variables" => {
+        
+
+flunk "get-output-variables";
 #        my %outputs = $model.run(:$input).get-outputs-hash();
 #        dd %outputs;
 
@@ -239,7 +260,7 @@ subtest "Get model data" => {
 #                 }
 #             }
 #         }
-#    };
+    }
 
 
     subtest "graphs and reports" => {
@@ -258,17 +279,6 @@ subtest "Get model data" => {
 
 }
 
-
-todo "Not implemented yet", 5;
-
-flunk "get-output-variables";
-
-flunk "submit-dataset";
-
-flunk "load-branch-data";
-flunk "store-branch-data";
-
-flunk "order-instances";
 
 done-testing;
 

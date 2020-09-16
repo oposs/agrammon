@@ -293,7 +293,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
         post -> LoggedIn $user, 'delete_data' {
             request-body -> %data {
                 my $ret = $ws.delete-data($user, %data);
-                content 'application/json', %( :$ret );
+                content 'application/json', $ret;
             }
         }
 
@@ -307,7 +307,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'store_branch_data' {
-            request-body -> (:%data!, :datasetName($dataset-name)!) {
+            request-body -> (:datasetName($dataset-name)!, :%data!) {
                 my $data = $ws.store-branch-data($user, %data, $dataset-name);
                 content 'application/json', $data;
             }
@@ -323,8 +323,8 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test/implement
         post -> LoggedIn $user, 'order_instances' {
-            request-body -> (:@instances, :datasetName($dataset-name)!) {
-                my $data = $ws.order-instances($user, @instances, $dataset-name);
+            request-body -> (:datasetName($dataset-name)!, :@instances) {
+                my $data = $ws.order-instances($user, $dataset-name, @instances);
                 content 'application/json', $data;
             }
         }

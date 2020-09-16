@@ -46,6 +46,19 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         return self;
     }
 
+    method !clone($new) {
+        my $dataset = Agrammon::DB::Dataset.new(:name($new));
+        warn "clone($new) not yet implemented";
+        return $dataset;
+    }
+
+    method submit($email) {
+        my $new-dataset = self!clone("Clone of $!name");
+
+        warn "Sending mail for submit($email) not yet implemented";
+        return $new-dataset;
+    }
+
     method lookup {
         self.with-db: -> $db {
             my $username = $!user.username;
@@ -96,6 +109,40 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $!data = $results.arrays;
         }
         return self;
+    }
+
+    method load-branch-data {
+        warn "*** load-branch-data() not yet implemented";
+        my @data;
+        # self.with-db: -> $db {
+        #     my $username = $!user.username;
+        #     my $results = $db.query(q:to/DATASET/, $username, $!name);
+        #     SELECT data_var, data_val, data_instance_order, branches_data, data_comment
+        #       FROM data_view LEFT JOIN branches ON (branches_var=data_id)
+        #      WHERE data_dataset=dataset_name2id($1,$2)
+        #        AND data_var not like '%::ignore'
+        #      ORDER BY data_instance_order ASC, data_var
+        #     DATASET
+        #     $!data = $results.arrays;
+        # }
+        return @data;
+    }
+
+    method store-branch-data(%data) {
+        warn "*** store-branch-data() not yet implemented";
+        my @data;
+        # self.with-db: -> $db {
+        #     my $username = $!user.username;
+        #     my $results = $db.query(q:to/DATASET/, $username, $!name);
+        #     SELECT data_var, data_val, data_instance_order, branches_data, data_comment
+        #       FROM data_view LEFT JOIN branches ON (branches_var=data_id)
+        #      WHERE data_dataset=dataset_name2id($1,$2)
+        #        AND data_var not like '%::ignore'
+        #      ORDER BY data_instance_order ASC, data_var
+        #     DATASET
+        #     $!data = $results.arrays;
+        # }
+        return @data.keys.elems;
     }
 
     method store-comment($comment) {
@@ -250,6 +297,31 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
             return $ret.rows;
         }
+    }
+
+    method order-instances(@instances) {
+        warn "*** order-instance not yet implemented";
+        self.with-db: -> $db {
+
+            # my $i = 0;
+            # for (@instances) {
+            #     my $pattern  = $_;
+            #     $pattern     =~ m/(.*)\[(.*)\]/;
+            #     my $var      = $1;
+            #     my $instance = $2;
+            #     $var         = "%$var\[\]%";
+            #     # warn "var=$var, instance=$instance";
+
+            #     my $ret = $db.query(q:to/SQL/, $i, $!id, $var, $instance);
+            #     UPDATE data_new SET data_instance_order = $1
+            #      WHERE data_dataset = $2
+            #       AND data_var      LIKE $3
+            #       AND data_instance LIKE $4
+            #     SQL
+            #     $i++;
+            # }
+        }
+        return True;
     }
 
 }

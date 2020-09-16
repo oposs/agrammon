@@ -26,5 +26,7 @@ given $outputs.new-instance('Test::SubModule', 'Monkey C') {
 }
 
 # TODO
+todo "Not implemented yet";
+flunk "gui output formatter tests";
 
 done-testing;
