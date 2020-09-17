@@ -60,8 +60,8 @@ transactionally {
         isa-ok my $dataset = $datasets[0], 'List', 'Got dataset List';
         is $dataset[0], 'MyTestDataset', 'First dataset has name MyTestDataset';
         is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
-        $dataset = $datasets[7];
 
+        $dataset = $datasets[1];
         is $dataset[0], 'Agrammon6Testing', 'Last dataset has name Agrammon6Testing';
     }
 
@@ -74,11 +74,7 @@ transactionally {
         ok $ws.submit-dataset($user, 'MyTestDataset', 'foo@bar.ch'), "Submit dataset";
     }
 
-    subtest "change-password" => {
-        ok $ws.change-password($user, "test12", "test34"), 'Password update sucessful';
-        nok $ws.change-password($user, "test12", "test34"), 'Password update failed';
-    }
-
+    my $newUser;
     subtest "create-account" => {
         my $userData = \(
             :username('foo@bar.ch'),
@@ -87,8 +83,13 @@ transactionally {
             :password('myPass'),
             :organisation('Org'),
         );
-        ok my $newUser = $ws.create-account($user, $userData), "Create new account";
+        ok $newUser = $ws.create-account($user, $userData), "Create new account";
         is $newUser.username, 'foo@bar.ch', "User has expected username";
+    }
+
+    subtest "change-password" => {
+        ok $ws.change-password($user, "test12", "test34"), 'Password update sucessful';
+        nok $ws.change-password($user, "test12", "test34"), 'Password update failed';
     }
 
     subtest "create-tag" => {
@@ -141,7 +142,7 @@ transactionally {
     subtest "rename-instance" => {
         ok my $ret = $ws.rename-instance(
             $user, 'TestSingle',
-            'MKühe', 'Milchkühe',
+            'Stall Milchkühe', 'MKühe',
             'Livestock::DairyCow[]'
         ), "Rename instance";
     }
@@ -195,12 +196,12 @@ transactionally {
     subtest "load-branch-data" => sub {
         return $ws.load-branch-data($user, 'MyTestDataset');
     }
-    
+
     subtest "store-branch-data" => sub {
         return $ws.store-branch-data($user, 'MyTestDataset', %( :x(1), :y(2) ) );
     }
 
-    
+
 }
 
 subtest "Get model data" => {
@@ -238,7 +239,7 @@ subtest "Get model data" => {
 # TODO: fix
     todo "Not implemented yet", 1;
     subtest "get-output-variables" => {
-        
+
 
 flunk "get-output-variables";
 #        my %outputs = $model.run(:$input).get-outputs-hash();
