@@ -22,7 +22,7 @@ class Agrammon::DB::Tag does Agrammon::DB {
 
     method rename($new) {
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/TAG/, $new, $!name, $!user.id);
+            $db.query(q:to/TAG/, $new, $!name, $!user.id);
                 UPDATE tag SET tag_name = $1
                  WHERE tag_name = $2 AND tag_pers = $3
                 RETURNING tag_name
@@ -34,7 +34,7 @@ class Agrammon::DB::Tag does Agrammon::DB {
 
    method delete {
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/TAG/, $!id);
+            $db.query(q:to/TAG/, $!id);
                 DELETE FROM tag
                  WHERE tag_id = $1
             TAG
