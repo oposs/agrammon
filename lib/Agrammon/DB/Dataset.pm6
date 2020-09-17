@@ -36,7 +36,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
     method rename($new) {
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/DATASET/, $new, $!name, $!user.id);
+            $db.query(q:to/DATASET/, $new, $!name, $!user.id);
                 UPDATE dataset SET dataset_name = $1
                  WHERE dataset_name = $2 AND dataset_pers = $3
                 RETURNING dataset_name
@@ -76,11 +76,13 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     method set-tag($tagName) {
         self.with-db: -> $db {
             my $tag = Agrammon::DB::Tag.new( :name($tagName), :user($!user)).lookup;
-            my $ret = $db.query(q:to/DATASET/, $tag.id, $!id);
-                INSERT INTO tagds (tagds_tag, tagds_dataset)
-                VALUES ($1, $2)
-                RETURNING tagds_id
-            DATASET
+            if $tag.id {
+                $db.query(q:to/DATASET/, $tag.id, $!id);
+                    INSERT INTO tagds (tagds_tag, tagds_dataset)
+                    VALUES ($1, $2)
+                    RETURNING tagds_id
+               DATASET
+            }
         }
         return self;
     }
@@ -88,10 +90,12 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     method remove-tag($tagName) {
         self.with-db: -> $db {
             my $tag = Agrammon::DB::Tag.new( :name($tagName), :user($!user)).lookup;
-            my $ret = $db.query(q:to/DATASET/, $tag.id, $!id);
-                DELETE FROM tagds
-                 WHERE tagds_tag = $1 AND tagds_dataset = $2
-            DATASET
+            if $tag.id {
+                $db.query(q:to/DATASET/, $tag.id, $!id);
+                    DELETE FROM tagds
+                    WHERE tagds_tag = $1 AND tagds_dataset = $2
+                DATASET
+            }
         }
         return self;
     }
@@ -225,6 +229,58 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                          !! self!store-variable-comment($var, $comment);
     }
 
+    method !store-variable($var, $value) {
+
+        return unless $var and $comment.defined;
+        my $username = $!user.username;
+
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var);
+            UPDATE data_new SET value = $1
+             WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
+                                                       AND data_instance IS NULL
+            RETURNING data_comment
+            SQL
+
+            my $rows = $ret.rows;
+            return $rows if $rows;
+
+            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var);
+            INSERT INTO data_new (data_dataset, data_var, value)
+            VALUES (dataset_name2id($2,$3),$4,$1)
+            RETURNING data_comment
+            SQL
+            $rows = $ret.rows;
+            return $rows if $rows;
+        }
+    }
+
+    method !store-instance-variable($var, $instance, $value) {
+
+        return unless $var and $comment.defined and $instance;
+        my $username = $!user.username;
+
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $var, $instance);
+            UPDATE data_new SET data_comment = $1
+             WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
+                                                       AND data_instance = $5
+            RETURNING data_comment
+            SQL
+
+            my $rows = $ret.rows;
+            return $rows if $rows;
+
+            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $var, $instance);
+            INSERT INTO data_new (data_dataset, data_var, data_comment, data_instance)
+            VALUES (dataset_name2id($2,$3),$4,$1,$5)
+            RETURNING data_comment
+            SQL
+            $rows = $ret.rows;
+            return $rows if $rows;
+        }
+    }
+
     method store-input($var-name, $value) {
         my $instance;
 
@@ -233,8 +289,8 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $instance = $0;
         }
 
-        return $instance ?? self!delete-instance-variable($var, $instance)
-                         !! self!delete-variable($var);
+        return $instance ?? self!store-instance-variable($var, $instance)
+                         !! self!store-variable($var);
     }
 
     method !delete-variable($var) {
