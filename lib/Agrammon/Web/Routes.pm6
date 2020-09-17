@@ -26,11 +26,11 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
 sub static-content($root) is export {
     route {
-        get -> 'index.html' {
+        get -> {
             static $root ~ 'static/index.html'
         }
 
-        get -> {
+        get -> 'index.html' {
             static $root ~ 'static/index.html'
         }
 
@@ -43,7 +43,7 @@ sub static-content($root) is export {
         }
 
         get -> 'source', *@path {
-            static $root ~ 'static/source', @path
+            static $root ~ 'static/script', @path
         }
 
         get -> 'QxJqPlot/source/resource', *@path {
@@ -80,7 +80,6 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
 
         post -> LoggedIn $user, 'send_datasets' {
             request-body -> (:@datasets!) {
-                dd 'datasets=' ~ @datasets;
                 my $data = $ws.send-datasets($user, @datasets);
                 content 'application/json', $data;
             }
