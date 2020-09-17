@@ -27,6 +27,7 @@ subtest "Setup" => {
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(conninfo => $cfg.db-conninfo), 'Create DB::Pg object';
     $user = Agrammon::Web::SessionUser.new(:$username);
     ok $user.load, "Load user $username";
+    dd $user;
     ok $ws = Agrammon::Web::Service.new(:$cfg), "Created Web::Service object";
 }
 
@@ -61,8 +62,12 @@ transactionally {
         is $dataset[0], 'MyTestDataset', 'First dataset has name MyTestDataset';
         is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
 
-        $dataset = $datasets[1];
-        is $dataset[0], 'Agrammon6Testing', 'Last dataset has name Agrammon6Testing';
+        my $found;
+        for @$datasets -> $dataset {
+            $found = $dataset[0] eq 'Agrammon6Testing';
+            last if $found;
+        }
+        ok $found, 'Found dataset Agrammon6Testing';
     }
 
     subtest "rename-dataset" => {
