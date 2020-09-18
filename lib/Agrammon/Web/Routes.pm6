@@ -16,6 +16,15 @@ sub routes(Agrammon::Web::Service $ws) is export {
     my $schema = 'share/agrammon.openapi';
     my $root = '';
     route {
+        # before {
+        #     # Consume and re-instate request.
+        #     my $blob = await request.body-blob;
+        #     request.set-body($blob);
+        #     # Dump.
+        #     my $req = ~request;
+        #     try $req ~= $blob.decode('utf-8');
+        #     note $req;
+        # }
         include static-content($root);
         include api-routes($schema, $ws);
         include user-routes($ws);
@@ -367,10 +376,14 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         ### data
-        # working
+        # implement branches
         post -> LoggedIn $user, 'store_data' {
             request-body -> %data {
-                my $ret = $ws.store-data($user, %data);
+                my $ret = $ws.store-data(
+                    $user,
+                    :dataset(%data<dataset_name>), :var(%data<data_var>), :value(%data<data_val>),
+                    :branches(%data<branches>), :options(%data<options>)
+                );
                 content 'application/json', %( :$ret );
             }
         }

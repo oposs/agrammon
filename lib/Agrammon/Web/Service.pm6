@@ -135,22 +135,18 @@ class Agrammon::Web::Service {
         return $user.reset-password($email, $password, $key);
     }
 
-    method store-data(Agrammon::Web::SessionUser $user, %data) {
-
-        my $dataset = %data<dataset_name>;
-        my $var     = %data<data_var>;
-        my $value   = %data<data_val>;
-
-        my $branches = %data<branches>;
-        my $options  = %data<options>;
+    method store-data(Agrammon::Web::SessionUser $user, :$dataset!, :$var!, :$value!, :@branches, :@options) {
 
         my $ds = Agrammon::DB::Dataset.new(:$user, :name($dataset));
-
         my $ret = $ds.store-input($var, $value);
 
         $!outputs-cache.invalidate($user.username, $dataset);
 
-        warn "**** store-data(var=$var, value=$value): not yet completely implemented (branch data)";
+        if @branches {
+            warn "**** store-data(var=$var, value=$value): not yet completely implemented (branch data)";
+            dd @branches;
+            dd @options;
+        }
         return 1;
     }
 

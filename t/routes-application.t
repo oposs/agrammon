@@ -100,6 +100,21 @@ subtest 'Store data' => {
     }
 }
 
+subtest 'Store data (regional)' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/store_data', {
+            test post(json => {
+                :dataset_name('DatasetA'), :data_var('x'), :data_val('1'), :data_row(1),
+                :branches(@('a', 'b')), :options(@('x', 'y'))
+             }),
+            status => 200,
+            json   => { ret => 1 }
+        };
+        check-mock $fake-store,
+            *.called('store-data', times => 2);
+    }
+}
+
 subtest 'Store variable comment' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_input_comment', {
