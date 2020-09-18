@@ -13139,7 +13139,7 @@ COPY public.pers (pers_id, pers_email, pers_first, pers_last, pers_password, per
 1617	nedrariahi19@gmail.com	nedra	riahi	19ordinateur87	inrat	2017-05-31 22:50:57.488389	2017-05-31 22:50:50.737842	1
 1618	adi.ruettimann@egli-muehlen.ch	Adrian	Rüttimann	Carmen77	\N	2017-06-06 05:44:56.940595	2017-06-06 05:41:20.266533	1
 1626	chriesihof@bluewin.ch	\N	\N	ammoniak	\N	2017-06-27 19:19:19.757414	2017-06-27 18:29:02.605979	1
-1	fritz.zaucker@oetiker.ch	Fritz	Zaucker	test12	\N	2018-10-05 08:32:57.291476	\N	0
+1	fritz.zaucker@oetiker.ch	Fritz	Zaucker	$2a$06$2Wio5yQCNcZJYwEhWAL29.BfcHLCGNEl3Y5I5XmnDVsgHrjpCXJTS	\N	2018-10-05 08:32:57.291476	\N	0
 \.
 
 

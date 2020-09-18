@@ -2,7 +2,7 @@ use v6;
 use Agrammon::Config;
 
 use Test;
-plan 3;
+plan 9;
 
 my %config-expected = (
     General => {
@@ -40,10 +40,14 @@ my $file = "t/test-data/agrammon.cfg.yaml";
 
 ok my $cfg = Agrammon::Config.new, 'Create Agrammon Config';
 ok $cfg.load($file), "Load config from file $file";
-is-deeply %(
-    General  => $cfg.general,
-    Database => $cfg.database,
-    GUI      => $cfg.gui,
-    Model    => $cfg.model), %config-expected, 'Config as expected';
+
+is-deeply $cfg.general,     %config-expected<General>,            'Config.general as expected';
+is-deeply $cfg.gui,         %config-expected<GUI>,                'Config.gui as expected';
+is-deeply $cfg.model,       %config-expected<Model>,              'Config.model as expected';
+is $cfg.database<name>,     %config-expected<Database><name>,     'Config.database.name as expected';
+is $cfg.database<user>,     %config-expected<Database><user>,     'Config.database.user as expected';
+is $cfg.database<password>, %config-expected<Database><password>, 'Config.database.user as expected';
+# hostname might be different in dev, ci, and prod
+ok $cfg.database<host>,     'Config.database.host exists';
 
 done-testing;

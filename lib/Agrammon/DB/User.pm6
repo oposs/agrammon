@@ -29,10 +29,11 @@ class Agrammon::DB::User does Agrammon::DB {
     method set-username(Str $username) {
         $!username = $username;
     }
-    
+
     method create-account(Str $role-name) {
+        warn "*** create account";
         die X::Agrammon::DB::User::Exists.new(:username($!username)) if self.exists;
-        
+
         self.with-db: -> $db {
             my %r = $db.query(q:to/ROLE/, $role-name).hash;
                 SELECT role_id   AS id,
@@ -48,10 +49,9 @@ class Agrammon::DB::User does Agrammon::DB {
                 VALUES ($1, $2, $3, crypt($4, gen_salt('bf')), $5, $6)
                 RETURNING pers_id
             USER
-
             $!id = $u.value;
         }
-        return $!id;
+        return self;
     }
 
     method load {
@@ -70,7 +70,7 @@ class Agrammon::DB::User does Agrammon::DB {
                   FROM pers
                  WHERE pers_email = $1
             USER
-                
+
             # how can this be done more compactly
             $!id           = $u<id>;
             $!username     = $u<username>;
@@ -90,7 +90,7 @@ class Agrammon::DB::User does Agrammon::DB {
         }
         return self;
     }
-    
+
     method exists {
         self.with-db: -> $db {
             my $uid = $db.query(q:to/USER/, $!username).value;
@@ -116,25 +116,48 @@ class Agrammon::DB::User does Agrammon::DB {
         self.with-db: -> $db {
 
            if self.password-is-valid($!username, $old) {
-                say "Old pw valid";
                 my $res = $db.query(q:to/PASSWORD/, $!username, $new);
                     UPDATE pers
                        SET pers_password = crypt($2, gen_salt('bf'))
                      WHERE pers_email    = $1
                 PASSWORD
 
-                if self.password-is-valid($!username, $new) {
-                    return 'PW update successful';
+                my $valid = self.password-is-valid($!username, $new);
+                if not $valid {
+                    warn 'PW update failed';
                 }
-                else {
-                    return 'PW update failed';
-                }
+                return $valid;
             }
             else {
                 warn "Invalid old pw: $old";
             }
         }
-        return 'Invalid password';
+        return False;
+    }
+
+    method password-key-is-valid(Str $password, Str $key) {
+        warn "TODO: Password hash check missing";
+        return $key;
+    }
+
+
+    method reset-password($username, $password, $key) {
+        self.with-db: -> $db {
+
+            if self.password-key-is-valid($username, $key) {
+                my $res = $db.query(q:to/PASSWORD/, $username, $password);
+                    UPDATE pers
+                       SET pers_password = crypt($2, gen_salt('bf'))
+                     WHERE pers_email    = $1
+                PASSWORD
+
+                return $res;
+            }
+            else {
+                warn "Invalid password key";
+            }
+        }
+        return;
     }
 
 }
