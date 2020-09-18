@@ -135,7 +135,7 @@ class Agrammon::Web::Service {
         return $user.reset-password($email, $password, $key);
     }
 
-    method store-data(Agrammon::Web::SessionUser $user, :$dataset!, :$var!, :$value!, :@branches, :@options) {
+    method store-data(Agrammon::Web::SessionUser $user, :$dataset!, :$var!, :$value, :@branches, :@options) {
 
         my $ds = Agrammon::DB::Dataset.new(:$user, :name($dataset));
         my $ret = $ds.store-input($var, $value);
