@@ -274,16 +274,14 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method store-input-comment($var-name, $comment) {
+    method store-input-comment(:$variable, :$comment) {
         my $instance;
-
-        my $var = $var-name;
-        if $var ~~ s/\[(.+)\]/[]/ {
+        if $variable ~~ s/\[(.+)\]/[]/ {
             $instance = $0;
         }
 
-        return $instance ?? self!store-instance-variable-comment($var, $instance, $comment)
-                         !! self!store-variable-comment($var, $comment);
+        return $instance ?? self!store-instance-variable-comment($variable, $instance, $comment)
+                         !! self!store-variable-comment($variable, $comment);
     }
 
     method !store-variable($var, $value) {
