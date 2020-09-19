@@ -118,7 +118,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
+        # working
         post -> LoggedIn $user, 'store_dataset_comment' {
             request-body -> (:dataset($dataset-name)!, :$comment!) {
                 my $ret = $ws.store-dataset-comment($user, $dataset-name, $comment);
