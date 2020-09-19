@@ -79,15 +79,12 @@ transactionally {
 
     my $newUser;
     subtest "create-account" => {
-        my $userData = \(
-            :username('foo@bar.ch'),
-            :firstname('Erika'),
-            :lastname('Mustermann'),
-            :password('myPass'),
-            :organisation('Org'),
-        );
-        ok $newUser = $ws.create-account($user, $userData), "Create new account";
-        is $newUser.username, 'foo@bar.ch', "User has expected username";
+        ok $username = $ws.create-account(
+            $user,
+            'foo@bar.com', 'myPassword', 'myKey',
+            'Erika', 'Mustermann', 'MyOrg'
+        ), "Create new account";
+        is $username, 'foo@bar.com', "User has expected username";
     }
 
     subtest "change-password" => {
@@ -178,8 +175,8 @@ transactionally {
     }
 
     subtest "reset-password" => {
-        ok  $ws.reset-password($user, 'foo@bar.ch', "test12", "hash"), 'Password reset sucessful';
-        nok $ws.reset-password($user, 'foo@bar.ch', "test34", ""),     'Password reset without key fails';
+        ok  $ws.reset-password($user, 'foo@bar.com', "test12", "hash"), 'Password reset sucessful';
+        nok $ws.reset-password($user, 'foo@bar.com', "test34", ""),     'Password reset without key fails';
     }
 
     subtest "load-branch-data" => sub {

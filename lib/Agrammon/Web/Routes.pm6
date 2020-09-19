@@ -254,13 +254,14 @@ sub user-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
+        # working
         post -> LoggedIn $user, 'create_account' {
-            request-body -> %user-data {
-                my $data = $ws.create-account($user, %user-data);
-                content 'application/json', $data;
+            request-body -> (:$email!, :$password!, :$key, :$firstname, :$lastname, :$org) {
+                my $username = $ws.create-account($user, $email, $password, $key, $firstname, $lastname, $org);
+                content 'application/json', { :$username };
             }
         }
+
     }
 }
 

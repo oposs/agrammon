@@ -19,6 +19,7 @@ my $role = 'user';
 my $fake-auth = make-fake-auth($role);
 my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
+        # create-account => %( created => 1 )
     },
     overriding => {
         reset-password => -> $email, $password, $key {
@@ -27,8 +28,8 @@ my $fake-store = mocked(Agrammon::Web::Service,
         change-password => -> $old-password, $new-password {
             %( changed => 1 )
         },
-        create-account => -> $user, %data {
-            %( created => 1 )
+        create-account => -> $user, $email, $password, $key, $firstname, $lastname, $org {
+            $email
         },
     }
 );
@@ -60,9 +61,9 @@ subtest 'Change password' => {
 subtest 'Create account' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/create_account', {
-            test post(json => { :email('foo@bar.ch') }),
+            test post(json => { :email('foo@bar.com'), :password('xyz') }),
                 status => 200,
-                json   => { created => 1 },
+                json   => { :username('foo@bar.com') },
         };
         check-mock $fake-store,
             *.called('create-account', times => 1);

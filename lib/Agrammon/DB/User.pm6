@@ -31,7 +31,6 @@ class Agrammon::DB::User does Agrammon::DB {
     }
 
     method create-account(Str $role-name) {
-        warn "*** create account";
         die X::Agrammon::DB::User::Exists.new(:username($!username)) if self.exists;
 
         self.with-db: -> $db {
