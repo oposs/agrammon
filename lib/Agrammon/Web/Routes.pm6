@@ -282,7 +282,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
+        # working
         post -> LoggedIn $user, 'store_variable_comment' {
             request-body -> (:dataset($dataset-name)!, :$variable!, :$comment) {
                 my $ret = $ws.store-input-comment($user, $dataset-name, $variable, $comment);
