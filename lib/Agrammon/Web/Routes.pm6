@@ -89,8 +89,8 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         # test
         post -> LoggedIn $user, 'create_dataset' {
             request-body -> (:$name!) {
-                my $data = $ws.create-dataset($user, $name);
-                content 'application/json', $data;
+                my $dataset-name = $ws.create-dataset($user, $name);
+                content 'application/json', { :name($dataset-name) };
             }
         }
 
