@@ -177,7 +177,7 @@ subtest 'Load dataset' => {
 subtest 'Rename dataset' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/rename_dataset', {
-            test post(json => { :old('DatasetC'),  :new('DatasetD') }),
+            test post(json => { :oldName('DatasetC'),  :newName('DatasetD') }),
                 status => 200,
                 json   => { name => 'DatasetD' },
         };

@@ -97,10 +97,10 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
+        # working
         post -> LoggedIn $user, 'rename_dataset' {
-            request-body -> (:$old!, :$new!) {
-                my $data = $ws.rename-dataset($user, $old, $new);
+            request-body -> (:oldName($old-name)!, :newName($new-name)!) {
+                my $data = $ws.rename-dataset($user, $old-name, $new-name);
                 content 'application/json', $data;
             }
         }

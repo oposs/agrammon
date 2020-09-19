@@ -256,8 +256,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
 
             var renameDatasetFunc = function(data,exc,id) {
                 if (exc == null) {
-                    var oldDataset = data['old'];
-                    var newDataset = data['new'];
+                    var oldDataset = data.oldName;
+                    var newDataset = data.newName;
                     var userName = this.__info.getUserName();
                     qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', userName);
 //                this.__rpc.callAsync(this.get_datasets_func,
@@ -285,15 +285,14 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
             this.__btnRename.addListener("execute", function(e) {
                 var data = this.__table.getSelectionModel().getSelectedRanges();
                 var row = data[0]['minIndex'];
-                var dataset = new Object;
-                dataset['name'] = this.__table.getTableModel().getValue(0,row,1);
+                var oldName = this.__table.getTableModel().getValue(0,row,1);
                 var dialog;
                 var okFunction = qx.lang.Function.bind(function(self) {
-                    var newDataset = self.nameField.getValue();
-                    if (this.__datasetStore.datasetExists(newDataset)) {
+                    var newName = self.nameField.getValue();
+                    if (this.__datasetStore.datasetExists(newName)) {
                         qx.event.message.Bus.dispatchByName('error',
                             [ this.tr("Error"),
-                              this.tr("Dataset") + ' ' + newDataset
+                              this.tr("Dataset") + ' ' + newName
                             + ' ' +this.tr("already exists")]);
                         self.close();
                         return;
@@ -304,8 +303,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                     this.__rpc.callAsync(
                         qx.lang.Function.bind(renameDatasetFunc, this),
                         'rename_dataset',
-                                    { oldDataset:  dataset.name,
-                                      newDataset:  newDataset}
+                                    { oldName:  oldName,
+                                      newName:  newName}
                     );
                     self.close();
                 }, this);
