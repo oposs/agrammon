@@ -284,9 +284,9 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # test
         post -> LoggedIn $user, 'store_variable_comment' {
-            request-body -> (:$dataset, :$variable, :$comment) {
-                my $data = $ws.store-input-comment($user, $dataset, $variable, $comment);
-                content 'application/json', $data;
+            request-body -> (:dataset($dataset-name)!, :$variable!, :$comment) {
+                my $ret = $ws.store-input-comment($user, $dataset-name, $variable, $comment);
+                content 'application/json', %( :stored($ret) );
             }
         }
 
