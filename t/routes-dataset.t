@@ -50,7 +50,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
             %( tags => @datasets.elems)
         },
         create-dataset => -> $user, $name {
-            %( name => $name)
+            $name
         },
         rename-dataset => -> $user, $old, $new {
             %( name => $new)
