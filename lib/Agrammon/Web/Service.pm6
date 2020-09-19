@@ -59,7 +59,7 @@ class Agrammon::Web::Service {
     method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         my $model = self.cfg.model-variant; # model 'SingleSHL';
         my $version = '2.0-stage';
-        return Agrammon::DB::Dataset.new(:$user, :$name, :$model, :$version).create;
+        return Agrammon::DB::Dataset.new(:$user, :$name, :$model, :$version).create.name;
     }
 
     method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new) {

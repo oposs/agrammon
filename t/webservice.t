@@ -48,8 +48,8 @@ subtest "get-cfg()" => {
 transactionally {
 
     subtest "create-dataset" => {
-        ok my $dataset = $ws.create-dataset($user, "MyTestDataset"), "Create dataset";
-        is $dataset.name, "MyTestDataset", "Dataset has correct name";
+        ok my $dataset-name = $ws.create-dataset($user, "MyTestDataset"), "Create dataset";
+        is $dataset-name, "MyTestDataset", "Dataset has correct name";
     }
 
     subtest "get-datasets()" => {
