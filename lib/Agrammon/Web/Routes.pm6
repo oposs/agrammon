@@ -110,10 +110,9 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
+        # working
         post -> LoggedIn $user, 'load_dataset' {
             request-body -> (:name($dataset)!) {
-                say "#### load_dataset(): dataset=$dataset";
                 my @data = $ws.load-dataset($user, $dataset);
                 content 'application/json', @data;
             }
