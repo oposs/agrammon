@@ -62,6 +62,7 @@ sub static-content($root) is export {
 
 sub dataset-routes(Agrammon::Web::Service $ws) {
     route {
+        ### datasets
         # working
         post -> LoggedIn $user, 'get_datasets' {
             my $cfg = $ws.cfg;
@@ -71,6 +72,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             content 'application/json', $data;
         }
 
+        # working
         post -> LoggedIn $user, 'delete_datasets' {
             request-body -> (:@datasets!) {
                 my $deleted = $ws.delete-datasets($user, @datasets);
@@ -78,6 +80,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
+        # test
         post -> LoggedIn $user, 'send_datasets' {
             request-body -> (:@datasets!) {
                 my $data = $ws.send-datasets($user, @datasets);

@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 25;
+plan 26;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -208,7 +208,7 @@ transactionally {
 
     subtest "delete-datasets" => {
         is $ws.delete-datasets($user, @('MyNewTestDataset')), 1, 'One dataset deleted';
-    };
+    }
 
 }
 
