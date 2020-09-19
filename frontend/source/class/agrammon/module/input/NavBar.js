@@ -270,27 +270,28 @@ qx.Class.define('agrammon.module.input.NavBar', {
         this.add(this.__navTree);
 
         var getInputVariablesHandler =
-             qx.lang.Function.bind(function(data,exc,id) {
-             if (exc == null) {
-                 var dataset = data['dataset'];
-                 this.debug('getInputVariablesHandler(): dataset='+dataset);
-                 // create select menus for results
-                 if (data['reports'] != null) {
-                     qx.event.message.Bus.dispatchByName('agrammon.Reports.createMenu',
-                                                         data['reports']);
-                 }
-                 if (data['graphs'] != null) {
-                     qx.event.message.Bus.dispatchByName('agrammon.Graphs.createMenu',
-                                                         data['graphs']);
-                 }
-                 this.__getInputVariables(data['inputs']); // build NavTree structur
+            qx.lang.Function.bind(function(data,exc,id) {
+            if (exc == null) {
+                var dataset = data['dataset'];
+                this.debug('getInputVariablesHandler(): dataset='+dataset);
+                // create select menus for results
+                if (data['reports'] != null) {
+                    qx.event.message.Bus.dispatchByName('agrammon.Reports.createMenu',
+                                                        data['reports']);
+                }
+                if (data['graphs'] != null) {
+                    qx.event.message.Bus.dispatchByName('agrammon.Graphs.createMenu',
+                                                        data['graphs']);
+                }
+                this.__getInputVariables(data['inputs']); // build NavTree structur
 
-                 if (dataset != null ) {
-                     this.debug('getInputVariablesHandler(): loading ' + dataset);
-                     this.__rpc.callAsyncSmart(this.loadDatasetHandler,
-                                          'load_dataset',
-                                               {name : dataset}
-                                         );
+                if (dataset != null ) {
+                    this.debug('getInputVariablesHandler(): loading ' + dataset);
+                    this.__rpc.callAsyncSmart(
+                        this.loadDatasetHandler,
+                        'load_dataset',
+                        {name : dataset}
+                    );
                  }
             }
             else {
