@@ -24,12 +24,10 @@ my $fake-store = mocked(Agrammon::Web::Service,
         get-input-variables  =>  %( :x(1), :y(2) ),
         get-output-variables =>  %( :x(1), :y(2) ),
         store-data => 1,
-        load-branch-data => ( 1, 2 )
+        load-branch-data => ( 1, 2 ),
+        store-input-comment => 1,
     },
     overriding => {
-        store-input-comment => -> $user, $dataset, $variable, $comment {
-            %( name => $variable)
-        },
         delete-data => -> $user, %data {
             %( deleted => 1)
         },
@@ -106,7 +104,7 @@ subtest 'Store variable comment' => {
         test-given '/store_variable_comment', {
             test post(json => { :dataset('Dataset'), :variable('x'), :comment('bla bla' ) }),
                 status => 200,
-                json   => { name => 'x' },
+                json   => { :stored(1) },
         };
         check-mock $fake-store,
             *.called('store-input-comment', times => 1);
