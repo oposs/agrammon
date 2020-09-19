@@ -100,7 +100,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                                                             datasetHash);
                     }
                     this.__rpc.callAsync( delete_datasets_func,
-                                         'delete_datasets', datasets);
+                                         'delete_datasets', { datasets : datasets });
                 }
                 self.close();
             }, this);
@@ -113,17 +113,17 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
         var delete_datasets_func = function(data,exc,id) {
             if (exc == null) {
                 var msg;
-                if (data == 1) {
-                    msg = that.tr("dataset");
-                }
-                else {
-                    msg = that.tr("datasets");
-                }
+                var deleted = data.deleted;
+                msg = (deleted == 1) ? that.tr("dataset") : that.tr("datasets");
                 qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', that.__info.getUserName());
-                qx.event.message.Bus.dispatchByName('error',
-                                                    [ that.tr("Info"), data + ' ' + msg + ' '
-                                                    + that.tr("deleted"),
-                                                      'info' ]);
+                qx.event.message.Bus.dispatchByName(
+                    'error',
+                    [
+                        that.tr("Info"),
+                        deleted + ' ' + msg + ' ' + that.tr("deleted"),
+                        'info'
+                    ]
+                );
             }
             else {
                 alert(exc);
@@ -236,7 +236,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 new qx.ui.toolbar.Button(this.tr("Send"),
                                          "icon/16/actions/document-send.png");
             this.__btnSend.setToolTip(new qx.ui.tooltip.ToolTip(this.tr("Send selected dataset(s) to other Agrammon user")));
-               
+
             this.__btnNew =
                 new qx.ui.toolbar.Button(this.tr("New"),
                                          "icon/16/actions/document-new.png");

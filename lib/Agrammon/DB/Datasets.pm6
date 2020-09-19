@@ -59,9 +59,26 @@ class Agrammon::DB::Datasets does Agrammon::DB {
         }
         return self;
     }
-    
+
+    method delete(@datasets) {
+        my $deleted;
+        my $user = $!user.id;
+        for @datasets -> $ds {
+            self.with-db: -> $db {
+                my $results = $db.query(q:to/DATASET/, $user, $ds);
+                    DELETE FROM dataset
+                     WHERE dataset_pers = $1
+                       AND dataset_name = $2
+                    RETURNING dataset_id
+                DATASET
+                $deleted++ if $results.value;
+            }
+        }
+        return $deleted;
+    }
+
     method list {
         return [@!collection.map: {.name, .mod-date, .records, .read-only, .version, .tags, .comment, .model, 0}];
     }
-    
+
 }

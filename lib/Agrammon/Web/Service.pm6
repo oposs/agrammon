@@ -39,8 +39,7 @@ class Agrammon::Web::Service {
     }
 
     method delete-datasets(Agrammon::Web::SessionUser $user, @datasets) {
-        return @datasets.elems;
-        # return Agrammon::DB::Datasets.new(:$user, :$version).load.list;
+        return Agrammon::DB::Datasets.new(:$user).delete(@datasets);
     }
 
     # return list of datasets as expected by Web GUI
