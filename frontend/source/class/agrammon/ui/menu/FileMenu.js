@@ -231,11 +231,7 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
 	  * @lint ignoreDeprecated(alert)
           */
          __createDatasetFunc: function(dataset,exc,id) {
-            console.log('__createDatasetFunc: dataset=', dataset);
-            this.debug('__createDatasetFunc(): this=' + this);
             if (exc == null) {
-                // var dataset = new Object;
-                // dataset.name = data.name;
                 // load the newly created dataset
                 qx.event.message.Bus.dispatchByName('agrammon.NavBar.loadDataset',   dataset);
                 qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', this.__info.getUserName());
@@ -252,14 +248,9 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
 	  * @lint ignoreDeprecated(alert)
           */
          __createDatasetOnlyFunc: function(dataset,exc,id) {
-             console.log('__createDatasetOnlyFunc: dataset=', dataset);
-            this.debug('__createDatasetFunc(): this=' + this);
             if (exc == null) {
-                // var dataset = new Object;
-                // dataset.name = data.name;
-                qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', this.__info.getUserName());
                 // don't load the newly created dataset
-                // qx.event.message.Bus.dispatchByName('agrammon.NavBar.loadDataset',dataset);
+                qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', this.__info.getUserName());
             }
             else {
                 alert(exc);
