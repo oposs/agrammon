@@ -71,8 +71,8 @@ transactionally {
     }
 
     subtest "rename-dataset" => {
-        ok my $newDataset = $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset'), "Rename dataset";
-        is $newDataset.name, 'MyNewTestDataset', 'Dataset has expected name';
+        ok my $ret = $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset'), "Rename dataset";
+        is $ret<new>, 'MyNewTestDataset', 'Dataset has expected name';
     }
 
     subtest "submit-dataset" => {
