@@ -31,7 +31,8 @@ my $fake-store = mocked(Agrammon::Web::Service,
         cfg          => Agrammon::Config.new(gui => :variant('Single'), model => :variant('SHL')),
         get-datasets => ($fake-dataset-a, $fake-dataset-b),
         get-tags     => ($fake-tag-a, $fake-tag-b),
-        load-dataset => ( 1, 2 )
+        load-dataset => ( 1, 2 ),
+        store-dataset-comment => 1,
     },
     overriding => {
         create-tag => -> $user, $name {
@@ -56,9 +57,6 @@ my $fake-store = mocked(Agrammon::Web::Service,
             %( name => $new)
         },
         submit-dataset => -> $user, $name, $mail {
-            %( name => $name)
-        },
-        store-dataset-comment => -> $user, $name, $comment {
             %( name => $name)
         },
         delete-datasets => -> $user, @datasets {
@@ -203,9 +201,9 @@ subtest 'Submit dataset' => {
 subtest 'Store dataset comment' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_dataset_comment', {
-            test post(json => { :name('DatasetC'), :comment('bla bla')}),
+            test post(json => { :dataset('DatasetC'), :comment('bla bla')}),
                 status => 200,
-                json   => { name => 'DatasetC' },
+                json   => { :stored(1) },
         };
         check-mock $fake-store,
             *.called('store-dataset-comment', times => 1);
