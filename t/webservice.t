@@ -206,6 +206,9 @@ transactionally {
         return $ws.store-branch-data($user, 'MyTestDataset', %( :x(1), :y(2) ) );
     }
 
+    subtest "delete-datasets" => {
+        is $ws.delete-datasets($user, @('MyNewTestDataset')), 1, 'One dataset deleted';
+    };
 
 }
 

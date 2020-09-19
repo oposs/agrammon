@@ -62,7 +62,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
             %( name => $name)
         },
         delete-datasets => -> $user, @datasets {
-            %( deleted => @datasets.elems);
+            @datasets.elems;
         },
         send-datasets => -> $user, @datasets {
             %( sent => @datasets.elems);
