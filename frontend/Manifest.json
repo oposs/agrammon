@@ -1,0 +1,34 @@
+{
+  "info" : 
+  {
+    "name" : "agrammon",
+
+    "summary" : "NH3 Simulations",
+    "description" : "Simulation of NH3 emissions from farms.",
+    
+    "homepage" : "http://agrammon.ch",
+
+    "license" : "SomeLicense",
+    "authors" : 
+    [
+      {
+        "name" : "Fritz Zaucker (zaucker)",
+        "email" : "fritz.zaucker@oetiker.ch"
+      }
+    ],
+
+    "version" : "branches/qx",
+    "qooxdoo-versions": ["1.0svn"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "agrammon",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "application"
+  }
+}
+

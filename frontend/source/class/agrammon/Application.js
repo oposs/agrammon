@@ -1,0 +1,279 @@
+/* ************************************************************************
+
+************************************************************************ */
+
+qx.Class.define('agrammon.Application', {
+    extend: qx.application.Standalone,
+
+    members: {
+
+        /**
+          * TODOC
+          *
+          * @return {var} TODOC
+	  * @lint ignoreDeprecated(alert)
+          */
+        main: function() {
+            this.base(arguments);
+
+            var rv = -1; // Return value assumes failure.
+            if (navigator.appName == 'Microsoft Internet Explorer') {
+                var ua = navigator.userAgent;
+                var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (re.exec(ua) != null) {
+                    rv = parseFloat( RegExp.$1 );
+                }
+            }
+            if (rv>0 && rv<7) {
+                alert(this.tr("Agrammon is not supported on Internet Explorer below version 7"));
+                this.terminate();
+            }
+
+            // Enable logging in debug variant
+            if ((qx.core.Environment.get("qx.debug"))) {
+                // support native logging capabilities, e.g. Firebug for Firefox
+                qx.log.appender.Native;
+                // support additional cross-browser console. Press F7 to toggle visibility
+                qx.log.appender.Console;
+            }
+
+	    var param, params = this.__getParams();
+	    for (var i=0; i<params.length; i++) {
+                if (params[i] != null) {
+                    param = params[i].split("=");
+                }
+		if (param[0] == 'lang') {
+ 	            qx.locale.Manager.getInstance().setLocale(param[1]);
+		}
+            } 
+
+            var that = this;
+
+            this.__rpc = agrammon.io.remote.Rpc.getInstance();
+
+            qx.event.message.Bus.subscribe('agrammon.main.logout', this.__logout, this);
+            qx.event.message.Bus.subscribe('agrammon.main.login',  this.__login, this);
+
+            var root = this.getRoot();
+            root.setBlockerColor("#bfbfbf");
+            root.setBlockerOpacity(0.5);
+
+            // Add a popup error/info window to the application it will display
+            // messages sent to the error message bus.
+            root.add(new agrammon.ui.dialog.Error());
+
+            // Dto for help messages.
+            root.add(new agrammon.ui.dialog.Help());
+
+            // Dto for log messages.
+            root.add(new agrammon.ui.dialog.Log());
+
+            // the base layout of the page.
+            var main = new qx.ui.container.Composite(new qx.ui.layout.VBox());
+            main.set({ padding: 5 });
+
+            root.add(main, { edge: 0 });
+
+            var title = new qx.ui.basic.Label().set({
+                value          : 'AGRAMMON', // will be overwritten from config
+                font           : qx.bom.Font.fromString('14px bold sans-serif'),
+                textColor      : '#808080'
+            });
+
+            var output     = new agrammon.module.output.Output(false);
+            var reference  = new agrammon.module.output.Output(true);
+
+            var propEditor = new agrammon.module.input.PropTable();
+            var navbar     = new agrammon.module.input.NavBar(propEditor);
+
+	        var mainMenu;
+
+            var getCfgFunc = qx.lang.Function.bind(function(data, exc, id) {
+                if (exc == null) {
+                    console.log('cfg=', data);
+                    this.debug('getCfgFunc(): title='   +data.title.en);
+                    this.debug('getCfgFunc(): version=' +data.version);
+                    this.debug('getCfgFunc(): variant=' +data.variant);
+                    this.debug('getCfgFunc(): guiVariant=' +data.guiVariant);
+                    this.debug('getCfgFunc(): modelVariant=' +data.modelVariant);
+
+		            var results;
+		            if (data.guiVariant != 'Regional') {
+ 	                    results = new agrammon.module.output.Results(output);
+                    }
+            	    var input      = new agrammon.module.input.Input(propEditor, navbar, results);
+            	    var tabview    = new agrammon.module.Main(input, output, reference);
+            	    var editMenu   = new agrammon.ui.menu.NavMenu(navbar);
+            	    mainMenu       = new agrammon.ui.menu.MainMenu(tabview, title, editMenu);
+
+            	    main.add(mainMenu);
+            	    main.add(tabview, { flex : 1 });
+            	    main.add(new agrammon.Footer(this.tr("Implemented by OETIKER+PARTNER AG. Copyright 2010-"), 'http://www.oetiker.ch/'));
+
+                    navbar.setVariant(data.modelVariant);
+                    agrammon.module.dataset.DatasetTable.getInstance().setVariant(data.variant);
+                    mainMenu.setTitle(data.title, data.version);
+                    agrammon.Info.getInstance().setVersion(data.version);
+                    agrammon.Info.getInstance().setVariant(data.variant);
+                    agrammon.Info.getInstance().setGuiVariant(data.guiVariant);
+                    agrammon.Info.getInstance().setModelVariant(data.modelVariant);
+                    agrammon.Info.getInstance().setTitle(data.title);
+		            qx.event.message.Bus.dispatchByName('agrammon.Info.setModelVariant', data.modelVariant);
+                }
+                else {
+                    alert(exc);
+                }
+                this.__loginScreen();
+            }, this);
+
+            this.__rpc.callAsync( getCfgFunc, 'get_cfg');
+
+            this.__authenticate = function(data, exc, id) {
+                if (exc == null) {
+                    var user      = data.user;
+                    var role      = data.role;
+                    var news      = data.news;
+                    var password  = this.__password;
+                    var remember  = this.__remember;
+                    var lastLogin = String(data.last_login);
+                    that.debug('__authenticate(): user='+user+', role='+role+', password='+password+', remember='+remember);
+//                    if (this.supports_html5_storage() && this.getRemember()) {
+
+
+                    qx.event.message.Bus.dispatchByName('agrammon.info.setUser',
+                                                        { username: user,
+                                                          role:     role }
+                    );
+                    if (news && news != '') {
+                        var dialog =
+                            new agrammon.ui.dialog.News(that.tr("Latest news"),
+                                                  news,
+                                                  function () {
+                                                      dialog.close();
+                                                      qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openConnect');
+                                                  }, lastLogin);
+                    }
+                    else {
+                        qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openConnect');
+                    }
+                    // enable admin menu
+                    mainMenu.showAdmin(role == 'admin' || role == 'support');
+                    qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', user);
+                }
+                else {
+                    // that.debug("Authentication failed: " + exc);
+                    qx.event.message.Bus.dispatchByName('error',
+                         [ qx.locale.Manager.tr("Authentication error"),
+                           qx.locale.Manager.tr("Invalid username or password"),
+                           'error',
+                           { msg: 'agrammon.main.logout', data: null}
+                         ]
+                    );
+                }
+            };
+
+        },
+
+ /********************************************************************
+ * Functional Block Methods
+ ********************************************************************/
+
+        __authenticate: null,
+        __rpc:          null,
+        __password:     null,
+
+        supports_html5_storage: function() {
+            try {
+                return 'localStorage' in window && window['localStorage'] !== null;
+            } catch (e) {
+                return false;
+            }
+        },
+
+        close : function(e) {
+            this.base(arguments);
+            this.debug('Application.close()');
+//            alert('Really close?');
+            // Prompt user
+            // return "AGRAMMON: Do you really want to close the application?";
+        },
+
+        terminate : function(e) {
+            this.base(arguments);
+            this.debug('Application.terminate()');
+//            alert('Really terminate?');
+        },
+
+	__getParams : function() { 
+            var params = "";	
+            var urlParams = window.location.search; 
+            if (urlParams.length > 0) { 
+                urlParams = urlParams.substr(1, urlParams.length);
+                if (params != null) {
+                    params = urlParams.split("&");
+                }
+            } 
+            return params;
+        },
+
+        __login: function(msg) {
+            var userData     = msg.getData();
+            this.debug('__login(' + userData.user + ')');
+            if (this.supports_html5_storage() && userData.remember) {
+                localStorage.setItem('agrammonUsername', userData.user);
+                localStorage.setItem('agrammonPassword', userData.password);
+                localStorage.setItem('agrammonRemember', userData.remember);
+            }
+            this.__password = userData.password;
+            this.__rpc.callAsync( this.__authenticate, 'auth', userData);
+        },
+
+        __logout: function() {
+            var userData =  {user: 'logout', password: ''};
+            this.__rpc.callAsync( qx.lang.Function.bind(this.__logoutFunc,this), 'auth', userData);
+            qx.event.message.Bus.dispatchByName('agrammon.NavBar.clearTree', null);
+            qx.event.message.Bus.dispatchByName('agrammon.input.select');
+        },
+
+	    /**
+	     * @lint ignoreDeprecated(alert)
+	     */  
+        __logoutFunc: function(data, exc, id) {
+            if (exc == null) {
+                if (data.sudoUser) {
+                    var infoOnly = true;
+                    var dialog =
+                        new agrammon.ui.dialog.Confirm(this.tr("End change user"),
+                                                       this.tr("Returning from %1 to %2", data.sudoUser, data.user),
+                                                       qx.lang.Function.bind(function() {
+                                                           this.__authenticate(data, exc, id);
+                                                           dialog.close()
+                                                       }, this), this, infoOnly);
+                    return;
+                }
+                qx.event.message.Bus.dispatchByName('agrammon.info.setUser',    '-');
+                qx.event.message.Bus.dispatchByName('agrammon.info.setDataset', '-');
+                this.__loginScreen();
+            }
+            else {
+                alert(exc);
+            }
+        },
+
+        /**
+          * TODOC
+          *
+          * @return {var} TODOC
+          */
+
+//           * @lint ignore(Agrammon)
+
+        __loginScreen: function() {
+            var loginDialog =
+                new agrammon.module.user.Login(this.tr("Please authenticate yourself"));
+            loginDialog.open();
+        }
+
+    }
+}
+);

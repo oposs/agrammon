@@ -1,0 +1,18 @@
+- Sprache:
+
+    - Fix changeLanguage hacks
+    - Französiche Lokalisierung
+
+- Input:
+
+    - Daten in Top-Level GUI erlauben (Pflanzenbau)
+
+- Backend:
+
+    - Check/fix/improve error handling
+    - Verstaendliche Fehlermeldungen statt DB error messages	  
+
+- Fix this/that/that2/that3 everywhere
+
+- Fix FIX MEs
+

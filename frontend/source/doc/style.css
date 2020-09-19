@@ -1,0 +1,105 @@
+body, html {
+	background: white;
+	font-family:"Arial",sans-serif;
+	margin: 20;
+	padding: 20;
+	min-width: 250px;
+   font-size: 14px;    
+}
+
+.container {
+
+	margin: 0 auto;
+	width: 750px;
+}
+
+.container h2 {
+	font-family:"Arial",sans-serif;
+	font-size: 22px;
+	color: #FF0080;
+}
+
+h1 {
+	font-family:"Arial",sans-serif;
+	font-size: 18px;
+}
+
+h2 {
+	font-family:"Arial",sans-serif;
+	font-size: 16px;
+}
+
+dt  {
+        font-weight: bold;
+}
+
+.right {
+    float:right;
+    width:500px;
+	padding:0 10px;
+
+}
+
+.left {
+    float:left;
+    width:200px;
+
+}
+
+#footer {
+    border-top: 1px solid #C0C0C0;
+	text-align: center;
+    clear:both;
+	padding:5px;
+    margin:0;
+	
+    }
+
+#copyright {
+	font-size: 12px;
+}
+
+ul.menu {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+	border: 0px solid #91DBFF;
+}
+
+ul.menu li {
+	padding: 3px;
+	background: white;/*#E6F2FF;*/
+	color: #0072A8;
+	padding-left: 3px;
+}
+
+ul.menu li:hover {
+	color: white;
+	background: #0080C0;
+}
+
+ul.menu li.selected {
+	background: #91C5FF;
+}
+
+ul.menu li.heading {
+	background: white;
+	color: #0080C0;
+	font-weight: bold;
+}
+
+ul.menu li.heading:hover {
+	background: #0052AC;
+	color: white;
+	font-weight: bold;
+}
+
+ul.menu li a {
+	color: inherit;
+	text-decoration: none;
+}
+
+pre {
+	padding: 0px;
+	margin: 0px;
+}

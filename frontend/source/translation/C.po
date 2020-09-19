@@ -1,0 +1,309 @@
+# Language C translations for bafu-nh package.
+# Copyright (C) 2008 THE bafu-nh'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the bafu-nh package.
+# Automatically generated, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: bafu-nh 3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-12 15:52+0100\n"
+"PO-Revision-Date: 2008-09-15 20:44+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: source/class/Agrammon/Application.js:74
+msgid "User: "
+msgstr ""
+
+#: source/class/Agrammon/Application.js:79
+msgid "Dataset: "
+msgstr ""
+
+#: source/class/Agrammon/Application.js:120
+msgid "File"
+msgstr ""
+
+#: source/class/Agrammon/Application.js:126
+msgid "Edit"
+msgstr ""
+
+#: source/class/Agrammon/Application.js:132
+msgid "Options"
+msgstr ""
+
+#: source/class/Agrammon/Application.js:138
+#: source/class/Agrammon/ui/HelpMenu.js:22
+#: source/class/Agrammon/ui/HelpMenu.js:32
+#: source/class/Agrammon/ui/Login.js:56 source/class/Agrammon/ui/Login.js:74
+msgid "Help"
+msgstr ""
+
+#: source/class/Agrammon/Application.js:164
+msgid "Input"
+msgstr ""
+
+#: source/class/Agrammon/Application.js:167
+msgid "Reports"
+msgstr ""
+
+#: source/class/Agrammon/Application.js:171
+msgid "Graphs"
+msgstr ""
+
+#: source/class/Agrammon/Application.js:345
+msgid "Please authenticate yourself"
+msgstr ""
+
+#: source/class/Agrammon/ui/DatasetTool.js:43
+#: source/class/Agrammon/ui/Datasets.js:59
+msgid "Dataset name"
+msgstr ""
+
+#: source/class/Agrammon/ui/DatasetTool.js:44
+#: source/class/Agrammon/ui/Datasets.js:60
+msgid "Modification date"
+msgstr ""
+
+#: source/class/Agrammon/ui/DatasetTool.js:45
+#: source/class/Agrammon/ui/Datasets.js:61
+msgid "Number of parameters"
+msgstr ""
+
+#: source/class/Agrammon/ui/DatasetTool.js:59
+#: source/class/Agrammon/ui/Login.js:58
+#: source/class/Agrammon/ui/OptionMenu.js:85
+msgid "Cancel"
+msgstr ""
+
+#: source/class/Agrammon/ui/DatasetTool.js:66
+msgid "Rename"
+msgstr ""
+
+#: source/class/Agrammon/ui/DatasetTool.js:73
+msgid "Copy"
+msgstr ""
+
+#: source/class/Agrammon/ui/DatasetTool.js:80
+msgid "Delete"
+msgstr ""
+
+#: source/class/Agrammon/ui/Datasets.js:40
+#: source/class/Agrammon/ui/DocWindow.js:42
+msgid "Close"
+msgstr ""
+
+#: source/class/Agrammon/ui/Datasets.js:47
+#: source/class/Agrammon/ui/FileMenu.js:50
+msgid "Create new dataset"
+msgstr ""
+
+#: source/class/Agrammon/ui/FileMenu.js:44
+msgid "Creating new (empty) dataset"
+msgstr ""
+
+#: source/class/Agrammon/ui/FileMenu.js:45
+#: source/class/Agrammon/ui/FileMenu.js:90
+msgid "New dataset name"
+msgstr ""
+
+#: source/class/Agrammon/ui/FileMenu.js:60
+#: source/class/Agrammon/ui/FileMenu.js:105
+msgid "Datasets of user "
+msgstr ""
+
+#: source/class/Agrammon/ui/FileMenu.js:66
+msgid "Connect to dataset"
+msgstr ""
+
+#: source/class/Agrammon/ui/FileMenu.js:89
+msgid "Cloning dataset"
+msgstr ""
+
+#: source/class/Agrammon/ui/FileMenu.js:95
+msgid "Clone dataset"
+msgstr ""
+
+#: source/class/Agrammon/ui/FileMenu.js:111
+msgid "Manage datasets"
+msgstr ""
+
+#: source/class/Agrammon/ui/FileMenu.js:123
+msgid "Logout"
+msgstr ""
+
+#: source/class/Agrammon/ui/Graphs.js:32
+msgid "Choose graph: "
+msgstr ""
+
+#: source/class/Agrammon/ui/Graphs.js:38
+#: source/class/Agrammon/ui/Reports.js:39
+msgid "Select"
+msgstr ""
+
+#: source/class/Agrammon/ui/Graphs.js:42
+msgid "Pie"
+msgstr ""
+
+#: source/class/Agrammon/ui/Graphs.js:45
+msgid "Bar"
+msgstr ""
+
+#: source/class/Agrammon/ui/HelpMenu.js:36
+#: source/class/Agrammon/ui/HelpMenu.js:46
+msgid "Documentation"
+msgstr ""
+
+#: source/class/Agrammon/ui/HelpMenu.js:58
+msgid "About"
+msgstr ""
+
+#: source/class/Agrammon/ui/HelpMenu.js:73
+msgid "Change Log"
+msgstr ""
+
+#: source/class/Agrammon/ui/Login.js:38
+msgid "Username"
+msgstr ""
+
+#: source/class/Agrammon/ui/Login.js:44
+msgid "Password"
+msgstr ""
+
+#: source/class/Agrammon/ui/NavMenu.js:53
+msgid "Add instance"
+msgstr ""
+
+#: source/class/Agrammon/ui/NavMenu.js:56
+msgid "Duplicate instance"
+msgstr ""
+
+#: source/class/Agrammon/ui/NavMenu.js:59
+msgid "Rename instance"
+msgstr ""
+
+#: source/class/Agrammon/ui/NavMenu.js:62
+msgid "Delete instance"
+msgstr ""
+
+#: source/class/Agrammon/ui/NavMenu.js:65
+msgid "Check instance"
+msgstr ""
+
+#: source/class/Agrammon/ui/OptionMenu.js:31
+msgid "Set language..."
+msgstr ""
+
+#: source/class/Agrammon/ui/OptionMenu.js:36
+#: source/class/Agrammon/ui/OptionMenu.js:133
+msgid "Changing password for "
+msgstr ""
+
+#: source/class/Agrammon/ui/OptionMenu.js:61
+msgid "Current password"
+msgstr ""
+
+#: source/class/Agrammon/ui/OptionMenu.js:67
+msgid "New password"
+msgstr ""
+
+#: source/class/Agrammon/ui/OptionMenu.js:74
+msgid "Confirm password"
+msgstr ""
+
+#: source/class/Agrammon/ui/OptionMenu.js:109
+msgid "Passwords did not match. Please try again."
+msgstr ""
+
+#: source/class/Agrammon/ui/OptionMenu.js:142
+msgid "Change password"
+msgstr ""
+
+#: source/class/Agrammon/ui/PropTable.js:179
+#: source/class/Agrammon/ui/Reports.js:92
+msgid "Variable"
+msgstr ""
+
+#: source/class/Agrammon/ui/PropTable.js:180
+msgid "Input Parameter"
+msgstr ""
+
+#: source/class/Agrammon/ui/PropTable.js:181
+msgid "Input Parameter German"
+msgstr ""
+
+#: source/class/Agrammon/ui/PropTable.js:182
+msgid "Input Parameter French"
+msgstr ""
+
+#: source/class/Agrammon/ui/PropTable.js:183
+msgid "Input Parameter Italian"
+msgstr ""
+
+#: source/class/Agrammon/ui/PropTable.js:184
+msgid "Doubleclick to edit"
+msgstr ""
+
+#: source/class/Agrammon/ui/PropTable.js:188
+#: source/class/Agrammon/ui/Reports.js:94
+msgid "Unit"
+msgstr ""
+
+#: source/class/Agrammon/ui/PropTable.js:189
+msgid "Order"
+msgstr ""
+
+#: source/class/Agrammon/ui/PropTable.js:352
+msgid "Please connect to a dataset before changing parameters."
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:33
+msgid "Choose report: "
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:43
+msgid "Summary NH3 emissions"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:46
+msgid "Summary NH3 emissions (yard separate)"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:49
+msgid "Summary N-flow"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:52
+msgid "Summary livestock NH3 emission by animal category"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:56
+msgid "Storage and Application NH3 emissions"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:60
+msgid "Detailed NH3 emissions"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:64
+msgid "All results and intermediate results"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:91
+msgid "Module"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:93
+msgid "Value"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:95
+msgid "Print"
+msgstr ""
+
+#: source/class/Agrammon/ui/Reports.js:144
+msgid "Open in Excel"
+msgstr ""

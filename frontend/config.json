@@ -1,0 +1,87 @@
+{
+  "name"    : "agrammon",
+
+  "include" :
+  [
+    {
+      "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
+    }
+  ],
+
+  "export" :
+  [
+    "api",
+    "build",
+    "clean",
+    "distclean",
+    "fix",
+    "info",
+    "inspector",
+    "lint",
+    "migration",
+    "pretty",
+    "profiling",
+    "source",
+    "source-all",
+    "source-hybrid",
+    "test",
+    "test-source",
+    "translation"
+  ],
+
+  "let" :
+  {
+    "APPLICATION"  : "agrammon",
+    "QOOXDOO_PATH" : "./qooxdoo",
+//    "QXTHEME"      : "qx.theme.Modern",
+//    "QXTHEME"      : "qx.theme.Simple",
+    "QXTHEME"      : "qx.theme.Indigo",
+    "API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
+    "LOCALES"      : [ "en", "fr", "de" ],
+    "CACHE"        : "/scratch/cache_agrammon",
+    "ROOT"         : "."
+  },
+
+  // You only need to edit the remainder of this file, if you want to customize
+  // specific jobs, or add own job definitions.
+
+
+  "jobs" :
+  {
+
+    "libraries" : {
+      "library" : [
+//        { "manifest" : "../Lib/Manifest.json" },
+//        { "manifest" : "contrib://QxJqPlot/trunk/Manifest.json" }
+        { "manifest" : "${HOME}/checkouts/QxJqPlot/Manifest.json" }
+      ]
+    },
+
+    "build" :
+    {
+       "copy-files":
+       {
+          "files": [
+/*
+		    "index.html", 
+                    "doc/about.de.html",
+                    "doc/about.fr.html",
+                    "doc/about.en.html",
+                    "doc/changelog.de.html",
+                    "doc/help.de.html",
+                    "doc/help.fr.html",
+                    "doc/help.en.html",
+                    "doc/login.de.html",
+                    "doc/login.fr.html",
+                    "doc/login.en.html",
+                    "doc/roadmap.de.html",
+                    "doc/style.css",
+                    "doc/techdoc.de.html"
+*/
+                    ]
+       }
+
+    }
+  }
+
+}

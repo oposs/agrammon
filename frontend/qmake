@@ -1,0 +1,2 @@
+#! /bin/bash
+$HOME/checkouts/qooxdoo/tool/bin/generator.py -m QOOXDOO_PATH:$HOME/checkouts/qooxdoo -m CACHE:./cache $1
