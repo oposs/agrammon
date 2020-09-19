@@ -149,7 +149,7 @@ class Agrammon::DB::User does Agrammon::DB {
                 if not $valid {
                     warn 'PW update failed';
                 }
-                return $valid;
+                return $valid ?? %( :changed(1)) !! False;
             }
             else {
                 warn "Invalid old pw: $old";

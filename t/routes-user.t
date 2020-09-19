@@ -24,7 +24,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         reset-password => -> $email, $password, $key {
             %( reset => 1 )
         },
-        change-password => -> $old-password, $new-password {
+        change-password => -> $user, $old-password, $new-password {
             %( changed => 1 )
         },
         create-account => -> $user, $email, $password, $key, $firstname, $lastname, $org, $role {

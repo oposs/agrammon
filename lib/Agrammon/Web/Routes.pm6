@@ -269,10 +269,10 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
 sub user-routes(Agrammon::Web::Service $ws) {
     route {
 
-        # test
+        # working
         post -> LoggedIn $user, 'change_password' {
             request-body -> (:oldPassword($old-password)!, :newPassword($new-password)!) {
-                my $data = $ws.change-password($old-password, $new-password);
+                my $data = $ws.change-password($user, $old-password, $new-password);
                 content 'application/json', $data;
             }
         }
