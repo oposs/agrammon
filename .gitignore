@@ -1,3 +1,4 @@
 .precomp/
 t/test-data/.secret
 static/resource
+frontend/cache
