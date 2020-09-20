@@ -164,11 +164,11 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             content 'application/json', $data;
         }
 
-        # test
+        # working
         post -> LoggedIn $user, 'create_tag' {
             request-body -> (:$name!) {
-                my $data = $ws.create-tag($user, $name);
-                content 'application/json', $data;
+                my $tag = $ws.create-tag($user, $name);
+                content 'application/json', $tag;
             }
         }
 
@@ -199,8 +199,8 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         # test
         post -> LoggedIn $user, 'new_tag' {
             request-body -> (:$name!) {
-                my $data = $ws.create-tag($user, $name);
-                content 'application/json', $data;
+                my $new-tag = $ws.create-tag($user, $name);
+                content 'application/json', %( :newName($new-tag) );
             }
         }
     }

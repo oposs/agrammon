@@ -951,8 +951,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
           */
          __new_tag_func: function(data,exc,id) {
             if (exc == null) {
-//	            this.debug(data+' tags created.');
-//                qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', this.__info.getUserName());
+	            this.debug('Tag', data.newName, 'created.');
 	        }
             else {
                 alert(exc);
@@ -1073,7 +1072,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                     tm.updateView(1);
         		    tm.sortByColumn(0, true);
                     this.__rpc.callAsync( qx.lang.Function.bind(this.__new_tag_func,this),
-                                          'new_tag', tag
+                                          'new_tag', { name : tag }
     			    );
                     self.close();
                 }, this);
