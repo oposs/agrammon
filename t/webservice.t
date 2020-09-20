@@ -141,7 +141,7 @@ transactionally {
     subtest "rename-instance" => {
         ok my $ret = $ws.rename-instance(
             $user, 'TestSingle',
-            'Milchkühe', 'MKühe',
+            'Stall Milchkühe', 'MKühe',
             'Livestock::DairyCow[]'
         ), "Rename instance";
     }
