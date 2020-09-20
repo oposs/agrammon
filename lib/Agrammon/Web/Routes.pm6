@@ -219,11 +219,11 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
+        # working
         post -> LoggedIn $user, 'delete_tag' {
             request-body -> (:$name!) {
-                my $data = $ws.delete-tag($user, $name);
-                content 'application/json', $data;
+                my $deleted-name = $ws.delete-tag($user, $name);
+                content 'application/json', %( :name($deleted-name) );
             }
         }
 

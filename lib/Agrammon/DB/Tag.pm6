@@ -90,7 +90,7 @@ class Agrammon::DB::Tag does Agrammon::DB {
                  WHERE tag_id = $1
             TAG
         }
-        return self;
+        return $!name;
     }
 
     method lookup {

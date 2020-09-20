@@ -40,7 +40,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         rename-tag => -> $user, $old, $new {
         },
         delete-tag => -> $user, $name {
-            %( name => $name)
+            $name
         },
         set-tag => -> $user, @datasets, $name {
             %( tags => @datasets.elems)

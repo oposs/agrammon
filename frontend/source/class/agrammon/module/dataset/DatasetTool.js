@@ -417,7 +417,6 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                 for (ii = max; ii>=min; ii--) {
                     tag = activeTagsTm.getValue(0,ii,1) ;
 //                    that.debug('tagRemove_func(): removing tag ' + tag + ' from ds='+datasets);
-//                    this.__rpc.callAsync( this.__delete_tag_func, 'delete_tag',
                     this.__rpc.callAsync( this.__remove_tag_func, 'remove_tag',
 			                       { datasets: datasets, tag: tag }
 			        );
@@ -951,6 +950,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
           */
          __delete_tag_func: function(data,exc,id) {
             if (exc == null) {
+                console.log('__delete_tag_func(): data=', data);
 //	            this.debug(data+' tags deleted.');
 //                qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', this.__info.getUserName());
 	        }
@@ -1109,7 +1109,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         this.__activeTagsTable.delTag(tags[tag]);
 // 	                    this.debug('Deleting tag='+tags[tag]);
                         this.__rpc.callAsync( qx.lang.Function.bind(this.__delete_tag_func,this),
-                                              'delete_tag', tags[tag]
+                                              'delete_tag', { name : tags[tag] }
    			                                );
      	            }
                     self.close();
