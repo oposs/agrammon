@@ -23,6 +23,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         get-cfg =>  %( :title('Agrammon'), :version('SHL') ),
         get-input-variables  =>  %( :x(1), :y(2) ),
         get-output-variables =>  %( :x(1), :y(2) ),
+        delete-instance => %( :deleted(1) ),
         store-data => 1,
         load-branch-data => ( 1, 2 ),
         store-input-comment => 1,
@@ -30,6 +31,8 @@ my $fake-store = mocked(Agrammon::Web::Service,
     overriding => {
         delete-data => -> $user, %data {
             %( deleted => 1)
+        store-input-comment => -> $user, $dataset, $variable, $comment {
+            %( name => $variable)
         },
         rename-instance => -> $user, $dataset-name, $old-name, $new-name, $variable-pattern {
         },
@@ -110,15 +113,15 @@ subtest 'Store variable comment' => {
     }
 }
 
-subtest 'Delete data' => {
+subtest 'Delete instance' => {
     test-service routes($fake-store), :$fake-auth, {
-        test-given '/delete_data', {
-            test post(json => { :name('x') }),
+        test-given '/delete_instance', {
+            test post(json => { :datasetName('Dataset'), :variable('x'), :instance('MK') }),
                 status => 200,
-                json   => { deleted => 1 },
+                json   => { %( :deleted(1)) },
         };
         check-mock $fake-store,
-            *.called('delete-data', times => 1);
+            *.called('delete-instance', times => 1);
     }
 }
 

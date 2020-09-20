@@ -974,10 +974,10 @@ qx.Class.define('agrammon.module.input.NavBar', {
             // delete from database
             this.__rpc.callAsync(
                 qx.lang.Function.bind(this.__deleteDataFunc, folder),
-                'delete_data', {
-                dataset_name: datasetName,
-                instance:     instance,
-                pattern:      pattern}
+                'delete_instance', {
+                datasetName: datasetName,
+                instance:    instance,
+                variable:    pattern}
             );
 
             return;

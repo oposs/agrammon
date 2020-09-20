@@ -305,7 +305,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         ### data
-        # test
+        # working
         post -> LoggedIn $user, 'store_data' {
             request-body -> %data {
                 my $ret = $ws.store-data($user, %data);
@@ -321,10 +321,10 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
-        post -> LoggedIn $user, 'delete_data' {
-            request-body -> %data {
-                my $ret = $ws.delete-data($user, %data);
+        # working
+        post -> LoggedIn $user, 'delete_instance' {
+            request-body -> ( :datasetName($dataset-name), :$instance, :$variable )  {
+                my $ret = $ws.delete-instance($user, $dataset-name, $variable, $instance);
                 content 'application/json', $ret;
             }
         }

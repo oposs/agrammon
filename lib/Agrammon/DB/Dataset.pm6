@@ -378,15 +378,21 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method delete-input($var-name) {
-        my $instance;
-        my $var = $var-name;
-        if $var ~~ s/\[(.+)\]/[]/ {
-            $instance = $0;
-        }
+    method delete-instance($variable, $instance) {
+        return unless $variable and $instance;
+        my $username = $!user.username;
 
-        return $instance ?? self!delete-instance-variable($var, $instance)
-                         !! self!delete-variable($var);
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $username, $!name, $variable ~ '%', $instance);
+                DELETE FROM data_new
+                WHERE data_dataset=dataset_name2id($1,$2) AND data_var LIKE $3
+                                                        AND data_instance = $4
+                RETURNING data_val
+            SQL
+
+            my $rows = $ret.rows;
+            return $rows if $rows;
+        }
     }
 
     method rename-instance($old-name, $new-name, $pattern) {
