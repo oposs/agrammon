@@ -101,17 +101,14 @@ transactionally {
     }
 
     subtest "rename-tag" => {
-        ok my $newTag = $ws.rename-tag($user, '00MyTestTag', '00MyNewTestTag'), "Rename tag";
-        is $newTag.name, '00MyNewTestTag', 'Tag has expected name';
+        ok my $new-name = $ws.rename-tag($user, '00MyTestTag', '00MyNewTestTag'), "Rename tag";
+        is $new-name, '00MyNewTestTag', 'Tag has expected name';
     }
 
      subtest "get-tags()" => {
         ok my $tags = $ws.get-tags($user), "Get tags";
-        # isa-ok $tags, 'Array', 'Got tags Array';
         ok $tags.elems >= 12,  "Found 12+ tags";
-        # isa-ok my $tag = $tags[0], 'List', 'Got tag List';
         is $tags[0], '00MyNewTestTag', 'First tag has name 00MyNewTestTag';
-        # dd $tags;
     }
 
 

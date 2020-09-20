@@ -29,7 +29,7 @@ class Agrammon::DB::Tag does Agrammon::DB {
             TAG
             $!name = $new;
         }
-        return self;
+        return self.name;
     }
 
    method delete {

@@ -39,7 +39,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
             %( name => $name)
         },
         rename-tag => -> $user, $old, $new {
-            %( name => $new)
+            $new
         },
         delete-tag => -> $user, $name {
             %( name => $name)
@@ -82,9 +82,9 @@ subtest 'Create tag' => {
 subtest 'Rename tag' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/rename_tag', {
-            test post(json => { :old('TagC'),  :new('TagD')}),
+            test post(json => { :oldTag('TagC'),  :newTag('TagD')}),
                 status => 200,
-                json   => { name => 'TagD' },
+                json   => { :newName('TagD') },
         };
         check-mock $fake-store,
             *.called('rename-tag', times => 1);

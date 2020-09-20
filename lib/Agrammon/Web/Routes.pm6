@@ -183,11 +183,11 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
+        # working
         post -> LoggedIn $user, 'rename_tag' {
-            request-body -> (:$old!, :$new!) {
-                my $data = $ws.rename-tag($user, $old, $new);
-                content 'application/json', $data;
+            request-body -> (:oldTag($old)!, :newTag($new)!) {
+                my $new-name = $ws.rename-tag($user, $old, $new);
+                content 'application/json', %( :newName($new-name) );
             }
         }
 
