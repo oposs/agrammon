@@ -378,12 +378,12 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method delete-instance($variable, $instance) {
-        return unless $variable and $instance;
+    method delete-instance($variable-pattern, $instance) {
+        return unless $variable-pattern and $instance;
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $username, $!name, $variable ~ '%', $instance);
+            my $ret = $db.query(q:to/SQL/, $username, $!name, $variable-pattern ~ '%', $instance);
                 DELETE FROM data_new
                 WHERE data_dataset=dataset_name2id($1,$2) AND data_var LIKE $3
                                                         AND data_instance = $4

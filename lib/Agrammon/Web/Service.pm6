@@ -154,8 +154,8 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.store-input-comment($var-name, $comment);
     }
 
-    method delete-instance(Agrammon::Web::SessionUser $user, $dataset-name, $variable, $instance) {
-        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).delete-instance($variable, $instance);
+    method delete-instance(Agrammon::Web::SessionUser $user, $dataset-name, $variable-pattern, $instance) {
+        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).delete-instance($variable-pattern, $instance);
     }
 
     method load-branch-data(Agrammon::Web::SessionUser $user, Str $name) {

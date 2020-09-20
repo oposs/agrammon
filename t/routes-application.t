@@ -116,7 +116,7 @@ subtest 'Store variable comment' => {
 subtest 'Delete instance' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/delete_instance', {
-            test post(json => { :datasetName('Dataset'), :variable('x'), :instance('MK') }),
+            test post(json => { :datasetName('Dataset'), :variablePattern('x'), :instance('MK') }),
                 status => 200,
                 json   => { %( :deleted(1)) },
         };

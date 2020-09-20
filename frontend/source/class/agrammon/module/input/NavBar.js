@@ -975,9 +975,9 @@ qx.Class.define('agrammon.module.input.NavBar', {
             this.__rpc.callAsync(
                 qx.lang.Function.bind(this.__deleteDataFunc, folder),
                 'delete_instance', {
-                datasetName: datasetName,
-                instance:    instance,
-                variable:    pattern}
+                datasetName     : datasetName,
+                instance        : instance,
+                variablePattern : pattern}
             );
 
             return;

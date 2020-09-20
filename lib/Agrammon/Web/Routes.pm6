@@ -323,8 +323,8 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # working
         post -> LoggedIn $user, 'delete_instance' {
-            request-body -> ( :datasetName($dataset-name), :$instance, :$variable )  {
-                my $ret = $ws.delete-instance($user, $dataset-name, $variable, $instance);
+            request-body -> ( :datasetName($dataset-name), :$instance, :variablePattern($variable-pattern) )  {
+                my $ret = $ws.delete-instance($user, $dataset-name, $variable-pattern, $instance);
                 content 'application/json', $ret;
             }
         }
