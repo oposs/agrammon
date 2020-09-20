@@ -168,8 +168,8 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Dataset.new(:$user, :$name).store-branch-data(%data);
     }
 
-    method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $pattern) {
-        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.rename-instance($old-instance, $new-instance, $pattern);
+    method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $variable-pattern) {
+        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.rename-instance($old-instance, $new-instance, $variable-pattern);
     }
 
     method order-instances(Agrammon::Web::SessionUser $user, Str $dataset-name, @instances) {

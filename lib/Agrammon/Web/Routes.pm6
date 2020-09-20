@@ -334,11 +334,11 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
+        # working
         post -> LoggedIn $user, 'rename_instance' {
-            request-body -> (:datasetName($dataset-name)!, :oldInstance($old-instance)!, :newInstance($new-instance)!, :$pattern!) {
-                my $data = $ws.rename-instance($user, $dataset-name, $old-instance, $new-instance, $pattern);
-                content 'application/json', $data;
+            request-body -> (:datasetName($dataset-name)!, :oldInstance($old-instance)!, :newInstance($new-instance)!, :variablePattern($variable-pattern)!) {
+                my $new-name = $ws.rename-instance($user, $dataset-name, $old-instance, $new-instance, $variable-pattern);
+                content 'application/json', %( :newName($new-name) );
             }
         }
 

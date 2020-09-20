@@ -375,7 +375,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
     method rename-instance($old-instance, $new-instance, $pattern) {
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $new-instance, $!id, "\%$pattern\%", $old-instance);
+            my $ret = $db.query(q:to/SQL/, $new-instance, $!id, "$pattern\%", $old-instance);
             UPDATE data_new set data_instance = $1
              WHERE data_dataset = $2
                AND data_var LIKE $3
@@ -383,7 +383,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             RETURNING data_val
             SQL
 
-            return $ret.rows;
+            return $new-instance if $ret.rows;
         }
     }
 

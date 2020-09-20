@@ -991,12 +991,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
           */
         __renameInstanceFunc: function(data, exc, id) {
             if (exc == null) {
-                var msg = data;
-                var oldFolder = this;
-                // this.debug('_renameInstanceFunc(): oldName=' + oldFolder.getName()
-                //          + ', newName=' + msg.getName()
-                //          + ', status='+msg.status);
-                oldFolder.setName(msg.newName);
+                this.setName(data.newName);
             }
             else {
                 alert(exc);
@@ -1018,10 +1013,10 @@ qx.Class.define('agrammon.module.input.NavBar', {
             this.__rpc.callAsync(
                 qx.lang.Function.bind(this.__renameInstanceFunc, folder),
                 'rename_instance', {
-                dataset_name: datasetName,
-                oldInstance:  oldInstance,
-                newInstance:  newInstance,
-                pattern:      pattern}
+                datasetName     : datasetName,
+                oldInstance     : oldInstance,
+                newInstance     : newInstance,
+                variablePattern : pattern}
             );
 
             return;
