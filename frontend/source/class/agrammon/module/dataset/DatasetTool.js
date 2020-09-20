@@ -1072,7 +1072,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                     tm.updateView(1);
         		    tm.sortByColumn(0, true);
                     this.__rpc.callAsync( qx.lang.Function.bind(this.__new_tag_func,this),
-                                          'new_tag', { name : tag }
+                                          'create_tag', { name : tag }
     			    );
                     self.close();
                 }, this);

@@ -68,7 +68,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
 
 subtest 'Create tag' => {
     test-service routes($fake-store), :$fake-auth, {
-        test-given '/new_tag', {
+        test-given '/create_tag', {
             test post(json => { :name('TagA') }),
                 status => 200,
                 json   => { :newName('TagA') },
