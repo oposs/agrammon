@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 26;
+plan 27;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -71,8 +71,7 @@ transactionally {
     }
 
     subtest "rename-dataset" => {
-        ok my $ret = $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset'), "Rename dataset";
-        is $ret<new>, 'MyNewTestDataset', 'Dataset has expected name';
+        lives-ok { $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset') }, "Rename dataset";
     }
 
     subtest "submit-dataset" => {
@@ -110,7 +109,7 @@ transactionally {
      subtest "get-tags()" => {
         ok my $tags = $ws.get-tags($user), "Get tags";
         # isa-ok $tags, 'Array', 'Got tags Array';
-        is $tags.elems, 12,  "Found 12 tags";
+        ok $tags.elems >= 12,  "Found 12+ tags";
         # isa-ok my $tag = $tags[0], 'List', 'Got tag List';
         is $tags[0], '00MyNewTestTag', 'First tag has name 00MyNewTestTag';
         # dd $tags;
@@ -208,6 +207,16 @@ transactionally {
 
     subtest "delete-datasets" => {
         is $ws.delete-datasets($user, @('MyNewTestDataset')), 1, 'One dataset deleted';
+    }
+
+}
+
+transactionally {
+
+    subtest "rename-dataset exception" => {
+        throws-like { $ws.rename-dataset($user, 'TestSingle', 'Agrammon6Testing') },
+            X::Agrammon::DB::Dataset::AlreadyExists,
+            "Rename dataset fails for existing dataset name";
     }
 
 }

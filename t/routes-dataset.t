@@ -54,7 +54,6 @@ my $fake-store = mocked(Agrammon::Web::Service,
             $name
         },
         rename-dataset => -> $user, $old, $new {
-            %( :$old, :$new )
         },
         submit-dataset => -> $user, $name, $mail {
             %( name => $name)
@@ -178,8 +177,7 @@ subtest 'Rename dataset' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/rename_dataset', {
             test post(json => { :oldName('DatasetC'),  :newName('DatasetD') }),
-                status => 200,
-                json   => { :oldName('DatasetC'), :newName('DatasetD') },
+                status => 204,
         };
         check-mock $fake-store,
             *.called('rename-dataset', times => 1);

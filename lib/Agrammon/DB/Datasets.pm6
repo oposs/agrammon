@@ -78,7 +78,7 @@ class Agrammon::DB::Datasets does Agrammon::DB {
     }
 
     method list {
-        return [@!collection.map: {.name, .mod-date, .records, .read-only, .version, .tags, .comment, .model, 0}];
+        return [@!collection.map: {.name, .mod-date, .records, .read-only, .version, .tags.map(*.name), .comment, .model, 0}];
     }
 
 }

@@ -253,32 +253,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openNew', this);
             }, this);
 
-
-            var renameDatasetFunc = function(data,exc,id) {
-                if (exc == null) {
-                    var oldDataset = data.oldName;
-                    var newDataset = data.newName;
-                    var userName = this.__info.getUserName();
-                    qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', userName);
-//                this.__rpc.callAsync(this.get_datasets_func,
-//                              'get_datasets', this.__info.getUserName());
-                    qx.event.message.Bus.dispatchByName('error',
-                                                  [ this.tr("Info"),
-                                                    this.tr("Dataset")
-                                                    + ' ' + oldDataset
-                                                    + ' ' + this.tr("renamed to")
-                                                    + ' ' + newDataset,
-                                                    'info' ]);
-                    // change current dataset name if we renamed currently
-                    // connected dataset
-                    if (oldDataset == this.__info.getDatasetName()) {
-                        this.__info.setDatasetName(newDataset);
-                    }
-                }
-                else {
-                    alert(exc);
-                }
-            };
+            var that = this;
 
             this.__datasetStore = agrammon.module.dataset.DatasetCache.getInstance();
             // FIX ME: implement refresh of table content after rename
@@ -286,9 +261,9 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 var data = this.__table.getSelectionModel().getSelectedRanges();
                 var row = data[0]['minIndex'];
                 var oldName = this.__table.getTableModel().getValue(0,row,1);
-                var dialog;
                 var okFunction = qx.lang.Function.bind(function(self) {
                     var newName = self.nameField.getValue();
+                    // Don't bother to rename to an already existing dataset name
                     if (this.__datasetStore.datasetExists(newName)) {
                         qx.event.message.Bus.dispatchByName('error',
                             [ this.tr("Error"),
@@ -301,14 +276,38 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                     qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
 
                     this.__rpc.callAsync(
-                        qx.lang.Function.bind(renameDatasetFunc, this),
+                        function(data, exc) {
+                            if (exc == null) {
+                                var userName = that.__info.getUserName();
+                                qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', userName);
+                                qx.event.message.Bus.dispatchByName(
+                                    'error',
+                                    [
+                                        that.tr("Info"),
+                                        that.tr("Dataset")
+                                        + ' ' + oldName
+                                        + ' ' + that.tr("renamed to")
+                                        + ' ' + newName,
+                                        'info'
+                                    ]
+                                );
+                                that.__table.getTableModel().updateView(1);
+
+                                // change current dataset name if we renamed currently connected dataset
+                                if (that.__info.getDatasetName() == oldName ) {
+                                    that.__info.setDatasetName(newName);
+                                }
+                            }
+                            else {
+                                alert(exc + ': ' + data.error);
+                            }
+                        },
                         'rename_dataset',
-                                    { oldName:  oldName,
-                                      newName:  newName}
+                        { oldName: oldName, newName: newName }
                     );
                     self.close();
                 }, this);
-                dialog = new agrammon.ui.dialog.Dialog(this.tr("Rename dataset"),
+                var dialog = new agrammon.ui.dialog.Dialog(this.tr("Rename dataset"),
                                                        this.tr("New name"),
                                                        okFunction, this);
             }, this);

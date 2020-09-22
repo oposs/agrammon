@@ -100,10 +100,15 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         # working
         post -> LoggedIn $user, 'rename_dataset' {
             request-body -> (:oldName($old-name)!, :newName($new-name)!) {
-                my %ret = $ws.rename-dataset($user, $old-name, $new-name);
-                content 'application/json', %(
-                    :oldName(%ret<old>), :newName(%ret<new>)
-                );
+                $ws.rename-dataset($user, $old-name, $new-name);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::AlreadyExists {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                }
             }
         }
 

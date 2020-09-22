@@ -62,7 +62,7 @@ class Agrammon::Web::Service {
     }
 
     method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
-        return %( :$old, :new(Agrammon::DB::Dataset.new(:$user, :name($old)).rename($new).name));
+        Agrammon::DB::Dataset.new(:$user, :name($old)).rename($new);
     }
 
     method submit-dataset(Agrammon::Web::SessionUser $user, Str $name, Str $mail) {
