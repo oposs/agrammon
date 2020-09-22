@@ -82,6 +82,12 @@ qx.Class.define('agrammon.io.remote.Rpc', {
             if (data != null) {
                 req.setRequestData(data);
             }
+            req.addListener("statusError", function(e) {
+                var req = e.getTarget();
+                var response = req.getResponse();
+                console.log('callAsync(): response=', response);
+                handler(response, 409);
+            }, this);
             req.addListener("success", function(e) {
                 var req = e.getTarget();
                 var response = req.getResponse();
