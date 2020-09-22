@@ -89,8 +89,13 @@ class Agrammon::Web::Service {
         Agrammon::DB::Tag.new(:$user, :name($old)).rename($new);
     }
 
-    method set-tag(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $tag-name) {
-        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.set-tag($tag-name);
+    method set-tag(Agrammon::Web::SessionUser $user, $datasets, Str $tag-name) {
+        my $tagged;
+        for @$datasets -> $ds {
+            Agrammon::DB::Dataset.new(:$user, :name($ds)).lookup.set-tag($tag-name);\
+            $tagged++;
+        }
+        return $tagged;
     }
 
     method remove-tag(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $tag-name) {

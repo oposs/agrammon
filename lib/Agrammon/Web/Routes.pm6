@@ -300,8 +300,8 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
 
         # test
         post -> LoggedIn $user, 'set_tag' {
-            request-body -> (:@datasets!, :$tag!) {
-                my $data = $ws.set-tag($user, @datasets, $tag);
+            request-body -> (:$datasets!, :$tag!) {
+                my $data = $ws.set-tag($user, $datasets, $tag);
                 content 'application/json', $data;
             }
         }
