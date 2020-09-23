@@ -366,7 +366,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     }
 
     method delete-instance($variable-pattern, $instance) {
-        return unless $variable-pattern and $instance;
         my $username = $!user.username;
 
         self.with-db: -> $db {
