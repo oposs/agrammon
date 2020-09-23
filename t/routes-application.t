@@ -31,8 +31,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         delete-data => -> $user, %data {
             %( deleted => 1)
         },
-        rename-instance => -> $user, $dataset-name, $old-instance, $new-instance, $variable-pattern {
-            $new-instance
+        rename-instance => -> $user, $dataset-name, $old-name, $new-name, $variable-pattern {
         },
         order-instances => -> $user, $dataset-name, @instances {
             %( sorted => 1 )
@@ -150,9 +149,8 @@ subtest 'Store branch data' => {
 subtest 'Rename instance' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/rename_instance', {
-            test post(json => { :datasetName('TestDataset'), :oldInstance('InstC'), :newInstance('InstD'), :variablePattern('xxx') }),
-                status => 200,
-                json   => { :newName('InstD') },
+            test post(json => { :datasetName('TestDataset'), :oldName('InstC'), :newName('InstD'), :variablePattern('xxx') }),
+                status => 204,
         };
         check-mock $fake-store,
             *.called('rename-instance', times => 1);

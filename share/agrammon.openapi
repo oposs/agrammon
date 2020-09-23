@@ -41,6 +41,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /rename_instance:
+        post:
+            summary: Rename an instance
+            operationId: renameInstance
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Rename"
+            responses:
+                '204':
+                    description: Instance renamed.
+                '409':
+                    description: Rename failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
 components:
     schemas:

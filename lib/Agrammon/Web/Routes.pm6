@@ -93,6 +93,19 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'renameInstance', -> LoggedIn $user {
+            request-body -> ( :datasetName($dataset-name), :oldName($old-name), :newName($new-name), :variablePattern($variable-pattern)! ) {
+                $ws.rename-instance($user, $dataset-name, $old-name, $new-name, $variable-pattern);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::InstanceAlreadyExists | X::Agrammon::DB::Dataset::InstanceRenameFailed {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -334,13 +347,6 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # working
-        post -> LoggedIn $user, 'rename_instance' {
-            request-body -> (:datasetName($dataset-name)!, :oldInstance($old-instance)!, :newInstance($new-instance)!, :variablePattern($variable-pattern)!) {
-                my $new-name = $ws.rename-instance($user, $dataset-name, $old-instance, $new-instance, $variable-pattern);
-                content 'application/json', %( :newName($new-name) );
-            }
-        }
 
         # test/implement
         post -> LoggedIn $user, 'order_instances' {

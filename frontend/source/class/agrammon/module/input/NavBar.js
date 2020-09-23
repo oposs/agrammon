@@ -990,11 +990,8 @@ qx.Class.define('agrammon.module.input.NavBar', {
           * @lint ignoreDeprecated(alert)
           */
         __renameInstanceFunc: function(data, exc, id) {
-            if (exc == null) {
-                this.setName(data.newName);
-            }
-            else {
-                alert(exc);
+            if (exc != null) {
+                alert(exc + ': ' + data.error);
             }
         },
 
@@ -1005,21 +1002,16 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var oldInstance = data.oldInstance;
             var folder      = data.folder;
             var datasetName = this.__info.getDatasetName();
-            // this.debug('_renameInstanceData(): rename ' + pattern
-            //             + ' / ' + oldInstance + ' -> ' + newInstance
-            //             + ':' + datasetName);
 
             // rename instance variables in database
             this.__rpc.callAsync(
                 qx.lang.Function.bind(this.__renameInstanceFunc, folder),
                 'rename_instance', {
                 datasetName     : datasetName,
-                oldInstance     : oldInstance,
-                newInstance     : newInstance,
+                oldName         : oldInstance,
+                newName         : newInstance,
                 variablePattern : pattern}
             );
-
-            return;
         },
 
         /**
@@ -1033,12 +1025,13 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var parentName   = parentFolder.getName();
             // this.debug('renInstance('+oldFolder +'): oldLabel = ' + oldLabel);
             // this.debug('renInstance('+oldFolder +'): parentFolder = ' + parentFolder);
-            var dialog;
 
             var okFunction =  qx.lang.Function.bind(function(self) {
                 var newLabel = self.nameField.getValue();
-                if (!agrammon.module.input.NavBar.validInstanceName(newLabel,
-                                                                  parentFolder)) {
+                if (!agrammon.module.input.NavBar.validInstanceName(
+                        newLabel,
+                        parentFolder
+                    )) {
                     return;
                 }
 
@@ -1052,12 +1045,12 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 self.close();
             }, this);
 
-            dialog = new agrammon.ui.dialog.Dialog(this.tr('Rename instance ')
-                                                + oldLabel,
-                                                this.tr('New name'),
-                                                okFunction, this);
-            return;
-        }, // renInstance
+            var dialog = new agrammon.ui.dialog.Dialog(
+                this.tr('Rename instance ') + oldLabel,
+                this.tr('New name'),
+                okFunction, this
+            );
+        },
 
         /**
           * TODOC
