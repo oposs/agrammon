@@ -78,7 +78,7 @@ class Agrammon::Web::Service {
     }
 
     method create-tag(Agrammon::Web::SessionUser $user, Str $name) {
-        return Agrammon::DB::Tag.new(:$user, :$name).create;
+        Agrammon::DB::Tag.new(:$user, :$name).create;
     }
 
     method delete-tag(Agrammon::Web::SessionUser $user, Str $name) {

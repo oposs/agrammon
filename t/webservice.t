@@ -96,8 +96,7 @@ transactionally {
     }
 
     subtest "create-tag" => {
-        ok my $tag = $ws.create-tag($user, "00MyTestTag"), "Create tag";
-        is $tag.name, "00MyTestTag", "Tag has correct name";
+        lives-ok { $ws.create-tag($user, "00MyTestTag") }, "Create tag";
     }
 
     subtest "rename-tag" => {
@@ -109,7 +108,6 @@ transactionally {
         ok $tags.elems >= 12,  "Found 12+ tags";
         is $tags[0], '00MyNewTestTag', 'First tag has name 00MyNewTestTag';
     }
-
 
     subtest "set-tag" => {
         ok my $dataset = $ws.set-tag($user, 'MyNewTestDataset', '00MyNewTestTag'), "Set tag";
