@@ -168,12 +168,12 @@ transactionally {
     }
 
     subtest "delete-instance" => {
-        ok $ws.delete-instance(
+        lives-ok { $ws.delete-instance(
             $user,
             'MyNewTestDataset',
             'Livestock::DairyCow[]',
             'MK'
-        ), "Instance deleted";
+        ) }, "Instance deleted";
     }
 
     subtest "reset-password" => {
@@ -234,41 +234,15 @@ transactionally {
         "Rename tag fails if old tag name doesn't exist";
 }
 
-# TODO: needs create-instance first
-# transactionally {
-#     throws-like {
-#         $ws.rename-instance(
-#                 $user, 'TestSingle',
-#                 'Stall Milchkühe', 'MKühe',
-#                 'Livestock::DairyCow[]'
-#             )
-#         },
-#         X::Agrammon::DB::Dataset::InstanceAlreadyExists,
-#         "Rename instance fails for existing instance name";
-# }
-
 transactionally {
-    throws-like {
-        $ws.rename-instance(
-                $user, 'TestSingle',
-                'Stall Milchkühe', 'Stall Milchkühe',
-                'Livestock::DairyCow[]'
-            )
-        },
-        X::Agrammon::DB::Dataset::InstanceRenameFailed,
-        "Rename instance fails if old and new instance name are identical";
-}
-
-transactionally {
-    throws-like {
-        $ws.rename-instance(
-                $user, 'TestSingle',
-                'Stall Milchkühe X', 'MKühe',
-                'Livestock::DairyCow[]'
-            )
-        },
-        X::Agrammon::DB::Dataset::InstanceRenameFailed,
-        "Rename instance fails if old instance name doesn't exist";
+    throws-like { $ws.delete-instance(
+            $user,
+            'MyNewTestDataset',
+            'Livestock::DairyCow[]',
+            'MKX'
+        ) },
+        X::Agrammon::DB::Dataset::InstanceDeleteFailed,
+        "Delete instance tag fails if instance doesn't exist";
 }
 
 subtest "Get model data" => {

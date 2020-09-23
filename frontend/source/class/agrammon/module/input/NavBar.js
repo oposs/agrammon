@@ -955,7 +955,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 qx.event.message.Bus.dispatchByName('agrammon.Output.reCalc');
             }
             else {
-                alert(exc);
+                alert(exc + ': ' + data.error);
             }
         },
 
@@ -967,17 +967,13 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var datasetName = this.__info.getDatasetName();
 
             pattern = pattern.replace(/\[.+\]/, '[]');
-            // this.debug('_deleteInstanceData(): delete ' + pattern
-            //            + ' / ' + instance
-            //            + ' from ' + datasetName);
-
-            // delete from database
             this.__rpc.callAsync(
                 qx.lang.Function.bind(this.__deleteDataFunc, folder),
                 'delete_instance', {
-                datasetName     : datasetName,
-                instance        : instance,
-                variablePattern : pattern}
+                    datasetName     : datasetName,
+                    instance        : instance,
+                    variablePattern : pattern
+                }
             );
 
             return;

@@ -35,6 +35,11 @@ class X::Agrammon::DB::Dataset::InstanceRenameFailed is Exception {
     has Str $.new-name is required;
     method message {
         "Dataset '$!old-name' couldn't be renamed to '$!new-name'."
+#| Error when instance couldn't be deleted.
+class X::Agrammon::DB::Dataset::InstanceDeleteFailed is Exception {
+    has Str $.instance is required;
+    method message {
+        "Instance '$!instance' couldn't be deleted."
     }
 }
 
@@ -360,24 +365,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method !delete-instance-variable($var, $instance) {
-
-        return unless $var and $instance;
-        my $username = $!user.username;
-
-        self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $username, $!name, $var, $instance);
-            DELETE FROM data_new
-             WHERE data_dataset=dataset_name2id($1,$2) AND data_var=$3
-                                                       AND data_instance = $4
-            RETURNING data_val
-            SQL
-
-            my $rows = $ret.rows;
-            return $rows if $rows;
-        }
-    }
-
     method delete-instance($variable-pattern, $instance) {
         return unless $variable-pattern and $instance;
         my $username = $!user.username;
@@ -385,13 +372,13 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $username, $!name, $variable-pattern ~ '%', $instance);
                 DELETE FROM data_new
-                WHERE data_dataset=dataset_name2id($1,$2) AND data_var LIKE $3
-                                                        AND data_instance = $4
+                 WHERE data_dataset=dataset_name2id($1,$2) AND data_var LIKE $3
+                                                           AND data_instance = $4
                 RETURNING data_val
             SQL
 
-            my $rows = $ret.rows;
-            return $rows if $rows;
+            # update failed
+            die X::Agrammon::DB::Dataset::InstanceDeleteFailed.new(:$instance) unless $ret.rows;
         }
     }
 

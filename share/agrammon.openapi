@@ -66,28 +66,41 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-    /rename_instance:
+    /delete_instance:
         post:
-            summary: Rename an instance
-            operationId: renameInstance
+            summary: Delete an instance
+            operationId: deleteInstance
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/Rename"
+                            $ref: "#/components/schemas/DeleteInstance"
             responses:
                 '204':
                     description: Instance renamed.
                 '409':
                     description: Rename failed
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Error"
+                            $ref: "#/components/schemas/DeleteInstance"
 
 components:
     schemas:
+        DeleteInstance:
+            type: object
+            required:
+                 - datasetName
+                 - instance
+                 - variablePattern
+            properties:
+                datasetName:
+                    description: Dataset name
+                    type: string
+                instance:
+                    description: Instance name
+                    type: string
+                variablePattern:
+                    description: Variable name
+                    type: string
         Rename:
             type: object
             required:
