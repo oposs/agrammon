@@ -12,21 +12,53 @@ paths:
                 content:
                     application/json:
                         schema:
-                            type: object
-                            required:
-                                - oldName
-                                - newName
-                            properties:
-                                oldName: 
-                                    description: Current dataset name
-                                    type: string
-                                newName: 
-                                    description: New dataset name
-                                    type: string
+                            $ref: "#/components/schemas/Rename"
             responses:
                 '204':
                     description: Dataset renamed.
-                '400':
-                    description: Invalid input
-#                    content: 
-#                        application/json:
+                '409':
+                    description: Rename failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /rename_tag:
+        post:
+            summary: Rename a dataset tag
+            operationId: renameTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Rename"
+            responses:
+                '204':
+                    description: Tag renamed.
+                '409':
+                    description: Rename failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
+components:
+    schemas:
+        Rename:
+            type: object
+            required:
+                 - oldName
+                 - newName
+            properties:
+                oldName:
+                    description: Current name
+                    type: string
+                newName:
+                    description: New name
+                    type: string
+        Error:
+            required:
+                - error
+            properties:
+                error:
+                    type: string

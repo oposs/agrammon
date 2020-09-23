@@ -2,6 +2,23 @@ use v6;
 use Agrammon::DB;
 use Agrammon::DB::User;
 
+#| Error when a tag already exists for the user.
+class X::Agrammon::DB::Tag::AlreadyExists is Exception {
+    has Str $.tag-name is required;
+    method message {
+        "Dataset '$!tag-name' already exists."
+    }
+}
+
+#| Error when tag couldn't be renamed.
+class X::Agrammon::DB::Tag::RenameFailed is Exception {
+    has Str $.old-name is required;
+    has Str $.new-name is required;
+    method message {
+        "Tag '$!old-name' couldn't be renamed to '$!new-name'."
+    }
+}
+
 class Agrammon::DB::Tag does Agrammon::DB {
     has Str $.name;
     has Int $.id;
@@ -22,11 +39,26 @@ class Agrammon::DB::Tag does Agrammon::DB {
 
     method rename($new) {
         self.with-db: -> $db {
-            $db.query(q:to/TAG/, $new, $!name, $!user.id);
+            # old and new name are identical
+            die X::Agrammon::DB::Tag::RenameFailed.new(:old-name($!name), :new-name($new)) if $new eq $!name;
+
+            my $ret = $db.query(q:to/SQL/, $new, $!name, $!user.id);
                 UPDATE tag SET tag_name = $1
                  WHERE tag_name = $2 AND tag_pers = $3
                 RETURNING tag_name
-            TAG
+            SQL
+
+            # new dataset name already exists
+            CATCH {
+                when /unique/ {
+                    die X::Agrammon::DB::Tag::AlreadyExists.new(:tag-name($new));
+                }
+            }
+
+            # update failed
+            die X::Agrammon::DB::Tag::RenameFailed.new(:old-name($!name), :new-name($new)) unless $ret.rows;
+
+            # rename suceeded
             $!name = $new;
         }
         return self.name;

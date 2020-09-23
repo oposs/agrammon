@@ -1041,8 +1041,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         qx.lang.Function.bind(this.__rename_tag_func,this),
                         'rename_tag',
                         {
-                            oldTag: tag_old,
-                            newTag: tag_new
+                            oldName: tag_old,
+                            newName: tag_new
                         }
     			    );
                     self.close();

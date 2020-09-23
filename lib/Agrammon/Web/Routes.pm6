@@ -80,6 +80,19 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'renameTag', -> LoggedIn $user {
+            request-body -> ( :oldName($old-name), :newName($new-name) ) {
+                $ws.rename-tag($user, $old-name, $new-name);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Tag::AlreadyExists | X::Agrammon::DB::Tag::RenameFailed {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -180,14 +193,6 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             request-body -> (:$name!) {
                 my $data = $ws.delete-tag($user, $name);
                 content 'application/json', $data;
-            }
-        }
-
-        # working
-        post -> LoggedIn $user, 'rename_tag' {
-            request-body -> (:oldTag($old)!, :newTag($new)!) {
-                my $new-name = $ws.rename-tag($user, $old, $new);
-                content 'application/json', %( :newName($new-name) );
             }
         }
 

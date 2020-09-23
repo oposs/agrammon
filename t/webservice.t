@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 29;
+plan 32;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -223,6 +223,27 @@ transactionally {
     throws-like { $ws.rename-dataset($user, 'NoDataset', 'NewDataset') },
         X::Agrammon::DB::Dataset::RenameFailed,
         "Rename dataset fails if old dataset name doesn't exist";
+}
+
+transactionally {
+    $ws.create-tag($user, "01MyTestTag");
+    $ws.create-tag($user, "02MyTestTag");
+    throws-like { $ws.rename-tag($user, '01MyTestTag', '02MyTestTag') },
+        X::Agrammon::DB::Tag::AlreadyExists,
+        "Rename tag fails for existing new tag name";
+}
+
+transactionally {
+    $ws.create-tag($user, "01MyTestTag");
+    throws-like { $ws.rename-tag($user, '01MyTestTag', '01MyTestTag') },
+        X::Agrammon::DB::Tag::RenameFailed,
+        "Rename tag fails if old and new name are identical";
+}
+
+transactionally {
+    throws-like { $ws.rename-tag($user, '03MyTestTag', '04MyTestTag') },
+        X::Agrammon::DB::Tag::RenameFailed,
+        "Rename tag fails if old tag name doesn't exist";
 }
 
 subtest "Get model data" => {
