@@ -212,33 +212,27 @@ transactionally {
 
 transactionally {
 
-    subtest "rename-dataset exception" => {
-        @($ws.get-datasets($user, 'SingleSHL')).map: *[0].note;
+    @($ws.get-datasets($user, 'SingleSHL')).map: *[0].note;
 
-        throws-like { $ws.rename-dataset($user, 'TestSingle', 'Agrammon6Testing') },
-            X::Agrammon::DB::Dataset::AlreadyExists,
-            "Rename dataset fails for existing new dataset name";
-    }
+    throws-like { $ws.rename-dataset($user, 'TestSingle', 'Agrammon6Testing') },
+        X::Agrammon::DB::Dataset::AlreadyExists,
+        "Rename dataset fails for existing new dataset name";
 
 }
 
 transactionally {
 
-    subtest "rename-dataset exception" => {
-        throws-like { $ws.rename-dataset($user, 'TestSingle', 'TestSingle') },
-            X::Agrammon::DB::Dataset::RenameFailed,
-            "Rename dataset fails if old and new name are identical";
-    }
+    throws-like { $ws.rename-dataset($user, 'TestSingle', 'TestSingle') },
+        X::Agrammon::DB::Dataset::RenameFailed,
+        "Rename dataset fails if old and new name are identical";
 
 }
 
 transactionally {
 
-    subtest "rename-dataset exception" => {
-        throws-like { $ws.rename-dataset($user, 'NoDataset', 'NewDataset') },
-            X::Agrammon::DB::Dataset::RenameFailed,
-            "Rename dataset fails if old dataset name doesn't exist";
-    }
+    throws-like { $ws.rename-dataset($user, 'NoDataset', 'NewDataset') },
+        X::Agrammon::DB::Dataset::RenameFailed,
+        "Rename dataset fails if old dataset name doesn't exist";
 
 }
 
