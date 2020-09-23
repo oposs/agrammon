@@ -95,7 +95,8 @@ CREATE TABLE public.dataset (
     dataset_comment text,
     dataset_model text,
     dataset_readonly boolean DEFAULT false,
-    CONSTRAINT dataset_name_empty CHECK ((dataset_name !~ '^\s*$'::text))
+    CONSTRAINT dataset_name_empty CHECK ((dataset_name !~ '^\s*$'::text)),
+    UNIQUE(dataset_name, dataset_pers)
 );
 
 

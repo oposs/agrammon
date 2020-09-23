@@ -11,7 +11,7 @@
   "depends": [
     "Cro::HTTP",
     "Cro::HTTP::Session::Pg",
-    "Cro::HTTP::Test",
+    "Cro::OpenAPI::RoutesFromDefinition",
     "DB::Pg",
     "Digest::SHA1::Native",
     "OO::Monitors",

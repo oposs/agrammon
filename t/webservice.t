@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 26;
+plan 29;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -27,7 +27,6 @@ subtest "Setup" => {
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(conninfo => $cfg.db-conninfo), 'Create DB::Pg object';
     $user = Agrammon::Web::SessionUser.new(:$username);
     ok $user.load, "Load user $username";
-    dd $user;
     ok $ws = Agrammon::Web::Service.new(:$cfg), "Created Web::Service object";
 }
 
@@ -71,8 +70,7 @@ transactionally {
     }
 
     subtest "rename-dataset" => {
-        ok my $newDataset = $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset'), "Rename dataset";
-        is $newDataset.name, 'MyNewTestDataset', 'Dataset has expected name';
+        lives-ok { $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset') }, "Rename dataset";
     }
 
     subtest "submit-dataset" => {
@@ -110,7 +108,7 @@ transactionally {
      subtest "get-tags()" => {
         ok my $tags = $ws.get-tags($user), "Get tags";
         # isa-ok $tags, 'Array', 'Got tags Array';
-        is $tags.elems, 12,  "Found 12 tags";
+        ok $tags.elems >= 12,  "Found 12+ tags";
         # isa-ok my $tag = $tags[0], 'List', 'Got tag List';
         is $tags[0], '00MyNewTestTag', 'First tag has name 00MyNewTestTag';
         # dd $tags;
@@ -212,6 +210,24 @@ transactionally {
 
 }
 
+transactionally {
+    throws-like { $ws.rename-dataset($user, 'TestSingle', 'Agrammon6Testing') },
+        X::Agrammon::DB::Dataset::AlreadyExists,
+        "Rename dataset fails for existing new dataset name";
+}
+
+transactionally {
+    throws-like { $ws.rename-dataset($user, 'TestSingle', 'TestSingle') },
+        X::Agrammon::DB::Dataset::RenameFailed,
+        "Rename dataset fails if old and new name are identical";
+}
+
+transactionally {
+    throws-like { $ws.rename-dataset($user, 'NoDataset', 'NewDataset') },
+        X::Agrammon::DB::Dataset::RenameFailed,
+        "Rename dataset fails if old dataset name doesn't exist";
+}
+
 subtest "Get model data" => {
 
     my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
@@ -229,16 +245,15 @@ subtest "Get model data" => {
         with %input-hash<inputs> -> @module-inputs {
             for @module-inputs -> $input {
                 my $var    = $input<variable>;
+                next unless $var ~~ /'::dairy_cows'/;
                 is-deeply $input.keys.sort, qw|branch defaults enum gui help labels models options optionsLang order type units validator variable|,
                           "$var has expected keys";
-                if $var ~~ /'::dairy_cows'/ {
-                    # dd $input;
-                    subtest "$var" => {
+                # dd $input;
+                subtest "$var" => {
 # TODO: needs fixing
-#                        is $input<branch>, 'true', 'branch is true';
-                        is-deeply $input<defaults>, %( calc => Any, gui => Any);
-                        is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
-                    }
+#                    is $input<branch>, 'true', 'branch is true';
+                    is-deeply $input<defaults>, %( calc => Any, gui => Any);
+                    is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
                 }
             }
         }
