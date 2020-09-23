@@ -212,15 +212,15 @@ transactionally {
 
 transactionally {
 
-    @($ws.get-datasets($user, 'SingleSHL')).map: *[0].note;
+    @($ws.get-datasets($user, 'SingleSHL')).sort.map: *[0].note;
 
     throws-like { $ws.rename-dataset($user, 'TestSingle', 'Agrammon6Testing') },
         X::Agrammon::DB::Dataset::AlreadyExists,
         "Rename dataset fails for existing new dataset name";
 
-    @($ws.get-datasets($user, 'SingleSHL')).map: *[0].note;
 
 }
+    @($ws.get-datasets($user, 'SingleSHL')).sort.map: *[0].note;
 
 transactionally {
 
