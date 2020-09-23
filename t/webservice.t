@@ -27,7 +27,6 @@ subtest "Setup" => {
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(conninfo => $cfg.db-conninfo), 'Create DB::Pg object';
     $user = Agrammon::Web::SessionUser.new(:$username);
     ok $user.load, "Load user $username";
-    dd $user;
     ok $ws = Agrammon::Web::Service.new(:$cfg), "Created Web::Service object";
 }
 
