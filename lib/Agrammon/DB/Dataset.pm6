@@ -11,6 +11,16 @@ class X::Agrammon::DB::Dataset::AlreadyExists is Exception {
     }
 }
 
+#| Error when dataset couldn't be renamed.
+class X::Agrammon::DB::Dataset::RenameFailed is Exception {
+    has Str $.dataset-name is required;
+    has Str $.old-name is required;
+    has Str $.new-name is required;
+    method message {
+        "Dataset '$!dataset-name' couldn't be renamed from '$!old-name' to '$!new-name' exists."
+    }
+}
+
 class Agrammon::DB::Dataset does Agrammon::DB {
     has Int  $.id;
     has Str  $.name;
@@ -44,16 +54,25 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
     method rename($new) {
         self.with-db: -> $db {
-            $db.query(q:to/SQL/, $new, $!name, $!user.id);
+            # old and new name are identical
+            die X::Agrammon::DB::Dataset::RenameFailed.new(:dataset-name($new), :old-name($!name), :new-name($new)) if $new eq $!name;
+
+            my $ret = $db.query(q:to/SQL/, $new, $!name, $!user.id);
                 UPDATE dataset SET dataset_name = $1
                  WHERE dataset_name = $2 AND dataset_pers = $3
                 RETURNING dataset_name
             SQL
+            # update failed
+            die X::Agrammon::DB::Dataset::RenameFailed.new(:dataset-name($new), :old-name($!name), :new-name($new)) unless $ret.rows;
+
+            # new dataset name already exists
             CATCH {
                 when /unique/ {
                     die X::Agrammon::DB::Dataset::AlreadyExists.new(:dataset-name($new));
                 }
             }
+
+            # rename suceeded
             $!name = $new;
         }
         return self;

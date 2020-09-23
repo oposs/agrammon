@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 27;
+plan 29;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -216,7 +216,27 @@ transactionally {
     subtest "rename-dataset exception" => {
         throws-like { $ws.rename-dataset($user, 'TestSingle', 'Agrammon6Testing') },
             X::Agrammon::DB::Dataset::AlreadyExists,
-            "Rename dataset fails for existing dataset name";
+            "Rename dataset fails for existing new dataset name";
+    }
+
+}
+
+transactionally {
+
+    subtest "rename-dataset exception" => {
+        throws-like { $ws.rename-dataset($user, 'TestSingle', 'TestSingle') },
+            X::Agrammon::DB::Dataset::RenameFailed,
+            "Rename dataset fails if old and new name are identical";
+    }
+
+}
+
+transactionally {
+
+    subtest "rename-dataset exception" => {
+        throws-like { $ws.rename-dataset($user, 'NoDataset', 'NewDataset') },
+            X::Agrammon::DB::Dataset::RenameFailed,
+            "Rename dataset fails if old dataset name doesn't exist";
     }
 
 }

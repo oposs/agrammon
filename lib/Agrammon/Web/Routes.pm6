@@ -77,6 +77,11 @@ sub api-routes (Str $schema, $ws) {
                             error => .message
                         );
                     }
+                    when X::Agrammon::DB::Dataset::RenameFailed {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
                 }
             }
         }
