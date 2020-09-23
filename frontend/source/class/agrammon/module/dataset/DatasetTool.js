@@ -949,21 +949,6 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
           * @return {var} TODOC
 	  * @lint ignoreDeprecated(alert)
           */
-         __new_tag_func: function(data,exc,id) {
-            if (exc == null) {
-	            this.debug('Tag', data.newName, 'created.');
-	        }
-            else {
-                alert(exc);
-            }
-        },
-
-        /**
-          * TODOC
-          *
-          * @return {var} TODOC
-	  * @lint ignoreDeprecated(alert)
-          */
          __delete_tag_func: function(data,exc,id) {
             if (exc == null) {
 //	            this.debug(data+' tags deleted.');
@@ -1052,17 +1037,17 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         okFunction, this);
                 }, this);
 
-                this.__btnNew.addListener("execute", function(e) {
-//                this.debug('TagTable.__btnNew()');
-                var dialog;
+            this.__btnNew.addListener("execute", function(e) {
                 var okFunction = qx.lang.Function.bind(function(self) {
                     var tag = self.nameField.getValue();
-//                    this.debug('newCommand: tag=' + tag);
-                    var tm =   this.__availableTagsTable.getTableModel();
+                    var tm  = this.__availableTagsTable.getTableModel();
                     if (this.__datasetCache.tagExists(tag)) {
                         qx.event.message.Bus.dispatchByName('error',
-                            [ this.tr("Error"),
-                              this.tr("Tag") + ' ' + tag + ' ' +this.tr("already exists")]);
+                            [
+                                this.tr("Error"),
+                                this.tr("Tag") + ' ' + tag + ' ' + this.tr("already exists")
+                            ]
+                        );
                         self.close();
                         return;
                     }
@@ -1071,16 +1056,22 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
       	            tm.addRows([[ tag ]]);
                     tm.updateView(1);
         		    tm.sortByColumn(0, true);
-                    this.__rpc.callAsync( qx.lang.Function.bind(this.__new_tag_func,this),
-                                          'create_tag', { name : tag }
+                    this.__rpc.callAsync(
+                        qx.lang.Function.bind(function(data, exc, id) {
+                            if (exc != null) {
+                                alert(exc + ': ' + data.error);
+                            }
+                        }, this),
+                        'create_tag',
+                        { name : tag }
     			    );
                     self.close();
                 }, this);
-                dialog =
-                    new agrammon.ui.dialog.Dialog(this.tr("Creating new tag"),
-                                           this.tr("New tag name"),
-                                           okFunction, this);
-//            this.close();
+                var dialog = new agrammon.ui.dialog.Dialog(
+                    this.tr("Creating new tag"),
+                    this.tr("New tag name"),
+                    okFunction, this
+                );
             }, this);
 
 

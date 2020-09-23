@@ -36,7 +36,6 @@ my $fake-store = mocked(Agrammon::Web::Service,
     },
     overriding => {
         create-tag => -> $user, $name {
-            $name
         },
         rename-tag => -> $user, $old, $new {
         },
@@ -70,8 +69,7 @@ subtest 'Create tag' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/create_tag', {
             test post(json => { :name('TagA') }),
-                status => 200,
-                json   => { :newName('TagA') },
+                status => 204,
         };
         check-mock $fake-store,
             *.called('create-tag',  times => 1  );

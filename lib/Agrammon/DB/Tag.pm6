@@ -4,9 +4,9 @@ use Agrammon::DB::User;
 
 #| Error when a tag already exists for the user.
 class X::Agrammon::DB::Tag::AlreadyExists is Exception {
-    has Str $.tag-name is required;
+    has Str $.name is required;
     method message {
-        "Dataset '$!tag-name' already exists."
+        "Tag '$!name' already exists."
     }
 }
 
@@ -19,6 +19,14 @@ class X::Agrammon::DB::Tag::RenameFailed is Exception {
     }
 }
 
+#| Error when tag couldn't be created.
+class X::Agrammon::DB::Tag::CreateFailed is Exception {
+    has Str $.name is required;
+    method message {
+        "Tag '$!name' couldn't be created."
+    }
+}
+
 class Agrammon::DB::Tag does Agrammon::DB {
     has Str $.name;
     has Int $.id;
@@ -26,13 +34,24 @@ class Agrammon::DB::Tag does Agrammon::DB {
 
     method create {
         self.with-db: -> $db {
-            my $results = $db.query(q:to/TAG/, $!name, $!user.id);
+            my $ret = $db.query(q:to/SQL/, $!name, $!user.id);
                 INSERT INTO tag (tag_name, tag_pers)
                 VALUES ($1, $2)
                 RETURNING tag_id
-            TAG
+            SQL
 
-            $!id = $results.value;
+            # new dataset name already exists
+            CATCH {
+                when /unique/ {
+                    die X::Agrammon::DB::Tag::AlreadyExists.new(:$!name);
+                }
+            }
+
+            # update failed
+            die X::Agrammon::DB::Tag::CreateFailed.new(:$!name) unless $ret.value;
+
+            # rename suceeded
+            $!id = $ret.value;
         }
         return self;
     }
@@ -51,7 +70,7 @@ class Agrammon::DB::Tag does Agrammon::DB {
             # new dataset name already exists
             CATCH {
                 when /unique/ {
-                    die X::Agrammon::DB::Tag::AlreadyExists.new(:tag-name($new));
+                    die X::Agrammon::DB::Tag::AlreadyExists.new(:$!name);
                 }
             }
 

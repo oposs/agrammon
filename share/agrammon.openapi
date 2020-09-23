@@ -22,6 +22,31 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /create_tag:
+        post:
+            summary: Create new dataset tag
+            operationId: createTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - name
+                            properties:
+                                name:
+                                    description: Tag name
+                                    type: string
+            responses:
+                '204':
+                    description: Tag created.
+                '409':
+                    description: Tag creation failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
     /rename_tag:
         post:
             summary: Rename a dataset tag
