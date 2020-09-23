@@ -218,6 +218,8 @@ transactionally {
         X::Agrammon::DB::Dataset::AlreadyExists,
         "Rename dataset fails for existing new dataset name";
 
+    @($ws.get-datasets($user, 'SingleSHL')).map: *[0].note;
+
 }
 
 transactionally {
@@ -252,6 +254,7 @@ subtest "Get model data" => {
     subtest "get-input-variables" => {
         with %input-hash<inputs> -> @module-inputs {
             for @module-inputs -> $input {
+                next unless $var ~~ /'::dairy_cows'/;
                 my $var    = $input<variable>;
                 is-deeply $input.keys.sort, qw|branch defaults enum gui help labels models options optionsLang order type units validator variable|,
                           "$var has expected keys";
