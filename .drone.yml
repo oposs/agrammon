@@ -48,7 +48,8 @@ steps:
       - psql -U postgres -h dbhost -c "CREATE GROUP agrammon_user USER agrammon"        > /dev/null
       - psql -U postgres -h dbhost -c "CREATE EXTENSION pgcrypto" agrammon_test         > /dev/null
       - psql -U postgres -h dbhost --file=/drone/src/t/test-data/agrammon_test.dump.sql agrammon_test > /dev/null
-      - prove -v -r --exec=raku t
+#      - prove -v -r --exec=raku t
+      - prove -v -r --exec=raku t/routes-dataset.t t/webservice.t
 
 ### caching and frontend tests not configured yet
 # - name: frontend

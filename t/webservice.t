@@ -213,11 +213,7 @@ transactionally {
 transactionally {
 
     subtest "rename-dataset exception" => {
-        my $model-version = 'SingleSHL';
-        ok my $datasets = $ws.get-datasets($user, $model-version), "Get $model-version datasets";
-        for @$datasets -> $dataset {
-            note $dataset[0];
-        }
+        @($ws.get-datasets($user, 'SingleSHL')).map: *[0].note;
 
         throws-like { $ws.rename-dataset($user, 'TestSingle', 'Agrammon6Testing') },
             X::Agrammon::DB::Dataset::AlreadyExists,
