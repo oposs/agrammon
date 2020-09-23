@@ -1,4 +1,5 @@
 use v6;
+use Agrammon::DB::User;
 use Agrammon::Config;
 use Agrammon::Model;
 use Agrammon::UI::Web;
@@ -83,8 +84,15 @@ transactionally {
             $user,
             'foo@bar.com', 'myPassword', 'myKey',
             'Erika', 'Mustermann', 'MyOrg'
-        ), "Create new account";
+        ), "Create new account with all data";
         is $username, 'foo@bar.com', "User has expected username";
+
+        ok $username = $ws.create-account(
+            $user,
+            'foo2@bar.com', 'myPassword', Any,
+            Any, Any, Any
+        ), "Create new account with only required data";
+        is $username, 'foo2@bar.com', "User has expected username";
     }
 
     subtest "change-password" => {
@@ -212,6 +220,7 @@ transactionally {
 }
 
 transactionally {
+<<<<<<< HEAD
     $ws.create-tag($user, "01MyTestTag");
     $ws.create-tag($user, "02MyTestTag");
     throws-like { $ws.rename-tag($user, '01MyTestTag', '02MyTestTag') },
@@ -239,7 +248,24 @@ transactionally {
 }
 
 subtest "Get model data" => {
+=======
+    $ws.create-account(
+        $user,
+        'foo2@bar.com', 'myPassword', Any,
+        Any, Any, Any
+    );
+    throws-like {
+        $ws.create-account(
+            $user,
+            'foo2@bar.com', 'myPassword', Any,
+            Any, Any, Any
+        ) },
+        X::Agrammon::DB::User::Exists,
+        "User already exist";
+}
+>>>>>>> Add more tests, error handling and OpenAPI for create_account
 
+subtest "Get model data" => {
     my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
     my $top = 'End';
     ok my $model = Agrammon::Model.new(:$path), "Load model";

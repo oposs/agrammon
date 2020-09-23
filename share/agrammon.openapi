@@ -3,6 +3,56 @@ info:
     version: 1.0.0,
     title: OpenApi Agrammon,
 paths:
+    /create_account:
+        post:
+            summary: Create new user account
+            operationId: createAccount
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - email
+                                - password
+                            properties:
+                                email:
+                                    description: User's email used as username
+                                    type: string
+                                password:
+                                    description: Inital password
+                                    type: string
+                                key:
+                                    description: Validation keu
+                                    type: string
+                                firstname:
+                                    description: Firstname
+                                    type: string
+                                lastname:
+                                    description: Lastname
+                                    type: string
+                                org:
+                                    description: Organization
+                                    type: string
+            responses:
+                '200':
+                    description: Account created.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required:
+                                    - username
+                                properties:
+                                    username:
+                                        type: string
+                '409':
+                    description: User already exists
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
     /rename_dataset:
         post:
             summary: Rename a dataset

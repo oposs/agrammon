@@ -2,7 +2,7 @@ use v6;
 
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
-
+use Agrammon::DB::User;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 
@@ -66,6 +66,21 @@ sub static-content($root) {
 
 sub api-routes (Str $schema, $ws) {
     openapi $schema.IO, {
+        # working
+        operation 'createAccount', -> LoggedIn $user {
+            request-body -> (:$email!, :$password!, :$key, :$firstname, :$lastname, :$org) {
+                my $username = $ws.create-account($user, $email, $password, $key, $firstname, $lastname, $org);
+                content 'application/json', { :$username };
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::User::AlreadyExists | X::Agrammon::DB::User::CreateFailed {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                }
+            }
+        }
         # working
         operation 'renameDataset', -> LoggedIn $user {
             request-body -> ( :oldName($old-name), :newName($new-name) ) {
@@ -251,14 +266,6 @@ sub user-routes(Agrammon::Web::Service $ws) {
             request-body -> (:$email!, :$password!, :$key!) {
                 my $data = $ws.reset-password($email, $password, $key);
                 content 'application/json', $data;
-            }
-        }
-
-        # working
-        post -> LoggedIn $user, 'create_account' {
-            request-body -> (:$email!, :$password!, :$key, :$firstname, :$lastname, :$org) {
-                my $username = $ws.create-account($user, $email, $password, $key, $firstname, $lastname, $org);
-                content 'application/json', { :$username };
             }
         }
 

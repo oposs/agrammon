@@ -15,13 +15,21 @@ class X::Agrammon::DB::User::NoUsername is Exception {
     }
 }
 
+class X::Agrammon::DB::User::CreateFailed is Exception {
+    has Str $.user-name is required;
+
+    method message {
+        "Couldn't create user $.username";
+    }
+}
+
 class Agrammon::DB::User does Agrammon::DB {
     has Int $.id;
-    has Str $.username;
-    has Str $.firstname;
-    has Str $.lastname;
+    has Str $.username is required;
     has Str $.password;
-    has Str $.organisation;
+    has $.firstname;
+    has $.lastname;
+    has $.organisation;
     has DateTime $.last-login;
     has DateTime $.created;
     has Agrammon::DB::Role $.role;
