@@ -96,8 +96,7 @@ transactionally {
     }
 
     subtest "create-tag" => {
-        ok my $tag = $ws.create-tag($user, "00MyTestTag"), "Create tag";
-        is $tag, "00MyTestTag", "Tag has correct name";
+        lives-ok { $ws.create-tag($user, "00MyTestTag") }, "Create tag";
     }
 
     subtest "rename-tag" => {
