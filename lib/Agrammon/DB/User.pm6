@@ -25,7 +25,7 @@ class X::Agrammon::DB::User::CreateFailed is Exception {
 
 class Agrammon::DB::User does Agrammon::DB {
     has Int $.id;
-    has Str $.username is required;
+    has Str $.username;
     has Str $.password;
     has $.firstname;
     has $.lastname;

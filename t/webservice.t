@@ -261,7 +261,7 @@ subtest "Get model data" => {
             Any, Any, Any
         ) },
         X::Agrammon::DB::User::Exists,
-        "User already exist";
+        "User already exists";
 }
 >>>>>>> Add more tests, error handling and OpenAPI for create_account
 
