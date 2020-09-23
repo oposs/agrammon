@@ -86,7 +86,7 @@ class Agrammon::Web::Service {
     }
 
     method rename-tag(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
-        return Agrammon::DB::Tag.new(:$user, :name($old)).rename($new);
+        Agrammon::DB::Tag.new(:$user, :name($old)).rename($new);
     }
 
     method set-tag(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $tag-name) {

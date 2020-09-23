@@ -101,8 +101,7 @@ transactionally {
     }
 
     subtest "rename-tag" => {
-        ok my $new-name = $ws.rename-tag($user, '00MyTestTag', '00MyNewTestTag'), "Rename tag";
-        is $new-name, '00MyNewTestTag', 'Tag has expected name';
+        lives-ok { $ws.rename-tag($user, '00MyTestTag', '00MyNewTestTag') }, "Rename tag";
     }
 
      subtest "get-tags()" => {
