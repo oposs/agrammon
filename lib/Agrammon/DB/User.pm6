@@ -16,10 +16,18 @@ class X::Agrammon::DB::User::NoUsername is Exception {
 }
 
 class X::Agrammon::DB::User::CreateFailed is Exception {
-    has Str $.user-name is required;
+    has Str $.username is required;
 
     method message {
-        "Couldn't create user $.username";
+        "Couldn't create user $!username";
+    }
+}
+
+class X::Agrammon::DB::User::UnknownRole is Exception {
+    has Str $.role is required;
+
+    method message {
+        "Role '$!role' doesn't exist.";
     }
 }
 
@@ -38,25 +46,33 @@ class Agrammon::DB::User does Agrammon::DB {
         $!username = $username;
     }
 
-    method create-account(Str $role-name) {
-        die X::Agrammon::DB::User::Exists.new(:username($!username)) if self.exists;
+    method create-account($role-name) {
+        my $role = $role-name || 'user';
+        die X::Agrammon::DB::User::Exists.new(:$!username) if self.exists;
+        die X::Agrammon::DB::User::NoUsername.new(:$!username) unless $!username;
 
         self.with-db: -> $db {
-            my %r = $db.query(q:to/ROLE/, $role-name).hash;
+            my $ret = $db.query(q:to/SQL/, $role);
                 SELECT role_id   AS id,
                        role_name AS name
                   FROM role
                  WHERE role_name = $1
-            ROLE
+            SQL
+            die X::Agrammon::DB::User::UnknownRole.new(:$role) unless $ret.rows;
+
+            my %r = $ret.hash;
             $!role = Agrammon::DB::Role.new(|%r);
 
-            my $u = $db.query(q:to/USER/, $!username, $!firstname, $!lastname, $!password, $!organisation, %r<id> );
+            $ret = $db.query(q:to/SQL/, $!username, $!firstname, $!lastname, $!password, $!organisation, %r<id> );
                 INSERT INTO pers (pers_email, pers_first, pers_last,
                                   pers_password, pers_org, pers_role)
                 VALUES ($1, $2, $3, crypt($4, gen_salt('bf')), $5, $6)
                 RETURNING pers_id
-            USER
-            $!id = $u.value;
+            SQL
+
+            die X::Agrammon::DB::User::CreateFailed.new(:$!username) unless $ret.rows;
+
+            $!id = $ret.value;
         }
         return self;
     }

@@ -119,12 +119,12 @@ class Agrammon::Web::Service {
         return %gui-output;
     }
 
-    method create-account(Agrammon::Web::SessionUser $user, $email, $password, $key, $firstname, $lastname, $org ) {
+    method create-account(Agrammon::Web::SessionUser $user, $email, $password, $key, $firstname, $lastname, $org, $role?) {
         return Agrammon::DB::User.new(
             :username($email), :$password,
             :$firstname, :$lastname,
             :organisation($org)
-        ).create-account('user').username;
+        ).create-account($role).username;
     }
 
     method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password) {

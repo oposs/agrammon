@@ -62,12 +62,36 @@ transactionally {
             :lastname<XL>,
             :organisation<XO>,
             :$password,
-        ), 'Create new user';
+        ), 'Create new admin account';
         ok $uid = $user.create-account('admin'), "Create account, uid=$uid";
         is $user.username, $username, "Username is $username";
         is $user.role.name, 'admin', "User role is admin";
+
+        ok $user = Agrammon::DB::User.new(
+            :username<agtest2>,
+            :firstname<XF>,
+            :lastname<XL>,
+            :organisation<XO>,
+            :$password,
+        ), 'Create new user account';
+        ok $uid = $user.create-account('user'), "Create account, uid=$uid";
+        is $user.role.name, 'user', "User role is user";
+
+        ok $user = Agrammon::DB::User.new(
+            :username<agtest3>,
+            :firstname<XF>,
+            :lastname<XL>,
+            :organisation<XO>,
+            :$password,
+        ), 'Create new user account';
+        ok $uid = $user.create-account(Any), "Create account, uid=$uid";
+        is $user.role.name, 'user', "User role is user by default";
+
         throws-like {$uid = $user.create-account('admin')},
-                    X::Agrammon::DB::User::Exists, "Cannot create existing account";
+            X::Agrammon::DB::User::Exists, "Cannot create existing account";
+
+        throws-like { die X::Agrammon::DB::User::CreateFailed.new(:username('agtest3')) },
+            X::Agrammon::DB::User::CreateFailed, "CreateFailed exception works";
     }
 
     subtest 'load()' => {

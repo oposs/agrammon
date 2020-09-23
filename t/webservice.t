@@ -10,7 +10,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 33;
+plan 36;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -83,16 +83,23 @@ transactionally {
         ok $username = $ws.create-account(
             $user,
             'foo@bar.com', 'myPassword', 'myKey',
-            'Erika', 'Mustermann', 'MyOrg'
-        ), "Create new account with all data";
+            'Erika', 'Mustermann', 'MyOrg', 'user'
+        ), "Create new user account with all data";
         is $username, 'foo@bar.com', "User has expected username";
 
         ok $username = $ws.create-account(
             $user,
             'foo2@bar.com', 'myPassword', Any,
-            Any, Any, Any
-        ), "Create new account with only required data";
+            Any, Any, Any, 'user'
+        ), "Create new user account with only required data";
         is $username, 'foo2@bar.com', "User has expected username";
+
+        ok $username = $ws.create-account(
+            $user,
+            'foo3@bar.com', 'myPassword', Any,
+            Any, Any, Any, Any
+        ), "Create new user account with only required data with default role";
+        is $username, 'foo3@bar.com', "User has expected username";
     }
 
     subtest "change-password" => {
@@ -220,7 +227,6 @@ transactionally {
 }
 
 transactionally {
-<<<<<<< HEAD
     $ws.create-tag($user, "01MyTestTag");
     $ws.create-tag($user, "02MyTestTag");
     throws-like { $ws.rename-tag($user, '01MyTestTag', '02MyTestTag') },
@@ -247,8 +253,18 @@ transactionally {
         "Delete tag fails if tag name doesn't exist";
 }
 
-subtest "Get model data" => {
-=======
+transactionally {
+    throws-like {
+        $ws.create-account(
+            $user,
+            '', 'myPassword', Any,
+            Any, Any, Any
+        ) },
+        X::Agrammon::DB::User::NoUsername,
+        "User needs none-empty username/email";
+}
+
+transactionally {
     $ws.create-account(
         $user,
         'foo2@bar.com', 'myPassword', Any,
@@ -263,7 +279,17 @@ subtest "Get model data" => {
         X::Agrammon::DB::User::Exists,
         "User already exists";
 }
->>>>>>> Add more tests, error handling and OpenAPI for create_account
+
+transactionally {
+    throws-like {
+        $ws.create-account(
+            $user,
+            'foo3@bar.ch', 'myPassword', Any,
+            Any, Any, Any, 'NoRole'
+        ) },
+        X::Agrammon::DB::User::UnknownRole,
+        "User needs valid role";
+}
 
 subtest "Get model data" => {
     my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');

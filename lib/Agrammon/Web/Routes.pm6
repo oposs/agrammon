@@ -68,15 +68,31 @@ sub api-routes (Str $schema, $ws) {
     openapi $schema.IO, {
         # working
         operation 'createAccount', -> LoggedIn $user {
-            request-body -> (:$email!, :$password!, :$key, :$firstname, :$lastname, :$org) {
-                my $username = $ws.create-account($user, $email, $password, $key, $firstname, $lastname, $org);
+            request-body -> (:$email!, :$password!, :$key, :$firstname, :$lastname, :$org, :$role) {
+                my $username = $ws.create-account($user, $email, $password, $key, $firstname, $lastname, $org, $role);
                 content 'application/json', { :$username };
                 CATCH {
                     note "$_";
-                    when X::Agrammon::DB::User::AlreadyExists | X::Agrammon::DB::User::CreateFailed {
+                    when X::Agrammon::DB::User::CreateFailed  {
+                        not-found 'application/json', %(
+                            error => .message
+                        );
+                    }
+                    when X::Agrammon::DB::User::AlreadyExists
+                       | X::Agrammon::DB::User::CreateFailed  {
                         conflict 'application/json', %(
                             error => .message
                         );
+                    }
+                    when X::Agrammon::DB::User::NoUsername {
+                        bad-request 'application/json', %(
+                            error => .message
+                        );
+                    }
+                    when X::Agrammon::DB::User::NoUsername | X::Agrammon::DB::User::UnknownRole  {
+                        response.status = 422;
+                        response.append-header('Content-type', 'application/json');
+                        response.set-body(to-json { :error(.message) });
                     }
                 }
             }

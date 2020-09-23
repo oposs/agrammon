@@ -24,7 +24,7 @@ paths:
                                     description: Inital password
                                     type: string
                                 key:
-                                    description: Validation keu
+                                    description: Validation key
                                     type: string
                                 firstname:
                                     description: Firstname
@@ -34,6 +34,9 @@ paths:
                                     type: string
                                 org:
                                     description: Organization
+                                    type: string
+                                role:
+                                    description: User role
                                     type: string
             responses:
                 '200':
@@ -47,12 +50,30 @@ paths:
                                 properties:
                                     username:
                                         type: string
+                '400':
+                    description: No username
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/BadRequest"
+                '404':
+                    description: Couldn't create account
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/CreationFailed"
                 '409':
                     description: User already exists
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+                '422':
+                    description: Role doesn't exist
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Unknown"
     /rename_dataset:
         post:
             summary: Rename a dataset
@@ -209,7 +230,25 @@ components:
                 newName:
                     description: New name
                     type: string
+        BadRequest:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
         Error:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
+        CreationFailed:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
+        Unknown:
             required:
                 - error
             properties:
