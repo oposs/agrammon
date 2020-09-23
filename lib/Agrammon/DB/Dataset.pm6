@@ -21,6 +21,23 @@ class X::Agrammon::DB::Dataset::RenameFailed is Exception {
     }
 }
 
+#| Error when an instance already exists for the user.
+class X::Agrammon::DB::Dataset::InstanceAlreadyExists is Exception {
+    has Str $.name is required;
+    method message {
+        "Instance '$!name' already exists."
+    }
+}
+
+#| Error when instance couldn't be renamed.
+class X::Agrammon::DB::Dataset::InstanceRenameFailed is Exception {
+    has Str $.old-name is required;
+    has Str $.new-name is required;
+    method message {
+        "Dataset '$!old-name' couldn't be renamed to '$!new-name'."
+    }
+}
+
 class Agrammon::DB::Dataset does Agrammon::DB {
     has Int  $.id;
     has Str  $.name;
@@ -363,7 +380,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
     method delete-input($var-name) {
         my $instance;
-
         my $var = $var-name;
         if $var ~~ s/\[(.+)\]/[]/ {
             $instance = $0;
@@ -373,17 +389,29 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                          !! self!delete-variable($var);
     }
 
-    method rename-instance($old-instance, $new-instance, $pattern) {
+    method rename-instance($old-name, $new-name, $pattern) {
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $new-instance, $!id, "\%$pattern\%", $old-instance);
-            UPDATE data_new set data_instance = $1
-             WHERE data_dataset = $2
-               AND data_var LIKE $3
-               AND data_instance = $4
-            RETURNING data_val
+            # old and new name are identical
+            die X::Agrammon::DB::Dataset::InstanceRenameFailed.new(:$old-name, :$new-name) if $old-name eq $new-name;
+
+            my $ret = $db.query(q:to/SQL/, $new-name, $!id, "$pattern\%", $old-name);
+                UPDATE data_new set data_instance = $1
+                 WHERE data_dataset = $2
+                   AND data_var LIKE $3
+                   AND data_instance = $4
+                RETURNING data_val
             SQL
 
-            return $ret.rows;
+            # new instance name already exists
+            CATCH {
+                when /unique/ {
+                    die X::Agrammon::DB::Dataset::InstanceAlreadyExists.new(:$old-name, :$new-name);
+                }
+            }
+
+            # update failed
+            die X::Agrammon::DB::Dataset::InstanceRenameFailed.new(:$old-name, :$new-name) unless $ret.rows;
+
         }
     }
 
