@@ -62,7 +62,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                  WHERE dataset_name = $2 AND dataset_pers = $3
                 RETURNING dataset_name
             SQL
-            note "rows=" ~ $ret.rows;
 
             # new dataset name already exists
             CATCH {
