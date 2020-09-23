@@ -72,12 +72,7 @@ sub api-routes (Str $schema, $ws) {
                 $ws.rename-dataset($user, $old-name, $new-name);
                 CATCH {
                     note "$_";
-                    when X::Agrammon::DB::Dataset::AlreadyExists {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
-                    }
-                    when X::Agrammon::DB::Dataset::RenameFailed {
+                    when X::Agrammon::DB::Dataset::AlreadyExists | X::Agrammon::DB::Dataset::RenameFailed {
                         conflict 'application/json', %(
                             error => .message
                         );
