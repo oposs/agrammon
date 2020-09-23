@@ -1,19 +1,23 @@
 use v6;
 
 use Cro::HTTP::Router;
+use Cro::OpenAPI::RoutesFromDefinition;
 
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 
 subset LoggedIn of Agrammon::Web::SessionUser where .logged-in;
 
+
 sub routes(Agrammon::Web::Service $ws) is export {
 
     # Fix for Agrammon
     # my $root = $app ~~ Agrammon::Application::Development ?? 'frontend/source-output' !! 'qx-build';
+    my $schema = 'share/agrammon.openapi';
     my $root = '';
     route {
         include static-content($root);
+        include api-routes($schema, $ws);
         include user-routes($ws);
         include dataset-routes($ws);
         include application-routes($ws);
@@ -24,7 +28,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
     }
 }
 
-sub static-content($root) is export {
+sub static-content($root) {
     route {
         get -> {
             static $root ~ 'static/index.html'
@@ -56,6 +60,25 @@ sub static-content($root) is export {
 
         get -> 'qooxdoo', *@path {
             static $root ~ 'static/qooxdoo', @path
+        }
+    }
+}
+
+sub api-routes (Str $schema, $ws) {
+    openapi $schema.IO, {
+        # working
+        operation 'renameDataset', -> LoggedIn $user {
+            request-body -> ( :oldName($old-name), :newName($new-name) ) {
+                $ws.rename-dataset($user, $old-name, $new-name);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::AlreadyExists {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                }
+            }
         }
     }
 }
@@ -94,21 +117,6 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             request-body -> (:$name!) {
                 my $dataset-name = $ws.create-dataset($user, $name);
                 content 'application/json', { :name($dataset-name) };
-            }
-        }
-
-        # working
-        post -> LoggedIn $user, 'rename_dataset' {
-            request-body -> (:oldName($old-name)!, :newName($new-name)!) {
-                $ws.rename-dataset($user, $old-name, $new-name);
-                CATCH {
-                    note "$_";
-                    when X::Agrammon::DB::Dataset::AlreadyExists {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
-                    }
-                }
             }
         }
 

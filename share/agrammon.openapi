@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+    version: 1.0.0,
+    title: OpenApi Agrammon,
+paths:
+    /rename_dataset:
+        post:
+            summary: Rename a dataset
+            operationId: renameDataset
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - oldName
+                                - newName
+                            properties:
+                                oldName: 
+                                    description: Current dataset name
+                                    type: string
+                                newName: 
+                                    description: New dataset name
+                                    type: string
+            responses:
+                '204':
+                    description: Dataset renamed.
+                '400':
+                    description: Invalid input
+#                    content: 
+#                        application/json:
