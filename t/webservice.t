@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 29;
+plan 32;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -101,17 +101,13 @@ transactionally {
     }
 
     subtest "rename-tag" => {
-        ok my $newTag = $ws.rename-tag($user, '00MyTestTag', '00MyNewTestTag'), "Rename tag";
-        is $newTag.name, '00MyNewTestTag', 'Tag has expected name';
+        lives-ok { $ws.rename-tag($user, '00MyTestTag', '00MyNewTestTag') }, "Rename tag";
     }
 
      subtest "get-tags()" => {
         ok my $tags = $ws.get-tags($user), "Get tags";
-        # isa-ok $tags, 'Array', 'Got tags Array';
         ok $tags.elems >= 12,  "Found 12+ tags";
-        # isa-ok my $tag = $tags[0], 'List', 'Got tag List';
         is $tags[0], '00MyNewTestTag', 'First tag has name 00MyNewTestTag';
-        # dd $tags;
     }
 
 
@@ -226,6 +222,27 @@ transactionally {
     throws-like { $ws.rename-dataset($user, 'NoDataset', 'NewDataset') },
         X::Agrammon::DB::Dataset::RenameFailed,
         "Rename dataset fails if old dataset name doesn't exist";
+}
+
+transactionally {
+    $ws.create-tag($user, "01MyTestTag");
+    $ws.create-tag($user, "02MyTestTag");
+    throws-like { $ws.rename-tag($user, '01MyTestTag', '02MyTestTag') },
+        X::Agrammon::DB::Tag::AlreadyExists,
+        "Rename tag fails for existing new tag name";
+}
+
+transactionally {
+    $ws.create-tag($user, "01MyTestTag");
+    throws-like { $ws.rename-tag($user, '01MyTestTag', '01MyTestTag') },
+        X::Agrammon::DB::Tag::RenameFailed,
+        "Rename tag fails if old and new name are identical";
+}
+
+transactionally {
+    throws-like { $ws.rename-tag($user, '03MyTestTag', '04MyTestTag') },
+        X::Agrammon::DB::Tag::RenameFailed,
+        "Rename tag fails if old tag name doesn't exist";
 }
 
 subtest "Get model data" => {

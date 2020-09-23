@@ -1007,7 +1007,6 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
             this.__tagToolBar.add(this.__btnNew);
             this.__tagToolBar.add(this.__btnDel);
             this.__btnRename.addListener("execute", function(e) {
-//                this.debug('TagTable.__btnRename()');
                 var dialog;
                 var okFunction = qx.lang.Function.bind(function(self) {
                     var tag_new = self.nameField.getValue();
@@ -1032,46 +1031,29 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                     var data = table.getSelectionModel().getSelectedRanges();
                     var row = data[0]['minIndex'];
                     var tm = table.getTableModel();
-//                    var len=tm.getRowCount(1);
                     var tag_old = tm.getValue(0, row, 1);
 
-//data = tm.getData();
-//this.debug('len='+len+', data='+data);
-//            this.__availableTagsTable.getSelectionModel().removeListener("changeSelection",
-//                                                           this.__availableTagsSelected_func, this);
-
-//                    this.debug('renameCommand: row='+row+', ' + tag_old + ' -> ' + tag_new);
-// if (this.__totalTagsSelected(this.__activeTagsTable)) {
-
-
                     tm.setValue(0, row, tag_new, 1);
-//                    tm.updateView(1);
-//     data = tm.getData();len=tm.getRowCount(1);
-//     this.debug('len='+len+', data='+data);
-// }
-     this.__availableTagsTable.renameTag(tag_old, tag_new);
-//     len=tm.getRowCount(1);
-//     this.debug('len='+len+', data='+data);
-//            this.__availableTagsTable.getSelectionModel().addListener("changeSelection",
-//                                                           this.__availableTagsSelected_func, this);
-//                    alert('Renaming tag');
+
+                    this.__availableTagsTable.renameTag(tag_old, tag_new);
                     this.__datasetTable.renameTag(tag_old, tag_new);
-                    this.__rpc.callAsync( qx.lang.Function.bind(this.__rename_tag_func,this),
-                                        'rename_tag',
-			                            { tag_old: tag_old,
-                                          tag_new: tag_new
-                                        }
+                    this.__rpc.callAsync(
+                        qx.lang.Function.bind(this.__rename_tag_func,this),
+                        'rename_tag',
+                        {
+                            oldName: tag_old,
+                            newName: tag_new
+                        }
     			    );
                     self.close();
                 }, this);
-                dialog =
-                    new agrammon.ui.dialog.Dialog(this.tr("Rename tag"),
-                                           this.tr("New tag name"),
-                                           okFunction, this);
-//            this.close();
-            }, this);
+                dialog = new agrammon.ui.dialog.Dialog(
+                        this.tr("Rename tag"),
+                        this.tr("New tag name"),
+                        okFunction, this);
+                }, this);
 
-            this.__btnNew.addListener("execute", function(e) {
+                this.__btnNew.addListener("execute", function(e) {
 //                this.debug('TagTable.__btnNew()');
                 var dialog;
                 var okFunction = qx.lang.Function.bind(function(self) {
@@ -1137,7 +1119,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         this.__activeTagsTable.delTag(tags[tag]);
 // 	                    this.debug('Deleting tag='+tags[tag]);
                         this.__rpc.callAsync( qx.lang.Function.bind(this.__delete_tag_func,this),
-                                              'delete_tag', tags[tag] 
+                                              'delete_tag', tags[tag]
    			                                );
      	            }
                     self.close();
