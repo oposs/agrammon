@@ -57,14 +57,11 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             # old and new name are identical
             die X::Agrammon::DB::Dataset::RenameFailed.new(:dataset-name($new), :old-name($!name), :new-name($new)) if $new eq $!name;
 
-            note "Rename $!name -> $new for user " ~ $!user.id;
             my $ret = $db.query(q:to/SQL/, $new, $!name, $!user.id);
                 UPDATE dataset SET dataset_name = $1
                  WHERE dataset_name = $2 AND dataset_pers = $3
                 RETURNING dataset_name
             SQL
-            note "rows=" ~ $ret.rows;
-            note "value=" ~ $ret.value if $ret.rows;
             # new dataset name already exists
             CATCH {
                 when /unique/ {

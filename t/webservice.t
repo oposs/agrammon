@@ -211,31 +211,21 @@ transactionally {
 }
 
 transactionally {
-
-    @($ws.get-datasets($user, 'SingleSHL')).sort.map: *[0].note;
-
     throws-like { $ws.rename-dataset($user, 'TestSingle', 'Agrammon6Testing') },
         X::Agrammon::DB::Dataset::AlreadyExists,
         "Rename dataset fails for existing new dataset name";
-
-
 }
-    @($ws.get-datasets($user, 'SingleSHL')).sort.map: *[0].note;
 
 transactionally {
-
     throws-like { $ws.rename-dataset($user, 'TestSingle', 'TestSingle') },
         X::Agrammon::DB::Dataset::RenameFailed,
         "Rename dataset fails if old and new name are identical";
-
 }
 
 transactionally {
-
     throws-like { $ws.rename-dataset($user, 'NoDataset', 'NewDataset') },
         X::Agrammon::DB::Dataset::RenameFailed,
         "Rename dataset fails if old dataset name doesn't exist";
-
 }
 
 subtest "Get model data" => {
@@ -258,14 +248,12 @@ subtest "Get model data" => {
                 next unless $var ~~ /'::dairy_cows'/;
                 is-deeply $input.keys.sort, qw|branch defaults enum gui help labels models options optionsLang order type units validator variable|,
                           "$var has expected keys";
-                if $var ~~ /'::dairy_cows'/ {
-                    # dd $input;
-                    subtest "$var" => {
+                # dd $input;
+                subtest "$var" => {
 # TODO: needs fixing
-#                        is $input<branch>, 'true', 'branch is true';
-                        is-deeply $input<defaults>, %( calc => Any, gui => Any);
-                        is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
-                    }
+#                    is $input<branch>, 'true', 'branch is true';
+                    is-deeply $input<defaults>, %( calc => Any, gui => Any);
+                    is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
                 }
             }
         }
