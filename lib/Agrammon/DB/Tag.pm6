@@ -19,11 +19,11 @@ class X::Agrammon::DB::Tag::RenameFailed is Exception {
     }
 }
 
-#| Error when tag couldn't be created.
-class X::Agrammon::DB::Tag::CreateFailed is Exception {
+#| Error when tag couldn't be deleted.
+class X::Agrammon::DB::Tag::DeleteFailed is Exception {
     has Str $.name is required;
     method message {
-        "Tag '$!name' couldn't be created."
+        "Tag '$!name' couldn't be deleted."
     }
 }
 
@@ -85,12 +85,15 @@ class Agrammon::DB::Tag does Agrammon::DB {
 
    method delete {
         self.with-db: -> $db {
-            $db.query(q:to/TAG/, $!id);
+            my $ret = $db.query(q:to/TAG/, $!id);
                 DELETE FROM tag
                  WHERE tag_id = $1
+                RETURNING tag_id
             TAG
+
+            # delete failed
+            die X::Agrammon::DB::Tag::DeleteFailed.new( :$!name ) unless $ret.rows;
         }
-        return $!name;
     }
 
     method lookup {

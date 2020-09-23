@@ -949,13 +949,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
 	  * @lint ignoreDeprecated(alert)
           */
          __delete_tag_func: function(data,exc,id) {
-            if (exc == null) {
-                console.log('__delete_tag_func(): data=', data);
-//	            this.debug(data+' tags deleted.');
-//                qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', this.__info.getUserName());
-	        }
-            else {
-                alert(exc);
+            if (exc != null) {
+                alert(exc + ': ' + data.error);
             }
         },
 

@@ -80,12 +80,12 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
-        operation 'createTag', -> LoggedIn $user {
+        operation 'deleteTag', -> LoggedIn $user {
             request-body -> ( :$name ) {
-                $ws.create-tag($user, $name);
+                $ws.delete-tag($user, $name);
                 CATCH {
                     note "$_";
-                    when X::Agrammon::DB::Tag::AlreadyExists | X::Agrammon::DB::Tag::CreateFailed {
+                    when X::Agrammon::DB::Tag::DeleteFailed {
                         conflict 'application/json', %(
                             error => .message
                         );
@@ -219,14 +219,13 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # working
-        post -> LoggedIn $user, 'delete_tag' {
+        # test
+        post -> LoggedIn $user, 'new_tag' {
             request-body -> (:$name!) {
-                my $deleted-name = $ws.delete-tag($user, $name);
-                content 'application/json', %( :name($deleted-name) );
+                my $data = $ws.create-tag($user, $name);
+                content 'application/json', $data;
             }
         }
-
     }
 }
 

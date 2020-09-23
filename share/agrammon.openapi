@@ -22,27 +22,21 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-    /create_tag:
+    /delete_tag:
         post:
-            summary: Create new dataset tag
-            operationId: createTag
+            summary: Delete a dataset tag
+            operationId: deleteTag
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            type: object
-                            required:
-                                - name
-                            properties:
-                                name:
-                                    description: Tag name
-                                    type: string
+                            $ref: "#/components/schemas/Delete"
             responses:
                 '204':
-                    description: Tag created.
+                    description: Tag deleted.
                 '409':
-                    description: Tag creation failed
+                    description: Delete failed
                     content:
                         application/json:
                             schema:
@@ -104,21 +98,13 @@ paths:
 
 components:
     schemas:
-        DeleteInstance:
+        Delete:
             type: object
             required:
-                 - datasetName
-                 - instance
-                 - variablePattern
+                 - name
             properties:
-                datasetName:
-                    description: Dataset name
-                    type: string
-                instance:
-                    description: Instance name
-                    type: string
-                variablePattern:
-                    description: Variable name
+                name:
+                    description: Object name
                     type: string
         Rename:
             type: object
