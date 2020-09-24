@@ -155,7 +155,7 @@ class Agrammon::Web::Service {
     }
 
     method store-input-comment(Agrammon::Web::SessionUser $user, :$dataset!, :$variable!, :$comment) {
-        return Agrammon::DB::Dataset.new(:$user, :name($dataset)).lookup.store-input-comment(:$variable, :$comment);
+        Agrammon::DB::Dataset.new(:$user, :name($dataset)).store-input-comment(:$variable, :$comment);
     }
 
     method delete-instance(Agrammon::Web::SessionUser $user, $dataset-name, $variable-pattern, $instance) {

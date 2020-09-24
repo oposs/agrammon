@@ -222,6 +222,38 @@ paths:
                         application/json:
                             schema:
                                $ref: "#/components/schemas/Error"
+    /store_input_comment:
+        post:
+            summary: Create new user account
+            operationId: storeInputComment
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasetName
+                                - variable
+                            properties:
+                                datasetName:
+                                    description: Dataset name
+                                    type: string
+                                variable:
+                                    description: Variable name
+                                    type: string
+                                comment:
+                                    description: Comment
+                                    type: string
+            responses:
+                '204':
+                    description: Instance renamed.
+                '500':
+                    description: Store comment failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
 components:
     schemas:

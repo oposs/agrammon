@@ -192,6 +192,18 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'storeInputComment', -> LoggedIn $user {
+            request-body -> ( :datasetName($dataset-name), :$variable, :$comment ) {
+                $ws.store-input-comment($user, $dataset-name, $variable, $comment);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::StoreInputCommentFailed {
+                        response.status = 500;
+                        content 'application/json', %( error => .message )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -363,16 +375,6 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # working
-        post -> LoggedIn $user, 'store_variable_comment' {
-            request-body -> %data {
-                my $ret = $ws.store-input-comment(
-                    $user,
-                    :dataset(%data<dataset>), :variable(%data<variable>), :comment(%data<comment>)
-                );
-                content 'application/json', %( :$ret );
-            }
-        }
 
         # test/implement
         post -> LoggedIn $user, 'load_branch_data' {
