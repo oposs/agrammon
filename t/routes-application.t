@@ -112,7 +112,19 @@ subtest 'Store variable comment' => {
     }
 }
 
-subtest 'Delete instance' => {
+subtest 'Delete data' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/delete_data', {
+            test post(json => { :name('x') }),
+                status => 200,
+                json   => { deleted => 1 },
+        };
+        check-mock $fake-store,
+            *.called('delete-data', times => 1);
+    }
+}
+
+subtest 'Delete instance' => {A
     test-service routes($fake-store), :$fake-auth, {
         test-given '/delete_instance', {
             test post(json => { :datasetName('Dataset'), :variablePattern('x'), :instance('MK') }),

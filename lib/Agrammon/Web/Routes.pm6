@@ -335,6 +335,14 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         # test/implement
+        post -> LoggedIn $user, 'delete_data' {
+            request-body -> %data {
+                my $ret = $ws.delete-data($user, %data);
+                content 'application/json', $ret;
+            }
+        }
+
+        # test/implement
         post -> LoggedIn $user, 'load_branch_data' {
             request-body -> (:$name!) {
                 my $data = $ws.load-branch-data($user, $name);
