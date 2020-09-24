@@ -283,10 +283,14 @@ paths:
                                     type: integer
                                 branches:
                                     description: Branches
-#                                    type: integer
+                                    type: array
+                                    items:
+                                        type: string
                                 options:
                                     description: Options
-#                                    type: integer
+                                    type: array
+                                    items:
+                                        type: string
             responses:
                 '204':
                     description: Instance renamed.
