@@ -47,6 +47,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /delete_tag:
+        post:
+            summary: Delete a dataset tag
+            operationId: deleteTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Delete"
+            responses:
+                '204':
+                    description: Tag deleted.
+                '409':
+                    description: Delete failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
     /rename_tag:
         post:
             summary: Rename a dataset tag
@@ -119,6 +138,14 @@ components:
                     type: string
                 variablePattern:
                     description: Variable name
+                    type: string
+        Delete:
+            type: object
+            required:
+                 - name
+            properties:
+                name:
+                    description: Object name
                     type: string
         Rename:
             type: object

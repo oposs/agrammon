@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 35;
+plan 33;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -118,7 +118,8 @@ transactionally {
     }
 
     subtest "delete-tag" => {
-        ok my $tag = $ws.delete-tag($user, 'MyNewTestTag'), "Delete tag";
+        ok $ws.create-tag($user, "07TestTag"), "Create tag";
+        lives-ok { $ws.delete-tag($user, '07TestTag') }, "Delete tag";
     }
 
     subtest "store-dataset-comment" => {
@@ -234,52 +235,10 @@ transactionally {
         "Rename tag fails if old tag name doesn't exist";
 }
 
-# TODO: needs create-instance first
-# transactionally {
-#     throws-like {
-#         $ws.rename-instance(
-#                 $user, 'TestSingle',
-#                 'Stall Milchkühe', 'MKühe',
-#                 'Livestock::DairyCow[]'
-#             )
-#         },
-#         X::Agrammon::DB::Dataset::InstanceAlreadyExists,
-#         "Rename instance fails for existing instance name";
-# }
-
 transactionally {
-    throws-like {
-        $ws.rename-instance(
-                $user, 'TestSingle',
-                'Stall Milchkühe', 'Stall Milchkühe',
-                'Livestock::DairyCow[]'
-            )
-        },
-        X::Agrammon::DB::Dataset::InstanceRenameFailed,
-        "Rename instance fails if old and new instance name are identical";
-}
-
-transactionally {
-    throws-like {
-        $ws.rename-instance(
-                $user, 'TestSingle',
-                'Stall Milchkühe X', 'MKühe',
-                'Livestock::DairyCow[]'
-            )
-        },
-        X::Agrammon::DB::Dataset::InstanceRenameFailed,
-        "Rename instance fails if old instance name doesn't exist";
-}
-
-transactionally {
-    throws-like { $ws.delete-instance(
-            $user,
-            'MyNewTestDataset',
-            'Livestock::DairyCow[]',
-            'MKX'
-        ) },
-        X::Agrammon::DB::Dataset::InstanceDeleteFailed,
-        "Delete instance tag fails if instance doesn't exist";
+    throws-like { $ws.delete-tag($user, 'NoTag') },
+        X::Agrammon::DB::Tag::DeleteFailed,
+        "Delete tag fails if tag name doesn't exist";
 }
 
 subtest "Get model data" => {
