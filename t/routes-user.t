@@ -62,10 +62,15 @@ subtest 'Create account' => {
         test-given '/create_account', {
             test post(json => { :email('foo@bar.com'), :password('xyz'), :role('user') }),
                 status => 200,
-                json   => { :username('foo@bar.com') },
+                json   => { :username('foo@bar.com') };
+            test post(json => { :email('foo2@bar.com'), :password('xyz'), :role('admin') }),
+                status => 200,
+                json   => { :username('foo2@bar.com') };
+            test post(json => { :email('foo3@bar.com'), :password('xyz'), :role('unknown') }),
+                status => 400;
         };
         check-mock $fake-store,
-            *.called('create-account', times => 1);
+            *.called('create-account', times => 2);
     }
 }
 

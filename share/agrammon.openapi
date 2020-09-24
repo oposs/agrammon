@@ -38,6 +38,9 @@ paths:
                                 role:
                                     description: User role
                                     type: string
+                                    enum:
+                                        - admin
+                                        - user
             responses:
                 '200':
                     description: Account created.
