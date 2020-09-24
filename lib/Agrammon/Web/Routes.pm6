@@ -2,7 +2,7 @@ use v6;
 
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
-
+use Agrammon::DB::User;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 
@@ -66,6 +66,37 @@ sub static-content($root) {
 
 sub api-routes (Str $schema, $ws) {
     openapi $schema.IO, {
+        # working
+        operation 'createAccount', -> LoggedIn $user {
+            request-body -> (:$email!, :$password!, :$key, :$firstname, :$lastname, :$org, :$role) {
+                my $username = $ws.create-account($user, $email, $password, $key, $firstname, $lastname, $org, $role);
+                content 'application/json', { :$username };
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::User::CreateFailed  {
+                        not-found 'application/json', %(
+                            error => .message
+                        );
+                    }
+                    when X::Agrammon::DB::User::AlreadyExists
+                       | X::Agrammon::DB::User::CreateFailed  {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                    when X::Agrammon::DB::User::NoUsername {
+                        bad-request 'application/json', %(
+                            error => .message
+                        );
+                    }
+                    when X::Agrammon::DB::User::UnknownRole  {
+                        response.status = 422;
+                        response.append-header('Content-type', 'application/json');
+                        response.set-body(to-json { :error(.message) });
+                    }
+                }
+            }
+        }
         # working
         operation 'renameDataset', -> LoggedIn $user {
             request-body -> ( :oldName($old-name), :newName($new-name) ) {
@@ -254,13 +285,6 @@ sub user-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
-        post -> LoggedIn $user, 'create_account' {
-            request-body -> %user-data {
-                my $data = $ws.create-account($user, %user-data);
-                content 'application/json', $data;
-            }
-        }
     }
 }
 

@@ -19,7 +19,7 @@ qx.Class.define('agrammon.module.user.Account', {
      construct: function (title, username, action) {
         this.base(arguments);
         var that = this;
-        this.set({ layout:new qx.ui.layout.VBox(10), 
+        this.set({ layout:new qx.ui.layout.VBox(10),
                    width: 200, modal: true,
                    showClose: false, showMinimize: false, showMaximize: false,
                    caption: title
@@ -171,6 +171,7 @@ qx.Class.define('agrammon.module.user.Account', {
         }, this);
 
         var createAccountHandler = function(data,exc,id) {
+            console.log('createAccountHandler(): data=', data)
             if (exc == null) {
                 that.debug('createAccountHandler(): '+data);
                 if (adminCreate) {
@@ -258,13 +259,21 @@ qx.Class.define('agrammon.module.user.Account', {
                  action = 'create_account';
             }
             this.debug('rpc call '+action);
-            this.__rpc.callAsync( createAccountHandler,
-                                  action,
-                                  { email:    username,
-                                    password: password,
-                                    key:      ''
-                                  }
-                                );
+            var firstName   = this.firstName.getValue();
+            var lastName    = this.lastName.getValue();
+            var org         = this.organisation.getValue();
+            this.__rpc.callAsync(
+                createAccountHandler,
+                action,
+                {
+                    email:    username,
+                    password: password,
+                    key:      '',
+                    firstname: firstName,
+                    lastname:  lastName,
+                    org:       org
+            }
+            );
             if (!passwordReset) {
                 this.firstName.exclude();
                 this.lastName.exclude();
@@ -302,16 +311,17 @@ qx.Class.define('agrammon.module.user.Account', {
                 var firstName   = this.firstName.getValue();
                 var lastName    = this.lastName.getValue();
                 var org         = this.organisation.getValue();
-                this.__rpc.callAsync( activateAccountHandler,
-                                    'create_account',
-                                    { email:     username,
-                                      password:  password,
-                                      key:       key,
-                                      firstname: firstName,
-                                      lastname:  lastName,
-                                      org:       org
-                                    }
-                                  );
+                this.__rpc.callAsync(
+                    activateAccountHandler,
+                    'create_account',
+                    { email:     username,
+                        password:  password,
+                        key:       key,
+                        firstname: firstName,
+                        lastname:  lastName,
+                        org:       org
+                    }
+                );
                 // this.firstName.destroy();
                 // this.lastName.destroy();
                 // this.organisation.destroy();
