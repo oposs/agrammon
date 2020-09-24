@@ -6,7 +6,7 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 11;
+plan 12;
 
 # routing tests related to application logic
 
@@ -26,7 +26,6 @@ my $fake-store = mocked(Agrammon::Web::Service,
         get-input-variables  =>  %( :x(1), :y(2) ),
         get-output-variables =>  %( :x(1), :y(2) ),
         load-branch-data => ( 1, 2 ),
-        store-input-comment => 1,
     },
     overriding => {
         delete-instance => -> $user, $dataset-name, $instance, $pattern {
@@ -38,6 +37,8 @@ my $fake-store = mocked(Agrammon::Web::Service,
         },
         store-branch-data => -> $user, %data, $dataset-name {
             %( stored => 1 )
+        },
+        store-input-comment => -> $user, $dataset-name, $variable, $comment {
         },
         store-data => -> $user, $dataset, $variable, $value, @branches?, @options?, $row? {
         },
@@ -113,7 +114,6 @@ subtest 'Store data (regional)' => {
     }
 }
 
-done-testing; exit;
 subtest 'Store variable comment' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_input_comment', {

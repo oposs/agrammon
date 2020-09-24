@@ -46,6 +46,15 @@ class X::Agrammon::DB::Dataset::InstanceRenameFailed is Exception {
     }
 }
 
+#| Error when instance couldn't be renamed.
+class X::Agrammon::DB::Dataset::StoreInputCommentFailed is Exception {
+    has Str $.comment is required;
+    has Str $.variable is required;
+    method message {
+        "Couldn't save comment '$!comment' for variable '$!variable'."
+    }
+}
+
 #| Error when data couldn't be saved.
 class X::Agrammon::DB::Dataset::StoreDataFailed is Exception {
     has Str $.variable is required;

@@ -201,6 +201,18 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'storeInputComment', -> LoggedIn $user {
+            request-body -> ( :datasetName($dataset-name), :$variable, :$comment ) {
+                $ws.store-input-comment($user, $dataset-name, $variable, $comment);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::StoreInputCommentFailed {
+                        response.status = 500;
+                        content 'application/json', %( error => .message )
+                    }
+                }
+            }
+        }
         operation 'storeData', -> LoggedIn $user {
             request-body -> ( :datasetName($dataset-name), :$variable, :$value, :@branches, :@options , :$row) {
                 $ws.store-data(
@@ -378,29 +390,6 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         ### data
-<<<<<<< HEAD
-        # implement branches
-        post -> LoggedIn $user, 'store_data' {
-            request-body -> %data {
-                my $ret = $ws.store-data(
-                    $user,
-                    :dataset(%data<dataset_name>), :var(%data<data_var>), :value(%data<data_val>),
-                    :branches(%data<branches>), :options(%data<options>)
-                );
-                content 'application/json', %( :$ret );
-            }
-        }
-
-=======
-        # working
-        post -> LoggedIn $user, 'store_variable_comment' {
-            request-body -> (:dataset($dataset-name)!, :$variable!, :$comment) {
-                my $ret = $ws.store-input-comment($user, $dataset-name, $variable, $comment);
-                content 'application/json', %( :stored($ret) );
-            }
-        }
->>>>>>> Remove unused return value, add exception handler and OpenAPI validation
-
         # test/implement
         post -> LoggedIn $user, 'load_branch_data' {
             request-body -> (:$name!) {
