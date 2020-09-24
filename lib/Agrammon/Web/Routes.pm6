@@ -112,6 +112,13 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Dataset::InstanceAlreadyExists | X::Agrammon::DB::Dataset::InstanceRenameFailed {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                }
+            }
+        }
         operation 'deleteInstance', -> LoggedIn $user {
             request-body -> ( :datasetName($dataset-name), :$instance, :variablePattern($variable-pattern) ) {
                 $ws.delete-instance($user, $dataset-name, $variable-pattern, $instance);

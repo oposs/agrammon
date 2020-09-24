@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 34;
+plan 33;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';

@@ -29,17 +29,20 @@ class X::Agrammon::DB::Dataset::InstanceAlreadyExists is Exception {
     }
 }
 
+#| Error when instance couldn't be deleted.
+class X::Agrammon::DB::Dataset::InstanceDeleteFailed is Exception {
+    has Str $.instance is required;
+    method message {
+        "Instance '$!instance' couldn't be deleted."
+    }
+}
+
 #| Error when instance couldn't be renamed.
 class X::Agrammon::DB::Dataset::InstanceRenameFailed is Exception {
     has Str $.old-name is required;
     has Str $.new-name is required;
     method message {
         "Dataset '$!old-name' couldn't be renamed to '$!new-name'."
-#| Error when instance couldn't be deleted.
-class X::Agrammon::DB::Dataset::InstanceDeleteFailed is Exception {
-    has Str $.instance is required;
-    method message {
-        "Instance '$!instance' couldn't be deleted."
     }
 }
 
