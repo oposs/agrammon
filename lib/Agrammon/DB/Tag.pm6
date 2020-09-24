@@ -93,9 +93,10 @@ class Agrammon::DB::Tag does Agrammon::DB {
 
    method delete {
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/TAG/, $!id);
+            my $ret = $db.query(q:to/TAG/, $!name, $!user.username);
                 DELETE FROM tag
-                 WHERE tag_id = $1
+                 WHERE tag_name = $1
+                   AND tag_pers = (SELECT pers_id FROM pers WHERE pers_email = $2)
                 RETURNING tag_id
             TAG
 

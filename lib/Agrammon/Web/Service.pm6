@@ -82,7 +82,7 @@ class Agrammon::Web::Service {
     }
 
     method delete-tag(Agrammon::Web::SessionUser $user, Str $name) {
-        Agrammon::DB::Tag.new(:$user, :$name).lookup.delete;
+        Agrammon::DB::Tag.new(:$user, :$name).delete;
     }
 
     method rename-tag(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
