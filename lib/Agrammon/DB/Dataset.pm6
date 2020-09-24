@@ -296,7 +296,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                          !! self!store-input-comment($variable, $comment);
     }
 
-    method !store-variable($variable, $value) {
+    method !store-variable($variable, $value --> Nil) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
@@ -319,7 +319,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method !store-instance-variable($variable, $instance, $value) {
+    method !store-instance-variable($variable, $instance, $value --> Nil) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
@@ -342,7 +342,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method store-input($var-name, $value) {
+    method store-input($var-name, $value --> Nil) {
         my $instance;
 
         my $var = $var-name;
@@ -350,8 +350,8 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $instance = $0;
         }
 
-        return $instance ?? self!store-instance-variable($var, $instance, $value)
-                         !! self!store-variable($var, $value);
+        $instance ?? self!store-instance-variable($var, $instance, $value)
+                  !! self!store-variable($var, $value);
     }
 
     method !delete-variable($var) {

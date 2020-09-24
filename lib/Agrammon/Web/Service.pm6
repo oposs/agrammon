@@ -135,7 +135,7 @@ class Agrammon::Web::Service {
         return $user.reset-password($email, $password, $key);
     }
 
-    method store-data(Agrammon::Web::SessionUser $user, $dataset-name, $variable, $value, @branches?, @options?, $row?) {
+    method store-data(Agrammon::Web::SessionUser $user, $dataset-name, $variable, $value, @branches?, @options?, $row? --> Nil) {
         # TODO: not sure where row is needed; implement branches
 
         my $ds = Agrammon::DB::Dataset.new(:$user, :name($dataset-name));
