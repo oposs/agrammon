@@ -9,7 +9,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 34;
+plan 35;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -167,24 +167,13 @@ transactionally {
         ok $ws.store-data($user, %data), "Instance input stored";
     }
 
-    # TODO: replace with deletion of real data and check for deleted rows
-    subtest "delete-data" => {
-        my %data = %(
-            :dataset_name('MyNewTestDataset'),
-            :pattern('PlantProduction::AgriculturalArea::agricultural_area'), # var name
-        );
-        lives-ok { $ws.delete-data($user, %data) }, "Simple input deleted";
-        todo "Needs deletion of existing data", 1;
-        ok $ws.delete-data($user, %data), "Simple input deleted";
-
-        %data = %(
-            :dataset_name('MyNewTestDataset'),
-            :pattern('Livestock::DairyCow[MK]::Excretion::dairy_cows'), # var name
-            :instance('MK'),
-        );
-        lives-ok { $ws.delete-data($user, %data) }, "Instance input deleted";
-        todo "Needs deletion of existing data", 1;
-        ok $ws.delete-data($user, %data), "Instance input deleted";
+    subtest "delete-instance" => {
+        lives-ok { $ws.delete-instance(
+            $user,
+            'MyNewTestDataset',
+            'Livestock::DairyCow[]',
+            'MK'
+        ) }, "Instance deleted";
     }
 
     subtest "reset-password" => {
@@ -280,6 +269,17 @@ transactionally {
         },
         X::Agrammon::DB::Dataset::InstanceRenameFailed,
         "Rename instance fails if old instance name doesn't exist";
+}
+
+transactionally {
+    throws-like { $ws.delete-instance(
+            $user,
+            'MyNewTestDataset',
+            'Livestock::DairyCow[]',
+            'MKX'
+        ) },
+        X::Agrammon::DB::Dataset::InstanceDeleteFailed,
+        "Delete instance tag fails if instance doesn't exist";
 }
 
 subtest "Get model data" => {

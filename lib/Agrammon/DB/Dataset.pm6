@@ -29,6 +29,14 @@ class X::Agrammon::DB::Dataset::InstanceAlreadyExists is Exception {
     }
 }
 
+#| Error when instance couldn't be deleted.
+class X::Agrammon::DB::Dataset::InstanceDeleteFailed is Exception {
+    has Str $.instance is required;
+    method message {
+        "Instance '$!instance' couldn't be deleted."
+    }
+}
+
 #| Error when instance couldn't be renamed.
 class X::Agrammon::DB::Dataset::InstanceRenameFailed is Exception {
     has Str $.old-name is required;
@@ -360,33 +368,20 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method !delete-instance-variable($var, $instance) {
-
-        return unless $var and $instance;
+    method delete-instance($variable-pattern, $instance) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $username, $!name, $var, $instance);
-            DELETE FROM data_new
-             WHERE data_dataset=dataset_name2id($1,$2) AND data_var=$3
-                                                       AND data_instance = $4
-            RETURNING data_val
+            my $ret = $db.query(q:to/SQL/, $username, $!name, $variable-pattern ~ '%', $instance);
+                DELETE FROM data_new
+                 WHERE data_dataset=dataset_name2id($1,$2) AND data_var LIKE $3
+                                                           AND data_instance = $4
+                RETURNING data_val
             SQL
 
-            my $rows = $ret.rows;
-            return $rows if $rows;
+            # update failed
+            die X::Agrammon::DB::Dataset::InstanceDeleteFailed.new(:$instance) unless $ret.rows;
         }
-    }
-
-    method delete-input($var-name) {
-        my $instance;
-        my $var = $var-name;
-        if $var ~~ s/\[(.+)\]/[]/ {
-            $instance = $0;
-        }
-
-        return $instance ?? self!delete-instance-variable($var, $instance)
-                         !! self!delete-variable($var);
     }
 
     method rename-instance($old-name, $new-name, $pattern) {

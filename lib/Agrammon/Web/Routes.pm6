@@ -119,6 +119,19 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'deleteInstance', -> LoggedIn $user {
+            request-body -> ( :datasetName($dataset-name), :$instance, :variablePattern($variable-pattern) ) {
+                $ws.delete-instance($user, $dataset-name, $variable-pattern, $instance);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::InstanceDeleteFailed {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -305,7 +318,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         ### data
-        # test
+        # working
         post -> LoggedIn $user, 'store_data' {
             request-body -> %data {
                 my $ret = $ws.store-data($user, %data);
@@ -318,14 +331,6 @@ sub application-routes(Agrammon::Web::Service $ws) {
             request-body -> (:dataset($dataset-name)!, :$variable!, :$comment) {
                 my $ret = $ws.store-input-comment($user, $dataset-name, $variable, $comment);
                 content 'application/json', %( :stored($ret) );
-            }
-        }
-
-        # test/implement
-        post -> LoggedIn $user, 'delete_data' {
-            request-body -> %data {
-                my $ret = $ws.delete-data($user, %data);
-                content 'application/json', $ret;
             }
         }
 

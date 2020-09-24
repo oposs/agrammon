@@ -66,6 +66,22 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /delete_instance:
+        post:
+            summary: Delete an instance
+            operationId: deleteInstance
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/DeleteInstance"
+            responses:
+                '204':
+                    description: Instance renamed.
+                '409':
+                    description: Rename failed
+                            $ref: "#/components/schemas/Error"
     /rename_instance:
         post:
             summary: Rename an instance
@@ -88,6 +104,22 @@ paths:
 
 components:
     schemas:
+        DeleteInstance:
+            type: object
+            required:
+                 - datasetName
+                 - instance
+                 - variablePattern
+            properties:
+                datasetName:
+                    description: Dataset name
+                    type: string
+                instance:
+                    description: Instance name
+                    type: string
+                variablePattern:
+                    description: Variable name
+                    type: string
         Rename:
             type: object
             required:
