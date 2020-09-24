@@ -89,7 +89,7 @@ sub api-routes (Str $schema, $ws) {
                             error => .message
                         );
                     }
-                    when X::Agrammon::DB::User::NoUsername | X::Agrammon::DB::User::UnknownRole  {
+                    when X::Agrammon::DB::User::UnknownRole  {
                         response.status = 422;
                         response.append-header('Content-type', 'application/json');
                         response.set-body(to-json { :error(.message) });
