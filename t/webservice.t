@@ -169,14 +169,15 @@ transactionally {
 
     subtest "store-data" => {
         my $dataset = 'MyNewTestDataset';
-        my $var = 'PlantProduction::AgriculturalArea::agricultural_area';
+        my $variable = 'PlantProduction::AgriculturalArea::agricultural_area';
         my $value = 42;
-        ok $ws.store-data($user,  :$dataset, :$var, :$value), "Simple input stored";
+        my $row   = 1;
+        lives-ok { $ws.store-data($user,  $dataset, $variable, $value) }, "Simple input stored";
 
-        $var = 'Livestock::DairyCow[MK]::Excretion::dairy_cows';
+        $variable = 'Livestock::DairyCow[MK]::Excretion::dairy_cows';
         my @branches;
         my @options;
-        ok $ws.store-data($user, :$dataset, :$var, :$value, :@branches, :@options), "Instance input stored";
+        lives-ok { $ws.store-data($user, $dataset, $variable, $value, @branches, @options, $row) }, "Instance input stored";
     }
 
     subtest "delete-instance" => {

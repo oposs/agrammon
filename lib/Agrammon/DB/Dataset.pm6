@@ -46,12 +46,11 @@ class X::Agrammon::DB::Dataset::InstanceRenameFailed is Exception {
     }
 }
 
-#| Error when instance couldn't be renamed.
-class X::Agrammon::DB::Dataset::StoreInputCommentFailed is Exception {
-    has Str $.comment is required;
+#| Error when data couldn't be saved.
+class X::Agrammon::DB::Dataset::StoreDataFailed is Exception {
     has Str $.variable is required;
     method message {
-        "Couldn't save comment '$!comment' for variable '$!variable'."
+        "Data for variable '$!variable' couldn't be saved."
     }
 }
 
@@ -288,55 +287,49 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                          !! self!store-input-comment($variable, $comment);
     }
 
-    method !store-variable($var, $value) {
-
-        return unless $var and $value.defined;
+    method !store-variable($variable, $value) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var);
-            UPDATE data_new SET data_val = $1
-             WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
-                                                       AND data_instance IS NULL
-            RETURNING data_val
+            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable);
+                UPDATE data_new SET data_val = $1
+                 WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
+                                                           AND data_instance IS NULL
+                RETURNING data_val
             SQL
 
-            my $rows = $ret.rows;
-            return $rows if $rows;
+            return if $ret.rows;
 
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var);
-            INSERT INTO data_new (data_dataset, data_var, data_val)
-            VALUES (dataset_name2id($2,$3),$4,$1)
-            RETURNING data_val
+            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable);
+                INSERT INTO data_new (data_dataset, data_var, data_val)
+                     VALUES          (dataset_name2id($2,$3), $4, $1)
+                RETURNING data_val
             SQL
-            $rows = $ret.rows;
-            return $rows if $rows;
+
+            die X::Agrammon::DB::Dataset::StoreDataFailed.new($variable) unless $ret.rows;
         }
     }
 
-    method !store-instance-variable($var, $instance, $value) {
-
-        return unless $var and $value.defined and $instance;
+    method !store-instance-variable($variable, $instance, $value) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var, $instance);
-            UPDATE data_new SET data_val = $1
-             WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
-                                                       AND data_instance = $5
-            RETURNING data_comment
+            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable, $instance);
+                UPDATE data_new SET data_val = $1
+                 WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
+                                                           AND data_instance = $5
+                RETURNING data_comment
             SQL
 
-            my $rows = $ret.rows;
-            return $rows if $rows;
+            return if $ret.rows;
 
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $var, $instance);
-            INSERT INTO data_new (data_dataset, data_var, data_val, data_instance)
-            VALUES (dataset_name2id($2,$3),$4,$1,$5)
-            RETURNING data_comment
+            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable, $instance);
+                INSERT INTO data_new (data_dataset, data_var, data_val, data_instance)
+                     VALUES (dataset_name2id($2,$3), $4, $1, $5)
+                RETURNING data_comment
             SQL
-            $rows = $ret.rows;
-            return $rows if $rows;
+
+            die X::Agrammon::DB::Dataset::StoreDataFailed.new($variable) unless $ret.rows;
         }
     }
 

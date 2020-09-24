@@ -222,10 +222,10 @@ paths:
                         application/json:
                             schema:
                                $ref: "#/components/schemas/Error"
-    /store_input_comment:
+    /store_data:
         post:
             summary: Create new user account
-            operationId: storeInputComment
+            operationId: storeData
             requestBody:
                 required: true
                 content:
@@ -235,6 +235,7 @@ paths:
                             required:
                                 - datasetName
                                 - variable
+                                - value
                             properties:
                                 datasetName:
                                     description: Dataset name
@@ -242,9 +243,18 @@ paths:
                                 variable:
                                     description: Variable name
                                     type: string
-                                comment:
-                                    description: Comment
+                                value:
+                                    description: Value
                                     type: string
+                                row:
+                                    description: Row
+                                    type: integer
+                                branches:
+                                    description: Branches
+#                                    type: integer
+                                options:
+                                    description: Options
+#                                    type: integer
             responses:
                 '204':
                     description: Instance renamed.

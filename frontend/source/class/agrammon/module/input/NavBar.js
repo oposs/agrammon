@@ -689,12 +689,12 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     if (! rec.variable.match(/\[\]/)) {
                         // this.debug('Adding variable '+rec.variable+' = '+rec.value);
                         this.__rpc.callAsync(this.__store_data_func,
-                                             'store_data',
-                                             {
-                                               dataset_name: datasetName,
-                                               data_var:     rec.variable,
-                                               data_val:     rec.value
-                                             }
+                            'store_data',
+                            {
+                                datasetName: datasetName,
+                                variable:    rec.variable,
+                                value:       rec.value
+                            }
                         );
                     }
                 }
@@ -718,12 +718,8 @@ qx.Class.define('agrammon.module.input.NavBar', {
           * @lint ignoreDeprecated(alert)
           */
         __store_data_func: function(data, exc, id) {
-            if (exc == null) {
-//                var text = data;
-                //alert('_store_data_func():' + text);
-            }
-            else {
-                alert(exc);
+            if (exc != null) {
+                alert(exc + ': ' + data.error);
             }
 
          },

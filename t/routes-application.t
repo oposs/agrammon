@@ -25,8 +25,8 @@ my $fake-store = mocked(Agrammon::Web::Service,
         get-cfg =>  %( :title('Agrammon'), :version('SHL') ),
         get-input-variables  =>  %( :x(1), :y(2) ),
         get-output-variables =>  %( :x(1), :y(2) ),
-        store-data => 1,
-        load-branch-data => ( 1, 2 )
+        load-branch-data => ( 1, 2 ),
+        store-input-comment => 1,
     },
     overriding => {
         delete-instance => -> $user, $dataset-name, $instance, $pattern {
@@ -39,7 +39,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         store-branch-data => -> $user, %data, $dataset-name {
             %( stored => 1 )
         },
-        store-input-comment => -> $user, $dataset-name, $variable, $comment {
+        store-data => -> $user, $dataset, $variable, $value, @branches?, @options?, $row? {
         },
     }
 );
@@ -91,9 +91,8 @@ subtest 'Get output variables' => {
 subtest 'Store data' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_data', {
-            test post(json => { :dataset_name('DatasetA'), :data_var('x'), :data_val('1'), :data_row(1) }),
-            status => 200,
-            json   => { ret => 1 }
+            test post(json => { :datasetName('DatasetA'), :variable('x'), :value('1'), :row(1) }),
+            status => 204,
         };
         check-mock $fake-store,
             *.called('store-data', times => 1);
@@ -104,17 +103,17 @@ subtest 'Store data (regional)' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_data', {
             test post(json => {
-                :dataset_name('DatasetA'), :data_var('x'), :data_val('1'), :data_row(1),
+                :datasetName('DatasetA'), :variable('x'), :value('1'), :row(1),
                 :branches(@('a', 'b')), :options(@('x', 'y'))
              }),
-            status => 200,
-            json   => { ret => 1 }
+            status => 204,
         };
         check-mock $fake-store,
             *.called('store-data', times => 2);
     }
 }
 
+done-testing; exit;
 subtest 'Store variable comment' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_input_comment', {

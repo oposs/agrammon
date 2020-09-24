@@ -142,12 +142,8 @@ return;
 	  * @lint ignoreDeprecated(alert)
           */
         __store_data_func: function(data, exc, id) {
-            if (exc == null) {
-//                var text = data;
-                //alert('__store_data_func():' + text);
-            }
-            else {
-                alert(exc);
+            if (exc != null) {
+                alert(exc + ': ' + data.error);
             }
 
         },
@@ -162,14 +158,15 @@ return;
 //            this.debug('__storeData(): var/val = ' + varName + '/' + value);
             var datasetName = this.__info.getDatasetName();
 
-            this.__rpc.callAsync(this.__store_data_func,
-                                 'store_data',
-                                 {
-                                    dataset_name: datasetName,
-                                    data_var:     varName,
-                                    data_val:     value,
-                                    data_row:     -1
-                                 }
+            this.__rpc.callAsync(
+                this.__store_data_func,
+                'store_data',
+                {
+                    datasetName: datasetName,
+                    variable:    varName,
+                    value:       value,
+                    row:         -1
+                    }
             );
 
             return;
