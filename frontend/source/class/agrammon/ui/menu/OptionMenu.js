@@ -109,8 +109,7 @@ qx.Class.define('agrammon.ui.menu.OptionMenu', {
                     // this.debug('password: ' + oldPW + ' -> ' + newPW1);
                     this.__rpc.callAsync(
                         qx.lang.Function.bind(this.__changePassword, this),
-//                        'change_password', oldPW, newPW1
-                        'change_password', {old : oldPW, 'new' : newPW1}
+                        'change_password', {oldPassword : oldPW, newPassword : newPW1}
                     );
                 }
                 this.newPassword1.clearValue();

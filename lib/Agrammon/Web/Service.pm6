@@ -128,7 +128,7 @@ class Agrammon::Web::Service {
     }
 
     method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password) {
-        return $user.change-password($old-password, $new-password);
+        $user.change-password($old-password, $new-password);
     }
 
     method reset-password(Agrammon::Web::SessionUser $user, Str $email, Str $password, Str $key) {
