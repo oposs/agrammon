@@ -103,8 +103,11 @@ transactionally {
     }
 
     subtest "change-password" => {
-        ok $ws.change-password($user, "test12", "test34"), 'Password update sucessful';
-        nok $ws.change-password($user, "test12", "test34"), 'Password update failed';
+        lives-ok    { $ws.change-password($user, "test12", "test34") }, 'Password update sucessful';
+        throws-like {$ws.change-password($user, "test12", "test34") },
+            X::Agrammon::DB::User::InvalidPassword, 'Password invalid';
+        throws-like {$ws.change-password($user, "test34", "test34") },
+            X::Agrammon::DB::User::PasswordsIdentical, 'Passwords identical';
     }
 
     subtest "create-tag" => {

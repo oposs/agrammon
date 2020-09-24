@@ -25,7 +25,6 @@ my $fake-store = mocked(Agrammon::Web::Service,
             %( reset => 1 )
         },
         change-password => -> $user, $old-password, $new-password {
-            %( changed => 1 )
         },
         create-account => -> $user, $email, $password, $key, $firstname, $lastname, $org, $role {
             $email
@@ -49,8 +48,7 @@ subtest 'Change password' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/change_password', {
             test post(json => { :oldPassword('old'),  :newPassword('new') }),
-                status => 200,
-                json   => { changed => 1 },
+                status => 204,
         };
         check-mock $fake-store,
             *.called('change-password', times => 1);

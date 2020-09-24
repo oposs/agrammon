@@ -176,6 +176,23 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'changePassword', -> LoggedIn $user {
+            request-body -> (:oldPassword($old-password)!, :newPassword($new-password)!) {
+                $ws.change-password($user, $old-password, $new-password);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::User::PasswordsIdentical {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                    when X::Agrammon::DB::User::InvalidPassword {
+                        response.status = 422;
+                        content 'application/json', %( error => .message )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -268,14 +285,6 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
 
 sub user-routes(Agrammon::Web::Service $ws) {
     route {
-
-        # working
-        post -> LoggedIn $user, 'change_password' {
-            request-body -> (:oldPassword($old-password)!, :newPassword($new-password)!) {
-                my $data = $ws.change-password($user, $old-password, $new-password);
-                content 'application/json', $data;
-            }
-        }
 
         # implement/test
         post -> LoggedIn $user, 'reset_password' {

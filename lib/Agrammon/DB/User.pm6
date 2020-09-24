@@ -31,6 +31,18 @@ class X::Agrammon::DB::User::UnknownRole is Exception {
     }
 }
 
+class X::Agrammon::DB::User::InvalidPassword is Exception {
+    method message() {
+        "Invalid username or password";
+    }
+}
+
+class X::Agrammon::DB::User::PasswordsIdentical is Exception {
+    method message() {
+        "Old and new password must be different";
+    }
+}
+
 class Agrammon::DB::User does Agrammon::DB {
     has Int $.id;
     has Str $.username;
@@ -127,33 +139,28 @@ class Agrammon::DB::User does Agrammon::DB {
 
     method password-is-valid(Str $username, Str $password) {
         self.with-db: -> $db {
-            return $db.query(q:to/PERS/, $username, $password).value;
-            SELECT crypt($2, pers_password) = pers_password
+            return $db.query(q:to/SQL/, $username, $password).value;
+                SELECT crypt($2, pers_password) = pers_password
                   FROM pers
                  WHERE pers_email = $1
-            PERS
+            SQL
         }
     }
 
     method change-password($old, $new) {
         self.with-db: -> $db {
 
-           if self.password-is-valid($!username, $old) {
-                my $res = $db.query(q:to/PASSWORD/, $!username, $new);
-                    UPDATE pers
-                       SET pers_password = crypt($2, gen_salt('bf'))
-                     WHERE pers_email    = $1
-                PASSWORD
+            die X::Agrammon::DB::User::InvalidPassword.new    unless self.password-is-valid($!username, $old);
+            die X::Agrammon::DB::User::PasswordsIdentical.new if $old eq $new;
 
-                my $valid = self.password-is-valid($!username, $new);
-                if not $valid {
-                    warn 'PW update failed';
-                }
-                return $valid ?? %( :changed(1)) !! False;
-            }
-            else {
-                warn "Invalid old pw: $old";
-            }
+            my $ret = $db.query(q:to/SQL/, $!username, $new);
+                UPDATE pers
+                    SET pers_password = crypt($2, gen_salt('bf'))
+                    WHERE pers_email    = $1
+            SQL
+
+            die X::Agrammon::DB::User::InvalidPassword.new unless self.password-is-valid($!username, $new);
+
         }
         return False;
     }

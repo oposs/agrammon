@@ -77,6 +77,31 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Unknown"
+    /change_password:
+        post:
+            summary: Change user password
+            operationId: changePassword
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ChangePassword"
+            responses:
+                '204':
+                    description: Password changed.
+                '409':
+                    description: Rename failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                '422':
+                    description: Passwords identical
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
     /rename_dataset:
         post:
             summary: Rename a dataset
@@ -174,7 +199,10 @@ paths:
                     description: Instance renamed.
                 '409':
                     description: Rename failed
-                            $ref: "#/components/schemas/Error"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
     /rename_instance:
         post:
             summary: Rename an instance
@@ -193,7 +221,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                               $ref: "#/components/schemas/Error"
 
 components:
     schemas:
@@ -232,6 +260,18 @@ components:
                     type: string
                 newName:
                     description: New name
+                    type: string
+        ChangePassword:
+            type: object
+            required:
+                 - oldPassword
+                 - newPassword
+            properties:
+                oldPassword:
+                    description: Current password
+                    type: string
+                newPassword:
+                    description: New password
                     type: string
         BadRequest:
             required:
