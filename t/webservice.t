@@ -142,10 +142,10 @@ transactionally {
     }
 
     subtest "store-input-comment" => {
-        my $dataset-name = 'MyNewTestDataset';
-        my $var-name     = 'Application::Slurry::Csoft::appl_evening';
-        my $comment      = 'MyComment';
-        ok my $newComment = $ws.store-input-comment($user, $dataset-name, $var-name, $comment), "Store input comment";
+        my $dataset  = 'MyNewTestDataset';
+        my $variable = 'Application::Slurry::Csoft::appl_evening';
+        my $comment  = 'MyComment';
+        lives-ok { $ws.store-input-comment($user, :$dataset, :$variable, :$comment) }, "Store input comment";
     }
 
     subtest "load-dataset" => {

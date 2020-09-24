@@ -144,11 +144,8 @@ qx.Class.define('agrammon.ui.dialog.Comment', {
 	  * @lint ignoreDeprecated(alert)
           */
         _storeCommentFunc: function(data, exc, id) {
-            if (exc == null) {
-                this.debug('_storeCommentFunc():' + data);
-            }
-            else {
-                alert(exc);
+            if (exc != null) {
+                alert(exc + ': ' + data.error);
             }
             this.close();
         },

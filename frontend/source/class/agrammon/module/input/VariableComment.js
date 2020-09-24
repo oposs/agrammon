@@ -23,16 +23,14 @@ qx.Class.define('agrammon.module.input.VariableComment', {
         _storeComment: function(comment) {
             var variable = this._tableModel.getValue(0, this._commentRow);
             var dataset  = this._info.getDatasetName();
-            this.debug('_storeComment(): comment='+comment);
-            this.debug('_storeComment(): dataset='+dataset);
-            this.debug('_storeComment(): variable='+variable);
-            this._rpc.callAsync(qx.lang.Function.bind(this._storeCommentFunc,this),
-                               'store_variable_comment',
-                               {
-                                   dataset:    dataset,
-                                   comment:    comment,
-                                   variable:   variable
-                               }
+            this._rpc.callAsync(qx.lang.Function.bind(
+                this._storeCommentFunc,this),
+                'store_input_comment',
+                {
+                    datasetName:    dataset,
+                    comment:    comment,
+                    variable:   variable
+                }
             );
         },
 

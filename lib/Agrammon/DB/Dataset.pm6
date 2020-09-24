@@ -46,6 +46,15 @@ class X::Agrammon::DB::Dataset::InstanceRenameFailed is Exception {
     }
 }
 
+#| Error when instance couldn't be renamed.
+class X::Agrammon::DB::Dataset::StoreInputCommentFailed is Exception {
+    has Str $.comment is required;
+    has Str $.variable is required;
+    method message {
+        "Couldn't save comment '$!comment' for variable '$!variable'."
+    }
+}
+
 class Agrammon::DB::Dataset does Agrammon::DB {
     has Int  $.id;
     has Str  $.name;
@@ -222,68 +231,61 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method !store-variable-comment($var, $comment) {
-
-        return unless $var and $comment.defined;
+    method !store-input-comment($variable, $comment) {
         my $username = $!user.username;
-
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $var);
-            UPDATE data_new SET data_comment = $1
-             WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
-                                                       AND data_instance IS NULL
-            RETURNING data_comment
+                my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable);
+                UPDATE data_new SET data_comment = $1
+                 WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
+                                                           AND data_instance IS NULL
+                RETURNING data_comment
             SQL
 
-            my $rows = $ret.rows;
-            return $rows if $rows;
+            return if $ret.rows;
 
-            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $var);
-            INSERT INTO data_new (data_dataset, data_var, data_comment)
-            VALUES (dataset_name2id($2,$3),$4,$1)
-            RETURNING data_comment
-            SQL
-            $rows = $ret.rows;
-            return $rows if $rows;
+            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable);
+                INSERT INTO data_new (data_dataset, data_var, data_comment)
+                     VALUES          (dataset_name2id($2,$3), $4, $1)
+                RETURNING data_comment
+                SQL
+
+            # couldn't save comment
+            die X::Agrammon::DB::Dataset::StoreInputCommentFailed.new(:$comment, :$variable) unless $ret.rows;
         }
     }
 
-    method !store-instance-variable-comment($var, $instance, $comment) {
-
-        return unless $var and $comment.defined and $instance;
+    method !store-instance-input-comment($variable, $instance, $comment) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $var, $instance);
-            UPDATE data_new SET data_comment = $1
-             WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
-                                                       AND data_instance = $5
-            RETURNING data_comment
+            my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable, $instance);
+                UPDATE data_new SET data_comment = $1
+                 WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
+                                                           AND data_instance = $5
+                RETURNING data_comment
             SQL
 
-            my $rows = $ret.rows;
-            return $rows if $rows;
+            return if $ret.rows;
 
-            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $var, $instance);
-            INSERT INTO data_new (data_dataset, data_var, data_comment, data_instance)
-            VALUES (dataset_name2id($2,$3),$4,$1,$5)
-            RETURNING data_comment
+            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable, $instance);
+                INSERT INTO data_new (data_dataset, data_var, data_comment, data_instance)
+                     VALUES          (dataset_name2id($2,$3), $4, $1, $5)
+                RETURNING data_comment
             SQL
-            $rows = $ret.rows;
-            return $rows if $rows;
+
+            # couldn't save comment
+            die X::Agrammon::DB::Dataset::StoreInputCommentFailed.new(:$comment, :$variable) unless $ret.rows;
         }
     }
 
-    method store-input-comment($var-name, $comment) {
+    method store-input-comment(:$variable!, :$comment) {
         my $instance;
-
-        my $var = $var-name;
-        if $var ~~ s/\[(.+)\]/[]/ {
+        if $variable ~~ s/\[(.+)\]/[]/ {
             $instance = $0;
         }
 
-        return $instance ?? self!store-instance-variable-comment($var, $instance, $comment)
-                         !! self!store-variable-comment($var, $comment);
+        return $instance ?? self!store-instance-input-comment($variable, $instance, $comment)
+                         !! self!store-input-comment($variable, $comment);
     }
 
     method !store-variable($var, $value) {
