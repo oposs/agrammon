@@ -80,6 +80,19 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'createTag', -> LoggedIn $user {
+            request-body -> ( :$name ) {
+                $ws.create-tag($user, $name);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Tag::AlreadyExists | X::Agrammon::DB::Tag::CreateFailed {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                }
+            }
+        }
         operation 'deleteTag', -> LoggedIn $user {
             request-body -> ( :$name ) {
                 $ws.delete-tag($user, $name);
@@ -218,15 +231,8 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
                 content 'application/json', $data;
             }
         }
-
-        # test
-        post -> LoggedIn $user, 'new_tag' {
-            request-body -> (:$name!) {
-                my $data = $ws.create-tag($user, $name);
-                content 'application/json', $data;
-            }
-        }
     }
+
 }
 
 sub user-routes(Agrammon::Web::Service $ws) {
