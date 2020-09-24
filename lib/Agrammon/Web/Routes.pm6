@@ -91,8 +91,7 @@ sub api-routes (Str $schema, $ws) {
                     }
                     when X::Agrammon::DB::User::UnknownRole  {
                         response.status = 422;
-                        response.append-header('Content-type', 'application/json');
-                        response.set-body(to-json { :error(.message) });
+                        content 'application/json', %( error => .message )
                     }
                 }
             }
