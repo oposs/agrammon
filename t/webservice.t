@@ -133,7 +133,7 @@ transactionally {
     }
 
     subtest "delete-tag" => {
-        ok $ws.create-tag($user, "07TestTag"), "Create tag";
+        lives-ok { $ws.create-tag($user, "07TestTag") }, "Create tag";
         lives-ok { $ws.delete-tag($user, '07TestTag') }, "Delete tag";
     }
 

@@ -61,7 +61,7 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Dataset.new(:$user, :$name, :$model, :$version).create.name;
     }
 
-    method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
+    method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new --> Nil) {
         Agrammon::DB::Dataset.new(:$user, :name($old)).rename($new);
     }
 
@@ -77,15 +77,15 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Tags.new(:$user).load.list;
     }
 
-    method create-tag(Agrammon::Web::SessionUser $user, Str $name) {
+    method create-tag(Agrammon::Web::SessionUser $user, Str $name --> Nil) {
         Agrammon::DB::Tag.new(:$user, :$name).create;
     }
 
-    method delete-tag(Agrammon::Web::SessionUser $user, Str $name) {
+    method delete-tag(Agrammon::Web::SessionUser $user, Str $name --> Nil) {
         Agrammon::DB::Tag.new(:$user, :$name).delete;
     }
 
-    method rename-tag(Agrammon::Web::SessionUser $user, Str $old, Str $new) {
+    method rename-tag(Agrammon::Web::SessionUser $user, Str $old, Str $new --> Nil) {
         Agrammon::DB::Tag.new(:$user, :name($old)).rename($new);
     }
 
@@ -127,7 +127,7 @@ class Agrammon::Web::Service {
         ).create-account($role).username;
     }
 
-    method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password) {
+    method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password --> Nil) {
         $user.change-password($old-password, $new-password);
     }
 
@@ -154,11 +154,11 @@ class Agrammon::Web::Service {
         }
     }
 
-    method store-input-comment(Agrammon::Web::SessionUser $user, :$dataset!, :$variable!, :$comment) {
+    method store-input-comment(Agrammon::Web::SessionUser $user, :$dataset!, :$variable!, :$comment --> Nil) {
         Agrammon::DB::Dataset.new(:$user, :name($dataset)).store-input-comment(:$variable, :$comment);
     }
 
-    method delete-instance(Agrammon::Web::SessionUser $user, $dataset-name, $variable-pattern, $instance) {
+    method delete-instance(Agrammon::Web::SessionUser $user, $dataset-name, $variable-pattern, $instance --> Nil) {
         Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).delete-instance($variable-pattern, $instance);
     }
 
@@ -170,7 +170,7 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Dataset.new(:$user, :$name).store-branch-data(%data);
     }
 
-    method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $variable-pattern) {
+    method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $variable-pattern --> Nil) {
         Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.rename-instance($old-instance, $new-instance, $variable-pattern);
     }
 
