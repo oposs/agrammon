@@ -275,7 +275,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method !store-input-comment($variable, $comment) {
+    method !store-input-comment($variable, $comment --> Nil) {
         my $username = $!user.username;
         self.with-db: -> $db {
                 my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable);
@@ -298,7 +298,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method !store-instance-input-comment($variable, $instance, $comment) {
+    method !store-instance-input-comment($variable, $instance, $comment --> Nil) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
@@ -322,14 +322,14 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method store-input-comment(:$variable!, :$comment) {
+    method store-input-comment(:$variable!, :$comment --> Nil) {
         my $instance;
         if $variable ~~ s/\[(.+)\]/[]/ {
             $instance = $0;
         }
 
-        return $instance ?? self!store-instance-input-comment($variable, $instance, $comment)
-                         !! self!store-input-comment($variable, $comment);
+        $instance ?? self!store-instance-input-comment($variable, $instance, $comment)
+                  !! self!store-input-comment($variable, $comment);
     }
 
     method !store-variable($variable, $value --> Nil) {
@@ -408,7 +408,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method delete-instance($variable-pattern, $instance) {
+    method delete-instance($variable-pattern, $instance --> Nil) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
@@ -424,7 +424,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method rename-instance($old-name, $new-name, $pattern) {
+    method rename-instance($old-name, $new-name, $pattern --> Nil) {
         self.with-db: -> $db {
             # old and new name are identical
             die X::Agrammon::DB::Dataset::InstanceRenameFailed.new(:$old-name, :$new-name) if $old-name eq $new-name;
@@ -446,7 +446,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
             # update failed
             die X::Agrammon::DB::Dataset::InstanceRenameFailed.new(:$old-name, :$new-name) unless $ret.rows;
-
         }
     }
 
