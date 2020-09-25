@@ -165,7 +165,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
 
     #| Set tag on datasets.
-    method set-tag(@datasets!, $tag-name! --> Nil) {
+    method set-tag(@datasets, $tag-name --> Nil) {
         self.with-db: -> $db {
             my $tag-id = Agrammon::DB::Tag.new( :name($tag-name), :$!user).lookup.id;
             die X::Agrammon::DB::Tag::UnknownTag($tag-name) unless $tag-id;
@@ -187,7 +187,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     }
 
     #| Remove tag from datasets.
-    method remove-tag(@datasets!, $tag-name! --> Nil) {
+    method remove-tag(@datasets, $tag-name --> Nil) {
         self.with-db: -> $db {
             my $tag-id = Agrammon::DB::Tag.new( :name($tag-name), :$!user).lookup.id;
             die X::Agrammon::DB::Tag::UnknownTag($tag-name) unless $tag-id;
