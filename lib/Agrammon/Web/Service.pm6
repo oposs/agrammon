@@ -89,12 +89,12 @@ class Agrammon::Web::Service {
         Agrammon::DB::Tag.new(:$user, :name($old)).rename($new);
     }
 
-    method set-tag(Agrammon::Web::SessionUser $user, @datasets, Str $tag-name) {
-        return Agrammon::DB::Dataset.new.set-tag(@datasets, $tag-name);
+    method set-tag(Agrammon::Web::SessionUser $user, @datasets, Str $tag-name --> Nil) {
+        Agrammon::DB::Dataset.new(:$user).set-tag(@datasets, $tag-name);
     }
 
-    method remove-tag(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $tag-name) {
-        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.remove-tag($tag-name);
+    method remove-tag(Agrammon::Web::SessionUser $user, @datasets, Str $tag-name --> Nil) {
+        Agrammon::DB::Dataset.new(:$user).remove-tag(@datasets, $tag-name);
     }
 
     method get-input-variables {

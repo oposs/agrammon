@@ -125,11 +125,11 @@ transactionally {
     }
 
     subtest "set-tag" => {
-        ok my $dataset = $ws.set-tag($user, ('MyNewTestDataset'), '00MyNewTestTag'), "Set tag";
+        lives-ok { $ws.set-tag($user, ['MyNewTestDataset'], '00MyNewTestTag') }, "Set tag";
     }
 
     subtest "remove-tag" => {
-        ok my $dataset = $ws.remove-tag($user, 'MyNewTestDataset', '00MyNewTestTag'), "Remove tag";
+        lives-ok { $ws.remove-tag($user, ['MyNewTestDataset'], '00MyNewTestTag') }, "Remove tag";
     }
 
     subtest "delete-tag" => {
