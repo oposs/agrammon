@@ -359,7 +359,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         set_tag_func,
                         'set_tag',
                         { datasets: datasets, tagName: tag }
-		            );
+                    );
                     availableTagsTable.addToFilter(tag, true);
   	                activeTagsTm.addRows([[ tag ]]);
                     datasetTable.addTag(datasets, tag);
@@ -406,7 +406,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         this.__remove_tag_func,
                         'remove_tag',
                         { datasets: datasets, tagName: tag }
-			        );
+                    );
                     availableTagsTable.removeFromFilter(tag);
  	                activeTagsTm.removeRows(ii,1);
                     datasetTable.removeTag(datasets, tag);
