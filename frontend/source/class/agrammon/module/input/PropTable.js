@@ -365,14 +365,15 @@ qx.Class.define('agrammon.module.input.PropTable', {
                 return;
             }
             // store data in database
-            this.__rpc.callAsync(this.__store_data_func,
-                               'store_data',
-                               {
-                                    dataset_name: datasetName,
-                                    data_var:     varname,
-                                    data_val:     value,
-                                    data_row:     fR
-                               }
+            this.__rpc.callAsync(
+                this.__store_data_func,
+                'store_data',
+                {
+                    datasetName: datasetName,
+                    variable:    varname,
+                    value:       value,
+                    row:         fR
+                }
             );
             qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
 
@@ -386,12 +387,10 @@ qx.Class.define('agrammon.module.input.PropTable', {
           */
         __store_data_func: function(data, exc, id) {
             if (exc == null) {
-//                var text = data;
-                //alert('__store_data_func():' + text);
                 qx.event.message.Bus.dispatchByName('agrammon.Output.reCalc');
             }
             else {
-                alert(exc);
+                alert(exc + ': ' + data.error);
             }
 
         },
@@ -504,15 +503,16 @@ qx.Class.define('agrammon.module.input.PropTable', {
             }
             var datasetName = this.__info.getDatasetName();
 
-            this.__rpc.callAsync(this.__store_data_func,
-                                 'store_data',
-                                 {
-                                    dataset_name: datasetName,
-                                    data_var:     varName,
-                                    data_val:     value,
-                                    branches:     branches,
-                                    options:      options
-                                 }
+            this.__rpc.callAsync(
+                this.__store_data_func,
+                'store_data',
+                {
+                    datasetName: datasetName,
+                    variable:    varName,
+                    value:       value,
+                    branches:    branches,
+                    options:     options
+                }
             );
 
             return;

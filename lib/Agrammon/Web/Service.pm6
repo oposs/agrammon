@@ -135,23 +135,23 @@ class Agrammon::Web::Service {
         return $user.reset-password($email, $password, $key);
     }
 
-    method store-data(Agrammon::Web::SessionUser $user, %data) {
+    method store-data(Agrammon::Web::SessionUser $user, $dataset-name, $variable, $value, @branches?, @options?, $row? --> Nil) {
+        # TODO: not sure where row is needed; implement branches
 
-        my $dataset = %data<dataset_name>;
-        my $var     = %data<data_var>;
-        my $value   = %data<data_val>;
+        my $ds = Agrammon::DB::Dataset.new(:$user, :name($dataset-name));
+        $ds.store-input($variable, $value);
 
-        my $branches = %data<branches>;
-        my $options  = %data<options>;
+        $!outputs-cache.invalidate($user.username, $dataset-name);
 
-        my $ds = Agrammon::DB::Dataset.new(:$user, :name($dataset));
-
-        my $ret = $ds.store-input($var, $value);
-
-        $!outputs-cache.invalidate($user.username, $dataset);
-
-        warn "**** store-data(var=$var, value=$value): not yet completely implemented (branch data)";
-        return 1;
+        if $row {
+            warn "**** store-data(var=$variable, value=$value, row=$row): what is row used for???";
+            dd $row;
+        }
+        if @branches {
+            warn "**** store-data(var=$variable, value=$value): not yet completely implemented (branch data)";
+            dd @branches;
+            dd @options;
+        }
     }
 
     method store-input-comment(Agrammon::Web::SessionUser $user, :$dataset!, :$variable!, :$comment) {

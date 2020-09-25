@@ -16,6 +16,15 @@ sub routes(Agrammon::Web::Service $ws) is export {
     my $schema = 'share/agrammon.openapi';
     my $root = '';
     route {
+        # before {
+        #     # Consume and re-instate request.
+        #     my $blob = await request.body-blob;
+        #     request.set-body($blob);
+        #     # Dump.
+        #     my $req = ~request;
+        #     try $req ~= $blob.decode('utf-8');
+        #     note $req;
+        # }
         include static-content($root);
         include api-routes($schema, $ws);
         include user-routes($ws);
@@ -204,6 +213,20 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'storeData', -> LoggedIn $user {
+            request-body -> ( :datasetName($dataset-name), :$variable, :$value, :@branches, :@options , :$row) {
+                $ws.store-data(
+                    $user, $dataset-name, $variable, $value, @branches, @options, $row
+                );
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::StoreDataFailed {
+                        response.status = 500;
+                        content 'application/json', %( error => .message )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -367,15 +390,6 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         ### data
-        # working
-        post -> LoggedIn $user, 'store_data' {
-            request-body -> %data {
-                my $ret = $ws.store-data($user, %data);
-                content 'application/json', %( :$ret );
-            }
-        }
-
-
         # test/implement
         post -> LoggedIn $user, 'load_branch_data' {
             request-body -> (:$name!) {

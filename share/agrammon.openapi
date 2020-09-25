@@ -254,6 +254,52 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /store_data:
+        post:
+            summary: Create new user account
+            operationId: storeData
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasetName
+                                - variable
+                                - value
+                            properties:
+                                datasetName:
+                                    description: Dataset name
+                                    type: string
+                                variable:
+                                    description: Variable name
+                                    type: string
+                                value:
+                                    description: Value
+                                    type: string
+                                row:
+                                    description: Row
+                                    type: integer
+                                branches:
+                                    description: Branches
+                                    type: array
+                                    items:
+                                        type: string
+                                options:
+                                    description: Options
+                                    type: array
+                                    items:
+                                        type: string
+            responses:
+                '204':
+                    description: Instance renamed.
+                '500':
+                    description: Store comment failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
 components:
     schemas:
