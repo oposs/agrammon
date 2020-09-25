@@ -63,6 +63,22 @@ class X::Agrammon::DB::Dataset::StoreDataFailed is Exception {
     }
 }
 
+#| Error when tag couldn't be set.
+class X::Agrammon::DB::Dataset::SetTagFailed is Exception {
+    has Str $.name is required;
+    method message {
+        "Tag '$!name' couldn't be set."
+    }
+}
+
+| Error when tag couldn't be removed.
+class X::Agrammon::DB::Dataset::RemoveTagFailed is Exception {
+    has Str $.name is required;
+    method message {
+        "Tag '$!name' couldn't be removed."
+    }
+}
+
 class Agrammon::DB::Dataset does Agrammon::DB {
     has Int  $.id;
     has Str  $.name;
@@ -147,31 +163,51 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         return self;
     }
 
-    method set-tag($tagName) {
+
+### TOOD: use INSERT ON CONFLICT !!!
+    #! Set tag on datasets opportunistically.
+    method set-tag(@datasets!, $tag-name!) {
+        my $tagged = 0;
         self.with-db: -> $db {
-            my $tag = Agrammon::DB::Tag.new( :name($tagName), :user($!user)).lookup;
-            if $tag.id {
-                $db.query(q:to/DATASET/, $tag.id, $!id);
+            my $tag-id = Agrammon::DB::Tag.new( :name($tag-name), :$!user).lookup.id;
+            die X::Agrammon::DB::Tag::UnknownTag($tag-name) unless $tag-id;
+
+            for @datasets -> $dataset-name {
+                my $ds = Agrammon::DB::Dataset.new($!user, $dataset-name).load;
+                my @tags = $ds.tags;
+                dd @tags.map(*.name);
+                $tagged += $db.query(q:to/SQL/, $tag-id, $dataset-name).rows;
                     INSERT INTO tagds (tagds_tag, tagds_dataset)
-                    VALUES ($1, $2)
+                            VALUES       ($1, $2)
                     RETURNING tagds_id
-               DATASET
+                SQL
+                CATCH { # ignore unique failures (tag already set)
+                    when /unique/ {
+                        next;
+                    }
+                    # other DB failure
+                    die X::Agrammon::DB::Dataset::SetTagFailed.new($tag-name);
+                }
             }
         }
-        return self;
+        return $tagged;
     }
 
-    method remove-tag($tagName) {
+    #! Remove tag from datasets opportunistically.
+    method remove-tag(@datasets!, $tag-name) {
+        my $deleted = 0;
         self.with-db: -> $db {
-            my $tag = Agrammon::DB::Tag.new( :name($tagName), :user($!user)).lookup;
-            if $tag.id {
-                $db.query(q:to/DATASET/, $tag.id, $!id);
+            my $tag-id = Agrammon::DB::Tag.new( :name($tag-name), :$!user).lookup.id;
+            die X::Agrammon::DB::Tag::UnknownTag($tag-name) unless $tag-id;
+
+            for @datasets -> $dataset-name {
+                $deleted += $db.query(q:to/SQL/, $tag-id, $dataset-name).rows;
                     DELETE FROM tagds
-                    WHERE tagds_tag = $1 AND tagds_dataset = $2
-                DATASET
+                    WHERE tagds_tag = $1 AND tagds_dataset = SELECT dataset_id FROM dataset WHERE dataset_name = $2
+                SQL
             }
         }
-        return self;
+        return $deleted;
     }
 
     method load {

@@ -227,6 +227,30 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'setTag', -> LoggedIn $user {
+            request-body -> ( :@datasets!, :tagName($tag-name)! ) {
+                $ws.set-tag($user, @datasets, $tag-name);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::SetTagFailed {
+                        response.status = 500;
+                        content 'application/json', %( error => .message )
+                    }
+                }
+            }
+        }
+        operation 'removeTag', -> LoggedIn $user {
+            request-body -> ( :@datasets!, :tagName($tag-name)! ) {
+                $ws.remove-tag($user, @datasets, $tag-name);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::RemoveTagFailed {
+                        response.status = 500;
+                        content 'application/json', %( error => .message )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -296,14 +320,6 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         post -> LoggedIn $user, 'get_tags' {
             my $data = $ws.get-tags($user);
             content 'application/json', $data;
-        }
-
-        # test
-        post -> LoggedIn $user, 'set_tag' {
-            request-body -> (:$datasets!, :$tag!) {
-                my $data = $ws.set-tag($user, $datasets, $tag);
-                content 'application/json', $data;
-            }
         }
 
         # test

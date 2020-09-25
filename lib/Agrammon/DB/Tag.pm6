@@ -35,6 +35,15 @@ class X::Agrammon::DB::Tag::DeleteFailed is Exception {
     }
 }
 
+class X::Agrammon::DB::Tag::UnknownTag is Exception {
+    has Str $.tag-name is required;
+
+    method message {
+        "Tag '$!tag-name' doesn't exist.";
+    }
+}
+
+
 class Agrammon::DB::Tag does Agrammon::DB {
     has Str $.name;
     has Int $.id;
