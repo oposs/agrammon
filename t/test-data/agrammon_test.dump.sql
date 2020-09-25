@@ -414,7 +414,7 @@ CREATE TABLE public.tagds (
     tagds_tag integer NOT NULL,
     tagds_dataset integer NOT NULL
 );
-
+ALTER TABLE public.tagds ADD CONSTRAINT "tagds_tagds_dataset_key" UNIQUE (tagds_dataset, tagds_tag);
 
 ALTER TABLE public.tagds OWNER TO agrammon;
 

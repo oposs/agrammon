@@ -300,6 +300,68 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /set_tag:
+        post:
+            summary: Set tag on datasets
+            operationId: setTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasets
+                                - tagName
+                            properties:
+                                datasets:
+                                    description: Dataset list
+                                    type: array
+                                    items:
+                                        type: string
+                                tagName:
+                                    description: Tag name
+                                    type: string
+            responses:
+                '204':
+                    description: Datasets tagged.
+                '500':
+                    description: Setting tag failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /remove_tag:
+        post:
+            summary: Remove tag on datasets
+            operationId: removeTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasets
+                                - tagName
+                            properties:
+                                datasets:
+                                    description: Dataset list
+                                    type: array
+                                    items:
+                                        type: string
+                                tagName:
+                                    description: Tag name
+                                    type: string
+            responses:
+                '204':
+                    description: Datasets tag removed.
+                '500':
+                    description: Remove tag failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
 components:
     schemas:

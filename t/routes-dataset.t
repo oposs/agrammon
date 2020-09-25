@@ -6,6 +6,8 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
+plan 14;
+
 # routing tests related to datasets
 
 sub make-fake-auth($role) {
@@ -42,10 +44,8 @@ my $fake-store = mocked(Agrammon::Web::Service,
         delete-tag => -> $user, $name {
         },
         set-tag => -> $user, @datasets, $name {
-            %( tags => @datasets.elems)
         },
         remove-tag => -> $user, @datasets, $name {
-            %( tags => @datasets.elems)
         },
         create-dataset => -> $user, $name {
             $name
@@ -100,9 +100,8 @@ subtest 'Delete tag' => {
 subtest 'Set tag' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/set_tag', {
-            test post(json => { datasets => ('DatasetA', 'DatasetB'), :tag('TagC') }),
-                status => 200,
-                json   => { tags => 2 },
+            test post(json => { datasets => ('DatasetA', 'DatasetB'), :tagName('TagC') }),
+                status => 204,
         };
         check-mock $fake-store,
             *.called('set-tag', times => 1);
@@ -112,9 +111,8 @@ subtest 'Set tag' => {
 subtest 'Remove tag' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/remove_tag', {
-            test post(json => { datasets => ('DatasetA', 'DatasetB'), :tag('TagC') }),
-                status => 200,
-                json   => { :tags(2) },
+            test post(json => { datasets => ('DatasetA', 'DatasetB'), :tagName('TagC') }),
+                status => 204,
         };
         check-mock $fake-store,
             *.called('remove-tag', times => 1);
