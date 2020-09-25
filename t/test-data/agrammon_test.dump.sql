@@ -412,8 +412,7 @@ ALTER SEQUENCE public.tag_tag_id_seq OWNED BY public.tag.tag_id;
 CREATE TABLE public.tagds (
     tagds_id integer NOT NULL,
     tagds_tag integer NOT NULL,
-    tagds_dataset integer NOT NULL,
-    UNIQUE 
+    tagds_dataset integer NOT NULL
 );
 ALTER TABLE public.tagds ADD CONSTRAINT "tagds_tagds_dataset_key" UNIQUE (tagds_dataset, tagds_tag);
 
