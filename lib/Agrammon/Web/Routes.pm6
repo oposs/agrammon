@@ -283,7 +283,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         }
 
         ### dataset
-        # test
+        # working
         post -> LoggedIn $user, 'create_dataset' {
             request-body -> (:$name!) {
                 my $dataset-name = $ws.create-dataset($user, $name);
@@ -316,20 +316,13 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         }
 
         ### tags
-        # test
+        # working
         post -> LoggedIn $user, 'get_tags' {
             my $data = $ws.get-tags($user);
             content 'application/json', $data;
         }
 
-        # test
-        post -> LoggedIn $user, 'remove_tag' {
-            request-body -> (:@datasets!, :$tag!) {
-                my $data = $ws.remove-tag($user, @datasets, $tag);
-                content 'application/json', $data;
-            }
-        }
-    }
+   }
 
 }
 
