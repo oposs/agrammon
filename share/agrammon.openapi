@@ -277,7 +277,9 @@ paths:
                                     type: string
                                 value:
                                     description: Value
-                                    type: string
+                                    oneOf:
+                                        - type: integer
+                                        - type: string
                                 row:
                                     description: Row
                                     type: integer
