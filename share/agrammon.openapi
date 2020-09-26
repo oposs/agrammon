@@ -89,15 +89,15 @@ paths:
                             $ref: "#/components/schemas/ChangePassword"
             responses:
                 '204':
-                    description: Password changed.
+                    description: Password changed
                 '409':
-                    description: Rename failed
+                    description: Passwords identical
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
                 '422':
-                    description: Passwords identical
+                    description: Password invalid
                     content:
                         application/json:
                             schema:
@@ -114,9 +114,9 @@ paths:
                             $ref: "#/components/schemas/Rename"
             responses:
                 '204':
-                    description: Dataset renamed.
+                    description: Dataset renamed
                 '409':
-                    description: Rename failed
+                    description: Dataset rename failed
                     content:
                         application/json:
                             schema:
@@ -139,7 +139,7 @@ paths:
                                     type: string
             responses:
                 '204':
-                    description: Tag created.
+                    description: Tag created
                 '409':
                     description: Tag creation failed
                     content:
@@ -158,9 +158,9 @@ paths:
                             $ref: "#/components/schemas/Delete"
             responses:
                 '204':
-                    description: Tag deleted.
+                    description: Tag deleted
                 '409':
-                    description: Delete failed
+                    description: Tag deletion failed
                     content:
                         application/json:
                             schema:
@@ -177,9 +177,9 @@ paths:
                             $ref: "#/components/schemas/Rename"
             responses:
                 '204':
-                    description: Tag renamed.
+                    description: Tag renamed
                 '409':
-                    description: Rename failed
+                    description: Tag rename failed
                     content:
                         application/json:
                             schema:
@@ -196,9 +196,9 @@ paths:
                             $ref: "#/components/schemas/DeleteInstance"
             responses:
                 '204':
-                    description: Instance renamed.
+                    description: Instance renamed
                 '409':
-                    description: Rename failed
+                    description: Instance rename failed
                     content:
                         application/json:
                             schema:
@@ -215,9 +215,9 @@ paths:
                             $ref: "#/components/schemas/Rename"
             responses:
                 '204':
-                    description: Instance renamed.
+                    description: Instance renamed
                 '409':
-                    description: Rename failed
+                    description: Instance rename failed
                     content:
                         application/json:
                             schema:
@@ -247,7 +247,7 @@ paths:
                                     type: string
             responses:
                 '204':
-                    description: Instance renamed.
+                    description: Comment stored
                 '500':
                     description: Store comment failed
                     content:
@@ -256,52 +256,30 @@ paths:
                                 $ref: "#/components/schemas/Error"
     /store_data:
         post:
-            summary: Create new user account
+            summary: Store an input value
             operationId: storeData
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            type: object
-                            required:
-                                - datasetName
-                                - variable
-                                - value
-                            properties:
-                                datasetName:
-                                    description: Dataset name
-                                    type: string
-                                variable:
-                                    description: Variable name
-                                    type: string
-                                value:
-                                    description: Value
-                                    oneOf:
-                                        - type: integer
-                                        - type: string
-                                row:
-                                    description: Row
-                                    type: integer
-                                branches:
-                                    description: Branches
-                                    type: array
-                                    items:
-                                        type: string
-                                options:
-                                    description: Options
-                                    type: array
-                                    items:
-                                        type: string
+                            $ref: "#/components/schemas/Data"
             responses:
                 '204':
-                    description: Instance renamed.
+                    description: Data stored
                 '500':
-                    description: Store comment failed
+                    description: Store data failed
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+                default:
+                    description: Unknown response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
     /set_tag:
         post:
             summary: Set tag on datasets
@@ -311,22 +289,10 @@ paths:
                 content:
                     application/json:
                         schema:
-                            type: object
-                            required:
-                                - datasets
-                                - tagName
-                            properties:
-                                datasets:
-                                    description: Dataset list
-                                    type: array
-                                    items:
-                                        type: string
-                                tagName:
-                                    description: Tag name
-                                    type: string
+                            $ref: "#/components/schemas/SetRemoveTag"
             responses:
                 '204':
-                    description: Datasets tagged.
+                    description: Datasets tagged
                 '500':
                     description: Setting tag failed
                     content:
@@ -342,22 +308,10 @@ paths:
                 content:
                     application/json:
                         schema:
-                            type: object
-                            required:
-                                - datasets
-                                - tagName
-                            properties:
-                                datasets:
-                                    description: Dataset list
-                                    type: array
-                                    items:
-                                        type: string
-                                tagName:
-                                    description: Tag name
-                                    type: string
+                            $ref: "#/components/schemas/SetRemoveTag"
             responses:
                 '204':
-                    description: Datasets tag removed.
+                    description: Datasets tag removed
                 '500':
                     description: Remove tag failed
                     content:
@@ -414,6 +368,49 @@ components:
                     type: string
                 newPassword:
                     description: New password
+                    type: string
+        Data:
+            type: object
+            required:
+                - datasetName
+                - variable
+                - value
+            properties:
+                datasetName:
+                    description: Dataset name
+                    type: string
+                variable:
+                    description: Variable name
+                    type: string
+                value:
+                    description: Value
+                    type: string
+                row:
+                    description: Row
+                    type: integer
+                branches:
+                    description: Branches
+                    type: array
+                    items:
+                        type: string
+                options:
+                    description: Options
+                    type: array
+                    items:
+                        type: string
+        SetRemoveTag:
+            type: object
+            required:
+                - datasets
+                - tagName
+            properties:
+                datasets:
+                    description: Dataset list
+                    type: array
+                    items:
+                        type: string
+                tagName:
+                    description: Tag name
                     type: string
         BadRequest:
             required:
