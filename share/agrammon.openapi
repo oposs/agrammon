@@ -318,6 +318,64 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /get_input_variables:
+        post:
+            summary: Get input variables
+            operationId: getInputVariables
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasetName
+                            properties:
+                                datasetName:
+                                    description: Dataset name
+                                    type: string
+            responses:
+                '200':
+                    description: Input variables
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/InputVariables"
+                '500':
+                    description: Getting input variables failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /get_output_variables:
+        post:
+            summary: Get output variables
+            operationId: getOutputVariables
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasetName
+                            properties:
+                                datasetName:
+                                    description: Dataset name
+                                    type: string
+            responses:
+                '200':
+                    description: Output variables
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/OutputVariables"
+                '500':
+                    description: Getting output variables failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
 components:
     schemas:
@@ -369,6 +427,137 @@ components:
                 newPassword:
                     description: New password
                     type: string
+        InputVariables:
+            type: object
+            required:
+                - dataset
+                - inputs
+                - graphs
+                - reports
+            properties:
+                dataset:
+                    description: Dataset name
+                    type: string
+                inputs:
+                    description: Input variables
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Input'
+                graphs:
+                    description: Graphical results
+                    type: object
+                    additionalProperties: true
+                reports:
+                    description: Tabular results
+                    type: object
+                    additionalProperties: true
+        LanguageLabels:
+            type: object
+            properties:
+                de:
+                    type: string
+                en:
+                    type: string
+                fr:
+                    type: string
+        Input:
+            type: object
+            additionalProperties: true
+            properties:
+                branch:
+                    type: string
+                    enum:
+                        - true
+                defaults:
+                    type: object
+                    properties:
+                        calc:
+                            oneOf:
+                                - type: string
+                                - type: number
+                        gui:
+                            oneOf:
+                                - type: string
+                                - type: number
+                enum:
+                    description: XXX
+                    type: object
+                    additionalProperties: true
+                gui:
+                    description: GUI navigation label
+                        schema:
+                            $ref: '#/components/schemas/LanguageLabels'
+                help:
+                    description: Help texts
+                        schema:
+                            $ref: '#/components/schemas/LanguageLabels'
+                labels:
+                    description: Input labels
+                        schema:
+                            $ref: '#/components/schemas/LanguageLabels'
+                models:
+                    description: Model variants this input is used for
+                    type: array
+                    items:
+                        type: string
+                options:
+                    description: XXX
+                    type: array
+                    items:
+                        type: string
+                optionsLang:
+                    description: XXX
+                    type: array
+                    items:
+                        type: string
+                order:
+                    description: Number used for sorting
+                    type: integer
+                type:
+                    description: Data type
+                    type: string
+                    enum:
+                        - float
+                        - integer
+                        - percent
+                        - text
+                        - enum
+                units:
+                    description: Input labels
+                        schema:
+                            $ref: '#/components/schemas/LanguageLabels'
+                validator:
+                    description: Input validator
+                    type: object
+                    required:
+                        - name
+                        - args
+                    properties:
+                        name:
+                            description: Operation name
+                            type: string
+                        args:
+                            description: Arguments
+                            type: array
+                            items:
+                                type: number
+                variable:
+                    description: bla
+                    type: string
+        OutputVariables:
+            type: object
+            required:
+                - variable
+                - value
+            properties:
+                variable:
+                    description: Variable name
+                    type: string
+                value:
+                    description: Value
+                    oneOf:
+                        - type: integer
+                        - type: string
         Data:
             type: object
             required:
@@ -384,7 +573,9 @@ components:
                     type: string
                 value:
                     description: Value
-                    type: string
+                    oneOf:
+                        - type: integer
+                        - type: string
                 row:
                     description: Row
                     type: integer
