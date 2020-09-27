@@ -179,7 +179,7 @@ qx.Class.define('agrammon.module.output.Output', {
             }
             this.__oldTimeout = this.__rpc.getTimeout();
             this.__rpc.setTimeout(600*1000);  // 10 minutes CPU limit
-            this.__rpc.callAsync(this.getOutputFunc, 'get_output_variables', datasetName);
+            this.__rpc.callAsync(this.getOutputFunc, 'get_output_variables', { datasetName: datasetName} );
             return;
         }
 
