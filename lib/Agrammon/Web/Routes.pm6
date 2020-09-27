@@ -216,7 +216,7 @@ sub api-routes (Str $schema, $ws) {
         operation 'storeData', -> LoggedIn $user {
             request-body -> ( :datasetName($dataset-name), :$variable, :$value, :@branches, :@options , :$row) {
                 $ws.store-data(
-                    $user, $dataset-name, $variable, $value, @branches, @options, $row
+                    $user, $dataset-name, $variable, $value, @branches, @options, $row // Any
                 );
                 CATCH {
                     note "$_";
@@ -249,6 +249,33 @@ sub api-routes (Str $schema, $ws) {
                         content 'application/json', %( error => .message )
                     }
                 }
+            }
+        }
+        operation 'getOutputVariables', -> LoggedIn $user {
+            request-body -> ( :datasetName($dataset-name)! ) {
+                my %output = $ws.get-output-variables($user, $dataset-name);
+                content 'application/json', { %output };
+                # CATCH {
+                #     note "$_";
+                #     when X::Agrammon::DB::Dataset::RemoveTagFailed {
+                #         response.status = 500;
+                #         content 'application/json', %( error => .message )
+                #     }
+                # }
+            }
+        }
+        operation 'getInputVariables', -> LoggedIn $user {
+            request-body -> ( :datasetName($dataset-name)! ) {
+                my %data = $ws.get-input-variables($user, $dataset-name);
+                %data<dataset> = $dataset-name;
+                content 'application/json', %data;
+                # CATCH {
+                #     note "$_";
+                #     when X::Agrammon::DB::Dataset::RemoveTagFailed {
+                #         response.status = 500;
+                #         content 'application/json', %( error => .message )
+                #     }
+                # }
             }
         }
     }
@@ -380,23 +407,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
         #     }
         # }
 
-        # test
-        post -> LoggedIn $user, 'get_input_variables' {
-            request-body -> (:name($dataset)!) {
-                say "get_input_variables(): ### dataset=$dataset";
-                my %data = $ws.get-input-variables;
-                %data<dataset> = $dataset;
-                content 'application/json', %data;
-            }
-        }
 
-        # test
-        post -> LoggedIn $user, 'get_output_variables' {
-            request-body -> %data {
-                my %output = $ws.get-output-variables($user, %data<dataset>);
-                content 'application/json', %output;
-            }
-        }
 
         ### data
         # test/implement

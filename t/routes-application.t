@@ -23,11 +23,24 @@ my $fake-auth = make-fake-auth($role);
 my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
         get-cfg =>  %( :title('Agrammon'), :version('SHL') ),
-        get-input-variables  =>  %( :x(1), :y(2) ),
-        get-output-variables =>  %( :x(1), :y(2) ),
         load-branch-data => ( 1, 2 ),
     },
     overriding => {
+        get-input-variables => -> $user, $dataset-name {
+            %(
+                dataset => $dataset-name,
+                inputs  => [
+                    {
+                        :variable("Livestock::DairyCow[]::Excretion::CMilk::milk_yield")
+                    },
+                ],
+                graphs  => %(),
+                reports => %()
+            ),
+        },
+        get-output-variables => -> $user, $dataset-name {
+             %( :variable('x'), :value(2) )
+        },
         delete-instance => -> $user, $dataset-name, $instance, $pattern {
         },
         rename-instance => -> $user, $dataset-name, $old-name, $new-name, $variable-pattern {
@@ -68,9 +81,18 @@ subtest 'Get configuration with login' => {
 subtest 'Get input variables' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/get_input_variables', {
-            test post(json => { :name('DatasetA') } ),
-                status => 200,
-                json   => { dataset => 'DatasetA', x => 1, y => 2 }
+            test post(json => { :datasetName('DatasetA') } ),
+            status => 200,
+            json   => {
+                dataset => 'DatasetA',
+                inputs  => [
+                    {
+                        :variable("Livestock::DairyCow[]::Excretion::CMilk::milk_yield")
+                    },
+                ],
+                graphs  =>  %(),
+                reports => %(),
+            }
         };
         check-mock $fake-store,
             *.called('get-input-variables', times => 1);
@@ -80,9 +102,9 @@ subtest 'Get input variables' => {
 subtest 'Get output variables' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/get_output_variables', {
-            test post(json => { :data('DatasetA') } ),
+            test post(json => { :datasetName('DatasetA') } ),
             status => 200,
-            json   => { x => 1, y => 2 }
+            json   => { :variable('x'), :value(2) }
         };
         check-mock $fake-store,
             *.called('get-output-variables', times => 1);
@@ -192,5 +214,49 @@ done-testing;
 =AUTHOR S<Fritz Zaucker E<lt>fritz.zaucker@oetiker.chE<gt>>
 
 See C<git blame> for other contributors.
+
+Example input variable:
+
+                    :branch("false"),
+                    :defaults(${
+                        :calc(Any),
+                        :gui(Any)
+                    }),
+                    :enum(${}),
+                    :gui(${
+                        :de("Tierhaltung::Milchkühe[]"),
+                        :en("Livestock::DairyCow[]"),
+                        :fr("Production animale::Vâches laitières[]")
+                    }),
+                    :help(${
+                        :de("<p>Vorschlag für Standardwert: 7500 kg pro Jahr</p>"),
+                        :en("<p>Standard value for Switzerland: 7500 kg per head and year</p>"),
+                        :fr("<p>Proposition de valeur standard: 7500 kg par an </p>")
+                    }),
+                    :labels(${
+                        :de("Durchschnittliche Milchleistung pro Kuh"),
+                        :en("Milk yield per dairy cow"),
+                        :fr("Production laitière moyenne par vache")
+                    }),
+                    :models($(
+                        "all",
+                    )),
+                    :options(
+                        $[]
+                    ),
+                    :optionsLang(
+                        $[]
+                    ),
+                    :order(500000),
+                    :type("float"),
+                    :units(${
+                        :de("kg/Jahr"),
+                        :en("kg/year"),
+                        :fr("kg/an")}),
+                    :validator(${
+                        :args($["1000", "15000"]),
+                        :name("between")
+                    })
+                    :variable("Livestock::DairyCow[]::Excretion::CMilk::milk_yield")
 
 =end pod
