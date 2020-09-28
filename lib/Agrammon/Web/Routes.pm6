@@ -267,10 +267,10 @@ sub api-routes (Str $schema, $ws) {
                 my %data = $ws.get-input-variables;
                 %data<datasetName> = $dataset-name;
                 # debug output on purpose
-                dd "KEYS:", %data.keys;
-                dd "GRAPHS:", %data<graphs>;
-                dd "REPORTS:", %data<reports>;
-                dd "INPUTS[0]:", %data<inputs>[0];
+                # dd "KEYS:", %data.keys;
+                # dd "GRAPHS:", %data<graphs>;
+                # dd "REPORTS:", %data<reports>;
+                # dd "INPUTS[0]:", %data<inputs>[0];
                 # for %data<inputs>[] -> $input {
                 #     dd $input<optionsLang>;
                 # }
