@@ -3,13 +3,13 @@ use Agrammon::Model;
 
 class Agrammon::UI::Web {
     has Agrammon::Model $.model;
-    
+
     method !get-inputs {
         my @inputs;
         for $!model.evaluation-order -> $module {
             my @module-inputs;
             for $module.input -> $input {
-                
+
                 my %input-hash = $input.as-hash;
                 my $gui= $module.gui || $module.gui-root-module.gui;
                 my @gui = split(',', $gui);
@@ -48,7 +48,7 @@ class Agrammon::UI::Web {
 
                 my %data = $result.data;
                 my @data;
-                for %data.kv -> $key, $langLabels { 
+                for %data.kv -> $key, $langLabels {
                     my %opts = %(
                         label      => $key,
                         subReports => split('_', $key),
@@ -77,10 +77,10 @@ class Agrammon::UI::Web {
             graphs  => @graphs,
         );
     }
-    
+
     method get-input-variables {
         my %results = self!get-results;
-        
+
         return %( %results, inputs => self!get-inputs );
     }
 
