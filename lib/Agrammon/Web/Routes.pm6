@@ -287,7 +287,6 @@ sub api-routes (Str $schema, $ws) {
 
 sub dataset-routes(Agrammon::Web::Service $ws) {
     route {
-        ### datasets
         # working
         post -> LoggedIn $user, 'get_datasets' {
             my $cfg = $ws.cfg;
@@ -305,28 +304,11 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test
-        post -> LoggedIn $user, 'send_datasets' {
-            request-body -> (:@datasets!) {
-                my $data = $ws.send-datasets($user, @datasets);
-                content 'application/json', $data;
-            }
-        }
-
-        ### dataset
         # working
         post -> LoggedIn $user, 'create_dataset' {
             request-body -> (:$name!) {
                 my $dataset-name = $ws.create-dataset($user, $name);
                 content 'application/json', { :name($dataset-name) };
-            }
-        }
-
-        # implement/test
-        post -> LoggedIn $user, 'submit_dataset' {
-            request-body -> (:$name!, :$mail) {
-                my $data = $ws.submit-dataset($user, $name, $mail);
-                content 'application/json', $data;
             }
         }
 
@@ -346,34 +328,51 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        ### tags
         # working
         post -> LoggedIn $user, 'get_tags' {
             my $data = $ws.get-tags($user);
             content 'application/json', $data;
         }
 
-   }
+        # TODO: test send_datasets()
+        post -> LoggedIn $user, 'send_datasets' {
+            request-body -> (:@datasets!) {
+                my $data = $ws.send-datasets($user, @datasets);
+                content 'application/json', $data;
+            }
+        }
 
+        # TODO: implement/test submit_dataset()
+        post -> LoggedIn $user, 'submit_dataset' {
+            request-body -> (:$name!, :$mail) {
+                my $data = $ws.submit-dataset($user, $name, $mail);
+                content 'application/json', $data;
+            }
+        }
+   }
 }
 
 sub user-routes(Agrammon::Web::Service $ws) {
     route {
-
-        # implement/test
+        # TODO: implement/test reset_password()
         post -> LoggedIn $user, 'reset_password' {
             request-body -> (:$email!, :$password!, :$key!) {
                 my $data = $ws.reset-password($email, $password, $key);
                 content 'application/json', $data;
             }
         }
-
     }
 }
 
 sub application-routes(Agrammon::Web::Service $ws) {
     route {
-        ### auth
+        # working
+        post -> 'get_cfg' {
+            my %cfg = $ws.get-cfg;
+            content 'application/json', %cfg;
+        }
+
+        # TODO: implement news in auth()
         post -> Agrammon::Web::SessionUser $user, 'auth' {
             request-body -> %data {
                 my $username = %data<user>;
@@ -383,7 +382,6 @@ sub application-routes(Agrammon::Web::Service $ws) {
                         user       => $username,
                         role       => $user.role.name,
                         last_login => $user.last-login,
-                        # TODO: news not implemented for the moment
                         news       => Nil,
                         sudoUser   => 0
                     );
@@ -393,15 +391,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        ### cfg
-        # working
-        post -> 'get_cfg' {
-            my %cfg = $ws.get-cfg;
-            content 'application/json', %cfg;
-        }
-
-        ### data
-        # test/implement
+        # TODO: test/implement load_branch_data()
         post -> LoggedIn $user, 'load_branch_data' {
             request-body -> (:$name!) {
                 my $data = $ws.load-branch-data($user, $name);
@@ -409,7 +399,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # test/implement
+        # TODO: test/implement store_branch_data()
         post -> LoggedIn $user, 'store_branch_data' {
             request-body -> (:datasetName($dataset-name)!, :%data!) {
                 my $data = $ws.store-branch-data($user, %data, $dataset-name);
@@ -417,14 +407,12 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-
-        # test/implement
+        # TODO: test/implement order_instances()
         post -> LoggedIn $user, 'order_instances' {
             request-body -> (:datasetName($dataset-name)!, :@instances) {
                 my $data = $ws.order-instances($user, $dataset-name, @instances);
                 content 'application/json', $data;
             }
         }
-
     }
 }
