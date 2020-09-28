@@ -215,11 +215,8 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
 	  * @lint ignoreDeprecated(alert)
           */
          __get_input_variables_func: function(data,exc,id) {
-            if (exc == null) {
-                // alert('Created dataset ' + data);
-            }
-            else {
-                alert('__get_input_variables_funct(): exc='+exc);
+            if (exc != null) {
+                alert(exc + ': ' + data.error);
             }
 
         },
@@ -277,7 +274,7 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
                 );
                 this.__rpc.callAsync(
                     qx.lang.Function.bind(this.__get_input_variables_func, this),
-                    'get_input_variables');
+                    'get_input_variables', { datasetName : newDataset });
             }
             else {
                 this.__rpc.callAsync(
