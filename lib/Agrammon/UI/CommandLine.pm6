@@ -18,7 +18,7 @@ use Agrammon::Web::SessionUser;
 
 
 my %*SUB-MAIN-OPTS =
-  :named-anywhere,    # allow named variables at any location 
+  :named-anywhere,    # allow named variables at any location
 ;
 
 subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
@@ -152,6 +152,7 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
 
     # initialization
     my $cfg = Agrammon::Config.new;
+    note "Loading config from $cfg-filename";
     $cfg.load($cfg-filename);
 
     my $model-path = $model-filename.IO;
@@ -169,7 +170,7 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
         }));
     }
 
-    my $model = timed "Load $module", {
+    my $model = timed "Load model from $module-path/$module.nhd", {
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
     }
 
@@ -182,15 +183,15 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
     my $host = %*ENV<AGRAMMON_HOST> || '0.0.0.0';
     my $port = %*ENV<AGRAMMON_PORT> || 20000;
     my Cro::Service $http = Cro::HTTP::Server.new(
-            :$host, :$port,
-            application => routes($ws),
-            after => [
-                Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
-            ],
-            before => [
-                Agrammon::Web::SessionStore.new(:$db)
-            ]
-            );
+        :$host, :$port,
+        application => routes($ws),
+        after => [
+            Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
+        ],
+        before => [
+            Agrammon::Web::SessionStore.new(:$db)
+        ]
+    );
     $http.start;
     say "Listening at http://$host:$port";
     return $http;
