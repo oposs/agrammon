@@ -400,19 +400,6 @@ sub application-routes(Agrammon::Web::Service $ws) {
             content 'application/json', %cfg;
         }
 
-        ### input/output
-
-        # # test/implement (is this needed?)
-        # post -> LoggedIn $user, 'get_input' {
-        #         ...
-        #     request-body -> (:$dataset!) {
-        #         my $data = $ws.get-input($user, $dataset);
-        #         content 'application/json', $data;
-        #     }
-        # }
-
-
-
         ### data
         # test/implement
         post -> LoggedIn $user, 'load_branch_data' {
