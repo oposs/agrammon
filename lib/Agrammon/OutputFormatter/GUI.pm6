@@ -25,7 +25,7 @@ sub get-data($model, $outputs) {
             for sorted-kv($_) -> $output, $raw-value {
                 my $format = $model.output-format($module, $output);
                 my $value = flat-value($raw-value);
-                my $formattedValue = $format ?? sprintf($format, $value)
+                my $formattedValue = ($format && $value) ?? sprintf($format, $value)
                                              !! $value;
                 push @records, %(
                     format    => $format,
