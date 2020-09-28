@@ -430,12 +430,12 @@ components:
         InputVariables:
             type: object
             required:
-                - dataset
+                - datasetName
                 - inputs
                 - graphs
                 - reports
             properties:
-                dataset:
+                datasetName:
                     description: Dataset name
                     type: string
                 inputs:
@@ -445,12 +445,14 @@ components:
                         $ref: '#/components/schemas/Input'
                 graphs:
                     description: Graphical results
-                    type: object
-                    additionalProperties: true
+                    type: array
+                    items:
+                        type: object
                 reports:
                     description: Tabular results
-                    type: object
-                    additionalProperties: true
+                    type: array
+                    items:
+                        type: object
         LanguageLabels:
             type: object
             properties:
@@ -460,6 +462,8 @@ components:
                     type: string
                 fr:
                     type: string
+                it:
+                    type: string
         Input:
             type: object
             additionalProperties: true
@@ -467,16 +471,19 @@ components:
                 branch:
                     type: string
                     enum:
-                        - true
+                        - 'true'
+                        - 'false'
                 defaults:
                     type: object
                     properties:
                         calc:
-                            oneOf:
+                            nullable: true
+                            anyOf:
                                 - type: string
                                 - type: number
                         gui:
-                            oneOf:
+                            nullable: true
+                            anyOf:
                                 - type: string
                                 - type: number
                 enum:
@@ -504,12 +511,16 @@ components:
                     description: XXX
                     type: array
                     items:
-                        type: string
+                        type: array
+                        items:
+                            type: string
                 optionsLang:
                     description: XXX
                     type: array
                     items:
-                        type: string
+                        schema:
+                            $ref: '#/components/schemas/LanguageLabels'
+#                        type: object
                 order:
                     description: Number used for sorting
                     type: integer
@@ -517,11 +528,12 @@ components:
                     description: Data type
                     type: string
                     enum:
-                        - float
-                        - integer
-                        - percent
-                        - text
-                        - enum
+                        - 'float'
+                        - 'integer'
+                        - 'percent'
+                        - 'text'
+                        - 'enum'
+                        - 'enum{ignore}'
                 units:
                     description: Input labels
                         schema:
@@ -529,32 +541,33 @@ components:
                 validator:
                     description: Input validator
                     type: object
-                    required:
-                        - name
-                        - args
+# TODO: can be either empty hash or must have name and args
+#                    required:
+#                        - name
+#                        - args
                     properties:
                         name:
                             description: Operation name
                             type: string
+                            enum:
+                                - 'ge'
+                                - 'between'
                         args:
                             description: Arguments
                             type: array
                             items:
-                                type: number
+                                anyOf:
+# TODO: convert to numbers in backend
+                                    - type: number
+                                    - type: string
                 variable:
                     description: bla
                     type: string
         OutputVariables:
             type: object
-            required:
-                - variable
-                - value
-            properties:
-                variable:
-                    description: Variable name
-                    type: string
-                value:
-                    description: Value
+            additionalProperties:
+                type: object
+                additionalProperties:
                     oneOf:
                         - type: integer
                         - type: string
