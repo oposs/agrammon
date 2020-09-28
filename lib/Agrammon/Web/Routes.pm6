@@ -56,7 +56,7 @@ sub static-content($root) {
         }
 
         get -> 'source', *@path {
-            static $root ~ 'static/script', @path
+            static $root ~ 'static/source', @path
         }
 
         get -> 'QxJqPlot/source/resource', *@path {
@@ -255,27 +255,31 @@ sub api-routes (Str $schema, $ws) {
             request-body -> ( :datasetName($dataset-name)! ) {
                 my %output = $ws.get-output-variables($user, $dataset-name);
                 content 'application/json', { %output };
-                # CATCH {
-                #     note "$_";
-                #     when X::Agrammon::DB::Dataset::RemoveTagFailed {
-                #         response.status = 500;
-                #         content 'application/json', %( error => .message )
-                #     }
-                # }
+                CATCH {
+                    note "$_";
+                    response.status = 500;
+                    content 'application/json', %( error => $_ )
+                }
             }
         }
         operation 'getInputVariables', -> LoggedIn $user {
             request-body -> ( :datasetName($dataset-name)! ) {
-                my %data = $ws.get-input-variables($user, $dataset-name);
-                %data<dataset> = $dataset-name;
-                content 'application/json', %data;
-                # CATCH {
-                #     note "$_";
-                #     when X::Agrammon::DB::Dataset::RemoveTagFailed {
-                #         response.status = 500;
-                #         content 'application/json', %( error => .message )
-                #     }
+                my %data = $ws.get-input-variables;
+                %data<datasetName> = $dataset-name;
+                # debug output on purpose
+                dd "KEYS:", %data.keys;
+                dd "GRAPHS:", %data<graphs>;
+                dd "REPORTS:", %data<reports>;
+                dd "INPUTS[0]:", %data<inputs>[0];
+                # for %data<inputs>[] -> $input {
+                #     dd $input<optionsLang>;
                 # }
+                content 'application/json', %data;
+                CATCH {
+                    note "$_";
+                    response.status = 500;
+                    content 'application/json', %( error => $_ )
+                }
             }
         }
     }
