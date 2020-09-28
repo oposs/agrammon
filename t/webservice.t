@@ -32,7 +32,7 @@ subtest "Setup" => {
     ok $user.load, "Load user $username";
 
 
-    my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
+    my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOxExtended/');
     my $top = 'End';
     ok my $model = Agrammon::Model.new(:$path), "Load model";
     lives-ok { $model.load($top) }, "Load module from $top";
@@ -322,7 +322,6 @@ subtest "Get model data" => {
                 is-deeply $input.keys.sort, qw|branch defaults enum gui help labels models options optionsLang order type units validator variable|,
                           "$var has expected keys";
                 subtest "$var" => {
-                    dd "INPUT:", $input;
                     is $input<branch>, 'false', 'branch is false';
                     is-deeply $input<defaults>, %( calc => Any, gui => Any), "defaults as expected";
                     is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
