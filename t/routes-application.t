@@ -26,16 +26,15 @@ my $fake-store = mocked(Agrammon::Web::Service,
         load-branch-data => ( 1, 2 ),
     },
     overriding => {
-        get-input-variables => -> $user, $dataset-name {
+        get-input-variables => {
             %(
-                dataset => $dataset-name,
                 inputs  => [
                     {
                         :variable("Livestock::DairyCow[]::Excretion::CMilk::milk_yield")
                     },
                 ],
-                graphs  => %(),
-                reports => %()
+                graphs  => [],
+                reports => [],
             ),
         },
         get-output-variables => -> $user, $dataset-name {
@@ -84,14 +83,14 @@ subtest 'Get input variables' => {
             test post(json => { :datasetName('DatasetA') } ),
             status => 200,
             json   => {
-                dataset => 'DatasetA',
+                datasetName => 'DatasetA',
                 inputs  => [
                     {
                         :variable("Livestock::DairyCow[]::Excretion::CMilk::milk_yield")
                     },
                 ],
-                graphs  =>  %(),
-                reports => %(),
+                graphs  => [],
+                reports => [],
             }
         };
         check-mock $fake-store,
