@@ -214,9 +214,9 @@ sub api-routes (Str $schema, $ws) {
             }
         }
         operation 'storeData', -> LoggedIn $user {
-            request-body -> ( :datasetName($dataset-name), :$variable, :$value, :@branches, :@options , :$row) {
+            request-body -> ( :datasetName($dataset-name), :$variable, :$value, :@branches, :@options , Int :$row) {
                 $ws.store-data(
-                    $user, $dataset-name, $variable, $value, @branches, @options, $row // Any
+                    $user, $dataset-name, $variable, $value, @branches, @options, $row
                 );
                 CATCH {
                     note "$_";
