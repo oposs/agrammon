@@ -1,648 +1,648 @@
-    openapi: 3.0.0
-    info:
-        version: 1.0.0,
-        title: OpenApi Agrammon,
-    paths:
-        /create_account:
-            post:
-                summary: Create new user account
-                operationId: createAccount
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                required:
-                                    - email
-                                    - password
-                                properties:
-                                    email:
-                                        description: User's email used as username
-                                        type: string
-                                    password:
-                                        description: Inital password
-                                        type: string
-                                    key:
-                                        description: Validation key
-                                        type: string
-                                    firstname:
-                                        description: Firstname
-                                        type: string
-                                    lastname:
-                                        description: Lastname
-                                        type: string
-                                    org:
-                                        description: Organization
-                                        type: string
-                                    role:
-                                        description: User role
-                                        type: string
-                                        enum:
-                                            - admin
-                                            - user
-                responses:
-                    '200':
-                        description: Account created.
-                        content:
-                            application/json:
-                                schema:
-                                    type: object
-                                    required:
-                                        - username
-                                    properties:
-                                        username:
-                                            type: string
-                    '400':
-                        description: No username
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/BadRequest"
-                    '404':
-                        description: Couldn't create account
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/CreationFailed"
-                    '409':
-                        description: User already exists
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-                    '422':
-                        description: Role doesn't exist
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Unknown"
-        /change_password:
-            post:
-                summary: Change user password
-                operationId: changePassword
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/ChangePassword"
-                responses:
-                    '204':
-                        description: Password changed
-                    '409':
-                        description: Passwords identical
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-                    '422':
-                        description: Password invalid
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /rename_dataset:
-            post:
-                summary: Rename a dataset
-                operationId: renameDataset
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Rename"
-                responses:
-                    '204':
-                        description: Dataset renamed
-                    '409':
-                        description: Dataset rename failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /create_tag:
-            post:
-                summary: Create new dataset tag
-                operationId: createTag
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                required:
-                                    - name
-                                properties:
-                                    name:
-                                        description: Tag name
-                                        type: string
-                responses:
-                    '204':
-                        description: Tag created
-                    '409':
-                        description: Tag creation failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /delete_tag:
-            post:
-                summary: Delete a dataset tag
-                operationId: deleteTag
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Delete"
-                responses:
-                    '204':
-                        description: Tag deleted
-                    '409':
-                        description: Tag deletion failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /rename_tag:
-            post:
-                summary: Rename a dataset tag
-                operationId: renameTag
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Rename"
-                responses:
-                    '204':
-                        description: Tag renamed
-                    '409':
-                        description: Tag rename failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /delete_instance:
-            post:
-                summary: Delete an instance
-                operationId: deleteInstance
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/DeleteInstance"
-                responses:
-                    '204':
-                        description: Instance renamed
-                    '409':
-                        description: Instance rename failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /rename_instance:
-            post:
-                summary: Rename an instance
-                operationId: renameInstance
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Rename"
-                responses:
-                    '204':
-                        description: Instance renamed
-                    '409':
-                        description: Instance rename failed
-                        content:
-                            application/json:
-                                schema:
-                                   $ref: "#/components/schemas/Error"
-        /store_input_comment:
-            post:
-                summary: Create new user account
-                operationId: storeInputComment
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                required:
-                                    - datasetName
-                                    - variable
-                                properties:
-                                    datasetName:
-                                        description: Dataset name
-                                        type: string
-                                    variable:
-                                        description: Variable name
-                                        type: string
-                                    comment:
-                                        description: Comment
-                                        type: string
-                responses:
-                    '204':
-                        description: Comment stored
-                    '500':
-                        description: Store comment failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /store_data:
-            post:
-                summary: Store an input value
-                operationId: storeData
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Data"
-                responses:
-                    '204':
-                        description: Data stored
-                    '500':
-                        description: Store data failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-                    default:
-                        description: Unknown response
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-
-        /set_tag:
-            post:
-                summary: Set tag on datasets
-                operationId: setTag
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/SetRemoveTag"
-                responses:
-                    '204':
-                        description: Datasets tagged
-                    '500':
-                        description: Setting tag failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /remove_tag:
-            post:
-                summary: Remove tag on datasets
-                operationId: removeTag
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/SetRemoveTag"
-                responses:
-                    '204':
-                        description: Datasets tag removed
-                    '500':
-                        description: Remove tag failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /get_input_variables:
-            post:
-                summary: Get input variables
-                operationId: getInputVariables
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                required:
-                                    - datasetName
-                                properties:
-                                    datasetName:
-                                        description: Dataset name
-                                        type: string
-                responses:
-                    '200':
-                        description: Input variables
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/InputVariables"
-                    '500':
-                        description: Getting input variables failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-        /get_output_variables:
-            post:
-                summary: Get output variables
-                operationId: getOutputVariables
-                requestBody:
-                    required: true
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                required:
-                                    - datasetName
-                                properties:
-                                    datasetName:
-                                        description: Dataset name
-                                        type: string
-                responses:
-                    '200':
-                        description: Output variables
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/OutputVariables"
-                    '500':
-                        description: Getting output variables failed
-                        content:
-                            application/json:
-                                schema:
-                                    $ref: "#/components/schemas/Error"
-
-    components:
-        schemas:
-            DeleteInstance:
-                type: object
-                required:
-                     - datasetName
-                     - instance
-                     - variablePattern
-                properties:
-                    datasetName:
-                        description: Dataset name
-                        type: string
-                    instance:
-                        description: Instance name
-                        type: string
-                    variablePattern:
-                        description: Variable name
-                        type: string
-            Delete:
-                type: object
-                required:
-                     - name
-                properties:
-                    name:
-                        description: Object name
-                        type: string
-            Rename:
-                type: object
-                required:
-                     - oldName
-                     - newName
-                properties:
-                    oldName:
-                        description: Current name
-                        type: string
-                    newName:
-                        description: New name
-                        type: string
-            ChangePassword:
-                type: object
-                required:
-                     - oldPassword
-                     - newPassword
-                properties:
-                    oldPassword:
-                        description: Current password
-                        type: string
-                    newPassword:
-                        description: New password
-                        type: string
-            InputVariables:
-                type: object
-                required:
-                    - datasetName
-                    - inputs
-                    - graphs
-                    - reports
-                properties:
-                    datasetName:
-                        description: Dataset name
-                        type: string
-                    inputs:
-                        description: Input variables
-                        type: array
-                        items:
-                            $ref: '#/components/schemas/Input'
-                    graphs:
-                        description: Graphical results
-                        type: array
-                        items:
+openapi: 3.0.0
+info:
+    version: 1.0.0,
+    title: OpenApi Agrammon,
+paths:
+    /create_account:
+        post:
+            summary: Create new user account
+            operationId: createAccount
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
                             type: object
-                    reports:
-                        description: Tabular results
-                        type: array
-                        items:
+                            required:
+                                - email
+                                - password
+                            properties:
+                                email:
+                                    description: User's email used as username
+                                    type: string
+                                password:
+                                    description: Inital password
+                                    type: string
+                                key:
+                                    description: Validation key
+                                    type: string
+                                firstname:
+                                    description: Firstname
+                                    type: string
+                                lastname:
+                                    description: Lastname
+                                    type: string
+                                org:
+                                    description: Organization
+                                    type: string
+                                role:
+                                    description: User role
+                                    type: string
+                                    enum:
+                                        - admin
+                                        - user
+            responses:
+                '200':
+                    description: Account created.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required:
+                                    - username
+                                properties:
+                                    username:
+                                        type: string
+                '400':
+                    description: No username
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/BadRequest"
+                '404':
+                    description: Couldn't create account
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/CreationFailed"
+                '409':
+                    description: User already exists
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                '422':
+                    description: Role doesn't exist
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Unknown"
+    /change_password:
+        post:
+            summary: Change user password
+            operationId: changePassword
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ChangePassword"
+            responses:
+                '204':
+                    description: Password changed
+                '409':
+                    description: Passwords identical
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                '422':
+                    description: Password invalid
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /rename_dataset:
+        post:
+            summary: Rename a dataset
+            operationId: renameDataset
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Rename"
+            responses:
+                '204':
+                    description: Dataset renamed
+                '409':
+                    description: Dataset rename failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /create_tag:
+        post:
+            summary: Create new dataset tag
+            operationId: createTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
                             type: object
-            LanguageLabels:
-                type: object
-                properties:
-                    de:
-                        type: string
-                    en:
-                        type: string
-                    fr:
-                        type: string
-                    it:
-                        type: string
-            Input:
-                type: object
-                additionalProperties: true
-                properties:
-                    branch:
-                        type: string
-                        enum:
-                            - 'true'
-                            - 'false'
-                    defaults:
+                            required:
+                                - name
+                            properties:
+                                name:
+                                    description: Tag name
+                                    type: string
+            responses:
+                '204':
+                    description: Tag created
+                '409':
+                    description: Tag creation failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /delete_tag:
+        post:
+            summary: Delete a dataset tag
+            operationId: deleteTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Delete"
+            responses:
+                '204':
+                    description: Tag deleted
+                '409':
+                    description: Tag deletion failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /rename_tag:
+        post:
+            summary: Rename a dataset tag
+            operationId: renameTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Rename"
+            responses:
+                '204':
+                    description: Tag renamed
+                '409':
+                    description: Tag rename failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /delete_instance:
+        post:
+            summary: Delete an instance
+            operationId: deleteInstance
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/DeleteInstance"
+            responses:
+                '204':
+                    description: Instance renamed
+                '409':
+                    description: Instance rename failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /rename_instance:
+        post:
+            summary: Rename an instance
+            operationId: renameInstance
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Rename"
+            responses:
+                '204':
+                    description: Instance renamed
+                '409':
+                    description: Instance rename failed
+                    content:
+                        application/json:
+                            schema:
+                               $ref: "#/components/schemas/Error"
+    /store_input_comment:
+        post:
+            summary: Create new user account
+            operationId: storeInputComment
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasetName
+                                - variable
+                            properties:
+                                datasetName:
+                                    description: Dataset name
+                                    type: string
+                                variable:
+                                    description: Variable name
+                                    type: string
+                                comment:
+                                    description: Comment
+                                    type: string
+            responses:
+                '204':
+                    description: Comment stored
+                '500':
+                    description: Store comment failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /store_data:
+        post:
+            summary: Store an input value
+            operationId: storeData
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Data"
+            responses:
+                '204':
+                    description: Data stored
+                '500':
+                    description: Store data failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                default:
+                    description: Unknown response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
+    /set_tag:
+        post:
+            summary: Set tag on datasets
+            operationId: setTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/SetRemoveTag"
+            responses:
+                '204':
+                    description: Datasets tagged
+                '500':
+                    description: Setting tag failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /remove_tag:
+        post:
+            summary: Remove tag on datasets
+            operationId: removeTag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/SetRemoveTag"
+            responses:
+                '204':
+                    description: Datasets tag removed
+                '500':
+                    description: Remove tag failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /get_input_variables:
+        post:
+            summary: Get input variables
+            operationId: getInputVariables
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasetName
+                            properties:
+                                datasetName:
+                                    description: Dataset name
+                                    type: string
+            responses:
+                '200':
+                    description: Input variables
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/InputVariables"
+                '500':
+                    description: Getting input variables failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /get_output_variables:
+        post:
+            summary: Get output variables
+            operationId: getOutputVariables
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasetName
+                            properties:
+                                datasetName:
+                                    description: Dataset name
+                                    type: string
+            responses:
+                '200':
+                    description: Output variables
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/OutputVariables"
+                '500':
+                    description: Getting output variables failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
+components:
+    schemas:
+        DeleteInstance:
+            type: object
+            required:
+                 - datasetName
+                 - instance
+                 - variablePattern
+            properties:
+                datasetName:
+                    description: Dataset name
+                    type: string
+                instance:
+                    description: Instance name
+                    type: string
+                variablePattern:
+                    description: Variable name
+                    type: string
+        Delete:
+            type: object
+            required:
+                 - name
+            properties:
+                name:
+                    description: Object name
+                    type: string
+        Rename:
+            type: object
+            required:
+                 - oldName
+                 - newName
+            properties:
+                oldName:
+                    description: Current name
+                    type: string
+                newName:
+                    description: New name
+                    type: string
+        ChangePassword:
+            type: object
+            required:
+                 - oldPassword
+                 - newPassword
+            properties:
+                oldPassword:
+                    description: Current password
+                    type: string
+                newPassword:
+                    description: New password
+                    type: string
+        InputVariables:
+            type: object
+            required:
+                - datasetName
+                - inputs
+                - graphs
+                - reports
+            properties:
+                datasetName:
+                    description: Dataset name
+                    type: string
+                inputs:
+                    description: Input variables
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Input'
+                graphs:
+                    description: Graphical results
+                    type: array
+                    items:
                         type: object
-                        properties:
-                            calc:
-                                nullable: true
-                                anyOf:
-                                    - type: string
-                                    - type: number
-                            gui:
-                                nullable: true
-                                anyOf:
-                                    - type: string
-                                    - type: number
+                reports:
+                    description: Tabular results
+                    type: array
+                    items:
+                        type: object
+        LanguageLabels:
+            type: object
+            properties:
+                de:
+                    type: string
+                en:
+                    type: string
+                fr:
+                    type: string
+                it:
+                    type: string
+        Input:
+            type: object
+            additionalProperties: true
+            properties:
+                branch:
+                    type: string
                     enum:
-                        description: XXX
-                        type: object
-                        additionalProperties: true
-                    gui:
-                        description: GUI navigation label
-                        schema:
-                            $ref: '#/components/schemas/LanguageLabels'
-                    help:
-                        description: Help texts
-                        schema:
-                            $ref: '#/components/schemas/LanguageLabels'
-                    labels:
-                        description: Input labels
-                        schema:
-                            $ref: '#/components/schemas/LanguageLabels'
-                    models:
-                        description: Model variants this input is used for
+                        - 'true'
+                        - 'false'
+                defaults:
+                    type: object
+                    properties:
+                        calc:
+                            nullable: true
+                            anyOf:
+                                - type: string
+                                - type: number
+                        gui:
+                            nullable: true
+                            anyOf:
+                                - type: string
+                                - type: number
+                enum:
+                    description: XXX
+                    type: object
+                    additionalProperties: true
+                gui:
+                    description: GUI navigation label
+                    schema:
+                        $ref: '#/components/schemas/LanguageLabels'
+                help:
+                    description: Help texts
+                    schema:
+                        $ref: '#/components/schemas/LanguageLabels'
+                labels:
+                    description: Input labels
+                    schema:
+                        $ref: '#/components/schemas/LanguageLabels'
+                models:
+                    description: Model variants this input is used for
+                    type: array
+                    items:
+                        type: string
+                options:
+                    description: XXX
+                    type: array
+                    items:
                         type: array
                         items:
                             type: string
-                    options:
-                        description: XXX
-                        type: array
-                        items:
-                            type: array
-                            items:
-                                type: string
-                    optionsLang:
-                        description: XXX
-                        type: array
-                        items:
-                            schema:
-                                $ref: '#/components/schemas/LanguageLabels'
-    #                        type: object
-                    order:
-                        description: Number used for sorting
-                        type: integer
-                    type:
-                        description: Data type
-                        type: string
-                        enum:
-                            - 'float'
-                            - 'integer'
-                            - 'percent'
-                            - 'text'
-                            - 'enum'
-                            - 'enum{ignore}'
-                    units:
-                        description: Input labels
+                optionsLang:
+                    description: XXX
+                    type: array
+                    items:
                         schema:
                             $ref: '#/components/schemas/LanguageLabels'
-                    variable:
-                        description: bla
-                        type: string
-                    validator:
-                        description: Input validator
-                        schema:
-                            oneOf:
-                                - $ref: '#/components/schemas/EmptyHash'
-                                - $ref: '#/components/schemas/ValidatorHash'
-                    variable:
-                        description: bla
-                        type: string
-            EmptyHash:
-                type: object
-                properties: {}
-            ValidatorHash:
-                type: object
-                properties:
-                    name:
-                        description: Operation name
-                        type: string
-                        enum:
-                            - 'ge'
-                            - 'between'
-                    args:
-                        description: Arguments
-                        type: array
-                        items:
-                            anyOf: # TODO: convert to numbers in backend
-                                - type: number
-                                - type: string
-            OutputVariables:
+#                        type: object
+                order:
+                    description: Number used for sorting
+                    type: integer
+                type:
+                    description: Data type
+                    type: string
+                    enum:
+                        - 'float'
+                        - 'integer'
+                        - 'percent'
+                        - 'text'
+                        - 'enum'
+                        - 'enum{ignore}'
+                units:
+                    description: Input labels
+                    schema:
+                        $ref: '#/components/schemas/LanguageLabels'
+                variable:
+                    description: bla
+                    type: string
+                validator:
+                    description: Input validator
+                    schema:
+                        oneOf:
+                            - $ref: '#/components/schemas/EmptyHash'
+                            - $ref: '#/components/schemas/ValidatorHash'
+                variable:
+                    description: bla
+                    type: string
+        EmptyHash:
+            type: object
+            properties: {}
+        ValidatorHash:
+            type: object
+            properties:
+                name:
+                    description: Operation name
+                    type: string
+                    enum:
+                        - 'ge'
+                        - 'between'
+                args:
+                    description: Arguments
+                    type: array
+                    items:
+                        anyOf: # TODO: convert to numbers in backend
+                            - type: number
+                            - type: string
+        OutputVariables:
+            type: object
+            additionalProperties:
                 type: object
                 additionalProperties:
-                    type: object
-                    additionalProperties:
-                        oneOf:
-                            - type: integer
-                            - type: string
-            Data:
-                type: object
-                required:
-                    - datasetName
-                    - variable
-                    - value
-                properties:
-                    datasetName:
-                        description: Dataset name
+                    oneOf:
+                        - type: integer
+                        - type: string
+        Data:
+            type: object
+            required:
+                - datasetName
+                - variable
+                - value
+            properties:
+                datasetName:
+                    description: Dataset name
+                    type: string
+                variable:
+                    description: Variable name
+                    type: string
+                value:
+                    description: Value
+                    oneOf:
+                        - type: integer
+                        - type: string
+                row:
+                    description: Row
+                    type: integer
+                branches:
+                    description: Branches
+                    type: array
+                    items:
                         type: string
-                    variable:
-                        description: Variable name
+                options:
+                    description: Options
+                    type: array
+                    items:
                         type: string
-                    value:
-                        description: Value
-                        oneOf:
-                            - type: integer
-                            - type: string
-                    row:
-                        description: Row
-                        type: integer
-                    branches:
-                        description: Branches
-                        type: array
-                        items:
-                            type: string
-                    options:
-                        description: Options
-                        type: array
-                        items:
-                            type: string
-            SetRemoveTag:
-                type: object
-                required:
-                    - datasets
-                    - tagName
-                properties:
-                    datasets:
-                        description: Dataset list
-                        type: array
-                        items:
-                            type: string
-                    tagName:
-                        description: Tag name
+        SetRemoveTag:
+            type: object
+            required:
+                - datasets
+                - tagName
+            properties:
+                datasets:
+                    description: Dataset list
+                    type: array
+                    items:
                         type: string
-            BadRequest:
-                required:
-                    - error
-                properties:
-                    error:
-                        type: string
-            Error:
-                required:
-                    - error
-                properties:
-                    error:
-                        type: string
-            CreationFailed:
-                required:
-                    - error
-                properties:
-                    error:
-                        type: string
-            Unknown:
-                required:
-                    - error
-                properties:
-                    error:
-                        type: string
+                tagName:
+                    description: Tag name
+                    type: string
+        BadRequest:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
+        Error:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
+        CreationFailed:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
+        Unknown:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
