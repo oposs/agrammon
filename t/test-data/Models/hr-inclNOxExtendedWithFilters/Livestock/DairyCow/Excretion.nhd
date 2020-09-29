@@ -43,8 +43,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 +animalcategory
   type = enum
   filter = true
-  #default_gui  = dairy_cow
-  #default_calc = dairy_cow
+  default_gui  = dairy_cow
+  default_calc = dairy_cow
   ++enum
     +++dairy_cow
        en = Dairy_cow
@@ -58,13 +58,13 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = -
 ++description
     Animal category
-#++help
-#  +++en
-#     <p>There are no sub categories for dairy cows.</p>
-#  +++de
-#     <p>Für Milchkühe sind keine Unterkategorien vorgesehen.</p>
-#  +++fr
-#     <p><Für Milchkühe sind keine Unterkategorien vorgesehen./p>
+++help
+  +++en
+     <p>There are no sub categories for dairy cows.</p>
+  +++de
+     <p>Für Milchkühe sind keine Unterkategorien vorgesehen.</p>
+  +++fr
+     <p><Für Milchkühe sind keine Unterkategorien vorgesehen./p>
 
 +dairy_cows
   type = integer
@@ -253,22 +253,3 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(dairy_cows);
   ++description
     Number of dairy cows in barn.
-
-#+animalcategory
-#  print = 9
-#  ++units
-#    en = -
-#  ++formula
-#    'DairyCow'
-##    In(animalcategory);
-#  ++description
-#    Animal category
-
-#+animalcategory
-#  print = 9
-#  ++units
-#    en = -
-#  ++description
-#    Animal category (needed only for Detail Report)
-#  ++formula
-#    'DairyCow';

@@ -117,15 +117,6 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
 
 *** output ***
 
-#+animalcategory
-#  print = 7
-#  ++units
-#    en = -
-#  ++description
-#    Animal category
-#  ++formula
-#    Val(animalcategory, Pig::Excretion);
-
 +n_excretion
   print = 7
   ++units  

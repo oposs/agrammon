@@ -474,12 +474,3 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
      ( Val(n_into_housing, DairyCow::Housing) * Val(share_liquid, DairyCow::Housing::Type)  +
        Val(n_into_yard, DairyCow::Yard)
      ) *  Out(er_n2o_nliquid);
-
-#+animalcategory
-#  print = 7
-#  ++units
-#    en = -
-#  ++description
-#    Animal category
-#  ++formula
-#    Val(animalcategory, DairyCow::Excretion);

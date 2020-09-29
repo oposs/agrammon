@@ -723,12 +723,3 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual soluble N excreted by a specified number fo pigs.
   ++formula
     Tech(share_Nsol) * Out(n_excretion);
-
-#+animalcategory
-#  print = 9
-#  ++units
-#    en = -
-#  ++description
-#    Animal category
-#  ++formula
-#    In(animalcategory);
