@@ -1,0 +1,221 @@
+*** general ***
+
+author   = Agrammon Group			
+date     = 2017-07-10
+taxonomy = Application::Slurry
+gui      = Application::Slurry,Hofdüngerausbringung::Gülle,Epandage::Lisier,Application::Slurry
+
++short
+
+ Computes the annual NH3 emission from slurry
+ application.
+
++description 
+
+ This process computes the annual NH3 emission from slurry 
+ application. The standard emission factor for slurry application is corrected 
+ according to the TAN content and the application rate, the application 
+ technology, the crops to which the manure is applied, soft measures applied 
+ during application and the application season. 
+
+ Since slurry is hardly incorporated in Switzerland, no correction for 
+ incorporeation was made for slurry application. 
+
+
+\subsubsection{References:}
+Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
+
+ Frick R, Menzi H, Katz P 1996. Ammoniakverluste nach der
+ Hofdüngeranwendung. FAT-Bericht Nr. 486.
+
+Katz P E 1996. Dissertation: Ammoniakemissionen nach der Gülleanwendung auf 
+ Grünland. Diss. ETH Nr. 11382. Dissertation. Eidgenössische Technische 
+ Hochschule Zürich.
+
+ Menzi H, Frick R, Kaufmann R 1997a. Ammoniak-Emissionen in der Schweiz: 
+ Ausmass und technische Beurteilung des Reduktionspotentials. Eidgenössische 
+ Forschungsanstalt für Agrarökologie und Landbau, Zürich-Reckenholz. 107pp. 
+
+ Menzi H, Katz, PE, Fahrni M, Neftel A, Frick R 1998. A simple empirical model
+  based on regression analysis to estimate ammonia emissions after manure
+  application. Atmospheric Environment 32:301-307.
+
+Sogaard H T, Sommer S G, Hutchings N J, Huijsmans J F M, Bussink D W, Nicholson F 2002. Ammonia volatilization from field-applied animal slurry - the ALFAM model. Atmospheric Environment 36: 3309-3319.
+
+Sommer S G 2001b. Effect of coposting on nutrient loss and nitrogen availability of cattle deep litter. European Journal of Agronomy 14: 123-133.
+
+
+*** input ***
+
+*** technical ***
+
++er_App_cattle_liquid
+  value = 0.5
+  ++units 
+    en = -
+  ++description
+    Emission rate for slurry application based on TAN of the slurry. The 
+    average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al. (1998), Menzi et al. (1997a)
+ 
++er_App_pigs_liquid
+  value = 0.35
+  ++units 
+    en = -
+  ++description
+
+   Die Emissionsrate wurde gemäss ALFAM Modell (Sogaard et al., 2002) berechnet mit folgenden Inputdaten: durchschnittliche Temperatur von März bis November: 12°C (Daten SMA Station Bern Liebefeld 1993-2002); Windgeschwindigkeit von 1 m/s:
+Schweinegülle Mast: TAN Gehalt Gülle: 2.1 kg/m3 (Verdünnung 1:1, d.h. 2.5 % TS gemäss Flisch et al., 2009); ohne Korrekturen für emissionsminderende Ausbringung, ohne Einarbeitung nach Ausbringung; Ausbringungsmenge: 30 m3/ha; mikrometeorologische Messung: 30.3 % TAN (Mittelwert Boden feucht, Boden trocken). Bei gleichen Annahmen, jedoch einer reduzierten Ausbringungsmenge von 20 m3/ha (aufgrund des im Vergleich zu Rindergülle höheren TAN-Gehalts) und eines TS Gehalts von 3 % (höherer Strohanteil bei Labelsystemen): 33.2 %.
+Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt Gülle: 1.65 kg/m3; Verdünnung 1:1, d.h. 2.5 % TS gemäss Flisch et al., 2009) Emissionsraten von 32.9 % bzw. 36.2 % TAN.
+
++er_App_fermented_slurry
+  value = 0.53
+  ++units
+    en = -
+  ++description
+    Emission rate for fermented slurry based on TAN of the slurry.
+
++er_n2_App_liquid
+  value = 0.0
+  ++units 
+    en = -
+  ++description
+    Emission rate for manure application. Not considerd relevant
+
+
++er_no_App_liquid
+  value = 0.0055
+  ++units 
+    en = -
+  ++description
+    Emission rate for manure application. Stehfest, Bouwman 2006
+
++er_n2o_App_liquid
+  value = 0.01
+  ++units 
+    en = -
+  ++description
+    Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
+
+*** external ***
+
++::Livestock
++::Storage
++Slurry::Ctech
++Slurry::Applrate
++Slurry::Csoft
++Slurry::Cseason
++Slurry::Cfermented
++Slurry::CfreeFactor
+
+*** output ***
+
++er_App_liquid
+  print = 15	      
+  ++units 
+    en = -
+  ++description
+    Emission rate for slurry application based on TAN of the slurry. The 
+    average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al (1998), Menzi et al. (1997a) and Sogaard et al. (2002)
+  ++formula
+      my $out;
+      if ( Val(n_into_storage_liquid, ::Livestock) != 0 ) {
+          $out = (
+                     Val(n_into_storage_liquid_pigs, ::Livestock) * Tech(er_App_pigs_liquid) +
+                   ( Val(n_into_storage_liquid, ::Livestock) - Val(n_into_storage_liquid_pigs, ::Livestock)) * Tech(er_App_cattle_liquid)
+                 )
+                 / Val(n_into_storage_liquid, ::Livestock);
+                 
+      }
+      else {
+             $out = (Tech(er_App_cattle_liquid) + Tech(er_App_pigs_liquid) )/2;
+      }
+      return $out;
+        
+
++nh3_nliquid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual NH3 emission from slurry application.
+  ++formula
+    Val(tan_into_application_liquid, ::Storage)
+    * (1 - Val(share_fermented_slurry, Slurry::Cfermented))
+    * ( Out(er_App_liquid) + Val(c_app, Slurry::Applrate) ) 
+    * Val(c_tech, Slurry::Ctech) 
+    * Val(c_soft, Slurry::Csoft) 
+    * Val(c_season, Slurry::Cseason) 
+    * Val(c_free_factor_application, Slurry::CfreeFactor)   +
+
+    Val(tan_into_application_liquid, ::Storage)
+    * Val(share_fermented_slurry, Slurry::Cfermented)
+    * ( Tech(er_App_fermented_slurry) + Val(c_app, Slurry::Applrate) ) 
+    * Val(c_tech, Slurry::Ctech) 
+    * Val(c_soft, Slurry::Csoft) 
+    * Val(c_season, Slurry::Cseason)
+    * Val(c_free_factor_application, Slurry::CfreeFactor) ;
+
++n2_nliquid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N2  emission from slurry application.
+  ++formula
+    Val(n_into_application_liquid, ::Storage)
+    *  Tech(er_n2_App_liquid)
+
++no_nliquid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual NO emission from slurry application.
+  ++formula
+    Val(n_into_application_liquid, ::Storage)
+    *  Tech(er_no_App_liquid)
+
++n2o_nliquid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N2O emission from slurry application.
+  ++formula
+    Val(n_into_application_liquid, ::Storage)
+    *  Tech(er_n2o_App_liquid)
+    
++n_remain_liquid
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N remaining on the field from slurry application. 
+  ++formula
+    Val(n_into_application_liquid, ::Storage) -
+    Out(nh3_nliquid) - Out(n2_nliquid) -
+    Out(no_nliquid) - Out(n2o_nliquid);
+    
+
++tan_remain_liquid
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N as TAN remaining on field the from slurry/liquid application.
+  ++formula
+    Val(tan_into_application_liquid, ::Storage) -
+    Out(nh3_nliquid) - Out(n2_nliquid) -
+    Out(no_nliquid) - Out(n2o_nliquid);

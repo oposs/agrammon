@@ -1,0 +1,1214 @@
+
+*** general ***
+
+author   = Agrammon Group 
+date     = 2009-04-22
+taxonomy = DetailsByAnimalCategory
+
+
++short
+
+Collects the annual NH3 emission by Animalcategories
+
++description 
+
+
+*** external ***
+
++ReportConfig
+
++Livestock
++Livestock::DairyCow
+  aggregate=SUM
++Livestock::DairyCow::Excretion
+  aggregate=SUM
++Livestock::DairyCow::Housing
+  aggregate=SUM
++Livestock::DairyCow::Yard
+  aggregate=SUM
++Livestock::DairyCow::Grazing
+  aggregate=SUM
+
++Livestock::OtherCattle
+  aggregate=SUM
++Livestock::OtherCattle::Excretion
+  aggregate=SUM
++Livestock::OtherCattle::Housing
+  aggregate=SUM
++Livestock::OtherCattle::Yard
+  aggregate=SUM
++Livestock::OtherCattle::Grazing
+  aggregate=SUM
+
++Livestock::Pig
+  aggregate=SUM
++Livestock::Pig::Excretion
+  aggregate=SUM
++Livestock::Pig::Housing
+  aggregate=SUM
++Livestock::Pig::Grazing
+  aggregate=SUM
+
++Livestock::FatteningPigs
+  aggregate=SUM
++Livestock::FatteningPigs::Excretion
+  aggregate=SUM
++Livestock::FatteningPigs::Housing
+  aggregate=SUM
++Livestock::FatteningPigs::Grazing
+  aggregate=SUM
+
++Livestock::Poultry
+  aggregate=SUM
++Livestock::Poultry::Excretion
+  aggregate=SUM
++Livestock::Poultry::Housing
+  aggregate=SUM
++Livestock::Poultry::Outdoor
+  aggregate=SUM
+
++Livestock::Equides
+  aggregate=SUM
++Livestock::Equides::Excretion
+  aggregate=SUM
++Livestock::Equides::Housing
+  aggregate=SUM
++Livestock::Equides::Yard
+  aggregate=SUM
++Livestock::Equides::Grazing
+  aggregate=SUM
+
++Livestock::SmallRuminants
+  aggregate=SUM
++Livestock::SmallRuminants::Excretion
+  aggregate=SUM
++Livestock::SmallRuminants::Housing
+  aggregate=SUM
++Livestock::SmallRuminants::Grazing
+  aggregate=SUM
+
++Livestock::RoughageConsuming
+  aggregate=SUM
++Livestock::RoughageConsuming::Excretion
+  aggregate=SUM
++Livestock::RoughageConsuming::Housing
+  aggregate=SUM
++Livestock::RoughageConsuming::Grazing
+  aggregate=SUM
+
++Storage
++Storage::Slurry
+  aggregate=SUM
++Storage::SolidManure
++Storage::SolidManure::Poultry
++Storage::SolidManure::Solid
+
++Application
++Application::SolidManure
++Application::SolidManure::Poultry
++Application::SolidManure::Solid
+
+
+*** output ***
+
++excretion_details
+  print = DetailsByAnimalCategory
+  format= %.1f
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels 
+     sort = 00
+     en = Total Excretion
+     de = Totale Ausscheidung
+     fr = Total Excretion
+  ++description
+    Annual N and TAN excretion by animal category.
+  ++formula
+     my @outArray;
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         my %output;
+         my $out = $OUT->{"Livestock_${type}_Excretion"}{INST};
+         delete $out->{DUMMY};
+         my $v = 0;
+         for my $varName (qw(Ntot TAN)) {
+             my $var = lc $varName;
+             $var = 'n'   if $varName eq 'Ntot';
+             my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+             for my $inst (sort keys %$out) {
+                 my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+                 die "No category for $type" unless $cat;
+                 $output{$cat}{$var} += $out->{$inst}{"Out_${var}_excretion"};
+             }
+
+             my $c = 1;
+             for my $cat (sort {
+                              $catOrder->{$a} cmp $catOrder->{$b}
+                          } keys %output) {
+                 push @outArray, {
+                     category => $cat,
+                     value    => $output{$cat}{$var},
+                     source   => "Livestock:$type:Excretion",
+                     type     => "Livestock:$type",
+                     sort     => $t*10000 + $c*1000 + $v*1,
+                     var      => "Ausscheidung $varName",
+                     print    => "DetailsFlux$varName,Details$type",
+                 };
+                 $c++;
+             }
+             $v++;
+         }
+         $t++;
+     }
+     return \@outArray;
+
++excretion_pasture_details
+  print = DetailsByAnimalCategory
+  format= %.1f
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels 
+     sort = 50
+     en = Total Excretion
+     de = Totale Ausscheidung
+     fr = Total Excretion
+  ++description
+    Annual N and TAN flux into grazing
+  ++formula
+     my @outArray;
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         my %output;
+         my $out = $OUT->{"Livestock_${type}_Grazing"}{INST};
+         delete $out->{DUMMY};
+
+         for my $varName (qw(Ntot TAN)) {
+             my $var = lc $varName;
+             $var = 'n' if $varName eq 'Ntot';
+             if ($type eq 'Poultry') {
+                 $var = "${var}_free_range";
+             }
+             else {
+                 $var = "${var}_remain";
+             }
+             my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+             for my $inst (sort keys %$out) {
+                 my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+                 die "No category for $type" unless $cat;
+                 $output{$cat}{$var} += ($out->{$inst}{"Out_${var}"} //0); # WHY //0
+             }
+         }
+
+         my $v = 0;
+         for my $varName (qw(Ntot TAN)) {
+             my $var = lc $varName;
+             $var = 'n'     if $varName eq 'Ntot';
+             # if ($type eq 'Poultry') {
+             #     $var = 'n_free_range';
+             # }
+             # else {
+             #     $var = 'n_remain';
+             # }
+             my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+             $var = "${var}_into_grazing";
+             for my $inst (sort keys %$out) {
+                 my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+                 die "No category for $type" unless $cat;
+                 $output{$cat}{$var} += $out->{$inst}{"Out_${var}"};
+             }
+
+             my $c = 1;
+             for my $cat (sort {
+                             $catOrder->{$a} cmp $catOrder->{$b}
+                               } keys %output) {
+                 push @outArray, {
+                     category => $cat,
+                     value    => $output{$cat}{$var},
+#                     source   => $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                     source   => "Livestock:$type:Excretion",
+                     type     => "Livestock:$type",
+                     sort     => $t*10000 + $c*1000 + $v*1,
+                     var      => "$varName into grazing",
+                     print    => "DetailsFlux$varName,Details$type",
+                 };
+                 $c++;
+             }
+             $v++;
+         }
+         $t++;
+     }
+     return \@outArray;
+
+
++housing_and_yard_emission_details
+  print = DetailsByAnimalCategory
+  format= %.1f
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels 
+     sort = 200
+     en = Housing and Yard
+     de = Stall und Laufhof
+     fr = Housing and Yard
+  ++description
+    Annual NH3 emission from grazing by animal category.
+  ++formula
+     my @outArray;
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         my %output;
+         my $outHousing = $OUT->{"Livestock_${type}_Housing"}{INST};
+         delete $outHousing->{DUMMY};
+         my $outYard = $OUT->{"Livestock_${type}_Yard"}{INST};
+         delete $outYard->{DUMMY};
+
+         my $v = 0;
+         for my $varName (qw(NH3)) {
+             my $var = lc $varName;
+             $var = 'n' if $varName eq 'Ntot';
+
+             my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+             for my $inst (sort keys %$outHousing) {
+                 my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+                 die "No category for $type" unless $cat;
+                 if ($varName =~ /TAN|Ntot/) {
+                     if ($type =~ /Pig|Poultry|SmallRuminants|RoughageConsuming/ ) { # no yard
+                         $output{$cat}{$var} += $outHousing->{$inst}{"Out_${var}_outhousing"};
+                     }
+                     else {
+                         $output{$cat}{$var} += $outHousing->{$inst}{"Out_${var}_outhousing"} + $outYard->{$inst}{"Out_${var}_outyard"};
+                     }
+                 }
+                 else {
+                     if ($type =~ /Pig|Poultry|SmallRuminants|RoughageConsuming/ ) { # no yard
+                         $output{$cat}{$var} += $outHousing->{$inst}{"Out_${var}_nhousing"};
+                     }
+                     else {
+                         $output{$cat}{$var} += $outHousing->{$inst}{"Out_${var}_nhousing"} + $outYard->{$inst}{"Out_${var}_nyard"};
+                     }
+                 }
+             }
+
+             my $c = 1;
+             for my $cat (sort  {
+                      $catOrder->{$a} cmp $catOrder->{$b}
+                      } keys %output) {
+                 push @outArray, {
+                     category => $cat,
+                     value    => $output{$cat}{$var},
+                     source   => "Livestock:$type:Excretion",
+                     type     => "Livestock:$type",
+                     sort     => $t*10000 + $c*1000 + $v*1,
+                     var      => "Housing and yard $varName",
+                     print    => "DetailsEmissions$varName,Details$type",
+                 };
+                 $c++;
+             }
+             $v++;
+         }
+         $t++;
+     }
+     return \@outArray;
+
+
++housing_and_yard_flux_details
+  print = DetailsByAnimalCategory
+  format= %.1f
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels 
+     sort = 200
+     en = Housing and Yard
+     de = Stall und Laufhof
+     fr = Housing and Yard
+  ++description
+    Annual NH3 emission from grazing by animal category.
+  ++formula
+     my @outArray;
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         my %output;
+         my $outHousing = $OUT->{"Livestock_${type}_Housing"}{INST};
+         delete $outHousing->{DUMMY};
+         my $outYard = $OUT->{"Livestock_${type}_Yard"}{INST};
+         delete $outYard->{DUMMY};
+# say Dumper "outHousing=", $outHousing;
+# say Dumper "outYard=",    $outYard;
+
+         my $v = 0;
+         for my $varName (qw(Ntot TAN)) {
+             my $var = lc $varName;
+             $var = 'n' if $varName eq 'Ntot';
+
+             for my $inst (sort keys %$outHousing) {
+                 for my $part (qw(total liquid solid)) {
+                     my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+                     die "No category for $type" unless $cat;
+                     if ($part eq 'total') {
+                         $output{$cat}{$var}{"into storage $part"} += ( $outHousing->{$inst}{"Out_${var}_outhousing"} // 0) +
+                                                                      ( $outYard->{$inst}{"Out_${var}_outyard"}       // 0);
+                     }
+                     else {
+                         $output{$cat}{$var}{"into storage $part"} += ( $outHousing->{$inst}{"Out_${var}_outhousing_$part"} // 0) +
+                                                                      ( $outYard->{$inst}{"Out_${var}_outyard_$part"}       // 0);
+                     }                                                
+                 }
+             }
+
+             for my $inst (sort keys %$outHousing) {
+                 my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+                 die "No category for $type" unless $cat;
+                 $output{$cat}{$var}{"into housing and yard"} += ( $outHousing->{$inst}{"Out_${var}_into_housing"} // 0) +
+                                                                 ( $outYard->{$inst}{"Out_${var}_into_yard"}       // 0);
+             }
+
+             my $c = 1;
+             my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+             for my $cat (sort  {
+                             $catOrder->{$a} cmp $catOrder->{$b}
+                          } keys %output) {
+                 my $f = 1;
+                 for my $flux (sort keys %{$output{$cat}{$var}}) {
+                     push @outArray, {
+                         category => $cat,
+                         value    => $output{$cat}{$var}{$flux},
+                         source   => $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                         type     => "Livestock:$type",
+                         sort     => $t*10000 + $c*1000 + $v*1 + $f*10,
+                         var      => "$varName $flux",
+                         print    => "DetailsFlux$varName,Details$type",
+                     };
+                     $f++;
+                 }
+                 $c++;
+             }
+             $v++;
+         }
+         $t++;
+     }
+     return \@outArray;
+
+
++grazing_emission_details
+  print = DetailsByAnimalCategory
+  format= %.1f
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels 
+     sort = 100
+     en = Grazing
+     de = Weide
+     fr = Grazing
+  ++description
+    Annual NH3 emission from grazing by animal category.
+  ++formula
+     my @outArray;
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         my %output;
+         my $out;
+         if ($type eq 'Poultry') {
+             $out = $OUT->{"Livestock_${type}_Outdoor"}{INST};
+         }
+         else {
+             $out = $OUT->{"Livestock_${type}_Grazing"}{INST};
+         }
+         delete $out->{DUMMY};
+
+         my $v = 0;
+         for my $varName (qw(NH3 N2 NO N2O)) {
+             my $var = lc $varName;
+
+             my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+             for my $inst (sort keys %$out) {
+                 my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+                 die "No category for $type" unless $cat;
+                 if ($type eq 'Poultry') {
+                     $output{$cat}{$var} += $out->{$inst}{"Out_${var}_free_range"};
+                 }
+                 else {
+                     $output{$cat}{$var} += $out->{$inst}{"Out_${var}_ngrazing"};
+                 }
+             }
+
+             my $c = 1;
+             for my $cat (sort  {
+                             $catOrder->{$a} cmp $catOrder->{$b}
+                          } keys %output) {
+                 push @outArray, {
+                     category => $cat,
+                     value    => $output{$cat}{$var},
+                     source   =>  $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                     type     => "Livestock:$type",
+                     sort     => $t*10000 + $c*1000 + $v*1,
+                     var      => "Grazing $varName",
+                     print    => "DetailsEmissions$varName,Details$type",
+                };
+                $c++;
+             }
+             $v++;
+         }
+         $t++;
+     }
+     return \@outArray;
+
+
++grazing_flux_details
+  print = DetailsByAnimalCategory
+  format= %.1f
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels 
+     sort = 650
+     en = Grazing
+     de = Weide
+     fr = Grazing
+  ++description
+    Annual NH3 emission from grazing by animal category.
+  ++formula
+     my @outArray;
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         my %output;
+
+
+         my $out;
+         if ($type eq 'Poultry') {
+             $out = $OUT->{"Livestock_${type}_Outdoor"}{INST};
+         }
+         else {
+             $out = $OUT->{"Livestock_${type}_Grazing"}{INST};
+         }
+         delete $out->{DUMMY};
+         my $outExcretion =  $OUT->{"Livestock_${type}_Excretion"}{INST};
+         delete $outExcretion->{DUMMY};
+
+          my %emissions;
+          for my $varName (qw(NH3 N2 NO N2O)) {
+              my $var = lc $varName;
+
+              my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+              for my $inst (sort keys %$out) {
+                  my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+                  die "No category for $type" unless $cat;
+                  if ($type eq 'Poultry') {
+                      $emissions{$var}{$cat}  += $out->{$inst}{"Out_${var}_free_range"};
+                      $emissions{total}{$cat} += $out->{$inst}{"Out_${var}_free_range"};
+                  }
+                  else {
+                      $emissions{$var}{$cat}  += $out->{$inst}{"Out_${var}_ngrazing"};
+                      $emissions{total}{$cat} += $out->{$inst}{"Out_${var}_ngrazing"};
+                  }
+              }
+         }
+
+if ($type eq 'Poultry') {
+#    for my $key (sort keys %$OUT) {
+#        say Dumper "OUT $key=", $OUT->{$key} if $key =~ /Livestock_Poultry/;
+#    }
+}
+         my $v = 0;
+         for my $varName (qw(Ntot TAN)) {
+             my $var = lc $varName;
+             $var = 'n'     if $varName eq 'Ntot';
+             my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+             for my $inst (sort keys %$out) {
+                 my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+
+                 my $into_grazing;
+                 if ($type eq 'Poultry') {
+                     $into_grazing = $out->{$inst}{"Out_${var}_free_range"};
+                 }
+                 else {
+                     $into_grazing = $out->{$inst}{"Out_${var}_into_grazing"};
+                 }
+                 my $into_soil_from_grazing = $into_grazing - $emissions{total}{$cat};
+
+                 $output{$cat}{$var}{"into grazing"}                           += $into_grazing;
+                 $output{$cat}{$var}{"into soil from grazing"}                 += $into_soil_from_grazing;
+                 $OUT->{DETAILS}{intoSoil}{fromGrazing}{$type}{$cat}{$varName} += $into_soil_from_grazing;
+             }
+
+             my $c = 1;
+             for my $cat (sort {
+                              $catOrder->{$a} cmp $catOrder->{$b}
+                          } keys %output) {
+                 push @outArray, {
+                     category => $cat,
+                     value    => $output{$cat}{$var}{"into grazing"},
+                     source   =>  $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                     type     => "Livestock:$type",
+                     sort     => $t*10000 + $c*1000 + $v*1,
+                     var      => "ZZZZZZ $varName into grazing",
+                     print    => "Details$type",
+                 };
+                 push @outArray, {
+                     category => $cat,
+                     value    => $output{$cat}{$var}{"into soil from grazing"},
+                     source   =>  $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                     type     => "Livestock:$type",
+                     sort     => $t*10000 + $c*1000 + $v*1,
+                     var      => "$varName into soil from grazing total",
+                     print    => "DetailsFlux$varName,Details$type",
+                 };
+                 $c++;
+             }
+             $v++;
+         }
+         $t++;
+#### say Dumper "OUT->{DETAILS}=", $OUT->{DETAILS} if $type eq 'Poultry';
+     }
+
+     return \@outArray;
+
+
++nitrogen_details
+  print = DetailsByAnimalCategory
+  format= %.1f
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels 
+     sort = 600
+     en = Housing, Yard, and Storage
+     de = Stall, Laufhof und Lager
+     fr = Housing, Yard, and Storage
+  ++description
+    Annual N2O emission from housing, yard, and storage by animal category.
+  ++formula
+     my @outArray;
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         my %output;
+         my $out = $OUT->{"Livestock_${type}"}{INST};
+         delete $out->{DUMMY};
+
+         my $v = 0;
+         my $ctot = 0;
+         for my $varName (qw(N2O NO N2)) {
+             my $var = lc $varName;
+
+             my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+             for my $inst (sort keys %$out) {
+                 my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+                 die "No category for $type" unless $cat;
+                 $output{$cat}{$var}   += ($out->{$inst}{"Out_${var}_nsolid"} // 0) + ($out->{$inst}{"Out_${var}_nliquid"} // 0);
+                 $output{$cat}{ntotal} += ($out->{$inst}{"Out_${var}_nsolid"} // 0) + ($out->{$inst}{"Out_${var}_nliquid"} // 0);
+             }
+
+             my $c = 1;
+             for my $cat (sort
+                          {
+                              $catOrder->{$a} cmp $catOrder->{$b}
+                          }
+                          keys %output) {
+                 push @outArray, {
+                     category => $cat,
+                     value    => $output{$cat}{$var},
+                     source   =>  $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                     type     => "Livestock:$type",
+                     sort     => $t*10000 + $c*1000 + $v*1,
+                     var      => "Housing, yard and storage $varName",
+                     print    => "DetailsEmissions$varName,Details$type",
+                 };
+                 $c++;
+             }
+             $ctot = $c;
+             $v++;
+         }
+
+         my $c = $ctot-1;
+         $v++;
+         for my $cat (sort keys %output) {
+             push @outArray, {
+                 category => $cat,
+                 value    => $output{$cat}{ntotal},
+                 source   =>  $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                 type     => "Livestock:$type",
+                 sort     => $t*10000 + $c*1000 + $v*1,
+                 var      => 'Total nitrogen',
+                 print    => "Details$type",
+             };
+             $v++;
+         }
+
+         $t++;
+     }
+     return \@outArray;
+
+# +nitrogen_flux
+#   print = DetailsByAnimalCategory
+#   format= %.1f
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#    ++labels 
+#      sort = 600
+#      en = Housing, Yard, and Storage
+#      de = Stall, Laufhof und Lager
+#      fr = Housing, Yard, and Storage
+#   ++description
+#     Annual Ntot flux from housing, yard, and storage by animal category.
+#   ++formula
+#      my @outArray;
+#      my $t = 1;
+#      for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+#          my %output;
+#          my $out = $OUT->{"Livestock_${type}"}{INST};
+#          delete $out->{DUMMY};
+#          my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+
+#          my $v = 0;
+#          my $ctot = 0;
+#          for my $varName (qw(N2O NO N2 Ntot)) {
+#              my $var = lc $varName;
+#              $var = 'n' if $varName eq 'Ntot';
+
+#              my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+#              for my $inst (sort keys %$out) {
+#                  my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+#                  die "No category for $type" unless $cat;
+#                  $output{$cat}{$var}   += ($out->{$inst}{"Out_${var}_nsolid"} // 0) + ($out->{$inst}{"Out_${var}_nliquid"} // 0);
+#                  $output{$cat}{ntotal} += ($out->{$inst}{"Out_${var}_nsolid"} // 0) + ($out->{$inst}{"Out_${var}_nliquid"} // 0);
+#              }
+
+#              my $c = 1;
+#              for my $cat (sort {
+#                               $catOrder->{$a} cmp $catOrder->{$b}
+#                           }
+#                           keys %output) {
+#                  # doppelt
+#                  # push @outArray, {
+#                  #     category => $cat,
+#                  #     value    => $output{$cat}{$var},
+#                  #     source   =>  $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+#                  #     type     => "Livestock:$type",
+#                  #     sort     => $t*10000 + $c*1000 + $v*1,
+#                  #     var      => "BBBBB $varName liquid+solid",
+#                  #     print    => "DetailsFlux$varName,Details$type",
+#                  # };
+#                  $c++;
+#              }
+#              $ctot = $c;
+#              $v++;
+#          }
+
+#          # my $c = $ctot-1;
+#          # $v++;
+#          # for my $cat (sort {
+#          #                  $catOrder->{$a} cmp $catOrder->{$b}
+#          #              } keys %output) {
+#          #     push @outArray, {
+#          #         category => $cat,
+#          #         value    => $output{$cat}{ntotal},
+#          #         source   =>  $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+#          #         type     => "Livestock:$type",
+#          #         sort     => $t*10000 + $c*10 + $v*1,
+#          #         var      => 'Total nitrogen liquid+solid',
+#          #         print    => "DetailsFluxNtot,Details$type",
+#          #     };
+#          #     $v++;
+#          # }
+
+#          $t++;
+#      }
+#      return \@outArray;
+
+
++storage_shares_noPoultry
+  print = DetailsByAnimalCategory
+  format= %g
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels
+     sort = 600
+     en = Storage
+     de = Lager
+     fr = Storage
+  ++description
+    Total annual N excretion by animal category.
+  ++formula
+     my @outArray;
+     my %tan;
+     my $catOrder;
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         if ($type eq 'XPoultry') {
+            $t++;
+            next;
+         }
+         $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+         my %output;
+         my $out = $OUT->{"Livestock_${type}"}{INST};
+         delete $out->{DUMMY};
+
+         for my $inst (sort keys %$out) {
+             my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+             die "YY No category for $type:$inst" unless $cat;
+             $tan{$type}{$cat}{total}  += ($out->{$inst}{Out_tan});
+             $tan{all}{total}          += ($out->{$inst}{Out_tan});
+             $tan{$type}{$cat}{liquid} += ($out->{$inst}{Out_tan_liquid});
+             $tan{all}{liquid}         += ($out->{$inst}{Out_tan_liquid});
+             $tan{$type}{$cat}{solid}  += ($out->{$inst}{Out_tan_solid});
+             $tan{all}{solid}          += ($out->{$inst}{Out_tan_solid});
+         }
+         $t++;
+     }
+
+     my %shares;
+     $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         if ($type eq 'XPoultry') {
+            $t++;
+            next;
+         }
+
+         for my $cat (keys %{$tan{$type}}) {
+             next if $cat eq 'all';
+             for my $part (qw(total liquid solid)) {
+                 if ($tan{all}{$part} == 0) {
+                     $shares{$type}{$cat}{$part} = 0;
+                 }
+                 else {
+                     $shares{$type}{$cat}{$part} = $tan{$type}{$cat}{$part} / $tan{all}{$part};
+                 }
+             }
+         }
+         $t++;
+     }
+     $OUT->{DETAILS}{storage_shares_noPoultry} = \%shares;
+     return \@outArray;
+
+
++storage_details_emissions_noPoultry
+  print = DetailsByAnimalCategory
+  format= %g
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels
+     sort = 500
+     en = Storage
+     de = Lager
+     fr = Storage
+  ++description
+    Total annual N excretion by animal category.
+  ++formula
+     my @outArray;
+     my %tan;
+     my %shares = %{$OUT->{DETAILS}{storage_shares_noPoultry}};
+
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         if ($type eq 'XPoultry') {
+            $t++;
+            next;
+         }
+
+         my $outStorage = $OUT->{Storage};
+         my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+
+         my $v = 0;
+         for my $varName (qw(NH3)) {
+             my $var = lc $varName;
+             $var = 'n' if $varName eq 'Ntot';
+             my $p = 1;
+             for my $part (qw(liquid solid total )) {
+                 my $total;
+                 if ($part eq 'total') {
+                     $total = $outStorage->{"Out_${var}_nstorage"};
+                 }
+                 else {
+                     $total = $outStorage->{"Out_${var}_nstorage_${part}"};
+                 } 
+
+                 my $c = 1;
+                 for my $cat (sort {
+                                  $catOrder->{$a} cmp $catOrder->{$b} 
+                              } keys %{$shares{$type}}) {
+                     push @outArray, {
+                         category => $cat,
+                         value    => $total * $shares{$type}{$cat}{$part},
+                         source   => $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                         type     => "Livestock:$type",
+                         sort     => $t*10000 + $c*1000 + $v*1 + $p*1,
+                         var      => "Storage $varName $part",
+                         print    => "DetailsEmissions$varName,Details$type",
+                     };
+                     $c++;
+                 } # cat
+                 $p++;
+             } # part 
+             $v++;
+         } # var
+         $t++;
+     } # type
+     return \@outArray;
+
+
++storage_details_flux_noPoultry
+  print = DetailsByAnimalCategory
+  format= %g
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels
+     sort = 600
+     en = Storage
+     de = Lager
+     fr = Storage
+  ++description
+    Total annual N excretion by animal category.
+  ++formula
+     my @outArray;
+     my %tan;
+     my %shares = %{$OUT->{DETAILS}{storage_shares_noPoultry}};
+
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         if ($type eq 'XPoultry') {
+            $t++;
+            next;
+         }
+
+         my $outStorage = $OUT->{Storage};
+         my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+# say Dumper "outStorage($type)=", $outStorage;
+
+         my $v = 0;
+         for my $varName (qw(Ntot TAN)) {
+             my $var = lc $varName;
+             $var = 'n' if $varName eq 'Ntot';
+             my $p = 1;
+             for my $part (qw( liquid solid total )) {
+                 my $total;
+                 if ($part eq 'total') {
+                     $total = $outStorage->{"Out_${var}_into_application"};
+                 }
+                 else {
+                     if ($part eq 'solid' ) {
+                         $total = $outStorage->{"Out_${var}_into_application_manure"};
+                     }
+                     else {
+                         $total = $outStorage->{"Out_${var}_into_application_${part}"};
+                     }
+                 }
+
+                 my $c = 1;
+                 for my $cat (sort {
+                                  $catOrder->{$a} cmp $catOrder->{$b}
+                              } keys %{$shares{$type}}) {
+                     $OUT->{DETAILS}{intoApplication}{$type}{$cat}{$varName}{$part} = $total * $shares{$type}{$cat}{$part};
+                     push @outArray, {
+                         category => $cat,
+                         value    => $total * $shares{$type}{$cat}{$part},
+                         source   => $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                         type     => "Livestock:$type",
+                         sort     => $t*10000 + $c*1000 + $v*1 + $p*1,
+                         var      => "$varName into application $part",
+                         print    => "DetailsFlux$varName,Details$type",
+                     };
+                     $c++;
+                 } # cat
+                 $p++;
+             } # part 
+             $v++;
+         } # var
+         $t++;
+     } # type
+     return \@outArray;
+
+
++application_details_emissions_noPoultry
+  print = DetailsByAnimalCategory
+  format= %g
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels
+     sort = 700
+     en = Application
+     de = Ausbringung
+     fr = Application
+  ++description
+    Total annual N excretion by animal category.
+  ++formula
+     my @outArray;
+     my %tan;
+     my %shares = %{$OUT->{DETAILS}{storage_shares_noPoultry}};
+     my %totals;
+     my %outputs = (
+         liquid => $OUT->{Application::Slurry},
+         solid  => $OUT->{Application::SolidManure},
+     );
+
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         if ($type eq 'XPoultry') {
+            $t++;
+            next;
+         }
+
+       my $p = 0;
+       my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+       for my $part (sort keys %outputs) {
+         my $out = $outputs{$part};
+         my $v = 0;
+         for my $varName (qw(N2 N2O NO NH3)) {
+              my $var = lc $varName;
+              my $total = $out->{"Out_${var}_n$part"};
+
+              my $c = 1;
+              for my $cat (sort {
+                               $catOrder->{$a} cmp $catOrder->{$b}
+                           } keys %{$shares{$type}}) {
+                  my $share = $total * $shares{$type}{$cat}{$part};
+                  $totals{$part}{$var}       += $share;
+                  $totals{total}{$cat}{$var} += $share;
+                  push @outArray, {
+                      category => $cat,
+                      value    => $share,
+                      source   => $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                      type     => "Livestock:$type",
+                      sort     => $t*10000 + $c*1000 + $v*1 + $p*1,
+                      var      => "Application $varName from $part",
+                      print    => "DetailsEmissions$varName,Details$type",
+                  };
+                  $c++;
+              } # cat
+#              $c = 1;
+              $v++;
+         } # var
+         $p++;
+       } # part
+       my $v = 0;
+       for my $varName (qw(N2 N2O NO NH3)) {
+            my $var = lc $varName;
+            my $c = 1;
+            for my $cat (sort {
+                             $catOrder->{$a} cmp $catOrder->{$b}
+                         } keys %{$shares{$type}}) {
+                push @outArray, {
+                    category => $cat,
+                    value    => $totals{total}{$cat}{$var},
+                    source   => $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+                    type     => "Livestock:$type",
+                    sort     => $t*10000 + $c*1000 + $v*1 + $p*1,
+                    var      => "Application $varName total",
+                    print    => "DetailsEmissions$varName,Details$type",
+                };
+                $c++;
+            }
+            $v++;
+       }
+       $t++;
+     }
+# warn Dumper "app detail emissions: outArray=", \@outArray;
+    return \@outArray;
+
+
++application_details_flux_noPoultry
+  print = DetailsByAnimalCategory
+  format= %g
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels
+     sort = 650
+     en = Application
+     de = Ausbringung
+     fr = Application
+  ++description
+    Total annual N excretion by animal category.
+  ++formula
+     my @outArray;
+     my %tan;
+     my $intoApplication = $OUT->{DETAILS}{intoApplication};
+     my %shares = %{$OUT->{DETAILS}{storage_shares_noPoultry}};
+
+     my %totals;
+     my %emissions;
+     my %outputs = (
+         liquid => $OUT->{Application::Slurry},
+         solid  => $OUT->{Application::SolidManure},
+     );
+
+#     say Dumper "outputs=", \%outputs;
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         if ($type eq 'XPoultry') {
+            $t++;
+            next;
+         }
+
+       for my $part (sort keys %outputs) {
+         my $out = $outputs{$part};
+         my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+         my $v = 0;
+         for my $varName (qw(N2 N2O NO NH3)) {
+              my $var = lc $varName;
+              my $total = $out->{"Out_${var}_n$part"};
+# say "total($var, $part)=", $total;
+              my $c = 1;
+              for my $cat (sort {
+                               $catOrder->{$a} cmp $catOrder->{$b}
+                           } keys %{$shares{$type}}) {
+                  my $share = $total * $shares{$type}{$cat}{$part};
+                  $emissions{$type}{$cat}{$part} += $share;
+                  $emissions{$type}{$cat}{total} += $share;
+                  $totals{$part}{$var} += $share;
+                  $totals{total}{$var} += $share;
+                  $c++;
+              } # cat
+              $v++;
+         } # var
+       } #part
+       $t++;
+     }
+
+     my $intoApp = $OUT->{DETAILS}{intoApplication};
+
+     $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         if ($type eq 'XPoultry') {
+            $t++;
+            next;
+         }
+# say "type=", $type // 'NOTYPE';
+# say Dumper "emissions{$type}=", $emissions{$type};
+         my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+         my $c = 1;
+         for my $cat (sort {
+                          $catOrder->{$a} cmp $catOrder->{$b}
+                      } keys %{$intoApp->{$type}}) {
+             my $v = 1;
+             for my $varName (qw(Ntot TAN)) {
+                 my $p = 0;
+                 for my $part (qw(total)) {
+                     my $source = $type =~ /DairyCow|FatteningPigs/ ? 'XXX' : "Livestock:$type:Excretion";
+                     my $var = lc $varName;
+                     push @outArray, {
+                          category => $cat,
+                         value    => $intoApp->{$type}{$cat}{$varName}{$part} - $emissions{$type}{$cat}{$part},
+                         source   => $source,
+                         type     => "Livestock:$type",
+                         sort     =>  $t*10000 + $c*1000 + $v*1,
+                         var      => "$varName into soil from application $part",
+                         print    => "DetailsFlux$varName,Details$type",
+                     };
+                     $v++;
+                     push @outArray, {
+                          category => $cat,
+                         value    => $intoApp->{$type}{$cat}{$varName}{$part} - $emissions{$type}{$cat}{$part} +
+                                      $OUT->{DETAILS}{intoSoil}{fromGrazing}{$type}{$cat}{$varName},
+                         source   => $source,
+                         type     => "Livestock:$type",
+                         sort     =>  $t*10000 + $c*1000 + $v*1,
+                         var      => "$varName into soil from application and grazing $part",
+                         print    => "DetailsFlux$varName,Details$type",
+                     };
+                     $p++;
+                 } # part
+                 $v++;
+             } # var
+             $c++;
+         } # cat
+         $t++;
+     } # type
+     return \@outArray;
+
+
++application_details_into_soil_noPoultry
+  print = DetailsByAnimalCategory
+  format= %g
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+   ++labels
+     sort = 650
+     en = Application
+     de = Ausbringung
+     fr = Application
+  ++description
+    Total annual N and TAN into soil by animal category.
+  ++formula
+     my @outArray;
+     my %tan;
+#     my $outStorage     = $OUT->{Storage};
+     my $outApplication = $OUT->{Application};
+     my %shares = %{$OUT->{DETAILS}{storage_shares_noPoultry}};
+
+#say Dumper "outStorage=", $outStorage;
+
+     my %emissions;
+     
+     my $t = 1;
+     for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+         if ($type eq 'XPoultry') {
+            $t++;
+            next;
+         }
+
+         my $catOrder = $OUT->{"ReportConfig"}{Out_animalcategory_order}{$type};
+         my $c = 1;
+         for my $cat (sort {
+                          $catOrder->{$a} cmp $catOrder->{$b}
+                      } keys %{$shares{$type}}) {
+             my $v = 1;
+             for my $varName (qw(Ntot TAN)) {
+                 my $var = lc $varName;
+                 $var = 'n' if $varName eq 'Ntot';
+
+                 my $p = 0;
+                 for my $part (qw(total)) {
+                     my $source = $type =~ /DairyCow|FatteningPigs/ ? 'XXX' : "Livestock:$type:Excretion";
+                     push @outArray, {
+                         category => $cat,
+                         value    =>  $shares{$type}{$cat}{$part} * $outApplication->{"Out_${var}_napplication"},
+                         source   => $source,
+                         type     => "Livestock:$type",
+                         sort     =>  $t*10000 + $c*1000 + $v*1,
+                         var      => "XXXX $varName into soil from application $part",
+                         print    => "DetailsFlux$varName,Details$type",
+                     };
+                     ### $v++;
+                     ### push @outArray, {
+                     ###     category => $cat,
+                     ###     value    => $intoApp->{$type}{$cat}{$varName}{$part} - $emissions{$type}{$cat}{$part} +
+                     ###                  $OUT->{DETAILS}{intoSoil}{fromGrazing}{$type}{$cat}{$varName},
+                     ###     source   => $source,
+                     ###     type     => "Livestock:$type",
+                     ###     sort     =>  $t*10000 + $c*1000 + $v*1,
+                     ###     var      => "$varName into soil from application and grazing $part",
+                     ###     print    => "DetailsFlux$varName,Details$type",
+                     ### };
+                     $p++;
+                 } # part
+                 $v++;
+             } # var
+             $c++;
+         } # cat
+         $t++;
+     } # type
+     return \@outArray;

@@ -1,0 +1,280 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-19
+taxonomy = Livestock::FatteningPigs::Housing::Type
+
++short
+
+Selects the emission rate and other correciton factors for the specific housing types for fattening pigs.
+
++description
+  
+ This process selects the correction factor for the specific housing types for fattening pigs. Among these correction factors are the emission rate for the housing type, the correction factor for the housing type area, the correction factor for the area per animal, the liquid and solid share for the housing type as well as the factor on what barn size increases the regularized minimal (limited to 0.5).
+
+
+*** input ***
+
++housing_type
+  default_calc = ignore
+  type  = enum
+  ++enum
+    +++ignore
+       en = Dummy entry LU
+    +++Slurry_Conventional
+       en = slurry_conventional
+       de = Konventioneller_Stall_ohne_Auslauf
+       fr = Stabulation_conventionnelle_sans_parcours
+       it = Slurry_Conventional
+    +++Slurry_Label
+       en = slurry_label
+       de = Labelstall_mit_Mehrflächenbucht_und_Auslauf
+       fr = Stabulation_labellisée_à_aires_multiples_et_parcours
+       it = Slurry_Label
+    +++Slurry_Label_Open
+       en = outdoor climate house
+       de = Nicht wärmegedämmter Stall (siehe Spalte Hilfe)
+       fr = Stabulation labellisée à aires multiples et parcours comme stabulation à front ouvert/étable froide
+       it = Slurry Label Open Front Housing non insulated stables
+    +++Deep_Litter
+       en = deep_litter
+       de = Tiefstreustall
+       fr = Stabulation_litière_profonde
+       it = Deep_Litter
+    +++Outdoor
+       en = outdoor
+       de = Weidehaltung
+       fr = Plein_air
+       it = Outdoor
+  ++labels 
+    en = Housing system
+    de = Aufstallung
+    fr = Type de stabulation
+  ++units  
+    en = -
+  ++description
+    Type of housing.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: Slurry label</p>
+
+       <p>(Slurry label: multi-area pen with littered area or combined
+          lying and feeding cubicles connected to outside yards)</p>
+    +++de
+       <p>Vorschlag für Standardwert: Labelstall mit Mehrflächenbucht
+          und Auslauf</p>
+       <p>Bei der Aufstallung wird hauptsächlich zwischen
+          konventionellen Stallsystemen ohne Auslauf und Labelställen
+          mit Mehrflächenbucht und Auslauf
+          unterschieden. Tiefstreuställe und Weidehaltung sind von
+          geringer Bedeutung.</p>
+       <p>Nicht wärmegedämmter Stall: nicht wärmegedämmter Stall mit
+          freier Lüftung (Aussenklimaställe) und
+          Mikroklimabereichen</p>
+    +++fr
+       <p>Proposition de valeur standard: système labellisé à aires
+          multiples et parcours extérieur</p>
+       <p>Dans les systèmes de stabulation, on distingue
+          principalement les systèmes conventionnels sans parcours
+          extérieur et les systèmes labellisés à aires multiples et
+          parcours extérieur. Les stabulations à litière profonde et
+          la garde au pâturage sont de moindre importance.</p>
+       <p>Stabulation sans isolation thermique : porcheries sans
+          isolation thermique à ventilation naturelle (stabulation à
+          climat extérieur) et à zones de microclimat</p>
+
++exercise_place
+  models = LU
+  type  = enum
+  default_calc = none
+  ++enum
+    +++none
+       en = none
+       de = keine
+       fr = aucune
+       it = none
+    +++exercise_place
+       en = Tasks see help 
+       de = Massnahmen siehe Hilfetext
+       fr = Mesures voir aide
+       it = Tasks see help
+  ++labels 
+    en = Mitigation tasks for outside exercise yard
+    de = Emissionsmindernde Massnahmen Auslauf
+    fr = Mesures limitant les émissions parcours exterieur 
+  ++units  
+    en = -
+  ++description
+    Mitigation tasks for exercise place
+  ++help
+    +++en
+       <p>Outside yards with partly slatted floor or solid floor with stationary scraper (scraper cleaning every two hours) in cimbination with windbraker, shadowing and shower. </p>
+       <p>Recommended standard value: none</p>
+    +++de
+       <p>Auslauf mit Teilspaltenboden oder planbefestigter Boden mit stationärem Schieber (Reinigung alle 2 Stunden) in Kombination mit Windschutz, Beschattung und einer Schweinedusche im Kotbereich.</p>
+       <p>Vorschlag für Standardwert: keine</p>
+    +++fr
+       <p>Parcours exterieur avec caillebotis partiel ou sol en dur avec un racleur stationnaire (nettoyage toutes les 2 heures) combiné avec brise-vent, ombrage et douche dans la zone de défécation. </p>
+       <p>Proposition valeur standard: aucune</p>
+
+*** technical ***
+
++red_exercise_place
+  value = 0.2
+  ++units 
+    en = -
+  ++description
+    Reduction efficiency for LU Model Version (Workshop SHL Zollikofen, 08.02.2010).
+
+*** external ***
+
++..::Excretion
++Type::Slurry_Conventional
++Type::Slurry_Label
++Type::Slurry_Label_Open
++Type::Deep_Litter
++Type::Outdoor
+
+*** output ***
+
++housing_type
+  print = 15
+  ++units  
+    en = -
+  ++description
+    Housing type (needed in other modules).
+  ++formula
+    In(housing_type);
+
++er_housing
+  print = 10
+  ++units  
+    en = -
+  ++description
+    Emission rate for the housing type.
+  ++formula
+    if ( Out(housing_type) eq 'Outdoor' ) {
+	return Val(er_housing,Type::Outdoor);
+    }
+    elsif ( Out(housing_type) eq 'Slurry_Conventional' ) {
+	return Val(er_housing,Type::Slurry_Conventional);
+    }
+    elsif ( Out(housing_type) eq 'Slurry_Label' ) {
+	return Val(er_housing,Type::Slurry_Label);
+    }
+    elsif ( Out(housing_type) eq 'Slurry_Label_Open' ) {
+	return Val(er_housing,Type::Slurry_Label_Open);
+    }
+    elsif ( Out(housing_type) eq 'Deep_Litter' ) {
+	return Val(er_housing,Type::Deep_Litter);
+    }
+
++share_liquid
+  print = 10
+  ++units  
+    en = -
+  ++description
+    Liquid share for the housing type.
+  ++formula
+#	given ( Out(housing_type) ) {
+#	    when ('Slurry_Conventional') { return Val(share_liquid,Type::Slurry_Conventional); }
+#	    when ('Slurry_Label')        { return Val(share_liquid,Type::Slurry_Label); }
+#	    when ('Slurry_Label_Open')   { return Val(share_liquid,Type::Slurry_Label_Open); }
+#	    when ('Deep_Litter')         { return Val(share_liquid,Type::Deep_Litter); }
+#	    when ('Outdoor')             { return Val(share_liquid,Type::Outdoor); }
+#	}
+    if ( Out(housing_type) eq 'Outdoor' ) {
+        return Val(share_liquid,Type::Outdoor);
+    }
+    elsif ( Out(housing_type) eq 'Slurry_Conventional' ) {
+        return Val(share_liquid,Type::Slurry_Conventional);
+    }
+    elsif ( Out(housing_type) eq 'Slurry_Label' ) {
+        return Val(share_liquid,Type::Slurry_Label);
+    }
+    elsif ( Out(housing_type) eq 'Slurry_Label_Open' ) {
+        return Val(share_liquid,Type::Slurry_Label_Open);
+    }
+    elsif ( Out(housing_type) eq 'Deep_Litter' ) {
+        return Val(share_liquid,Type::Deep_Litter);
+    }
+
++share_solid
+  print = 10
+  ++units  
+    en = -
+  ++description
+    Solid share for the housing type.
+  ++formula
+#    Val(share_solid, 'Type::' . Out(housing_type));
+#    Val(share_solid, 'Type_'.Out(housing_type));
+#	given (Out(housing_type)) {
+#	    when ('Slurry_Conventional') { 
+#            return Val(share_solid,Type::Slurry_Conventional); 
+#        };
+#	    when ('Slurry_Label')        { 
+#            return Val(share_solid,Type::Slurry_Label); 
+#        };
+#	    when ('Slurry_Label_Open')   { 
+#            return Val(share_solid,Type::Slurry_Label_Open); 
+#        };
+#	    when ('Deep_Litter')         { 
+#            return Val(share_solid,Type::Deep_Litter); 
+#        };
+#	    when ('Outdoor')             { 
+#            return Val(share_solid,Type::Outdoor); 
+#        };
+#	};
+    if ( Out(housing_type) eq 'Outdoor' ) {
+        return Val(share_solid,Type::Outdoor);
+    }
+    elsif ( Out(housing_type) eq 'Slurry_Conventional' ) {
+        return Val(share_solid,Type::Slurry_Conventional);
+    }
+    elsif ( Out(housing_type) eq 'Slurry_Label' ) {
+        return Val(share_solid,Type::Slurry_Label);
+    }
+    elsif ( Out(housing_type) eq 'Slurry_Label_Open' ) {
+        return Val(share_solid,Type::Slurry_Label_Open);
+    }
+    elsif ( Out(housing_type) eq 'Deep_Litter' ) {
+        return Val(share_solid,Type::Deep_Litter);
+    }
+
+
++share_outdoor
+  print=15
+  ++units
+     en = -
+  ++description
+    Factor for considering outdoor part.
+  ++formula 
+    if ( (Out(housing_type) eq 'Slurry_Label') or (Out(housing_type) eq 'Slurry_Label_Open') ){
+       return 0.5;
+    }
+    else {
+       return( 1 );
+    }
+
+
++c_exercise_place
+  print = 15
+  ++units  
+    en = -
+  ++description
+    Reduction exercise place.
+  ++formula
+    if (defined In(exercise_place) and In(exercise_place) eq 'exercise_place' ){ 
+        if ((Out(housing_type) eq 'Slurry_Conventional') or (Out(housing_type) eq 'Deep_Litter') or (Out(housing_type) eq 'Outdoor')) {
+	    writeLog({en=>"An outside exercise yard is applicable for the label system only!",
+                 de=>"Auslauf ist nur für Labelställe anwendbar!",
+                 fr=>"Parcour exterieur est éligible pour les stabulations label seulement!"});
+	    return 0;
+	}
+	else {
+	     return( Tech(red_exercise_place));
+	}
+    }
+    else {
+	    return 0;
+       } ;

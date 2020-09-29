@@ -1,0 +1,486 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2018-04-04
+taxonomy = End
+
++short
+
+Dummy Module marking the startpoint for the Model Parser
+
++description
+
+*** external ***
+
++Total
++SharesByAnimalCategory
+
+*** results ***
+
++KtLU
+   type = report
+   ++selector
+     en = Berechnung Baugesuch Kanton Luzern - Ammonia emissions (in kg N per year)
+     de = Berechnung Baugesuch Kanton Luzern - Ammoniak-Emissionen (in kg N pro Jahr)
+     fr = Baugesuch Kanton Luzern 0 Emissions d'ammoniaque (en kg de N par année)
+   ++data
+     +++LivestockSummary_LivestockSummaryPlus_LivestockTotal
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+     +++PlantProductionSummary_PlantProductionTotal
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+     +++FullTotal
+       en = Total
+       de = Total
+       fr = Total
+
++Summary
+  type = report
+  ++selector
+    en = Ammonia emissions (in kg N per year) - summary
+    de = Ammoniak-Emissionen (in kg N pro Jahr) - Zusammenfassung
+    fr = Emissions d'ammoniaque (en kg de N par année) - résumé
+  ++data
+    +++LivestockSummary_LivestockSummaryPlus_LivestockTotal
+      en = Livestock
+      de = Tierproduktion
+      fr = Production animale
+    +++PlantProductionSummary_PlantProductionTotal
+      en = Plant production
+      de = Pflanzenbau
+      fr = Production végétale
+    +++FullTotal
+      en = Total
+      de = Total
+      fr = Total
+
++SummaryShort
+  type = report
+  ++selector
+    en = Ammonia emissions (in kg N per year) - summary short
+    de = Ammoniak-Emissionen (in kg N pro Jahr) - Kurzzusammenfassung
+    fr = Emissions d'ammoniaque (en kg de N par année) - résumé minimal
+  ++data
+     +++ZLivestockSummary_LivestockTotal
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+     +++PlantProductionSummary
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+     +++FullTotal
+       en = Total
+       de = Total
+       fr = Total
+
++AnimalEmissions
+  type = report
+  ++selector
+    en = Ammonia emissions (in kg N per year) for animal species - summarized
+    de = Ammoniak-Emissionen (in kg N pro Jahr) pro Tierkategorie - Zusammenfassung
+    fr = Emissions d'ammoniaque (en kg de N par année) par catégorie d'animaux - résumé
+  ++data
+    +++CattleSummary
+      en = Cattle
+      de = Rindvieh
+      fr = Bétail bovin
+    +++PigSummary
+      en = Pigs
+      de = Schweine
+      fr = Porcs
+    +++PoultrySummary
+      en = Poultry
+      de = Geflügel
+      fr = Volaille
+    +++OtherSummary
+      en = Other animals
+      de = Übrige Tierarten
+      fr = Autres animaux
+    +++LivestockSummary_LivestockSummaryPlus_LivestockTotal
+      en = Livestock
+      de = Tierproduktion
+      fr = Production animale
+    +++PlantProductionSummary_PlantProductionTotal
+      en = Plant production
+      de = Pflanzenbau
+      fr = Production végétale
+    +++FullTotal
+       en = Total
+       de = Total
+       fr = Total
+
++AnimalEmissionsDetailed
+   type = report
+   ++selector
+     en = Ammonia emissions (in kg N per year) for animal species - detailed
+     de =  Ammoniak-Emissionen (in kg N pro Jahr) pro Tierkategorie - detailliert
+     fr = Emissions d'ammoniaque (en kg N par année) par catégorie d'animaux - détails
+   ++data
+     +++DairyCowSummary
+       en = Dairy cows
+       de = Milchkühe
+       fr = Vaches laitières
+     +++OtherCattleSummary
+       en = Other cattle
+       de = Übriges Rindvieh
+       fr = Autres bovins
+     +++FatteningPigSummary
+       en = Fattening pigs
+       de = Mastschweine
+       fr = Porcs à l'engrais
+     +++OtherPigSummary
+       en = Other pigs
+       de = Zuchtschweine
+       fr = Porcs d'élevage
+     +++PoultrySummary
+       en = Poultry
+       de = Geflügel
+       fr = Volaille
+     +++EquidesSummary
+       en = Equides
+       de = Pferde und andere Equiden
+       fr = Chevaux et autres équidés
+     +++SmallRuminantSummary
+       en = Small ruminants
+       de = Kleinwiederkäuer
+       fr = Petits ruminants
+     +++LivestockSummary_LivestockSummaryPlus_LivestockTotal
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+    +++PlantProductionSummary_PlantProductionTotal
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+     +++FullTotal
+       en = Total
+       de = Total
+       fr = Total
+
++Distribution
+   type = report
+   ++selector
+     en = Ammonia emissions in percent of the total emission
+     de = Ammoniak Emissionen in Prozent der Gesamtemission
+     fr = Emissions d'ammoniaque en % des émissions totales
+   ++data
+     +++LivestockShare_LivestockTotalShare
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+    +++PlantProductionShare_PlantProductionTotalShare
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+     +++FullTotalShare
+       en = Total
+       de = Total
+       fr = Total
+
++DistributionAnimals
+   type = report
+   ++selector
+     en = Ammonia emissions in percent of the total emission for animal species - summarized
+     de = Ammoniak Emissionen in Prozent der Gesamtemission pro Tierkategorie - Zusammenfassung
+     fr = Emissions d'ammoniaque en % des émissions totales par catégorie d'animaux - résumé
+   ++data
+     +++CattleShare
+       en = Cattle
+       de = Rindvieh
+       fr = Bétail bovin
+     +++PigShare
+       en = Pigs
+       de = Schweine
+       fr = Porcs
+     +++PoultryShare
+       en = Poultry
+       de = Geflügel
+       fr = Volaille
+     +++OtherShare
+       en = Others
+       de = Übrige Tierarten
+       fr = Autres animaux
+     +++LivestockShare_LivestockTotalShare
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+     +++PlantProductionShare_PlantProdcutionTotalShare
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+    +++FullTotalShare
+       en = Total
+       de = Total
+       fr = Total
+
++DistributionAnimalsDetailed
+   type = report
+   ++selector
+     en = Ammonia emissions in percent of the total emission for animal species - detailed
+     de =  Ammoniak Emissionen in Prozent der Gesamtemission pro Tierkategorie - detailliert
+     fr = Emissions d'ammoniaque en % des émissions totales par catégorie d'animaux -détails
+   ++data
+     +++DairyCowShare
+       en = Dairy cows
+       de = Milchkühe
+       fr = Vaches laitières
+     +++OtherCattleShare
+       en = Other cattle
+       de = Übriges Rindvieh
+       fr = Autres bovins
+     +++FatteningPigShare
+       en = Fattening pigs
+       de = Mastschweine
+       fr = Porcs à l'engrais
+     +++OtherPigShare
+       en = Other pigs
+       de = Zuchtschweine
+       fr = Porcs d'élevage
+     +++PoultryShare
+       en = Poultry
+       de = Geflügel
+       fr = Volaille
+     +++EquidesShare
+       en = Equides
+       de = Pferde und andere Equiden
+       fr = Chevaux et autres équidés
+     +++SmallRuminantShare
+       en = Small ruminants
+       de = Kleinwiederkäuer
+       fr = Petits ruminants
+     +++LivestockShare_LivestockTotalShare
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+    +++PlantProductionShare_PlantProductionTotalShare
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+    +++FullTotalShare
+       en = Total
+       de = Total
+       fr = Total
+
++FluxSummary
+   type = report
+   ++selector
+     en = Nitrogen flux (in kg N per year) - summary
+     de = Stickstoff Fluss  (in kg N pro Jahr) - Zusammenfassung
+     fr = Flux azoté (en kg de N par année) - résumé
+   ++data
+     +++FluxSummaryLivestock
+       en = Nitrogen flux livestock
+       de = Stickstoff Flüsse Tierproduktion
+       fr = Flux azotés production animale
+     +++FluxSummaryPlantProduction
+       en = Nitrogen flux plant production
+       de = Stickstoff Flüsse Pflanzenbau
+       fr = Flux azotés production végétale
+
++TANFlux
+   type = report
+   ++selector
+     en = Total Amoniacal Nitrogen flux Livestock (in kg TAN per year)
+     de = Fluss des löslichen Stickstoffs (in kg TAN pro Jahr) -  Zusammenfassung
+     fr = Flux azoté soluble (en kg de TAN par année)
+   ++data
+     +++TANFlux
+       en = Nitrogen flux livestock
+       de = Fluss Stickstoff löslich Tierproduktion
+       fr = Flux azotés soluble production animale
+
++TotalAnimals
+   type = report
+   ++selector
+     en = Total ammonia emissions (in kg N per year) by animal species
+     de = Ammoniak Gesamtemissionen (in kg N pro Jahr) pro Tierkategorie
+     fr = Emissions totales d'ammoniaque (en kg de N par année) par catégorie d'animaux
+   ++data
+     +++DairyCowTotal
+       en = Dairy cows
+       de = Milchkühe
+       fr = Vaches laitières
+     +++OtherCattleTotal
+       en = Other cattle
+       de = Übriges Rindvieh
+       fr = Autres bovins
+     +++FatteningPigTotal
+       en = Fattening pigs
+       de = Mastschweine
+       fr = Porcs à l'engrais
+     +++OtherPigTotal
+       en = Other pigs
+       de = Zuchtschweine
+       fr = Porcs d'élevage
+     +++PoultryTotal
+       en = Poultry
+       de = Geflügel
+       fr = Volaille
+     +++EquidesTotal
+       en = Equides
+       de = Pferde und andere Equiden
+       fr = Chevaux et autres équidés
+     +++SmallRuminantTotal
+       en = Small ruminants
+       de = Kleinwiederkäuer
+       fr = Petits ruminants
+     +++LivestockTotal
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+     +++PlantProductionTotal
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+     +++FullTotal
+       en = Total
+       de = Total
+       fr = Total
+
++SummaryBarGraph
+   type = bar
+   ++selector
+     en = Ammonia emissions (in kg N per year) - summary (bar chart)
+     de = Ammoniak Emissionen (in kg N pro Jahr) - Zusammenfassung (Balkengrafik)
+     fr = Emissions d'ammoniaque (en kg de N par année) - résumé (histogramme)
+   ++data
+     +++LivestockSummary
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+     +++PlantProductionSummary
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production
+
++SummaryPieGraph
+   type = pie
+   ++selector
+     en = Ammonia emissions (in kg N per year) - summary (bar chart)
+     de = Ammoniak Emissionen (in kg N pro Jahr) - Zusammenfassung (Balkengrafik)
+     fr = Emissions d'ammoniaque (en kg de N par année) - résumé (histogramme)
+   ++data
+     +++LivestockSummary
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+     +++PlantProductionSummary
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production
+
++AnimalEmissionsTotalBarGraph
+   type = bar
+   ++selector
+     en = Ammonia emissions (in kg N per year) for animal species - detailed (bar chart)
+     de = Ammoniak-Emissionen (in kg N pro Jahr) pro Tierkategorie - detailliert (Balkengrafik)
+     fr = Emissions d'ammoniaque (en kg de N par année) par catégorie d'animaux -détails (histogramme)
+   ++data
+     +++DairyCowTotal
+       en = Dairy cows
+       de = Milchkühe
+       fr = Vaches laitières
+     +++OtherCattleTotal
+       en = Other cattle
+       de = Übriges Rindvieh
+       fr = Autres bovins
+     +++FatteningPigTotal
+       en = Fattening pigs
+       de = Mastschweine
+       fr = Porcs à l'engrais
+     +++OtherPigTotal
+       en = Other pigs
+       de = Zuchtschweine
+       fr = Porcs d'élevage
+     +++PoultryTotal
+       en = Poultry
+       de = Geflügel
+       fr = Volaille
+     +++EquidesTotal
+       en = Equides
+       de = Pferde und andere Equiden
+       fr = Chevaux et autres équidés
+     +++SmallRuminantTotal
+       en = Small ruminants
+       de = Kleinwiederkäuer
+       fr = Petits ruminants
+     +++PlantProductionTotal
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+
++AnimalEmissionsTotalPieGraph
+   type = pie
+   ++selector
+     en = Ammonia emissions (in kg N per year) for animal species - detailed (bar chart)
+     de = Ammoniak-Emissionen (in kg N pro Jahr) pro Tierkategorie - detailliert (Balkengrafik)
+     fr = Emissions d'ammoniaque (en kg de N par année) par catégorie d'animaux -détails (histogramme)
+   ++data
+     +++DairyCowTotal
+       en = Dairy cows
+       de = Milchkühe
+       fr = Vaches laitières
+     +++OtherCattleTotal
+       en = Other cattle
+       de = Übriges Rindvieh
+       fr = Autres bovins
+     +++FatteningPigTotal
+       en = Fattening pigs
+       de = Mastschweine
+       fr = Porcs à l'engrais
+     +++OtherPigTotal
+       en = Other pigs
+       de = Zuchtschweine
+       fr = Porcs d'élevage
+     +++PoultryTotal
+       en = Poultry
+       de = Geflügel
+       fr = Volaille
+     +++EquidesTotal
+       en = Equides
+       de = Pferde und andere Equiden
+       fr = Chevaux et autres équidés
+     +++SmallRuminantTotal
+       en = Small ruminants
+       de = Kleinwiederkäuer
+       fr = Petits ruminants
+     +++PlantProductionTotal
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+
++DistributionBarGraph
+   type = bar
+   ++selector
+     en = Ammonia emissions in percent of the total emission (bar chart)
+     de = Ammoniak Emissionen in Prozent der Gesamtemission (Balkengrafik)
+     fr = Emissions d'ammoniaque en % des émissions totales (histogramme)
+   ++data
+     +++LivestockShare
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+     +++PlantProductionShare
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale
+
++DistributionPieGraph
+   type = bar
+   ++selector
+     en = Ammonia emissions in percent of the total emission (bar chart)
+     de = Ammoniak Emissionen in Prozent der Gesamtemission (Balkengrafik)
+     fr = Emissions d'ammoniaque en % des émissions totales (histogramme)
+   ++data
+     +++LivestockShare
+       en = Livestock
+       de = Tierproduktion
+       fr = Production animale
+     +++PlantProductionShare
+       en = Plant production
+       de = Pflanzenbau
+       fr = Production végétale# äöü

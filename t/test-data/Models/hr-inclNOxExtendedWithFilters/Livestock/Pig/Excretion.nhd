@@ -1,0 +1,734 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-04-22
+taxonomy = Livestock::Pig::Excretion
+
++short
+
+Computes the annual N excretion of diffrent pig categories as a function of the
+crude protein and the energy content of the feed ration.
+
++description
+
+This process calculates the annual N excretion (total N and Nsol) of different pig categories according to the crude protein and energy content of the feed ration.
+
+\begin{todo}{Harald Menzi}{}
+   Formulation of Beat Reidy maybe mistaken,
+\end{todo}
+
+\subsubsection{References:}
+
+BLW, SRVA, LBL 2003. Weisungen zur Beruecksichtigung von Ökofuttern in der
+Suisse-Bilanz. 2003.
+
+
+Burgos SA, Robinson PH, Fadel JG, DePeters EJ 2005. Ammonia volatilization
+potential: Prediction of urinary urea nitrogen output on lactating dairy
+cows. Agriculture, Ecosystems and Environment 111:261-269.
+
+
+Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and
+dung of grazing cattle: effect of N intake. Atmospheric environment
+32:295-300.
+
+Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
+
+*** input ***
+
++animalcategory
+  type = enum
+  filter = true
+  ++enum
+    +++nursing_sows
+       en = nursing_sows
+       de = Säugende_Sauen
+       fr = Truies_allaitantes
+       it = nursing_sows
+    +++dry_sows
+       en = dry_sows
+       de = Galtsauen
+       fr = Truies_gestantes
+       it = dry_sows
+    +++gilts
+       en = gilts
+       de = Remonten
+       fr = Truies_de_remonte
+       it = gilts
+    +++weaned_piglets_up_to_25kg
+       en = weaned_piglets_up_to_25kg
+       de = Ferkel_abgesetzt_bis_25_kg
+       fr = Porcelets_sevrés_jusqu'_à_25_kg
+       it = weaned_piglets_up_to_25kg
+    +++boars
+       en = boars
+       de = Eber
+       fr = Verrats
+       it = boars
+  ++labels
+    en = Animal category
+    de = Tierkategorie
+    fr = Catégorie d'animaux
+  ++units
+    en = -
+++description
+    Pig category (nursing sows, dry sows, gilts, weaned piglets (up to 25_kg), and boars).
+++help
+  +++en
+     <p>Piglets until weaning are included in the category nursing sows and must not be entered separately.</p>
+  +++de
+     <p>Die Ferkel bis zum Absetzen sind bei den säugenden Sauen eingeschlossen und müssen nicht separat eingetragen werden.</p>
+  +++fr
+     <p>Les porcelets non sevrés sont compris dans la catégorie ‘Truies allaitantes' et ne doivent pas être mentionnés séparément. </p>
+
++pigs
+  type = float
+  branch = true
+  validator = ge(0);
+  ++labels
+    en = Number of animal places
+    de = Anzahl Tierplätze
+    fr = Nombre de places d'animaux
+  ++units
+    en = -
+  ++description
+    Number of places for pigs for the selected type in barn.
+  ++help
+    +++en
+       <p> </p>
+    +++de
+       <p> </p>
+    +++fr
+       <p> </p>
+
++inp_n_excretion
+  models = SHL
+  type = text
+  default_calc = Standard
+  default_gui  = Standard
+  ++labels
+    en = N excretion
+    de = N Ausscheidung
+    fr = Excrétions azotées
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a pig
+  ++help
+    +++en
+       <p>If "Standard" is selected the standard value for the
+          nitrogen excretion according to PRIF 2017 is applied
+          (Richner et al., 2017) is applied (PRIF: Principles of
+          Agricultural Crop Fertilisation in Switzerland). If a number
+          is entered, a value for the nitrogen excretion can be
+          selected by the user.</p>
+       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+          pp. 4/1-4/23.</p>
+    +++de
+       <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD
+          2017 (Richner et al., 2017) verwendet. Bei Eingabe einer Zahl kann der Wert für die
+          Stickstoffausscheidung selbst gewählt werden.</p>
+       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+          pp. 4/1-4/23.</p>
+    +++fr
+       <p>Si "Standard" est introduisé, la valeur de référence pour
+          les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
+          est utilisée (PRIF: « Principes de la fertilisation des
+          cultures agricoles en Suisse » ). Si un nombre est introduisé
+          une valeur pour les excrétions azotées peut être déterminée par
+          l'utilisateur/-trice.</p>
+       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+          pp. 4/1-4/23.</p>
+
++crude_protein
+  type = float
+  validator = between(100,220);
+  ++labels
+     en = Crude protein content of the ration
+     de = Rohproteingehalt der Ration
+     fr = Teneur de la ration en matière azotée
+  ++units
+     en = g CP/kg
+     de = g RP/kg
+     fr = g MA/kg
+  ++description
+       <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
+
+       <p>Bei Verwendung von zwei verschiedenen Futtermitteln bei abgesetzten
+       Ferkeln: nach Verzehr gemittelte Gehalt einsetzen.</p>
+
+       <p>Standardwerte zur Eingabe, falls die Gehalte des auf dem Betrieb
+       verwendeten Futters nicht bekannt sind:</p>
+
+       <ul>
+         <li>Säugende Sauen 180 g RP /kg; </li>
+
+         <li>Galtsauen 145 g RP /kg;  </li>
+
+         <li>Remonten 170 g RP /kg ;  </li>
+
+         <li>Eber 171 g RP /kg ;  </li>
+
+         <li>abgesetzte Ferkel 177 g RP /kg </li>
+       </ul>
+
+       <p>RP-Gehalte von nährstoffreduziertem Futter: </p>
+       <ul>
+         <li>Säugende Sauen 155 g RP /kg;  </li>
+
+         <li>Galtsauen, Remonten und Eber 135 g RP /kg; </li>
+
+         <li>abgesetzte Ferkel 165 g RP /kg </li>
+      </ul>
+  ++help
+    +++en
+       <p>The data of the feeds used on the farm must be entered.</p>
+       <p>If two different feeds are used for weaned piglets the weighed mean content must be entered.</p>
+
+       Standard values for Switzerland:
+
+       <ul>
+       <li>Nursing sows: 180 g CP /kg</li>
+       <li>Dry sows: 145 g CP /kg</li>
+       <li>Gilts: 170 g CP /kg</li>
+       <li>Boars: 171 g CP /kg</li>
+       <li>Weaned piglets: 177 g CP /kg</li>
+       </ul>
+
+       For feeds with a reduced protein content:
+
+       <ul>
+       <li>Nursing sows: 155 g CP /kg</li>
+       <li>Dry sows and gilts: 135 g CP /kg</li>
+       <li>Boars: 140 g CP /kg</li>
+       </li>Weaned piglets: 165 g CP /kg</li>
+    +++de
+       <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
+
+       <p>Bei Verwendung von zwei verschiedenen Futtermitteln bei
+       abgesetzten Ferkeln: nach Verzehr gemittelten Gehalt einsetzen.</p>
+
+       Standardwerte zur Eingabe, falls die Gehalte des auf dem Betrieb
+       verwendeten Futters nicht bekannt sind:
+
+       <ul>
+         <li>Säugende Sauen: 180 g RP /kg</li>
+         <li>Galtsauen: 145 g RP /kg</li>
+         <li>Remonten: 170 g RP /kg</li>
+         <li>Eber: 171 g RP /kg;</li>
+         <li>abgesetzte Ferkel: 177 g RP /kg</li>
+       </ul>
+
+       RP-Gehalte von nährstoffreduziertem Futter:
+
+       <ul>
+         <li>Säugende Sauen: 155 g RP /kg</li>
+         <li>Galtsauen und Remonten: 135 g RP /kg</li>
+         <li>Eber: 140 g RP /kg;</li>
+         <li>abgesetzte Ferkel: 165 g RP /kg</li>
+       </ul>
+
+    +++fr
+       <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
+
+       <p>Lorsque deux aliments différents sont utilisés pour les
+       porcelets sevrés, introduire une teneur moyenne pondérée selon
+       la quantité ingérée.</p>
+
+       Proposition de valeurs standard:
+
+       <ul>
+       <li>truies allaitantes: 180 g MA /kg</li>
+       <li>truies gestantes: 145 g MA /kg</li>
+       <li>verrats: 171 g MA /kg</li>
+       <li>truies de remonte: 170 g MA /kg</li>
+       <li>porcelets sevrés 177 g MA /kg</li>
+       </ul>
+
+       Teneur en matière azotée pour les aliments à teneurs réduites:
+
+       <ul>
+       <li>truies allaitantes: 155 g MA /kg</li>
+       <li>truies en gestation et truies de remonte: 135 g MA /kg</li>
+       <li>verrats 140 g MA /kg</li>
+       <li>porcelets sevrés 165 g MA /kg</li>
+       </ul>
+
++energy_content
+  type = float
+  validator = between(9,16);
+  ++labels
+    en = Energy content of the ration
+    de = Energiegehalt der Ration
+    fr = Teneur de la ration en énergie
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+       <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
+
+       <p>Bei Verwendung von zwei verschiedenen Futtermitteln bei
+       abgesetzten Ferkeln: nach Verzehr gemittelten Gehalt einsetzen.</p>
+
+       Standardwerte zur Eingabe, falls die Gehalte des auf dem Betrieb
+       verwendeten Futters nicht bekannt sind:
+
+       <ul>
+         <li>Säugende Sauen: 13.7 MJ VES /kg</li>
+         <li>Galtsauen: 12.1 MJ VES /kg</li>
+         <li>Remonten: 14.0 MJ VES /kg</li>
+         <li>Eber: 12.9 MJ VES /kg;</li>
+         <li>abgesetzte Ferkel: 13.7 MJ VES /kg</li>
+       </ul>
+  ++help
+    +++en
+      <p>The data of the feeds used on the farm must be entered.</p>
+      <p>If two different feeds are used for weaned piglets the weighed mean content must be entered.</p>
+
+      Standard values for Switzerland:
+
+      <ul>
+        <li>Nursing sows: 13.7 MJ DE* /kg</li>
+        <li>Dry sows: 12.1 MJ DE* /kg</li>
+        <li>Gilts: 14.0 MJ DE* /kg</li>
+        <li>Boars: 12.9 MJ DE* /kg MJ DE* /kg</li>
+        <li>Weaned piglets: 13.7 MJ DE* /kg</li>
+      </ul>
+      *Digestible energy
+    +++de
+      <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
+       <p>Bei Verwendung von zwei verschiedenen Futtermitteln bei
+       abgesetzten Ferkeln: nach Verzehr gemittelten Gehalt einsetzen.</p>
+
+       Standardwerte zur Eingabe, falls die Gehalte des auf dem Betrieb verwendeten Futters nicht bekannt sind:
+
+       <ul>
+         <li>Säugende Sauen: 13.7 MJ VES /kg</li>
+         <li>Galtsauen: 12.1 MJ VES /kg</li>
+         <li>Remonten: 14.0 MJ VES /kg</li>
+         <li>Eber: 12.9 MJ VES /kg;</li>
+         <li>abgesetzte Ferkel: 13.7 MJ VES /kg</li>
+       </ul>
+    +++fr
+      <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
+      <p>Lorsque deux aliments différents sont utilisés pour les
+      porcelets sevrés, introduire une teneur moyenne pondérée selon
+      la quantité ingérée.</p>
+
+
+      Proposition de valeurs standard:
+
+      <ul>
+        <li>truies allaitantes: 13.7 MJ EDP /kg</li>
+        <li>truies en gestation: 12.1 MJ EDP /kg</li>
+        <li>remontes: 14.0 MJ EDP /kg</li>
+        <li>verrats: 12.9 MJ EDP /kg</li>
+        <li>porcelets sevrés: 13.7 MJ EDP /kg</li>
+      </ul>
+
+*** technical ***
+
++standard_N_excretion_nursing_sows
+  value = 42
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for animal category (nursing sows) according to
+    Flisch et al. (2009).
+
++standard_N_excretion_dry_sows
+  value = 20
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for animal category (dry sows) according to
+     Flisch et al. (2009).
+
++standard_N_excretion_gilts
+  value = 13
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for animal category (gilts) according to
+     Flisch et al. (2009).
+
++standard_N_excretion_weaned_piglets_up_to_25kg
+  value = 4.6
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for animal category (piglets) according to
+    Flisch et al. (2009).
+
++standard_N_excretion_boars
+  value = 18
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for animal category (boars) according to
+    Flisch et al. (2009).
+
+### crude protein
+
++standard_crude_protein_nursing_sows
+  value = 180
+  ++units
+     en = g CP/kg
+     de = g RP/kg
+     fr = g MA/kg
+  ++description
+    Standard crude protein content of a feed ration for
+    nursing sows (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
+
++standard_crude_protein_dry_sows
+  value = 145
+  ++units
+     en = g CP/kg
+     de = g RP/kg
+     fr = g MA/kg
+  ++description
+    Standard crude protein content of a feed ration for
+    dry sows(BLW, SRVA, LBL 2003). Agridea, BLW (2010).
+
++standard_crude_protein_gilts
+  value = 170
+  ++units
+     en = g CP/kg
+     de = g RP/kg
+     fr = g MA/kg
+  ++description
+    Standard crude protein content of a feed ration for
+    gilts (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
+
++standard_crude_protein_weaned_piglets_up_to_25kg
+  value = 177
+  ++units
+     en = g CP/kg
+     de = g RP/kg
+     fr = g MA/kg
+  ++description
+    Standard crude protein content of a feed ration for
+    piglets (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
+
++standard_crude_protein_boars
+  value = 171
+  ++units
+     en = g CP/kg
+     de = g RP/kg
+     fr = g MA/kg
+  ++description
+    Standard crude protein content of a feed ration for
+    boars (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
+
+
+### energy content
+
+
++standard_energy_content_nursing_sows
+  value = 13.7
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Standard energy content of a feed ration for
+    nursing sows (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
+
++standard_energy_content_dry_sows
+  value = 12.1
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Standard energy content of a feed ration for
+    dry sows (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
+
++standard_energy_content_gilts
+  value = 13.7
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Standard energy content of a feed ration for
+
+
++standard_energy_content_weaned_piglets_up_to_25kg
+  value = 13.7
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Standard energy content of a feed ration for
+
+
++standard_energy_content_boars
+  value = 12.9
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Standard energy content of a feed ration for
+
+
+### cfeed
+
++cfeed_nursing_sows
+  value = 0.008
+  ++units
+    en = -
+  ++description
+    Correction factor for feed with reduced crude protein content
+
+
++cfeed_dry_sows
+  value = 0.006
+  ++units
+    en = -
+  ++description
+    Correction factor for feed with reduced crude protein content
+
+
++cfeed_gilts
+  value = 0.008
+  ++units
+    en = -
+  ++description
+    Correction factor for feed with reduced crude protein content
+
+
++cfeed_weaned_piglets_up_to_25kg
+  value = 0.012
+  ++units
+    en = -
+  ++description
+    Correction factor for feed with reduced crude protein content
+
+
++cfeed_boars
+  value = 0.008
+  ++units
+    en = -
+  ++description
+    Correction factor for feed with reduced crude protein content
+
+
+###
+
++minimal_N_excretion_nursing_sows
+  value = 37.5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual minimal N excretion for pig category  (nursing sows) according to
+
++minimal_N_excretion_dry_sows
+  value = 21.9
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual minimal N excretion for pig category (dry sows) according to
+    Flisch et al. (2009). Agridea, BLW (2010).
+
++minimal_N_excretion_gilts
+  value = 8.5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual minimal N excretion for pig category (gilts) according to
+    Flisch et al. (2009). Agridea, BLW (2010).
+
++minimal_N_excretion_weaned_piglets_up_to_25kg
+  value = 2.9
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual minimal N excretion for pig category (piglets) according to
+    Flisch et al. (2009). Agridea, BLW (2010).
+
++minimal_N_excretion_boars
+  value = 13.5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual minimal N excretion for pig category (boars) according to
+    Flisch et al. (2009). Agridea, BLW (2010).
+
++share_Nsol
+  value = 0.7
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta from pigs. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
+*** external ***
+
+
+*** output ***
+
++pigs
+  print = 20
+  ++description
+    Number of pigs of a specific category.
+  ++units
+    en = -
+  ++formula
+    In(pigs);
+
++standard_N_excretion
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for specified animal category according to
+    Flisch et al. (2009).
+  ++formula
+    my $cat = In(animalcategory);
+    my $key = 'standard_N_excretion_' . $cat;
+
+    my $exc = $TE->{$key};
+    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
+    if ( ($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
+        writeLog({
+            en => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+            de => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+            fr => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+        });
+    }
+    return $exc;
+
+
++standard_crude_protein
+  print = 7
+  ++units
+     en = g CP/kg
+     de = g RP/kg
+     fr = g MA/kg
+  ++description
+    Annual standard N excretion for specified pig category according to
+    Flisch et al. (2009).
+  ++formula
+    return $TE->{'standard_crude_protein_'.In(animalcategory)};
+
++standard_energy_content
+  print = 7
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Standard energy content of the feed ration for selected pig category.
+  ++formula
+#    my $key = "standard_energy_content_" . In(animalcategory);
+#    return Tech($key);
+    return $TE->{'standard_energy_content_'.In(animalcategory)};
+
++cfeed
+  print = 7
+  ++units
+    en = -
+  ++description
+    Correction factor for feed with reduced crude protein content (BLW, SRVA, LBL 2003).
+  ++formula
+#    my $key = "cfeed_" . In(animalcategory);
+#    return Tech($key);
+    return $TE->{'cfeed_'.In(animalcategory)};
+
++minimal_N_excretion
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Minimal annual N excretion for specified pig category according to
+    Flisch et al. (2009).
+  ++formula
+#    my $key = "minimal_N_excretion_" . In(animalcategory);
+#    return Tech($key);
+    return $TE->{'minimal_N_excretion_'.In(animalcategory)};
+
++n_excretion
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N excreted by a specified number of animals.
+  ++formula
+    if(  Out(standard_N_excretion)
+    	   * (1 - (Out(standard_crude_protein) - (In(crude_protein) * Out(standard_energy_content) / In(energy_content) )) * Out(cfeed)) >= Out(minimal_N_excretion) ){
+	return( Out(standard_N_excretion)
+    	   * (1 - (Out(standard_crude_protein) - (In(crude_protein) * Out(standard_energy_content) / In(energy_content) )) * Out(cfeed)) * In(pigs) );
+    } else {
+
+        writeLog({en => "The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
+		     . "The excretion was set to " . Out(minimal_N_excretion) ." kg N per animal!",
+                  de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+		     . "Die Ausscheidung wurde auf ". Out(minimal_N_excretion) ."  kg N pro Tier gesetzt!",
+                  fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+		     . "Die Ausscheidung wurde auf ". Out(minimal_N_excretion) ."  kg N pro Tier gesetzt!"});
+        return( Out(minimal_N_excretion) * In(pigs) );
+    }
+
++tan_excretion
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual soluble N excreted by a specified number fo pigs.
+  ++formula
+    Tech(share_Nsol) * Out(n_excretion);
+
+#+animalcategory
+#  print = 9
+#  ++units
+#    en = -
+#  ++description
+#    Animal category
+#  ++formula
+#    In(animalcategory);
