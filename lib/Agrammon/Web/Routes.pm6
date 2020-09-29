@@ -266,14 +266,6 @@ sub api-routes (Str $schema, $ws) {
             request-body -> ( :datasetName($dataset-name)! ) {
                 my %data = $ws.get-input-variables;
                 %data<datasetName> = $dataset-name;
-                # debug output on purpose
-                # dd "KEYS:", %data.keys;
-                # dd "GRAPHS:", %data<graphs>;
-                # dd "REPORTS:", %data<reports>;
-                # dd "INPUTS[0]:", %data<inputs>[0];
-                # for %data<inputs>[] -> $input {
-                #     dd $input<optionsLang>;
-                # }
                 content 'application/json', %data;
                 CATCH {
                     note "$_";
