@@ -16,10 +16,12 @@ lives-ok { $model.load('End') }, "Load module End.nhd from $path";
 # my $filename = 'complex-model-with-filters-input2.csv';
 # dairy cows, no pigs
 #my $filename = 'complex-model-with-filters-input3.csv';
+
 # dairy cows and pigs
-#my $filename = 'complex-model-with-filters-input4.csv';
+my $filename = 'complex-model-with-filters-input4.csv';
+
 # missing animalcategory for dairy cows => warnings
-my $filename = 'complex-model-with-filters-input.csv';
+#my $filename = 'complex-model-with-filters-input.csv';
 
 my $fh = open $*PROGRAM.parent.add("test-data/$filename");
 my @datasets = Agrammon::DataSource::CSV.new().read($fh);
@@ -47,9 +49,9 @@ lives-ok
 dd %output<Total><nh3_ntotal>;
 dd %output<Total><nh3_nanimalproduction>;
 
-is %output<Total><nh3_ntotal>, <2831516334992619272501/10493750000000000000>,
+is %output<Total><nh3_ntotal>, 829.0435196080422e0,
         "Correct nh3_ntotal result: %output<Total><nh3_ntotal>";
-is %output<Total><nh3_nanimalproduction>, <2831516334992619272501/10493750000000000000>,
+is %output<Total><nh3_nanimalproduction>, 829.0435196080422e0,
         "Correct nh3_nanimalproduction result: %output<Total><nh3_nanimalproduction>";
 
 

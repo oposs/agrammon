@@ -31,7 +31,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedWinterRatio;share_maize_silage_winter;100
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedWinterRatio;share_potatoes_winter;0
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CMilk;milk_yield;7000
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion;dairy_cows;100
+2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion;dairy_cows;10
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::GrazingInput;grazing_days;165
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::GrazingInput;grazing_hours;8.5
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Housing::ClimateAir;mitigation_options_for_housing_systems_for_dairy_cows_air;none
@@ -57,7 +57,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;0
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedWinterRatio;share_potatoes_winter;0
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CMilk;milk_yield;7000
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion;dairy_cows;0
+2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion;dairy_cows;5
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::GrazingInput;grazing_days;165
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::GrazingInput;grazing_hours;8.5
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Housing::ClimateAir;mitigation_options_for_housing_systems_for_dairy_cows_air;none
