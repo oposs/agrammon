@@ -17,8 +17,10 @@ sub output-as-text(Agrammon::Model $model, Agrammon::Outputs $outputs, Str $lang
                     $n++;
                     my $unit = $model.output-unit($module, $output, $language);
                     push @module-lines, "    $output = $val $unit";
-                    if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
-                        render-filters(@module-lines, $value, $unit, "    ");
+                    if $include-filters {
+                        if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
+                            render-filters(@module-lines, $value, $unit, "    ");
+                        }
                     }
                 }
             }
@@ -35,8 +37,10 @@ sub output-as-text(Agrammon::Model $model, Agrammon::Outputs $outputs, Str $lang
                             $n++;
                             my $unit = $model.output-unit($module, $output, $language);
                             push @module-lines, "        $output = $val $unit";
-                            if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
-                                render-filters(@module-lines, $value, $unit, "    ");
+                            if $include-filters {
+                                if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
+                                    render-filters(@module-lines, $value, $unit, "    ");
+                                }
                             }
                         }
                     }
