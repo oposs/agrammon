@@ -520,7 +520,6 @@ components:
                     items:
                         schema:
                             $ref: '#/components/schemas/LanguageLabels'
-#                        type: object
                 order:
                     description: Number used for sorting
                     type: integer
