@@ -2,6 +2,8 @@ use v6;
 use Agrammon::DB::User;
 use Agrammon::Config;
 use Agrammon::Model;
+use Agrammon::Performance;
+use Agrammon::TechnicalParser;
 use Agrammon::UI::Web;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
@@ -28,7 +30,21 @@ subtest "Setup" => {
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(conninfo => $cfg.db-conninfo), 'Create DB::Pg object';
     $user = Agrammon::Web::SessionUser.new(:$username);
     ok $user.load, "Load user $username";
-    ok $ws = Agrammon::Web::Service.new(:$cfg), "Created Web::Service object";
+
+
+    my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOxExtended/');
+    my $top = 'End';
+    ok my $model = Agrammon::Model.new(:$path), "Load model";
+    lives-ok { $model.load($top) }, "Load module from $top";
+
+    my $tech-input = $path.add('technical.cfg');
+    ok my %technical-parameters = timed "Load parameters from $tech-input", {
+        my $params = parse-technical($tech-input.IO.slurp);
+        %($params.technical.map(-> %module {
+            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+        }));
+    }
+    ok $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters), "Create Web::Service object";
 }
 
 subtest "get-cfg()" => {
@@ -292,71 +308,43 @@ transactionally {
 }
 
 subtest "Get model data" => {
-    my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
-    my $top = 'End';
-    ok my $model = Agrammon::Model.new(:$path), "Load model";
-    lives-ok { $model.load($top) }, "Load module from $top";
+    my $dataset-name = 'TestSingle';
+    my $input-hash;
 
-    ok my $ui-web = Agrammon::UI::Web.new(:$model);
+    subtest "Get input variables" => {
+        ok $input-hash = $ws.get-input-variables, "Get inputs";
+        is-deeply $input-hash.keys.sort, qw|graphs inputs reports| , "Input hash has expected keys";
 
-    my %input-hash = $ui-web.get-input-variables;
-    %input-hash<dataset> = 'TEST';
-    is-deeply %input-hash.keys.sort, qw|dataset graphs inputs reports| , "Input hash has expected keys";
-
-    subtest "get-input-variables" => {
-        with %input-hash<inputs> -> @module-inputs {
+        with $input-hash<inputs> -> @module-inputs {
             for @module-inputs -> $input {
                 my $var    = $input<variable>;
                 next unless $var ~~ /'::dairy_cows'/;
                 is-deeply $input.keys.sort, qw|branch defaults enum gui help labels models options optionsLang order type units validator variable|,
                           "$var has expected keys";
-                # dd $input;
                 subtest "$var" => {
-# TODO: needs fixing
-#                    is $input<branch>, 'true', 'branch is true';
-                    is-deeply $input<defaults>, %( calc => Any, gui => Any);
+                    is $input<branch>, 'false', 'branch is false';
+                    is-deeply $input<defaults>, %( calc => Any, gui => Any), "defaults as expected";
                     is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
                 }
             }
         }
-    };
-
-# TODO: fix
-    todo "Not implemented yet", 1;
-    subtest "get-output-variables" => {
-
-
-flunk "get-output-variables";
-#        my %outputs = $model.run(:$input).get-outputs-hash();
-#        dd %outputs;
-
-#         with %input-hash<outputs> -> @module-inputs {
-#             for @module-inputs -> $input {
-#                 my $var    = $input<variable>;
-#                 is-deeply $input.keys.sort, qw|branch defaults enum gui help labels models options optionsLang order type units validator variable|,
-#                           "$var has expected keys";
-#                 if $var ~~ /'::dairy_cows'/ {
-#                     dd $input;
-#                     subtest "$var" => {
-# # TODO: needs fixing
-# #                        is $input<branch>, 'true', 'branch is true';
-#                         is-deeply $input<defaults>, %( calc => Any, gui => Any);
-#                         is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
-#                     }
-#                 }
-#             }
-#         }
     }
 
+    subtest "get-output-variables" => {
+        ok my $output-hash = $ws.get-output-variables($user, $dataset-name), "Get outputs";
+        is-deeply $output-hash.keys.sort, qw|data log pid| , "Output hash has expected keys";
+        is-deeply $output-hash<data>.[0].keys.sort, qw|format fullValue labels order print units value var| , "Output data value hash has expected keys";
+        is-deeply $output-hash<data>.[0]<labels>.keys.sort, qw|de en fr sort| , "Output data value labels hash has expected keys";
+    }
 
     subtest "graphs and reports" => {
-        my $graphs = %input-hash<graphs>;
+        my $graphs = $input-hash<graphs>;
 
         my %graph = $graphs[0];
         is-deeply %graph.keys.sort, qw|_order data name selector type|, "First graph has expected keys";
         is %graph<type>, 'bar', "Graph has correct type";
 
-        my $reports = %input-hash<reports>;
+        my $reports = $input-hash<reports>;
         my %report = $reports[0];
         is-deeply %report.keys.sort, qw|_order data name selector type|, "First report has expected keys";
         is %report<type>, 'report', "Report has correct type";

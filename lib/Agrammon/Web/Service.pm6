@@ -8,6 +8,7 @@ use Agrammon::DB::Tags;
 use Agrammon::Model;
 use Agrammon::OutputsCache;
 use Agrammon::OutputFormatter::GUI;
+use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
 use Agrammon::Web::SessionUser;
 use Agrammon::UI::Web;
@@ -112,8 +113,8 @@ class Agrammon::Web::Service {
             }
         }
 
-        use Agrammon::OutputFormatter::Text;
-        my $result = output-as-text($!model, $outputs, 'de', 'LivestockTotal');
+        # TODO: what is last parameter needed for?
+        my $result = output-as-text($!model, $outputs, 'de', 'LivestockTotal', True);
         my %gui-output = output-for-gui($!model, $outputs);
         warn '**** get-output-variables() not yet completely implemented';
         return %gui-output;

@@ -272,7 +272,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
         var getInputVariablesHandler =
             qx.lang.Function.bind(function(data,exc,id) {
             if (exc == null) {
-                var dataset = data['dataset'];
+                var dataset = data.datasetName;
                 this.debug('getInputVariablesHandler(): dataset='+dataset);
                 // create select menus for results
                 if (data['reports'] != null) {
@@ -295,7 +295,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                  }
             }
             else {
-                alert('getInputVariablesHandler:'+exc);
+                alert(exc + ': ' + data.error);
             }
             return;
         }, this);
@@ -569,8 +569,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var rec, i, len, m, mlen,
                 defaultValue, helpFunction,
                 metaData;
-//            var date = new Date(), runTime, startTime = date.getTime();
-
             var modelVariant = this.getVariant();
             if (modelVariant == null) {
                 alert('This should not happen: modelVariant=null');
@@ -620,7 +618,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 case 'percent':
                 case 'text':
                     if (rec.variable.match(/dilution_parts_water/) ) {
-                        console.log('  scalar reached for rec.type'=rec.type);
+                        console.warn('  scalar reached for rec.type=', rec.type);
                     }
                     metaData.type      = rec.type;
                     metaData.validator = rec.validator;
@@ -629,9 +627,9 @@ qx.Class.define('agrammon.module.input.NavBar', {
                         // this.debug('NavBar: Branch variable:' + rec.variable
                         //           + 'branch='+rec.branch);
                     }
-		    if (rec.type == 'percent') {
-			defaultValue = null;
-		    }
+                    if (rec.type == 'percent') {
+                        defaultValue = null;
+                    }
                     break;
                 case 'boolean':
                     metaData.type = 'checkbox';
@@ -640,7 +638,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     break;
                 default:
                     if (rec.variable.match(/dilution_parts_water/) ) {
-                        console.log('  default reached for rec.type'=rec.type);
+                        console.warn('  default reached for rec.type=', rec.type);
                     }
                     if ( rec.type.match(/enum/) ) { // combobox
                         var olen = rec.options.length;
@@ -661,10 +659,8 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     }
                     break;
                 }
-//                if (rec.validator) {
-                   helpFunction =
-                      agrammon.util.Validators.getHelpFunction(rec.validator, rec.type, rec.help);
-//                }
+                helpFunction =
+                    agrammon.util.Validators.getHelpFunction(rec.validator, rec.type, rec.help);
                 if (rec.value == undefined) {
                     rec.value = defaultValue;
                 }
@@ -704,8 +700,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             this.buildTree();
             this.__rootFolder.setIcon('Agrammon/nh3.png');
             this.__rootFolder.isComplete(0); // set icons
-//            runTime = new Date().getTime() - startTime;
-//            this.debug('_getInputVariables(): runTime = ' + runTime);
             return;
         }, // __getInputVariables()
 
@@ -738,7 +732,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             // FIX ME: where should this really be
             qx.event.message.Bus.dispatchByName('agrammon.PropTable.clear');
             this.__rpc.callAsyncSmart( this.getInputVariablesHandler,
-                                       'get_input_variables', {name: dataset.name});
+                                       'get_input_variables', {datasetName: dataset.name});
             return;
         },
 
