@@ -120,12 +120,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Total annual N excreted by all animals.
   ++formula
-    Sum(n_excretion,Livestock::OtherCattle) +
-    Sum(n_excretion,Livestock::DairyCow) +
-    Sum(n_excretion,Livestock::Pig) +
-    Sum(n_excretion,Livestock::FatteningPigs) +
-    Sum(n_excretion,Livestock::Equides) +
-    Sum(n_excretion,Livestock::SmallRuminants) +
+    Sum(n_excretion,Livestock::OtherCattle) P+
+    Sum(n_excretion,Livestock::DairyCow) P+
+    Sum(n_excretion,Livestock::Pig) P+
+    Sum(n_excretion,Livestock::FatteningPigs) P+
+    Sum(n_excretion,Livestock::Equides) P+
+    Sum(n_excretion,Livestock::SmallRuminants) P+
     Sum(n_excretion,Livestock::Poultry);
 
 +tan_excretion
@@ -168,14 +168,32 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (liquid and solid share) from housing
     and yard into the storage from all animals.
   ++formula
-    Sum(n_from_cattle,Livestock::OtherCattle) +
-    Sum(n_from_dairycow,Livestock::DairyCow) +
-    Sum(n_from_pig,Livestock::Pig) +
-    Sum(n_from_fattening_pig,Livestock::FatteningPigs) +
-    Sum(n_from_equides,Livestock::Equides) +
-    Sum(n_from_other,Livestock::SmallRuminants) +
-    Sum(n_from_other,Livestock::RoughageConsuming) +
+    Sum(n_from_cattle,Livestock::OtherCattle) P+
+    Sum(n_from_dairycow,Livestock::DairyCow) P+
+    Sum(n_from_pig,Livestock::Pig) P+
+    Sum(n_from_fattening_pig,Livestock::FatteningPigs) P+
+    Sum(n_from_equides,Livestock::Equides) P+
+    Sum(n_from_other,Livestock::SmallRuminants) P+
+    Sum(n_from_other,Livestock::RoughageConsuming) P+
     Sum(n_from_poultry,Livestock::Poultry);
+
++n_into_storage_ratios
+  format= %.2f
+  print = FluxSummaryLivestock
+  ++labels
+    sort = 105
+    en = Shares of total N into storage
+    de = Anteil Total N ins Hofdüngerlager
+    fr = Proportions de N total dans le stock d'engrais de ferme
+  ++units
+    en =
+    de =
+    fr =
+  ++description
+    Shares of annual N flux from housing and yard into the
+    storage from all animals besides poultry.
+  ++formula
+    scale( Out(n_into_storage), 1 / scalar(Out(n_into_storage)) );
 
 +tan_into_storage
   format= %.0f
@@ -185,22 +203,45 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     en = Total TAN into storage
     de = Total Nlös ins Hofdüngerlager
     fr = TAN total dans le stock d'engrais de ferme
+    en = Shares of total N into storage
+    de = Anteil Total N ins Hofdüngerlager
+    fr = Proportions de N total dans le stock d'engrais de ferme
   ++units
     en = kg TAN/year
     de = kg TAN/Jahr
     fr = kg TAN/an
   ++description
     Annual TAN flux as TAN from housing and yard into the
+    Shares of annual N flux from housing and yard into the
     storage from all animals besides poultry.
   ++formula
-    Sum(tan,Livestock::OtherCattle) +
-    Sum(tan,Livestock::DairyCow) +
-    Sum(tan,Livestock::Pig) +
-    Sum(tan,Livestock::FatteningPigs) +
-    Sum(tan,Livestock::Equides) +
-    Sum(tan,Livestock::SmallRuminants) +
-    Sum(tan,Livestock::RoughageConsuming) +
+    Sum(tan,Livestock::OtherCattle) P+
+    Sum(tan,Livestock::DairyCow) P+
+    Sum(tan,Livestock::Pig) P+
+    Sum(tan,Livestock::FatteningPigs) P+
+    Sum(tan,Livestock::Equides) P+
+    Sum(tan,Livestock::SmallRuminants) P+
+    Sum(tan,Livestock::RoughageConsuming) P+
     Sum(tan,Livestock::Poultry);
+
+
++tan_into_storage_ratios
+  format= %.0f
+  print = TANFlux
+  ++labels
+    sort = 105
+    en = Shares of TAN into storage
+    de = Anteile Nlös ins Hofdüngerlager
+    fr = Proportions de TAN dans le stock d'engrais de ferme
+  ++units
+    en =
+    de =
+    fr =
+  ++description
+    Shares of annual TAN flux as TAN from housing and yard into the
+    storage from all animal categories
+  ++formula
+    scale( Out(tan_into_storage), 1 / scalar(Out(tan_into_storage)) );
 
 +n_into_storage_liquid
   print = 3a
