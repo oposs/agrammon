@@ -105,25 +105,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 *** output ***
 
-+test_output
-  print=all
-  ++units
-    en = -
-  ++description
-   Testing
-  ++formula
-#    use Data::Dumper;
-#     say STDERR "OUT=", Dumper $OUT;
-#     say STDERR "OUT{Livestock_OtherCattle_Excretion}=", Dumper $OUT->{Livestock_OtherCattle_Excretion};
-#     say STDERR "OUT{Livestock_DairyCow_Excretion}{INST}=", Dumper $OUT->{Livestock_DairyCow_Excretion}{INST};
-#     for my $k (keys $OUT->{Livestock_OtherCattle_Excretion}{INST}) {
-#          say STDERR "OUT{Livestock_OtherCattle_Excretion}{INST}{$k}=", Dumper $OUT->{Livestock_OtherCattle_Excretion}{INST}{$k};
-#     }
-#     say STDERR "OUT{Livestock_DairyCow_Excretion}{INST}=", Dumper $OUT->{Livestock_DairyCow_Excretion}{INST};
-#    say STDERR "OUT(INST)=", Dumper $OUT->{Livestock_OtherCattle}{INST};
-#    say STDERR "OUT($INST)=", Dumper $OUT->{Livestock_OtherCattle}{INST}{$INST};
-    return -1;
-
 +n_excretion
   format= %.0f
   print = FluxSummaryLivestock
@@ -146,14 +127,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_excretion,Livestock::Equides) +
     Sum(n_excretion,Livestock::SmallRuminants) +
     Sum(n_excretion,Livestock::Poultry);
-#    Val(n_excretion,Livestock::OtherCattle) +   # $Livestock::OtherCattle{n_excretion}
-#    Val(n_excretion,Livestock::DairyCow) +
-#    Val(n_excretion,Livestock::Pig) +
-#    Val(n_excretion,Livestock::FatteningPigs) +
-#    Val(n_excretion,Livestock::Equides) +
-#    Val(n_excretion,Livestock::SmallRuminants) + # $LSR{n_excretion}
-#    Val(n_excretion,Livestock::RoughageConsuming) + # $LSR{n_excretion}
-#    Val(n_excretion,Livestock::Poultry);
 
 +tan_excretion
   format= %.0f
