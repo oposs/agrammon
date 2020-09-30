@@ -29,7 +29,13 @@ class Agrammon::Model::FilterSet {
     #| Build mapping of filter keys to the matching values for the instance in question.
     method filters-for($multi-input --> Hash) {
         hash @!filters.map: -> Filter $filter {
-            $filter.filter-key => $multi-input.input-hash-for($filter.taxonomy){$filter.input-name}
+            with $multi-input.input-hash-for($filter.taxonomy){$filter.input-name} {
+                $filter.filter-key => $_
+            }
+            else {
+                warn "Missing filter value for '$filter.input-name()' in $filter.taxonomy() on instance '$multi-input.instance-id()'";
+                Empty
+            }
         }
     }
 }
