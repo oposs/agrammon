@@ -12,6 +12,7 @@
     "Cro::HTTP",
     "Cro::HTTP::Session::Pg",
     "Cro::OpenAPI::RoutesFromDefinition",
+    "Data::Dump::Tree",
     "DB::Pg",
     "Digest::SHA1::Native",
     "OO::Monitors",
