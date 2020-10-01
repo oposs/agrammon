@@ -16,30 +16,18 @@ my $nh3-ntotal = 2948.7161903612955;
 my $nh3-nanimalproduction = 2948.7161903612955;
 my $nh3-napplication = 1311.7830090654595;
 
+my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
+my $fh = open $*PROGRAM.parent.add("test-data/$filename");
+my @datasets = Agrammon::DataSource::CSV.new().read($fh);
+is @datasets.elems, 1, "Got the one expected data set from $filename to run";
+$fh.close;
+
 for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
     subtest "Model $model-version" => {
         my $path = $*PROGRAM.parent.add("test-data/Models/$model-version/");
         my $model;
         lives-ok { $model = load-model-using-cache($temp-dir, $path, 'End') },
                 "Load module End.nhd from $path";
-
-        # pigs and no dairy cows
-        #my $filename = 'complex-model-with-filters-input1.csv';
-        # no pigs, no dairy cows
-        # my $filename = 'complex-model-with-filters-input2.csv';
-        # dairy cows, no pigs
-        #my $filename = 'complex-model-with-filters-input3.csv';
-
-        # dairy cows and pigs
-        my $filename = 'complex-model-with-filters-input4.csv';
-
-        # missing animalcategory for dairy cows => warnings
-        #my $filename = 'complex-model-with-filters-input.csv';
-
-        my $fh = open $*PROGRAM.parent.add("test-data/$filename");
-        my @datasets = Agrammon::DataSource::CSV.new().read($fh);
-        is @datasets.elems, 1, "Got the one expected data set from $filename to run";
-        $fh.close;
 
         my $params;
         lives-ok
@@ -56,7 +44,7 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                             technical => %($params.technical.map(-> %module {
                                 %module.keys[0] => %(%module.values[0].map({ .name => .value }))
                             }))
-                            )
+                    )
                 },
                 'Successfully executed model';
         my %output-hash = $output.get-outputs-hash;
@@ -68,11 +56,11 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
         is (+%output-hash<Application><nh3_napplication>).round(.001), $nh3-napplication.round(.001),
                 "Correct nh3_napplication result: { (+%output-hash<Application><nh3_napplication>).round(.001) }";
 
-        # say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
-        #say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
-        #    say "\nLivestockSummary (Details)=\n", output-as-text($model, $output, 'de', 'LivestockSummary', True);
+#        say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
+#        say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
+#        say "\nLivestockSummary (Details)=\n", output-as-text($model, $output, 'de', 'LivestockSummary', True);
 
-        # ddt "GUI: FluxSummaryLivestock=", output-for-gui($model, $output)<data>[0];
+#        ddt "GUI: FluxSummaryLivestock=", output-for-gui($model, $output)<data>[0];
     }
 }
 done-testing;
