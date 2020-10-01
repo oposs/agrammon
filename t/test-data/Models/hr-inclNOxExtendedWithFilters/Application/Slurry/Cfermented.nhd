@@ -1,0 +1,57 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-04-22
+taxonomy = Application::Slurry::Cfermented
+
++short
+
+ Correction factor of the standard emission rate for fermented slurry
+
++description
+
+ This process computes the correction factor of fermented slurry
+
+ \subsubsection{References:}
+
+
+*** input ***
+ 
++fermented_slurry
+  type  = percent
+  ++labels 
+    en = Share of anaerobically digested slurry 
+    de = Anteil Gärgülle
+    fr = Part de lisier issu de digestion
+  ++units  
+    en = %
+  ++description
+    Share of anaerobically digested slurry 
+  ++help
+    +++en
+       <p>Share of slurry produced at the farm which is spread onto the farm area after fermentation in a digestion plant.</p>
+       <p>Standard value for Switzerland: 0%</p>
+    +++de
+       <p>Anteil der auf dem Betrieb produzierten Gülle, welche nach der Vergärung in einer Biogasanlage als Gärgülle ausgebracht wird. Gärgülle: Gesamtsubstrat nach der Vergärung von Material landwirtschaftlicher Herkunft plus maximal 20% Material nicht-landwirtschaftlicher Herkunft (Frischsubstanz).</p>
+       <p>Agridea, BLW. 2010. Wegleitung Suisse-Bilanz. Auflage 1.8, April 2010. Agridea, Lindau. Bundesamt für Landwirtschaft, BLW, Bern.</p>
+       <p>Vorschlag für Standardwert: 0%</p>
+    +++fr
+       <p>Part de lisier produit sur l'exploitation et épandu en tant que lisier issu de digestion après avoir passé dans une installation de biogaz. Lisier issu de digestion: ensemble des substrats après la méthanisation de produits d'origine agricole comportant au plus 20% MF (matière fraîche) de produits d'origine non agricole. </p>
+       <p>Agridea, OFAG. 2010. Guide Suisse-Bilanz. Edition 1.8, avril 2010. Agridea, Lindau. Office fédéral de l'agriculture OFAG , Berne.</p>
+       <p>Proposition de valeur standard: 0%</p>
+ 
+
+*** technical ***
+
+*** external ***
+
+*** output ***
+
++share_fermented_slurry
+  print = 15
+  ++units 
+    en = -
+  ++description
+    Share of fermented slurry.
+  ++formula
+    In(fermented_slurry)/100;

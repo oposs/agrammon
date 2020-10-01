@@ -1,0 +1,482 @@
+
+*** general ***
+
+author   = Agrammon Group 
+date     = 2009-04-22
+taxonomy = DetailsByAnimalCategory
+
+
++short
+
+Collects the annual NH3 emission by Animalcategories
+
++description 
+
+
+*** external ***
+
++Livestock
+#  aggregate=SUM
++Livestock::DairyCow
+  aggregate=SUM
++Livestock::DairyCow::Excretion
+  aggregate=SUM
++Livestock::DairyCow::Housing
+  aggregate=SUM
++Livestock::DairyCow::Yard
+  aggregate=SUM
++Livestock::DairyCow::Grazing
+  aggregate=SUM
+
++Livestock::OtherCattle
+  aggregate=SUM
++Livestock::OtherCattle::Excretion
+  aggregate=SUM
++Livestock::OtherCattle::Housing
+  aggregate=SUM
++Livestock::OtherCattle::Yard
+  aggregate=SUM
++Livestock::OtherCattle::Grazing
+  aggregate=SUM
+
++Livestock::Pig
+  aggregate=SUM
++Livestock::Pig::Excretion
+  aggregate=SUM
++Livestock::Pig::Housing
+  aggregate=SUM
++Livestock::Pig::Grazing
+  aggregate=SUM
+
++Livestock::FatteningPigs
+  aggregate=SUM
++Livestock::FatteningPigs::Excretion
+  aggregate=SUM
++Livestock::FatteningPigs::Housing
+  aggregate=SUM
++Livestock::FatteningPigs::Grazing
+  aggregate=SUM
+
++Livestock::Poultry
+  aggregate=SUM
++Livestock::Poultry::Excretion
+  aggregate=SUM
++Livestock::Poultry::Housing
+  aggregate=SUM
++Livestock::Poultry::Outdoor
+  aggregate=SUM
+
++Livestock::Equides
+  aggregate=SUM
++Livestock::Equides::Excretion
+  aggregate=SUM
++Livestock::Equides::Housing
+  aggregate=SUM
++Livestock::Equides::Yard
+  aggregate=SUM
++Livestock::Equides::Grazing
+  aggregate=SUM
+
++Livestock::SmallRuminants
+  aggregate=SUM
++Livestock::SmallRuminants::Excretion
+  aggregate=SUM
++Livestock::SmallRuminants::Housing
+  aggregate=SUM
++Livestock::SmallRuminants::Grazing
+  aggregate=SUM
+
++Livestock::RoughageConsuming
+  aggregate=SUM
++Livestock::RoughageConsuming::Excretion
+  aggregate=SUM
++Livestock::RoughageConsuming::Housing
+  aggregate=SUM
++Livestock::RoughageConsuming::Grazing
+  aggregate=SUM
+
++Storage
++Storage::Slurry
+  aggregate=SUM
++Storage::SolidManure
++Storage::SolidManure::Poultry
++Storage::SolidManure::Solid
+
++Application
++Application::SolidManure
++Application::SolidManure::Poultry
++Application::SolidManure::Solid
+
+
+*** output ***
+
+
+## +housing_details
+##   print = DetailsByAnimalCategory
+##   format= %.1f
+##   ++units  
+##     en = kg N/year
+##     de = kg N/Jahr
+##     fr = kg N/an
+##    ++labels 
+##      sort = 2000
+##      en = Housing
+##      de = Stall
+##      fr = Housing
+##   ++description
+##     Annual NH3 emission from housing by animal category.
+##   ++formula
+##      my @outArray;
+##      my $t = 0;
+##      for my $type (qw(DairyCow OtherCattle Pig FatteningPigs Poultry Equides SmallRuminants RoughageConsuming)) {
+## #     for my $type (qw(OtherCattle)) {
+##          my %output;
+##          my $out = $OUT->{"Livestock_${type}_Housing"}{INST};
+##          delete $out->{DUMMY};
+
+##          my $v = 0;
+##          for my $varName (qw(Ntot NH3 TAN)) {
+##              my $var = lc $varName;
+##              $var = 'n' if $varName eq 'Ntot';
+
+##              for my $inst (keys %$out) {
+## #                 say Dumper "HOUSING: out->{$inst}=", $out->{$inst} if $type eq 'DairyCow' and $varName eq 'Ntot';
+##                  my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+##                  die "No category for $type" unless $cat;
+##                  if ($varName eq 'TAN') {
+## #                     say "tan=", $out->{$inst}{"Out_${var}_outhousing"};
+##                      $output{$cat}{$var} += $out->{$inst}{"Out_${var}_outhousing"};
+##                  }
+##                  else {
+##                      $output{$cat}{$var} += $out->{$inst}{"Out_${var}_nhousing"};
+##                  }
+##              }
+
+##              my $c = 0;
+##              for my $cat (keys %output) {
+##                  push @outArray, {
+##                      category => $cat,
+##                      value    => $output{$cat}{$var},
+##                      source   => $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+##                      type     => "Livestock:$type",
+##                      sort     => (9-$t)*100 + (9-$c)*10 + $v*1,
+##                      var      => $varName,
+##                      print    => "Details$type",
+##                  };
+##                  $c++;
+##              }
+##              $v++;
+##          }
+##          $t++;
+##      }
+## #     say Dumper "outArray=", \@outArray;
+##      return \@outArray;
+
+## +yard_details
+##   print = DetailsByAnimalCategory
+##   format= %.1f
+##   ++units  
+##     en = kg N/year
+##     de = kg N/Jahr
+##     fr = kg N/an
+##    ++labels 
+##      sort = 3000
+##      en = Yard
+##      de = Laufhof
+##      fr = Yard
+##   ++description
+##     Annual NH3 emission from yard by animal category.
+##   ++formula
+##      my @outArray;
+##      my $t = 0;
+##      for my $type (qw(DairyCow OtherCattle Equides)) {
+## #     for my $type (qw(OtherCattle)) {
+##          my %output;
+##          my $out = $OUT->{"Livestock_${type}_Yard"}{INST};
+##          delete $out->{DUMMY};
+
+##          my $v = 0;
+##          for my $varName (qw(NH3 TAN N2 NO N2O)) {
+##              my $var = lc $varName;
+##              $var = 'n' if $varName eq 'Ntot';
+
+##              for my $inst (keys %$out) {
+## #                 say Dumper "YARD: out->{$inst}=", $out->{$inst} if $type eq 'DairyCow' and $varName eq 'Ntot';
+ 
+##                  my $cat = $OUT->{"Livestock_${type}_Excretion"}{INST}{$inst}{Out_animalcategory};
+##                  die "No category for $type" unless $cat;
+##                  if ($varName eq 'TAN') {
+##                      $output{$cat}{$var} += $out->{$inst}{"Out_${var}_outyard"};
+##                  }
+##                  else {
+##                      $output{$cat}{$var} += $out->{$inst}{"Out_${var}_nyard"};
+##                  }
+##              }
+
+##              my $c = 0;
+##              for my $cat (keys %output) {
+##                  push @outArray, {
+##                      category => $cat,
+##                      value    => $output{$cat}{$var},
+##                      source   =>  $type =~ /DairyCow|FatteningPigs/ ? undef : "Livestock:$type:Excretion",
+##                      type     => "Livestock:$type",
+##                      sort     => (9-$t)*100 + (9-$c)*10 + $v*1,
+##                      var      => $varName,
+##                      print    => "Details$type",
+##                  };
+##                  $c++;
+##              }
+##              $v++;
+##          }
+##          $t++;
+##      }
+##      return \@outArray;
+
+
+# +n_excretion_othercattle
+#   format= %.0f
+#   print = OtherCattleFlux
+#   ++labels 
+#     en = Excretion other cattle
+#     de = Ausscheidung übriges Rindvieh
+#     fr = Déjections Autres bovins 
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Total annual N excreted by all other cattle.
+#   ++formula
+#     Sum(n_excretion, Livestock::OtherCattle); 
+
+
+# +nh3_nothercattle_grazing
+#   format= %.0f
+#   print = OtherCattleSummary
+#   ++labels
+#     sort = 210
+#     en = Grazing other cattle NH3-Emissions
+#     de = Übriges Rindvieh Weide NH3-Emission
+#     fr = Autres bovins Emission de NH3 Pâturage 
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 emission from other cattle grazing areas.
+#   ++formula
+#      Sum(nh3_ngrazing, Livestock::OtherCattle::Grazing) ;
+ 
+
+# +nh3_nothercattle_housing_and_yard
+#   format= %.0f
+#   print = OtherCattleSummary
+#   ++labels
+#     sort = 220
+#     en = Housing and yard other cattle NH3-Emissions
+#     de = Übriges Rindvieh Stall und Laufhof NH3-Emission
+#     fr = Autres bovins Emission de NH3 Stabulation et parcours extérieur  
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 emission from cattle from all housings and yards.
+#   ++formula
+#    Sum(nh3_nhousing, Livestock::OtherCattle::Housing) +  
+#    Sum(nh3_nyard, Livestock::OtherCattle::Yard);
+
+
+# +share_storage_solid_othercattle
+#   format= %.2f
+#   print = 44
+#   ++labels
+#     en = Share input storage solid other cattle
+#     de = Übriges Rindvieh Anteile Lagerinput fest
+#     fr = Autres bovins Part Stockage solide
+#   ++units
+#     en = %
+#   ++description
+#     Share input storage other cattle
+#   ++formula
+#     if(Val(tan_into_storage_solid_dairycows_cattle, Livestock) >0){
+#        Sum(tan_solid, Livestock::OtherCattle) / Val(tan_into_storage_solid_dairycows_cattle, Livestock);
+#      }else{0;};
+
+
+# +share_storage_liquid_othercattle
+#   format= %.2f
+#   print = 44
+#   ++labels
+#     en = Share input storage liquid other cattle
+#     de = Übriges Rindvieh Anteile Lagerinput flüssig
+#     fr = Autres bovins Part Stockage liquide
+#   ++units
+#     en = %
+#   ++description
+#     Share input storage other cattle
+#   ++formula
+#     if(Val(n_into_storage_liquid, Livestock) >0){
+#        Sum(n_liquid_from_cattle, Livestock::OtherCattle) / Val(n_into_storage_liquid, Livestock);
+#      }else{0;};
+
+
+# +share_application_solid_othercattle
+#   format= %.2f
+#   print = 44
+#   ++labels
+#     en = Share input storage other cattle 
+#     de = Übriges Rindvieh Anteile Lagerinput
+#     fr = Autres bovins Part Epandage solide  
+#   ++units
+#     en = %
+#   ++description
+#     Share input storage other cattle
+#   ++formula
+#    if( Val(tan_into_storage_solid_dairycows_cattle, Livestock) > 0 ){
+#       Sum(tan_solid, Livestock::OtherCattle) 
+#       / Val(tan_into_storage_solid_dairycows_cattle, Livestock);
+#      }else{0;};
+
+
+# +share_application_liquid_othercattle
+#   format= %.2f
+#   print = 44
+#   ++labels
+#     en = Share input Storage liquid other cattle
+#     de = Übriges Rindvieh Anteile Gewicht Ausbringemissionen flüssig Lager
+#     fr = Autres bovins Part Stockage liquide
+#   ++units
+#     en = %
+#   ++description
+#     Share input Storage dairy cow
+#   ++formula
+#    if(Out(sum_weight_application_slurry) >0){
+#       Sum(n_liquid_from_cattle, Livestock::OtherCattle)*0.5 / Out(sum_weight_application_slurry);
+#    }else{0;};
+
+
+# +nh3_nothercattle_storage_solid
+#   format= %.0f
+#   print = OtherCattleSummary
+#   ++labels 
+#     sort = 232
+#     en = _Storage solid other cattle NH3-Emissions
+#     de = _Übriges Rindvieh Hofdüngerlager fest NH3-Emission
+#     fr = _Autres bovins Emission de NH3 Stockage des engrais de ferme solide 
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 emission from storage (estimation proportional to tan input of animalcategory in storage)
+#   ++formula
+#    Out(share_storage_solid_othercattle) *  Val(nh3_nsolid_dairycows_cattle, Storage::SolidManure::Solid);
+
+
+# +nh3_nothercattle_storage_liquid
+#   format= %.0f
+#   print = OtherCattleSummary
+#   ++labels
+#     sort = 231
+#     en = _Storage liquid other cattle NH3-Emissions
+#     de = _Übriges Rindvieh Hofdüngerlager flüssig NH3-Emission
+#     fr = _Autres bovins Emission de NH3 Stockage des engrais de ferme liquide 
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+#   ++formula
+#    Out(share_storage_liquid_othercattle) *  Val(nh3_nstorage_liquid, Storage);
+
+
+# +nh3_nothercattle_storage
+#   format= %.0f
+#   print = OtherCattleSummary
+#   ++labels
+#     sort = 230
+#     en = Storage other cattle NH3-Emissions
+#     de = Übriges Rindvieh Hofdüngerlager NH3-Emission
+#     fr = Autres bovins Emission de NH3 Stockage des engrais de ferme 
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+#   ++formula
+#    Out(nh3_nothercattle_storage_solid) + Out(nh3_nothercattle_storage_liquid);
+
+
+# +nh3_nothercattle_application_solid
+#   format= %.0f
+#   print = OtherCattleSummary
+#   ++labels
+#     sort = 242 
+#     en = _Application solid other cattle NH3-Emissions
+#     de = _Übriges Rindvieh Hofdüngerausbringung fest NH3-Emission
+#     fr = _Autres bovins Emission de NH3 Epandage des engrais de ferme solides
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+#   ++formula
+#    Out(share_application_solid_othercattle) *  Val(nh3_nsolid_dairycows_cattle, Application::SolidManure::Solid);
+
+
+# +nh3_nothercattle_application_liquid
+#   format= %.0f
+#   print = OtherCattleSummary
+#   ++labels 
+#     sort = 241
+#     en = _Application liquid other cattle NH3-Emissions
+#     de = _Übriges Rindvieh Hofdüngerausbringung flüssig NH3-Emission
+#     fr = _Autres bovins Emission de NH3 Epandage des engrais de ferme liquides 
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+#   ++formula
+#    Out(share_application_liquid_othercattle) *  Val(nh3_napplication_liquid, Application);
+
+
+# +nh3_nothercattle_application
+#   format= %.0f
+#   print = OtherCattleSummary
+#   ++labels 
+#     sort = 240
+#     en = Application other cattle NH3-Emissions
+#     de = Übriges Rindvieh Hofdüngerausbringung NH3-Emission
+#     fr = Autres bovins Emission de NH3 Epandage des engrais de ferme 
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+#   ++formula
+#    Out(nh3_nothercattle_application_solid) + Out(nh3_nothercattle_application_liquid);
+
+
+# +nh3_nothercattle_total
+#   format= %.0f
+#   print = OtherCattleTotal
+#   ++labels
+#     sort = 290
+#     en = Other cattle NH3-Emission
+#     de = Übriges Rindvieh NH3-Emission
+#     fr = Autres bovins Emission de NH3
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 emission from other cattle ( Application and storage, estimation proportional to input of animalcategory in storage)
+#   ++formula
+#    Out(nh3_nothercattle_grazing) + Out(nh3_nothercattle_housing_and_yard) + Out(nh3_nothercattle_storage) + Out(nh3_nothercattle_application);

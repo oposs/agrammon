@@ -1,0 +1,401 @@
+*** general ***
+
+author    = Agrammon Group
+date      = 2008-02-19
+taxonomy  = Livestock::Pig
+instances = multi
+gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,Livestock::Pigs
+
++short
+
+ Collects the annual emission of NH3 and the N flux for pigs.
+
++description 
+ This process summarizes the annual emission of NH3 for pigs from housing and
+ grazing.
+ And it summarizes the annual N flux from housing to the storage for pigs.
+
+*** input ***
+
+*** technical ***
+
++er_n2_solid_Slurry
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_solid_Solid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_liquid_Slurry
+  value = 0.02
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_liquid_Solid
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
+
+
++er_no_solid_Slurry
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_solid_Solid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_liquid_Slurry
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_liquid_Solid
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
+
+
+
++er_n2o_solid_Slurry
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_solid_Solid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_liquid_Slurry
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2o_liquid_Solid
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
+*** external ***
+
++Pig::Grazing
++Pig::Housing::Type
++Pig::Housing
++Pig::Excretion
+
+*** output ***
+
++n_excretion
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by pigs.
+  ++formula
+    Val(n_excretion, Pig::Excretion);
+
++n_from_pig
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from pigs housing.
+  ++formula
+    Val(n_outhousing, Pig::Housing); 
+
++tan
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from pigs housing.
+  ++formula
+    Val(tan_outhousing, Pig::Housing); 
+
++n_liquid_from_pig
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from pigs housing, liquid fraction.
+  ++formula 
+    Val(n_outhousing_liquid, Pig::Housing); 
+
++tan_liquid
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from pigs housing, liquid fraction.
+  ++formula
+    Val(tan_outhousing_liquid, Pig::Housing);
+        
++n_solid_from_pig
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from pigs housing, solid fraction.
+  ++formula
+    Val(n_outhousing_solid, Pig::Housing);
+
++tan_solid
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN from pigs housing, liquid fraction.
+  ++formula
+    Val(tan_outhousing_solid, Pig::Housing);
+
++nh3_npig
+  print = 5
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from pigs housing and grazing (production).
+  ++formula
+     Val(nh3_nhousing, Pig::Housing) +
+     Val(nh3_ngrazing, Pig::Grazing);
+         
+########### Other Voltaile N Flux
+
+
++er_n2_nsolid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from pigs housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, Pig::Housing::Type) ) {
+            return Tech(er_n2_solid_Slurry)         when 'Slurry_Conventional';
+            return Tech(er_n2_solid_Slurry)         when 'Slurry_Label';
+            return Tech(er_n2_solid_Solid)          when 'Deep_Litter';
+            return Tech(er_n2_solid_Solid)          when 'Outdoor';
+            default { return 0; }
+      };
+
++er_no_nsolid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from pigs housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, Pig::Housing::Type) ) {
+            return Tech(er_no_solid_Slurry)         when 'Slurry_Conventional';
+            return Tech(er_no_solid_Slurry)         when 'Slurry_Label';
+            return Tech(er_no_solid_Solid)          when 'Deep_Litter';
+            return Tech(er_no_solid_Solid)          when 'Outdoor';
+            default { return 0; }
+      };
+
++er_n2o_nsolid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from pigs housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, Pig::Housing::Type) ) {
+            return Tech(er_n2o_solid_Slurry)         when 'Slurry_Conventional';
+            return Tech(er_n2o_solid_Slurry)         when 'Slurry_Label';
+            return Tech(er_n2o_solid_Solid)          when 'Deep_Litter';
+            return Tech(er_n2o_solid_Solid)          when 'Outdoor';
+            default { return 0; }
+      };
+
++er_n2_nliquid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from pigs housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, Pig::Housing::Type) ) {
+            return Tech(er_n2_liquid_Slurry)         when 'Slurry_Conventional';
+            return Tech(er_n2_liquid_Slurry)         when 'Slurry_Label';
+            return Tech(er_n2_liquid_Solid)          when 'Deep_Litter';
+            return Tech(er_n2_liquid_Solid)          when 'Outdoor';
+            default { return 0; }
+      };
+
++er_no_nliquid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from pigs housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, Pig::Housing::Type) ) {
+            return Tech(er_no_liquid_Slurry)         when 'Slurry_Conventional';
+            return Tech(er_no_liquid_Slurry)         when 'Slurry_Label';
+            return Tech(er_no_liquid_Solid)          when 'Deep_Litter';
+            return Tech(er_no_liquid_Solid)          when 'Outdoor';
+            default { return 0; }
+      };
+
++er_n2o_nliquid
+  print=all
+  ++units
+      en = -
+  ++description
+    Annual N2 emissions from pigs housing, yard and grazing (production).
+  ++formula
+     given ( Val(housing_type, Pig::Housing::Type) ) {
+            return Tech(er_n2o_liquid_Slurry)         when 'Slurry_Conventional';
+            return Tech(er_n2o_liquid_Slurry)         when 'Slurry_Label';
+            return Tech(er_n2o_liquid_Solid)          when 'Deep_Litter';
+            return Tech(er_n2o_liquid_Solid)          when 'Outdoor';
+            default { return 0; }
+      };
+
+
+
++n2_nsolid
+  print = 7
+  ++labels
+     en = Grazing, housing, yard storage pig N2-emissions
+        de = Weide, Stall und Laufhof Zuchtschweine N2-Emission
+        fr = Porc Emissions de N2 pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+        de = kg N/Jahr
+        fr = kg N/an
+  ++description
+    Annual N2 emissions from pigs housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Pig::Housing) * (1-Val(share_liquid, Pig::Housing::Type) ) 
+     ) * Out(er_n2_nsolid);
+
+
++no_nsolid_pig
+  print = 7
+  ++labels
+    en = Grazing, housing and yard pig NO-emissions
+        de = Weide, Stall und Laufhof Zuchtschweine NO-Emission
+        fr = Porc Emissions de NO pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+        de = kg N/Jahr
+        fr = kg N/an
+  ++description
+    Annual NO emissions from pigs housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Pig::Housing) * (1-Val(share_liquid, Pig::Housing::Type) ) 
+     ) * Out(er_no_nsolid);
+
++n2o_nsolid
+  print = 7
+  ++labels
+    en = housing, yard and storage pig N2O-emissions
+    de = Stall, Laufhof und LagerZuchtschweine N2O-Emission
+    fr = Porc Emissions de N2O pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2O emissions from pigs housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Pig::Housing) * (1-Val(share_liquid, Pig::Housing::Type) ) 
+     ) * Out(er_n2o_nsolid);
+
+   
++n2_nliquid
+  print = 7
+  ++labels
+     en = housing, yard and storage pig N2-emissions
+        de = Weide, Stall und Laufhof Zuchtschweine N2-Emission
+        fr = Porc Emissions de N2 pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+        de = kg N/Jahr
+        fr = kg N/an
+  ++description
+    Annual N2 emissions from pigs housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Pig::Housing) * Val(share_liquid, Pig::Housing::Type) 
+     ) * Out(er_n2_nliquid);
+
+
++no_nliquid_pig
+  print = 7
+  ++labels
+    en = housing, yard and storage pig NO-emissions
+        de = Weide, Stall und Laufhof Zuchtschweine NO-Emission
+        fr = Porc Emissions de NO pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+        de = kg N/Jahr
+        fr = kg N/an
+  ++description
+    Annual NO emissions from pigs housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Pig::Housing) * Val(share_liquid, Pig::Housing::Type)
+     ) * Out(er_no_nliquid); 
+
++n2o_nliquid
+  print = 7
+  ++labels
+    en = Grazing, housing and yard pig N2O-emissions
+    de = Weide, Stall und Laufhof Zuchtschweine N2O-Emission
+    fr = Porc Emissions de N2O pâturage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2O emissions from pigs housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Pig::Housing) * Val(share_liquid, Pig::Housing::Type)
+     ) *  Out(er_n2o_nliquid);

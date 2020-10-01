@@ -1,0 +1,303 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-22
+taxonomy = Livestock::Equides::Excretion
+#instances = many
+
+
++short
+
+Computes the annual N excretion of  horses, mules and asses.
+
++description
+
+This process calculated the annual N excretion of the animal categories listed
+above. The standard N excretion was taken from the official Swiss fertilizer
+guidelines. The Nsol content of the excreta is based on e.g. Peterson et al.
+(1998) or Burgos et al. (2005). These values were compiled on the basis of
+official feeding recommendations (Flisch et al. 2009) by H. Menzi.
+
+\subsubsection{References:}
+Burgos SA, Robinson PH, Fadel JG, DePeters EJ 2005. Ammonia volatilization
+potential: Prediction of urinary urea nitrogen output on lactating dairy
+cows. Agriculture, Ecosystems and Environment 111:261-269.
+
+
+Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and
+dung of grazing cattle: effect of N intake. Atmospheric environment
+32:295-300.
+
+Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
+
+*** input ***
+
++animalcategory
+  type = enum
+  ++enum
+    +++horses_older_than_3yr
+       en = horses_older_than_3yr
+       de = Pferde_über_3-jährig
+       fr = Chevaux_de_plus_de_3_ans
+       it = horses_older_than_3yr
+    +++horses_younger_than_3yr
+       en = horses_younger_than_3yr
+       de = Pferde_unter_3-jährig
+       fr = Chevaux_de_moins_de_3_ans
+       it = horses_younger_than_3yr
+    +++mules
+       en = mules
+       de = Maultiere_und_Maulesel_jeden_Alters
+       fr = Mulets_et_baudets
+       it = mules
+    +++ponies_and_asses
+       en = ponies_and_asses
+       de = Ponies_Kleinpferde_und_Esel_jeden_Alters
+       fr = Anes_et_poneys
+       it = ponies_and_asses
+  ++labels
+    en = Animal category
+    de = Tierkategorie
+    fr = Catégorie d'animaux
+  ++units
+    en = -
+  ++description
+    Animal category (horses younger than 3 years, horses older than 3 years, mules, ponies and asses).
+  ++help
+    +++en
+       <p> </p>
+    +++de
+       <p> </p>
+    +++fr
+       <p> </p>
+
++animals
+  type = integer
+  validator = ge(0)
+  branch = true
+  ++labels
+    en = Number of animals
+    de = Anzahl Tiere
+    fr = Nombre d'animaux
+  ++units
+    en = -
+  ++description
+    Number of other animals for the selected type in barn.
+  ++help
+    +++en
+       <p> </p>
+    +++de
+       <p> </p>
+    +++fr
+       <p> </p>
+
++inp_n_excretion
+  type = text
+  default_calc = Standard
+  default_gui  = Standard
+  ++labels
+    en = N_excretion
+    de = N_Ausscheidung
+    fr = Excrétions_azotées
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for animal category
+  ++help
+    +++en
+       <p>If "Standard" is selected the standard value for the
+          nitrogen excretion according to PRIF 2017 is applied (Richner
+          et al., 2017) is applied (PRIF: Principles of Agricultural Crop
+          Fertilisation in Switzerland). If a number is entered, a value
+          for the nitrogen excretion can be selected by the user.</p>
+       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+          pp. 4/1-4/23.</p>
+    +++de
+       <p>Bei Auswahl «Standard» wird der Richtwert für die
+          Stickstoffausscheidung gemäss GRUD 2017 (Richner et al., 2017)
+          verwendet. Bei Eingabe einer Zahl kann der Wert für die
+          Stickstoffausscheidung selbst gewählt werden.</p>
+       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+          pp. 4/1-4/23.</p>
+    +++fr
+       <p>Si "Standard" est introduisé, la valeur de référence pour
+          les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
+          est utilisée (PRIF: « Principes de la fertilisation des
+          cultures agricoles en Suisse » ). Si un nombre est introduisé
+          une valeur pour les excrétions azotées peut être déterminée par
+          l'utilisateur/-trice.</p>
+       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+          pp. 4/1-4/23.</p>
+
+
+*** technical ***
+
+### standard_N_excretion
+
++standard_N_excretion_horses_younger_than_3yr
+  value = 42
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for other animal category (horses younger
+    than 3 years) according to Flisch et al. (2009).
+
++standard_N_excretion_horses_older_than_3yr
+  value = 44
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for other animal category (horses older
+    than 3 years) according to Flisch et al. (2009).
+
++standard_N_excretion_mules
+  value = 25.10
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for other animal category (mules) according to
+    Flisch et al. (2009).
+
++standard_N_excretion_ponies_and_asses
+  value = 15.7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for other animal category (asses and ponies) according to
+    Flisch et al. (2009).
+
+
+###  share_Nsol
+
++share_Nsol_horses_younger_than_3yr
+  value = 0.4
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta from horses younger than 3 years.
+    Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_horses_older_than_3yr
+  value = 0.4
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta from horses older than 3 years.
+    Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_mules
+  value = 0.4
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta from mules.
+    Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_ponies_and_asses
+  value = 0.4
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta from asses and ponies.
+    Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
+
+
+*** external ***
+
+*** output ***
+
++standard_N_excretion
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for specified other animal category according to
+    Flisch et al. (2009).
+  ++formula
+    my $cat = In(animalcategory);
+    my $key = 'standard_N_excretion_' . $cat;
+    my $exc = $TE->{$key};
+    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
+    if ( ($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
+        writeLog({
+            en => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+            de => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+            fr => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+        });
+    }
+    return $exc;
+
++share_Nsol
+  print = 7
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta of other animal category. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+  ++formula
+    my $key = "share_Nsol_" . In(animalcategory);
+    return $TE->{$key};
+
++n_excretion
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by a specified number of animals.
+  ++formula
+    Out(standard_N_excretion) * In(animals);
+
++tan_excretion
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual soluble N excreted by a specified number of animals.
+  ++formula
+     Out(share_Nsol) * Out(n_excretion);
+
++animals
+  print = 9
+  ++units
+    en = -
+  ++description
+    Number of other animals for the selected type in barn.
+  ++formula
+    In(animals);
+
++animalcategory
+  print = 9
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    In(animalcategory);
