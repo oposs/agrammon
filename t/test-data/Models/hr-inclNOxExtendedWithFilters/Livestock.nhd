@@ -120,12 +120,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Total annual N excreted by all animals.
   ++formula
-    Sum(n_excretion,Livestock::OtherCattle) +
-    Sum(n_excretion,Livestock::DairyCow) +
-    Sum(n_excretion,Livestock::Pig) +
-    Sum(n_excretion,Livestock::FatteningPigs) +
-    Sum(n_excretion,Livestock::Equides) +
-    Sum(n_excretion,Livestock::SmallRuminants) +
+    Sum(n_excretion,Livestock::OtherCattle) P+
+    Sum(n_excretion,Livestock::DairyCow) P+
+    Sum(n_excretion,Livestock::Pig) P+
+    Sum(n_excretion,Livestock::FatteningPigs) P+
+    Sum(n_excretion,Livestock::Equides) P+
+    Sum(n_excretion,Livestock::SmallRuminants) P+
     Sum(n_excretion,Livestock::Poultry);
 
 +tan_excretion
@@ -143,14 +143,14 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Total annual TAN excreted by all animals.
   ++formula
-      Sum(n_sol_excretion,Livestock::OtherCattle::Excretion ) P+
-      Sum(n_sol_excretion,Livestock::DairyCow::Excretion ) P+
-      Sum(n_sol_excretion,Livestock::Pig::Excretion ) P+
-      Sum(n_sol_excretion,Livestock::FatteningPigs::Excretion ) P+
-      Sum(n_sol_excretion,Livestock::Equides::Excretion ) P+
-      Sum(n_sol_excretion,Livestock::SmallRuminants::Excretion) P+
-      Sum(n_sol_excretion,Livestock::RoughageConsuming::Excretion) P+
-      Sum(n_sol_excretion,Livestock::Poultry::Excretion);
+    Sum(tan_excretion,Livestock::OtherCattle::Excretion ) P+
+    Sum(tan_excretion,Livestock::DairyCow::Excretion ) P+
+    Sum(tan_excretion,Livestock::Pig::Excretion ) P+
+    Sum(tan_excretion,Livestock::FatteningPigs::Excretion ) P+
+    Sum(tan_excretion,Livestock::Equides::Excretion ) P+
+    Sum(tan_excretion,Livestock::SmallRuminants::Excretion) P+
+    Sum(tan_excretion,Livestock::RoughageConsuming::Excretion) P+
+    Sum(tan_excretion,Livestock::Poultry::Excretion);
 
 +n_into_storage
   format= %.0f
@@ -173,8 +173,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_from_pig,Livestock::Pig) P+
     Sum(n_from_fattening_pig,Livestock::FatteningPigs) P+
     Sum(n_from_equides,Livestock::Equides) P+
-    Sum(n_from_other,Livestock::SmallRuminants) +
-    Sum(n_from_other,Livestock::RoughageConsuming) +
+    Sum(n_from_other,Livestock::SmallRuminants) P+
+    Sum(n_from_other,Livestock::RoughageConsuming) P+
     Sum(n_from_poultry,Livestock::Poultry);
 
 +n_into_storage_ratios
@@ -265,12 +265,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (liquid share) from housing and yard into the
     storage from all animal besides poultry.
   ++formula
-    Sum(n_outhousing_liquid,Livestock::OtherCattle::Housing) +
-    Sum(n_outhousing_liquid,Livestock::DairyCow::Housing) +
-    Sum(n_outhousing_liquid,Livestock::Pig::Housing) +
-    Sum(n_outhousing_liquid,Livestock::FatteningPigs::Housing) +
-    Sum(n_outhousing_liquid,Livestock::Equides::Housing) +
-    Sum(n_outhousing_liquid,Livestock::SmallRuminants::Housing) +
+    Sum(n_outhousing_liquid,Livestock::OtherCattle::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::DairyCow::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::Pig::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::FatteningPigs::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::Equides::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::SmallRuminants::Housing) P+
     Sum(n_outhousing_liquid,Livestock::RoughageConsuming::Housing);
 
 +n_into_storage_liquid_pigs
@@ -436,7 +436,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n2_nsolid,Livestock::OtherCattle) P+
     Sum(no_nsolid,Livestock::OtherCattle) P+
     Sum(n2o_nsolid,Livestock::OtherCattle) P+
-
     Sum(n2_nsolid,Livestock::DairyCow) P+
     Sum(no_nsolid,Livestock::DairyCow) P+
     Sum(n2o_nsolid,Livestock::DairyCow);

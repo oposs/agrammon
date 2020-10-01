@@ -1,8 +1,11 @@
 use Test;
+use Data::Dump::Tree;
 use Agrammon::DataSource::CSV;
 use Agrammon::Model;
 use Agrammon::Model::Parameters;
 use Agrammon::OutputFormatter::CSV;
+use Agrammon::OutputFormatter::GUI;
+use Agrammon::OutputFormatter::Text;
 use Agrammon::TechnicalParser;
 
 my $model-version = 'hr-inclNOxExtendedWithFilters';
@@ -34,30 +37,41 @@ lives-ok
     'Parsed technical file';
 isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
 
-my %output;
+my $output;
 lives-ok
     {
-        %output = $model.run(
+        $output = $model.run(
             input => @datasets[0],
             technical => %($params.technical.map(-> %module {
                 %module.keys[0] => %(%module.values[0].map({ .name => .value }))
             }))
-        ).get-outputs-hash()
+        )
     },
     'Successfully executed model';
 
-dd %output<Total><nh3_ntotal>;
-dd %output<Total><nh3_nanimalproduction>;
+my %output-hash = $output.get-outputs-hash;
 
-is %output<Total><nh3_ntotal>, 829.0435196080422e0,
-        "Correct nh3_ntotal result: %output<Total><nh3_ntotal>";
-is %output<Total><nh3_nanimalproduction>, 829.0435196080422e0,
-        "Correct nh3_nanimalproduction result: %output<Total><nh3_nanimalproduction>";
+#dd %output<Total><nh3_ntotal>;
+#dd %output<Total><nh3_nanimalproduction>;
+my $nh3-ntotal = 2948.7161903612955;
+my $nh3-nanimalproduction = 2948.7161903612955;
 
+is %output-hash<Total><nh3_ntotal>, $nh3-ntotal,
+        "Correct nh3_ntotal result: %output-hash<Total><nh3_ntotal>";
+is %output-hash<Total><nh3_nanimalproduction>, $nh3-nanimalproduction,
+        "Correct nh3_nanimalproduction result: %output-hash<Total><nh3_nanimalproduction>";
 
-todo "Detailed tests for intermediate results", 1;
-subtest "Intermediate results" => {
-    flunk "Intermediate results ok";
-}
+# my @instances = $output.find-instances('Livestock::Pig').sort(*.key).map(*.value);
+# dd @instances;
+
+# say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
+say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
+
+# ddt "GUI: FluxSummaryLivestock=", output-for-gui($model, $output)<data>[0];
+
+#todo "Detailed tests for intermediate results", 1;
+#subtest "Intermediate results" => {
+#    flunk "Intermediate results ok";
+#}
 
 done-testing;
