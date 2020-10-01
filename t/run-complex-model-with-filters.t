@@ -11,6 +11,11 @@ use Agrammon::TechnicalParser;
 
 my $temp-dir = $*TMPDIR.add('agrammon_testing');
 
+#| Expected results
+my $nh3-ntotal = 2948.7161903612955;
+my $nh3-nanimalproduction = 2948.7161903612955;
+my $nh3-napplication = 1311.7830090654595;
+
 for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
     subtest "Model $model-version" => {
         my $path = $*PROGRAM.parent.add("test-data/Models/$model-version/");
@@ -54,19 +59,12 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                             )
                 },
                 'Successfully executed model';
-
         my %output-hash = $output.get-outputs-hash;
 
-        my $nh3-ntotal = 2948.7161903612955;
-        my $nh3-nanimalproduction = 2948.7161903612955;
-        my $nh3-napplication = 1311.7830090654595;
-
-        # dd +%output-hash<Application><nh3_napplication>;
         is %output-hash<Total><nh3_ntotal>.round(.001), $nh3-ntotal.round(.001),
                 "Correct nh3_ntotal result: { %output-hash<Total><nh3_ntotal>.round(.001) }";
         is %output-hash<Total><nh3_nanimalproduction>.round(.001), $nh3-nanimalproduction.round(.001),
                 "Correct nh3_nanimalproduction result: { %output-hash<Total><nh3_nanimalproduction>.round(.001) }";
-
         is (+%output-hash<Application><nh3_napplication>).round(.001), $nh3-napplication.round(.001),
                 "Correct nh3_napplication result: { (+%output-hash<Application><nh3_napplication>).round(.001) }";
 
