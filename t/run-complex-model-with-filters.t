@@ -2,16 +2,20 @@ use Test;
 use Data::Dump::Tree;
 use Agrammon::DataSource::CSV;
 use Agrammon::Model;
+use Agrammon::ModelCache;
 use Agrammon::Model::Parameters;
 use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::GUI;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::TechnicalParser;
 
+my $temp-dir = $*TMPDIR.add('agrammon_testing');
+
 my $model-version = 'hr-inclNOxExtendedWithFilters';
 my $path = $*PROGRAM.parent.add("test-data/Models/$model-version/");
-my $model = Agrammon::Model.new(:$path);
-lives-ok { $model.load('End') }, "Load module End.nhd from $path";
+my $model;
+lives-ok { $model = load-model-using-cache($temp-dir, $path, 'End') },
+        "Load module End.nhd from $path";
 
 # pigs and no dairy cows
 #my $filename = 'complex-model-with-filters-input1.csv';
