@@ -53,8 +53,10 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual NH3 emission from manure application.
   ++formula
-    Val(nh3_nliquid, Application::Slurry) +
-    Val(nh3_nsolid, Application::SolidManure)
+    scale(
+        Val(n_into_storage_ratios, Livestock),
+        Val(nh3_nliquid, Application::Slurry) + Val(nh3_nsolid, Application::SolidManure)
+    );
 
 +nh3_napplication_solid
   format = %.0f

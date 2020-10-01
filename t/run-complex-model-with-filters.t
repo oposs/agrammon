@@ -55,27 +55,22 @@ lives-ok
 
 my %output-hash = $output.get-outputs-hash;
 
-#dd %output<Total><nh3_ntotal>;
-#dd %output<Total><nh3_nanimalproduction>;
 my $nh3-ntotal = 2948.7161903612955;
 my $nh3-nanimalproduction = 2948.7161903612955;
+my $nh3-napplication = 1311.7830090654595;
 
 is %output-hash<Total><nh3_ntotal>, $nh3-ntotal,
         "Correct nh3_ntotal result: %output-hash<Total><nh3_ntotal>";
 is %output-hash<Total><nh3_nanimalproduction>, $nh3-nanimalproduction,
         "Correct nh3_nanimalproduction result: %output-hash<Total><nh3_nanimalproduction>";
 
-# my @instances = $output.find-instances('Livestock::Pig').sort(*.key).map(*.value);
-# dd @instances;
+is +%output-hash<Application><nh3_napplication>, $nh3-napplication,
+        "Correct nh3_napplication result: {+%output-hash<Application><nh3_napplication>}";
 
 # say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
-say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
+#say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
+say "\nLivestockSummary (Details)=\n", output-as-text($model, $output, 'de', 'LivestockSummary', True);
 
 # ddt "GUI: FluxSummaryLivestock=", output-for-gui($model, $output)<data>[0];
-
-#todo "Detailed tests for intermediate results", 1;
-#subtest "Intermediate results" => {
-#    flunk "Intermediate results ok";
-#}
 
 done-testing;
