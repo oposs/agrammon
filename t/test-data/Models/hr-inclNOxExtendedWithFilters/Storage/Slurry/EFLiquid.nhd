@@ -367,14 +367,20 @@ T. Kupper).
   ++formula
     if ( lc In(contains_pig_manure) eq 'no' ) {
       return 0;
-    } elsif ( lc In(contains_pig_manure) eq 'yes' ) {
+    } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'no' ) {
+      return Out(ef_pigs_liquid);
+    } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'yes' ) {
       return Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock) * Out(ef_pigs_liquid);
     } else {
       writeLog({
-        en => 'Invalid values for "Contains pigs slurry" (' . In(contains_pig_manure) . ')' . "\n",
-        de => 'Ungültige Eingabe für "Enthält Schweinegülle" (' . In(contains_pig_manure) . ')' . "\n",
-        fr => 'Entrée non valable pour "Contient du lisier de porc" (' . In(contains_pig_manure) . ')' . "\n"
+        en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')'
+          . ' and/or "Contains pigs slurry" (' . In(contains_pig_manure) . ')' . "\n",
+        de => 'Ungültige Eingabe für "Enthält Rindergülle" (' . In(contains_cattle_manure) . ')'
+          . ' und/oder "Enthält Schweinegülle" (' . In(contains_pig_manure) . ')' . "\n",
+        fr => 'Entrée non valable pour "Contient du lisier de bovin" (' . In(contains_cattle_manure) . ') '
+          . ' et/ou "Contient du lisier de porc" (' . In(contains_pig_manure) . ')' . "\n"
       });
+      return Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock) * Out(ef_pigs_liquid);
     }
 
     
@@ -389,14 +395,10 @@ T. Kupper).
   ++formula
     if ( lc In(contains_cattle_manure) eq 'no' ) {
       return 0;
-    } elsif ( lc In(contains_cattle_manure) eq 'yes' ) {
-      return (1 - Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock)) * Out(ef_cattle_liquid);
+    } elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {
+      return Out(ef_cattle_liquid);
     } else {
-      writeLog({
-        en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')' . "\n",
-        de => 'Ungültige Eingabe für "Enthält Rindergülle" (' . In(contains_cattle_manure) . ')' . "\n",
-        fr => 'Entrée non valable pour "Contient du lisier de bovin" (' . In(contains_cattle_manure) . ')' . "\n"
-      });
+      return (1 - Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock)) * Out(ef_cattle_liquid);
     }
 
  
