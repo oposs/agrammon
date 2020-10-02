@@ -13,9 +13,9 @@ Database:
 GUI:
     variant: Single
     title:
-        de: AGRAMMON 4.0 Einzelbetriebsmodell
-        en: AGRAMMON 4.0 Single Farm Model
-        fr: AGRAMMON 4.0 modèle Exploitation individuelle
+        de: AGRAMMON 6.0 Einzelbetriebsmodell
+        en: AGRAMMON 6.0 Single Farm Model
+        fr: AGRAMMON 6.0 modèle Exploitation individuelle
 
 Model:
     debugLevel: 0
@@ -24,4 +24,4 @@ Model:
     root:      End.nhd
     technical: technical.cfg
     variant:   SHL
-    version:   "4.0 - #REV#"
+    version:   "6.0 - #REV#"
