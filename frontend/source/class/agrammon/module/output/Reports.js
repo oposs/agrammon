@@ -479,8 +479,9 @@ qx.Class.define('agrammon.module.output.Reports', {
                             refValue = '-';
                             refDiff  = '-';
                         }
-                        if (rec.filter) {
-                            varName = '__' + rec.filter;
+                        if (rec.filters) {
+                            console.log('filters=', rec.filters);
+//                            varName = '__' + rec.filter;
                         }
                         repDataset.push([ '', // moduleName,
                                           varName,

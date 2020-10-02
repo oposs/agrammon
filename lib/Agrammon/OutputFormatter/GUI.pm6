@@ -56,16 +56,11 @@ sub get-data($model, $outputs, $include-filters) {
     return @records;
 }
 
-sub make-record($fq-name, $output, $model, $raw-value, $var, $filter-id?) {
+sub make-record($fq-name, $output, $model, $raw-value, $var, $filters?) {
     my $format = $model.output-format($fq-name, $output);
     my $full-value = flat-value($raw-value);
     my $value = ($format  && $full-value.defined) ?? sprintf($format, $full-value)
                                                   !! $full-value;
-    my $filter;
-    if $filter-id {
-        $filter-id ~~ / '=' (.+) /;
-        $filter = ~$0;
-    }
     return %(
         :$format,
         :print($model.output-print($fq-name, $output)),
@@ -75,24 +70,19 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, $filter-id?) {
         :fullValue($full-value),
         :$value,
         :$var,
-        :$filter,
+        :$filters,
     );
 }
 
 sub push-filters(@records, $fq-name, $output, $model,
                  Agrammon::Outputs::FilterGroupCollection $collection,
                  $var) {
-    my @results = $collection.results-by-filter-group;
-    for @results {
+    for $collection.results-by-filter-group {
         my %filters := .key;
         my $value := .value;
         my @filters = %filters.map: { .key ~ '=' ~ .value };
         for @filters.kv -> $idx, $filter-id {
-            push @records, make-record($fq-name, $output, $model, $value, $var, $filter-id);
-            # TODO: what does this do in text formatter? Do we need it here?
-            #                    $idx == 0
-            #                    ?? "$prefix $filter-id    $value $unit"
-            #                    !! "$prefix $filter-id";
+            push @records, make-record($fq-name, $output, $model, $value, $var, %filters);
         }
     }
 }
