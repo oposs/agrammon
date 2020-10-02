@@ -1,5 +1,5 @@
 2010v2.1_20120425;2648;Application::Slurry::Applrate;appl_rate;20
-2010v2.1_20120425;2648;Application::Slurry::Applrate;dilution_parts_water;1.0000
+2010v2.1_20120425;2648;Application::Slurry::Applrate;dilution_parts_water;1
 2010v2.1_20120425;2648;Application::Slurry::Cfermented;fermented_slurry;0
 2010v2.1_20120425;2648;Application::Slurry::Cseason;appl_autumn_winter_spring;70
 2010v2.1_20120425;2648;Application::Slurry::Cseason;appl_summer;30
@@ -322,7 +322,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_climate;none
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_slurry_channel;none
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_pigs;none
-2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::Type;housing_type_SHL;Slurry_Label
+2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::Type;housing_type;Slurry_Label
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;animalcategory;dry_sows
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;crude_protein;145
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;energy_content;11.9
@@ -332,7 +332,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_climate;none
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_slurry_channel;none
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_pigs;none
-2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::Type;housing_type_SHL;Slurry_Label
+2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::Type;housing_type;Slurry_Label
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;animalcategory;nursing_sows
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;crude_protein;165
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;energy_content;13.5
@@ -342,7 +342,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_climate;none
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_slurry_channel;none
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_pigs;none
-2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::Type;housing_type_SHL;Slurry_Conventional
+2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::Type;housing_type;Slurry_Conventional
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;animalcategory;weaned_piglets_up_to_25kg
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;crude_protein;180
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;energy_content;13.5
@@ -352,7 +352,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_climate;none
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_slurry_channel;none
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_pigs;none
-2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::Type;housing_type_SHL;Slurry_Conventional
+2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::Type;housing_type;Slurry_Conventional
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Excretion;animalcategory;broilers
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Excretion;animals;50
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Housing::AirScrubber;air_scrubber;none
@@ -413,23 +413,23 @@
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 1];mixing_frequency;7_to_12_times_per_year
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 1];volume;100
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 2]::EFLiquid;contains_cattle_manure;yes
-2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 2]::EFLiquid;contains_pig_manure;no
+2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 2]::EFLiquid;contains_pig_manure;yes
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 2]::EFLiquid;cover_type;solid_cover
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 2];depth;4
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 2];mixing_frequency;7_to_12_times_per_year
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 2];volume;60
-2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 3]::EFLiquid;contains_cattle_manure;yes
+2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 3]::EFLiquid;contains_cattle_manure;no
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 3]::EFLiquid;contains_pig_manure;yes
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 3]::EFLiquid;cover_type;uncovered
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 3];depth;2.5
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 3];mixing_frequency;7_to_12_times_per_year
-2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 3];volume;0
+2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 3];volume;60
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4]::EFLiquid;contains_cattle_manure;yes
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4]::EFLiquid;contains_pig_manure;yes
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4]::EFLiquid;cover_type;uncovered
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4];depth;2.5
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4];mixing_frequency;7_to_12_times_per_year
-2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4];volume;0
+2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4];volume;100
 2010v2.1_20120425;2648;Storage::SolidManure::Poultry;share_applied_direct_poultry_manure;0
 2010v2.1_20120425;2648;Storage::SolidManure::Poultry;share_covered_basin;0
 2010v2.1_20120425;2648;Storage::SolidManure::Solid;share_applied_direct_cattle_other_manure;0
