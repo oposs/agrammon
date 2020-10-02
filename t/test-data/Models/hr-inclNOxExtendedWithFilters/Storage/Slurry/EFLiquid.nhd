@@ -407,7 +407,51 @@ T. Kupper).
         }
     }
 
+    
++ef_liquid_pigs
+  print = 20
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Scaled emission factor of a specific liquid storage for pig slurry.
+  ++formula
+    if ( lc In(contains_pig_manure) eq 'no' ) {
+      return 0;
+    } elsif ( lc In(contains_pig_manure) eq 'yes' ) {
+      return Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock) * Out(ef_pigs_liquid);
+    } else {
+      writeLog({
+        en => 'Invalid values for "Contains pigs slurry" (' . In(contains_pig_manure) . ')' . "\n",
+        de => 'Ungültige Eingabe für "Enthält Schweinegülle" (' . In(contains_pig_manure) . ')' . "\n",
+        fr => 'Entrée non valable pour "Contient du lisier de porc" (' . In(contains_pig_manure) . ')' . "\n"
+      });
+    }
 
+    
++ef_liquid_cattle
+  print = 20
+  ++units  
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Scaled emission factor of a specific liquid storage for cattle slurry.
+  ++formula
+    if ( lc In(contains_cattle_manure) eq 'no' ) {
+      return 0;
+    } elsif ( lc In(contains_cattle_manure) eq 'yes' ) {
+      return (1 - Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock)) * Out(ef_cattle_liquid);
+    } else {
+      writeLog({
+        en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')' . "\n",
+        de => 'Ungültige Eingabe für "Enthält Rindergülle" (' . In(contains_cattle_manure) . ')' . "\n",
+        fr => 'Entrée non valable pour "Contient du lisier de bovin" (' . In(contains_cattle_manure) . ')' . "\n"
+      });
+    }
+
+ 
 +c_free_factor_storage_slurry
   print = 10
   ++units 
