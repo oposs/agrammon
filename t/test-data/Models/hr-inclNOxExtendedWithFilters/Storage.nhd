@@ -87,7 +87,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Val(nh3_nsolid, Storage::SolidManure);
 
 +nh3_nstorage_liquid_pigs
-  print = newStorage
+  print = newStorage,test
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -175,8 +175,8 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       Livestock) )
      }
 
-+n_into_application_liquid
-  print = 3x
++n_into_application_liquid_pigs_incl_nxox
+  print = newStorage
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -188,10 +188,40 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
         0
     }
     else {
-        Val(n_into_storage_liquid, Livestock) -
-        Sum(nh3_nliquid, Storage::Slurry) -
-        Val(nxox_nliquid, Livestock)
+        Val(n_into_storage_liquid_pigs, Livestock) P-
+        scale( Val(n_into_storage_liquid_pigs_ratio, Livestock), Out(nh3_nstorage_liquid_pigs) );
     }
+
++n_into_application_liquid_cattle_incl_nxox
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for application.
+  ++formula
+    if(Val(n_into_storage_liquid, Livestock) < Sum(nh3_nliquid, Storage::Slurry)  ) {
+        0
+    }
+    else {
+        Val(n_into_storage_liquid_cattle, Livestock) P-
+        scale( Val(n_into_storage_liquid_cattle_ratio, Livestock), Out(nh3_nstorage_liquid_cattle) );
+    }
+
++n_into_application_liquid
+  print = test
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for application.
+  ++formula
+    Out(n_into_application_liquid_pigs_incl_nxox) P+
+    Out(n_into_application_liquid_cattle_incl_nxox) P-
+    Val(nxox_nliquid, Livestock);
+
 
  +tan_into_application_liquid
   print = 4x
