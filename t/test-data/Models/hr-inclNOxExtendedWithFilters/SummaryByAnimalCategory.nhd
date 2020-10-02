@@ -211,8 +211,8 @@ taxonomy = SummaryByAnimalCategory
   ++description
     Sum of weight factor for slurry application between pigs and Cattle 
   ++formula
-   ( Val(n_into_storage_liquid_pigs, Livestock)*0.35 +
-      (Val(n_into_storage_liquid, Livestock) - Val(n_into_storage_liquid_pigs, Livestock))*0.5 );
+   ( Val(n_into_storage_liquid_pigs_scalar, Livestock)*0.35 +
+      (Val(n_into_storage_liquid, Livestock) - Val(n_into_storage_liquid_pigs_scalar, Livestock))*0.5 );
   
 
 +share_storage_liquid_dairycow
