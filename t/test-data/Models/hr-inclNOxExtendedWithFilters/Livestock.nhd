@@ -273,6 +273,19 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_outhousing_liquid,Livestock::SmallRuminants::Housing) P+
     Sum(n_outhousing_liquid,Livestock::RoughageConsuming::Housing);
 
++n_into_storage_liquid_pigs
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) from pigs housing into the storage
+   (used for calculation of the ef of mixed storage units).
+  ++formula
+    Sum(n_liquid_from_pig,Livestock::Pig) P+
+    Sum(n_liquid_from_fattening_pig,Livestock::FatteningPigs);
+
 +n_into_storage_liquid_pigs_scalar
   print = 7
   ++units
