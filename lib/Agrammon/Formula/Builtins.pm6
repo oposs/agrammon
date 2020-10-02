@@ -15,6 +15,8 @@ sub get-builtins is export {
             warn @message.join || 'Warning';
         },
         abs => &abs,
+        # Construct a filter group from data
+        filterGroup => &filter-group,
         # Turn a filter group into a simple scalar value
         scalar => &filter-group-scalar,
         # Scale all values in a filter group by the given multiplier
@@ -48,6 +50,23 @@ sub get-builtins is export {
             $ag.apply-pairwise($b, &[*], 0)
         },
     )
+}
+
+sub filter-group(Str $taxonomy, **@mappings) {
+    unless @mappings %% 2 {
+        die "filterGroup must receive a taxonomy followed by alternating filter group key and value parameters";
+    }
+    Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs: @mappings.map:
+            -> $filter-source, $value {
+                unless $filter-source ~~ Hash {
+                    die "filterGroup filter values must be a hash";
+                }
+                my %filter;
+                for $filter-source.kv -> $input, $filter-value {
+                    %filter{$taxonomy ~ '::' ~ $input} = $filter-value;
+                }
+                %filter => $value
+            }
 }
 
 multi as-filter-group(Agrammon::Outputs::FilterGroupCollection $group) {

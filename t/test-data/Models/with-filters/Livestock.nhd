@@ -161,6 +161,22 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_sol_excretion,Livestock::RoughageConsuming::Excretion) P+
     Sum(n_sol_excretion,Livestock::Poultry::Excretion);
 
++factors
+  format= %.0f
+  print = Factors
+  ++labels
+    en = Factors
+    de = Faktoren
+    fr = Facteurs
+  ++description
+    Factor
+  ++formula
+    filterGroup('Livestock::Pig::Excretion',
+        { animalcategory => 'boars' }, 0.75,
+        { animalcategory => 'dry_sows' }, 0.5,
+        { animalcategory => 'nursing_sows' }, 0.75,
+        { animalcategory => 'weaned_piglets_up_to_25kg' }, 0.25)
+
 +n_into_storage
   format= %.0f
   print = FluxSummaryLivestock
