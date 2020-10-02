@@ -213,7 +213,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     }
 
 +nh3_nliquid_pigs
-  print = 1a
+  print = newStorage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -225,7 +225,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     * Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;
 
 +nh3_nliquid_cattle
-  print = 1a
+  print = newStorage
   ++units
     en = kg N/year
     de = kg N/Jahr

@@ -357,7 +357,7 @@ T. Kupper).
 
     
 +ef_liquid_pigs
-  print = 20
+  print = newStorage
   ++units  
     en =  kg N/m2/year
     de =  kg N/m2/Jahr
@@ -379,7 +379,7 @@ T. Kupper).
 
     
 +ef_liquid_cattle
-  print = 20
+  print = newStorage
   ++units  
     en =  kg N/m2/year
     de =  kg N/m2/Jahr

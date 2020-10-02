@@ -86,6 +86,28 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++formula
     Val(nh3_nsolid, Storage::SolidManure);
 
++nh3_nstorage_liquid_pigs
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from liquid storage of pig slurry.
+  ++formula
+    Sum(nh3_nliquid_pigs, Storage::Slurry);
+
++nh3_nstorage_liquid_cattle
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from liquid storage of cattle slurry.
+  ++formula
+    Sum(nh3_nliquid_cattle, Storage::Slurry);
+
 +nh3_nstorage_liquid
   format= %.0f
   print = LivestockSummaryPlus

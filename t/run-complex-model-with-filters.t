@@ -56,9 +56,10 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
         is (+%output-hash<Application><nh3_napplication>).round(.001), $nh3-napplication.round(.001),
                 "Correct nh3_napplication result: { (+%output-hash<Application><nh3_napplication>).round(.001) }";
 
-#        say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
-#        say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
-#        say "\nLivestockSummary (Details)=\n", output-as-text($model, $output, 'de', 'LivestockSummary', True);
+       # say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
+       # say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
+       # say "\nLivestockSummary (Details)=\n", output-as-text($model, $output, 'de', 'LivestockSummary', True);
+       say "\nnewStorage (Details)=\n", output-as-text($model, $output, 'de', 'newStorage', True);
 
 #        ddt "GUI: FluxSummaryLivestock=", output-for-gui($model, $output)<data>[0];
     }
