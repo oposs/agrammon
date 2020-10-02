@@ -325,7 +325,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     scale( Out(n_into_storage_liquid_pigs), 1 / scalar(Out(n_into_storage_liquid_pigs)) );
 
 +n_into_storage_liquid_cattle
-  print = test
+  print = newStorage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -338,7 +338,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_liquid_from_dairycow,Livestock::DairyCow);
 
 +n_into_storage_liquid_cattle_ratio
-  print = test
+  print = newStorage
   ++units
     en = 
     de = 
