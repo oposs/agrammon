@@ -354,58 +354,6 @@ T. Kupper).
          return 0;
      }
      return $TE->{'ef_pig_'.In(cover_type)};
- 
-+ef_liquid
-  print = 15
-  ++units  
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
-  ++description
-    Emission factor of a specific liquid storage, if storage conatains cattle and pig manure,
-    a maen distribution depending on the n flow into liqud storage is assumed. Which does not 
-    consider possible separt storage units.
-  ++formula
-    if ( not defined Val(n_into_storage_liquid, ::Livestock) or Val(n_into_storage_liquid, ::Livestock) == 0 ) {
-        return 0;
-    }
-    
-    if ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {
-        return Out(ef_cattle_liquid);
-    }
-    elsif ( lc In(contains_cattle_manure) eq 'no' and lc In(contains_pig_manure) eq 'yes' ) {
-        return Out(ef_pigs_liquid);
-    }
-    elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'yes' ) {
-        if ( Val(n_into_storage_liquid, ::Livestock) != 0) {
-             return (Val(n_into_storage_liquid_pigs, ::Livestock) * Out(ef_pigs_liquid) +
-                      (Val(n_into_storage_liquid, ::Livestock) - 
-                       Val(n_into_storage_liquid_pigs, ::Livestock)) *  Out(ef_cattle_liquid) ) 
-                    / Val(n_into_storage_liquid, ::Livestock) 
-        }
-        else {
-             return (Out(ef_cattle_liquid) + Out(ef_pigs_liquid) )/2;
-        }
-    }
-    else {
-        if ( Val(n_into_storage_liquid, ::Livestock) != 0 ) {
-            writeLog({en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')'
-                      . ' and/or "Contains pigs slurry" (' . In(contains_pig_manure) . ')' . "\n",
-                  de => 'Ungültige Eingabe für "Enthält Rindergülle" (' . In(contains_cattle_manure) . ')'
-                      . ' und/oder "Enthält Schweinegülle" (' . In(contains_pig_manure) . ')' . "\n",
-                  fr => 'Entrée non valable pour "Contient du lisier de bovin" (' . In(contains_cattle_manure) . ') '
-                      . ' et/ou "Contient du lisier de porc" (' . In(contains_pig_manure) . ')' . "\n"});
-
-             return (Val(n_into_storage_liquid_pigs, ::Livestock) * Out(ef_pigs_liquid) +
-                      (Val(n_into_storage_liquid, ::Livestock) - 
-                       Val(n_into_storage_liquid_pigs, ::Livestock)) *  Out(ef_cattle_liquid) ) 
-                    / Val(n_into_storage_liquid, ::Livestock) 
-        }
-        else {
-             # Although it does not matter give mean as result
-             return (Out(ef_cattle_liquid) + Out(ef_pigs_liquid) )/2;
-        }
-    }
 
     
 +ef_liquid_pigs
