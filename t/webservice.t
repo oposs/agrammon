@@ -12,7 +12,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 36;
+plan 37;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -66,6 +66,14 @@ transactionally {
     subtest "create-dataset" => {
         ok my $dataset-name = $ws.create-dataset($user, "MyTestDataset"), "Create dataset";
         is $dataset-name, "MyTestDataset", "Dataset has correct name";
+    }
+
+    subtest "clone-dataset" => {
+        my $username = 'fritz.zaucker@oetiker.ch';
+        lives-ok { $ws.clone-dataset(
+                        $user, $username, $username, 'Agrammon6Testing', 'Agrammon6Testing Kopie'
+                   );
+        }, "Clone dataset";
     }
 
     subtest "get-datasets()" => {

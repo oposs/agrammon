@@ -11,6 +11,17 @@ class X::Agrammon::DB::Dataset::AlreadyExists is Exception {
     }
 }
 
+#| Error when dataset couldn't be cloned.
+class X::Agrammon::DB::Dataset::CloneFailed is Exception {
+    has Str $.old-dataset is required;
+    has Str $.new-dataset is required;
+    has Str $.old-username is required;
+    has Str $.new-username is required;
+    method message {
+        "Dataset '$!old-dataset' of '$!-old-username' couldn't be copied to '$!new-dataset' of '$!new-username'."
+    }
+}
+
 #| Error when dataset couldn't be renamed.
 class X::Agrammon::DB::Dataset::RenameFailed is Exception {
     has Str $.dataset-name is required;
@@ -92,22 +103,57 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     has Agrammon::DB::Tag  @.tags;
     has Agrammon::DB::User $.user;
 
-    method create {
+    method create-dataset( $name, $user, $version, $comment, $model, $read-only ) {
+        my @ret;
         self.with-db: -> $db {
-            my $ds = $db.query(q:to/DATASET/, $!name, $!user.id, $!version, $!comment, $!model, $!read-only);
+            @ret = $db.query(q:to/SQL/, $name, $user.id, $version, $comment, $model, $read-only).array;
                 INSERT INTO dataset (dataset_name, dataset_pers,
                                      dataset_version, dataset_comment,
                                      dataset_model, dataset_readonly
                                     )
                 VALUES ($1, $2, $3, $4, $5, $6)
                 RETURNING dataset_id, dataset_mod_date
-            DATASET
-
-            my @d = $ds.array;
-            $!id = @d[0];
-            $!mod-date = @d[1];
+            SQL
+            CATCH {
+                # new dataset name already exists
+                when /unique/ {
+                    die X::Agrammon::DB::Dataset::AlreadyExists.new(:dataset-name($!name));
+                }
+            }
         }
+        return { :id(@ret[0]), :mod-date(@ret[1]) };
+    }
+
+    method create {
+        my $ds = self.create-dataset( $!name, $!user, $!version, $!comment, $!model, $!read-only );
+        $!id = $ds<id>;
+        $!mod-date = $ds<mod-date>;
         return self;
+    }
+
+    method clone($!user, :$old-username, :$new-username, :$old-dataset, :$new-dataset) {
+        # old and new dataset are identical
+        die X::Agrammon::DB::Dataset::AlreadyExists.new(:dataset-name($new-dataset))
+            if $old-dataset eq $new-dataset and $old-username eq $new-username;
+
+        my $new-user 
+        my $ds = self.create-dataset( $new-dataset, $new-username, $version, $comment, $model, $read-only );
+        my $new-dataset-id = $ds<id>;
+
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $new-dataset-id, $old-username, $old-dataset);
+                INSERT INTO data_new (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
+                     SELECT $1, data_var, data_instance, data_val, data_instance_order, data_comment
+                       FROM data_new
+                      WHERE data_dataset = dataset_name2id($2, $3)
+            SQL
+
+            dd "rows=", $ret.rows;
+            die unless $ret.row;
+            CATCH {
+                die X::Agrammon::DB::Dataset::CloneFailed.new(:$old-username, :$new-username, :$old-dataset, :$new-dataset);
+            }
+        }
     }
 
     method rename(Str $new) {
@@ -133,17 +179,11 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             # rename suceeded
             $!name = $new;
         }
-        return self;
-    }
-
-    method !clone($new) {
-        my $dataset = Agrammon::DB::Dataset.new(:name($new));
-        warn "clone($new) not yet implemented";
-        return $dataset;
     }
 
     method submit($email) {
-        my $new-dataset = self!clone("Clone of $!name");
+        my $new-dataset = 'newDataset';
+#        = self!clone("Clone of $!name");
 
         warn "Sending mail for submit($email) not yet implemented";
         return $new-dataset;

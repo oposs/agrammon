@@ -62,6 +62,12 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Dataset.new(:$user, :$name, :$model, :$version).create.name;
     }
 
+    method clone-dataset(Agrammon::Web::SessionUser $user,
+                         Str $old-username, Str $new-username,
+                         Str $old-dataset, Str $new-dataset --> Nil) {
+        Agrammon::DB::Dataset.new(:$user).clone(:$old-username, :$new-username, :$old-dataset, :$new-dataset);
+    }
+
     method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new --> Nil) {
         Agrammon::DB::Dataset.new(:$user, :name($old)).rename($new);
     }
