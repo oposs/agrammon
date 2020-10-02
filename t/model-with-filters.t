@@ -92,6 +92,23 @@ subtest 'Running the model produces output instances with filters' => {
         }
     }
 
+    subtest 'filterGroup builtin' => {
+        given $output.get-output('Livestock', 'factors') -> $factor {
+            isa-ok $factor, Agrammon::Outputs::FilterGroupCollection,
+                    'filterGroup builtin will produce a filter group collection';
+            my @results-by-group = $factor.results-by-filter-group;
+            dd @results-by-group;
+            given @results-by-group.grep(*.key eqv { "Livestock::Pig::Excretion::animalcategory" => "boars" }) {
+                is .elems, 1, 'Found filter group value for boars';
+                is .[0].value, 0.75, 'Correct value for boars';
+            }
+            given @results-by-group.grep(*.key eqv { "Livestock::Pig::Excretion::animalcategory" => "dry_sows" }) {
+                is .elems, 1, 'Found filter group value for dry sows';
+                is .[0].value, 0.5, 'Correct value for dry sows';
+            }
+        }
+    }
+
     subtest 'Final outputs still correct even with filter groups in effect' => {
         is $output.get-output('Total', 'nh3_ntotal'),
                 455.8311423399035e0,
