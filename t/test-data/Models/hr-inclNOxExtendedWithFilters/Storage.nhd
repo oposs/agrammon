@@ -157,7 +157,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
    }
     
 +mineralization_liquid 
-  print = 7
+  print = 7,test
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -166,14 +166,12 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Annual TAN mineralized from not TAN fraction in liquid storage.
   ++formula
 
-    if(Val(tan_into_storage_liquid, Livestock) <  Sum(nh3_nliquid, Storage::Slurry))
-      {0} 
-    else 
-      {
-     Tech(mineralizationrate_liquid) * 
-     ( Val(n_into_storage_liquid, Livestock) -  Val(tan_into_storage_liquid,
-      Livestock) )
-     }
+    if(Val(tan_into_storage_liquid, Livestock) <  Sum(nh3_nliquid, Storage::Slurry)) {
+      0;
+    } else {
+      scale( Val(n_into_storage_liquid, Livestock) P-  Val(tan_into_storage_liquid,
+      Livestock), Tech(mineralizationrate_liquid));
+    }
 
 +n_into_application_liquid_pigs_incl_nxox
   print = newStorage
