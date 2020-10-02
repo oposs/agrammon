@@ -43,11 +43,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 +animalcategory
   type = enum
   filter = true
-  default_gui  = dairy_cow
-  default_calc = dairy_cow
+  default_gui  = dairy_cows
+  default_calc = dairy_cows
   ++enum
-    +++dairy_cow
-       en = Dairy_cow
+    +++dairy_cows
+       en = Dairy_cows
        de = Milchkühe
        fr = Milchkühe
   ++labels

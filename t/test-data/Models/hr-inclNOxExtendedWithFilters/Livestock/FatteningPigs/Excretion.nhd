@@ -36,6 +36,32 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** input ***
 
++animalcategory
+  type = enum
+  filter = true
+  default_gui  = fattening_pigs
+  default_calc = fattening_pigs
+  ++enum
+    +++fattening_pigs
+       en = Fattening_pigs
+       de = Mastschweine
+       fr = Porcs à l'engrais
+  ++labels
+    en = Animal category
+    de = Tierkategorie
+    fr = Catégorie d'animaux
+  ++units
+    en = -
+++description
+    Animal category
+++help
+  +++en
+     <p>There are no sub categories for dairy cows.</p>
+  +++de
+     <p>Für Mastschweine sind keine Unterkategorien vorgesehen.</p>
+  +++fr
+     <p><Für Mastschweine sind keine Unterkategorien vorgesehen./p>
+
 +fattening_pigs
   type = integer
   validator = ge(0)
