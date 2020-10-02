@@ -400,8 +400,6 @@ qx.Class.define('agrammon.module.output.Reports', {
                 this.__showReference(true);
             }
 
-
-console.log('__getOutputData(): data=', data);
             var len = data.length;
             var n=0;
             var title, currentTitle='';
@@ -480,6 +478,9 @@ console.log('__getOutputData(): data=', data);
                         else {
                             refValue = '-';
                             refDiff  = '-';
+                        }
+                        if (rec.filter) {
+                            varName = '__' + rec.filter;
                         }
                         repDataset.push([ '', // moduleName,
                                           varName,

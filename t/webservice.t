@@ -51,12 +51,12 @@ subtest "get-cfg()" => {
     my %cfg-expected = (
         guiVariant => "Single",
         modelVariant => "SHL",
-        title => {de => "AGRAMMON 4.0 Einzelbetriebsmodell",
-                  en => "AGRAMMON 4.0 Single Farm Model",
-                  fr => "AGRAMMON 4.0 modèle Exploitation individuelle"
+        title => {de => "AGRAMMON 6.0 Einzelbetriebsmodell",
+                  en => "AGRAMMON 6.0 Single Farm Model",
+                  fr => "AGRAMMON 6.0 modèle Exploitation individuelle"
                  },
         variant => "SHL",
-        version => "4.0 - #REV#"
+        version => "6.0 - #REV#"
     );
     is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
 }
@@ -333,7 +333,7 @@ subtest "Get model data" => {
     subtest "get-output-variables" => {
         ok my $output-hash = $ws.get-output-variables($user, $dataset-name), "Get outputs";
         is-deeply $output-hash.keys.sort, qw|data log pid| , "Output hash has expected keys";
-        is-deeply $output-hash<data>.[0].keys.sort, qw|format fullValue labels order print units value var| , "Output data value hash has expected keys";
+        is-deeply $output-hash<data>.[0].keys.sort, qw|filter format fullValue labels order print units value var| , "Output data value hash has expected keys";
         is-deeply $output-hash<data>.[0]<labels>.keys.sort, qw|de en fr sort| , "Output data value labels hash has expected keys";
     }
 

@@ -113,9 +113,8 @@ class Agrammon::Web::Service {
             }
         }
 
-        # TODO: what is last parameter needed for?
-        my $result = output-as-text($!model, $outputs, 'de', 'LivestockTotal', True);
-        my %gui-output = output-for-gui($!model, $outputs);
+        # TODO: get with-filters from frontend
+        my %gui-output = output-for-gui($!model, $outputs, True);
         warn '**** get-output-variables() not yet completely implemented';
         return %gui-output;
     }
