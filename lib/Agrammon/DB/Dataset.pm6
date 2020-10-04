@@ -18,7 +18,7 @@ class X::Agrammon::DB::Dataset::CloneFailed is Exception {
     has Str $.old-username is required;
     has Str $.new-username is required;
     method message {
-        "Dataset '$!old-dataset' of '$!-old-username' couldn't be copied to '$!new-dataset' of '$!new-username'."
+        "Dataset '$!old-dataset' of '$!old-username' couldn't be copied to '$!new-dataset' of '$!new-username'."
     }
 }
 
@@ -96,22 +96,22 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     has Bool $.read-only;
     has Str  $.model;
     has Str  $.comment;
-    has Str  $.version;
-    has Int  $.records;
+    has Str  $.version is default('2.0-stage'); # TODO: get from config
+    has Int  $.records; # TODO: is this needed?
     has DateTime $.mod-date;
     has $.data;
     has Agrammon::DB::Tag  @.tags;
     has Agrammon::DB::User $.user;
 
-    method create-dataset( $name, $user, $version, $comment, $model, $read-only ) {
+    method create-dataset( $dataset-name, $username, $version, $model ) {
         my @ret;
         self.with-db: -> $db {
-            @ret = $db.query(q:to/SQL/, $name, $user.id, $version, $comment, $model, $read-only).array;
+            @ret = $db.query(q:to/SQL/, $dataset-name, $version, $model, $username).array;
                 INSERT INTO dataset (dataset_name, dataset_pers,
-                                     dataset_version, dataset_comment,
-                                     dataset_model, dataset_readonly
-                                    )
-                VALUES ($1, $2, $3, $4, $5, $6)
+                                     dataset_version, dataset_model)
+                  SELECT $1, pers_id, $2, $3
+                    FROM pers
+                   WHERE pers_email = $4
                 RETURNING dataset_id, dataset_mod_date
             SQL
             CATCH {
@@ -125,31 +125,27 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     }
 
     method create {
-        my $ds = self.create-dataset( $!name, $!user, $!version, $!comment, $!model, $!read-only );
+        my $ds = self.create-dataset( $!name, $!user.username, $!version, $!model );
         $!id = $ds<id>;
         $!mod-date = $ds<mod-date>;
         return self;
     }
 
-    method clone($!user, :$old-username, :$new-username, :$old-dataset, :$new-dataset) {
+    method clone(:$old-username, :$new-username, :$old-dataset, :$new-dataset) {
         # old and new dataset are identical
         die X::Agrammon::DB::Dataset::AlreadyExists.new(:dataset-name($new-dataset))
             if $old-dataset eq $new-dataset and $old-username eq $new-username;
 
-        my $new-user 
-        my $ds = self.create-dataset( $new-dataset, $new-username, $version, $comment, $model, $read-only );
-        my $new-dataset-id = $ds<id>;
+        my $ds = self.create-dataset( $new-dataset, $new-username, $!version, $!model);
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $new-dataset-id, $old-username, $old-dataset);
+            my $ret = $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset);
                 INSERT INTO data_new (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
                      SELECT $1, data_var, data_instance, data_val, data_instance_order, data_comment
                        FROM data_new
                       WHERE data_dataset = dataset_name2id($2, $3)
             SQL
 
-            dd "rows=", $ret.rows;
-            die unless $ret.row;
             CATCH {
                 die X::Agrammon::DB::Dataset::CloneFailed.new(:$old-username, :$new-username, :$old-dataset, :$new-dataset);
             }

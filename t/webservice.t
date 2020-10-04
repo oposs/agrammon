@@ -68,14 +68,6 @@ transactionally {
         is $dataset-name, "MyTestDataset", "Dataset has correct name";
     }
 
-    subtest "clone-dataset" => {
-        my $username = 'fritz.zaucker@oetiker.ch';
-        lives-ok { $ws.clone-dataset(
-                        $user, $username, $username, 'Agrammon6Testing', 'Agrammon6Testing Kopie'
-                   );
-        }, "Clone dataset";
-    }
-
     subtest "get-datasets()" => {
         my $model-version = 'SingleSHL';
         ok my $datasets = $ws.get-datasets($user, $model-version), "Get $model-version datasets";
@@ -92,6 +84,14 @@ transactionally {
             last if $found;
         }
         ok $found, 'Found dataset Agrammon6Testing';
+    }
+
+    subtest "clone-dataset" => {
+        my $username = 'fritz.zaucker@oetiker.ch';
+        lives-ok { $ws.clone-dataset(
+                $user, $username, $username, 'Agrammon6Testing', 'Agrammon6Testing Kopie'
+                )
+        }, "Clone dataset";
     }
 
     subtest "rename-dataset" => {
