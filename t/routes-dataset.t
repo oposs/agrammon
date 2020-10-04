@@ -6,7 +6,7 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 14;
+plan 15;
 
 # routing tests related to datasets
 
