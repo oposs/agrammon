@@ -480,18 +480,28 @@ qx.Class.define('agrammon.module.output.Reports', {
                             refDiff  = '-';
                         }
                         if (rec.filters) {
-                            console.log('filters=', rec.filters);
-//                            varName = '__' + rec.filter;
+                            var filters = rec.filters;
+                            var keys = Object.keys(filters);
+                            if (keys.length > 0) {
+                                var filterArray = [];
+                                for (k=0; k<keys.length; k++) {
+                                    var f = keys[k];
+                                    var v = filters[f];
+                                    f = f.replace(/.+::/,'');
+                                    filterArray.push(f + '=' + v);
+                                }
+                                varName = '- ' + filterArray.join(', ');
+                            }
                         }
                         repDataset.push([ '', // moduleName,
-                                          varName,
-                                          refValue, // reference
-                                          value,
-                                          refDiff, // change
-                                          rec.units[locale],
-                                          rec.print,
-                                          rec.labels.sort
-                                        ]);
+                            varName,
+                            refValue, // reference
+                            value,
+                            refDiff, // change
+                            rec.units[locale],
+                            rec.print,
+                            rec.labels.sort
+                        ]);
                         n++;
                     } // printMe
                 } // variables

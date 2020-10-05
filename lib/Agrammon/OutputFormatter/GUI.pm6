@@ -80,10 +80,7 @@ sub push-filters(@records, $fq-name, $output, $model,
     for $collection.results-by-filter-group {
         my %filters := .key;
         my $value := .value;
-        my @filters = %filters.map: { .key ~ '=' ~ .value };
-        for @filters.kv -> $idx, $filter-id {
-            push @records, make-record($fq-name, $output, $model, $value, $var, %filters);
-        }
+        push @records, make-record($fq-name, $output, $model, $value, $var, %filters);
     }
 }
 
