@@ -1,5 +1,5 @@
 2010v2.1_20120425;2648;Application::Slurry::Applrate;appl_rate;20
-2010v2.1_20120425;2648;Application::Slurry::Applrate;dilution_parts_water;1
+2010v2.1_20120425;2648;Application::Slurry::Applrate;dilution_parts_water;1.0000
 2010v2.1_20120425;2648;Application::Slurry::Cfermented;fermented_slurry;0
 2010v2.1_20120425;2648;Application::Slurry::Cseason;appl_autumn_winter_spring;70
 2010v2.1_20120425;2648;Application::Slurry::Cseason;appl_summer;30
