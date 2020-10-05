@@ -53,7 +53,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         rename-dataset => -> $user, $old, $new {
         },
         clone-dataset => -> $user,
-                            Str $old-username, Str $new-username,
+                            Str $new-username,
                             Str $old-dataset, Str $new-dataset {
         },
         submit-dataset => -> $user, $name, $mail {
@@ -172,7 +172,7 @@ subtest 'Load dataset' => {
 subtest 'Clone dataset' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/clone_dataset', {
-            test post(json => { :oldUsername('foo'), :newUsername('foo'), :oldDataset('DatasetC'),  :newDataset('DatasetD') }),
+            test post(json => { :newUsername('foo'), :oldDataset('DatasetC'),  :newDataset('DatasetD') }),
                 status => 204,
         };
         check-mock $fake-store,

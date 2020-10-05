@@ -106,9 +106,9 @@ sub api-routes (Str $schema, $ws) {
             }
         }
         operation 'cloneDataset', -> LoggedIn $user {
-            request-body -> ( :oldUsername($old-username), :newUsername($new-username),
+            request-body -> ( :newUsername($new-username),
                               :oldDataset($old-dataset), :newDataset($new-dataset)  ) {
-                $ws.clone-dataset($user, $old-username, $new-username, $old-dataset, $new-dataset);
+                $ws.clone-dataset($user, $new-username, $old-dataset, $new-dataset);
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Dataset::AlreadyExists {

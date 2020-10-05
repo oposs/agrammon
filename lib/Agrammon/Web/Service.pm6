@@ -62,10 +62,10 @@ class Agrammon::Web::Service {
     }
 
     method clone-dataset(Agrammon::Web::SessionUser $user,
-                         Str $old-username, Str $new-username,
+                         Str $new-username,
                          Str $old-dataset, Str $new-dataset --> Nil) {
         my $model = self.cfg.model-variant; # model 'SingleSHL';
-        Agrammon::DB::Dataset.new(:$user, :$model).clone(:$old-username, :$new-username, :$old-dataset, :$new-dataset);
+        Agrammon::DB::Dataset.new(:$user, :$model).clone(:$new-username, :$old-dataset, :$new-dataset);
     }
 
     method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new --> Nil) {

@@ -437,14 +437,10 @@ components:
         CloneDataset:
             type: object
             required:
-                 - oldUsername
                  - newUsername
                  - oldDataset
                  - newDataset
             properties:
-                oldUsername:
-                    description: Owner of the source dataset
-                    type: string
                 newUsername:
                     description: Owner of the cloned dataset
                     type: string

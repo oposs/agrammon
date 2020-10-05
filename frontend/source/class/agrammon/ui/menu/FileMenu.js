@@ -321,10 +321,11 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
                     }
                 },
                 'clone_dataset',
-                {'oldUsername': oldUsername,
+                {
                  'oldDataset':  oldDataset,
                  'newUsername': newUsername,
-                 'newDataset':  newDataset}
+                 'newDataset':  newDataset
+                }
             );
         },
 

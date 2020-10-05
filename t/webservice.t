@@ -89,11 +89,10 @@ transactionally {
     }
 
     subtest "clone-dataset" => {
-        my $username = 'fritz.zaucker@oetiker.ch';
-        lives-ok { $ws.clone-dataset(
-                $user, $username, $username, 'Agrammon6Testing', 'Agrammon6Testing Kopie'
-                )
-        }, "Clone dataset";
+        my $new-username = 'fritz.zaucker@oetiker.ch';\
+        my $old-dataset  = 'Agrammon6Testing';
+        my $new-dataset  = 'Agrammon6Testing Kopie';
+        lives-ok { $ws.clone-dataset($user, $new-username, $old-dataset, $new-dataset) }, "Clone dataset";
     }
 
     subtest "rename-dataset" => {

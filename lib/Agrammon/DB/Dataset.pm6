@@ -103,7 +103,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     has Agrammon::DB::Tag  @.tags;
     has Agrammon::DB::User $.user;
 
-    method create-dataset( $dataset-name, $username, $version, $model ) {
+    method !create-dataset( $dataset-name, $username, $version, $model ) {
         my @ret;
         self.with-db: -> $db {
             @ret = $db.query(q:to/SQL/, $dataset-name, $version, $model, $username).array;
@@ -125,19 +125,20 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     }
 
     method create {
-        my $ds = self.create-dataset( $!name, $!user.username, $!version, $!model );
+        my $ds = self!create-dataset( $!name, $!user.username, $!version, $!model );
         $!id = $ds<id>;
         $!mod-date = $ds<mod-date>;
         return self;
     }
 
-    method clone(:$old-username, :$new-username, :$old-dataset, :$new-dataset) {
+    method clone(:$new-username, :$old-dataset, :$new-dataset) {
+        my $old-username = $!user.username;
+
         # old and new dataset are identical
         die X::Agrammon::DB::Dataset::AlreadyExists.new(:dataset-name($new-dataset))
             if $old-dataset eq $new-dataset and $old-username eq $new-username;
 
-        my $ds = self.create-dataset( $new-dataset, $new-username, $!version, $!model);
-
+        my $ds = self!create-dataset( $new-dataset, $new-username, $!version, $!model);
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset);
                 INSERT INTO data_new (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
@@ -179,9 +180,9 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
     method submit($email) {
         my $new-dataset = 'newDataset';
-#        = self!clone("Clone of $!name");
 
-        warn "Sending mail for submit($email) not yet implemented";
+        # TODO: clone dataset; implement sending eMail
+        warn "Submitting dataset and sending mail for submit($email) not yet implemented";
         return $new-dataset;
     }
 
