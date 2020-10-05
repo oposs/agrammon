@@ -157,7 +157,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
    }
     
 +mineralization_liquid 
-  print = 7,test
+  print = 7
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -220,9 +220,45 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Out(n_into_application_liquid_cattle_incl_nxox) P-
     Val(nxox_nliquid, Livestock);
 
+####################################################
+##### tan into application liquid
 
- +tan_into_application_liquid
-  print = 4x
++tan_into_application_liquid_pigs_incl_nxox
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for application.
+  ++formula
+    if(Val(tan_into_storage_liquid, Livestock) < Sum(nh3_nliquid, Storage::Slurry)  ) {
+        0
+    }
+    else {
+        Val(tan_into_storage_liquid_pigs, Livestock) P-
+        Out(nh3_nstorage_liquid_pigs);
+    }
+
++tan_into_application_liquid_cattle_incl_nxox
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for application.
+  ++formula
+    if(Val(tan_into_storage_liquid, Livestock) < Sum(nh3_nliquid, Storage::Slurry)  ) {
+        0
+    }
+    else {
+        Val(tan_into_storage_liquid_cattle, Livestock) P-
+        Out(nh3_nstorage_liquid_cattle);
+    }
+
++tan_into_application_liquid
+  print = newStorage
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -234,11 +270,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
         0
     }
     else {
-        Val(tan_into_storage_liquid, Livestock) -
-        Sum(nh3_nliquid, Storage::Slurry) -
-        Val(nxox_nliquid, Livestock) +
+        Out(tan_into_application_liquid_pigs_incl_nxox) P+
+        Out(tan_into_application_liquid_cattle_incl_nxox) P-
+        Val(nxox_nliquid, Livestock) P+
         Out(mineralization_liquid)
     }
+
+####################################################
 
 
 +n_into_application_manure
