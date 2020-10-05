@@ -12,9 +12,9 @@ use Agrammon::TechnicalParser;
 my $temp-dir = $*TMPDIR.add('agrammon_testing');
 
 #| Expected results
-my $nh3-ntotal = 2948.7161903612955;
-my $nh3-nanimalproduction = 2948.7161903612955;
-my $nh3-napplication = 1311.7830090654595;
+my $nh3-ntotal = 3028.087;
+my $nh3-nanimalproduction = 3028.087;
+my $nh3-napplication = 1358.701;
 
 my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
 my $fh = open $*PROGRAM.parent.add("test-data/$filename");
@@ -56,9 +56,10 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
         is (+%output-hash<Application><nh3_napplication>).round(.001), $nh3-napplication.round(.001),
                 "Correct nh3_napplication result: { (+%output-hash<Application><nh3_napplication>).round(.001) }";
 
-#        say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
-#        say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
-#        say "\nLivestockSummary (Details)=\n", output-as-text($model, $output, 'de', 'LivestockSummary', True);
+       # say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
+       # say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
+       # say "\nLivestockSummary (Details)=\n", output-as-text($model, $output, 'de', 'LivestockSummary', True);
+       say "\nnewStorage (Details)=\n", output-as-text($model, $output, 'de', 'newStorage', True);
 
 #        ddt "GUI: FluxSummaryLivestock=", output-for-gui($model, $output)<data>[0];
     }

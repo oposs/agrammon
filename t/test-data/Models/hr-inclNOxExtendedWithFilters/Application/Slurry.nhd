@@ -120,8 +120,8 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       my $out;
       if ( Val(n_into_storage_liquid, ::Livestock) != 0 ) {
           $out = (
-                     Val(n_into_storage_liquid_pigs, ::Livestock) * Tech(er_App_pigs_liquid) +
-                   ( Val(n_into_storage_liquid, ::Livestock) - Val(n_into_storage_liquid_pigs, ::Livestock)) * Tech(er_App_cattle_liquid)
+                     Val(n_into_storage_liquid_pigs_scalar, ::Livestock) * Tech(er_App_pigs_liquid) +
+                   ( Val(n_into_storage_liquid, ::Livestock) - Val(n_into_storage_liquid_pigs_scalar, ::Livestock)) * Tech(er_App_cattle_liquid)
                  )
                  / Val(n_into_storage_liquid, ::Livestock);
                  
