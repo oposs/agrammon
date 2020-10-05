@@ -61,6 +61,14 @@ subtest "get-cfg()" => {
     is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
 }
 
+subtest "get-excel-export" => {
+    my @print-tags = ['FluxSummary', 'Total'];
+    lives-ok { $ws.get-excel-export($user, "MyTestDataset", @print-tags) }, 'Get Excel export';
+#    is $dataset-name, "MyTestDataset", "Dataset has correct name";
+}
+
+done-testing; exit;
+
 transactionally {
 
     subtest "create-dataset" => {

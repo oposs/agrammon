@@ -56,6 +56,28 @@ class Agrammon::Web::Service {
         return @data;
     }
 
+    method get-excel-export(Agrammon::Web::SessionUser $user, Str $dataset-name, @print-tags) {
+        dd "get-excel-export(): print-tags=", @print-tags;
+        use Spreadsheet::XLSX;
+
+        # Create a new workbook and add some worksheets to it.
+        my $workbook = Spreadsheet::XLSX.new;
+        my $sheet-a = $workbook.create-worksheet('Ingredients');
+
+        # Put some data into a worksheet and style it.
+        # THis is a convenience form.
+        $sheet-a.set(0, 0, 'Ingredient', :bold);
+        $sheet-a.set(0, 1, 'Quantity', :bold);
+        $sheet-a.set(1, 0, 'Eggs');
+        $sheet-a.set(1, 1, 6, :number-format('#,###'));
+
+
+        # Get it as a blob, e.g. for a HTTP response.
+        my $report = $workbook.to-blob();
+        dd $report;
+        return $report;
+        }
+
     method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         my $model = self.cfg.model-variant; # model 'SingleSHL';
         return Agrammon::DB::Dataset.new(:$user, :$name, :$model).create.name;
