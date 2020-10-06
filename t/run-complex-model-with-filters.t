@@ -16,7 +16,7 @@ my $nh3-ntotal = 3079.2;
 my $nh3-nanimalproduction = 3079.2;
 my $nh3-napplication = 1328.988;
 my $n-into-application = 6265.865;
-my $tan-into-application = 2434.147;
+my $tan-into-application = 2435.534;
 
 my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
 my $fh = open $*PROGRAM.parent.add("test-data/$filename");
