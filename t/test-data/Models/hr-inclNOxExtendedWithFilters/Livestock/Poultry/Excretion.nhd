@@ -32,6 +32,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +animalcategory
   type = enum
+  filter = true
   ++enum
     +++layers
        en = layers

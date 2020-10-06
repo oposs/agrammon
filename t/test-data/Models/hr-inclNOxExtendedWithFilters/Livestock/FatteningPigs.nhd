@@ -400,11 +400,11 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
      ( Val(n_into_housing, FatteningPigs::Housing) * Val(share_liquid, FatteningPigs::Housing::Type)
      ) *  Out(er_n2o_nliquid);         
 
-+animalcategory
-  print = 7
-  ++units  
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, FatteningPigs::Excretion);
+#+animalcategory
+  # print = 7
+  # ++units  
+  #   en = -
+  # ++description
+  #   Animal category
+  # ++formula
+  #   Val(animalcategory, FatteningPigs::Excretion);

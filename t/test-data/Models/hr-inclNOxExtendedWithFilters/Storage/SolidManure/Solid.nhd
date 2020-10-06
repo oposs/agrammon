@@ -365,6 +365,10 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++formula
     	1 - ( Tech(c_covered_basin_pig_manure) * In(share_covered_basin_pig_manure)/100 );
 
+
+####################################################
+#### correct tan/n flows into solid storage
+
 +tan_into_storage_pigs
   print = 1a
   ++units  
@@ -374,7 +378,8 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Val(tan_into_storage_solid_pigs, ::Livestock) * (1-(In(share_applied_direct_pig_manure)/100));
+    scale( Val(tan_into_storage_solid_pigs, ::Livestock), 
+      ( 1 - In(share_applied_direct_pig_manure) / 100 ) );
 
 +n_into_storage_pigs
   print = 1a
@@ -385,7 +390,8 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Val(n_into_storage_solid_pigs, ::Livestock) * (1-(In(share_applied_direct_pig_manure)/100));
+    scale( Val(n_into_storage_solid_pigs, ::Livestock), 
+      ( 1 - In(share_applied_direct_pig_manure) / 100 ) );
 
 +tan_into_storage_dairycows_cattle
   print = 1a
@@ -396,7 +402,8 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Val(tan_into_storage_solid_dairycows_cattle, ::Livestock) * (1-(In(share_applied_direct_cattle_other_manure)/100));
+    scale( Val(tan_into_storage_solid_dairycows_cattle, ::Livestock), 
+      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
 
 +n_into_storage_dairycows_cattle
   print = 1a
@@ -407,9 +414,9 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Val(n_into_storage_solid_dairycows_cattle, ::Livestock) * (1-(In(share_applied_direct_cattle_other_manure)/100));
+    scale( Val(n_into_storage_solid_dairycows_cattle, ::Livestock), 
+      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
     
-
 +tan_into_storage_horses_otherequides_smallruminants
   print = 1a
   ++units  
@@ -419,7 +426,8 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Val(tan_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) * (1- (In(share_applied_direct_cattle_other_manure)/100) );
+    scale( Val(tan_into_storage_solid_horses_otherequides_smallruminants, ::Livestock), 
+      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
 
 +n_into_storage_horses_otherequides_smallruminants
   print = 1a
@@ -430,8 +438,14 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Val(n_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) * (1- (In(share_applied_direct_cattle_other_manure)/100) );
+    scale( Val(n_into_storage_solid_horses_otherequides_smallruminants, ::Livestock), 
+      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
 
+####################################################
+
+
+####################################################
+#### nh3 loss
 
 +nh3_nsolid_dairycows_cattle
   print = 1a
@@ -442,8 +456,11 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Tech(er_tan_cattle_other) * Out(tan_into_storage_dairycows_cattle) * Out(c_covered_basin_cattle) 
-    * Out(c_free_factor_storage_solidmanure_cattle) ;
+    scale( Out(tan_into_storage_dairycows_cattle), 
+      Tech(er_tan_cattle_other) * 
+      Out(c_covered_basin_cattle) * 
+      Out(c_free_factor_storage_solidmanure_cattle)
+    );
 
 +nh3_nsolid_pigs
   print = 1a
@@ -454,8 +471,11 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Tech(er_tan_pigs) * Out(tan_into_storage_pigs)* Out(c_covered_basin_pig) 
-    * Out(c_free_factor_storage_solidmanure_pig);
+    scale( Out(tan_into_storage_pigs), 
+      Tech(er_tan_pigs) * 
+      Out(c_covered_basin_pig) * 
+      Out(c_free_factor_storage_solidmanure_pig)
+    );
 
 +nh3_nsolid_horses_otherequides_smallruminants
   print = 1a
@@ -466,9 +486,11 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Tech(er_tan_cattle_other) * Out(tan_into_storage_horses_otherequides_smallruminants)
-    * Out(c_free_factor_storage_solidmanure_cattle); 
-
+    scale( Out(tan_into_storage_horses_otherequides_smallruminants), 
+      Tech(er_tan_cattle_other) * 
+      Out(c_covered_basin_cattle) * 
+      Out(c_free_factor_storage_solidmanure_cattle)
+    );
 
 +nh3_nsolid
   print = 1a
@@ -479,9 +501,11 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Out(nh3_nsolid_dairycows_cattle) +
-    Out(nh3_nsolid_pigs) +
+    Out(nh3_nsolid_dairycows_cattle) P+
+    Out(nh3_nsolid_pigs) P+
     Out(nh3_nsolid_horses_otherequides_smallruminants);
+
+####################################################
 
 +immobilization_horses_otherequides_smallruminants
   print = 7

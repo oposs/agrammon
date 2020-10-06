@@ -12,11 +12,11 @@ use Agrammon::TechnicalParser;
 my $temp-dir = $*TMPDIR.add('agrammon_testing');
 
 #| Expected results
-my $nh3-ntotal = 3028.087;
-my $nh3-nanimalproduction = 3028.087;
-my $nh3-napplication = 1358.701;
-my $n-into-application = 6381.851;
-my $tan-into-application = 2505.426;
+my $nh3-ntotal = 3079.2;
+my $nh3-nanimalproduction = 3079.2;
+my $nh3-napplication = 1328.988;
+my $n-into-application = 6265.865;
+my $tan-into-application = 2434.147;
 
 my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
 my $fh = open $*PROGRAM.parent.add("test-data/$filename");
