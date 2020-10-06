@@ -337,7 +337,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
     Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) -
     Out(immobilization_poultry_layers_growers_other_poultry) -
     Out(nh3_npoultry_layers_growers_other_poultry) -
-    Val(nxox_nsolid_poultry, ::Livestock) 
+    Val(nxox_nsolid_layers_growers_other_poultry, ::Livestock) 
 
 +tan_into_application_turkeys_broilers
   print = 7
