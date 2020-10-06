@@ -128,7 +128,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 
 
 +nh3_nliquid
-  print = 1a,check
+  print = 1a
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -171,7 +171,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 
 
 +nh3_nliquid_correctTotalFlow
-  print = 1a,check
+  print = 1a
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -249,7 +249,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     );
 
 +nh3_nliquid_correctTotalFlow_correctDetailReport
-  print = 1a,check
+  print = 1a
   ++units  
     en = kg N/year
     de = kg N/Jahr

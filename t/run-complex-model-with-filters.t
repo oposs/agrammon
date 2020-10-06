@@ -15,6 +15,8 @@ my $temp-dir = $*TMPDIR.add('agrammon_testing');
 my $nh3-ntotal = 3028.087;
 my $nh3-nanimalproduction = 3028.087;
 my $nh3-napplication = 1358.701;
+my $n-into-application = 6381.851;
+my $tan-into-application = 2505.426;
 
 my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
 my $fh = open $*PROGRAM.parent.add("test-data/$filename");
@@ -55,6 +57,11 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                 "Correct nh3_nanimalproduction result: { %output-hash<Total><nh3_nanimalproduction>.round(.001) }";
         is (+%output-hash<Application><nh3_napplication>).round(.001), $nh3-napplication.round(.001),
                 "Correct nh3_napplication result: { (+%output-hash<Application><nh3_napplication>).round(.001) }";
+        is (+%output-hash<Storage><n_into_application>).round(.001), $n-into-application.round(.001),
+                "Correct n_into_application result: { (+%output-hash<Storage><n_into_application>).round(.001) }";
+        is (+%output-hash<Storage><tan_into_application>).round(.001), $tan-into-application.round(.001),
+                "Correct tan_into_application result: { (+%output-hash<Storage><tan_into_application>).round(.001) }";
+
 
        # say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
        # say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
