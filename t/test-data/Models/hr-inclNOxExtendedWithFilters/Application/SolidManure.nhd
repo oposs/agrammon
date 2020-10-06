@@ -55,9 +55,9 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NH3 emission from solid manure application.
   ++formula
-    Val(nh3_nsolid_dairycows_cattle, SolidManure::Solid)  +
-    Val(nh3_nsolid_pigs, SolidManure::Solid)  +
-    Val(nh3_nsolid_horses_otherequides_smallruminants, SolidManure::Solid) +
+    Val(nh3_nsolid_dairycows_cattle, SolidManure::Solid)  P+
+    Val(nh3_nsolid_pigs, SolidManure::Solid)  P+
+    Val(nh3_nsolid_horses_otherequides_smallruminants, SolidManure::Solid) P+
     Val(nh3_npoultry, SolidManure::Poultry);
 
 +no_nsolid

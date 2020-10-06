@@ -93,11 +93,12 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NH3 emission from solid manure application.
   ++formula
-    Tech(er_App_manure) 
-     * Val(tan_into_application, ::Storage::SolidManure::Poultry)
-     * Val(c_incorp_time, Poultry::CincorpTime)
-     * Val(c_season, Cseason)
-     * Val(c_free_factor_application_solidmanure, CfreeFactor);
+    scale( Val(tan_into_application, ::Storage::SolidManure::Poultry),
+      Tech(er_App_manure) *
+      Val(c_incorp_time, Poultry::CincorpTime) *
+      Val(c_season, Cseason) *
+      Val(c_free_factor_application_solidmanure, CfreeFactor)
+    );
 
 +n2_npoultry
   print = 1a
