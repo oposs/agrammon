@@ -400,8 +400,6 @@ qx.Class.define('agrammon.module.output.Reports', {
                 this.__showReference(true);
             }
 
-
-console.log('__getOutputData(): data=', data);
             var len = data.length;
             var n=0;
             var title, currentTitle='';
@@ -481,15 +479,29 @@ console.log('__getOutputData(): data=', data);
                             refValue = '-';
                             refDiff  = '-';
                         }
+                        if (rec.filters) {
+                            var filters = rec.filters;
+                            var keys = Object.keys(filters);
+                            if (keys.length > 0) {
+                                var filterArray = [];
+                                for (k=0; k<keys.length; k++) {
+                                    var f = keys[k];
+                                    var v = filters[f];
+                                    f = f.replace(/.+::/,'');
+                                    filterArray.push(f + '=' + v);
+                                }
+                                varName = '- ' + filterArray.join(', ');
+                            }
+                        }
                         repDataset.push([ '', // moduleName,
-                                          varName,
-                                          refValue, // reference
-                                          value,
-                                          refDiff, // change
-                                          rec.units[locale],
-                                          rec.print,
-                                          rec.labels.sort
-                                        ]);
+                            varName,
+                            refValue, // reference
+                            value,
+                            refDiff, // change
+                            rec.units[locale],
+                            rec.print,
+                            rec.labels.sort
+                        ]);
                         n++;
                     } // printMe
                 } // variables

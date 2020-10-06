@@ -61,7 +61,7 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
        # say "\nLivestockSummary (Details)=\n", output-as-text($model, $output, 'de', 'LivestockSummary', True);
        say "\nnewStorage (Details)=\n", output-as-text($model, $output, 'de', 'newStorage', True);
 
-#        ddt "GUI: FluxSummaryLivestock=", output-for-gui($model, $output)<data>[0];
+#        ddt "GUI: $print with filters=", output-for-gui($model, $output, True)<data>;
     }
 }
 done-testing;
