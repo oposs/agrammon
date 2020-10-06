@@ -184,14 +184,14 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
     }
     return;
 
-+animalcategory
-  print = 7
-  ++units  
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, OtherCattle::Excretion);
+#+animalcategory
+  # print = 7
+  # ++units  
+  #   en = -
+  # ++description
+  #   Animal category
+  # ++formula
+  #   Val(animalcategory, OtherCattle::Excretion);
 
 +n_excretion
   print = 7

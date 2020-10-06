@@ -398,11 +398,11 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
     Val(nh3_nhousing, Poultry::Housing) +
     Val(nh3_free_range, Poultry::Outdoor);
 
-+animalcategory
-  print = 7
-  ++units  
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, Poultry::Excretion);
+#+animalcategory
+  # print = 7
+  # ++units  
+  #   en = -
+  # ++description
+  #   Animal category
+  # ++formula
+  #   Val(animalcategory, Poultry::Excretion);

@@ -51,14 +51,14 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
 
 *** output ***
 
-+animalcategory
-  print = 7
-  ++units  
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, SmallRuminants::Excretion);
+#+animalcategory
+#  print = 7
+#  ++units  
+#    en = -
+#  ++description
+#    Animal category
+#  ++formula
+#    Val(animalcategory, SmallRuminants::Excretion);
 
 +n_excretion
   print = 7

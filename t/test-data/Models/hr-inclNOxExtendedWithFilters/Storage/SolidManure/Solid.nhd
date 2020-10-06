@@ -493,7 +493,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     );
 
 +nh3_nsolid
-  print = 1a,check
+  print = 1a
   ++units  
     en = kg N/year
     de = kg N/Jahr
