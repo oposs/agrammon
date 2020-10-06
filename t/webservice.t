@@ -12,7 +12,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 36;
+plan 37;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -74,16 +74,25 @@ transactionally {
         isa-ok $datasets, 'Array', 'Got datasets Array';
 
         ok $datasets.elems >= 8, "Found right number of datasets";
-        isa-ok my $dataset = $datasets[0], 'List', 'Got dataset List';
-        is $dataset[0], 'MyTestDataset', 'First dataset has name MyTestDataset';
-        is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
+        isa-ok $datasets[0], 'List', 'Got dataset List';
 
         my $found;
-        for @$datasets -> $dataset {
-            $found = $dataset[0] eq 'Agrammon6Testing';
-            last if $found;
+        my $dataset;
+        for @$datasets -> $ds {
+            if $found = $ds[0] eq 'MyTestDataset' {
+                $dataset = $ds;
+                last;
+            }
         }
-        ok $found, 'Found dataset Agrammon6Testing';
+        ok $found, 'Found dataset MyTestDataset';
+        is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
+    }
+
+    subtest "clone-dataset" => {
+        my $new-username = 'fritz.zaucker@oetiker.ch';\
+        my $old-dataset  = 'Agrammon6Testing';
+        my $new-dataset  = 'Agrammon6Testing Kopie';
+        lives-ok { $ws.clone-dataset($user, $new-username, $old-dataset, $new-dataset) }, "Clone dataset";
     }
 
     subtest "rename-dataset" => {

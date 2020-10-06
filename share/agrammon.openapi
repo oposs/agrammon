@@ -102,6 +102,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /clone_dataset:
+        post:
+            summary: Clone a dataset
+            operationId: cloneDataset
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/CloneDataset"
+            responses:
+                '204':
+                    description: Dataset cloned
+                '409':
+                    description: Dataset clone failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
     /rename_dataset:
         post:
             summary: Rename a dataset
@@ -414,6 +433,22 @@ components:
                     type: string
                 newName:
                     description: New name
+                    type: string
+        CloneDataset:
+            type: object
+            required:
+                 - newUsername
+                 - oldDataset
+                 - newDataset
+            properties:
+                newUsername:
+                    description: Owner of the cloned dataset
+                    type: string
+                oldDataset:
+                    description: Name of the source dataset
+                    type: string
+                newDataset:
+                    description: Name of the cloned dataset
                     type: string
         ChangePassword:
             type: object

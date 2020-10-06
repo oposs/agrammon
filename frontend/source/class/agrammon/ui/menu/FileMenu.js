@@ -290,25 +290,6 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
           * @return {var} TODOC
 	  * @lint ignoreDeprecated(alert)
           */
-         __cloneDatasetFunc: function(data,exc,id) {
-//            this.debug('__cloneDatasetFunc() this='+this);
-
-            if (exc == null) {
-                var datasetName = data;
-                var dataset = new Object;
-                dataset['name'] = datasetName;
-
-                qx.event.message.Bus.dispatchByName('agrammon.input.select');
-                this.__info.setDatasetName(datasetName);
-                qx.event.message.Bus.dispatchByName('agrammon.NavBar.loadDataset',
-                                              dataset);
-                qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', this.__info.getUserName());
-            }
-            else {
-                alert(exc);
-            }
-        },
-
         __cloneDataset: function(msg) {
             var oldUsername;
             oldUsername = this.__info.getUserName();
@@ -323,13 +304,28 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
             this.debug('__cloneDataset(): ' + oldUsername + '/' + oldDataset
                        + ' -> ' + newUsername + '/' + newDataset);
             qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
+            var that = this;
             this.__rpc.callAsync(
-                qx.lang.Function.bind(this.__cloneDatasetFunc, this),
-                           'clone_dataset',
-			               {'oldUsername': oldUsername,
-			                'oldDataset':  oldDataset,
-                            'newUsername': newUsername,
-			                'newDataset':  newDataset}
+                function(data,exc,id) {
+                   if (exc == null) {
+                        var dataset = new Object;
+                        dataset.name = newDataset;
+
+                        qx.event.message.Bus.dispatchByName('agrammon.input.select');
+                        that.__info.setDatasetName(newDataset);
+                        qx.event.message.Bus.dispatchByName('agrammon.NavBar.loadDataset', dataset);
+                        qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', that.__info.getUserName());
+                    }
+                    else {
+                        alert(exc, + ': ' + data.error);
+                    }
+                },
+                'clone_dataset',
+                {
+                 'oldDataset':  oldDataset,
+                 'newUsername': newUsername,
+                 'newDataset':  newDataset
+                }
             );
         },
 

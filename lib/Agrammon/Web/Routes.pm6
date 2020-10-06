@@ -105,7 +105,24 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
-        # working
+        operation 'cloneDataset', -> LoggedIn $user {
+            request-body -> ( :newUsername($new-username),
+                              :oldDataset($old-dataset), :newDataset($new-dataset)  ) {
+                $ws.clone-dataset($user, $new-username, $old-dataset, $new-dataset);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::AlreadyExists {
+                        conflict 'application/json', %(
+                            error => .message
+                        );
+                    }
+                    when X::Agrammon::DB::Dataset::CloneFailed {
+                        response.status = 500;
+                        conflict 'application/json', %( error => .message );
+                    }
+                }
+            }
+        }
         operation 'renameDataset', -> LoggedIn $user {
             request-body -> ( :oldName($old-name), :newName($new-name) ) {
                 $ws.rename-dataset($user, $old-name, $new-name);

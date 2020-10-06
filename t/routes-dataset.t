@@ -6,7 +6,7 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 14;
+plan 15;
 
 # routing tests related to datasets
 
@@ -51,6 +51,10 @@ my $fake-store = mocked(Agrammon::Web::Service,
             $name
         },
         rename-dataset => -> $user, $old, $new {
+        },
+        clone-dataset => -> $user,
+                            Str $new-username,
+                            Str $old-dataset, Str $new-dataset {
         },
         submit-dataset => -> $user, $name, $mail {
             %( name => $name)
@@ -162,6 +166,17 @@ subtest 'Load dataset' => {
         };
         check-mock $fake-store,
             *.called('load-dataset', times => 1);
+    }
+}
+
+subtest 'Clone dataset' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/clone_dataset', {
+            test post(json => { :newUsername('foo'), :oldDataset('DatasetC'),  :newDataset('DatasetD') }),
+                status => 204,
+        };
+        check-mock $fake-store,
+            *.called('clone-dataset', times => 1);
     }
 }
 
