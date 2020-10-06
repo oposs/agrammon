@@ -237,6 +237,8 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
 ####################################################
 
 
+
+####################################################
 #### immobilization
     
 +immobilization_poultry
@@ -248,8 +250,11 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual TAN immobilized from TAN fraction in poultry manure storage.
   ++formula
-    Tech(immobilizationrate_poultry) * 
-    ( Val(tan_into_storage_poultry,::Livestock) - Out(nh3_npoultry) )
+    scale(
+      Val(tan_into_storage_poultry,::Livestock) P- 
+      Out(nh3_npoultry),
+      Tech(immobilizationrate_poultry)
+    );
 
 +immobilization_poultry_layers_growers_other_poultry
   print = 7
@@ -260,8 +265,11 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual TAN immobilized from TAN fraction in poultry manure storage.
   ++formula
-    Tech(immobilizationrate_poultry) * 
-    ( Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) - Out(nh3_npoultry_layers_growers_other_poultry ) )
+    scale(
+      Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) P- 
+      Out(nh3_npoultry_layers_growers_other_poultry),
+      Tech(immobilizationrate_poultry)
+    );
 
 +immobilization_poultry_turkeys_broilers
   print = 7
@@ -272,8 +280,109 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual TAN immobilized from TAN fraction in poultry manure storage.
   ++formula
-    Tech(immobilizationrate_poultry) * 
-    ( Val(tan_into_storage_poultry_turkeys_broilers,::Livestock) - Out(nh3_npoultry_turkeys_broilers) )
+    scale(
+      Val(tan_into_storage_poultry_turkeys_broilers,::Livestock) P- 
+      Out(nh3_npoultry_turkeys_broilers),
+      Tech(immobilizationrate_poultry)
+    );
+
+####################################################
+
+####################################################
+#### n into application
+   
++n_into_application_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_poultry_layers_growers_other_poultry,::Livestock) P-
+    Val(nxox_nsolid_layers_growers_other_poultry,::Livestock) P- 
+    Out(nh3_npoultry_layers_growers_other_poultry);
+
++n_into_application_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_poultry_turkeys_broilers,::Livestock) P-
+    Val(nxox_nsolid_turkeys_broilers, ::Livestock) P-
+    Out(nh3_npoultry_turkeys_broilers);
+
++n_into_application
+  print = PoultryFlux
+  ++labels
+    sort = 500
+    en = Poultry N into Application
+    de = Geflügel N Fluss in die Ausbringung
+    fr = Volaille Flux de N dans l'épandage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of storage for manure application.
+  ++formula
+    Val(n_into_storage_poultry,::Livestock) P-
+    Val(nxox_nsolid_poultry, ::Livestock) P-
+    Out(nh3_npoultry);
+
+####################################################
+
+####################################################
+#### n into application
+  
++tan_into_application_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) P-
+    Out(immobilization_poultry_layers_growers_other_poultry) P-
+    Out(nh3_npoultry_layers_growers_other_poultry) P-
+    Val(nxox_nsolid_layers_growers_other_poultry, ::Livestock); 
+
++tan_into_application_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_poultry_turkeys_broilers,::Livestock) P- 
+    Val(nxox_nsolid_turkeys_broilers, ::Livestock) P- 
+    Out(immobilization_poultry_turkeys_broilers) P- 
+    Out(nh3_npoultry_turkeys_broilers);
+
++tan_into_application
+  print = 4a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux as TAN out of storage for manure application.
+  ++formula
+    Val(tan_into_storage_poultry,::Livestock) P- 
+    Out(immobilization_poultry) P- 
+    Val(nxox_nsolid_poultry, ::Livestock) P- 
+    Out(nh3_npoultry);
+
+####################################################
 
 #### output 
 
@@ -296,89 +405,3 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
                  });
     }
     return;
-
-+n_into_application_layers_growers_other_poultry
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Val(n_into_storage_poultry_layers_growers_other_poultry,::Livestock) -
-    Val(nxox_nsolid_layers_growers_other_poultry,::Livestock) - 
-    Out(nh3_npoultry_layers_growers_other_poultry)
-
-+n_into_application_turkeys_broilers
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Val(n_into_storage_poultry_turkeys_broilers,::Livestock) -
-    Val(nxox_nsolid_turkeys_broilers, ::Livestock) -
-    Out(nh3_npoultry_turkeys_broilers)
-
-+n_into_application
-  print = PoultryFlux
-  ++labels
-    sort = 500
-    en = Poultry N into Application
-    de = Geflügel N Fluss in die Ausbringung
-    fr = Volaille Flux de N dans l'épandage
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Val(n_into_storage_poultry,::Livestock) -
-    Val(nxox_nsolid_poultry, ::Livestock) -
-    Out(nh3_npoultry)
-
-+tan_into_application_layers_growers_other_poultry
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN out of storage for manure application.
-  ++formula
-    Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) -
-    Out(immobilization_poultry_layers_growers_other_poultry) -
-    Out(nh3_npoultry_layers_growers_other_poultry) -
-    Val(nxox_nsolid_poultry, ::Livestock) 
-
-+tan_into_application_turkeys_broilers
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN out of storage for manure application.
-  ++formula
-    Val(tan_into_storage_poultry_turkeys_broilers,::Livestock)
-    - Val(nxox_nsolid_turkeys_broilers, ::Livestock) 
-    - Out(immobilization_poultry_turkeys_broilers)
-    - Out(nh3_npoultry_turkeys_broilers)
-
-+tan_into_application
-  print = 4a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN out of storage for manure application.
-  ++formula
-    Val(tan_into_storage_poultry,::Livestock)
-    - Out(immobilization_poultry)
-    - Val(nxox_nsolid_poultry, ::Livestock) 
-    - Out(nh3_npoultry)
