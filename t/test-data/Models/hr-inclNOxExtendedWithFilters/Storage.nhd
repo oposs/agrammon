@@ -96,10 +96,10 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Annual TAN mineralized from not TAN fraction in liquid storage.
   ++formula
     if ( Val(tan_into_storage_liquid, Livestock) <  Sum(nh3_nliquid, Storage::Slurry) ) {
-      scale( Val(n_into_storage_liquid_cattle, Livestock) P-  Val(tan_into_storage_liquid_cattle,
+      scale( Val(n_out_livestock_liquid_cattle, Livestock) P-  Val(tan_into_storage_liquid_cattle,
       Livestock), 0.0);
     } else {
-      scale( Val(n_into_storage_liquid_cattle, Livestock) P-  Val(tan_into_storage_liquid_cattle,
+      scale( Val(n_out_livestock_liquid_cattle, Livestock) P-  Val(tan_into_storage_liquid_cattle,
       Livestock), Tech(mineralizationrate_liquid));
     }
     
@@ -113,10 +113,10 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Annual TAN mineralized from not TAN fraction in liquid storage.
   ++formula
     if ( Val(tan_into_storage_liquid, Livestock) <  Sum(nh3_nliquid, Storage::Slurry) ) {
-      scale( Val(n_into_storage_liquid_pigs, Livestock) P-  Val(tan_into_storage_liquid_pigs,
+      scale( Val(n_out_livestock_liquid_pigs, Livestock) P-  Val(tan_into_storage_liquid_pigs,
       Livestock), 0.0);
     } else {
-      scale( Val(n_into_storage_liquid_pigs, Livestock) P-  Val(tan_into_storage_liquid_pigs,
+      scale( Val(n_out_livestock_liquid_pigs, Livestock) P-  Val(tan_into_storage_liquid_pigs,
       Livestock), Tech(mineralizationrate_liquid));
     }
     
@@ -168,7 +168,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
                       Out(mineralization_liquid_pigs) P-
                       Val(nxox_nliquid_pigs, Livestock);
     if ( scalar(Sum(nh3_nliquid_pigs, Storage::Slurry)) <  scalar($max_pigs) ) {
-      scale( Val(n_into_storage_liquid_pigs_ratio, Livestock), Sum(nh3_nliquid_pigs, Storage::Slurry) );
+      scale( Val(n_out_livestock_liquid_pigs_ratio, Livestock), Sum(nh3_nliquid_pigs, Storage::Slurry) );
     } else {
       $max_pigs; 
     }
@@ -186,7 +186,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
                       Out(mineralization_liquid_cattle) P-
                       Val(nxox_nliquid_cattle, Livestock);
     if ( scalar(Sum(nh3_nliquid_cattle, Storage::Slurry)) <  scalar($max_cattle) ) {
-      scale( Val(n_into_storage_liquid_cattle_ratio, Livestock), Sum(nh3_nliquid_cattle, Storage::Slurry) );
+      scale( Val(n_out_livestock_liquid_cattle_ratio, Livestock), Sum(nh3_nliquid_cattle, Storage::Slurry) );
     } else {
       $max_cattle; 
     }
@@ -243,7 +243,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for application.
   ++formula
-    Val(n_into_storage_liquid_pigs, Livestock) P-
+    Val(n_out_livestock_liquid_pigs, Livestock) P-
     Out(nh3_nstorage_liquid_pigs) P-
     Val(nxox_nliquid_pigs, Livestock);
 
@@ -257,7 +257,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for application.
   ++formula
-    Val(n_into_storage_liquid_cattle, Livestock) P-
+    Val(n_out_livestock_liquid_cattle, Livestock) P-
     Out(nh3_nstorage_liquid_cattle) P-
     Val(nxox_nliquid_cattle, Livestock);
 

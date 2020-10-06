@@ -121,9 +121,9 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     Emission rate for slurry application based on TAN of the slurry. The 
     average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al (1998), Menzi et al. (1997a) and Sogaard et al. (2002)
   ++formula
-    Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock) * 
+    Val(n_out_livestock_liquid_pigs_share, ::Livestock) * 
     Tech(er_App_pigs_liquid) + 
-    ( 1 - Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock) ) * 
+    ( 1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock) ) * 
     Tech(er_App_cattle_liquid);
 
 

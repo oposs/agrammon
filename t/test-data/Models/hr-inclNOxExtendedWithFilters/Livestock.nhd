@@ -105,6 +105,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 *** output ***
 
+####################################################
+##### n/tan excretion (n/tan into livestock)
+
 +n_excretion
   format= %.0f
   print = FluxSummaryLivestock
@@ -120,13 +123,13 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Total annual N excreted by all animals.
   ++formula
-    Sum(n_excretion,Livestock::OtherCattle) P+
-    Sum(n_excretion,Livestock::DairyCow) P+
-    Sum(n_excretion,Livestock::Pig) P+
-    Sum(n_excretion,Livestock::FatteningPigs) P+
-    Sum(n_excretion,Livestock::Equides) P+
-    Sum(n_excretion,Livestock::SmallRuminants) P+
-    Sum(n_excretion,Livestock::Poultry);
+    Sum(n_excretion, Livestock::OtherCattle) P+
+    Sum(n_excretion, Livestock::DairyCow) P+
+    Sum(n_excretion, Livestock::Pig) P+
+    Sum(n_excretion, Livestock::FatteningPigs) P+
+    Sum(n_excretion, Livestock::Equides) P+
+    Sum(n_excretion, Livestock::SmallRuminants) P+
+    Sum(n_excretion, Livestock::Poultry);
 
 +tan_excretion
   format= %.0f
@@ -143,14 +146,214 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Total annual TAN excreted by all animals.
   ++formula
-    Sum(tan_excretion,Livestock::OtherCattle::Excretion ) P+
-    Sum(tan_excretion,Livestock::DairyCow::Excretion ) P+
-    Sum(tan_excretion,Livestock::Pig::Excretion ) P+
-    Sum(tan_excretion,Livestock::FatteningPigs::Excretion ) P+
-    Sum(tan_excretion,Livestock::Equides::Excretion ) P+
-    Sum(tan_excretion,Livestock::SmallRuminants::Excretion) P+
-    Sum(tan_excretion,Livestock::RoughageConsuming::Excretion) P+
-    Sum(tan_excretion,Livestock::Poultry::Excretion);
+    Sum(tan_excretion, Livestock::OtherCattle::Excretion) P+
+    Sum(tan_excretion, Livestock::DairyCow::Excretion) P+
+    Sum(tan_excretion, Livestock::Pig::Excretion) P+
+    Sum(tan_excretion, Livestock::FatteningPigs::Excretion) P+
+    Sum(tan_excretion, Livestock::Equides::Excretion) P+
+    Sum(tan_excretion, Livestock::SmallRuminants::Excretion) P+
+    Sum(tan_excretion, Livestock::RoughageConsuming::Excretion) P+
+    Sum(tan_excretion, Livestock::Poultry::Excretion);
+
+####################################################
+
+
+
+
+####################################################
+##### n out livestock (into storage) liquid
+
++n_into_storage_liquid_check
+  print = storage_check
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) from housing and yard into the
+    storage from all animal besides poultry.
+  ++formula
+    Sum(n_outhousing_liquid,Livestock::OtherCattle::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::DairyCow::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::Pig::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::FatteningPigs::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::Equides::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::SmallRuminants::Housing) P+
+    Sum(n_outhousing_liquid,Livestock::RoughageConsuming::Housing);
+
++n_out_livestock_liquid_pigs
+  print = newStorage
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Hash. Annual N flux (liquid share) from pigs housing into the storage
+   (used for calculation of the ef of mixed storage units).
+  ++formula
+    Sum(n_liquid_from_pig,Livestock::Pig) P+
+    Sum(n_liquid_from_fattening_pig,Livestock::FatteningPigs);
+
++n_out_livestock_liquid_cattle
+  print = newStorage
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Hash. Annual N flux (liquid share) from pigs housing into the storage
+   (used for calculation of the ef of mixed storage units).
+  ++formula
+    Sum(n_liquid_from_cattle,Livestock::OtherCattle) P+
+    Sum(n_liquid_from_dairycow,Livestock::DairyCow);
+
++n_out_livestock_liquid
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) from housing and yard into the
+    storage from all animal besides poultry.
+  ++formula
+    Out(n_out_livestock_liquid_pigs) P+
+    Out(n_out_livestock_liquid_cattle);
+
++n_out_livestock_liquid_pigs_ratio
+  print = newStorage
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Hash. Annual N flux (liquid share) from pigs housing into the storage
+   (used for calculation of the ef of mixed storage units).
+  ++formula
+    scale( Out(n_out_livestock_liquid_pigs), 1 / scalar(Out(n_out_livestock_liquid_pigs)) );
+
++n_out_livestock_liquid_cattle_ratio
+  print = newStorage
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Hash. Annual N flux (liquid share) from pigs housing into the storage
+   (used for calculation of the ef of mixed storage units).
+  ++formula
+    scale( Out(n_out_livestock_liquid_cattle), 1 / scalar(Out(n_out_livestock_liquid_cattle)) );
+
++n_out_livestock_liquid_pigs_share
+  print = newStorage
+  ++units
+    en = -
+    de = -
+    fr = -
+  ++description
+    Scalar. Share of annual liquid N flux from housing and yard into the
+    storage from pigs (scaled by total flux).
+  ++formula
+    scalar( Out(n_out_livestock_liquid_pigs) ) / scalar( Out(n_out_livestock_liquid) );
+
+
+####################################################
+
+####################################################
+##### n into storage solid -> rename to n_out_livestock or similar, eventually
+
++n_into_storage_solid_dairycows_cattle
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) from housing and yard into the
+    storage from all animals besides poultry.
+  ++formula
+    Sum(n_solid_from_cattle,Livestock::OtherCattle) P+
+    Sum(n_solid_from_dairycow,Livestock::DairyCow);
+
++n_into_storage_solid_pigs
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) from housing and yard into the
+    storage from all animals besides poultry.
+  ++formula
+    Sum(n_solid_from_pig,Livestock::Pig) P+
+    Sum(n_solid_from_fattening_pig,Livestock::FatteningPigs);
+
++n_into_storage_solid_horses_otherequides_smallruminants
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) from housing and yard into the
+    storage from all animals besides poultry.
+  ++formula
+    Sum(n_solid_from_equides,Livestock::Equides) P+
+    Sum(n_solid_from_other,Livestock::SmallRuminants) P+
+    Sum(n_solid_from_other,Livestock::RoughageConsuming);
+
++n_into_storage_poultry_layers_growers_other_poultry
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from poultry (layers, growers, other poultry) into the storage.
+  ++formula
+    Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry);
+
++n_into_storage_poultry_turkeys_broilers
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from poultry (broilers, turkeys) into the storage.
+  ++formula
+    Sum(n_from_poultry_turkeys_broilers,Livestock::Poultry);
+
++n_into_storage_poultry
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux from poultry into the storage.
+  ++formula
+    Sum(n_from_poultry,Livestock::Poultry);
+
++n_into_storage_solid
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) from housing and yard into the
+    storage from all animals besides poultry.
+  ++formula
+    Out(n_into_storage_solid_dairycows_cattle) P+
+    Out(n_into_storage_solid_pigs) P+
+    Out(n_into_storage_solid_horses_otherequides_smallruminants) P+
+    Out(n_into_storage_poultry);
+
+####################################################
+
+####################################################
+##### n into storage
 
 +n_into_storage
   format= %.0f
@@ -168,14 +371,14 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (liquid and solid share) from housing
     and yard into the storage from all animals.
   ++formula
-    Sum(n_from_cattle,Livestock::OtherCattle) P+
-    Sum(n_from_dairycow,Livestock::DairyCow) P+
-    Sum(n_from_pig,Livestock::Pig) P+
-    Sum(n_from_fattening_pig,Livestock::FatteningPigs) P+
-    Sum(n_from_equides,Livestock::Equides) P+
-    Sum(n_from_other,Livestock::SmallRuminants) P+
-    Sum(n_from_other,Livestock::RoughageConsuming) P+
-    Sum(n_from_poultry,Livestock::Poultry);
+    Sum(n_from_cattle, Livestock::OtherCattle) P+
+    Sum(n_from_dairycow, Livestock::DairyCow) P+
+    Sum(n_from_pig, Livestock::Pig) P+
+    Sum(n_from_fattening_pig, Livestock::FatteningPigs) P+
+    Sum(n_from_equides, Livestock::Equides) P+
+    Sum(n_from_other, Livestock::SmallRuminants) P+
+    Sum(n_from_other, Livestock::RoughageConsuming) P+
+    Sum(n_from_poultry, Livestock::Poultry);
 
 +n_into_storage_ratios
   format= %.2f
@@ -237,123 +440,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     storage from all animal categories
   ++formula
     scale( Out(tan_into_storage), 1 / scalar(Out(tan_into_storage)) );
-
-
-####################################################
-##### n into storage liquid
-
-+n_into_storage_liquid
-  print = 3a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (liquid share) from housing and yard into the
-    storage from all animal besides poultry.
-  ++formula
-    Sum(n_liquid_from_cattle,Livestock::OtherCattle) P+
-    Sum(n_liquid_from_dairycow,Livestock::DairyCow) P+
-    Sum(n_liquid_from_pig,Livestock::Pig) P+
-    Sum(n_liquid_from_fattening_pig,Livestock::FatteningPigs) P+
-    Sum(n_liquid_from_equides,Livestock::Equides) P+
-    Sum(n_liquid_from_other,Livestock::SmallRuminants);
-
-+n_into_storage_liquid_check
-  print = storage_check
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (liquid share) from housing and yard into the
-    storage from all animal besides poultry.
-  ++formula
-    Sum(n_outhousing_liquid,Livestock::OtherCattle::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::DairyCow::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::Pig::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::FatteningPigs::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::Equides::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::SmallRuminants::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::RoughageConsuming::Housing);
-
-+n_into_storage_liquid_pigs_scalar
-  print = newStorage
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Scalar. Annual N flux (liquid share) from pigs housing into the storage
-   (used for calculation of the ef of mixed storage units).
-  ++formula
-    Sum(n_liquid_from_pig,Livestock::Pig) +
-    Sum(n_liquid_from_fattening_pig,Livestock::FatteningPigs);
-
-+n_into_storage_liquid_pigsratio_scalar
-  print = newStorage
-  ++units
-    en = -
-    de = -
-    fr = -
-  ++description
-    Scalar. Share of annual liquid N flux from housing and yard into the
-    storage from pigs (scaled by total flux).
-  ++formula
-    Out(n_into_storage_liquid_pigs_scalar) / scalar(Out(n_into_storage_liquid));
-
-
-+n_into_storage_liquid_pigs
-  print = newStorage
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Hash. Annual N flux (liquid share) from pigs housing into the storage
-   (used for calculation of the ef of mixed storage units).
-  ++formula
-    Sum(n_liquid_from_pig,Livestock::Pig) P+
-    Sum(n_liquid_from_fattening_pig,Livestock::FatteningPigs);
-
-+n_into_storage_liquid_pigs_ratio
-  print = newStorage
-  ++units
-    en = 
-    de = 
-    fr = 
-  ++description
-    Hash. Annual N flux (liquid share) from pigs housing into the storage
-   (used for calculation of the ef of mixed storage units).
-  ++formula
-    scale( Out(n_into_storage_liquid_pigs), 1 / scalar(Out(n_into_storage_liquid_pigs)) );
-
-+n_into_storage_liquid_cattle
-  print = newStorage
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Hash. Annual N flux (liquid share) from pigs housing into the storage
-   (used for calculation of the ef of mixed storage units).
-  ++formula
-    Sum(n_liquid_from_cattle,Livestock::OtherCattle) P+
-    Sum(n_liquid_from_dairycow,Livestock::DairyCow);
-
-+n_into_storage_liquid_cattle_ratio
-  print = newStorage
-  ++units
-    en = 
-    de = 
-    fr = 
-  ++description
-    Hash. Annual N flux (liquid share) from pigs housing into the storage
-   (used for calculation of the ef of mixed storage units).
-  ++formula
-    scale( Out(n_into_storage_liquid_cattle), 1 / scalar(Out(n_into_storage_liquid_cattle)) );
-
-####################################################
 
 
 ####################################################
@@ -455,99 +541,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 ####################################################
 
-
-####################################################
-##### n into storage solid -> rename to n_out_livestock or similar, eventually
-
-+n_into_storage_solid_dairycows_cattle
-  print = 3a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (solid share) from housing and yard into the
-    storage from all animals besides poultry.
-  ++formula
-    Sum(n_solid_from_cattle,Livestock::OtherCattle) P+
-    Sum(n_solid_from_dairycow,Livestock::DairyCow);
-
-+n_into_storage_solid_pigs
-  print = 3a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (solid share) from housing and yard into the
-    storage from all animals besides poultry.
-  ++formula
-    Sum(n_solid_from_pig,Livestock::Pig) P+
-    Sum(n_solid_from_fattening_pig,Livestock::FatteningPigs);
-
-+n_into_storage_solid_horses_otherequides_smallruminants
-  print = 3a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (solid share) from housing and yard into the
-    storage from all animals besides poultry.
-  ++formula
-    Sum(n_solid_from_equides,Livestock::Equides) P+
-    Sum(n_solid_from_other,Livestock::SmallRuminants) P+
-    Sum(n_solid_from_other,Livestock::RoughageConsuming);
-
-+n_into_storage_poultry_layers_growers_other_poultry
-  print = 7
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux from poultry (layers, growers, other poultry) into the storage.
-  ++formula
-    Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry);
-
-+n_into_storage_poultry_turkeys_broilers
-  print = 7
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux from poultry (broilers, turkeys) into the storage.
-  ++formula
-    Sum(n_from_poultry_turkeys_broilers,Livestock::Poultry);
-
-+n_into_storage_poultry
-  print = 3a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux from poultry into the storage.
-  ++formula
-    Sum(n_from_poultry,Livestock::Poultry);
-
-+n_into_storage_solid
-  print = 3a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (solid share) from housing and yard into the
-    storage from all animals besides poultry.
-  ++formula
-    Out(n_into_storage_solid_dairycows_cattle) P+
-    Out(n_into_storage_solid_pigs) P+
-    Out(n_into_storage_solid_horses_otherequides_smallruminants) P+
-    Out(n_into_storage_poultry);
-
-####################################################
 
 ####################################################
 ##### tan into storage solid -> rename to tan_out_livestock or similar, eventually 
