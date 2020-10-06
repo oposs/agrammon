@@ -320,6 +320,17 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Out(tan_into_application_liquid_pigs) P+
     Out(tan_into_application_liquid_cattle);
 
++tan_into_application_liquid_pigsratio_scalar
+  print = newApplication
+  ++units
+    en = -
+    de = -
+    fr = -
+  ++description
+    Scalar. Pigs share of annual liquid N flux as TAN from storage into application (scaled by total flux).
+  ++formula
+    scalar( Out(tan_into_application_liquid_pigs) ) / scalar( Out(tan_into_application_liquid) );
+
 ####################################################
 
 

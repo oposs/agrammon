@@ -109,30 +109,91 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 
 *** output ***
 
+
+####################################################
+#### liquid application old (incorrect) way
+
 +er_App_liquid
-  print = 15	      
+  print = 15        
   ++units 
     en = -
   ++description
     Emission rate for slurry application based on TAN of the slurry. The 
     average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al (1998), Menzi et al. (1997a) and Sogaard et al. (2002)
   ++formula
-      my $out;
-      if ( Val(n_into_storage_liquid, ::Livestock) != 0 ) {
-          $out = (
-                     Val(n_into_storage_liquid_pigs_scalar, ::Livestock) * Tech(er_App_pigs_liquid) +
-                   ( Val(n_into_storage_liquid, ::Livestock) - Val(n_into_storage_liquid_pigs_scalar, ::Livestock)) * Tech(er_App_cattle_liquid)
-                 )
-                 / Val(n_into_storage_liquid, ::Livestock);
-                 
-      }
-      else {
-             $out = (Tech(er_App_cattle_liquid) + Tech(er_App_pigs_liquid) )/2;
-      }
-      return $out;
-        
+    Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock) * 
+    Tech(er_App_pigs_liquid) + 
+    ( 1 - Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock) ) * 
+    Tech(er_App_cattle_liquid);
+
 
 +nh3_nliquid
+  print = 1a,check
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual NH3 emission from slurry application.
+  ++formula
+    scale( Val(tan_into_application_liquid, ::Storage),
+      Val(c_tech, Slurry::Ctech) *
+      Val(c_soft, Slurry::Csoft) *
+      Val(c_season, Slurry::Cseason) *
+      Val(c_free_factor_application, Slurry::CfreeFactor) *
+      (
+        ( 1 - Val(share_fermented_slurry, Slurry::Cfermented) ) *
+        Out(er_App_liquid) +
+        Val(share_fermented_slurry, Slurry::Cfermented) *
+        Tech(er_App_fermented_slurry) + 
+        Val(c_app, Slurry::Applrate)
+      )
+    );
+
+####################################################
+
+
+####################################################
+#### liquid application correct way (implement and clean up as soon as permitted)
+
++er_App_liquid_correctTotalFlow
+  print = 15        
+  ++units 
+    en = -
+  ++description
+    Emission rate for slurry application based on TAN of the slurry. The 
+    average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al (1998), Menzi et al. (1997a) and Sogaard et al. (2002)
+  ++formula
+    Val(tan_into_application_liquid_pigsratio_scalar, ::Storage) * 
+    Tech(er_App_pigs_liquid) + 
+    ( 1 - Val(tan_into_application_liquid_pigsratio_scalar, ::Storage) ) * 
+    Tech(er_App_cattle_liquid);
+
+
++nh3_nliquid_correctTotalFlow
+  print = 1a,check
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual NH3 emission from slurry application.
+  ++formula
+    scale( Val(tan_into_application_liquid, ::Storage),
+      Val(c_tech, Slurry::Ctech) *
+      Val(c_soft, Slurry::Csoft) *
+      Val(c_season, Slurry::Cseason) *
+      Val(c_free_factor_application, Slurry::CfreeFactor) *
+      (
+        ( 1 - Val(share_fermented_slurry, Slurry::Cfermented) ) *
+        Out(er_App_liquid_correctTotalFlow) +
+        Val(share_fermented_slurry, Slurry::Cfermented) *
+        Tech(er_App_fermented_slurry) + 
+        Val(c_app, Slurry::Applrate)
+      )
+    );
+
++nh3_nliquid_noCat
   print = 1a
   ++units  
     en = kg N/year
@@ -141,21 +202,67 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NH3 emission from slurry application.
   ++formula
-    Val(tan_into_application_liquid, ::Storage)
-    * (1 - Val(share_fermented_slurry, Slurry::Cfermented))
-    * ( Out(er_App_liquid) + Val(c_app, Slurry::Applrate) ) 
-    * Val(c_tech, Slurry::Ctech) 
-    * Val(c_soft, Slurry::Csoft) 
-    * Val(c_season, Slurry::Cseason) 
-    * Val(c_free_factor_application, Slurry::CfreeFactor)   +
+    scale( Val(tan_into_application_liquid, ::Storage),
+      Val(c_tech, Slurry::Ctech) *
+      Val(c_soft, Slurry::Csoft) *
+      Val(c_season, Slurry::Cseason) *
+      Val(c_free_factor_application, Slurry::CfreeFactor) *
+      ( Val(share_fermented_slurry, Slurry::Cfermented) *
+        Tech(er_App_fermented_slurry) + 
+        Val(c_app, Slurry::Applrate) )
+    );
 
-    Val(tan_into_application_liquid, ::Storage)
-    * Val(share_fermented_slurry, Slurry::Cfermented)
-    * ( Tech(er_App_fermented_slurry) + Val(c_app, Slurry::Applrate) ) 
-    * Val(c_tech, Slurry::Ctech) 
-    * Val(c_soft, Slurry::Csoft) 
-    * Val(c_season, Slurry::Cseason)
-    * Val(c_free_factor_application, Slurry::CfreeFactor) ;
++nh3_nliquid_pigs
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual NH3 emission from slurry application.
+  ++formula
+    scale( Val(tan_into_application_liquid_pigs, ::Storage),
+      Val(c_tech, Slurry::Ctech) *
+      Val(c_soft, Slurry::Csoft) *
+      Val(c_season, Slurry::Cseason) *
+      Val(c_free_factor_application, Slurry::CfreeFactor) *
+      ( 1 - Val(share_fermented_slurry, Slurry::Cfermented) ) *
+      Tech(er_App_pigs_liquid)
+    );
+
++nh3_nliquid_cattle
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual NH3 emission from slurry application.
+  ++formula
+    scale( Val(tan_into_application_liquid_cattle, ::Storage),
+      Val(c_tech, Slurry::Ctech) *
+      Val(c_soft, Slurry::Csoft) *
+      Val(c_season, Slurry::Cseason) *
+      Val(c_free_factor_application, Slurry::CfreeFactor) *
+      ( 1 - Val(share_fermented_slurry, Slurry::Cfermented) ) *
+      Tech(er_App_cattle_liquid)
+    );
+
++nh3_nliquid_correctTotalFlow_correctDetailReport
+  print = 1a,check
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual NH3 emission from slurry application.
+  ++formula
+    Out(nh3_nliquid_noCat) P+
+    Out(nh3_nliquid_pigs) P+
+    Out(nh3_nliquid_cattle);
+
+####################################################
+
 
 +n2_nliquid
   print = 1a
