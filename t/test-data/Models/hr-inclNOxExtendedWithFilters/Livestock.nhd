@@ -457,7 +457,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 
 ####################################################
-##### n into storage solid
+##### n into storage solid -> rename to n_out_livestock or similar, eventually
 
 +n_into_storage_solid_dairycows_cattle
   print = 3a
@@ -550,7 +550,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 ####################################################
 
 ####################################################
-##### tan into storage solid
+##### tan into storage solid -> rename to tan_out_livestock or similar, eventually 
 
 +tan_into_storage_solid_dairycows_cattle
   print = 4a
