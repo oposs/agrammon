@@ -187,6 +187,9 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   } 
 
 
+####################################################
+#### nh3 loss
+
 +nh3_npoultry_layers_growers_other_poultry
   print = 7
   ++units  
@@ -196,8 +199,12 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual NH3 emission from poultry manure storage.
   ++formula
-       (Tech(er_layers_growers_other_poultry) * Val(tan_into_storage_poultry_layers_growers_other_poultry,::Livestock) * (1-(In(share_applied_direct_poultry_manure)/100)) * Out(c_covered_basin)* Out(c_free_factor_storage_poultrymanure) );
-
+    scale( Val(tan_into_storage_poultry_layers_growers_other_poultry, ::Livestock),
+      Tech(er_layers_growers_other_poultry) * 
+      ( 1 - In(share_applied_direct_poultry_manure) / 100 ) * 
+      Out(c_covered_basin) * 
+      Out(c_free_factor_storage_poultrymanure) 
+    );
 
 +nh3_npoultry_turkeys_broilers
   print = 7
@@ -208,7 +215,12 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual NH3 emission from poultry manure storage.
   ++formula
-       return (Tech(er_turkeys_broilers) * Val(tan_into_storage_poultry_turkeys_broilers,::Livestock) * (1-(In(share_applied_direct_poultry_manure)/100))* Out(c_covered_basin) * Out(c_free_factor_storage_poultrymanure));
+    scale( Val(tan_into_storage_poultry_turkeys_broilers, ::Livestock),
+      Tech(er_turkeys_broilers) * 
+      ( 1 - In(share_applied_direct_poultry_manure) / 100 ) * 
+      Out(c_covered_basin) * 
+      Out(c_free_factor_storage_poultrymanure)
+    );
 
 +nh3_npoultry
   print = 1a
@@ -219,7 +231,11 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual NH3 emission from poultry manure storage.
   ++formula
-    Out(nh3_npoultry_layers_growers_other_poultry) + Out(nh3_npoultry_turkeys_broilers); 
+    Out(nh3_npoultry_layers_growers_other_poultry) P+ 
+    Out(nh3_npoultry_turkeys_broilers); 
+
+####################################################
+
 
 #### immobilization
     

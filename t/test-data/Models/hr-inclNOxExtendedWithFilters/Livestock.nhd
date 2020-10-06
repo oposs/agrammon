@@ -579,7 +579,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(tan_solid,Livestock::FatteningPigs);
 
 +tan_into_storage_solid_horses_otherequides_smallruminants
-  print = 4a,check
+  print = 4a
   ++units
     en = kg N/year
     de = kg N/Jahr
