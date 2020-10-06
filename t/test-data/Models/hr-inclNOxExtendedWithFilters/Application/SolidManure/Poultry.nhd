@@ -84,7 +84,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 
 *** output ***
 
-+nh3_npoultry
++nh3_napplication_poultry
   print = 1a
   ++units  
     en = kg N/year
@@ -152,7 +152,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N flux out of solid manure application.
   ++formula
     Val(n_into_application, ::Storage::SolidManure::Poultry) -
-           Out(nh3_npoultry);
+           Out(nh3_napplication_poultry);
 
 +tan_frompoultry
   print = PoultryFlux
@@ -169,6 +169,6 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     TAN flux out of solid manure application.
   ++formula
     Val(tan_into_application, ::Storage::SolidManure::Poultry) -
-           Out(nh3_npoultry);
+           Out(nh3_napplication_poultry);
     
     

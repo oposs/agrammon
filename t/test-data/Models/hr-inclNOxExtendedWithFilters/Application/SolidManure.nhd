@@ -46,7 +46,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 
 *** output ***
 
-+nh3_nsolid
++nh3_napplication_solid
   print = 1a
   ++units  
     en = kg N/year
@@ -55,10 +55,10 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NH3 emission from solid manure application.
   ++formula
-    Val(nh3_nsolid_dairycows_cattle, SolidManure::Solid)  P+
-    Val(nh3_nsolid_pigs, SolidManure::Solid)  P+
-    Val(nh3_nsolid_horses_otherequides_smallruminants, SolidManure::Solid) P+
-    Val(nh3_npoultry, SolidManure::Poultry);
+    Val(nh3_napplication_solid_cattle, SolidManure::Solid)  P+
+    Val(nh3_napplication_solid_pigs, SolidManure::Solid)  P+
+    Val(nh3_napplication_solid_others, SolidManure::Solid) P+
+    Val(nh3_napplication_poultry, SolidManure::Poultry);
 
 +no_nsolid
   print = 1a
@@ -112,6 +112,6 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N flux out of solid manure application.
   ++formula
     Val(n_into_application_manure, ::Storage) -
-    Out(nh3_nsolid) - Out(n2_nsolid) - Out(no_nsolid) - Out(n2o_nsolid);
+    Out(nh3_napplication_solid) - Out(n2_nsolid) - Out(no_nsolid) - Out(n2o_nsolid);
     
 
