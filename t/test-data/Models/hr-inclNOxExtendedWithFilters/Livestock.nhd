@@ -238,6 +238,10 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     scale( Out(tan_into_storage), 1 / scalar(Out(tan_into_storage)) );
 
+
+####################################################
+##### n into storage liquid
+
 +n_into_storage_liquid
   print = 3a
   ++units
@@ -348,6 +352,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
    (used for calculation of the ef of mixed storage units).
   ++formula
     scale( Out(n_into_storage_liquid_cattle), 1 / scalar(Out(n_into_storage_liquid_cattle)) );
+
+####################################################
+
 
 ####################################################
 ##### tan into storage liquid
@@ -673,6 +680,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Out(nxox_nsolid_equides_other) +
     Out(nxox_nsolid_poultry);
 
+####################################################
+##### nxox liquid
 
 +nxox_nliquid
   print = 4a
@@ -700,6 +709,43 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) P+
     Sum(n2o_nliquid,Livestock::FatteningPigs);
 
++nxox_nliquid_cattle
+  print = 4a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) as TAN from housing and yard into
+    the storage from all animals besides poultry.
+  ++formula
+    Sum(n2_nliquid,Livestock::OtherCattle) P+
+    Sum(no_nliquid,Livestock::OtherCattle) P+
+    Sum(n2o_nliquid,Livestock::OtherCattle) P+
+
+    Sum(n2_nliquid,Livestock::DairyCow) P+
+    Sum(no_nliquid,Livestock::DairyCow) P+
+    Sum(n2o_nliquid,Livestock::DairyCow);
+
++nxox_nliquid_pigs
+  print = 4a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) as TAN from housing and yard into
+    the storage from all animals besides poultry.
+  ++formula
+    Sum(n2_nliquid,Livestock::Pig) P+
+    Sum(no_nliquid_pig,Livestock::Pig) P+
+    Sum(n2o_nliquid,Livestock::Pig) P+
+
+    Sum(n2_nliquid,Livestock::FatteningPigs) P+
+    Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) P+
+    Sum(n2o_nliquid,Livestock::FatteningPigs);
+
+####################################################
 
 +nxox_n
   print = 4a
