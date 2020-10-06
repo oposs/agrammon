@@ -60,6 +60,7 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
        # say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
        # say "\nLivestockSummary (Details)=\n", output-as-text($model, $output, 'de', 'LivestockSummary', True);
        say "\nnewStorage (Details)=\n", output-as-text($model, $output, 'de', 'newStorage', True);
+       # say "\nnewStorage (Details)=\n", output-as-text($model, $output, 'de', 'check', True);
 
 #        ddt "GUI: $print with filters=", output-for-gui($model, $output, True)<data>;
     }
