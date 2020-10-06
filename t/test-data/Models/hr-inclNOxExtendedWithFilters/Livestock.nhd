@@ -759,9 +759,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (solid share) as TAN from housing and yard into
     the storage from all animals besides poultry.
   ++formula
-    Out(nxox_nsolid_dairycows_cattle) +
-    Out(nxox_nsolid_pigs) +
-    Out(nxox_nsolid_equides_other) +
+    Out(nxox_nsolid_dairycows_cattle) P+
+    Out(nxox_nsolid_pigs) P+
+    Out(nxox_nsolid_equides_other) P+
     Out(nxox_nsolid_poultry);
 
 ####################################################
