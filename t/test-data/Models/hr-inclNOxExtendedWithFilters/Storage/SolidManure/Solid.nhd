@@ -369,6 +369,49 @@ This option mainly targets users who predict emissions and are obliged to consid
 ####################################################
 #### correct tan/n flows into solid storage
 
++n_into_storage_cattle
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    scale( Val(n_out_livestock_solid_cattle, ::Livestock), 
+      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
+
++n_into_storage_pigs
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    scale( Val(n_out_livestock_solid_pigs, ::Livestock), 
+      ( 1 - In(share_applied_direct_pig_manure) / 100 ) );
+
++n_into_storage_horses_otherequides_smallruminants
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    scale( Val(n_out_livestock_solid_others, ::Livestock), 
+      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
+
+####################################################
+
+
+
+####################################################
+#### correct tan flows into solid storage
+
 +tan_into_storage_pigs
   print = 1a
   ++units  
@@ -381,18 +424,6 @@ This option mainly targets users who predict emissions and are obliged to consid
     scale( Val(tan_into_storage_solid_pigs, ::Livestock), 
       ( 1 - In(share_applied_direct_pig_manure) / 100 ) );
 
-+n_into_storage_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from solid storage.
-  ++formula
-    scale( Val(n_into_storage_solid_pigs, ::Livestock), 
-      ( 1 - In(share_applied_direct_pig_manure) / 100 ) );
-
 +tan_into_storage_dairycows_cattle
   print = 1a
   ++units  
@@ -403,18 +434,6 @@ This option mainly targets users who predict emissions and are obliged to consid
     Annual NH3 emission from solid storage.
   ++formula
     scale( Val(tan_into_storage_solid_dairycows_cattle, ::Livestock), 
-      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
-
-+n_into_storage_dairycows_cattle
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from solid storage.
-  ++formula
-    scale( Val(n_into_storage_solid_dairycows_cattle, ::Livestock), 
       ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
     
 +tan_into_storage_horses_otherequides_smallruminants
@@ -429,19 +448,8 @@ This option mainly targets users who predict emissions and are obliged to consid
     scale( Val(tan_into_storage_solid_horses_otherequides_smallruminants, ::Livestock), 
       ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
 
-+n_into_storage_horses_otherequides_smallruminants
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from solid storage.
-  ++formula
-    scale( Val(n_into_storage_solid_horses_otherequides_smallruminants, ::Livestock), 
-      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
-
 ####################################################
+
 
 
 ####################################################
@@ -582,7 +590,7 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_solid_dairycows_cattle, ::Livestock) P-
+    Val(n_out_livestock_solid_cattle, ::Livestock) P-
     Val(nxox_nsolid_dairycows_cattle, ::Livestock) P-
     Out(nh3_nsolid_dairycows_cattle);
 
@@ -595,7 +603,7 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_solid_pigs, ::Livestock) P-
+    Val(n_out_livestock_solid_pigs, ::Livestock) P-
     Val(nxox_nsolid_pigs, ::Livestock) P-
     Out(nh3_nsolid_pigs)
 
@@ -608,7 +616,7 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_solid_horses_otherequides_smallruminants, ::Livestock) P- 
+    Val(n_out_livestock_solid_others, ::Livestock) P- 
     Val(nxox_nsolid_equides_other, ::Livestock) P-
     Out(nh3_nsolid_horses_otherequides_smallruminants);
 

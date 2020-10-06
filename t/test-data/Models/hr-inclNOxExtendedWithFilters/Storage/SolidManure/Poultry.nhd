@@ -300,7 +300,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_poultry_layers_growers_other_poultry,::Livestock) P-
+    Val(n_out_livestock_solid_poultry_layers_growers_other_poultry,::Livestock) P-
     Val(nxox_nsolid_layers_growers_other_poultry,::Livestock) P- 
     Out(nh3_npoultry_layers_growers_other_poultry);
 
@@ -313,7 +313,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_poultry_turkeys_broilers,::Livestock) P-
+    Val(n_out_livestock_solid_poultry_turkeys_broilers,::Livestock) P-
     Val(nxox_nsolid_turkeys_broilers, ::Livestock) P-
     Out(nh3_npoultry_turkeys_broilers);
 
@@ -331,7 +331,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_storage_poultry,::Livestock) P-
+    Val(n_out_livestock_solid_poultry,::Livestock) P-
     Val(nxox_nsolid_poultry, ::Livestock) P-
     Out(nh3_npoultry);
 
