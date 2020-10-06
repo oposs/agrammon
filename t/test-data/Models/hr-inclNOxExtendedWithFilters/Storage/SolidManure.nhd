@@ -40,7 +40,7 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
     Val(nh3_nsolid, SolidManure::Solid) P+
     Val(nh3_npoultry, SolidManure::Poultry);
 
-+n_nsolid
++n_out_storage_solid
   print = 7
   ++units  
     en = kg N/year
@@ -49,6 +49,6 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
   ++description
     Annual N flux from solid storage to application.
   ++formula
-    Val(n_into_storage_solid, ::Livestock) -
-    Out(nh3_nsolid) -
-    Val(nxox_nsolid_dairycows_cattle, ::Livestock)
+    Val(n_into_storage_solid, ::Livestock) P-
+    Out(nh3_nsolid) P-
+    Val(nxox_nsolid, ::Livestock)
