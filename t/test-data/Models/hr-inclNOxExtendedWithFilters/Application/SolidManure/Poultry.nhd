@@ -93,7 +93,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NH3 emission from solid manure application.
   ++formula
-    scale( Val(tan_into_application, ::Storage::SolidManure::Poultry),
+    scale( Val(tan_into_application_solid_poultry, ::Storage::SolidManure::Poultry),
       Tech(er_App_manure) *
       Val(c_incorp_time, Poultry::CincorpTime) *
       Val(c_season, Cseason) *
@@ -109,7 +109,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2 emission from solid manure application from poultry.
   ++formula
-    scale( Val(n_into_application, ::Storage::SolidManure::Poultry),
+    scale( Val(n_into_application_solid_poultry, ::Storage::SolidManure::Poultry),
       Tech(er_n2_App_manure) );
 
 +no_napplication_solid_poultry
@@ -121,7 +121,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NO emission from solid manure application from poultry.
   ++formula
-    scale( Val(n_into_application, ::Storage::SolidManure::Poultry),
+    scale( Val(n_into_application_solid_poultry, ::Storage::SolidManure::Poultry),
       Tech(er_no_App_manure) );
 
 +n2o_napplication_solid_poultry
@@ -133,5 +133,5 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2O emission from solid manure application from poultry.
   ++formula
-    scale( Val(n_into_application, ::Storage::SolidManure::Poultry),
+    scale( Val(n_into_application_solid_poultry, ::Storage::SolidManure::Poultry),
       Tech(er_n2o_App_manure) );
