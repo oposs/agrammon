@@ -100,7 +100,11 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 
 *** output ***
 
-+nh3_nsolid_dairycows_cattle
+
+####################################################
+##### nh3 loss
+
++nh3_napplication_solid_cattle
   print = 1a
   ++units  
     en = kg N/year
@@ -109,11 +113,46 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NH3 emission from solid manure application.
   ++formula
-    Tech(er_App_manure_dairycows_cattle) 
-     * Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid)
-     * Val(c_incorp_time, Solid::CincorpTime)
-     * Val(c_season, Cseason)
-     * Val(c_free_factor_application_solidmanure, CfreeFactor);
+    scale( Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid),
+      Tech(er_App_manure_dairycows_cattle) *
+      Val(c_incorp_time, Solid::CincorpTime) *
+      Val(c_season, Cseason) *
+      Val(c_free_factor_application_solidmanure, CfreeFactor)
+    );
+
++nh3_napplication_solid_pigs
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NH3 emission from solid manure application.
+  ++formula
+    scale( Val(tan_into_application_pigs, ::Storage::SolidManure::Solid),
+      Tech(er_App_manure_pigs) *
+      Val(c_incorp_time, Solid::CincorpTime) *
+      Val(c_season, Cseason) *
+      Val(c_free_factor_application_solidmanure, CfreeFactor)
+    );
+
++nh3_napplication_solid_others
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NH3 emission from solid manure application.
+  ++formula
+    scale( Val(tan_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid),
+      Tech(er_App_manure_horses_otherequides_smallruminants) *
+      Val(c_incorp_time, Solid::CincorpTime) *
+      Val(c_season, Cseason) *
+      Val(c_free_factor_application_solidmanure, CfreeFactor)
+    );
+
+####################################################
 
 +n2_nsolid_dairycows_cattle
   print = 1a
@@ -152,20 +191,6 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     Tech(er_n2o_App_manure) 
      * Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
 
-+nh3_nsolid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    NH3 emission from solid manure application.
-  ++formula
-    Tech(er_App_manure_pigs) 
-     * Val(tan_into_application_pigs, ::Storage::SolidManure::Solid)
-     * Val(c_incorp_time, Solid::CincorpTime)
-     * Val(c_season, Cseason)
-     * Val(c_free_factor_application_solidmanure, CfreeFactor);
 
 
 +n2_nsolid_pigs
@@ -205,20 +230,6 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
      * Val(n_into_application_pigs, ::Storage::SolidManure::Solid);
 
 
-+nh3_nsolid_horses_otherequides_smallruminants
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    NH3 emission from solid manure application.
-  ++formula
-    Tech(er_App_manure_horses_otherequides_smallruminants) 
-     * Val(tan_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid)
-     * Val(c_incorp_time, Solid::CincorpTime)
-     * Val(c_season, Cseason)
-     * Val(c_free_factor_application_solidmanure, CfreeFactor);
 
 +n2_nsolid_horses_otherequides_smallruminants
   print = 1a
@@ -267,7 +278,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N flux out of solid manure application from Cattles and Pigs.
   ++formula
     Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) - 
-    Out(nh3_nsolid_dairycows_cattle) - Out(n2_nsolid_dairycows_cattle) -
+    Out(nh3_napplication_solid_cattle) - Out(n2_nsolid_dairycows_cattle) -
     Out(no_nsolid_dairycows_cattle)  - Out(n2o_nsolid_dairycows_cattle);
   
 +n_remain_solid_pigs
@@ -280,7 +291,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N flux out of solid manure application from Cattles and Pigs.
   ++formula
     Val(n_into_application_pigs, ::Storage::SolidManure::Solid) - 
-    Out(nh3_nsolid_pigs) - Out(n2_nsolid_pigs) -
+    Out(nh3_napplication_solid_pigs) - Out(n2_nsolid_pigs) -
     Out(no_nsolid_pigs)  - Out(n2o_nsolid_pigs);
 
 +n_remain_horses_otherequides_smallruminants
@@ -293,7 +304,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N flux out of solid manure application from Equides and small ruminants
   ++formula
     Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid) -
-    Out(nh3_nsolid_horses_otherequides_smallruminants) - Out(n2_nsolid_horses_otherequides_smallruminants) -
+    Out(nh3_napplication_solid_others) - Out(n2_nsolid_horses_otherequides_smallruminants) -
     Out(no_nsolid_horses_otherequides_smallruminants) - Out(n2o_nsolid_horses_otherequides_smallruminants);
   
 +tan_remain_solid_dairycows_cattle
@@ -306,11 +317,11 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N flux out of solid manure application from Cattles and Pigs.
   ++formula  
    warn 'tan_into_application_dairycows_cattle=UNDEFINED' unless defined Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
-   warn 'nh3_nsolid_dairycows_cattle=UNDEFINED' unless defined  Out(nh3_nsolid_dairycows_cattle);
+   warn 'nh3_napplication_solid_cattle=UNDEFINED' unless defined  Out(nh3_napplication_solid_cattle);
    
     warn 'tan_into_application_dairycows_cattle=UNDEFINED' unless defined Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
     Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) - 
-    Out(nh3_nsolid_dairycows_cattle) - Out(n2_nsolid_dairycows_cattle) -
+    Out(nh3_napplication_solid_cattle) - Out(n2_nsolid_dairycows_cattle) -
     Out(no_nsolid_dairycows_cattle) - Out(n2o_nsolid_dairycows_cattle);
   
 +tan_remain_solid_pigs
@@ -323,7 +334,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N flux out of solid manure application from Pigs.
   ++formula
     Val(tan_into_application_pigs, ::Storage::SolidManure::Solid) - 
-    Out(nh3_nsolid_pigs) - Out(n2_nsolid_pigs) -
+    Out(nh3_napplication_solid_pigs) - Out(n2_nsolid_pigs) -
     Out(no_nsolid_pigs) - Out(n2o_nsolid_pigs);
   
 +tan_remain_horses_otherequides_smallruminants
@@ -336,7 +347,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N flux out of solid manure application from Equides and small ruminants
   ++formula
     Val(tan_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid) -
-    Out(nh3_nsolid_horses_otherequides_smallruminants) - Out(n2_nsolid_horses_otherequides_smallruminants) -
+    Out(nh3_napplication_solid_others) - Out(n2_nsolid_horses_otherequides_smallruminants) -
     Out(no_nsolid_horses_otherequides_smallruminants) - Out(n2o_nsolid_horses_otherequides_smallruminants);
 
 

@@ -370,7 +370,7 @@ T. Kupper).
     } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'no' ) {
       return Out(ef_pigs_liquid);
     } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'yes' ) {
-      return Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock) * Out(ef_pigs_liquid);
+      return Val(n_out_livestock_liquid_pigs_share, ::Livestock) * Out(ef_pigs_liquid);
     } else {
       writeLog({
         en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')'
@@ -380,7 +380,7 @@ T. Kupper).
         fr => 'Entrée non valable pour "Contient du lisier de bovin" (' . In(contains_cattle_manure) . ') '
           . ' et/ou "Contient du lisier de porc" (' . In(contains_pig_manure) . ')' . "\n"
       });
-      return Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock) * Out(ef_pigs_liquid);
+      return Val(n_out_livestock_liquid_pigs_share, ::Livestock) * Out(ef_pigs_liquid);
     }
 
     
@@ -398,7 +398,7 @@ T. Kupper).
     } elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {
       return Out(ef_cattle_liquid);
     } else {
-      return (1 - Val(n_into_storage_liquid_pigsratio_scalar, ::Livestock)) * Out(ef_cattle_liquid);
+      return (1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock)) * Out(ef_cattle_liquid);
     }
 
  

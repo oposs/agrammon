@@ -38,26 +38,6 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 *** output ***
 
-+nh3_napplication
-  format = %.0f
-  print = LivestockSummary
-  ++labels 
-    sort = 840
-    en = Application NH3-Emissions
-    de = Hofdüngerausbringung NH3-Emission
-    fr = Emission de NH3 Epandage des engrais de ferme
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from manure application.
-  ++formula
-    scale(
-        Val(n_into_storage_ratios, Livestock),
-        Val(nh3_nliquid, Application::Slurry) + Val(nh3_nsolid, Application::SolidManure)
-    );
-
 +nh3_napplication_solid
   format = %.0f
   print = LivestockSummaryPlus
@@ -73,7 +53,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual NH3 emission from solid manure application.
   ++formula
-    Val(nh3_nsolid, Application::SolidManure);
+    Val(nh3_napplication_solid, Application::SolidManure);
 
 +nh3_napplication_liquid
   format = %.0f
@@ -91,6 +71,23 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Annual NH3 emission from liquid manure application.
   ++formula
     Val(nh3_nliquid, Application::Slurry);   
+
++nh3_napplication
+  format = %.0f
+  print = LivestockSummary
+  ++labels 
+    sort = 840
+    en = Application NH3-Emissions
+    de = Hofdüngerausbringung NH3-Emission
+    fr = Emission de NH3 Epandage des engrais de ferme
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from manure application.
+  ++formula
+    Out(nh3_napplication_solid) P+ Out(nh3_napplication_liquid);
 
 +n2_napplication
   format = %.0f
