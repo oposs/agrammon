@@ -127,7 +127,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     Tech(er_App_cattle_liquid);
 
 
-+nh3_nliquid
++nh3_napplication_liquid
   print = 1a
   ++units  
     en = kg N/year
@@ -170,7 +170,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     Tech(er_App_cattle_liquid);
 
 
-+nh3_nliquid_correctTotalFlow
++nh3_napplication_liquid_correctTotalFlow
   print = 1a
   ++units  
     en = kg N/year
@@ -193,7 +193,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       )
     );
 
-+nh3_nliquid_noCat
++nh3_napplication_liquid_noCat
   print = 1a
   ++units  
     en = kg N/year
@@ -212,7 +212,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
         Val(c_app, Slurry::Applrate) )
     );
 
-+nh3_nliquid_pigs
++nh3_napplication_liquid_pigs
   print = 1a
   ++units  
     en = kg N/year
@@ -230,7 +230,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       Tech(er_App_pigs_liquid)
     );
 
-+nh3_nliquid_cattle
++nh3_napplication_liquid_cattle
   print = 1a
   ++units  
     en = kg N/year
@@ -248,7 +248,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       Tech(er_App_cattle_liquid)
     );
 
-+nh3_nliquid_correctTotalFlow_correctDetailReport
++nh3_napplication_liquid_correctTotalFlow_and_correctDetailReport
   print = 1a
   ++units  
     en = kg N/year
@@ -257,26 +257,30 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NH3 emission from slurry application.
   ++formula
-    Out(nh3_nliquid_noCat) P+
-    Out(nh3_nliquid_pigs) P+
-    Out(nh3_nliquid_cattle);
+    Out(nh3_napplication_liquid_noCat) P+
+    Out(nh3_napplication_liquid_pigs) P+
+    Out(nh3_napplication_liquid_cattle);
 
 ####################################################
 
 
-+n2_nliquid
+
+####################################################
+#### NxOx loss
+
++n2_napplication_liquid
   print = 1a
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Total annual N2  emission from slurry application.
+    Total annual N2 emission from slurry application.
   ++formula
-    Val(n_into_application_liquid, ::Storage)
-    *  Tech(er_n2_App_liquid)
+    scale( Val(n_into_application_liquid, ::Storage),
+      Tech(er_n2_App_liquid) );
 
-+no_nliquid
++no_napplication_liquid
   print = 1a
   ++units  
     en = kg N/year
@@ -285,10 +289,10 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NO emission from slurry application.
   ++formula
-    Val(n_into_application_liquid, ::Storage)
-    *  Tech(er_no_App_liquid)
+    scale( Val(n_into_application_liquid, ::Storage),
+      Tech(er_no_App_liquid) );
 
-+n2o_nliquid
++n2o_napplication_liquid
   print = 1a
   ++units  
     en = kg N/year
@@ -297,32 +301,35 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual N2O emission from slurry application.
   ++formula
-    Val(n_into_application_liquid, ::Storage)
-    *  Tech(er_n2o_App_liquid)
+    scale( Val(n_into_application_liquid, ::Storage),
+      Tech(er_n2o_App_liquid) );
     
-+n_remain_liquid
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual total N remaining on the field from slurry application. 
-  ++formula
-    Val(n_into_application_liquid, ::Storage) -
-    Out(nh3_nliquid) - Out(n2_nliquid) -
-    Out(no_nliquid) - Out(n2o_nliquid);
+####################################################
+
+
+# +n_remain_liquid
+#   print = 7
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual total N remaining on the field from slurry application. 
+#   ++formula
+#     Val(n_into_application_liquid, ::Storage) -
+#     Out(nh3_napplication_liquid) - Out(n2_napplication_liquid) -
+#     Out(no_nliquid) - Out(n2o_nliquid);
     
 
-+tan_remain_liquid
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N as TAN remaining on field the from slurry/liquid application.
-  ++formula
-    Val(tan_into_application_liquid, ::Storage) -
-    Out(nh3_nliquid) - Out(n2_nliquid) -
-    Out(no_nliquid) - Out(n2o_nliquid);
+# +tan_remain_liquid
+#   print = 7
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual N as TAN remaining on field the from slurry/liquid application.
+#   ++formula
+#     Val(tan_into_application_liquid, ::Storage) -
+#     Out(nh3_napplication_liquid) - Out(n2_napplication_liquid) -
+#     Out(no_nliquid) - Out(n2o_nliquid);

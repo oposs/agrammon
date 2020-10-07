@@ -38,6 +38,10 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 *** output ***
 
+
+####################################################
+#### 1) NH3 losses
+
 +nh3_napplication_solid
   format = %.0f
   print = LivestockSummaryPlus
@@ -70,7 +74,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual NH3 emission from liquid manure application.
   ++formula
-    Val(nh3_nliquid, Application::Slurry);   
+    Val(nh3_napplication_liquid, Application::Slurry);   
 
 +nh3_napplication
   format = %.0f
@@ -89,24 +93,14 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++formula
     Out(nh3_napplication_solid) P+ Out(nh3_napplication_liquid);
 
-+n2_napplication
-  format = %.0f
-  print = NOxFlux
-  ++labels 
-    sort = 810
-    en = Application N2-Emissions
-    de = Hofdüngerausbringung N2-Emission
-    fr = Emission de N2 Epandage des engrais de ferme
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from manure application.
-  ++formula
-    Val(n2_nsolid, Application::SolidManure) +
-    Val(n2_nliquid, Application::Slurry)
+####################################################
 
+
+
+####################################################
+#### 2) NxOx losses
+
+## 2a) N2 losses
 +n2_napplication_liquid
   format = %.0f
   print = NOxFlux
@@ -122,7 +116,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual N2 emission from manure application.
   ++formula
-    Val(n2_nliquid, Application::Slurry)
+    Val(n2_napplication_liquid, Application::Slurry);
 
 +n2_napplication_solid
   format = %.0f
@@ -139,26 +133,27 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual N2 emission from manure application.
   ++formula
-    Val(n2_nsolid, Application::SolidManure)
-    
-+no_napplication
+    Val(n2_napplication_solid, Application::SolidManure);
+
++n2_napplication
   format = %.0f
   print = NOxFlux
   ++labels 
-    sort = 820
-    en = Application NO-Emissions
-    de = Hofdüngerausbringung NO-Emission
-    fr = Emission de NO Epandage des engrais de ferme
+    sort = 810
+    en = Application N2-Emissions
+    de = Hofdüngerausbringung N2-Emission
+    fr = Emission de N2 Epandage des engrais de ferme
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NO emission from manure application.
+    Annual N2 emission from manure application.
   ++formula
-    Val(no_nsolid, Application::SolidManure) +
-    Val(no_nliquid, Application::Slurry)
+    Out(n2_napplication_liquid) P+ Out(n2_napplication_solid);
 
+    
+## 2b) NO losses
 +no_napplication_liquid
   format = %.0f
   print = NOxFlux
@@ -174,7 +169,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual NO emission from liquid manure application.
   ++formula
-    Val(no_nliquid, Application::Slurry)
+    Val(no_napplication_liquid, Application::Slurry)
 
 +no_napplication_solid
   format = %.0f
@@ -191,27 +186,27 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual NO emission from solid manure application.
   ++formula
-    Val(no_nsolid, Application::SolidManure) +
-    Val(no_nliquid, Application::Slurry)
+    Val(no_napplication_solid, Application::SolidManure);
 
-+n2o_napplication
++no_napplication
   format = %.0f
   print = NOxFlux
   ++labels 
-    sort = 830
-    en = Application N2O-Emissions from manure
-    de = Hofdüngerausbringung N2O-Emission
-    fr = Emission de N2O Epandage des engrais de ferme
+    sort = 820
+    en = Application NO-Emissions
+    de = Hofdüngerausbringung NO-Emission
+    fr = Emission de NO Epandage des engrais de ferme
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2O emission fromd solid manure application.
+    Annual NO emission from manure application.
   ++formula
-    Val(n2o_nsolid, Application::SolidManure) +
-    Val(n2o_nliquid, Application::Slurry)
+    Out(no_napplication_solid) P+
+    Out(no_napplication_liquid);
 
+## 2c) N2O losses
 +n2o_napplication_liquid
   format = %.0f
   print = NOxFlux
@@ -227,7 +222,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual N2O emission from liquid manure application.
   ++formula
-    Val(n2o_nliquid, Application::Slurry)
+    Val(n2o_napplication_liquid, Application::Slurry)
 
 +n2o_napplication_solid
   format = %.0f
@@ -244,7 +239,34 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual N2O emission from solid manure application.
   ++formula
-    Val(n2o_nsolid, Application::SolidManure)
+    Val(n2o_napplication_solid, Application::SolidManure)
+
++n2o_napplication
+  format = %.0f
+  print = NOxFlux
+  ++labels 
+    sort = 830
+    en = Application N2O-Emissions from manure
+    de = Hofdüngerausbringung N2O-Emission
+    fr = Emission de N2O Epandage des engrais de ferme
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N2O emission fromd solid manure application.
+  ++formula
+    Out(n2o_napplication_solid) P+
+    Out(n2o_napplication_liquid);
+
+## 2d) NxOx losses -> Total.nhd?
+
+####################################################
+
+
+
+####################################################
+#### 3) Ntot Fluxes
 
 +n_napplication
   format = %.0f
@@ -266,6 +288,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Out(n2_napplication)  -
     Out(no_napplication)  -
     Out(n2o_napplication);
+
+####################################################
+
+
+
+####################################################
+#### 4) TAN Fluxes
 
 +tan_napplication
   format = %.0f
@@ -304,7 +333,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 ###     Annual N flux out of the application. 
 ###   ++formula
 ###     Val(n_into_application, Storage) - 
-###     (Val(nh3_nliquid, Application::Slurry) +
+###     (Val(nh3_napplication_liquid, Application::Slurry) +
 ###     Val(nh3_nsolid, Application::SolidManure) )
 
 ### +tan_out_application
@@ -323,7 +352,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 ###     Annual TAN flux out of the application. 
 ###   ++formula
 ###     Val(tan_into_application, Storage) - 
-###     (Val(nh3_nliquid, Application::Slurry) +
+###     (Val(nh3_napplication_liquid, Application::Slurry) +
 ###     Val(nh3_nsolid, Application::SolidManure) )
 
 

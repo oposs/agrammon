@@ -60,21 +60,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     Val(nh3_napplication_solid_others, SolidManure::Solid) P+
     Val(nh3_napplication_poultry, SolidManure::Poultry);
 
-+no_nsolid
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    NO emission from solid manure application.
-  ++formula
-    Val(no_nsolid_dairycows_cattle, SolidManure::Solid)  +
-    Val(no_nsolid_pigs, SolidManure::Solid)  +
-    Val(no_nsolid_horses_otherequides_smallruminants, SolidManure::Solid) +
-    Val(no_npoultry, SolidManure::Poultry);
-
-+n2_nsolid
++n2_napplication_solid
   print = 1a
   ++units  
     en = kg N/year
@@ -83,12 +69,22 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2 emission from solid manure application.
   ++formula
-    Val(n2_nsolid_dairycows_cattle, SolidManure::Solid)  +
-    Val(n2_nsolid_pigs, SolidManure::Solid)  +
-    Val(n2_nsolid_horses_otherequides_smallruminants, SolidManure::Solid) +
-    Val(n2_npoultry, SolidManure::Poultry);
+    Val(n2_napplication_solid_without_poultry, SolidManure::Solid) P+
+    Val(n2_napplication_poultry, SolidManure::Poultry);
 
-+n2o_nsolid
++no_napplication_solid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NO emission from solid manure application.
+  ++formula
+    Val(no_napplication_solid_without_poultry, SolidManure::Solid) P+
+    Val(no_napplication_poultry, SolidManure::Poultry);
+
++n2o_napplication_solid
   print = 1a
   ++units  
     en = kg N/year
@@ -97,21 +93,19 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2O emission from solid manure application.
   ++formula
-    Val(n2o_nsolid_dairycows_cattle, SolidManure::Solid)  +
-    Val(n2o_nsolid_pigs, SolidManure::Solid)  +
-    Val(n2o_nsolid_horses_otherequides_smallruminants, SolidManure::Solid) +
-    Val(n2o_npoultry, SolidManure::Poultry);
+    Val(n2o_napplication_solid_without_poultry, SolidManure::Solid) P+
+    Val(n2o_napplication_poultry, SolidManure::Poultry);
 
-+n_nsolid
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N flux out of solid manure application.
-  ++formula
-    Val(n_into_application_manure, ::Storage) -
-    Out(nh3_napplication_solid) - Out(n2_nsolid) - Out(no_nsolid) - Out(n2o_nsolid);
+# +n_nsolid
+#   print = 7
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     N flux out of solid manure application.
+#   ++formula
+#     Val(n_into_application_manure, ::Storage) -
+#     Out(nh3_napplication_solid) - Out(n2_napplication_solid) - Out(no_napplication_solid) - Out(n2o_nsolid);
     
 

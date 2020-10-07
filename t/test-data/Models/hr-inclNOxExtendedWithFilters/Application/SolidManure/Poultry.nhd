@@ -100,7 +100,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
       Val(c_free_factor_application_solidmanure, CfreeFactor)
     );
 
-+n2_npoultry
++n2_napplication_poultry
   print = 1a
   ++units  
     en = kg N/year
@@ -109,10 +109,10 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2 emission from solid manure application.
   ++formula
-    Tech(er_n2_App_manure) 
-     * Val(n_into_application, ::Storage::SolidManure::Poultry)
+    scale( Val(n_into_application, ::Storage::SolidManure::Poultry),
+      Tech(er_n2_App_manure) );
 
-+no_npoultry
++no_napplication_poultry
   print = 1a
   ++units  
     en = kg N/year
@@ -121,10 +121,10 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NO emission from solid manure application.
   ++formula
-    Tech(er_no_App_manure) 
-     * Val(n_into_application, ::Storage::SolidManure::Poultry)
+    scale( Val(n_into_application, ::Storage::SolidManure::Poultry),
+      Tech(er_no_App_manure) );
 
-+n2o_npoultry
++n2o_napplication_poultry
   print = 1a
   ++units  
     en = kg N/year
@@ -133,8 +133,8 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2O emission from solid manure application.
   ++formula
-    Tech(er_n2o_App_manure) 
-     * Val(n_into_application, ::Storage::SolidManure::Poultry)
+    scale( Val(n_into_application, ::Storage::SolidManure::Poultry),
+      Tech(er_n2o_App_manure) );
 
 
 +n_frompoultry

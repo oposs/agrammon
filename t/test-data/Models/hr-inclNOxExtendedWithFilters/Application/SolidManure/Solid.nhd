@@ -154,7 +154,12 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 
 ####################################################
 
-+n2_nsolid_dairycows_cattle
+
+
+####################################################
+##### NxOx loss
+
++n2_napplication_solid_without_poultry
   print = 1a
   ++units  
     en = kg N/year
@@ -163,11 +168,13 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2 emission from solid manure application.
   ++formula
-    Tech(er_n2_App_manure) 
-     * Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
+    scale( 
+      Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) P+
+      Val(n_into_application_pigs, ::Storage::SolidManure::Solid) P+
+      Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid),
+      Tech(er_n2_App_manure) );
 
-
-+no_nsolid_dairycows_cattle
++no_napplication_solid_without_poultry
   print = 1a
   ++units  
     en = kg N/year
@@ -176,10 +183,13 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NO emission from solid manure application.
   ++formula
-    Tech(er_no_App_manure) 
-     * Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
+    scale( 
+      Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) P+
+      Val(n_into_application_pigs, ::Storage::SolidManure::Solid) P+
+      Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid),
+      Tech(er_no_App_manure) );
 
-+n2o_nsolid_dairycows_cattle
++n2o_napplication_solid_without_poultry
   print = 1a
   ++units  
     en = kg N/year
@@ -188,166 +198,95 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2O emission from solid manure application.
   ++formula
-    Tech(er_n2o_App_manure) 
-     * Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
+    scale( 
+      Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) P+
+      Val(n_into_application_pigs, ::Storage::SolidManure::Solid) P+
+      Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid),
+      Tech(er_n2o_App_manure) );
 
+####################################################
 
-
-+n2_nsolid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N2 emission from solid manure application.
-  ++formula
-    Tech(er_n2_App_manure) 
-     * Val(n_into_application_pigs, ::Storage::SolidManure::Solid);
-
-+no_nsolid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    NO emission from solid manure application.
-  ++formula
-    Tech(er_no_App_manure) 
-     * Val(n_into_application_pigs, ::Storage::SolidManure::Solid);
-
-+n2o_nsolid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N2O emission from solid manure application.
-  ++formula
-    Tech(er_n2o_App_manure) 
-     * Val(n_into_application_pigs, ::Storage::SolidManure::Solid);
-
-
-
-+n2_nsolid_horses_otherequides_smallruminants
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N2 emission from solid manure application.
-  ++formula
-    Tech(er_n2_App_manure) 
-     * Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid);
-
-
-+no_nsolid_horses_otherequides_smallruminants
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    NO emission from solid manure application.
-  ++formula
-    Tech(er_no_App_manure) 
-     * Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid);
-     
-+n2o_nsolid_horses_otherequides_smallruminants
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N2 emission from solid manure application.
-  ++formula
-    Tech(er_n2o_App_manure) 
-     * Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid);
   
-+n_remain_solid_dairycows_cattle
-  print = CattleFlux,RemainCattle
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N flux out of solid manure application from Cattles and Pigs.
-  ++formula
-    Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) - 
-    Out(nh3_napplication_solid_cattle) - Out(n2_nsolid_dairycows_cattle) -
-    Out(no_nsolid_dairycows_cattle)  - Out(n2o_nsolid_dairycows_cattle);
+# +n_remain_solid_dairycows_cattle
+#   print = CattleFlux,RemainCattle
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     N flux out of solid manure application from Cattles and Pigs.
+#   ++formula
+#     Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) - 
+#     Out(nh3_napplication_solid_cattle) - Out(n2_nsolid_dairycows_cattle) -
+#     Out(no_nsolid_dairycows_cattle)  - Out(n2o_nsolid_dairycows_cattle);
   
-+n_remain_solid_pigs
-  print = PigFlux
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N flux out of solid manure application from Cattles and Pigs.
-  ++formula
-    Val(n_into_application_pigs, ::Storage::SolidManure::Solid) - 
-    Out(nh3_napplication_solid_pigs) - Out(n2_nsolid_pigs) -
-    Out(no_nsolid_pigs)  - Out(n2o_nsolid_pigs);
+# +n_remain_solid_pigs
+#   print = PigFlux
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     N flux out of solid manure application from Cattles and Pigs.
+#   ++formula
+#     Val(n_into_application_pigs, ::Storage::SolidManure::Solid) - 
+#     Out(nh3_napplication_solid_pigs) - Out(n2_nsolid_pigs) -
+#     Out(no_nsolid_pigs)  - Out(n2o_nsolid_pigs);
 
-+n_remain_horses_otherequides_smallruminants
-  print = OthersFlux
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N flux out of solid manure application from Equides and small ruminants
-  ++formula
-    Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid) -
-    Out(nh3_napplication_solid_others) - Out(n2_nsolid_horses_otherequides_smallruminants) -
-    Out(no_nsolid_horses_otherequides_smallruminants) - Out(n2o_nsolid_horses_otherequides_smallruminants);
+# +n_remain_horses_otherequides_smallruminants
+#   print = OthersFlux
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     N flux out of solid manure application from Equides and small ruminants
+#   ++formula
+#     Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid) -
+#     Out(nh3_napplication_solid_others) - Out(n2_nsolid_horses_otherequides_smallruminants) -
+#     Out(no_nsolid_horses_otherequides_smallruminants) - Out(n2o_nsolid_horses_otherequides_smallruminants);
   
-+tan_remain_solid_dairycows_cattle
-  print = CattleFlux
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N flux out of solid manure application from Cattles and Pigs.
-  ++formula  
-   warn 'tan_into_application_dairycows_cattle=UNDEFINED' unless defined Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
-   warn 'nh3_napplication_solid_cattle=UNDEFINED' unless defined  Out(nh3_napplication_solid_cattle);
+# +tan_remain_solid_dairycows_cattle
+#   print = CattleFlux
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     N flux out of solid manure application from Cattles and Pigs.
+#   ++formula  
+#    warn 'tan_into_application_dairycows_cattle=UNDEFINED' unless defined Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
+#    warn 'nh3_napplication_solid_cattle=UNDEFINED' unless defined  Out(nh3_napplication_solid_cattle);
    
-    warn 'tan_into_application_dairycows_cattle=UNDEFINED' unless defined Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
-    Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) - 
-    Out(nh3_napplication_solid_cattle) - Out(n2_nsolid_dairycows_cattle) -
-    Out(no_nsolid_dairycows_cattle) - Out(n2o_nsolid_dairycows_cattle);
+#     warn 'tan_into_application_dairycows_cattle=UNDEFINED' unless defined Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
+#     Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) - 
+#     Out(nh3_napplication_solid_cattle) - Out(n2_nsolid_dairycows_cattle) -
+#     Out(no_nsolid_dairycows_cattle) - Out(n2o_nsolid_dairycows_cattle);
   
-+tan_remain_solid_pigs
-  print = PigFlux
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N flux out of solid manure application from Pigs.
-  ++formula
-    Val(tan_into_application_pigs, ::Storage::SolidManure::Solid) - 
-    Out(nh3_napplication_solid_pigs) - Out(n2_nsolid_pigs) -
-    Out(no_nsolid_pigs) - Out(n2o_nsolid_pigs);
+# +tan_remain_solid_pigs
+#   print = PigFlux
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     N flux out of solid manure application from Pigs.
+#   ++formula
+#     Val(tan_into_application_pigs, ::Storage::SolidManure::Solid) - 
+#     Out(nh3_napplication_solid_pigs) - Out(n2_nsolid_pigs) -
+#     Out(no_nsolid_pigs) - Out(n2o_nsolid_pigs);
   
-+tan_remain_horses_otherequides_smallruminants
-  print = OthersFlux
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N flux out of solid manure application from Equides and small ruminants
-  ++formula
-    Val(tan_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid) -
-    Out(nh3_napplication_solid_others) - Out(n2_nsolid_horses_otherequides_smallruminants) -
-    Out(no_nsolid_horses_otherequides_smallruminants) - Out(n2o_nsolid_horses_otherequides_smallruminants);
+# +tan_remain_horses_otherequides_smallruminants
+#   print = OthersFlux
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     N flux out of solid manure application from Equides and small ruminants
+#   ++formula
+#     Val(tan_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid) -
+#     Out(nh3_napplication_solid_others) - Out(n2_nsolid_horses_otherequides_smallruminants) -
+#     Out(no_nsolid_horses_otherequides_smallruminants) - Out(n2o_nsolid_horses_otherequides_smallruminants);
 
 
