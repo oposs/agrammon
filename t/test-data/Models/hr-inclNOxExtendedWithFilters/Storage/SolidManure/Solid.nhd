@@ -68,9 +68,7 @@ taxonomy = Storage::SolidManure::Solid
        <p>Ici, le fumier produit par les chevaux et autre équidés et les petits ruminants est inclu.</p>
        <p>Cette part comprend le fumier stocké sous une couverture en dur, dans le sens d'un contenant fermé, ou sous un autre type de couverture, p.ex. une bâche.</p> 
        <p>Proposition de valeur standard: 0% </p>
-
-
-  
+ 
 +free_correction_factor_cattle_manure
   models = SHL
   type = float
@@ -143,7 +141,6 @@ taxonomy = Storage::SolidManure::Solid
        <p>Vorschlag für Standardwert: 0%</p>
     +++fr
        <p>Proposition de valeur standard: 0% </p>
-
 
 +share_covered_basin_pig_manure
   type  = percent
@@ -319,8 +316,6 @@ This option mainly targets users who predict emissions and are obliged to consid
     return 1;
   } 
 
-
-
 +c_free_factor_storage_solidmanure_pig
   print = 10
   ++units 
@@ -345,8 +340,6 @@ This option mainly targets users who predict emissions and are obliged to consid
     return 1;
   } 
 
-
-
 +c_covered_basin_cattle
   print = 10
   ++units  
@@ -367,7 +360,7 @@ This option mainly targets users who predict emissions and are obliged to consid
 
 
 ####################################################
-#### correct tan/n flows into solid storage
+#### n flows into solid storage (remove me?)
 
 +n_into_storage_cattle
   print = 1a
@@ -410,7 +403,7 @@ This option mainly targets users who predict emissions and are obliged to consid
 
 
 ####################################################
-#### correct tan flows into solid storage
+#### tan flows into solid storage (fix variable names)
 
 +tan_into_storage_pigs
   print = 1a
@@ -581,7 +574,7 @@ This option mainly targets users who predict emissions and are obliged to consid
 ####################################################
 #### n into application
 
-+n_into_application_dairycows_cattle
++n_into_application_solid_cattle
   print = 3a
   ++units  
     en = kg N/year
@@ -594,7 +587,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     Val(nxox_nsolid_dairycows_cattle, ::Livestock) P-
     Out(nh3_nsolid_dairycows_cattle);
 
-+n_into_application_pigs
++n_into_application_solid_pigs
   print = 3a
   ++units  
     en = kg N/year
@@ -607,7 +600,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     Val(nxox_nsolid_pigs, ::Livestock) P-
     Out(nh3_nsolid_pigs)
 
-+n_into_application_horses_otherequides_smallruminants
++n_into_application_solid_others
   print = 3a
   ++units  
     en = kg N/year
@@ -619,19 +612,6 @@ This option mainly targets users who predict emissions and are obliged to consid
     Val(n_out_livestock_solid_others, ::Livestock) P- 
     Val(nxox_nsolid_equides_other, ::Livestock) P-
     Out(nh3_nsolid_horses_otherequides_smallruminants);
-
-+n_into_application_manure
-  print = 3a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Out(n_into_application_dairycows_cattle) P+
-    Out(n_into_application_pigs) P+
-    Out(n_into_application_horses_otherequides_smallruminants);
 
 ####################################################
 
