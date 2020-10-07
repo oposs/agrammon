@@ -110,7 +110,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    NH3 emission from solid manure application.
+    NH3 emission from solid manure application from cattle.
   ++formula
     scale( Val(tan_into_application_solid_cattle, ::Storage::SolidManure::Solid),
       Tech(er_App_manure_dairycows_cattle) *
@@ -126,7 +126,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    NH3 emission from solid manure application.
+    NH3 emission from solid manure application from pigs.
   ++formula
     scale( Val(tan_into_application_solid_pigs, ::Storage::SolidManure::Solid),
       Tech(er_App_manure_pigs) *
@@ -142,7 +142,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    NH3 emission from solid manure application.
+    NH3 emission from solid manure application from horses, equides, etc.
   ++formula
     scale( Val(tan_into_application_solid_others, ::Storage::SolidManure::Solid),
       Tech(er_App_manure_horses_otherequides_smallruminants) *

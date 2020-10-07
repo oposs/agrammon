@@ -360,7 +360,7 @@ This option mainly targets users who predict emissions and are obliged to consid
 
 
 ####################################################
-#### n flows into solid storage (remove me?)
+#### n into solid storage (remove me?)
 
 +n_into_storage_cattle
   print = 1a
@@ -403,7 +403,7 @@ This option mainly targets users who predict emissions and are obliged to consid
 
 
 ####################################################
-#### tan flows into solid storage (fix variable names)
+#### tan into solid storage (fix variable names)
 
 +tan_into_storage_pigs
   print = 1a
@@ -508,6 +508,8 @@ This option mainly targets users who predict emissions and are obliged to consid
 
 ####################################################
 
+
+
 ####################################################
 #### immobilization (move total immob to top level?)
 
@@ -571,6 +573,8 @@ This option mainly targets users who predict emissions and are obliged to consid
 
 ####################################################
 
+
+
 ####################################################
 #### n into application
 
@@ -614,6 +618,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     Out(nh3_nsolid_horses_otherequides_smallruminants);
 
 ####################################################
+
 
 
 ####################################################

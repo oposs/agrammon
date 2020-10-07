@@ -474,3 +474,16 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 #     Out(nh3_napplication_solid_others) - Out(n2_nsolid_horses_otherequides_smallruminants) -
 #     Out(no_nsolid_horses_otherequides_smallruminants) - Out(n2o_nsolid_horses_otherequides_smallruminants);
 
+# +n_nsolid
+#   print = 7
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     N flux out of solid manure application.
+#   ++formula
+#     Val(n_into_application_manure, ::Storage) -
+#     Out(nh3_napplication_solid) - Out(n2_napplication_solid) - Out(no_napplication_solid) - Out(n2o_nsolid);
+    
+
