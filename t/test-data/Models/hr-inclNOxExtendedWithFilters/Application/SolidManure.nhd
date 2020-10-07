@@ -58,7 +58,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     Val(nh3_napplication_solid_cattle, SolidManure::Solid)  P+
     Val(nh3_napplication_solid_pigs, SolidManure::Solid)  P+
     Val(nh3_napplication_solid_others, SolidManure::Solid) P+
-    Val(nh3_napplication_poultry, SolidManure::Poultry);
+    Val(nh3_napplication_solid_poultry, SolidManure::Poultry);
 
 +n2_napplication_solid
   print = 1a
@@ -70,7 +70,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N2 emission from solid manure application.
   ++formula
     Val(n2_napplication_solid_without_poultry, SolidManure::Solid) P+
-    Val(n2_napplication_poultry, SolidManure::Poultry);
+    Val(n2_napplication_solid_poultry, SolidManure::Poultry);
 
 +no_napplication_solid
   print = 1a
@@ -82,7 +82,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     NO emission from solid manure application.
   ++formula
     Val(no_napplication_solid_without_poultry, SolidManure::Solid) P+
-    Val(no_napplication_poultry, SolidManure::Poultry);
+    Val(no_napplication_solid_poultry, SolidManure::Poultry);
 
 +n2o_napplication_solid
   print = 1a
@@ -94,7 +94,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     N2O emission from solid manure application.
   ++formula
     Val(n2o_napplication_solid_without_poultry, SolidManure::Solid) P+
-    Val(n2o_napplication_poultry, SolidManure::Poultry);
+    Val(n2o_napplication_solid_poultry, SolidManure::Poultry);
 
 # +n_nsolid
 #   print = 7

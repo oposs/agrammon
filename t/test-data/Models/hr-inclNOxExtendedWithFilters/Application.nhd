@@ -356,3 +356,39 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 ###     Val(nh3_nsolid, Application::SolidManure) )
 
 
+
+# +n_frompoultry
+#   print = PoultryFlux
+#   ++labels
+#     sort = 500
+#     en = Poultry N potentialy availabel for Plants
+#     de = Geflügel N Pflanzen verfügbar
+#     fr = Volaille N disponible pour les plantes 
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     N flux out of solid manure application.
+#   ++formula
+#     Val(n_into_application, ::Storage::SolidManure::Poultry) -
+#            Out(nh3_napplication_poultry);
+
+# +tan_frompoultry
+#   print = PoultryFlux
+#   ++labels
+#     sort = 500
+#     en = Poultry N potentialy availabel for Plants
+#     de = Geflügel N Pflanzen verfügbar
+#     fr = Volaille N disponible pour les plantes 
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     TAN flux out of solid manure application.
+#   ++formula
+#     Val(tan_into_application, ::Storage::SolidManure::Poultry) -
+#            Out(nh3_napplication_poultry);
+    
+#     
