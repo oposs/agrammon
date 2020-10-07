@@ -494,7 +494,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 
 ####################################################
-##### tan into storage solid -> rename to tan_out_livestock or similar, eventually 
+##### tan out livestock solid 
 
 +tan_into_storage_solid_dairycows_cattle
   print = 4a
@@ -537,7 +537,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(tan_solid,Livestock::RoughageConsuming);
 
 
-+tan_into_storage_poultry_layers_growers_other_poultry
++tan_into_storage_solid_layers_growers_other_poultry
   print = 7
   ++units
     en = kg N/year
@@ -549,7 +549,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(tan_from_poultry_layers_growers_other_poultry,Livestock::Poultry);
 
-+tan_into_storage_poultry_turkeys_broilers
++tan_into_storage_solid_turkeys_broilers
   print = 7
   ++units
     en = kg N/year
@@ -561,6 +561,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(tan_from_poultry_turkeys_broilers,Livestock::Poultry);
 
+# remove me, eventually
 +tan_into_storage_poultry
   print = 4a
   ++units
@@ -571,7 +572,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (poulty manure) as TAN from housing and yard into
     the storage from poultry.
   ++formula
-    Sum(tan,Livestock::Poultry);
+    Out(tan_into_storage_solid_layers_growers_other_poultry) P+
+    Out(tan_into_storage_solid_turkeys_broilers);
 
 +tan_into_storage_solid
   print = 4a
@@ -586,7 +588,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Out(tan_into_storage_solid_dairycows_cattle) P+
     Out(tan_into_storage_solid_pigs) P+
     Out(tan_into_storage_solid_horses_otherequides_smallruminants) P+
-    Out(tan_into_storage_poultry);
+    Out(tan_into_storage_solid_layers_growers_other_poultry) P+
+    Out(tan_into_storage_solid_turkeys_broilers);
 
 ####################################################
 
