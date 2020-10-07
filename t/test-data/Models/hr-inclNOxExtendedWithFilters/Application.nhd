@@ -44,10 +44,10 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +nh3_napplication_solid
   format = %.0f
-  print = LivestockSummaryPlus
+  print = LivestockSummaryPlus,nh3,application,solid,all
   ++labels 
     sort = 842
-    en = _Application solid NH3-Emissions
+    en = _NH3-Emissions from solid manure application
     de = _Hofdüngerausbringung fest NH3-Emission
     fr = _Emission de NH3 Epandage des engrais de ferme solides
   ++units  
@@ -61,10 +61,10 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +nh3_napplication_liquid
   format = %.0f
-  print = LivestockSummaryPlus
+  print = LivestockSummaryPlus,nh3,application,liquid,all
   ++labels 
     sort = 841
-    en = _Application liquid NH3-Emissions
+    en = _NH3-Emissions from liquid manure application
     de = _Hofdüngerausbringung flüssig NH3-Emission
     fr = _Emission de NH3 Epandage des engrais de ferme liquides
   ++units  
@@ -78,10 +78,10 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +nh3_napplication
   format = %.0f
-  print = LivestockSummary
+  print = LivestockSummary,nh3,application,total,all
   ++labels 
     sort = 840
-    en = Application NH3-Emissions
+    en = NH3-Emissions from manure application
     de = Hofdüngerausbringung NH3-Emission
     fr = Emission de NH3 Epandage des engrais de ferme
   ++units  
@@ -103,44 +103,44 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 ## 2a) N2 losses
 +n2_napplication_liquid
   format = %.0f
-  print = NOxFlux
+  print = NOxFlux,n2,application,liquid,all
   ++labels 
-    sort = 810
-    en = Application N2-Emissions from liquid manure
-    de = Hofdüngerausbringung N2-Emission
-    fr = Emission de N2 Epandage des engrais de ferme
+    sort = 811
+    en = N2-Emissions from liquid manure application
+    de = Hofdüngerausbringung flüssig N2-Emission
+    fr = Emission de N2 Epandage des engrais de ferme liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2 emission from manure application.
+    Annual N2 emission from liquid manure application.
   ++formula
     Val(n2_napplication_liquid, Application::Slurry);
 
 +n2_napplication_solid
   format = %.0f
-  print = NOxFlux
+  print = NOxFlux,n2,application,solid,all
   ++labels 
-    sort = 810
-    en = Application N2-Emissions from solid manure
-    de = Hofdüngerausbringung N2-Emission
-    fr = Emission de N2 Epandage des engrais de ferme
+    sort = 812
+    en = N2-Emissions from solid manure application
+    de = Hofdüngerausbringung fest N2-Emission
+    fr = Emission de N2 Epandage des engrais de ferme solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2 emission from manure application.
+    Annual N2 emission from solid manure application.
   ++formula
     Val(n2_napplication_solid, Application::SolidManure);
 
 +n2_napplication
   format = %.0f
-  print = NOxFlux
+  print = NOxFlux,n2,application,total,all
   ++labels 
     sort = 810
-    en = Application N2-Emissions
+    en = N2-Emissions from manure application
     de = Hofdüngerausbringung N2-Emission
     fr = Emission de N2 Epandage des engrais de ferme
   ++units  
@@ -156,12 +156,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 ## 2b) NO losses
 +no_napplication_liquid
   format = %.0f
-  print = NOxFlux
+  print = NOxFlux,no,application,liquid,all
   ++labels 
-    sort = 820
-    en = Application NO-Emissions from liquid manure
-    de = Hofdüngerausbringung NO-Emission
-    fr = Emission de NO Epandage des engrais de ferme
+    sort = 821
+    en = NO-Emissions from liquid manure application
+    de = Hofdüngerausbringung flüssig NO-Emission
+    fr = Emission de NO Epandage des engrais de ferme liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -173,12 +173,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +no_napplication_solid
   format = %.0f
-  print = NOxFlux
+  print = NOxFlux,no,application,solid,all
   ++labels 
-    sort = 820
-    en = Application NO-Emissions from solid manure
-    de = Hofdüngerausbringung NO-Emission
-    fr = Emission de NO Epandage des engrais de ferme
+    sort = 822
+    en = NO-Emissions from solid manure application
+    de = Hofdüngerausbringung fest NO-Emission
+    fr = Emission de NO Epandage des engrais de ferme solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -190,10 +190,10 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +no_napplication
   format = %.0f
-  print = NOxFlux
+  print = NOxFlux,no,application,total,all
   ++labels 
     sort = 820
-    en = Application NO-Emissions
+    en = NO-Emissions from manure application
     de = Hofdüngerausbringung NO-Emission
     fr = Emission de NO Epandage des engrais de ferme
   ++units  
@@ -209,12 +209,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 ## 2c) N2O losses
 +n2o_napplication_liquid
   format = %.0f
-  print = NOxFlux
+  print = NOxFlux,n2o,application,liquid,all
   ++labels 
-    sort = 830
-    en = Application N2O-Emissions
-    de = Hofdüngerausbringung N2O-Emission
-    fr = Emission de N2O Epandage des engrais de ferme
+    sort = 831
+    en = N2O-Emissions from liquid manure application
+    de = Hofdüngerausbringung flüssig N2O-Emission
+    fr = Emission de N2O Epandage des engrais de ferme liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -226,12 +226,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +n2o_napplication_solid
   format = %.0f
-  print = NOxFlux
+  print = NOxFlux,n2o,application,solid,all
   ++labels 
-    sort = 830
-    en = Application N2O-Emissions from solid manure
-    de = Hofdüngerausbringung N2O-Emission
-    fr = Emission de N2O Epandage des engrais de ferme
+    sort = 832
+    en = N2O-Emissions from solid manure application
+    de = Hofdüngerausbringung fest N2O-Emission
+    fr = Emission de N2O Epandage des engrais de ferme solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -243,10 +243,10 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +n2o_napplication
   format = %.0f
-  print = NOxFlux
+  print = NOxFlux,n2o,application,total,all
   ++labels 
     sort = 830
-    en = Application N2O-Emissions from manure
+    en = N2O-Emissions from manure application
     de = Hofdüngerausbringung N2O-Emission
     fr = Emission de N2O Epandage des engrais de ferme
   ++units  
@@ -254,7 +254,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2O emission fromd solid manure application.
+    Annual N2O emission from manure application.
   ++formula
     Out(n2o_napplication_solid) P+
     Out(n2o_napplication_liquid);
@@ -268,12 +268,89 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 ####################################################
 #### 3) Ntot Fluxes
 
-+n_napplication
+## 3a) n into application (solid/liquid/total)
++n_into_application_liquid
+  print = n,into,application,liquid,all
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into liquid manure application. 
+  ++formula
+    Val(n_into_application_liquid, Storage);
+
++n_into_application_solid
+  print = n,into,application,solid,all
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into solid manure application. 
+  ++formula
+    Val(n_into_application_solid, Storage);
+
++n_into_application
+  print = n,into,application,total,all
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into manure application. 
+  ++formula
+    Out(n_into_application_liquid) P+
+    Out(n_into_application_solid);
+
+
+## 3b) n out of application (solid/liquid/total)
++n_remain_application_liquid
+  print = n,remain,application,liquid,all
+  ++labels
+    sort = 111
+    en = Total N out of liquid manure application
+    de = Total N aus der Hofdüngerausbringung flüssig
+    fr = N total provenant de l'Epandage des engrais de ferme liquides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of liquid manure application. 
+  ++formula
+    Out(n_into_application_liquid) P- 
+    Out(nh3_napplication_liquid) P-
+    Out(n2_napplication_liquid)  P-
+    Out(no_napplication_liquid)  P-
+    Out(n2o_napplication_liquid);
+
++n_remain_application_solid
+  print = n,remain,application,solid,all
+  ++labels
+    sort = 112
+    en = Total N out of solid manure application
+    de = Total N aus der Hofdüngerausbringung fest
+    fr = N total provenant de l'Epandage des engrais de ferme solides
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of solid manure application. 
+  ++formula
+    Out(n_into_application_solid) P- 
+    Out(nh3_napplication_solid) P-
+    Out(n2_napplication_solid)  P-
+    Out(no_napplication_solid)  P-
+    Out(n2o_napplication_solid);
+
++n_remain_application
   format = %.0f
-  print = FluxSummaryLivestock
+  print = FluxSummaryLivestock,n,remain,application,total,all
   ++labels
     sort = 110
-    en = Total N out of application
+    en = Total N out of manure application
     de = Total N aus der Hofdüngerausbringung
     fr = N total provenant de l'Epandage des engrais de ferme
   ++units  
@@ -281,13 +358,10 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N flux out of the application. 
+    Annual N flux out of manure application. 
   ++formula
-    Val(n_into_application, Storage) - 
-    Out(nh3_napplication) -
-    Out(n2_napplication)  -
-    Out(no_napplication)  -
-    Out(n2o_napplication);
+    Out(n_remain_application_liquid)  P+
+    Out(n_remain_application_solid);
 
 ####################################################
 
@@ -296,12 +370,104 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 ####################################################
 #### 4) TAN Fluxes
 
-+tan_napplication
-  format = %.0f
-  print = TANFlux
+## 4a) tan into application (solid/liquid/total)
++tan_into_application_liquid
+  print = tan,into,application,liquid,all
   ++labels 
     sort = 321
-    en = Total TAN out of application
+    en = Total TAN into liquid manure application
+    de = Total Nlös in die Hofdüngerausbringung flüssig
+    fr = TAN total dans l'Epandage des engrais de ferme liquides
+  ++units  
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
+  ++description
+    Annual TAN flux into liquid manure application. 
+  ++formula
+    Val(tan_into_application_liquid, Storage);
+
++tan_into_application_solid
+  print = tan,into,application,solid,all
+  ++labels 
+    sort = 322
+    en = Total TAN into solid manure application
+    de = Total Nlös in die Hofdüngerausbringung fest
+    fr = TAN total dans l'Epandage des engrais de ferme solides
+  ++units  
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
+  ++description
+    Annual TAN flux into solid manure the application. 
+  ++formula
+    Val(tan_into_application_solid, Storage);
+
++tan_into_application
+  print = tan,into,application,total,all
+  ++labels 
+    sort = 320
+    en = Total TAN into manure application
+    de = Total Nlös in die Hofdüngerausbringung
+    fr = TAN total dans l'Epandage des engrais de ferme
+  ++units  
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
+  ++description
+    Annual TAN flux into manure the application. 
+  ++formula
+    Out(tan_into_application_liquid) P+
+    Out(tan_into_application_solid);
+
+
+## 4b) tan out of application (solid/liquid/total)
++tan_remain_application_liquid
+  print = tan,remain,application,liquid,all
+  ++labels 
+    sort = 221
+    en = Total TAN out of liquid manure application
+    de = Total Nlös aus der Hofdüngerausbringung flüssig
+    fr = TAN total provenant de l'Epandage des engrais de ferme liquides
+  ++units  
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
+  ++description
+    Annual TAN flux out of liquid manure application. 
+  ++formula
+    Out(tan_into_application_liquid) P-
+    Out(nh3_napplication_liquid) P-
+    Out(n2_napplication_liquid)  P-
+    Out(no_napplication_liquid)  P-
+    Out(n2o_napplication_liquid);
+
++tan_remain_application_solid
+  print = tan,remain,application,solid,all
+  ++labels 
+    sort = 222
+    en = Total TAN out of solid manure application
+    de = Total Nlös aus der Hofdüngerausbringung fest
+    fr = TAN total provenant de l'Epandage des engrais de ferme solides
+  ++units  
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
+  ++description
+    Annual TAN flux out of solid manure application. 
+  ++formula
+    Out(tan_into_application_solid) P-
+    Out(nh3_napplication_solid) P-
+    Out(n2_napplication_solid)  P-
+    Out(no_napplication_solid)  P-
+    Out(n2o_napplication_solid);
+
++tan_remain_application
+  format = %.0f
+  print = TANFlux,tan,remain,application,total,all
+  ++labels 
+    sort = 220
+    en = Total TAN out of manure application
     de = Total Nlös aus der Hofdüngerausbringung
     fr = TAN total provenant de l'Epandage des engrais de ferme
   ++units  
@@ -309,181 +475,10 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     de = kg TAN/Jahr
     fr = kg TAN/an
   ++description
-    Annual TAN flux out of the application. 
+    Annual TAN flux out of manure application. 
   ++formula
-    Val(tan_into_application, Storage) -
-    Out(nh3_napplication) -
-    Out(n2_napplication)  -
-    Out(no_napplication)  -
-    Out(n2o_napplication);
+    Out(tan_remain_application_liquid)  P+
+    Out(tan_remain_application_solid);
 
-### +n_out_application
-###   format = %.0f
-###   print = FluxSummaryLivestock
-###   ++labels
-###     sort = 110
-###     en = Total N out of application
-###     de = Total N aus der Hofdüngerausbringung
-###     fr = N total provenant de l'Epandage des engrais de ferme
-###   ++units  
-###     en = kg N/year
-###     de = kg N/Jahr
-###     fr = kg N/an
-###   ++description
-###     Annual N flux out of the application. 
-###   ++formula
-###     Val(n_into_application, Storage) - 
-###     (Val(nh3_napplication_liquid, Application::Slurry) +
-###     Val(nh3_nsolid, Application::SolidManure) )
-
-### +tan_out_application
-###   format = %.0f
-###   print = TANFlux
-###   ++labels 
-###     sort = 321
-###     en = Total TAN out of application
-###     de = Total Nlös aus der Hofdüngerausbringung
-###     fr = TAN total provenant de l'Epandage des engrais de ferme
-###   ++units  
-###     en = kg TAN/year
-###     de = kg TAN/Jahr
-###     fr = kg TAN/an
-###   ++description
-###     Annual TAN flux out of the application. 
-###   ++formula
-###     Val(tan_into_application, Storage) - 
-###     (Val(nh3_napplication_liquid, Application::Slurry) +
-###     Val(nh3_nsolid, Application::SolidManure) )
-
-
-
-# +n_frompoultry
-#   print = PoultryFlux
-#   ++labels
-#     sort = 500
-#     en = Poultry N potentialy availabel for Plants
-#     de = Geflügel N Pflanzen verfügbar
-#     fr = Volaille N disponible pour les plantes 
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     N flux out of solid manure application.
-#   ++formula
-#     Val(n_into_application, ::Storage::SolidManure::Poultry) -
-#            Out(nh3_napplication_poultry);
-
-# +tan_frompoultry
-#   print = PoultryFlux
-#   ++labels
-#     sort = 500
-#     en = Poultry N potentialy availabel for Plants
-#     de = Geflügel N Pflanzen verfügbar
-#     fr = Volaille N disponible pour les plantes 
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     TAN flux out of solid manure application.
-#   ++formula
-#     Val(tan_into_application, ::Storage::SolidManure::Poultry) -
-#            Out(nh3_napplication_poultry);
-    
-  
-# +n_remain_solid_dairycows_cattle
-#   print = CattleFlux,RemainCattle
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     N flux out of solid manure application from Cattles and Pigs.
-#   ++formula
-#     Val(n_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) - 
-#     Out(nh3_napplication_solid_cattle) - Out(n2_nsolid_dairycows_cattle) -
-#     Out(no_nsolid_dairycows_cattle)  - Out(n2o_nsolid_dairycows_cattle);
-  
-# +n_remain_solid_pigs
-#   print = PigFlux
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     N flux out of solid manure application from Cattles and Pigs.
-#   ++formula
-#     Val(n_into_application_pigs, ::Storage::SolidManure::Solid) - 
-#     Out(nh3_napplication_solid_pigs) - Out(n2_nsolid_pigs) -
-#     Out(no_nsolid_pigs)  - Out(n2o_nsolid_pigs);
-
-# +n_remain_horses_otherequides_smallruminants
-#   print = OthersFlux
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     N flux out of solid manure application from Equides and small ruminants
-#   ++formula
-#     Val(n_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid) -
-#     Out(nh3_napplication_solid_others) - Out(n2_nsolid_horses_otherequides_smallruminants) -
-#     Out(no_nsolid_horses_otherequides_smallruminants) - Out(n2o_nsolid_horses_otherequides_smallruminants);
-  
-# +tan_remain_solid_dairycows_cattle
-#   print = CattleFlux
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     N flux out of solid manure application from Cattles and Pigs.
-#   ++formula  
-#    warn 'tan_into_application_dairycows_cattle=UNDEFINED' unless defined Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
-#    warn 'nh3_napplication_solid_cattle=UNDEFINED' unless defined  Out(nh3_napplication_solid_cattle);
-   
-#     warn 'tan_into_application_dairycows_cattle=UNDEFINED' unless defined Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid);
-#     Val(tan_into_application_dairycows_cattle, ::Storage::SolidManure::Solid) - 
-#     Out(nh3_napplication_solid_cattle) - Out(n2_nsolid_dairycows_cattle) -
-#     Out(no_nsolid_dairycows_cattle) - Out(n2o_nsolid_dairycows_cattle);
-  
-# +tan_remain_solid_pigs
-#   print = PigFlux
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     N flux out of solid manure application from Pigs.
-#   ++formula
-#     Val(tan_into_application_pigs, ::Storage::SolidManure::Solid) - 
-#     Out(nh3_napplication_solid_pigs) - Out(n2_nsolid_pigs) -
-#     Out(no_nsolid_pigs) - Out(n2o_nsolid_pigs);
-  
-# +tan_remain_horses_otherequides_smallruminants
-#   print = OthersFlux
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     N flux out of solid manure application from Equides and small ruminants
-#   ++formula
-#     Val(tan_into_application_horses_otherequides_smallruminants, ::Storage::SolidManure::Solid) -
-#     Out(nh3_napplication_solid_others) - Out(n2_nsolid_horses_otherequides_smallruminants) -
-#     Out(no_nsolid_horses_otherequides_smallruminants) - Out(n2o_nsolid_horses_otherequides_smallruminants);
-
-# +n_nsolid
-#   print = 7
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     N flux out of solid manure application.
-#   ++formula
-#     Val(n_into_application_manure, ::Storage) -
-#     Out(nh3_napplication_solid) - Out(n2_napplication_solid) - Out(no_napplication_solid) - Out(n2o_nsolid);
-    
+####################################################
 
