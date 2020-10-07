@@ -410,51 +410,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 ####################################################
 ##### tan out livestock liquid
 
-+tan_into_storage_liquid
-  print = 6
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (liquid share) as TAN from housing and yard into
-    the storage from all animals besides poultry.
-  ++formula
-    Sum(tan_liquid,Livestock::OtherCattle) P+
-    Sum(tan_liquid,Livestock::DairyCow) P+
-    Sum(tan_liquid,Livestock::Pig) P+
-    Sum(tan_liquid,Livestock::FatteningPigs) P+
-    Sum(tan_liquid,Livestock::Equides) P+
-    Sum(tan_liquid,Livestock::SmallRuminants) P+
-    Sum(tan_liquid,Livestock::RoughageConsuming);
-
-+tan_into_storage_liquid_pigs_scalar
-  print = newStorage
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Scalar. Annual N flux (liquid share) as TAN from pigs housing into the storage
-   (used for calculation of the ef of mixed storage units).
-  ++formula
-    Sum(tan_liquid, Livestock::Pig) +
-    Sum(tan_liquid, Livestock::FatteningPigs);
-
-+tan_into_storage_liquid_pigsratio_scalar
-  print = newStorage
-  ++units
-    en = -
-    de = -
-    fr = -
-  ++description
-    Scalar. Share of annual liquid N flux as TAN from housing and yard into the
-    storage from pigs (scaled by total flux).
-  ++formula
-    Out(tan_into_storage_liquid_pigs_scalar) / scalar(Out(tan_into_storage_liquid));
-
-
-+tan_into_storage_liquid_pigs
++tan_out_livestock_liquid_pigs
   print = newStorage
   ++units
     en = kg N/year
@@ -467,19 +423,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(tan_liquid,Livestock::Pig) P+
     Sum(tan_liquid,Livestock::FatteningPigs);
 
-+tan_into_storage_liquid_pigs_ratio
-  print = newStorage
-  ++units
-    en = 
-    de = 
-    fr = 
-  ++description
-    Hash. Annual N flux as TAN (liquid share) from pigs housing into the storage
-   (used for calculation of the ef of mixed storage units).
-  ++formula
-    scale( Out(tan_into_storage_liquid_pigs), 1 / scalar(Out(tan_into_storage_liquid_pigs)) );
-
-+tan_into_storage_liquid_cattle
++tan_out_livestock_liquid_cattle
   print = newStorage
   ++units
     en = kg N/year
@@ -492,7 +436,33 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(tan_liquid,Livestock::OtherCattle) P+
     Sum(tan_liquid,Livestock::DairyCow);
 
-+tan_into_storage_liquid_cattle_ratio
++tan_out_livestock_liquid
+  print = 6
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) as TAN from housing and yard into
+    the storage from all animals besides poultry.
+  ++formula
+    Out(tan_out_livestock_liquid_pigs) P+
+    Out(tan_out_livestock_liquid_cattle);
+
++tan_out_livestock_liquid_pigs_share
+  print = newStorage
+  ++units
+    en = -
+    de = -
+    fr = -
+  ++description
+    Scalar. Share of annual liquid N flux as TAN from housing and yard into the
+    storage from pigs (scaled by total flux).
+  ++formula
+    scalar( Out(tan_out_livestock_liquid_pigs) ) / 
+    scalar( Out(tan_out_livestock_liquid) );
+
++tan_out_livestock_liquid_pigs_ratio
   print = newStorage
   ++units
     en = 
@@ -502,7 +472,23 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Hash. Annual N flux as TAN (liquid share) from pigs housing into the storage
    (used for calculation of the ef of mixed storage units).
   ++formula
-    scale( Out(tan_into_storage_liquid_cattle), 1 / scalar(Out(tan_into_storage_liquid_cattle)) );
+    scale( Out(tan_out_livestock_liquid_pigs), 
+      1 / scalar( Out(tan_out_livestock_liquid_pigs) )
+    );
+
++tan_out_livestock_liquid_cattle_ratio
+  print = newStorage
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Hash. Annual N flux as TAN (liquid share) from pigs housing into the storage
+   (used for calculation of the ef of mixed storage units).
+  ++formula
+    scale( Out(tan_out_livestock_liquid_cattle), 
+      1 / scalar( Out(tan_out_livestock_liquid_cattle) )
+    );
 
 ####################################################
 
