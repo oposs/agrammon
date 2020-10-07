@@ -346,9 +346,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_application_solid_cattle, Storage::SolidManure::Solid)   +
-    Val(n_into_application_solid_pigs, Storage::SolidManure::Solid)   +
-    Val(n_into_application_solid_others, Storage::SolidManure::Solid)   +
+    Val(n_into_application_solid_cattle, Storage::SolidManure::Solid)   P+
+    Val(n_into_application_solid_pigs, Storage::SolidManure::Solid)   P+
+    Val(n_into_application_solid_others, Storage::SolidManure::Solid)   P+
     Val(n_into_application_solid_poultry, Storage::SolidManure::Poultry) 
  
 
@@ -361,16 +361,16 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN flux out of storage for manure application.
   ++formula
-    Val(tan_into_application_solid_cattle, Storage::SolidManure::Solid) +
-    Val(tan_into_application_solid_pigs, Storage::SolidManure::Solid) +
-    Val(tan_into_application_solid_others, Storage::SolidManure::Solid) +
+    Val(tan_into_application_solid_cattle, Storage::SolidManure::Solid) P+
+    Val(tan_into_application_solid_pigs, Storage::SolidManure::Solid) P+
+    Val(tan_into_application_solid_others, Storage::SolidManure::Solid) P+
     Val(tan_into_application_solid_poultry, Storage::SolidManure::Poultry);
 
 ####################################################
 
 
 ####################################################
-##### n/tan into application
+##### n/tan into application (remove later?)
 
 +n_into_application
   format= %.0f
@@ -379,7 +379,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     sort = 108
     en = Total N into application
     de = Total N in die Hofdüngerausbringung
-    fr = N total dans l'Ã©pandage des engrais de ferme
+    fr = N total dans l'Epandage des engrais de ferme
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -387,7 +387,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for application.
   ++formula
-    Out(n_into_application_liquid) + 
+    Out(n_into_application_liquid) P+ 
     Out(n_into_application_solid) ;
 
 +tan_into_application
@@ -397,7 +397,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     sort = 208
     en = Total TAN into application
     de = Total Nlös in die Hofdüngerausbringung
-    fr = TAN total dans l'Ã©pandage des engrais de ferme
+    fr = TAN total dans l'Epandage des engrais de ferme
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -405,7 +405,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN flux out of storage for application.
   ++formula
-    Out(tan_into_application_liquid) + 
+    Out(tan_into_application_liquid) P+ 
     Out(tan_into_application_solid);
 
 ####################################################
