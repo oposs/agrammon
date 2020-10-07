@@ -335,7 +335,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 
 
 ####################################################
-##### tan into application solid
+##### n/tan into application solid
 
 +n_into_application_solid
   print = 3a
@@ -361,9 +361,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN flux out of storage for manure application.
   ++formula
-    Val(tan_into_application_dairycows_cattle, Storage::SolidManure::Solid) +
-    Val(tan_into_application_pigs, Storage::SolidManure::Solid) +
-    Val(tan_into_application_horses_otherequides_smallruminants, Storage::SolidManure::Solid) +
+    Val(tan_into_application_solid_cattle, Storage::SolidManure::Solid) +
+    Val(tan_into_application_solid_pigs, Storage::SolidManure::Solid) +
+    Val(tan_into_application_solid_others, Storage::SolidManure::Solid) +
     Val(tan_into_application_solid_poultry, Storage::SolidManure::Poultry);
 
 ####################################################

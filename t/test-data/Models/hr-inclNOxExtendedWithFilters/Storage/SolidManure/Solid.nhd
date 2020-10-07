@@ -509,7 +509,7 @@ This option mainly targets users who predict emissions and are obliged to consid
 ####################################################
 
 ####################################################
-#### immobilization
+#### immobilization (move total immob to top level?)
 
 +immobilization_horses_otherequides_smallruminants
   print = 7
@@ -619,7 +619,7 @@ This option mainly targets users who predict emissions and are obliged to consid
 ####################################################
 #### tan into application
 
-+tan_into_application_dairycows_cattle
++tan_into_application_solid_cattle
   print = 3a
   ++units  
     en = kg N/year
@@ -633,7 +633,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     Out(nh3_nsolid_dairycows_cattle) P-
     Out(immobilization_dairycows_cattle);
 
-+tan_into_application_pigs
++tan_into_application_solid_pigs
   print = 3a
   ++units  
     en = kg N/year
@@ -647,7 +647,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     Out(nh3_nsolid_pigs) P-
     Out(immobilization_pigs);
 
-+tan_into_application_horses_otherequides_smallruminants
++tan_into_application_solid_others
   print = 3a
   ++units  
     en = kg N/year
@@ -660,20 +660,6 @@ This option mainly targets users who predict emissions and are obliged to consid
     Val(nxox_nsolid_equides_other, ::Livestock) P-
     Out(nh3_nsolid_horses_otherequides_smallruminants) P-
     Out(immobilization_horses_otherequides_smallruminants);
-
-+tan_into_application
-  print = 4a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN out of storage for manure application.
-  ++formula
-    Out(tan_into_application_dairycows_cattle) P+
-    Out(tan_into_application_pigs) P+
-    Out(tan_into_application_horses_otherequides_smallruminants);
-
 
 ####################################################
 
