@@ -20,9 +20,9 @@ sub get-builtins is export {
         filterGroup => &filter-group,
         # Turn a filter group into a simple scalar value
         scalar => &filter-group-scalar,
-        # sign of hash entries
+        # Get sign of all values in a filter group
         hashsign => -> $filter-group {
-            die "scale operator expects a filter group as its first argument"
+            die "hashsign operator expects a filter group as its first argument"
                     unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
             $filter-group.hashsign()
         },
