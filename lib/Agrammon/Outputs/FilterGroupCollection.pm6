@@ -67,6 +67,14 @@ class Agrammon::Outputs::FilterGroupCollection {
         self.bless: instances => %!values-by-filter.map({ .key => $factor * .value })
     }
 
+    #| Produce a new filter group collection which has the values of this one added to
+    #| a specified additor. This can be used to implement `scalar + group`, `group + scalar`
+    #| (these two just commute), and `group - scalar` (by passing in `- scalar` as the
+    #| additor).
+    method add(Numeric $factor --> Agrammon::Outputs::FilterGroupCollection) {
+        self.bless: instances => %!values-by-filter.map({ .key => $factor + .value })
+    }
+
     #| Apply an operation pairwise between this group collection and another one, returning a
     #| new group collection as the result. When a group exists in collections, then the operation
     #| is applied to their values. When a group exists on only one side, the base value is used.

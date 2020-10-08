@@ -25,6 +25,11 @@ sub get-builtins is export {
                     unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
             $filter-group.scale(+$multiplier)
         },
+        add => -> $filter-group, $additor {
+            die "scale operator expects a filter group as its first argument"
+                    unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
+            $filter-group.add(+$additor)
+        },        
         # P+ compiles into this
         addPairwise => -> $a, $b {
             my $ag = as-filter-group($a);

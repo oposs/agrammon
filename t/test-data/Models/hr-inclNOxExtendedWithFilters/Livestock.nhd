@@ -129,6 +129,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_excretion, Livestock::FatteningPigs) P+
     Sum(n_excretion, Livestock::Equides) P+
     Sum(n_excretion, Livestock::SmallRuminants) P+
+    Sum(n_excretion, Livestock::RoughageConsuming) P+
     Sum(n_excretion, Livestock::Poultry);
 
 +tan_excretion
@@ -157,6 +158,52 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 ####################################################
 
+
+
+
+####################################################
+##### Prepare animal master categories
+
+# +is_cattle
+#   print = check
+#   ++units
+#     en = 
+#     de = 
+#     fr = 
+#   ++description
+#     True, if belongs to master category _cattle_.
+#   ++formula
+#     add( 
+#       scale( 
+#         Sum(tan_excretion, Livestock::OtherCattle::Excretion) P+ 
+#         Sum(tan_excretion, Livestock::DairyCow::Excretion), 
+#         0 ),
+#       1 ) P+
+#     scale( 
+#       Sum(tan_excretion, Livestock::Pig::Excretion) P+
+#       Sum(tan_excretion, Livestock::FatteningPigs::Excretion) P+
+#       Sum(tan_excretion, Livestock::Equides::Excretion) P+
+#       Sum(tan_excretion, Livestock::SmallRuminants::Excretion) P+
+#       Sum(tan_excretion, Livestock::RoughageConsuming::Excretion) P+
+#       Sum(tan_excretion, Livestock::Poultry::Excretion), 
+#       0 );
+
++is_cattle
+  print = check
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    True, if belongs to master category _cattle_.
+  ++formula
+    my $answers = scale( 
+        Sum(tan_excretion, Livestock::OtherCattle::Excretion) P+ 
+        Sum(tan_excretion, Livestock::DairyCow::Excretion), 
+        0 );
+    add($answers, 1);
+    
+####################################################
 
 
 
