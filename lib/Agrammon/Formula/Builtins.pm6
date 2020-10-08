@@ -15,10 +15,17 @@ sub get-builtins is export {
             warn @message.join || 'Warning';
         },
         abs => &abs,
+        sign => &sign,
         # Construct a filter group from data
         filterGroup => &filter-group,
         # Turn a filter group into a simple scalar value
         scalar => &filter-group-scalar,
+        # sign of hash entries
+        hashsign => -> $filter-group {
+            die "scale operator expects a filter group as its first argument"
+                    unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
+            $filter-group.hashsign()
+        },
         # Scale all values in a filter group by the given multiplier
         scale => -> $filter-group, $multiplier {
             die "scale operator expects a filter group as its first argument"

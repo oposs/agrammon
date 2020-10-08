@@ -164,7 +164,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 ##### Prepare animal master categories
 
 +is_cattle
-  print = check
+  print = mastercat
   ++units
     en = 
     de = 
@@ -174,19 +174,79 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     add( 
       scale( 
-        Sum(tan_excretion, Livestock::OtherCattle::Excretion) P+ 
-        Sum(tan_excretion, Livestock::DairyCow::Excretion), 
+        Sum(n_excretion, Livestock::OtherCattle) P+ 
+        Sum(n_excretion, Livestock::DairyCow), 
         0 ),
-      1 ) P+
-    scale( 
-      Sum(tan_excretion, Livestock::Pig::Excretion) P+
-      Sum(tan_excretion, Livestock::FatteningPigs::Excretion) P+
-      Sum(tan_excretion, Livestock::Equides::Excretion) P+
-      Sum(tan_excretion, Livestock::SmallRuminants::Excretion) P+
-      Sum(tan_excretion, Livestock::RoughageConsuming::Excretion) P+
-      Sum(tan_excretion, Livestock::Poultry::Excretion), 
-      0 );
-    
+      1 );
+
++is_pigs
+  print = mastercat
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    True, if belongs to master category _cattle_.
+  ++formula
+    add( 
+      scale( 
+        Sum(n_excretion, Livestock::Pig) P+ 
+        Sum(n_excretion, Livestock::FatteningPigs), 
+        0 ),
+      1 );
+
++is_others
+  print = mastercat
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    True, if belongs to master category _cattle_.
+  ++formula
+    add( 
+      scale( 
+        Sum(n_excretion, Livestock::Equides) P+ 
+        Sum(n_excretion, Livestock::SmallRuminants) P+ 
+        Sum(n_excretion, Livestock::RoughageConsuming), 
+        0 ),
+      1 );
+
++test
+  print = check
+  ++formula
+    hashsign( Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry) );
+
+# +is_layers_growers_other_poultry
+#   print = mastercat,check
+#   ++units
+#     en = 
+#     de = 
+#     fr = 
+#   ++description
+#     True, if belongs to master category _cattle_.
+#   ++formula
+#     add( 
+#       scale( 
+#         Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry), 
+#         0 ),
+#       1 );
+
+# +is_turkeys_broilers
+#   print = mastercat,check
+#   ++units
+#     en = 
+#     de = 
+#     fr = 
+#   ++description
+#     True, if belongs to master category _cattle_.
+#   ++formula
+#     add( 
+#       scale( 
+#         Sum(n_from_poultry_turkeys_broilers,Livestock::Poultry), 
+#         0 ),
+#       1 );
+ 
 ####################################################
 
 

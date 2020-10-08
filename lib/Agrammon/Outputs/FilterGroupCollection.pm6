@@ -75,6 +75,11 @@ class Agrammon::Outputs::FilterGroupCollection {
         self.bless: instances => %!values-by-filter.map({ .key => $factor + .value })
     }
 
+    #| Produce a new filter group collection which has the sign of this one.
+    method hashsign() {
+        self.bless: instances => %!values-by-filter.map({ .key => sign( .value ) })
+    }
+
     #| Apply an operation pairwise between this group collection and another one, returning a
     #| new group collection as the result. When a group exists in collections, then the operation
     #| is applied to their values. When a group exists on only one side, the base value is used.
