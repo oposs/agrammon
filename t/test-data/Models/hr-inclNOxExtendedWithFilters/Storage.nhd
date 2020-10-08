@@ -70,7 +70,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       return 1;
     }
     else {
-      if( Val(n_into_storage_liquid_check, Livestock) > 0 ) {
+      if( Val(n_out_livestock_liquid, Livestock) > 0 ) {
         writeLog(
             {
               en => "No storage for slurry defined although slurry is produced!\n",
