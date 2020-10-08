@@ -130,6 +130,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_excretion, Livestock::FatteningPigs) P+
     Sum(n_excretion, Livestock::Equides) P+
     Sum(n_excretion, Livestock::SmallRuminants) P+
+    Sum(n_excretion, Livestock::RoughageConsuming) P+
     Sum(n_excretion, Livestock::Poultry);
 
 +tan_into_livestock
@@ -163,10 +164,72 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 ####################################################
 ##### Prepare animal master categories
 
-+test
-  print = check
++has_cattle
+  print = mastercat,check
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    True, if belongs to master category _cattle_.
+  ++formula
+    hashsign( 
+      Sum(n_excretion, Livestock::OtherCattle) P+ 
+      Sum(n_excretion, Livestock::DairyCow)
+    );
+
++has_pigs
+  print = mastercat,check
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    True, if belongs to master category _cattle_.
+  ++formula
+    hashsign( 
+      Sum(n_excretion, Livestock::Pig) P+ 
+      Sum(n_excretion, Livestock::FatteningPigs)
+    );
+
++has_others
+  print = mastercat,check
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    True, if belongs to master category _cattle_.
+  ++formula
+    hashsign( 
+      Sum(n_excretion, Livestock::Equides) P+ 
+      Sum(n_excretion, Livestock::SmallRuminants) P+ 
+      Sum(n_excretion, Livestock::RoughageConsuming)
+    );
+
++has_layers_growers_other_poultry
+  print = mastercat,check
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    True, if belongs to master category _cattle_.
   ++formula
     hashsign( Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry) );
+
++has_turkeys_broilers
+  print = mastercat,check
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    True, if belongs to master category _cattle_.
+  ++formula
+    hashsign( 
+      Sum(n_from_poultry_turkeys_broilers,Livestock::Poultry)
+    );
  
 ####################################################
 
