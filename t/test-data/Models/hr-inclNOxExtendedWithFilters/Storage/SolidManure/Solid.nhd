@@ -426,7 +426,7 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual TAN flux into solid storage from cattle.
   ++formula
-    scale( Val(tan_out_livestock_solid_dairycows_cattle, ::Livestock), 
+    scale( Val(tan_out_livestock_solid_cattle, ::Livestock), 
       ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
     
 +tan_into_storage_solid_others
@@ -438,7 +438,7 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual TAN flux into solid storage from horses etc.. -> Fix: Thomas fragen wegen Bezeichnung!
   ++formula
-    scale( Val(tan_out_livestock_solid_horses_otherequides_smallruminants, ::Livestock), 
+    scale( Val(tan_out_livestock_solid_others, ::Livestock), 
       ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
 
 ####################################################
@@ -635,7 +635,7 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(tan_out_livestock_solid_dairycows_cattle, ::Livestock) P-
+    Val(tan_out_livestock_solid_cattle, ::Livestock) P-
     Val(nxox_nsolid_dairycows_cattle, ::Livestock) P-
     Out(nh3_nsolid_dairycows_cattle) P-
     Out(immobilization_dairycows_cattle);
@@ -663,7 +663,7 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(tan_out_livestock_solid_horses_otherequides_smallruminants, ::Livestock) P- 
+    Val(tan_out_livestock_solid_others, ::Livestock) P- 
     Val(nxox_nsolid_equides_other, ::Livestock) P-
     Out(nh3_nsolid_horses_otherequides_smallruminants) P-
     Out(immobilization_horses_otherequides_smallruminants);

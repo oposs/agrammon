@@ -105,10 +105,11 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 *** output ***
 
-####################################################
-##### n/tan excretion (n/tan into livestock)
 
-+n_excretion
+####################################################
+##### n/tan into livestock
+
++n_into_livestock
   format= %.0f
   print = FluxSummaryLivestock
   ++labels
@@ -131,7 +132,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_excretion, Livestock::SmallRuminants) P+
     Sum(n_excretion, Livestock::Poultry);
 
-+tan_excretion
++tan_into_livestock
   format= %.0f
   print = TANFlux
   ++labels
@@ -159,7 +160,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 
 
-
 ####################################################
 ##### Prepare animal master categories
 
@@ -174,24 +174,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 ####################################################
 ##### n out livestock liquid (into storage)
-
-+n_into_storage_liquid_check
-  print = storage_check
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (liquid share) from housing and yard into the
-    storage from all animal besides poultry.
-  ++formula
-    Sum(n_outhousing_liquid,Livestock::OtherCattle::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::DairyCow::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::Pig::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::FatteningPigs::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::Equides::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::SmallRuminants::Housing) P+
-    Sum(n_outhousing_liquid,Livestock::RoughageConsuming::Housing);
 
 +n_out_livestock_liquid_pigs
   print = newStorage
@@ -268,8 +250,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     scalar( Out(n_out_livestock_liquid_pigs) ) / scalar( Out(n_out_livestock_liquid) );
 
-
 ####################################################
+
+
 
 ####################################################
 ##### n out livestock solid (into storage + application)
@@ -314,7 +297,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_solid_from_other,Livestock::SmallRuminants) P+
     Sum(n_solid_from_other,Livestock::RoughageConsuming);
 
-+n_out_livestock_solid_poultry_layers_growers_other_poultry
++n_out_livestock_solid_layers_growers_other_poultry
   print = 7
   ++units
     en = kg N/year
@@ -325,7 +308,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry);
 
-+n_out_livestock_solid_poultry_turkeys_broilers
++n_out_livestock_solid_turkeys_broilers
   print = 7
   ++units
     en = kg N/year
@@ -349,8 +332,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Out(n_out_livestock_solid_cattle) P+
     Out(n_out_livestock_solid_pigs) P+
     Out(n_out_livestock_solid_others) P+
-    Out(n_out_livestock_solid_poultry_layers_growers_other_poultry) P+
-    Out(n_out_livestock_solid_poultry_turkeys_broilers);
+    Out(n_out_livestock_solid_layers_growers_other_poultry) P+
+    Out(n_out_livestock_solid_turkeys_broilers);
 
 ####################################################
 
@@ -446,7 +429,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 ####################################################
 ##### tan out livestock solid 
 
-+tan_out_livestock_solid_dairycows_cattle
++tan_out_livestock_solid_cattle
   print = 4a
   ++units
     en = kg N/year
@@ -472,7 +455,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(tan_solid,Livestock::Pig) P+
     Sum(tan_solid,Livestock::FatteningPigs);
 
-+tan_out_livestock_solid_horses_otherequides_smallruminants
++tan_out_livestock_solid_others
   print = 4a
   ++units
     en = kg N/year
@@ -521,9 +504,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (solid share) as TAN from housing and yard into
     the storage from all animals besides poultry.
   ++formula
-    Out(tan_out_livestock_solid_dairycows_cattle) P+
+    Out(tan_out_livestock_solid_cattle) P+
     Out(tan_out_livestock_solid_pigs) P+
-    Out(tan_out_livestock_solid_horses_otherequides_smallruminants) P+
+    Out(tan_out_livestock_solid_others) P+
     Out(tan_out_livestock_solid_layers_growers_other_poultry) P+
     Out(tan_out_livestock_solid_turkeys_broilers);
 
