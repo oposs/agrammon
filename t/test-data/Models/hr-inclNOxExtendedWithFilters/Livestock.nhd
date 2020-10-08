@@ -630,6 +630,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 
 
+####################################################
+#### nxox loss (Livestock + Storage?!)
 
 +nxox_nsolid_dairycows_cattle
   print = 4a

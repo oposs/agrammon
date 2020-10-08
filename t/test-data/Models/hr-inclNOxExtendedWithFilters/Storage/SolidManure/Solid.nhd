@@ -369,7 +369,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from solid storage.
+    Annual N flux into solid storage from cattle.
   ++formula
     scale( Val(n_out_livestock_solid_cattle, ::Livestock), 
       ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
@@ -381,7 +381,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from solid storage.
+    Annual N flux into solid storage from pigs.
   ++formula
     scale( Val(n_out_livestock_solid_pigs, ::Livestock), 
       ( 1 - In(share_applied_direct_pig_manure) / 100 ) );
@@ -393,7 +393,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from solid storage.
+    Annual N flux into solid storage from others -> fix!.
   ++formula
     scale( Val(n_out_livestock_solid_others, ::Livestock), 
       ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
@@ -412,7 +412,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from solid storage.
+    Annual TAN flux into solid storage from pigs.
   ++formula
     scale( Val(tan_into_storage_solid_pigs, ::Livestock), 
       ( 1 - In(share_applied_direct_pig_manure) / 100 ) );
@@ -424,7 +424,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from solid storage.
+    Annual TAN flux into solid storage from cattle.
   ++formula
     scale( Val(tan_into_storage_solid_dairycows_cattle, ::Livestock), 
       ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
@@ -436,7 +436,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from solid storage.
+    Annual TAN flux into solid storage from horses etc.. -> Fix: Thomas fragen wegen Bezeichnung!
   ++formula
     scale( Val(tan_into_storage_solid_horses_otherequides_smallruminants, ::Livestock), 
       ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );

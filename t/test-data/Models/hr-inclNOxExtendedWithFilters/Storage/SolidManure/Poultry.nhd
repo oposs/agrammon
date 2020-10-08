@@ -188,6 +188,41 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
 
 
 ####################################################
+#### tan into storage
+
++tan_into_storage_solid_layers_growers_other_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into solid storage from layers, growers and other poultry.
+  ++formula
+    scale(
+      Val(tan_into_storage_solid_layers_growers_other_poultry, ::Livestock),
+      ( 1 - In(share_applied_direct_poultry_manure) / 100 )
+    );
+
++tan_into_storage_solid_turkeys_broilers
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into solid storage from turkeys and broilers.
+  ++formula
+    scale(
+      Val(tan_into_storage_solid_turkeys_broilers, ::Livestock),
+      ( 1 - In(share_applied_direct_poultry_manure) / 100 )
+    );
+
+####################################################
+
+
+
+####################################################
 #### nh3 loss
 
 +nh3_npoultry_layers_growers_other_poultry
@@ -199,9 +234,8 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual NH3 emission from poultry manure storage.
   ++formula
-    scale( Val(tan_into_storage_solid_layers_growers_other_poultry, ::Livestock),
+    scale( Out(tan_into_storage_solid_layers_growers_other_poultry),
       Tech(er_layers_growers_other_poultry) * 
-      ( 1 - In(share_applied_direct_poultry_manure) / 100 ) * 
       Out(c_covered_basin) * 
       Out(c_free_factor_storage_poultrymanure) 
     );
@@ -215,9 +249,8 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual NH3 emission from poultry manure storage.
   ++formula
-    scale( Val(tan_into_storage_solid_turkeys_broilers, ::Livestock),
+    scale( Out(tan_into_storage_solid_turkeys_broilers),
       Tech(er_turkeys_broilers) * 
-      ( 1 - In(share_applied_direct_poultry_manure) / 100 ) * 
       Out(c_covered_basin) * 
       Out(c_free_factor_storage_poultrymanure)
     );
@@ -239,38 +272,8 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
 
 
 ####################################################
-#### immobilization (fix me! -> wrong tan into storage!)
-
-+immobilization_poultry_layers_growers_other_poultry
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN immobilized from TAN fraction in poultry manure storage.
-  ++formula
-    scale(
-      Val(tan_into_storage_solid_layers_growers_other_poultry,::Livestock) P- 
-      Out(nh3_npoultry_layers_growers_other_poultry),
-      Tech(immobilizationrate_poultry)
-    );
-
-+immobilization_poultry_turkeys_broilers
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN immobilized from TAN fraction in poultry manure storage.
-  ++formula
-    scale(
-      Val(tan_into_storage_solid_turkeys_broilers,::Livestock) P- 
-      Out(nh3_npoultry_turkeys_broilers),
-      Tech(immobilizationrate_poultry)
-    );
-    
+#### immobilization
+ 
 +immobilization_poultry
   print = 7
   ++units  
@@ -280,8 +283,12 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
   ++description
     Annual TAN immobilized from TAN fraction in poultry manure storage.
   ++formula
-    Out(immobilization_poultry_layers_growers_other_poultry) P+
-    Out(immobilization_poultry_turkeys_broilers);
+    scale(
+      Out(tan_into_storage_solid_layers_growers_other_poultry) P+ 
+      Out(tan_into_storage_solid_turkeys_broilers) P- 
+      Out(nh3_npoultry),
+      Tech(immobilizationrate_poultry)
+    );
 
 ####################################################
 
