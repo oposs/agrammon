@@ -267,6 +267,22 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       Val(c_free_factor_application, Slurry::CfreeFactor)
     );
 
++er_nh3_application_liquid_correct
+  print = er_nh3_correct,application,liquid,all
+  ++units  
+    en = 
+  ++description
+    Emission rate
+  ++formula
+    Out(nh3_napplication_liquid_correct) P/
+      (
+        Val(tan_into_application_liquid, ::Storage) P+
+        add(
+          hashsign(Val(tan_into_application_liquid, ::Storage)),
+          -1
+      )
+    );
+
 ####################################################
 
 
@@ -274,8 +290,8 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 ####################################################
 #### NxOx loss
 
-+n2_napplication_liquid
-  print = n2,application,liquid,all
++er_n2_napplication_liquid
+  print = er_n2,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -283,11 +299,13 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual N2 emission from slurry application.
   ++formula
-    scale( Val(n_into_application_liquid, ::Storage),
-      Tech(er_n2_App_liquid) );
+    scale( 
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_n2_App_liquid)
+    );
 
-+no_napplication_liquid
-  print = no,application,liquid,all
++er_no_napplication_liquid
+  print = er_no,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -295,11 +313,13 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NO emission from slurry application.
   ++formula
-    scale( Val(n_into_application_liquid, ::Storage),
-      Tech(er_no_App_liquid) );
+    scale( 
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_no_App_liquid)
+    );
 
-+n2o_napplication_liquid
-  print = n2o,application,liquid,all
++er_n2o_napplication_liquid
+  print = er_n2o,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -307,7 +327,9 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual N2O emission from slurry application.
   ++formula
-    scale( Val(n_into_application_liquid, ::Storage),
-      Tech(er_n2o_App_liquid) );
+    scale( 
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_n2o_App_liquid)
+    );
     
 ####################################################
