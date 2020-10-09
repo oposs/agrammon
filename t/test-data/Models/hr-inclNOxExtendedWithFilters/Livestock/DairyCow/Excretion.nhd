@@ -182,58 +182,34 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++formula
     In(dairy_cows);
 
++n_excretion_animal
+  print = 7,check
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual mean total N excreted per animal.
+  ++formula
+    if ( lc In(inp_n_excretion) eq 'standard' ) {
+      Tech(standard_N_excretion) *
+      Val(cmilk_yield, Excretion::CMilk) *
+      Val(c_feed_ration, Excretion::CFeed);
+    } else {
+      In(inp_n_excretion);
+    };
+
 +n_excretion
   print = 7
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
-  ++formula
-    my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    if ( ($exc < 0.25 * Tech(standard_N_excretion)) or ($exc > 1.75 * Tech(standard_N_excretion))) {
-        writeLog({
-            en => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
-            de => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
-            fr => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
-        });
-    }
-    $exc = $exc * Val(cmilk_yield,   Excretion::CMilk)
-          * Val(c_feed_ration, Excretion::CFeed)
-          * In(dairy_cows);
-    return $exc;
-
   ++description
     Annual total N excreted by a specified number of animals.
-
-+n_excretion_animal
-  print = 7
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
   ++formula
-    my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    return $exc *
-        Val(cmilk_yield, Excretion::CMilk) *
-        Val(c_feed_ration, Excretion::CFeed);
-  ++description
-    Annual mean total N excreted per animal.
-
-+n_excretion_test
-  print = 7
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++formula
-    my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    return $exc;
-
-  ++description
-    Annual mean total N excreted per animal.
+    Out(n_excretion_animal) *
+    Out(animals);
 
 +tan_excretion
   print = 7
@@ -241,15 +217,22 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
-  ++formula
-     my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    (Tech(share_Nsol) * $exc
-                       * Val(cmilk_yield, Excretion::CMilk)
-                       * In(dairy_cows)
-     ) +
-     ( Out(n_excretion) -  $exc * In(dairy_cows)
-                                * Val(cmilk_yield, Excretion::CMilk)
-     ) * Tech(feed_influence_on_Nsol);
   ++description
     Annual soluble N excreted by a specified number of animals.
+  ++formula
+    my $exc = Tech(standard_N_excretion);
+    $exc = Out(n_excretion_animal) / 
+           Val(cmilk_yield, Excretion::CMilk) /
+           Val(c_feed_ration, Excretion::CFeed) unless lc In(inp_n_excretion) eq 'standard';
+    (
+      Tech(share_Nsol) * 
+      $exc *
+      Val(cmilk_yield, Excretion::CMilk) *
+      Out(animals)
+    ) + (
+      Out(n_excretion) - 
+      $exc *
+      Val(cmilk_yield, Excretion::CMilk) *
+      Out(animals)
+    ) * 
+    Tech(feed_influence_on_Nsol);
