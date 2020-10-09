@@ -443,6 +443,24 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 ####################################################
 ##### n/tan into application liquid
 
++immobilization
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in solid manure storage.
+  ++formula
+    Val(immobilization, Storage::SolidManure::Solid);
+
+####################################################
+
+
+
+####################################################
+##### n/tan into application liquid
+
 +n_into_application_liquid
   print = newStorage
   ++units  
@@ -486,10 +504,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_application_solid_cattle, Storage::SolidManure::Solid)   P+
-    Val(n_into_application_solid_pigs, Storage::SolidManure::Solid)   P+
-    Val(n_into_application_solid_others, Storage::SolidManure::Solid)   P+
-    Val(n_into_application_solid_poultry, Storage::SolidManure::Poultry) 
+    Val(n_out_livestock_solid, ::Livestock) P- 
+    Val(nxox_nsolid, ::Livestock) P-
+    Out(nh3_nstorage_solid);
  
 
 +tan_into_application_solid
@@ -501,10 +518,10 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN flux out of storage for manure application.
   ++formula
-    Val(tan_into_application_solid_cattle, Storage::SolidManure::Solid) P+
-    Val(tan_into_application_solid_pigs, Storage::SolidManure::Solid) P+
-    Val(tan_into_application_solid_others, Storage::SolidManure::Solid) P+
-    Val(tan_into_application_solid_poultry, Storage::SolidManure::Poultry);
+    Val(tan_out_livestock_solid, ::Livestock) P-
+    Val(nxox_nsolid, ::Livestock) P-
+    Out(nh3_nstorage_solid) P-
+    Out(immobilization);
 
 ####################################################
 

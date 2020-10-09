@@ -359,6 +359,25 @@ This option mainly targets users who predict emissions and are obliged to consid
     	1 - ( Tech(c_covered_basin_pig_manure) * In(share_covered_basin_pig_manure)/100 );
 
 
++share_into_storage_solid
+  print = share_storage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into solid storage from pigs.
+  ++formula
+    scale(
+      Val(has_cattle, ::Livestock) P+
+      Val(has_others, ::Livestock),
+      (1 - In(share_applied_direct_cattle_other_manure) / 100)
+    ) P+
+    scale(
+      Val(has_pigs, ::Livestock),
+      (1 - In(share_applied_direct_pig_manure) / 100)
+    );
+   
 ####################################################
 #### n into solid storage (remove me?)
 
@@ -441,6 +460,30 @@ This option mainly targets users who predict emissions and are obliged to consid
     scale( Val(tan_out_livestock_solid_others, ::Livestock), 
       ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
 
++n_into_storage_solid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into solid storage from horses etc.. -> Fix: Thomas fragen wegen Bezeichnung!
+  ++formula
+    Val(n_out_livestock_solid, ::Livestock) P*
+    Out(share_into_storage_solid);
+ 
++tan_into_storage_solid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into solid storage from horses etc.. -> Fix: Thomas fragen wegen Bezeichnung!
+  ++formula
+    Val(tan_out_livestock_solid, ::Livestock) P*
+    Out(share_into_storage_solid);
+
 ####################################################
 
 
@@ -493,8 +536,8 @@ This option mainly targets users who predict emissions and are obliged to consid
       Out(c_free_factor_storage_solidmanure_cattle)
     );
 
-+nh3_nsolid
-  print = 1a
++er_nh3_nstorage_solid
+  print = er_nh3,storage,solid
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -502,9 +545,31 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Out(nh3_nsolid_dairycows_cattle) P+
-    Out(nh3_nsolid_pigs) P+
-    Out(nh3_nsolid_horses_otherequides_smallruminants);
+    scale(
+      Val(has_cattle, ::Livestock) P+
+      Val(has_others, ::Livestock),
+      Tech(er_tan_cattle_other) * 
+      Out(c_covered_basin_cattle) * 
+      Out(c_free_factor_storage_solidmanure_cattle)
+    ) P+
+    scale(
+      Val(has_pigs, ::Livestock),
+      Tech(er_tan_pigs) * 
+      Out(c_covered_basin_pig) * 
+      Out(c_free_factor_storage_solidmanure_pig)
+    );
+
++nh3_nsolid
+  print = nh3,storage,solid
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Out(tan_into_storage_solid) P*
+    Out(er_nh3_nstorage_solid);
 
 ####################################################
 
@@ -515,51 +580,6 @@ This option mainly targets users who predict emissions and are obliged to consid
 ## immob eigentlich Netto 40% von TAN zu Norg -> zu Beginn (ohne Abzug NH3)
 ## dafür NH3 basierend auf (TANin + TANout) / 2 * EF
 
-+immobilization_horses_otherequides_smallruminants
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN immobilized from TAN fraction in solid manure storage.
-  ++formula
-    scale(
-      ( Out(tan_into_storage_solid_others) P-
-        Out(nh3_nsolid_horses_otherequides_smallruminants) ),
-      Tech(immobilizationrate_solid)
-    );
-
-+immobilization_dairycows_cattle
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN immobilized from TAN fraction in solid manure storage.
-  ++formula
-    scale(
-      ( Out(tan_into_storage_solid_cattle) P-
-        Out(nh3_nsolid_dairycows_cattle) ),
-      Tech(immobilizationrate_solid)
-    );
-
-+immobilization_pigs
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN immobilized from TAN fraction in solid manure storage.
-  ++formula
-    scale(
-      ( Out(tan_into_storage_solid_pigs) P-
-        Out(nh3_nsolid_pigs) ),
-      Tech(immobilizationrate_solid)
-    );
-
 +immobilization
   print = 7
   ++units  
@@ -569,104 +589,11 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual TAN immobilized from TAN fraction in solid manure storage.
   ++formula
-    Out(immobilization_pigs) P+
-    Out(immobilization_dairycows_cattle) P+
-    Out(immobilization_horses_otherequides_smallruminants);
-
-####################################################
-
-
-
-####################################################
-#### n into application
-
-+n_into_application_solid_cattle
-  print = 3a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Val(n_out_livestock_solid_cattle, ::Livestock) P-
-    Val(nxox_nsolid_dairycows_cattle, ::Livestock) P-
-    Out(nh3_nsolid_dairycows_cattle);
-
-+n_into_application_solid_pigs
-  print = 3a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Val(n_out_livestock_solid_pigs, ::Livestock) P-
-    Val(nxox_nsolid_pigs, ::Livestock) P-
-    Out(nh3_nsolid_pigs)
-
-+n_into_application_solid_others
-  print = 3a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Val(n_out_livestock_solid_others, ::Livestock) P- 
-    Val(nxox_nsolid_equides_other, ::Livestock) P-
-    Out(nh3_nsolid_horses_otherequides_smallruminants);
-
-####################################################
-
-
-
-####################################################
-#### tan into application
-
-+tan_into_application_solid_cattle
-  print = 3a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Val(tan_out_livestock_solid_cattle, ::Livestock) P-
-    Val(nxox_nsolid_dairycows_cattle, ::Livestock) P-
-    Out(nh3_nsolid_dairycows_cattle) P-
-    Out(immobilization_dairycows_cattle);
-
-+tan_into_application_solid_pigs
-  print = 3a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Val(tan_out_livestock_solid_pigs, ::Livestock) P-
-    Val(nxox_nsolid_pigs, ::Livestock) P-
-    Out(nh3_nsolid_pigs) P-
-    Out(immobilization_pigs);
-
-+tan_into_application_solid_others
-  print = 3a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for manure application.
-  ++formula
-    Val(tan_out_livestock_solid_others, ::Livestock) P- 
-    Val(nxox_nsolid_equides_other, ::Livestock) P-
-    Out(nh3_nsolid_horses_otherequides_smallruminants) P-
-    Out(immobilization_horses_otherequides_smallruminants);
+    scale(
+      Out(tan_into_storage_solid) P-
+      Out(nh3_nsolid),
+      Tech(immobilizationrate_solid)
+    );
 
 ####################################################
 
