@@ -379,99 +379,12 @@ This option mainly targets users who predict emissions and are obliged to consid
     );
    
 ####################################################
-#### n into solid storage (remove me?)
-
-+n_into_storage_solid_cattle
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux into solid storage from cattle.
-  ++formula
-    scale( Val(n_out_livestock_solid_cattle, ::Livestock), 
-      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
-
-+n_into_storage_solid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux into solid storage from pigs.
-  ++formula
-    scale( Val(n_out_livestock_solid_pigs, ::Livestock), 
-      ( 1 - In(share_applied_direct_pig_manure) / 100 ) );
-
-+n_into_storage_solid_others
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux into solid storage from others -> fix!.
-  ++formula
-    scale( Val(n_out_livestock_solid_others, ::Livestock), 
-      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
-
-####################################################
 
 
 
 ####################################################
 #### tan into solid storage (fix variable names)
 
-+tan_into_storage_solid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN flux into solid storage from pigs.
-  ++formula
-    scale( Val(tan_out_livestock_solid_pigs, ::Livestock), 
-      ( 1 - In(share_applied_direct_pig_manure) / 100 ) );
-
-+tan_into_storage_solid_cattle
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN flux into solid storage from cattle.
-  ++formula
-    scale( Val(tan_out_livestock_solid_cattle, ::Livestock), 
-      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
-    
-+tan_into_storage_solid_others
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN flux into solid storage from horses etc.. -> Fix: Thomas fragen wegen Bezeichnung!
-  ++formula
-    scale( Val(tan_out_livestock_solid_others, ::Livestock), 
-      ( 1 - In(share_applied_direct_cattle_other_manure) / 100 ) );
-
-+n_into_storage_solid
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN flux into solid storage from horses etc.. -> Fix: Thomas fragen wegen Bezeichnung!
-  ++formula
-    Val(n_out_livestock_solid, ::Livestock) P*
-    Out(share_into_storage_solid);
- 
 +tan_into_storage_solid
   print = 1a
   ++units  
@@ -490,51 +403,6 @@ This option mainly targets users who predict emissions and are obliged to consid
 
 ####################################################
 #### nh3 loss
-
-+nh3_nsolid_dairycows_cattle
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from solid storage.
-  ++formula
-    scale( Out(tan_into_storage_solid_cattle), 
-      Tech(er_tan_cattle_other) * 
-      Out(c_covered_basin_cattle) * 
-      Out(c_free_factor_storage_solidmanure_cattle)
-    );
-
-+nh3_nsolid_pigs
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from solid storage.
-  ++formula
-    scale( Out(tan_into_storage_solid_pigs), 
-      Tech(er_tan_pigs) * 
-      Out(c_covered_basin_pig) * 
-      Out(c_free_factor_storage_solidmanure_pig)
-    );
-
-+nh3_nsolid_horses_otherequides_smallruminants
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from solid storage.
-  ++formula
-    scale( Out(tan_into_storage_solid_others), 
-      Tech(er_tan_cattle_other) * 
-      Out(c_covered_basin_cattle) * 
-      Out(c_free_factor_storage_solidmanure_cattle)
-    );
 
 +er_nh3_nstorage_solid
   print = er_nh3,storage,solid

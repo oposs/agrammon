@@ -157,9 +157,8 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux into liquid storage.
   ++formula
-    Val(n_into_storage_solid_cattle, Storage::SolidManure::Solid) P-
-    Val(n_into_storage_solid_pigs, Storage::SolidManure::Solid) P-
-    Val(n_into_storage_solid_others, Storage::SolidManure::Solid);
+    Val(n_out_livestock_solid, ::Livestock) P*
+    Val(share_into_storage_solid, Storage::SolidManure::Solid);
 
 +n_into_storage
   print = newStorage
@@ -204,7 +203,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Val(tan_out_livestock_liquid, Livestock);
 
 +tan_into_storage_solid
-  print = newStorage
+  print = newStorage,check
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -212,9 +211,8 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux into liquid storage.
   ++formula
-    Val(tan_into_storage_solid_cattle, Storage::SolidManure::Solid) P-
-    Val(tan_into_storage_solid_pigs, Storage::SolidManure::Solid) P-
-    Val(tan_into_storage_solid_others, Storage::SolidManure::Solid);
+    Val(tan_out_livestock_solid, ::Livestock) P*
+    Val(share_into_storage_solid, Storage::SolidManure::Solid);
 
 +tan_into_storage_liquid_pigs
   print = newStorage
