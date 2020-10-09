@@ -359,7 +359,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     	1 - ( Tech(c_covered_basin_pig_manure) * In(share_covered_basin_pig_manure)/100 );
 
 
-+share_into_storage_solid
++share_into_storage_solid_no_poultry
   print = share_storage
   ++units  
     en = kg N/year
@@ -395,7 +395,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     Annual TAN flux into solid storage from horses etc.. -> Fix: Thomas fragen wegen Bezeichnung!
   ++formula
     Val(tan_out_livestock_solid, ::Livestock) P*
-    Out(share_into_storage_solid);
+    Out(share_into_storage_solid_no_poultry);
 
 ####################################################
 

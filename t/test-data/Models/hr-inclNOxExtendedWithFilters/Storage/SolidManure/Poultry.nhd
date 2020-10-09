@@ -202,6 +202,21 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
     return;
 
 
++share_into_storage_solid_poultry
+  print = share_storage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into solid storage from pigs.
+  ++formula
+    scale(
+      Val(has_poultry, ::Livestock),
+      (1 - In(share_applied_direct_poultry_manure) / 100)
+    );
+
+
 ####################################################
 #### tan into storage
 
