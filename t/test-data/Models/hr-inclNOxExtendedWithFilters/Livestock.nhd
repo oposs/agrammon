@@ -218,7 +218,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = 
     fr = 
   ++description
-    Animal categories belonging to mastercategory _poultry_LGO_ (layers, growers and other poultry). 
+    Animal categories belonging to mastercategory *poultry_LGO* (layers, growers and other poultry). 
     Hash entry of 1, if N flux out of housing > 0. Hash entry of 0, if N flux out of housing = 0.
   ++formula
     hashsign( Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry) );
@@ -230,12 +230,39 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = 
     fr = 
   ++description
-    Animal categories belonging to mastercategory _poultry_TB_ (turkeys and broilers). 
+    Animal categories belonging to mastercategory *poultry_TB* (turkeys and broilers). 
     Hash entry of 1, if N flux out of housing > 0. Hash entry of 0, if N flux out of housing = 0.
   ++formula
     hashsign( 
       Sum(n_from_poultry_turkeys_broilers,Livestock::Poultry)
     );
+
++has_no_poultry
+  print = mastercategory,livestock
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Animal categories belonging to mastercategory *no_poultry* (all except poultry). 
+    Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
+  ++formula
+    Out(has_pigs) P+
+    Out(has_cattle) P+
+    Out(has_others);
+
++has_poultry
+  print = mastercategory,livestock
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Animal categories belonging to mastercategory _poultry_ (all poultry). 
+    Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
+  ++formula
+    Out(has_poultry_LGO) P+
+    Out(has_poultry_TB);
  
 ####################################################
 

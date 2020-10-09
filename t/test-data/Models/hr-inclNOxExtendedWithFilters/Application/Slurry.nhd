@@ -224,7 +224,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     );
 
 
-## correct total flow & detail report
+## correct total flow & detail report based on actual flow into application
 +nh3_napplication_liquid_correct
   print = nh3_correct,application,liquid,all
   ++units  
@@ -260,6 +260,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
         Tech(er_App_fermented_slurry) + 
         Val(c_app, Slurry::Applrate)
       ),
+      # other factors affecting emission
       Val(c_tech, Slurry::Ctech) *
       Val(c_soft, Slurry::Csoft) *
       Val(c_season, Slurry::Cseason) *

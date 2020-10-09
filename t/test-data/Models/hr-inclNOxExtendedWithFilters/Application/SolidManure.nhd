@@ -40,6 +40,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 
 *** external ***
 
++::Livestock
 +::Storage
 +SolidManure::Solid
 +SolidManure::Poultry
@@ -55,9 +56,8 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NH3 emission from solid manure application.
   ++formula
-    Val(nh3_napplication_solid_cattle, SolidManure::Solid)  P+
-    Val(nh3_napplication_solid_pigs, SolidManure::Solid)  P+
-    Val(nh3_napplication_solid_others, SolidManure::Solid) P+
+    Val(tan_into_application_solid, ::Storage) P*
+    Val(er_nh3_napplication_solid_no_poultry, SolidManure::Solid) P+
     Val(nh3_napplication_solid_poultry, SolidManure::Poultry);
 
 +n2_napplication_solid
@@ -69,7 +69,13 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2 emission from solid manure application.
   ++formula
-    Val(n2_napplication_solid_without_poultry, SolidManure::Solid) P+
+    scale(
+      multiplyPairwise(
+        Val(n_into_application_solid, ::Storage),
+        Val(has_no_poultry, ::Livestock)
+        ),
+      Val(er_n2_napplication_solid_no_poultry, SolidManure::Solid)
+    ) P+
     Val(n2_napplication_solid_poultry, SolidManure::Poultry);
 
 +no_napplication_solid
@@ -81,7 +87,13 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NO emission from solid manure application.
   ++formula
-    Val(no_napplication_solid_without_poultry, SolidManure::Solid) P+
+    scale( 
+      multiplyPairwise(
+        Val(n_into_application_solid, ::Storage),
+        Val(has_no_poultry, ::Livestock)
+        ),
+      Val(er_no_napplication_solid_no_poultry, SolidManure::Solid)
+    ) P+
     Val(no_napplication_solid_poultry, SolidManure::Poultry);
 
 +n2o_napplication_solid
@@ -93,6 +105,12 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2O emission from solid manure application.
   ++formula
-    Val(n2o_napplication_solid_without_poultry, SolidManure::Solid) P+
+    scale( 
+      multiplyPairwise(
+        Val(n_into_application_solid, ::Storage),
+        Val(has_no_poultry, ::Livestock)
+        ),
+      Val(er_n2o_napplication_solid_no_poultry, SolidManure::Solid)
+    ) P+
     Val(n2o_napplication_solid_poultry, SolidManure::Poultry);
 

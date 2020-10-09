@@ -91,119 +91,80 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 
 *** external ***
 
-+::Storage
-+::Storage::SolidManure
-+::Storage::SolidManure::Solid
++::Livestock
 +Solid::CincorpTime
 +Cseason
 +CfreeFactor
 
 *** output ***
 
-####################################################
-##### nh3 loss
 
-+nh3_napplication_solid_cattle
-  print = nh3,application,solid,cattle
+##### er nh3
++er_nh3_napplication_solid_no_poultry
+  print = er_nh3,application,solid,no_poultry
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = 
+    de = 
+    fr = 
   ++description
-    NH3 emission from solid manure application from cattle.
+    NH3 emission rates for solid manure application from all animal categories except poultry.
   ++formula
-    scale( Val(tan_into_application_solid_cattle, ::Storage::SolidManure::Solid),
-      Tech(er_App_manure_dairycows_cattle) *
+    scale(
+      # er cattle
+      scale(
+        Val(has_cattle, ::Livestock),
+        Tech(er_App_manure_dairycows_cattle)
+      ) P+
+      # er pigs
+      scale(
+        Val(has_pigs, ::Livestock),
+        Tech(er_App_manure_pigs)
+      ) P+
+      # er others
+      scale(
+        Val(has_others, ::Livestock),
+        Tech(er_App_manure_horses_otherequides_smallruminants)
+      ),
+      # other factors
       Val(c_incorp_time, Solid::CincorpTime) *
       Val(c_season, Cseason) *
       Val(c_free_factor_application_solidmanure, CfreeFactor)
     );
 
-+nh3_napplication_solid_pigs
-  print = nh3,application,solid,pigs
+##### er n2
++er_n2_napplication_solid_no_poultry
+  print = er_n2,application,solid,no_poultry
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = 
+    de = 
+    fr = 
   ++description
-    NH3 emission from solid manure application from pigs.
+    N2 emission rates for solid manure application from all animal categories except poultry.
   ++formula
-    scale( Val(tan_into_application_solid_pigs, ::Storage::SolidManure::Solid),
-      Tech(er_App_manure_pigs) *
-      Val(c_incorp_time, Solid::CincorpTime) *
-      Val(c_season, Cseason) *
-      Val(c_free_factor_application_solidmanure, CfreeFactor)
-    );
+    Tech(er_n2_App_manure);
 
-+nh3_napplication_solid_others
-  print = nh3,application,solid,others
+##### er no
++er_no_napplication_solid_no_poultry
+  print = er_no,application,solid,no_poultry
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = 
+    de = 
+    fr = 
   ++description
-    NH3 emission from solid manure application from horses, equides, etc.
+    N2 emission rates for solid manure application from all animal categories except poultry.
   ++formula
-    scale( Val(tan_into_application_solid_others, ::Storage::SolidManure::Solid),
-      Tech(er_App_manure_horses_otherequides_smallruminants) *
-      Val(c_incorp_time, Solid::CincorpTime) *
-      Val(c_season, Cseason) *
-      Val(c_free_factor_application_solidmanure, CfreeFactor)
-    );
+    Tech(er_no_App_manure);
 
-####################################################
-
-
-
-####################################################
-##### NxOx loss
-
-+n2_napplication_solid_without_poultry
-  print = n2,application,solid,without_poultry
+##### er n2o
++er_n2o_napplication_solid_no_poultry
+  print = er_n2o,application,solid,no_poultry
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = 
+    de = 
+    fr = 
   ++description
-    N2 emission from solid manure application without poultry.
+    N2 emission rates for solid manure application from all animal categories except poultry.
   ++formula
-    scale( 
-      Val(n_into_application_solid_cattle, ::Storage::SolidManure::Solid) P+
-      Val(n_into_application_solid_pigs, ::Storage::SolidManure::Solid) P+
-      Val(n_into_application_solid_others, ::Storage::SolidManure::Solid),
-      Tech(er_n2_App_manure) );
-
-+no_napplication_solid_without_poultry
-  print = no,application,solid,without_poultry
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    NO emission from solid manure application without poultry.
-  ++formula
-    scale( 
-      Val(n_into_application_solid_cattle, ::Storage::SolidManure::Solid) P+
-      Val(n_into_application_solid_pigs, ::Storage::SolidManure::Solid) P+
-      Val(n_into_application_solid_others, ::Storage::SolidManure::Solid),
-      Tech(er_no_App_manure) );
-
-+n2o_napplication_solid_without_poultry
-  print = n2o,application,solid,without_poultry
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N2O emission from solid manure application without poultry.
-  ++formula
-    scale( 
-      Val(n_into_application_solid_cattle, ::Storage::SolidManure::Solid) P+
-      Val(n_into_application_solid_pigs, ::Storage::SolidManure::Solid) P+
-      Val(n_into_application_solid_others, ::Storage::SolidManure::Solid),
-      Tech(er_n2o_App_manure) );
-
-####################################################
-
+    Tech(er_n2o_App_manure);
 
 
