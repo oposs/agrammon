@@ -44,6 +44,19 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
     Val(tan_out_livestock_solid, ::Livestock) P*
     Val(share_into_storage_solid_poultry, SolidManure::Poultry);
 
+
++tan_into_storage_solid
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into solid storage from horses etc.. -> Fix: Thomas fragen wegen Bezeichnung!
+  ++formula
+    Val(tan_out_livestock_solid, ::Livestock) P*
+    Val(share_into_storage_solid_no_poultry, SolidManure::Solid);
+
 ####################################################
 
 +nh3_nstorage_solid_no_poultry
@@ -55,7 +68,7 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Val(tan_into_storage_solid, SolidManure::Solid) P*
+    Out(tan_into_storage_solid) P*
     Val(er_nh3_nstorage_solid_no_poultry, SolidManure::Solid);
 
 +nh3_nstorage_solid_poultry
@@ -94,7 +107,7 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
     Annual TAN immobilized from TAN fraction in solid manure storage.
   ++formula
     (
-      Val(tan_into_storage_solid, SolidManure::Solid) P-
+      Out(tan_into_storage_solid) P-
       Out(nh3_nstorage_solid_no_poultry)
     ) P*
     Val(immobilization_rate_no_poultry, SolidManure::Solid);

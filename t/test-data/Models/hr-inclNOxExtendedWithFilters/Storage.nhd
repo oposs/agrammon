@@ -446,6 +446,8 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 
 ####################################################
 ##### n/tan into application liquid
+## immob eigentlich Netto 40% von TAN zu Norg -> zu Beginn (ohne Abzug NH3)
+## dafür NH3 basierend auf (TANin + TANout) / 2 * EF
 
 +immobilization
   print = 7
