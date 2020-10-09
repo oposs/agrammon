@@ -57,7 +57,7 @@ taxonomy = Livestock::Poultry::Housing
     Annual N flux into the housing.
   ++formula
     Val(n_excretion, Excretion)
-    - Val(n_free_range, Outdoor);
+    - Val(n_into_outdoor, Outdoor);
 
 +tan_into_housing
   print = 7d
@@ -69,7 +69,7 @@ taxonomy = Livestock::Poultry::Housing
     Annual N flux into the housing.
   ++formula
     Val(tan_excretion, Excretion)
-    - Val(tan_free_range, Outdoor);
+    - Val(tan_into_outdoor, Outdoor);
 
 +nh3_nhousing
   print = 5d

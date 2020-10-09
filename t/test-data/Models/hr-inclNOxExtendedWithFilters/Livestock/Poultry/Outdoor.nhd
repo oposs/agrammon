@@ -227,7 +227,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
         return 0;
     }
 
-+n_free_range
++n_into_outdoor
   print = 7d
   ++units
      en = kg N/year
@@ -239,7 +239,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Val(n_excretion, Excretion)   *
         ( (Out(free_range_days)/365) * (Out(free_range_hours)/24) );
 
-+tan_free_range
++tan_into_outdoor
   print = 7d
   ++units
      en = kg N/year
@@ -260,7 +260,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Annual free_range NH3 emission from poultry (grazing). 
   ++formula
-    Out(tan_free_range) * Tech(er_free_range);
+    Out(tan_into_outdoor) * Tech(er_free_range);
 
 +n2_free_range
   print = 5d
@@ -271,7 +271,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Annual free_range N2 emission from poultry (grazing). 
   ++formula
-    Out(n_free_range) * Tech(er_n2_free_range);
+    Out(n_into_outdoor) * Tech(er_n2_free_range);
 
 +no_free_range
   print = 5d
@@ -282,7 +282,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Annual free_range NO emission from poultry (grazing). 
   ++formula
-    Out(n_free_range) * Tech(er_no_free_range);
+    Out(n_into_outdoor) * Tech(er_no_free_range);
 
 +n2o_free_range
   print = 5d
@@ -293,7 +293,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Annual free_range N2O emission from poultry (grazing). 
   ++formula
-    Out(n_free_range) * Tech(er_n2o_free_range);
+    Out(n_into_outdoor) * Tech(er_n2o_free_range);
 
 
 +n_remain_free_range
@@ -305,7 +305,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Annual N remaining free_range (on pasture, etc.).
   ++formula
-    Out(n_free_range)
+    Out(n_into_outdoor)
     - Out(nh3_free_range) - Out(no_free_range) - Out(n2o_free_range);
 
  

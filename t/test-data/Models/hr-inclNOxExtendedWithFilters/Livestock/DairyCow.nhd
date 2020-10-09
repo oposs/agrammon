@@ -183,14 +183,14 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, DairyCow::Housing::Type) ) {
-            return Tech(er_n2_solid_Slurry)                    when 'Tied_Housing_Slurry';
-            return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_n2_solid_Slurry)                    when 'Loose_Housing_Slurry';
-            return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_n2_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
-            default { return 0; }
-      };
+    given ( Val(housing_type, DairyCow::Housing::Type) ) {
+      return Tech(er_n2_solid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2_solid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
 
 +er_no_nsolid
   print=all
@@ -199,14 +199,14 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, DairyCow::Housing::Type) ) {
-            return Tech(er_no_solid_Slurry)                    when 'Tied_Housing_Slurry';
-            return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_no_solid_Slurry)                    when 'Loose_Housing_Slurry';
-            return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_no_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
-            default { return 0; }
-      };
+    given ( Val(housing_type, DairyCow::Housing::Type) ) {
+      return Tech(er_no_solid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_no_solid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_no_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
 
 +er_n2o_nsolid
   print=all
@@ -215,14 +215,14 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, DairyCow::Housing::Type) ) {
-            return Tech(er_n2o_solid_Slurry)                    when 'Tied_Housing_Slurry';
-            return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_n2o_solid_Slurry)                    when 'Loose_Housing_Slurry';
-            return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_n2o_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
-            default { return 0; }
-      };
+    given ( Val(housing_type, DairyCow::Housing::Type) ) {
+      return Tech(er_n2o_solid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2o_solid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2o_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
 
 +er_n2_nliquid
   print=all
@@ -231,14 +231,14 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, DairyCow::Housing::Type) ) {
-            return Tech(er_n2_liquid_Slurry)                    when 'Tied_Housing_Slurry';
-            return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_n2_liquid_Slurry)                    when 'Loose_Housing_Slurry';
-            return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_n2_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
-            default { return 0; }
-      };
+    given ( Val(housing_type, DairyCow::Housing::Type) ) {
+      return Tech(er_n2_liquid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
 
 +er_no_nliquid
   print=all
@@ -247,14 +247,14 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, DairyCow::Housing::Type) ) {
-            return Tech(er_no_liquid_Slurry)                    when 'Tied_Housing_Slurry';
-            return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_no_liquid_Slurry)                    when 'Loose_Housing_Slurry';
-            return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_no_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
-            default { return 0; }
-      };
+    given ( Val(housing_type, DairyCow::Housing::Type) ) {
+      return Tech(er_no_liquid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_no_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_no_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
 
 +er_n2o_nliquid
   print=all
@@ -263,14 +263,14 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, DairyCow::Housing::Type) ) {
-            return Tech(er_n2o_liquid_Slurry)                    when 'Tied_Housing_Slurry';
-            return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_n2o_liquid_Slurry)                    when 'Loose_Housing_Slurry';
-            return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-            return Tech(er_n2o_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
-            default { return 0; }
-      };
+    given ( Val(housing_type, DairyCow::Housing::Type) ) {
+      return Tech(er_n2o_liquid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2o_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2o_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
 
 
 

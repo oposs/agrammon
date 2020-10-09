@@ -107,7 +107,74 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 
 ####################################################
-##### n/tan into livestock
+##### n input
+
++n_into_housing
+  format= %.0f
+  print = FluxSummaryLivestock
+  ++labels
+    sort = 101
+    en = Total N excretion
+    de = Total N Ausscheidung
+    fr = Excrétion de N totale
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all animals.
+  ++formula
+    Sum(n_into_housing, Livestock::OtherCattle::Housing) P+
+    Sum(n_into_housing, Livestock::DairyCow::Housing) P+
+    Sum(n_into_housing, Livestock::Pig::Housing) P+
+    Sum(n_into_housing, Livestock::FatteningPigs::Housing) P+
+    Sum(n_into_housing, Livestock::Equides::Housing) P+
+    Sum(n_into_housing, Livestock::SmallRuminants::Housing) P+
+    Sum(n_into_housing, Livestock::RoughageConsuming::Housing) P+
+    Sum(n_into_housing, Livestock::Poultry::Housing);
+
++n_into_yard
+  format= %.0f
+  print = FluxSummaryLivestock
+  ++labels
+    sort = 101
+    en = Total N excretion
+    de = Total N Ausscheidung
+    fr = Excrétion de N totale
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all animals.
+  ++formula
+    Sum(n_into_yard, Livestock::OtherCattle::Yard) P+
+    Sum(n_into_yard, Livestock::DairyCow::Yard) P+
+    Sum(n_into_yard, Livestock::Equides::Yard);
+
++n_into_grazing
+  format= %.0f
+  print = FluxSummaryLivestock
+  ++labels
+    sort = 101
+    en = Total N excretion
+    de = Total N Ausscheidung
+    fr = Excrétion de N totale
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all animals.
+  ++formula
+    Sum(n_into_grazing, Livestock::OtherCattle::Grazing) P+
+    Sum(n_into_grazing, Livestock::DairyCow::Grazing) P+
+    Sum(n_into_grazing, Livestock::Pig::Grazing) P+
+    Sum(n_into_grazing, Livestock::FatteningPigs::Grazing) P+
+    Sum(n_into_grazing, Livestock::Equides::Grazing) P+
+    Sum(n_into_grazing, Livestock::SmallRuminants::Grazing) P+
+    Sum(n_into_grazing, Livestock::RoughageConsuming::Grazing) P+
+    Sum(n_into_outdoor, Livestock::Poultry::Outdoor);
 
 +n_into_livestock
   format= %.0f
@@ -124,14 +191,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Total annual N excreted by all animals.
   ++formula
-    Sum(n_excretion, Livestock::OtherCattle::Excretion) P+
-    Sum(n_excretion, Livestock::DairyCow::Excretion) P+
-    Sum(n_excretion, Livestock::Pig::Excretion) P+
-    Sum(n_excretion, Livestock::FatteningPigs::Excretion) P+
-    Sum(n_excretion, Livestock::Equides::Excretion) P+
-    Sum(n_excretion, Livestock::SmallRuminants::Excretion) P+
-    Sum(n_excretion, Livestock::RoughageConsuming::Excretion) P+
-    Sum(n_excretion, Livestock::Poultry::Excretion);
+    Out(n_into_housing) P+
+    Out(n_into_yard);
+
+
+####################################################
+##### n/tan into livestock
 
 +tan_into_livestock
   format= %.0f
@@ -1001,7 +1066,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(tan_into_grazing,Livestock::Equides::Grazing) P+
      Sum(tan_into_grazing,Livestock::SmallRuminants::Grazing) P+
      Sum(tan_into_grazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(tan_free_range,Livestock::Poultry::Outdoor);
+     Sum(tan_into_outdoor,Livestock::Poultry::Outdoor);
 
 
 
