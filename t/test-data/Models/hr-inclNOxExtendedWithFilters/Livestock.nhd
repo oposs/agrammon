@@ -124,14 +124,14 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Total annual N excreted by all animals.
   ++formula
-    Sum(n_excretion, Livestock::OtherCattle) P+
-    Sum(n_excretion, Livestock::DairyCow) P+
-    Sum(n_excretion, Livestock::Pig) P+
-    Sum(n_excretion, Livestock::FatteningPigs) P+
-    Sum(n_excretion, Livestock::Equides) P+
-    Sum(n_excretion, Livestock::SmallRuminants) P+
-    Sum(n_excretion, Livestock::RoughageConsuming) P+
-    Sum(n_excretion, Livestock::Poultry);
+    Sum(n_excretion, Livestock::OtherCattle::Excretion) P+
+    Sum(n_excretion, Livestock::DairyCow::Excretion) P+
+    Sum(n_excretion, Livestock::Pig::Excretion) P+
+    Sum(n_excretion, Livestock::FatteningPigs::Excretion) P+
+    Sum(n_excretion, Livestock::Equides::Excretion) P+
+    Sum(n_excretion, Livestock::SmallRuminants::Excretion) P+
+    Sum(n_excretion, Livestock::RoughageConsuming::Excretion) P+
+    Sum(n_excretion, Livestock::Poultry::Excretion);
 
 +tan_into_livestock
   format= %.0f
@@ -175,8 +175,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
     hashsign( 
-      Sum(n_excretion, Livestock::OtherCattle) P+ 
-      Sum(n_excretion, Livestock::DairyCow)
+      Sum(n_excretion, Livestock::OtherCattle::Excretion) P+ 
+      Sum(n_excretion, Livestock::DairyCow::Excretion)
     );
 
 +has_pigs
@@ -190,8 +190,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
     hashsign( 
-      Sum(n_excretion, Livestock::Pig) P+ 
-      Sum(n_excretion, Livestock::FatteningPigs)
+      Sum(n_excretion, Livestock::Pig::Excretion) P+ 
+      Sum(n_excretion, Livestock::FatteningPigs::Excretion)
     );
 
 +has_others
@@ -206,9 +206,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Hash entry of 0, if N flux into livestock = 0.
   ++formula
     hashsign( 
-      Sum(n_excretion, Livestock::Equides) P+ 
-      Sum(n_excretion, Livestock::SmallRuminants) P+ 
-      Sum(n_excretion, Livestock::RoughageConsuming)
+      Sum(n_excretion, Livestock::Equides::Excretion) P+ 
+      Sum(n_excretion, Livestock::SmallRuminants::Excretion) P+ 
+      Sum(n_excretion, Livestock::RoughageConsuming::Excretion)
     );
 
 +has_poultry_LGO
@@ -219,9 +219,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     fr = 
   ++description
     Animal categories belonging to mastercategory *poultry_LGO* (layers, growers and other poultry). 
-    Hash entry of 1, if N flux out of housing > 0. Hash entry of 0, if N flux out of housing = 0.
+    Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
-    hashsign( Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry) );
+    hashsign( Sum(n_excretion_layers_growers_other_poultry,Livestock::Poultry) );
 
 +has_poultry_TB
   print = mastercategory,livestock
@@ -231,10 +231,10 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     fr = 
   ++description
     Animal categories belonging to mastercategory *poultry_TB* (turkeys and broilers). 
-    Hash entry of 1, if N flux out of housing > 0. Hash entry of 0, if N flux out of housing = 0.
+    Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
     hashsign( 
-      Sum(n_from_poultry_turkeys_broilers,Livestock::Poultry)
+      Sum(n_excretion_turkeys_broilers,Livestock::Poultry)
     );
 
 +has_no_poultry
@@ -269,7 +269,78 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 
 ####################################################
-##### n out livestock (into storage + directly applied)
+##### n out housing
+
++n_out_housing_liquid
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) out of housing.
+  ++formula
+    Sum(n_outhousing_liquid, Livestock::Pig::Housing) P+
+    Sum(n_outhousing_liquid, Livestock::FatteningPigs::Housing) P+
+    Sum(n_outhousing_liquid, Livestock::OtherCattle::Housing) P+
+    Sum(n_outhousing_liquid, Livestock::DairyCow::Housing);
+
++n_out_housing_solid
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) out of housing.
+  ++formula
+    Sum(n_outhousing_solid, Livestock::Pig::Housing) P+
+    Sum(n_outhousing_solid, Livestock::FatteningPigs::Housing) P+
+    Sum(n_outhousing_solid, Livestock::OtherCattle::Housing) P+
+    Sum(n_outhousing_solid, Livestock::DairyCow::Housing) P+
+    Sum(n_outhousing_solid, Livestock::Equides::Housing) P+
+    Sum(n_outhousing_solid, Livestock::SmallRuminants::Housing) P+
+    Sum(n_outhousing_solid, Livestock::RoughageConsuming::Housing) P+
+    Sum(n_outhousing_solid, Livestock::Poultry::Housing);
+ 
+####################################################
+
+
+
+####################################################
+##### n out yard
+
++n_out_yard_liquid
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) out of yard.
+  ++formula
+    Sum(n_outyard_liquid, Livestock::OtherCattle::Yard) P+
+    Sum(n_outyard_liquid, Livestock::DairyCow::Yard);
+
++n_out_yard_solid
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) out of yard.
+  ++formula
+    Sum(n_outyard_solid, Livestock::OtherCattle::Yard) P+
+    Sum(n_outyard_solid, Livestock::DairyCow::Yard) P+
+    Sum(n_outyard_solid, Livestock::Equides::Yard);
+ 
+####################################################
+
+
+
+####################################################
+##### n out livestock (from housing and yard into storage + directly applied)
 
 +n_out_livestock_liquid
   print = 3a
@@ -281,10 +352,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (liquid share) from housing and yard into the
     storage from all animal besides poultry.
   ++formula
-    Sum(n_liquid_from_pig,Livestock::Pig) P+
-    Sum(n_liquid_from_fattening_pig,Livestock::FatteningPigs) P+
-    Sum(n_liquid_from_cattle,Livestock::OtherCattle) P+
-    Sum(n_liquid_from_dairycow,Livestock::DairyCow);
+    Out(n_out_housing_liquid) P+
+    Out(n_out_yard_liquid);
 
 # eventually use 'tan_out_livestock_liquid_pigs_share' for liquid storage scaling!
 +n_out_livestock_liquid_pigs_share
@@ -313,15 +382,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (solid share) from housing and yard into the
     storage from all animals besides poultry.
   ++formula
-    Sum(n_solid_from_cattle,Livestock::OtherCattle) P+
-    Sum(n_solid_from_dairycow,Livestock::DairyCow) P+
-    Sum(n_solid_from_pig,Livestock::Pig) P+
-    Sum(n_solid_from_fattening_pig,Livestock::FatteningPigs) P+
-    Sum(n_solid_from_equides,Livestock::Equides) P+
-    Sum(n_solid_from_other,Livestock::SmallRuminants) P+
-    Sum(n_solid_from_other,Livestock::RoughageConsuming) P+
-    Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry) P+
-    Sum(n_from_poultry_turkeys_broilers,Livestock::Poultry);
+    Out(n_out_housing_solid) P+
+    Out(n_out_yard_solid);
 
 +n_out_livestock
   format= %.0f
@@ -347,6 +409,79 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 
 ####################################################
+##### n out livestock (into storage + directly applied)
+
++tan_out_housing_liquid
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) out of housing.
+  ++formula
+    Sum(tan_outhousing_liquid, Livestock::Pig::Housing) P+
+    Sum(tan_outhousing_liquid, Livestock::FatteningPigs::Housing) P+
+    Sum(tan_outhousing_liquid, Livestock::OtherCattle::Housing) P+
+    Sum(tan_outhousing_liquid, Livestock::DairyCow::Housing);
+
++tan_out_housing_solid
+  print = 4a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) as TAN from housing and yard into
+    the storage from all animals besides poultry.
+  ++formula
+    Sum(tan_outhousing_solid, Livestock::OtherCattle::Housing) P+
+    Sum(tan_outhousing_solid, Livestock::DairyCow::Housing) P+
+    Sum(tan_outhousing_solid, Livestock::Pig::Housing) P+
+    Sum(tan_outhousing_solid, Livestock::FatteningPigs::Housing) P+
+    Sum(tan_outhousing_solid, Livestock::Equides::Housing) P+
+    Sum(tan_outhousing_solid, Livestock::SmallRuminants::Housing) P+
+    Sum(tan_outhousing_solid, Livestock::RoughageConsuming::Housing) P+
+    Sum(tan_outhousing_solid, Livestock::Poultry::Housing);
+ 
+####################################################
+
+
+
+####################################################
+##### n out livestock (into storage + directly applied)
+
++tan_out_yard_liquid
+  print = 3a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (liquid share) out of yard.
+  ++formula
+    Sum(tan_outyard_liquid, Livestock::OtherCattle::Yard) P+
+    Sum(tan_outyard_liquid, Livestock::DairyCow::Yard);
+
++tan_out_yard_solid
+  print = 4a
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux (solid share) as TAN from yard and yard into
+    the storage from all animals besides poultry.
+  ++formula
+    Sum(tan_outyard_solid, Livestock::OtherCattle::Yard) P+
+    Sum(tan_outyard_solid, Livestock::DairyCow::Yard) P+
+    Sum(tan_outyard_solid, Livestock::Equides::Yard);
+  
+####################################################
+
+
+
+####################################################
 ##### tan out livestock (into storage + directly applied)
 
 +tan_out_livestock_liquid
@@ -359,10 +494,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (liquid share) as TAN from housing and yard into
     the storage from all animals besides poultry.
   ++formula
-    Sum(tan_liquid,Livestock::Pig) P+
-    Sum(tan_liquid,Livestock::FatteningPigs) P+
-    Sum(tan_liquid,Livestock::OtherCattle) P+
-    Sum(tan_liquid,Livestock::DairyCow);
+    Out(tan_out_housing_liquid) P+
+    Out(tan_out_yard_liquid);
 
 # eventually use for liquid storage scaling!
 +tan_out_livestock_liquid_pigs_share
@@ -376,8 +509,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     storage from pigs (scaled by total flux).
   ++formula
     ( 
-      scalar(Sum(tan_liquid,Livestock::Pig)) +
-      scalar(Sum(tan_liquid,Livestock::FatteningPigs))
+      scalar(Sum(tan_outhousing_liquid, Livestock::Pig::Housing)) +
+      scalar(Sum(tan_outhousing_liquid, Livestock::FatteningPigs::Housing))
     ) / 
     scalar(Out(tan_out_livestock_liquid));
 
@@ -391,15 +524,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (solid share) as TAN from housing and yard into
     the storage from all animals besides poultry.
   ++formula
-    Sum(tan_solid,Livestock::OtherCattle) P+
-    Sum(tan_solid,Livestock::DairyCow) P+
-    Sum(tan_solid,Livestock::Pig) P+
-    Sum(tan_solid,Livestock::FatteningPigs) P+
-    Sum(tan_solid,Livestock::Equides) P+
-    Sum(tan_solid,Livestock::SmallRuminants) P+
-    Sum(tan_solid,Livestock::RoughageConsuming) P+
-    Sum(tan_from_poultry_layers_growers_other_poultry,Livestock::Poultry) P+
-    Sum(tan_from_poultry_turkeys_broilers,Livestock::Poultry);
+    Out(tan_out_housing_solid) P+
+    Out(tan_out_yard_solid);
 
 +tan_out_livestock
   format= %.0f
@@ -425,7 +551,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 
 ####################################################
-#### nxox loss solid (Livestock + Storage?!)
+#### nxox loss solid (Housing + Storage?!) -> rename to nxox_housing_storage + split to n2,...
 
 +nxox_nsolid_dairycows_cattle
   print = 4a
@@ -546,7 +672,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Out(nxox_nsolid_poultry);
 
 ####################################################
-##### nxox liquid
+##### nxox liquid -> rename to nxox_housing_storage + split to n2,...
 
 +nxox_nliquid
   print = 4a
@@ -574,42 +700,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) P+
     Sum(n2o_nliquid,Livestock::FatteningPigs);
 
-+nxox_nliquid_cattle
-  print = 4a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (solid share) as TAN from housing and yard into
-    the storage from all animals besides poultry.
-  ++formula
-    Sum(n2_nliquid,Livestock::OtherCattle) P+
-    Sum(no_nliquid,Livestock::OtherCattle) P+
-    Sum(n2o_nliquid,Livestock::OtherCattle) P+
-
-    Sum(n2_nliquid,Livestock::DairyCow) P+
-    Sum(no_nliquid,Livestock::DairyCow) P+
-    Sum(n2o_nliquid,Livestock::DairyCow);
-
-+nxox_nliquid_pigs
-  print = 4a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux (solid share) as TAN from housing and yard into
-    the storage from all animals besides poultry.
-  ++formula
-    Sum(n2_nliquid,Livestock::Pig) P+
-    Sum(no_nliquid_pig,Livestock::Pig) P+
-    Sum(n2o_nliquid,Livestock::Pig) P+
-
-    Sum(n2_nliquid,Livestock::FatteningPigs) P+
-    Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) P+
-    Sum(n2o_nliquid,Livestock::FatteningPigs);
-
 ####################################################
 
 +nxox_n
@@ -627,29 +717,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Out(nxox_nsolid_pigs) +
     Out(nxox_nsolid_equides_other) +
     Out(nxox_nsolid_poultry);
-
-
-+nh3_nlivestock
-  print = 55
-  ++labels
-    en = Total Livestock NH3-Emissions
-    de = Total Tierproduktion NH3-Emission
-    fr = Emission de NH3 totale issue de la production animale
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from livestock from all animals.
-  ++formula
-        Sum(nh3_ncattle,Livestock::OtherCattle) P+
-        Sum(nh3_ndairycow,Livestock::DairyCow) P+
-        Sum(nh3_nother,Livestock::SmallRuminants) P+
-        Sum(nh3_nother,Livestock::RoughageConsuming) P+
-        Sum(nh3_npig,Livestock::Pig) P+
-        Sum(nh3_nfattening_pig,Livestock::FatteningPigs) P+
-        Sum(nh3_nequides,Livestock::Equides) P+
-        Sum(nh3_npoultry,Livestock::Poultry);
 
 +n2_nlivestock
   print = NOxFlux
@@ -855,6 +922,20 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
    Sum(nh3_nhousing,Livestock::Equides::Housing) P+
    Sum(nh3_nhousing,Livestock::Poultry::Housing);
 
++nh3_nyard
+  print = 2
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from all yards.
+  ++formula
+    Sum(nh3_nyard,Livestock::OtherCattle::Yard) P+
+    Sum(nh3_nyard,Livestock::Equides::Yard) P+
+    Sum(nh3_nyard,Livestock::DairyCow::Yard);
+
+# is this variable really necessary?
 +nh3_nhousing_and_yard
   format= %.0f
   print = LivestockSummary
@@ -870,30 +951,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual NH3 emission from all housings and yards.
   ++formula
-   Sum(nh3_nhousing,Livestock::OtherCattle::Housing) P+
-   Sum(nh3_nhousing,Livestock::DairyCow::Housing) P+
-   Sum(nh3_nhousing,Livestock::SmallRuminants::Housing) P+
-   Sum(nh3_nhousing,Livestock::RoughageConsuming::Housing) P+
-   Sum(nh3_nhousing,Livestock::Pig::Housing) P+
-   Sum(nh3_nhousing,Livestock::FatteningPigs::Housing) P+
-   Sum(nh3_nhousing,Livestock::Equides::Housing) P+
-   Sum(nh3_nhousing,Livestock::Poultry::Housing) P+
-   Sum(nh3_nyard,Livestock::OtherCattle::Yard) P+
-   Sum(nh3_nyard,Livestock::Equides::Yard) P+
-   Sum(nh3_nyard,Livestock::DairyCow::Yard);
-
-+nh3_nyard
-  print = 2
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from all yards.
-  ++formula
-    Sum(nh3_nyard,Livestock::OtherCattle::Yard) P+
-    Sum(nh3_nyard,Livestock::Equides::Yard) P+
-    Sum(nh3_nyard,Livestock::DairyCow::Yard);
+    Out(nh3_nhousing) P+
+    Out(nh3_nyard);
 
 +n_remain_pasture
   format= %.0f
@@ -944,4 +1003,21 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(tan_into_grazing,Livestock::RoughageConsuming::Grazing) P+
      Sum(tan_free_range,Livestock::Poultry::Outdoor);
 
+
+
++nh3_nlivestock
+  print = 55
+  ++labels
+    en = Total Livestock NH3-Emissions
+    de = Total Tierproduktion NH3-Emission
+    fr = Emission de NH3 totale issue de la production animale
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from livestock from all animals.
+  ++formula
+    Out(nh3_nhousing_and_yard) P+
+    Out(nh3_ngrazing);
 

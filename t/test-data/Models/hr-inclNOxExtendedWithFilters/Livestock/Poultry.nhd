@@ -151,7 +151,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
     if( Val(animalcategory, Poultry::Excretion) eq 'layers'  
         || Val(animalcategory, Poultry::Excretion) eq 'growers' 
         ||  Val(animalcategory, Poultry::Excretion) eq 'other_poultry'){
-        Val(n_outhousing, Poultry::Housing);
+        Val(n_outhousing_solid, Poultry::Housing);
     }else{
         return(0);
     }; 
@@ -167,7 +167,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++formula
     if( Val(animalcategory,Poultry::Excretion) eq 'turkeys'  
         || Val(animalcategory,Poultry::Excretion) eq 'broilers') {
-        Val(n_outhousing, Poultry::Housing);
+        Val(n_outhousing_solid, Poultry::Housing);
     }else{
         return(0);
     }; 
@@ -181,7 +181,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual N flux from poultry housing.
   ++formula
-    Val(n_outhousing, Poultry::Housing)
+    Val(n_outhousing_solid, Poultry::Housing)
 
 +tan_from_poultry_layers_growers_other_poultry
   print = 7
@@ -195,7 +195,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
         if( Val(animalcategory, Poultry::Excretion) eq 'layers'  
             || Val(animalcategory, Poultry::Excretion) eq 'growers' 
             ||  Val(animalcategory, Poultry::Excretion) eq 'other_poultry'){
-        Val(tan_outhousing, Poultry::Housing)
+        Val(tan_outhousing_solid, Poultry::Housing)
     }else{
         return(0);
     }; 
@@ -211,7 +211,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++formula
     if( Val(animalcategory, Poultry::Excretion) eq 'turkeys'
         || Val(animalcategory, Poultry::Excretion) eq 'broilers'){
-        Val(tan_outhousing, Poultry::Housing)
+        Val(tan_outhousing_solid, Poultry::Housing)
     }else{
         return(0);
     }; 
@@ -225,7 +225,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual N flux from poultry housing.
   ++formula 
-    Val(tan_outhousing, Poultry::Housing)
+    Val(tan_outhousing_solid, Poultry::Housing)
 
 +tan_liquid
   print = 7
