@@ -532,8 +532,8 @@ taxonomy = Livestock::DairyCow::Yard
   ++description
     Annual NH3 emission per anmimal from yard.
   ++formula
-    if(  Val(dairy_cows, Excretion) != 0 ){
-        return Out(nh3_nyard) / Val(dairy_cows, Excretion);
+    if(  Val(animals, Excretion) != 0 ){
+        return Out(nh3_nyard) / Val(animals, Excretion);
     } else { return 0;};
 
 +n_outyard

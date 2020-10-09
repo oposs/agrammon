@@ -173,6 +173,15 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** output ***
 
++animals
+  print = 9
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    In(dairy_cows);
+
 +n_excretion
   print = 7
   ++units
@@ -244,12 +253,3 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
      ) * Tech(feed_influence_on_Nsol);
   ++description
     Annual soluble N excreted by a specified number of animals.
-
-+dairy_cows
-  print = 9
-  ++units
-    en = -
-  ++formula
-    In(dairy_cows);
-  ++description
-    Number of dairy cows in barn.

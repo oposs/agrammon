@@ -231,13 +231,13 @@ Selects the emission rate and other correction factors for the specific housing 
   ++description
     Factor on what barn size does increase the regularized minimal, limited to 0.5.
   ++formula 
-    if((Val(dairy_cows, ..::Excretion) < In(dimensioning_barn) ) and (Val(dairy_cows, ..::Excretion) != 0)){ 
-        if(In(dimensioning_barn) >= (Val(dairy_cows, ..::Excretion) * 1.5)){   
+    if((Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0)){ 
+        if(In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5)){   
             return 0.5; 
         }
         else { 
-            if(Val(dairy_cows , ..::Excretion) > 0){ 
-                return((In(dimensioning_barn) / Val(dairy_cows, ..::Excretion)) -1);
+            if(Val(animals , ..::Excretion) > 0){ 
+                return((In(dimensioning_barn) / Val(animals, ..::Excretion)) -1);
             }
             else {
                  return 0;
