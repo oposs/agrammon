@@ -420,7 +420,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual NH3 emission from storage.
   ++formula
-    Val(nh3_nsolid, Storage::SolidManure);
+    Out(tan_into_storage_solid) P* 
+    (
+      Val(er_nh3_nstorage_solid_no_poultry, Storage::SolidManure::Solid) P+
+      Val(er_nh3_nstorage_solid_poultry, Storage::SolidManure::Poultry)
+    );
 
 +nh3_nstorage
   format= %.0f
@@ -458,7 +462,14 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN immobilized from TAN fraction in solid manure storage.
   ++formula
-    Val(immobilization_no_poultry, Storage::SolidManure);
+    (
+      Out(tan_into_storage_solid) P-
+      Out(nh3_nstorage_solid)
+    ) P*
+    (
+      Val(immobilization_rate_no_poultry, Storage::SolidManure::Solid) P+
+      Val(immobilization_rate_poultry, Storage::SolidManure::Poultry)
+    );
 
 ####################################################
 
