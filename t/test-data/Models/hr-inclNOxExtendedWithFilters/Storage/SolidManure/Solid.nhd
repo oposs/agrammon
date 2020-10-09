@@ -404,7 +404,7 @@ This option mainly targets users who predict emissions and are obliged to consid
 ####################################################
 #### nh3 loss
 
-+er_nh3_nstorage_solid
++er_nh3_nstorage_solid_no_poultry
   print = er_nh3,storage,solid
   ++units  
     en = kg N/year
@@ -437,7 +437,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     Annual NH3 emission from solid storage.
   ++formula
     Out(tan_into_storage_solid) P*
-    Out(er_nh3_nstorage_solid);
+    Out(er_nh3_nstorage_solid_no_poultry);
 
 ####################################################
 
@@ -448,7 +448,7 @@ This option mainly targets users who predict emissions and are obliged to consid
 ## immob eigentlich Netto 40% von TAN zu Norg -> zu Beginn (ohne Abzug NH3)
 ## dafür NH3 basierend auf (TANin + TANout) / 2 * EF
 
-+immobilization
++immobilization_rate_no_poultry
   print = 7
   ++units  
     en = kg N/year
@@ -458,8 +458,7 @@ This option mainly targets users who predict emissions and are obliged to consid
     Annual TAN immobilized from TAN fraction in solid manure storage.
   ++formula
     scale(
-      Out(tan_into_storage_solid) P-
-      Out(nh3_nsolid),
+      Val(has_no_poultry, ::Livestock),
       Tech(immobilizationrate_solid)
     );
 

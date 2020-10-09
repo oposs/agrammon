@@ -456,7 +456,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN immobilized from TAN fraction in solid manure storage.
   ++formula
-    Val(immobilization, Storage::SolidManure::Solid);
+    Val(immobilization_no_poultry, Storage::SolidManure);
 
 ####################################################
 

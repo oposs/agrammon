@@ -28,6 +28,49 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
 *** output ***
 
 
+
+####################################################
+#### tan into storage
+
++tan_into_storage_solid_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into solid storage from poultry.
+  ++formula
+    Val(tan_out_livestock_solid, ::Livestock) P*
+    Val(share_into_storage_solid_poultry, SolidManure::Poultry);
+
+####################################################
+
++nh3_nstorage_solid_no_poultry
+  print = nh3,storage,solid
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from solid storage.
+  ++formula
+    Val(tan_into_storage_solid, SolidManure::Solid) P*
+    Val(er_nh3_nstorage_solid_no_poultry, SolidManure::Solid);
+
++nh3_nstorage_solid_poultry
+  print = 1a
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from poultry manure storage.
+  ++formula
+    Out(tan_into_storage_solid_poultry) P* 
+    Val(er_nh3_nstorage_solid_poultry, SolidManure::Poultry); 
+
+
 +nh3_nsolid
   print = 1a
   ++units  
@@ -37,6 +80,36 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
   ++description
     Annual NH3 emission from storage of solid manure.
   ++formula
-    Val(nh3_nsolid, SolidManure::Solid) P+
-    Val(nh3_npoultry, SolidManure::Poultry);
+    Out(nh3_nstorage_solid_no_poultry) P+
+    Out(nh3_nstorage_solid_poultry);
 
+
++immobilization_no_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in solid manure storage.
+  ++formula
+    (
+      Val(tan_into_storage_solid, SolidManure::Solid) P-
+      Out(nh3_nstorage_solid_no_poultry)
+    ) P*
+    Val(immobilization_rate_no_poultry, SolidManure::Solid);
+ 
++immobilization_poultry
+  print = 7
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN immobilized from TAN fraction in poultry manure storage.
+  ++formula
+    (
+      Out(tan_into_storage_solid_poultry) P-
+      Out(nh3_nstorage_solid_poultry)
+    ) P*
+    Val(immobilization_rate_poultry, SolidManure::Poultry);
