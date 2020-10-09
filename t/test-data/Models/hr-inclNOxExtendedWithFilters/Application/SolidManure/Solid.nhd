@@ -141,7 +141,10 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2 emission rates for solid manure application from all animal categories except poultry.
   ++formula
-    Tech(er_n2_App_manure);
+    scale(
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_n2_App_manure)
+    );
 
 ##### er no
 +er_no_napplication_solid_no_poultry
@@ -153,7 +156,10 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2 emission rates for solid manure application from all animal categories except poultry.
   ++formula
-    Tech(er_no_App_manure);
+    scale(
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_no_App_manure)
+    );
 
 ##### er n2o
 +er_n2o_napplication_solid_no_poultry
@@ -165,6 +171,9 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2 emission rates for solid manure application from all animal categories except poultry.
   ++formula
-    Tech(er_n2o_App_manure);
+    scale(
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_n2o_App_manure)
+    );
 
 

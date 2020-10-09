@@ -33,6 +33,8 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 +Storage
 +Application::Slurry
 +Application::SolidManure
++Application::SolidManure::Solid
++Application::SolidManure::Poultry
 
 
 
@@ -57,7 +59,11 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual NH3 emission from solid manure application.
   ++formula
-    Val(nh3_napplication_solid, Application::SolidManure);
+    Val(tan_into_application_solid, ::Storage) P*
+    (
+      Val(er_nh3_napplication_solid_no_poultry, Application::SolidManure::Solid) P+
+      Val(er_nh3_napplication_solid_poultry, Application::SolidManure::Poultry)
+    );
 
 +nh3_napplication_liquid
   format = %.0f
@@ -133,7 +139,11 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual N2 emission from solid manure application.
   ++formula
-    Val(n2_napplication_solid, Application::SolidManure);
+    Val(n_into_application_solid, ::Storage) P*
+    (
+      Val(er_n2_napplication_solid_no_poultry, Application::SolidManure::Solid) P+
+      Val(er_n2_napplication_solid_poultry, Application::SolidManure::Poultry)
+    );
 
 +n2_napplication
   format = %.0f
@@ -186,8 +196,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual NO emission from solid manure application.
   ++formula
-    Val(no_napplication_solid, Application::SolidManure);
-
+    Val(n_into_application_solid, ::Storage) P*
+    (
+      Val(er_no_napplication_solid_no_poultry, Application::SolidManure::Solid) P+
+      Val(er_no_napplication_solid_poultry, Application::SolidManure::Poultry)
+    );
+    
 +no_napplication
   format = %.0f
   print = NOxFlux,no,application,total,all
@@ -239,7 +253,11 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual N2O emission from solid manure application.
   ++formula
-    Val(n2o_napplication_solid, Application::SolidManure)
+    Val(n_into_application_solid, ::Storage) P*
+    (
+      Val(er_n2o_napplication_solid_no_poultry, Application::SolidManure::Solid) P+
+      Val(er_n2o_napplication_solid_poultry, Application::SolidManure::Poultry)
+    );
 
 +n2o_napplication
   format = %.0f
