@@ -441,33 +441,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 
 
 ####################################################
-##### n into application liquid
-
-+n_into_application_liquid_pigs
-  print = newStorage
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for application.
-  ++formula
-    Val(n_out_livestock_liquid_pigs, Livestock) P-
-    Out(nh3_nstorage_liquid_pigs) P-
-    Val(nxox_nliquid_pigs, Livestock);
-
-+n_into_application_liquid_cattle
-  print = newStorage
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for application.
-  ++formula
-    Val(n_out_livestock_liquid_cattle, Livestock) P-
-    Out(nh3_nstorage_liquid_cattle) P-
-    Val(nxox_nliquid_cattle, Livestock);
+##### n/tan into application liquid
 
 +n_into_application_liquid
   print = newStorage
@@ -478,42 +452,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for application.
   ++formula
-    Out(n_into_application_liquid_pigs) P+
-    Out(n_into_application_liquid_cattle);
-
-####################################################
-
-
-####################################################
-##### tan into application liquid
-
-+tan_into_application_liquid_pigs
-  print = newStorage
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for application.
-  ++formula
-    Val(tan_out_livestock_liquid_pigs, Livestock) P-
-    Out(nh3_nstorage_liquid_pigs) P-
-    Val(nxox_nliquid_pigs, Livestock) P+
-    Out(mineralization_liquid_pigs);
-
-+tan_into_application_liquid_cattle
-  print = newStorage
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux out of storage for application.
-  ++formula
-    Val(tan_out_livestock_liquid_cattle, Livestock) P-
-    Out(nh3_nstorage_liquid_cattle) P-
-    Val(nxox_nliquid_cattle, Livestock) P+
-    Out(mineralization_liquid_cattle);
+    Val(n_out_livestock_liquid, Livestock) P-
+    Out(nh3_nstorage_liquid) P-
+    Val(nxox_nliquid, Livestock);
 
 +tan_into_application_liquid
   print = newStorage
@@ -524,19 +465,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux as TAN out of storage for application.
   ++formula
-    Out(tan_into_application_liquid_pigs) P+
-    Out(tan_into_application_liquid_cattle);
+    Val(tan_out_livestock_liquid, Livestock) P-
+    Out(nh3_nstorage_liquid) P-
+    Val(nxox_nliquid, Livestock) P+
+    Out(mineralization_liquid);
 
-+tan_into_application_liquid_pigsratio_scalar
-  print = newApplication
-  ++units
-    en = -
-    de = -
-    fr = -
-  ++description
-    Scalar. Pigs share of annual liquid N flux as TAN from storage into application (scaled by total flux).
-  ++formula
-    scalar( Out(tan_into_application_liquid_pigs) ) / scalar( Out(tan_into_application_liquid) );
 
 ####################################################
 
@@ -577,7 +510,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 
 
 ####################################################
-##### n/tan into application (remove later?)
+##### n/tan into application (move later to application?)
 
 +n_into_application
   format= %.0f
