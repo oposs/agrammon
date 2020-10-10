@@ -296,7 +296,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Out(n_into_outdoor) * Tech(er_n2o_free_range);
 
 
-+n_remain_free_range
++n_remain_outdoor
   print = 7d
   ++units
      en = kg N/year
@@ -305,7 +305,23 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Annual N remaining free_range (on pasture, etc.).
   ++formula
-    Out(n_into_outdoor)
-    - Out(nh3_free_range) - Out(no_free_range) - Out(n2o_free_range);
+    Out(n_into_outdoor) - 
+    Out(nh3_free_range) - 
+    Out(no_free_range) - 
+    Out(n2o_free_range);
+
++tan_remain_outdoor
+  print = 7d
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N remaining free_range (on pasture, etc.).
+  ++formula
+    Out(tan_into_outdoor) - 
+    Out(nh3_free_range) - 
+    Out(no_free_range) - 
+    Out(n2o_free_range);
 
  

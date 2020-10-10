@@ -187,7 +187,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++formula
     Val(grazing_days,GrazingInput);
 
-+n_remain_pasture
++n_remain_grazing
   print = 7a
   ++units
      en = kg N/year
@@ -197,8 +197,25 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual N input on pastures.
   ++formula
     Out(n_into_grazing) -
-    Out(nh3_ngrazing) - Out(n2_ngrazing) -
-    Out(no_ngrazing) - Out(n2o_ngrazing);
+    Out(nh3_ngrazing) - 
+    Out(n2_ngrazing) -
+    Out(no_ngrazing) - 
+    Out(n2o_ngrazing);
+
++tan_remain_grazing
+  print = 7a
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N input on pastures.
+  ++formula
+    Out(tan_into_grazing) -
+    Out(nh3_ngrazing) - 
+    Out(n2_ngrazing) -
+    Out(no_ngrazing) - 
+    Out(n2o_ngrazing);
 
 +animalcategory
   print = 9
