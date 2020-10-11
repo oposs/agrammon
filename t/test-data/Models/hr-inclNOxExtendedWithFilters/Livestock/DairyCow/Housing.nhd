@@ -88,18 +88,20 @@ taxonomy = Livestock::DairyCow::Housing
   ++description
     Annual NH3 emission from dairy cow housing systems per animal place.
   ++formula
-    Out(tan_into_housing) * 
-    Val(k_grazing, Housing::KGrazing) * 
-    Val(er_housing, Housing::Type) * 
-    Val(k_area, Housing::Type) * 
-    (
-      (1 - Val(c_feeding_boxes, Housing::Type)) * 
-      (1 - Val(c_UNECE, Housing::Floor)) * 
-      (1 - Val(c_housing_floor, Housing::Floor)) * 
-      (1 - Val(c_housing_climate, Housing::ClimateAir)) * 
-      (1 - Val(c_housing_air, Housing::ClimateAir))
-    ) * 
-    Val(c_free_factor_housing, Housing::CFreeFactor);
+    my $c_housing = Val(k_grazing, Housing::KGrazing) * 
+                    Val(er_housing, Housing::Type) * 
+                    Val(k_area, Housing::Type) * 
+                    (
+                      (1 - Val(c_feeding_boxes, Housing::Type)) * 
+                      (1 - Val(c_UNECE, Housing::Floor)) * 
+                      (1 - Val(c_housing_floor, Housing::Floor)) * 
+                      (1 - Val(c_housing_climate, Housing::ClimateAir)) * 
+                      (1 - Val(c_housing_air, Housing::ClimateAir))
+                    ) * 
+                    Val(c_free_factor_housing, Housing::CFreeFactor);
+    #FIXME: Check: Is it in any way even possible that nh3_nhousing > tan_into_housing???
+    $c_housing = 1 unless $c_housing < 1;
+    Out(tan_into_housing) * $c_housing;
  
 +n_outhousing
   print = 7c 
@@ -110,12 +112,7 @@ taxonomy = Livestock::DairyCow::Housing
   ++description
     Annual N flux out of the housing.
   ++formula
-    if ( Out(n_into_housing) > Out(nh3_nhousing) ) {
-    	Out(n_into_housing) - Out(nh3_nhousing);
-    } else {
-      #FIXME: Check: Is it in any way even possible that nh3_nhousing > tan_into_housing?
-      return 0; 
-    }
+    Out(n_into_housing) - Out(nh3_nhousing);
 
 +tan_outhousing
   print = 9c
@@ -126,11 +123,7 @@ taxonomy = Livestock::DairyCow::Housing
   ++description
     Annual N flux as TAN out of the housing.
   ++formula
-    if ( Out(tan_into_housing) > Out(nh3_nhousing) ) {
-    	Out(tan_into_housing) - Out(nh3_nhousing);
-    } else { 
-      return 0; 
-    }
+    Out(tan_into_housing) - Out(nh3_nhousing);
 
 +n_outhousing_liquid
   print = 7c
@@ -165,7 +158,7 @@ taxonomy = Livestock::DairyCow::Housing
   ++description
     Annual N flux out of housing from solid fraction of manure.
   ++formula
-    Out(n_outhousing) * (1 - Val(share_liquid, Housing::Type));
+    Out(n_outhousing) - Out(n_outhousing_liquid);
 
 +tan_outhousing_solid
   print = 7c
@@ -176,4 +169,4 @@ taxonomy = Livestock::DairyCow::Housing
   ++description
     Annual N flux as TAN out of housing from solid fraction of manure.
   ++formula
-    Out(tan_outhousing) * (1 - Val(share_liquid, Housing::Type));
+    Out(tan_outhousing) - Out(tan_outhousing_liquid);
