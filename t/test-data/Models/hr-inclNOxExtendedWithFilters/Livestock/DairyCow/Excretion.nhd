@@ -182,6 +182,15 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++formula
     In(dairy_cows);
 
++animalcategory
+  print = 9
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    In(animalcategory);
+
 +n_excretion_animal
   print = 7,check
   ++units
