@@ -494,7 +494,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     ( 
       scalar(Sum(n_liquid_from_pig,Livestock::Pig)) +
-      scalar(Sum(n_liquid_from_fattening_pig,Livestock::FatteningPigs))
+      scalar(Sum(n_outhousing_liquid, Livestock::FatteningPigs::Housing))
     ) / 
     scalar(Out(n_out_livestock_liquid));
 
