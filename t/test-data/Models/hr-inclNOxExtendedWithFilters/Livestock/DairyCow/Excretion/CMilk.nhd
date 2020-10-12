@@ -58,14 +58,14 @@ Acker- und Futterbau 2009 (GRUDAF), Agrarforschung 16.2.
   ++units  
     en = -
   ++description
-    For milk yield > 6500
+    For milk yield > standard milk yield
 
 +a_low
   value = 0.1
   ++units  
     en = -
   ++description
-    For milk yield < 6500
+    For milk yield < standard milk yield
 
 
 *** output ***

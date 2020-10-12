@@ -223,7 +223,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual total N excreted by a specified number of animals.
+    Annual total N excreted by the specified number of animals.
   ++formula
     Out(n_excretion_animal) *
     Out(animals);
@@ -235,17 +235,15 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual soluble N excreted by a specified number of animals.
+    Annual soluble N excreted by the specified number of animals.
   ++formula
     my $exc = Tech(standard_N_excretion);
     $exc = Out(n_excretion_animal) / 
            Val(cmilk_yield, Excretion::CMilk) /
            Val(c_feed_ration, Excretion::CFeed) unless lc In(inp_n_excretion) eq 'standard';
-    (
-      Tech(share_Nsol) - Tech(feed_influence_on_Nsol)
-    ) * 
-    $exc *
-    Val(cmilk_yield, Excretion::CMilk) *
-    Out(animals) + 
-    Out(n_excretion) * 
-    Tech(feed_influence_on_Nsol);
+    # n related to milk yield
+    my $exc_milkyield = $exc * Out(animals) * Val(cmilk_yield, Excretion::CMilk);
+    # tan related to milk yield
+    $exc_milkyield * Tech(share_Nsol) +
+    # tan related to feeding
+    (Out(n_excretion) - $exc_milkyield) * Tech(feed_influence_on_Nsol);
