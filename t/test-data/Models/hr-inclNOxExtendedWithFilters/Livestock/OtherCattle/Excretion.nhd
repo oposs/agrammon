@@ -343,6 +343,24 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** output ***
 
++animals
+  print = 9
+  ++units
+    en = -
+  ++description
+    Number of animals for the selected cattle category in barn.
+  ++formula
+    In(animals);
+
++animalcategory
+  print = 9
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    In(animalcategory);
+
 +standard_N_excretion
   print = 7
   ++units
@@ -411,21 +429,3 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual soluble N excreted by an animalgroup of selected cattle category.
   ++formula
      Out(share_Nsol) * Out(n_excretion);
-
-+animals
-  print = 9
-  ++units
-    en = -
-  ++description
-    Number of animals for the selected cattle category in barn.
-  ++formula
-    In(animals);
-
-+animalcategory
-  print = 9
-  ++units
-    en = -
-  ++description
-    Animal category
-  ++formula
-    In(animalcategory);

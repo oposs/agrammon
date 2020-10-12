@@ -625,15 +625,23 @@ taxonomy = Livestock::OtherCattle::Yard
   ++description
     Reduction factor for the emission due to the use of the floor properties in housing systems.
   ++formula
-    if (In(floor_properties_exercise_yard_SHL) eq 'solid_floor'){
+    given ( In(floor_properties_exercise_yard_SHL) ) {
+      when 'solid_floor' {
          return Tech(red_floor_properties_solid_floor);
-    } elsif (In(floor_properties_exercise_yard_SHL) eq 'unpaved_floor'){
+      } 
+      when  'unpaved_floor' {
          return Tech(red_floor_properties_unpaved_floor);
-    } elsif (In(floor_properties_exercise_yard_SHL) eq 'perforated_floor'){
+      } 
+      when  'perforated_floor' {
          return Tech(red_floor_properties_perforated_floor);
-    } elsif (In(floor_properties_exercise_yard_SHL) eq 'paddock_or_pasture_used_as_exercise_yard'){
+      } 
+      when  'paddock_or_pasture_used_as_exercise_yard' {
          return Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
-    } else{ return 0;};
+      } 
+      default { 
+        return 0;
+      }
+    }
 
 +c_floor_properties_exercise_yard_LU
   print = 15
