@@ -52,9 +52,9 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
         isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
                 'Get another filter group back after adding scalar';
         is +$group, 42, 'Original filter group is not changed in place';
-        is +$_, 48, 'Total numeric value is correct after adding scalar';
+        is +$_, 46, 'Total numeric value is correct after adding scalar';
         is-deeply norm(.results-by-filter-group),
-                norm([{ac => 'blue cow'} => 39, { ac => 'pink cow' } => 9]),
+                norm([{ac => 'blue cow'} => 37, { ac => 'pink cow' } => 9]),
                 'Correct results by filter group after adding scalar';
     }
 }
