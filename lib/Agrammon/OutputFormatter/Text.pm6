@@ -69,7 +69,7 @@ sub render-filters(@module-lines, Agrammon::Outputs::FilterGroupCollection $coll
         my %filters := .key;
         my $value := .value;
         my @filters = %filters.map: { .key ~ '=' ~ .value };
-        for @filters.kv -> $idx, $filter-id {
+        for (@filters || '(Uncategorized)').kv -> $idx, $filter-id {
             my $padding = ' ' x $longest-filter - $filter-id.chars;
             push @module-lines, $idx == 0
                     ?? "$prefix  * $filter-id$padding    $value $unit"
