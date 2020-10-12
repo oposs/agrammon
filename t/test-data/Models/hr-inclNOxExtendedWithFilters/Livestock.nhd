@@ -300,7 +300,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Animal categories belonging to mastercategory _cattle_ (dairy cows and other cattle). 
     Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
-    hashsign( 
+    sign( 
       Sum(n_excretion, Livestock::OtherCattle::Excretion) P+ 
       Sum(n_excretion, Livestock::DairyCow::Excretion)
     );
@@ -315,7 +315,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Animal categories belonging to mastercategory _pigs_ (fattening pigs and other pigs). 
     Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
-    hashsign( 
+    sign( 
       Sum(n_excretion, Livestock::Pig::Excretion) P+ 
       Sum(n_excretion, Livestock::FatteningPigs::Excretion)
     );
@@ -331,7 +331,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     roughage consuming). Hash entry of 1, if N flux into livestock > 0. 
     Hash entry of 0, if N flux into livestock = 0.
   ++formula
-    hashsign( 
+    sign( 
       Sum(n_excretion, Livestock::Equides::Excretion) P+ 
       Sum(n_excretion, Livestock::SmallRuminants::Excretion) P+ 
       Sum(n_excretion, Livestock::RoughageConsuming::Excretion)
@@ -347,7 +347,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Animal categories belonging to mastercategory *poultry_LGO* (layers, growers and other poultry). 
     Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
-    hashsign( Sum(n_excretion_layers_growers_other_poultry,Livestock::Poultry) );
+    sign( Sum(n_excretion_layers_growers_other_poultry,Livestock::Poultry) );
 
 +has_poultry_TB
   print = mastercategory,livestock
@@ -359,7 +359,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Animal categories belonging to mastercategory *poultry_TB* (turkeys and broilers). 
     Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
-    hashsign( 
+    sign( 
       Sum(n_excretion_turkeys_broilers,Livestock::Poultry)
     );
 
