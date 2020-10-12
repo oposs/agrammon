@@ -46,6 +46,19 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
 }
 
 {
+    my $group = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 4, {ac => 'pink cow'} => 7, {ac => 'blue cow'} => 31];
+    given $group.add(2) {
+        isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
+                'Get another filter group back after adding scalar';
+        is +$group, 42, 'Original filter group is not changed in place';
+        is +$_, 46, 'Total numeric value is correct after adding scalar';
+        is-deeply norm(.results-by-filter-group),
+                norm([{ac => 'blue cow'} => 37, { ac => 'pink cow' } => 9]),
+                'Correct results by filter group after adding scalar';
+    }
+}
+{
     my $group-a = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
             [{ac => 'blue cow'} => 4, {ac => 'pink cow'} => 7, {ac => 'blue cow'} => 31];
     my $group-b = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
