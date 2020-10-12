@@ -192,9 +192,25 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     Correction factor for number of mixing frequency in storage, accoording to
     selected levels.
   ++formula
+    # needs warning here
     my $mixing = In(mixing_frequency) // '7_to_12_times_per_year';
-    # return $TE->{"c_mixing_$mixing"};
     return $TE->{'c_mixing_' . $mixing};
+
++depth
+  ++units
+    en = m
+  ++description
+    Depth of slurry storage.
+  ++formula
+    In(depth)
+
++volume
+  ++units
+    en = m3
+  ++description
+    Volume of slurry storage.
+  ++formula
+    In(volume)
 
 +surface_area
   print = 15
@@ -205,14 +221,13 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
   ++description
     Surface area of slurry storage.
   ++formula
-    if (not defined In(depth) or In(depth) <= 0) {
+    if (not defined In(depth) or Out(depth) <= 0) {
         return 0;
-    }
-    else {
-        return In(volume) / In(depth);
+    } else {
+        return Out(volume) / Out(depth);
     }
 
-+nh3_nliquid_pigs
++nh3_ntank_liquid_pigs
   print = newStorage
   ++units
     en = kg N/year
@@ -221,10 +236,12 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
   ++description
     Annual NH3 emission from slurry storage.
   ++formula
-    Val(ef_liquid_pigs, Slurry::EFLiquid) * Out(surface_area) * Out(c_mixing)
-    * Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;
+    Val(er_nh3_storage_liquid_pigs, Slurry::EFLiquid) * 
+    Out(surface_area) * 
+    Out(c_mixing) * 
+    Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;
 
-+nh3_nliquid_cattle
++nh3_ntank_liquid_cattle
   print = newStorage
   ++units
     en = kg N/year
@@ -233,24 +250,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
   ++description
     Annual NH3 emission from slurry storage.
   ++formula
-    Val(ef_liquid_cattle, Slurry::EFLiquid) * Out(surface_area) * Out(c_mixing)
-    * Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;
-
-+nh3_nliquid
-  print = 1a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from slurry storage.
-  ++formula
-    Out(nh3_nliquid_pigs) + Out(nh3_nliquid_cattle);
-
-+volume
-  ++units
-    en = m3
-  ++description
-    Volume of Storage.
-  ++formula
-    In(volume)
+    Val(er_nh3_storage_liquid_cattle, Slurry::EFLiquid) * 
+    Out(surface_area) * 
+    Out(c_mixing) * 
+    Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;

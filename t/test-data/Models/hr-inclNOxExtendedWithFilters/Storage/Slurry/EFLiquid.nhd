@@ -323,40 +323,8 @@ T. Kupper).
 
 *** output ***
 
-+ef_cattle_liquid
-  print = 20
-  ++units  
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
-  ++description
-    Emission factor of a specific liquid storage for cattle.
-  ++formula
-#    my $key = "ef_cattle_" . In(cover_type);
-#    return Tech($key);
-     if (not defined In(cover_type)) {
-         return 0;
-     }
-     return $TE->{'ef_cattle_'.In(cover_type)};
     
-+ef_pigs_liquid
-  print = 20
-  ++units  
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
-  ++description
-    Emission factor of a specific liquid storage for pig.
-  ++formula
-#    my $key = "ef_pig_" . In(cover_type);
-#    return Tech($key);
-     if (not defined In(cover_type)) {
-         return 0;
-     }
-     return $TE->{'ef_pig_'.In(cover_type)};
-
-    
-+ef_liquid_pigs
++er_nh3_storage_liquid_pigs
   print = newStorage
   ++units  
     en =  kg N/m2/year
@@ -365,26 +333,34 @@ T. Kupper).
   ++description
     Scaled emission factor of a specific liquid storage for pig slurry.
   ++formula
+    # get er pigs
+    if (not defined In(cover_type)) {
+        writeLog({
+          en => 'FIX: Invalid values for "cover_type" (' . In(cover_type) . ')' . "\n",
+          de => 'FIX: Ungültige Eingabe für "cover_type" (' . In(cover_type) . ')' . "\n",
+          fr => 'FIX: Entrée non valable pour "cover_type" (' . In(cover_type) . ')' . "\n"
+        });
+       return 0;
+    }
+    my $er_pigs = $TE->{'ef_pig_'.In(cover_type)};
+    # scale er pigs
     if ( lc In(contains_pig_manure) eq 'no' ) {
       return 0;
     } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'no' ) {
-      return Out(ef_pigs_liquid);
+      return $er_pigs;
     } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'yes' ) {
-      return Val(n_out_livestock_liquid_pigs_share, ::Livestock) * Out(ef_pigs_liquid);
+      return Val(n_out_livestock_liquid_pigs_share, ::Livestock) * $er_pigs;
     } else {
       writeLog({
-        en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')'
-          . ' and/or "Contains pigs slurry" (' . In(contains_pig_manure) . ')' . "\n",
-        de => 'Ungültige Eingabe für "Enthält Rindergülle" (' . In(contains_cattle_manure) . ')'
-          . ' und/oder "Enthält Schweinegülle" (' . In(contains_pig_manure) . ')' . "\n",
-        fr => 'Entrée non valable pour "Contient du lisier de bovin" (' . In(contains_cattle_manure) . ') '
-          . ' et/ou "Contient du lisier de porc" (' . In(contains_pig_manure) . ')' . "\n"
+        en => 'Invalid values for "Contains pigs slurry" (' . In(contains_pig_manure) . ')' . "\n",
+        de => 'Ungültige Eingabe für "Enthält Schweinegülle" (' . In(contains_pig_manure) . ')' . "\n",
+        fr => 'Entrée non valable pour "Contient du lisier de porc" (' . In(contains_pig_manure) . ')' . "\n"
       });
-      return Val(n_out_livestock_liquid_pigs_share, ::Livestock) * Out(ef_pigs_liquid);
+      return Val(n_out_livestock_liquid_pigs_share, ::Livestock) * $er_pigs;
     }
 
     
-+ef_liquid_cattle
++er_nh3_storage_liquid_cattle
   print = newStorage
   ++units  
     en =  kg N/m2/year
@@ -393,12 +369,24 @@ T. Kupper).
   ++description
     Scaled emission factor of a specific liquid storage for cattle slurry.
   ++formula
+    # get er cattle
+    if (not defined In(cover_type)) {
+       return 0;
+    }
+    my $er_cattle = $TE->{'ef_cattle_'.In(cover_type)};
     if ( lc In(contains_cattle_manure) eq 'no' ) {
       return 0;
     } elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {
-      return Out(ef_cattle_liquid);
+      return $er_cattle;
+    } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'yes' ) {
+      return (1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock)) * $er_cattle;
     } else {
-      return (1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock)) * Out(ef_cattle_liquid);
+      writeLog({
+        en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')' . "\n",
+        de => 'Ungültige Eingabe für "Enthält Rindergülle" (' . In(contains_cattle_manure) . ')' . "\n",
+        fr => 'Entrée non valable pour "Contient du lisier de bovin" (' . In(contains_cattle_manure) . ')' . "\n"
+      });
+      return (1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock)) * $er_cattle;
     }
 
  

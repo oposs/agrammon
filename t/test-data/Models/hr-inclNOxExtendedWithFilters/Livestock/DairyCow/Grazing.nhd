@@ -173,8 +173,8 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual NH3 emission per dairy cow from grazing.
   ++formula
-    if(  Val(dairy_cows, Excretion) != 0 ){
-        return Out(nh3_ngrazing) / Val(dairy_cows, Excretion);
+    if(  Val(animals, Excretion) != 0 ){
+        return Out(nh3_ngrazing) / Val(animals, Excretion);
     } else { return 0;}
  
 +grazing_days

@@ -21,22 +21,4 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
 
 *** external ***
 
-+::Livestock
-+SolidManure::Poultry
-+SolidManure::Solid
-
 *** output ***
-
-
-+nh3_nsolid
-  print = 1a
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from storage of solid manure.
-  ++formula
-    Val(nh3_nsolid, SolidManure::Solid) P+
-    Val(nh3_npoultry, SolidManure::Poultry);
-
