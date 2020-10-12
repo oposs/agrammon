@@ -200,27 +200,21 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual mean total N excreted per animal.
   ++formula
-    #FIXME: Add warning if +/-75% from standard
     if ( lc In(inp_n_excretion) eq 'standard' ) {
       Tech(standard_N_excretion) *
       Val(cmilk_yield, Excretion::CMilk) *
       Val(c_feed_ration, Excretion::CFeed);
     } else {
+      if ( (In(inp_n_excretion) < 0.25 * Tech(standard_N_excretion)) or 
+           (In(inp_n_excretion) > 1.75 * Tech(standard_N_excretion)) ) {
+        writeLog({
+            en => "TODO: Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
+            de => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
+            fr => "TODO: Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
+        });
+      }
       In(inp_n_excretion);
     };
-    # my $exc = Tech(standard_N_excretion);
-    # $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    # if ( ($exc < 0.25 * Tech(standard_N_excretion)) or ($exc > 1.75 * Tech(standard_N_excretion))) {
-    #     writeLog({
-    #         en => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
-    #         de => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
-    #         fr => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
-    #     });
-    # }
-    # $exc = $exc * Val(cmilk_yield,   Excretion::CMilk)
-    #       * Val(c_feed_ration, Excretion::CFeed)
-    #       * In(dairy_cows);
-    # return $exc;
 
 +n_excretion
   print = 7
