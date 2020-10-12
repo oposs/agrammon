@@ -71,7 +71,7 @@ Acker- und Futterbau 2009 (GRUDAF), Agrarforschung 16.2.
 *** output ***
 
 +milk_yield
-  print = milk_yield,excretion,dairy_cows
+  print = milk_yield,dairy_cows
   ++units 
     en = -
   ++description
@@ -80,7 +80,7 @@ Acker- und Futterbau 2009 (GRUDAF), Agrarforschung 16.2.
     In(milk_yield);
 
 +cmilk_yield
-  print = milk_yield,excretion,dairy_cows
+  print = c_excretion,dairy_cows
   ++units 
     en = -
   ++description
