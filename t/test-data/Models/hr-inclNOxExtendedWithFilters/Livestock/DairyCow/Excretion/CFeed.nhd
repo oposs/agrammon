@@ -20,16 +20,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** input ***
 
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-    de = ignorieren
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
-
 *** technical ***
 
 *** external ***
@@ -41,16 +31,15 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** output ***
 
 +c_feed_ration
-  print = 15
+  print = feed,excretion,dairy_cows
   ++units 
     en = -
   ++description
     Feed ration correction factor for annual N excretion.
   ++formula
-          1 + 
-         (Val(c_summer_ration, CFeedSummerRatio) + 
-          Val(c_winter_ration, CFeedWinterRatio) +
-          Val(c_concentrates_summer, CConcentrates) +
-          Val(c_concentrates_winter, CConcentrates)
-          );
+    1 + 
+    Val(c_summer_ration, CFeedSummerRatio) + 
+    Val(c_winter_ration, CFeedWinterRatio) +
+    Val(c_concentrates_summer, CConcentrates) +
+    Val(c_concentrates_winter, CConcentrates);
 

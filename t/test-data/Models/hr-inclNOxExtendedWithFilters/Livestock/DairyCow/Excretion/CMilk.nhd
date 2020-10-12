@@ -70,20 +70,25 @@ Acker- und Futterbau 2009 (GRUDAF), Agrarforschung 16.2.
 
 *** output ***
 
++milk_yield
+  print = milk_yield,excretion,dairy_cows
+  ++units 
+    en = -
+  ++description
+    Milk yield.
+  ++formula
+    In(milk_yield);
+
 +cmilk_yield
-  print = 15
+  print = milk_yield,excretion,dairy_cows
   ++units 
     en = -
   ++description
     Milk yield correction factor for annual N excretion.
   ++formula
-    my $a;
-    if (In(milk_yield) > Tech(standard_milk_yield)) {
-        $a = Tech(a_high);
+    if ( Out(milk_yield) > Tech(standard_milk_yield) ) {
+      1 + (Out(milk_yield) - Tech(standard_milk_yield)) / 1000 * Tech(a_high);
     }
     else {
-        $a = Tech(a_low);
+      1 + (Out(milk_yield) - Tech(standard_milk_yield)) / 1000 * Tech(a_low);
     }
-  
-    return (1 + ( (In(milk_yield)
-                   - Tech(standard_milk_yield))/1000 ) * $a);

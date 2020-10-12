@@ -174,7 +174,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** output ***
 
 +animals
-  print = 9
+  print = animals,excretion,dairy_cows
   ++units
     en = -
   ++description
@@ -183,7 +183,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(dairy_cows);
 
 +animalcategory
-  print = 9
+  print = animalcategory,excretion,dairy_cows
   ++units
     en = -
   ++description
@@ -192,7 +192,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(animalcategory);
 
 +n_excretion_animal
-  print = 7,check
+  print = n,excretion,dairy_cows
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -217,7 +217,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     };
 
 +n_excretion
-  print = 7
+  print = n,excretion,dairy_cows
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -229,7 +229,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Out(animals);
 
 +tan_excretion
-  print = 7
+  print = tan,excretion,dairy_cows
   ++units
     en = kg N/year
     de = kg N/Jahr
