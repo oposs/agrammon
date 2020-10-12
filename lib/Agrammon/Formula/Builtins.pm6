@@ -20,12 +20,6 @@ sub get-builtins is export {
         filterGroup => &filter-group,
         # Turn a filter group into a simple scalar value
         scalar => &filter-group-scalar,
-        # Get sign of all values in a filter group
-        hashsign => -> $filter-group {
-            die "hashsign operator expects a filter group as its first argument"
-                    unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
-            $filter-group.hashsign()
-        },
         # Scale all values in a filter group by the given multiplier
         scale => -> $filter-group, $multiplier {
             die "scale operator expects a filter group as its first argument"
@@ -94,4 +88,8 @@ multi filter-group-scalar(Agrammon::Outputs::FilterGroupCollection $group) {
 }
 multi filter-group-scalar(Any $value) {
     $value
+}
+
+multi sign(Agrammon::Outputs::FilterGroupCollection $group) {
+    $group.sign()
 }

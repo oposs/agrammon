@@ -76,7 +76,7 @@ class Agrammon::Outputs::FilterGroupCollection {
     }
 
     #| Produce a new filter group collection which has the sign of this one.
-    method hashsign() {
+    method sign() {
         self.bless: instances => %!values-by-filter.map({ .key => sign( .value ) })
     }
 

@@ -62,14 +62,14 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
 {
     my $group = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
             [{ac => 'blue cow'} => -4, {ac => 'pink cow'} => 0, {ac => 'green cow'} => 31, {ac => 'blue cow'} => 2];
-    given $group.hashsign() {
+    given $group.sign() {
         isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
-                'Get another filter group back after applying function hashsign';
+                'Get another filter group back after applying function sign';
         is +$group, 29, 'Original filter group is not changed in place';
-        is +$_, 0, 'Total numeric value is correct after applying function hashsign';
+        is +$_, 0, 'Total numeric value is correct after applying function sign';
         is-deeply norm(.results-by-filter-group),
                 norm([{ac => 'blue cow'} => -1, { ac => 'pink cow' } => 0, { ac => 'green cow' } => 1]),
-                'Correct results by filter group after applying function hashsign';
+                'Correct results by filter group after applying function sign';
     }
 }
 
