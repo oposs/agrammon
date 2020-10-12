@@ -114,7 +114,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 #### liquid application old (incorrect) way
 
 +er_App_liquid
-  print = 15        
+  print = er_nh3,application,liquid,all       
   ++units 
     en = -
   ++description
@@ -128,7 +128,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 
 
 +nh3_napplication_liquid
-  print = 1a
+  print = nh3,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -156,8 +156,9 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 ####################################################
 #### liquid application correct way (implement and clean up as soon as permitted)
 
+## correct total flow but incorrect detail report
 +er_App_liquid_correctTotalFlow
-  print = 15        
+  print = er_nh3_correctTotalFlow,application,liquid,all        
   ++units 
     en = -
   ++description
@@ -171,7 +172,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 
 
 +nh3_napplication_liquid_correctTotalFlow
-  print = 1a
+  print = nh3_correctTotalFlow,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -193,8 +194,10 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       )
     );
 
+
+## correct total flow & detail report
 +nh3_napplication_liquid_noCat
-  print = 1a
+  print = nh3_correctTotalFlow_and_correctDetailReport,application,liquid,noCat
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -213,7 +216,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     );
 
 +nh3_napplication_liquid_pigs
-  print = 1a
+  print = nh3_correctTotalFlow_and_correctDetailReport,application,liquid,pigs
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -231,7 +234,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     );
 
 +nh3_napplication_liquid_cattle
-  print = 1a
+  print = nh3_correctTotalFlow_and_correctDetailReport,application,liquid,cattle
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -249,7 +252,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     );
 
 +nh3_napplication_liquid_correctTotalFlow_and_correctDetailReport
-  print = 1a
+  print = nh3_correctTotalFlow_and_correctDetailReport,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -269,7 +272,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 #### NxOx loss
 
 +n2_napplication_liquid
-  print = 1a
+  print = n2,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -281,7 +284,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       Tech(er_n2_App_liquid) );
 
 +no_napplication_liquid
-  print = 1a
+  print = no,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -293,7 +296,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       Tech(er_no_App_liquid) );
 
 +n2o_napplication_liquid
-  print = 1a
+  print = n2o,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -305,31 +308,3 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       Tech(er_n2o_App_liquid) );
     
 ####################################################
-
-
-# +n_remain_liquid
-#   print = 7
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     Annual total N remaining on the field from slurry application. 
-#   ++formula
-#     Val(n_into_application_liquid, ::Storage) -
-#     Out(nh3_napplication_liquid) - Out(n2_napplication_liquid) -
-#     Out(no_nliquid) - Out(n2o_nliquid);
-    
-
-# +tan_remain_liquid
-#   print = 7
-#   ++units  
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     Annual N as TAN remaining on field the from slurry/liquid application.
-#   ++formula
-#     Val(tan_into_application_liquid, ::Storage) -
-#     Out(nh3_napplication_liquid) - Out(n2_napplication_liquid) -
-#     Out(no_nliquid) - Out(n2o_nliquid);

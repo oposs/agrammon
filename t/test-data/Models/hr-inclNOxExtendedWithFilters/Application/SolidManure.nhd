@@ -47,7 +47,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 *** output ***
 
 +nh3_napplication_solid
-  print = nh3,application,solid,all_categories
+  print = nh3,application,solid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -61,7 +61,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     Val(nh3_napplication_solid_poultry, SolidManure::Poultry);
 
 +n2_napplication_solid
-  print = n2,application,solid,all_categories
+  print = n2,application,solid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -73,7 +73,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     Val(n2_napplication_solid_poultry, SolidManure::Poultry);
 
 +no_napplication_solid
-  print = no,application,solid,all_categories
+  print = no,application,solid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -85,7 +85,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     Val(no_napplication_solid_poultry, SolidManure::Poultry);
 
 +n2o_napplication_solid
-  print = n2o,application,solid,all_categories
+  print = n2o,application,solid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr

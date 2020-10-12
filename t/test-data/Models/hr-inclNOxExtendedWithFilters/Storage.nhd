@@ -50,7 +50,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 
 *** output ***
 
-
+ 
 +has_liquid_storage
   format= %.0f
   print = checkComment
@@ -67,25 +67,26 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++formula
     my $volume = Sum(volume, Storage::Slurry) // 0;
     if ( $volume > 0){
-        return 1;
+      return 1;
     }
     else {
-        if( Val(n_into_storage_liquid_check, Livestock) > 0 ) {
-            writeLog(
-                {
-                  en => "No storage for slurry defined although slurry is produced!\n",
-                  de => "Es ist kein Güllelager eingegeben, obwohl Gülle anfällt!\n",
-                  fr => "Aucun stock de lisier n'est mentionné, alors qu'il y a production de lisier!\n"
-                }
-            );  
-        }
-        return 0;
+      if( Val(n_out_livestock_liquid, Livestock) > 0 ) {
+        writeLog(
+            {
+              en => "No storage for slurry defined although slurry is produced!\n",
+              de => "Es ist kein Güllelager eingegeben, obwohl Gülle anfällt!\n",
+              fr => "Aucun stock de lisier n'est mentionné, alors qu'il y a production de lisier!\n"
+            }
+        );  
+      }
+      return 0;
    }
 
 
+
 ####################################################
-##### mineralization liquid
-    
+##### mineralization liquid 
+
 +mineralization_liquid_cattle 
   print = 7
   ++units  
@@ -95,13 +96,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN mineralized from not TAN fraction in liquid storage.
   ++formula
-    if ( Val(tan_into_storage_liquid, Livestock) <  Sum(nh3_nliquid, Storage::Slurry) ) {
-      scale( Val(n_out_livestock_liquid_cattle, Livestock) P-  Val(tan_into_storage_liquid_cattle,
-      Livestock), 0.0);
-    } else {
-      scale( Val(n_out_livestock_liquid_cattle, Livestock) P-  Val(tan_into_storage_liquid_cattle,
-      Livestock), Tech(mineralizationrate_liquid));
-    }
+    scale( 
+      Val(n_out_livestock_liquid_cattle, Livestock) P-  
+      Val(tan_out_livestock_liquid_cattle, Livestock), 
+      Tech(mineralizationrate_liquid)
+    );
     
 +mineralization_liquid_pigs 
   print = 7
@@ -112,13 +111,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN mineralized from not TAN fraction in liquid storage.
   ++formula
-    if ( Val(tan_into_storage_liquid, Livestock) <  Sum(nh3_nliquid, Storage::Slurry) ) {
-      scale( Val(n_out_livestock_liquid_pigs, Livestock) P-  Val(tan_into_storage_liquid_pigs,
-      Livestock), 0.0);
-    } else {
-      scale( Val(n_out_livestock_liquid_pigs, Livestock) P-  Val(tan_into_storage_liquid_pigs,
-      Livestock), Tech(mineralizationrate_liquid));
-    }
+    scale( 
+      Val(n_out_livestock_liquid_pigs, Livestock) P- 
+      Val(tan_out_livestock_liquid_pigs, Livestock), 
+      Tech(mineralizationrate_liquid)
+    );
     
 +mineralization_liquid 
   print = 7
@@ -133,6 +130,139 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Out(mineralization_liquid_pigs);
 
 ####################################################
+
+
+
+####################################################
+##### n into storage
+
++n_into_storage_liquid
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into liquid storage.
+  ++formula
+    Val(n_out_livestock_liquid_cattle, Livestock) P-
+    Val(n_out_livestock_liquid_pigs, Livestock);
+
++n_into_storage_solid
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into liquid storage.
+  ++formula
+    Val(n_into_storage_solid_cattle, Storage::SolidManure::Solid) P-
+    Val(n_into_storage_solid_pigs, Storage::SolidManure::Solid) P-
+    Val(n_into_storage_solid_others, Storage::SolidManure::Solid);
+
++n_into_storage
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into liquid storage.
+  ++formula
+    Out(n_into_storage_liquid) P-
+    Out(n_into_storage_solid);
+
+####################################################
+
+
+
+####################################################
+##### tan into storage
+
++tan_into_storage_liquid
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into liquid storage.
+  ++formula
+    Val(tan_out_livestock_liquid_cattle, Livestock) P-
+    Val(tan_out_livestock_liquid_pigs, Livestock);
+
++tan_into_storage_solid
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into liquid storage.
+  ++formula
+    Val(tan_into_storage_solid_cattle, Storage::SolidManure::Solid) P-
+    Val(tan_into_storage_solid_pigs, Storage::SolidManure::Solid) P-
+    Val(tan_into_storage_solid_others, Storage::SolidManure::Solid);
+
++tan_into_storage
+  print = newStorage
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into liquid storage.
+  ++formula
+    Out(tan_into_storage_liquid) P-
+    Out(tan_into_storage_solid);
+
+####################################################
+
+
+
+####################################################
+##### n/tan directly applied hier
+
+# +tan_into_storage_liquid
+#   print = newStorage
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual N flux into liquid storage.
+#   ++formula
+#     Val(tan_out_livestock_liquid_cattle, Livestock) P-
+#     Val(tan_out_livestock_liquid_pigs, Livestock);
+
+# +tan_into_storage_solid
+#   print = newStorage
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual N flux into liquid storage.
+#   ++formula
+#     Val(tan_into_storage_solid_cattle, Storage::SolidManure::Solid) P-
+#     Val(tan_into_storage_solid_pigs, Storage::SolidManure::Solid) P-
+#     Val(tan_into_storage_solid_others, Storage::SolidManure::Solid);
+
+# +tan_into_storage
+#   print = newStorage
+#   ++units  
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual N flux into liquid storage.
+#   ++formula
+#     Out(tan_into_storage_liquid) P-
+#     Out(tan_into_storage_solid);
+
+####################################################
+
 
 
 ####################################################
@@ -164,12 +294,19 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual NH3 emission from liquid storage of pig slurry.
   ++formula
-    my $max_pigs =  Val(tan_into_storage_liquid_pigs, Livestock) P+ 
-                      Out(mineralization_liquid_pigs) P-
-                      Val(nxox_nliquid_pigs, Livestock);
+    my $max_pigs =  Val(tan_out_livestock_liquid_pigs, Livestock) P+ 
+                    Out(mineralization_liquid_pigs) P-
+                    Val(nxox_nliquid_pigs, Livestock);
     if ( scalar(Sum(nh3_nliquid_pigs, Storage::Slurry)) <  scalar($max_pigs) ) {
       scale( Val(n_out_livestock_liquid_pigs_ratio, Livestock), Sum(nh3_nliquid_pigs, Storage::Slurry) );
     } else {
+      # writeLog(
+      #     {
+      #       en => "No storage for slurry defined although slurry is produced!\n",
+      #       de => "Es ist kein Güllelager eingegeben, obwohl Gülle anfällt!\n",
+      #       fr => "Aucun stock de lisier n'est mentionné, alors qu'il y a production de lisier!\n"
+      #     }
+      # );  
       $max_pigs; 
     }
 
@@ -182,12 +319,19 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual NH3 emission from liquid storage of cattle slurry.
   ++formula
-    my $max_cattle =  Val(tan_into_storage_liquid_cattle, Livestock) P+ 
+    my $max_cattle =  Val(tan_out_livestock_liquid_cattle, Livestock) P+ 
                       Out(mineralization_liquid_cattle) P-
                       Val(nxox_nliquid_cattle, Livestock);
     if ( scalar(Sum(nh3_nliquid_cattle, Storage::Slurry)) <  scalar($max_cattle) ) {
       scale( Val(n_out_livestock_liquid_cattle_ratio, Livestock), Sum(nh3_nliquid_cattle, Storage::Slurry) );
     } else {
+      # writeLog(
+      #     {
+      #       en => "No storage for slurry defined although slurry is produced!\n",
+      #       de => "Es ist kein Güllelager eingegeben, obwohl Gülle anfällt!\n",
+      #       fr => "Aucun stock de lisier n'est mentionné, alors qu'il y a production de lisier!\n"
+      #     }
+      # );  
       $max_cattle; 
     }
 
@@ -206,8 +350,8 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual NH3 emission from storage.
   ++formula
-    Out(nh3_nstorage_liquid_pigs) P+ Out(nh3_nstorage_liquid_cattle);
-
+    Out(nh3_nstorage_liquid_pigs) P+ 
+    Out(nh3_nstorage_liquid_cattle);
 
 +nh3_nstorage
   format= %.0f
@@ -224,8 +368,8 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual NH3 emission from storage.
   ++formula
-    Sum(nh3_nliquid, Storage::Slurry) + 
-    Val(nh3_nsolid, Storage::SolidManure);
+    Out(nh3_nstorage_liquid) P+ 
+    Out(nh3_nstorage_solid);
 
 ####################################################
 
@@ -247,7 +391,6 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Out(nh3_nstorage_liquid_pigs) P-
     Val(nxox_nliquid_pigs, Livestock);
 
-
 +n_into_application_liquid_cattle
   print = newStorage
   ++units  
@@ -260,7 +403,6 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Val(n_out_livestock_liquid_cattle, Livestock) P-
     Out(nh3_nstorage_liquid_cattle) P-
     Val(nxox_nliquid_cattle, Livestock);
-
 
 +n_into_application_liquid
   print = newStorage
@@ -289,7 +431,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for application.
   ++formula
-    Val(tan_into_storage_liquid_pigs, Livestock) P-
+    Val(tan_out_livestock_liquid_pigs, Livestock) P-
     Out(nh3_nstorage_liquid_pigs) P-
     Val(nxox_nliquid_pigs, Livestock) P+
     Out(mineralization_liquid_pigs);
@@ -303,7 +445,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for application.
   ++formula
-    Val(tan_into_storage_liquid_cattle, Livestock) P-
+    Val(tan_out_livestock_liquid_cattle, Livestock) P-
     Out(nh3_nstorage_liquid_cattle) P-
     Val(nxox_nliquid_cattle, Livestock) P+
     Out(mineralization_liquid_cattle);
@@ -346,9 +488,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_into_application_solid_cattle, Storage::SolidManure::Solid)   +
-    Val(n_into_application_solid_pigs, Storage::SolidManure::Solid)   +
-    Val(n_into_application_solid_others, Storage::SolidManure::Solid)   +
+    Val(n_into_application_solid_cattle, Storage::SolidManure::Solid)   P+
+    Val(n_into_application_solid_pigs, Storage::SolidManure::Solid)   P+
+    Val(n_into_application_solid_others, Storage::SolidManure::Solid)   P+
     Val(n_into_application_solid_poultry, Storage::SolidManure::Poultry) 
  
 
@@ -361,16 +503,16 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN flux out of storage for manure application.
   ++formula
-    Val(tan_into_application_solid_cattle, Storage::SolidManure::Solid) +
-    Val(tan_into_application_solid_pigs, Storage::SolidManure::Solid) +
-    Val(tan_into_application_solid_others, Storage::SolidManure::Solid) +
+    Val(tan_into_application_solid_cattle, Storage::SolidManure::Solid) P+
+    Val(tan_into_application_solid_pigs, Storage::SolidManure::Solid) P+
+    Val(tan_into_application_solid_others, Storage::SolidManure::Solid) P+
     Val(tan_into_application_solid_poultry, Storage::SolidManure::Poultry);
 
 ####################################################
 
 
 ####################################################
-##### n/tan into application
+##### n/tan into application (remove later?)
 
 +n_into_application
   format= %.0f
@@ -379,7 +521,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     sort = 108
     en = Total N into application
     de = Total N in die Hofdüngerausbringung
-    fr = N total dans l'Ã©pandage des engrais de ferme
+    fr = N total dans l'Epandage des engrais de ferme
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -387,7 +529,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for application.
   ++formula
-    Out(n_into_application_liquid) + 
+    Out(n_into_application_liquid) P+ 
     Out(n_into_application_solid) ;
 
 +tan_into_application
@@ -397,7 +539,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     sort = 208
     en = Total TAN into application
     de = Total Nlös in die Hofdüngerausbringung
-    fr = TAN total dans l'Ã©pandage des engrais de ferme
+    fr = TAN total dans l'Epandage des engrais de ferme
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -405,7 +547,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN flux out of storage for application.
   ++formula
-    Out(tan_into_application_liquid) + 
+    Out(tan_into_application_liquid) P+ 
     Out(tan_into_application_solid);
 
 ####################################################
