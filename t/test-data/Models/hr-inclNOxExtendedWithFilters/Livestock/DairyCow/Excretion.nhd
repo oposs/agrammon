@@ -174,7 +174,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** output ***
 
 +animals
-  print = 9
+  print = animals,excretion,dairy_cows
   ++units
     en = -
   ++description
@@ -182,74 +182,68 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++formula
     In(dairy_cows);
 
-+n_excretion
-  print = 7
++animalcategory
+  print = animalcategory,excretion,dairy_cows
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++formula
-    my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    if ( ($exc < 0.25 * Tech(standard_N_excretion)) or ($exc > 1.75 * Tech(standard_N_excretion))) {
-        writeLog({
-            en => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
-            de => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
-            fr => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
-        });
-    }
-    $exc = $exc * Val(cmilk_yield,   Excretion::CMilk)
-          * Val(c_feed_ration, Excretion::CFeed)
-          * In(dairy_cows);
-    return $exc;
-
+    en = -
   ++description
-    Annual total N excreted by a specified number of animals.
+    Animal category
+  ++formula
+    In(animalcategory);
 
 +n_excretion_animal
-  print = 7
+  print = n,excretion,dairy_cows
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
-  ++formula
-    my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    return $exc *
-        Val(cmilk_yield, Excretion::CMilk) *
-        Val(c_feed_ration, Excretion::CFeed);
   ++description
     Annual mean total N excreted per animal.
+  ++formula
+    if ( lc In(inp_n_excretion) eq 'standard' ) {
+      Tech(standard_N_excretion) *
+      Val(cmilk_yield, Excretion::CMilk) *
+      Val(c_feed_ration, Excretion::CFeed);
+    } else {
+      if ( (In(inp_n_excretion) < 0.25 * Tech(standard_N_excretion)) or 
+           (In(inp_n_excretion) > 1.75 * Tech(standard_N_excretion)) ) {
+        writeLog({
+            en => "TODO: Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
+            de => "Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
+            fr => "TODO: Die eingegebene N-Ausscheidung für Milchkühe weicht im mehr als 75% vom Standard ab.",
+        });
+      }
+      In(inp_n_excretion);
+    };
 
-+n_excretion_test
-  print = 7
++n_excretion
+  print = n,excretion,dairy_cows
   ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++formula
-    my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    return $exc;
-
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
   ++description
-    Annual mean total N excreted per animal.
+    Annual total N excreted by the specified number of animals.
+  ++formula
+    Out(n_excretion_animal) *
+    Out(animals);
 
 +tan_excretion
-  print = 7
+  print = tan,excretion,dairy_cows
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
-  ++formula
-     my $exc = Tech(standard_N_excretion);
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    (Tech(share_Nsol) * $exc
-                       * Val(cmilk_yield, Excretion::CMilk)
-                       * In(dairy_cows)
-     ) +
-     ( Out(n_excretion) -  $exc * In(dairy_cows)
-                                * Val(cmilk_yield, Excretion::CMilk)
-     ) * Tech(feed_influence_on_Nsol);
   ++description
-    Annual soluble N excreted by a specified number of animals.
+    Annual soluble N excreted by the specified number of animals.
+  ++formula
+    my $exc = Tech(standard_N_excretion);
+    $exc = Out(n_excretion_animal) / 
+           Val(cmilk_yield, Excretion::CMilk) /
+           Val(c_feed_ration, Excretion::CFeed) unless lc In(inp_n_excretion) eq 'standard';
+    # n related to milk yield
+    my $exc_milkyield = $exc * Out(animals) * Val(cmilk_yield, Excretion::CMilk);
+    # tan related to milk yield
+    $exc_milkyield * Tech(share_Nsol) +
+    # tan related to feeding
+    (Out(n_excretion) - $exc_milkyield) * Tech(feed_influence_on_Nsol);

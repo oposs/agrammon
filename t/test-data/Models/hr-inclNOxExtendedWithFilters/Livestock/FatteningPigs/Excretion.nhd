@@ -533,7 +533,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** output ***
 
-+fattening_pigs
++animals
   print = 20
   ++units
     en = -
@@ -541,6 +541,16 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Number of fattening pigs of a specific category.
   ++formula
     In(fattening_pigs);
+
+# delete?
++animalcategory
+  print = 9
+  ++units
+    en = -
+  ++description
+    Animal category (needed only for Detail Report)
+  ++formula
+    'FatteningPigs';
 
 +standard_N_excretion
   print = 7
@@ -643,12 +653,15 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual total N excreted by a specified number of fattening pigs.
   ++formula
-    if(  Out(standard_N_excretion)
-    	   * (1 - (Out(standard_crude_protein) - (Out(crude_protein) * Out(standard_energy_content) / In(energy_content) )) * Out(cfeed)) >= Out(minimal_N_excretion) ){
-	return( Out(standard_N_excretion)
-    	   * (1 - (Out(standard_crude_protein) - (Out(crude_protein) * Out(standard_energy_content) / In(energy_content) )) * Out(cfeed)) * In(fattening_pigs) );
+    my $excr = Out(standard_N_excretion) * 
+               (1 - (
+                Out(standard_crude_protein) - 
+                (Out(crude_protein) * Out(standard_energy_content) / In(energy_content))
+                ) * 
+               Out(cfeed));
+    if ( $excr >= Out(minimal_N_excretion) ) {
+      $excr * Out(animals);
     } else {
-
         writeLog({en => "The entries for the contents of energy and crude protein of the ration result in a N "
 		        . "excretion below the minimum for fattening pigs. \n"
                 . "The excretion was set to " . Out(minimal_N_excretion) . " kg N per animal!",
@@ -659,7 +672,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
                         ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
                         ."L'excrétion a été fixée à ". Out(minimal_N_excretion) ."kg N par animal. \n"
                  });
-        return( Out(minimal_N_excretion) * In(fattening_pigs));
+      Out(minimal_N_excretion) * Out(animals);
     }
 
 +tan_excretion
@@ -672,12 +685,3 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual soluble N excreted by a specified number of fattening pigs.
   ++formula
     Tech(share_Nsol) * Out(n_excretion);
-
-+animalcategory
-  print = 9
-  ++units
-    en = -
-  ++description
-    Animal category (needed only for Detail Report)
-  ++formula
-    'FatteningPigs';

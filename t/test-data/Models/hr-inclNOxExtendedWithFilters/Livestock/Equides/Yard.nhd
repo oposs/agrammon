@@ -252,17 +252,6 @@ livestock. Atmospheric Environment 35:5331-5338.
 
 *** output ***
 
-+yard_hours_per_year
-  print = debug
-  ++units  
-    en = hours/year
-    de = Stunden/Jahr
-    fr = heurs/an
-  ++description
-    Access to exercise yards hourss per year. For Testing if Grazing and Yards >365 * 24
-  ++formula
-    In(yard_days)*In(yard_hours);
-
 +c_floor_properties_exercise_yard_SHL 
   print = 15
   ++units  
@@ -270,13 +259,20 @@ livestock. Atmospheric Environment 35:5331-5338.
   ++description
     Reduction factor for the emission due to the use of the floor properties in housing systems.
   ++formula 
-    if (In(floor_properties_exercise_yard_SHL) eq 'unpaved_floor'){
+    given ( In(floor_properties_exercise_yard_SHL) ) { 
+      when 'unpaved_floor' {
        	 return Tech(red_floor_properties_unpaved_floor);
-    } elsif (In(floor_properties_exercise_yard_SHL) eq 'solid_floor'){
+      } 
+      when 'solid_floor' {
        	 return Tech(red_floor_properties_solid_floor);
-    } elsif (In(floor_properties_exercise_yard_SHL) eq 'paddock_or_pasture_used_as_exercise_yard'){
+      } 
+      when 'paddock_or_pasture_used_as_exercise_yard' {
        	 return Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
-    } else{ return 0;};
+      } 
+      default { 
+        return 0;
+      }
+    }
 
 +c_floor_properties_exercise_yard_LU
   print = 15
@@ -286,12 +282,17 @@ livestock. Atmospheric Environment 35:5331-5338.
     Reduction factor for the emission due to the use of the floor properties in housing systems.
   ++formula 
     return 0 unless defined In(floor_properties_exercise_yard_LU);
-    if (In(floor_properties_exercise_yard_LU) eq 'unpaved_floor'){
-       	 return Tech(red_floor_properties_unpaved_floor);
-    } elsif (In(floor_properties_exercise_yard_LU) eq 'solid_floor'){
-       	 return Tech(red_floor_properties_solid_floor);
-    } else{ return 0;};
-
+    given ( In(floor_properties_exercise_yard_LU) ) { 
+      when 'unpaved_floor' {
+         return Tech(red_floor_properties_unpaved_floor);
+      } 
+      when 'solid_floor' {
+         return Tech(red_floor_properties_solid_floor);
+      } 
+      default { 
+        return 0;
+      }
+    }
 
 +c_free_factor_yard
   print = 10
@@ -300,7 +301,7 @@ livestock. Atmospheric Environment 35:5331-5338.
   ++description
     Free reduction of the Emission rate for the Yard.
   ++formula
-  if(In(free_correction_factor)//0 != 0) {
+  if ( In(free_correction_factor) // 0 != 0 ) {
       writeLog({en=>"You have entered an additional emission mitigation measure for the exercise yard of " 
                     . "the category horses and other equids of " . In(free_correction_factor) 
                     . "\%!\n",
@@ -311,8 +312,7 @@ livestock. Atmospheric Environment 35:5331-5338.
                 fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un "
 		    . "parcours extérieur pour chevaux et autres équidés de " . In(free_correction_factor) 
                     . "\%.\n" });
-	    return 1 - In(free_correction_factor)/100;
-     
+	    return 1 - In(free_correction_factor) / 100;  
   } else {
     return 1;
   } 

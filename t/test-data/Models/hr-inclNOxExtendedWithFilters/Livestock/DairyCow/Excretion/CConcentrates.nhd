@@ -110,21 +110,51 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
 
 *** output ***
 
-+c_concentrates_summer
-  print = 15
++amount_summer
+  print = c_excretion,dairy_cows
   ++units 
     en = -
   ++description
-    Calculation of correction to excretions with 0.3, 0.5, 1, 2, 3, 4, 6 kg of concentrate (barley and wheat) per cow per day, taking into account the amount of roghage substituted by the concentrate (according to the energy content) and the relative differnce of the protein content of the roughage and the concentrate. Results used to calculate a regression for % modification of N excretion due to concentrate quantity summer. Standard for Summer = 1 kg animal-1 day-1. 
+    Amount of concentrates per animal and per day in summer 
   ++formula
-      Tech(par_a_summer) + Tech(par_b_summer) * In(amount_summer); 
+    In(amount_summer); 
+ 
++amount_winter
+  print = c_excretion,dairy_cows
+  ++units 
+    en = -
+  ++description
+    Amount of concentrates per animal and per day in winter 
+  ++formula
+    In(amount_winter);
+  
++c_concentrates_summer
+  print = c_excretion,dairy_cows
+  ++units 
+    en = -
+  ++description
+    Calculation of correction to excretions with 0.3, 0.5, 1, 2, 3, 4, 6 kg of 
+    concentrate (barley and wheat) per cow per day, taking into account the 
+    amount of roghage substituted by the concentrate (according to the energy 
+    content) and the relative differnce of the protein content of the roughage 
+    and the concentrate. Results used to calculate a regression for % 
+    modification of N excretion due to concentrate quantity summer. 
+    Standard for Summer = 1 kg animal-1 day-1. 
+  ++formula
+    Tech(par_a_summer) + Tech(par_b_summer) * Out(amount_summer); 
        
         
 +c_concentrates_winter
-  print = 15
+  print = c_excretion,dairy_cows
   ++units 
     en = -
   ++description
-        Calculation of correction to excretions with 0.3, 0.5, 1, 2, 3, 4, 6 kg of concentrate (barley and wheat) per cow per day, taking into account the amount of roghage substituted by the concentrate (according to the energy content) and the relative differnce of the protein content of the roughage and the concentrate. Results used to calculate a regression for % modification of N excretion due to concentrate quantity summer. Standard for Winter = 2 kg animal-1 day-1. 
+    Calculation of correction to excretions with 0.3, 0.5, 1, 2, 3, 4, 6 kg of 
+    concentrate (barley and wheat) per cow per day, taking into account the 
+    amount of roghage substituted by the concentrate (according to the energy 
+    content) and the relative differnce of the protein content of the roughage 
+    and the concentrate. Results used to calculate a regression for % 
+    modification of N excretion due to concentrate quantity summer. 
+    Standard for Winter = 2 kg animal-1 day-1. 
   ++formula
-        Tech(par_a_winter) +  Tech(par_b_winter) * In(amount_winter);
+    Tech(par_a_winter) +  Tech(par_b_winter) * Out(amount_winter);

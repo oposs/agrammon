@@ -196,89 +196,91 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 *** output ***
 
 +share_grass_silage_winter
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = %
   ++description
     Share
   ++formula
-    if (In(share_grass_silage_winter) > 1) {
-       return (In(share_grass_silage_winter)/100);
+    if ( In(share_grass_silage_winter) > 1 ) {
+      In(share_grass_silage_winter) / 100;
     } else {
-       return (In(share_grass_silage_winter));
-    };
+      In(share_grass_silage_winter);
+    }
 
 +share_maize_silage_winter
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = %
   ++description
     Share
   ++formula
-    if (In(share_maize_silage_winter) > 1) {
-       return (In(share_maize_silage_winter)/100);
+    if ( In(share_maize_silage_winter) > 1 ) {
+      In(share_maize_silage_winter) / 100;
     } else {
-       return (In(share_maize_silage_winter));
-    };
+      In(share_maize_silage_winter);
+    }
 
 +share_maize_pellets_winter
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = %
   ++description
     Share
   ++formula
-    if (In(share_maize_pellets_winter) > 1) {
-       return (In(share_maize_pellets_winter)/100);
+    if ( In(share_maize_pellets_winter) > 1 ) {
+      In(share_maize_pellets_winter) / 100;
     } else {
-       return (In(share_maize_pellets_winter));
-    };
+      In(share_maize_pellets_winter);
+    }
 
 +share_potatoes_winter
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = %
   ++description
     Share
   ++formula
-    if (In(share_potatoes_winter) > 1) {
-       return (In(share_potatoes_winter)/100);
+    if ( In(share_potatoes_winter) > 1 ) {
+      In(share_potatoes_winter) / 100;
     } else {
-       return (In(share_potatoes_winter));
-    };
+      In(share_potatoes_winter);
+    }
 
 +share_beets_winter
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = %
   ++description
     Share
   ++formula
-    if (In(share_beets_winter) > 1 ) {
-       return (In(share_beets_winter)/100);
+    if ( In(share_beets_winter) > 1 ) {
+      In(share_beets_winter) / 100;
     } else {
-       return (In(share_beets_winter));
-    };
+      In(share_beets_winter);
+    }
 
 +share_hay_only_winter
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = %
   ++description
     Share
   ++formula
-    if ( Out(share_grass_silage_winter) >= Out(share_maize_silage_winter) && Out(share_grass_silage_winter) >= Out(share_maize_pellets_winter)) {
-       return( 1 - Out(share_grass_silage_winter) );
-    } elsif ( Out(share_maize_silage_winter) >= Out(share_grass_silage_winter) && Out(share_maize_silage_winter) >= Out(share_maize_pellets_winter) ) {
-       return( 1 - Out(share_maize_silage_winter) );
-    }else{
-      return( 1 - Out(share_maize_pellets_winter));
+    if ( Out(share_grass_silage_winter) >= Out(share_maize_silage_winter) and 
+         Out(share_grass_silage_winter) >= Out(share_maize_pellets_winter) ) {
+      1 - Out(share_grass_silage_winter);
+    } elsif ( Out(share_maize_silage_winter) >= Out(share_grass_silage_winter) and
+              Out(share_maize_silage_winter) >= Out(share_maize_pellets_winter) ) {
+      1 - Out(share_maize_silage_winter);
+    } else {
+      1 - Out(share_maize_pellets_winter);
     }
 
  
 
 +c_winter_ration
-  print = 15
+  print = c_excretion,dairy_cows
   ++units 
     en = %
   ++description
@@ -289,4 +291,4 @@ und Futterbau 2001. Agrarforschung 8:1-80.
     Tech(c_maize_pellets_winter) * Out(share_maize_pellets_winter) +
     Tech(c_potatoes_winter) * Out(share_potatoes_winter) + 
     Tech(c_beets_winter) * Out(share_beets_winter) +
-    Tech(c_default_hay) * Out(share_hay_only_winter) ;
+    Tech(c_default_hay) * Out(share_hay_only_winter);

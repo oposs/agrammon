@@ -119,6 +119,30 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 
 *** output ***
 
+
++grazing_hours
+  print = 15
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Grazing hours per day.
+  ++formula
+    In(grazing_hours);
+ 
++grazing_days
+  print = 15
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Grazing days per year.
+  ++formula
+    In(grazing_days);
+
+
 +n_into_grazing
   print = 7e
   ++units
@@ -128,9 +152,9 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual N excretion during grazing for equides.
   ++formula
-    Val(n_excretion,Excretion) 
-      * In(grazing_days)  / 365
-      * In(grazing_hours) /  24;
+    Val(n_excretion, Excretion) * 
+    Out(grazing_days)  / 365 *
+    Out(grazing_hours) /  24;
 
 +tan_into_grazing
   print = 7e
@@ -141,9 +165,9 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual solable N (TAN) excretion during grazing for equides.
   ++formula
-    Val(tan_excretion,Excretion) 
-      * In(grazing_days)  / 365
-      * In(grazing_hours) /  24;
+    Val(tan_excretion,Excretion) * 
+    Out(grazing_days)  / 365 * 
+    Out(grazing_hours) /  24;
 
 +nh3_ngrazing
   print = 5e
@@ -154,8 +178,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual NH3 emission from equides from grazing.
   ++formula
-    Out(tan_into_grazing)
-    * Tech(er_equides_grazing);
+    Out(tan_into_grazing) * Tech(er_equides_grazing);
 
 +n2_ngrazing
   print = 5c
@@ -190,31 +213,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++formula
     Out(n_into_grazing) * Tech(er_n2o_equides_grazing);
 
-
-+grazing_hours
-  print = 15
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Grazing hours per day.
-  ++formula
-    In(grazing_hours);
- 
-+grazing_days
-  print = 15
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Grazing days per year.
-  ++formula
-    In(grazing_days);
-
-
-+n_remain_pasture
++n_remain_grazing
   print = 7e
   ++units
      en = kg N/year
@@ -224,14 +223,22 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual N input on pastures.
   ++formula
     Out(n_into_grazing) -
-    Out(nh3_ngrazing) - Out(n2_ngrazing) -
-    Out(no_ngrazing) - Out(n2o_ngrazing);
+    Out(nh3_ngrazing) - 
+    Out(n2_ngrazing) -
+    Out(no_ngrazing) - 
+    Out(n2o_ngrazing);
 
-+animalcategory
-  print = 9
-  ++units  
-    en = -
++tan_remain_grazing
+  print = 7e
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
   ++description
-    Animal category
+    Annual N input on pastures.
   ++formula
-    Val(animalcategory, Excretion);
+    Out(tan_into_grazing) -
+    Out(nh3_ngrazing) - 
+    Out(n2_ngrazing) -
+    Out(no_ngrazing) - 
+    Out(n2o_ngrazing);

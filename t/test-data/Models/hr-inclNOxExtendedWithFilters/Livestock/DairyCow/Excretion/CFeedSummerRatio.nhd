@@ -139,62 +139,64 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 *** output ***
 
 +share_hay_summer
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = -
   ++description
     Share
   ++formula
     if (In(share_hay_summer) > 1) {
-       return (In(share_hay_summer)/100);
+      In(share_hay_summer) / 100;
     } else {
-       return (In(share_hay_summer));
-    };
+      In(share_hay_summer);
+    }
 
 +share_maize_silage_summer
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = -
   ++description
     Share
   ++formula
-    if (In(share_maize_silage_summer) > 1) {
-       return (In(share_maize_silage_summer)/100);
+    if ( In(share_maize_silage_summer) > 1 ) {
+      In(share_maize_silage_summer) / 100;
     } else {
-       return (In(share_maize_silage_summer));
-    };
+      In(share_maize_silage_summer);
+    }
 
 +share_maize_pellets_summer
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = -
   ++description
     Share
   ++formula
     if (In(share_maize_pellets_summer) > 1) {
-       return (In(share_maize_pellets_summer)/100);
+       In(share_maize_pellets_summer) / 100;
     } else {
-       return (In(share_maize_pellets_summer));
-    };
+       In(share_maize_pellets_summer);
+    }
 
 +share_grass_only_summer
-  print = 22
+  print = c_excretion,dairy_cows
   ++units 
     en = -
   ++description
     Share
   ++formula
-    if ( Out(share_hay_summer) >= Out(share_maize_silage_summer) && Out(share_hay_summer) >= Out(share_maize_pellets_summer)) {
-       return( 1 - Out(share_hay_summer) );
-    } elsif ( Out(share_maize_silage_summer) >= Out(share_hay_summer) && Out(share_maize_silage_summer) >= Out(share_maize_pellets_summer) ) {
-       return( 1 - Out(share_maize_silage_summer) );
-    }else{
-      return (1 - Out(share_maize_pellets_summer));
+    if ( Out(share_hay_summer) >= Out(share_maize_silage_summer) and 
+         Out(share_hay_summer) >= Out(share_maize_pellets_summer) ) {
+      1 - Out(share_hay_summer);
+    } elsif ( Out(share_maize_silage_summer) >= Out(share_hay_summer) and 
+              Out(share_maize_silage_summer) >= Out(share_maize_pellets_summer) ) {
+      1 - Out(share_maize_silage_summer);
+    } else {
+      1 - Out(share_maize_pellets_summer);
     }
 
 
 +c_summer_ration
-  print = 15
+  print = c_excretion,dairy_cows
   ++units 
     en = -
   ++description

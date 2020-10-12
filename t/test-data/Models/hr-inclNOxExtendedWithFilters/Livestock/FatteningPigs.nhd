@@ -116,95 +116,6 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
 
 *** output ***
 
-+n_excretion
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N excreted by fattening pigs.
-  ++formula
-    Val(n_excretion,FatteningPigs::Excretion);
-
-+n_from_fattening_pig
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux from fattening pigs housing.
-  ++formula
-    Val(n_outhousing,FatteningPigs::Housing); 
-
-+tan
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN from fattening pigs housing.
-  ++formula
-    Val(tan_outhousing,FatteningPigs::Housing); 
-
-+n_liquid_from_fattening_pig
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux from fattening pigs housing, liquid fraction.
-  ++formula 
-    Val(n_outhousing_liquid,FatteningPigs::Housing); 
-
-+tan_liquid
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN from fattening pigs housing, liquid fraction.
-  ++formula
-    Val(tan_outhousing_liquid,FatteningPigs::Housing);
-       
-+n_solid_from_fattening_pig
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux from fattening pigs housing, solid fraction.
-  ++formula
-    Val(n_outhousing_solid,FatteningPigs::Housing);
-
-+tan_solid
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN from fattening pigs housing, liquid fraction.
-  ++formula
-    Val(tan_outhousing_solid,FatteningPigs::Housing);
-
-+nh3_nfattening_pig
-  print = 5
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from fattening pigs housing and grazing (production).
-  ++formula
-     Val(nh3_nhousing,FatteningPigs::Housing) +
-     Val(nh3_ngrazing,FatteningPigs::Grazing);
-
 
 ########## Other Voltaile N Flux
 
@@ -216,13 +127,13 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++description
     Annual N2 emissions from fattening pigs housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
-            return Tech(er_n2_solid_Slurry)         when 'Slurry_Conventional';
-            return Tech(er_n2_solid_Slurry)         when 'Slurry_Label';
-            return Tech(er_n2_solid_Solid)          when 'Deep_Litter';
-            return Tech(er_n2_solid_Solid)          when 'Outdoor';
-            default { return 0; }
-      };
+    given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
+      return Tech(er_n2_solid_Slurry) when 'Slurry_Conventional';
+      return Tech(er_n2_solid_Slurry) when 'Slurry_Label';
+      return Tech(er_n2_solid_Solid)  when 'Deep_Litter';
+      return Tech(er_n2_solid_Solid)  when 'Outdoor';
+      default { return 0; }
+    };
 
 +er_no_nsolid
   print=all
@@ -231,13 +142,13 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++description
     Annual N2 emissions from fattening pigs housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
-            return Tech(er_no_solid_Slurry)         when 'Slurry_Conventional';
-            return Tech(er_no_solid_Slurry)         when 'Slurry_Label';
-            return Tech(er_no_solid_Solid)          when 'Deep_Litter';
-            return Tech(er_no_solid_Solid)          when 'Outdoor';
-            default { return 0; }
-      };
+    given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
+      return Tech(er_no_solid_Slurry) when 'Slurry_Conventional';
+      return Tech(er_no_solid_Slurry) when 'Slurry_Label';
+      return Tech(er_no_solid_Solid)  when 'Deep_Litter';
+      return Tech(er_no_solid_Solid)  when 'Outdoor';
+      default { return 0; }
+    };
 
 +er_n2o_nsolid
   print=all
@@ -246,13 +157,13 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++description
     Annual N2 emissions from fattening pigs housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
-            return Tech(er_n2o_solid_Slurry)         when 'Slurry_Conventional';
-            return Tech(er_n2o_solid_Slurry)         when 'Slurry_Label';
-            return Tech(er_n2o_solid_Solid)          when 'Deep_Litter';
-            return Tech(er_n2o_solid_Solid)          when 'Outdoor';
-            default { return 0; }
-      };
+    given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
+      return Tech(er_n2o_solid_Slurry)  when 'Slurry_Conventional';
+      return Tech(er_n2o_solid_Slurry)  when 'Slurry_Label';
+      return Tech(er_n2o_solid_Solid)   when 'Deep_Litter';
+      return Tech(er_n2o_solid_Solid)   when 'Outdoor';
+      default { return 0; }
+    };
 
 +er_n2_nliquid
   print=all
@@ -261,13 +172,13 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++description
     Annual N2 emissions from fattening pigs housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
-            return Tech(er_n2_liquid_Slurry)         when 'Slurry_Conventional';
-            return Tech(er_n2_liquid_Slurry)         when 'Slurry_Label';
-            return Tech(er_n2_liquid_Solid)          when 'Deep_Litter';
-            return Tech(er_n2_liquid_Solid)          when 'Outdoor';
-            default { return 0; }
-      };
+    given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
+      return Tech(er_n2_liquid_Slurry)  when 'Slurry_Conventional';
+      return Tech(er_n2_liquid_Slurry)  when 'Slurry_Label';
+      return Tech(er_n2_liquid_Solid)   when 'Deep_Litter';
+      return Tech(er_n2_liquid_Solid)   when 'Outdoor';
+      default { return 0; }
+    };
 
 +er_no_nliquid
   print=all
@@ -276,13 +187,13 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++description
     Annual N2 emissions from fattening pigs housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
-            return Tech(er_no_liquid_Slurry)         when 'Slurry_Conventional';
-            return Tech(er_no_liquid_Slurry)         when 'Slurry_Label';
-            return Tech(er_no_liquid_Solid)          when 'Deep_Litter';
-            return Tech(er_no_liquid_Solid)          when 'Outdoor';
-            default { return 0; }
-      };
+    given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
+      return Tech(er_no_liquid_Slurry)  when 'Slurry_Conventional';
+      return Tech(er_no_liquid_Slurry)  when 'Slurry_Label';
+      return Tech(er_no_liquid_Solid)   when 'Deep_Litter';
+      return Tech(er_no_liquid_Solid)   when 'Outdoor';
+      default { return 0; }
+    };
 
 +er_n2o_nliquid
   print=all
@@ -291,13 +202,13 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++description
     Annual N2 emissions from fattening pigs housing, yard and grazing (production).
   ++formula
-     given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
-            return Tech(er_n2o_liquid_Slurry)         when 'Slurry_Conventional';
-            return Tech(er_n2o_liquid_Slurry)         when 'Slurry_Label';
-            return Tech(er_n2o_liquid_Solid)          when 'Deep_Litter';
-            return Tech(er_n2o_liquid_Solid)          when 'Outdoor';
-            default { return 0; }
-      };
+    given ( Val(housing_type, FatteningPigs::Housing::Type) ) {
+      return Tech(er_n2o_liquid_Slurry) when 'Slurry_Conventional';
+      return Tech(er_n2o_liquid_Slurry) when 'Slurry_Label';
+      return Tech(er_n2o_liquid_Solid)  when 'Deep_Litter';
+      return Tech(er_n2o_liquid_Solid)  when 'Outdoor';
+      default { return 0; }
+    };
 
 
 
@@ -314,7 +225,9 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++description
     Annual N2 emissions from fattening pigs housing, yard and grazing (production).
   ++formula
-     ( Val(n_into_housing, FatteningPigs::Housing) * (1-Val(share_liquid, FatteningPigs::Housing::Type) ) 
+     ( 
+      Val(n_into_housing, FatteningPigs::Housing) * 
+      (1 - Val(share_liquid, FatteningPigs::Housing::Type)) 
      ) * Out(er_n2_nsolid);
 
 
@@ -331,7 +244,9 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++description
     Annual NO emissions from fattening pigs housing, yard and grazing (production).
   ++formula
-     ( Val(n_into_housing, FatteningPigs::Housing) * (1-Val(share_liquid, FatteningPigs::Housing::Type) ) 
+     ( 
+      Val(n_into_housing, FatteningPigs::Housing) * 
+      (1 - Val(share_liquid, FatteningPigs::Housing::Type)) 
      ) * Out(er_no_nsolid);
 
 +n2o_nsolid
@@ -347,7 +262,9 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++description
     Annual N2O emissions from fattening pigs housing, yard and grazing (production).
   ++formula
-     ( Val(n_into_housing, FatteningPigs::Housing) * (1-Val(share_liquid, FatteningPigs::Housing::Type) ) 
+     ( 
+      Val(n_into_housing, FatteningPigs::Housing) * 
+      (1 - Val(share_liquid, FatteningPigs::Housing::Type)) 
      ) * Out(er_n2o_nsolid);
 
    
@@ -399,12 +316,3 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++formula
      ( Val(n_into_housing, FatteningPigs::Housing) * Val(share_liquid, FatteningPigs::Housing::Type)
      ) *  Out(er_n2o_nliquid);         
-
-#+animalcategory
-  # print = 7
-  # ++units  
-  #   en = -
-  # ++description
-  #   Animal category
-  # ++formula
-  #   Val(animalcategory, FatteningPigs::Excretion);

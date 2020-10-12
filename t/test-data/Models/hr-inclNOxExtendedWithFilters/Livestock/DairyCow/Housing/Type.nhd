@@ -161,7 +161,7 @@ Selects the emission rate and other correction factors for the specific housing 
 *** output ***
 
 +er_housing
-  print = 10
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description
@@ -177,7 +177,7 @@ Selects the emission rate and other correction factors for the specific housing 
        }
 
 +share_liquid
-  print = 10
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description
@@ -191,24 +191,8 @@ Selects the emission rate and other correction factors for the specific housing 
            return Val(share_liquid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
        }
 
-+share_solid
-  print = 10
-  ++units 
-    en = -
-  ++description
-    Solid share for the housing type.
-  ++formula
-#      Val(share_solid, 'Type::' . In(housing_type));
-       given ( In(housing_type) ) {
-           return Val(share_solid,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
-           return Val(share_solid,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-       return Val(share_solid,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
-           return Val(share_solid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-           return Val(share_solid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
-       }
-
 +k_area_type
-  print = 255
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description
@@ -225,7 +209,7 @@ Selects the emission rate and other correction factors for the specific housing 
 
 
 +area_increase
-  print = 15
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description
@@ -249,7 +233,7 @@ Selects the emission rate and other correction factors for the specific housing 
     };
 
 +k_area
-  print = 15
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description
@@ -258,7 +242,7 @@ Selects the emission rate and other correction factors for the specific housing 
     1 + (Out(area_increase) * Out(k_area_type));
 
 +housing_type
-  print = 15
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description
@@ -267,7 +251,7 @@ Selects the emission rate and other correction factors for the specific housing 
     In(housing_type);
 
 +dimensioning_barn
-  print = 15
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description
@@ -276,7 +260,7 @@ Selects the emission rate and other correction factors for the specific housing 
     In(dimensioning_barn);
 
 +c_feeding_boxes
-  print = 15
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description

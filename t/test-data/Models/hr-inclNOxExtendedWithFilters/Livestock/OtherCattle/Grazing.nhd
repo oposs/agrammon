@@ -100,13 +100,14 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual soluble N (TAN) excretion during grazing for a defined cattle category.
   ++formula
-    Val(tan_excretion, Excretion) 
-      * (Val(grazing_days,GrazingInput) - Val(days_with_grazing_and_yard,Yard)) / 365
-      * Val(grazing_hours,GrazingInput) /  24 +
-    Val(tan_excretion,Excretion)
-    * (1 - Val(share_excretion_with_grazing,Yard))
-    * Val(days_with_grazing_and_yard,Yard) / 365
-    * Val(grazing_hours,GrazingInput) / 24;
+    Val(tan_excretion, Excretion) * 
+    Val(grazing_hours, GrazingInput) / 24 *
+    (
+      (Val(grazing_days, GrazingInput) - Val(days_with_grazing_and_yard, Yard)) / 365 * 
+      Val(grazing_hours, GrazingInput) /  24 +
+      (1 - Val(share_excretion_with_grazing, Yard)) * 
+      Val(days_with_grazing_and_yard, Yard) / 365
+    );
 
 +nh3_ngrazing
   print = 5a
@@ -152,42 +153,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++formula
     Out(n_into_grazing) * Tech(er_n2o_cattle_grazing);
 
-+grazing_hours
-  print = 15
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Grazing hours per day.
-  ++formula
-    Val(grazing_hours,GrazingInput);
-
-+nh3_ngrazing_animal
-  print = 6a
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual NH3 emission per cattle form grazing.
-  ++formula
-    if(  Val(animals, Excretion) != 0 ){
-        return Out(nh3_ngrazing) / Val(animals, Excretion);	
-    } else { return 0;};
- 
-+grazing_days
-  print = 15
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Grazing days per year.
-  ++formula
-    Val(grazing_days,GrazingInput);
-
-+n_remain_pasture
++n_remain_grazing
   print = 7a
   ++units
      en = kg N/year
@@ -197,14 +163,22 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual N input on pastures.
   ++formula
     Out(n_into_grazing) -
-    Out(nh3_ngrazing) - Out(n2_ngrazing) -
-    Out(no_ngrazing) - Out(n2o_ngrazing);
+    Out(nh3_ngrazing) - 
+    Out(n2_ngrazing) -
+    Out(no_ngrazing) - 
+    Out(n2o_ngrazing);
 
-+animalcategory
-  print = 9
-  ++units  
-    en = -
++tan_remain_grazing
+  print = 7a
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
   ++description
-    Animal category
+    Annual N input on pastures.
   ++formula
-    Val(animalcategory, Excretion);
+    Out(tan_into_grazing) -
+    Out(nh3_ngrazing) - 
+    Out(n2_ngrazing) -
+    Out(no_ngrazing) - 
+    Out(n2o_ngrazing);
