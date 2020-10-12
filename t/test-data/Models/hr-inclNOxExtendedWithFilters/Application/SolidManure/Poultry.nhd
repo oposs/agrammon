@@ -75,33 +75,32 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 
 *** external ***
 
-+::Storage
-+::Storage::SolidManure
-+::Storage::SolidManure::Poultry
++::Livestock
 +Poultry::CincorpTime
 +Cseason
 +CfreeFactor
 
 *** output ***
 
-+nh3_napplication_solid_poultry
-  print = nh3,application,solid,poultry
++er_nh3_napplication_solid_poultry
+  print = er_nh3,application,solid,poultry
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    NH3 emission from solid manure application.
+    NH3 emission rate for solid manure application.
   ++formula
-    scale( Val(tan_into_application_solid_poultry, ::Storage::SolidManure::Poultry),
+    scale(
+      Val(has_poultry, ::Livestock),
       Tech(er_App_manure) *
       Val(c_incorp_time, Poultry::CincorpTime) *
       Val(c_season, Cseason) *
       Val(c_free_factor_application_solidmanure, CfreeFactor)
     );
 
-+n2_napplication_solid_poultry
-  print = n2,application,solid,poultry
++er_n2_napplication_solid_poultry
+  print = er_n2,application,solid,poultry
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -109,11 +108,13 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2 emission from solid manure application from poultry.
   ++formula
-    scale( Val(n_into_application_solid_poultry, ::Storage::SolidManure::Poultry),
-      Tech(er_n2_App_manure) );
+    scale( 
+      Val(has_poultry, ::Livestock),
+      Tech(er_n2_App_manure)
+    );
 
-+no_napplication_solid_poultry
-  print = no,application,solid,poultry
++er_no_napplication_solid_poultry
+  print = er_no,application,solid,poultry
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -121,11 +122,13 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     NO emission from solid manure application from poultry.
   ++formula
-    scale( Val(n_into_application_solid_poultry, ::Storage::SolidManure::Poultry),
-      Tech(er_no_App_manure) );
+    scale( 
+      Val(has_poultry, ::Livestock),
+      Tech(er_no_App_manure)
+    );
 
-+n2o_napplication_solid_poultry
-  print = n2o,application,solid,poultry
++er_n2o_napplication_solid_poultry
+  print = er_n2o,application,solid,poultry
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -133,5 +136,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   ++description
     N2O emission from solid manure application from poultry.
   ++formula
-    scale( Val(n_into_application_solid_poultry, ::Storage::SolidManure::Poultry),
-      Tech(er_n2o_App_manure) );
+    scale( 
+      Val(has_poultry, ::Livestock),
+      Tech(er_n2o_App_manure)
+    );

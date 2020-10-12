@@ -37,62 +37,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 
 *** technical ***
 
-
 *** external ***
 
-+::Storage
-+SolidManure::Solid
-+SolidManure::Poultry
-
 *** output ***
-
-+nh3_napplication_solid
-  print = nh3,application,solid,all
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    NH3 emission from solid manure application.
-  ++formula
-    Val(nh3_napplication_solid_cattle, SolidManure::Solid)  P+
-    Val(nh3_napplication_solid_pigs, SolidManure::Solid)  P+
-    Val(nh3_napplication_solid_others, SolidManure::Solid) P+
-    Val(nh3_napplication_solid_poultry, SolidManure::Poultry);
-
-+n2_napplication_solid
-  print = n2,application,solid,all
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N2 emission from solid manure application.
-  ++formula
-    Val(n2_napplication_solid_without_poultry, SolidManure::Solid) P+
-    Val(n2_napplication_solid_poultry, SolidManure::Poultry);
-
-+no_napplication_solid
-  print = no,application,solid,all
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    NO emission from solid manure application.
-  ++formula
-    Val(no_napplication_solid_without_poultry, SolidManure::Solid) P+
-    Val(no_napplication_solid_poultry, SolidManure::Poultry);
-
-+n2o_napplication_solid
-  print = n2o,application,solid,all
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    N2O emission from solid manure application.
-  ++formula
-    Val(n2o_napplication_solid_without_poultry, SolidManure::Solid) P+
-    Val(n2o_napplication_solid_poultry, SolidManure::Poultry);
 

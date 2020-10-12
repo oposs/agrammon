@@ -1,6 +1,6 @@
 *** general ***
 
-author   = Agrammon Group			
+author   = Agrammon Group                 
 date     = 2017-07-10
 taxonomy = Application::Slurry
 gui      = Application::Slurry,Hofdüngerausbringung::Gülle,Epandage::Lisier,Application::Slurry
@@ -113,6 +113,20 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 ####################################################
 #### liquid application old (incorrect) way
 
++pigs_share_n_out_livestock_liquid
+  print = share      
+  ++units 
+    en = -
+  ++description
+    Pigs share of N flux out of livestock liquid manure
+  ++formula
+    scalar(
+      multiplyPairwise(
+        Val(has_pigs, ::Livestock),
+        Val(n_out_livestock_liquid, ::Livestock)
+      )
+    ) / scalar(Val(n_out_livestock_liquid, ::Livestock));
+
 +er_App_liquid
   print = er_nh3,application,liquid,all       
   ++units 
@@ -121,9 +135,9 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     Emission rate for slurry application based on TAN of the slurry. The 
     average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al (1998), Menzi et al. (1997a) and Sogaard et al. (2002)
   ++formula
-    Val(n_out_livestock_liquid_pigs_share, ::Livestock) * 
+    Out(pigs_share_n_out_livestock_liquid) * 
     Tech(er_App_pigs_liquid) + 
-    ( 1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock) ) * 
+    (1 - Out(pigs_share_n_out_livestock_liquid)) * 
     Tech(er_App_cattle_liquid);
 
 
@@ -136,13 +150,14 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NH3 emission from slurry application.
   ++formula
-    scale( Val(tan_into_application_liquid, ::Storage),
+    scale( 
+      Val(tan_into_application_liquid, ::Storage),
       Val(c_tech, Slurry::Ctech) *
       Val(c_soft, Slurry::Csoft) *
       Val(c_season, Slurry::Cseason) *
       Val(c_free_factor_application, Slurry::CfreeFactor) *
       (
-        ( 1 - Val(share_fermented_slurry, Slurry::Cfermented) ) *
+        (1 - Val(share_fermented_slurry, Slurry::Cfermented)) *
         Out(er_App_liquid) +
         Val(share_fermented_slurry, Slurry::Cfermented) *
         Tech(er_App_fermented_slurry) + 
@@ -156,23 +171,36 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 ####################################################
 #### liquid application correct way (implement and clean up as soon as permitted)
 
-## correct total flow but incorrect detail report
-+er_App_liquid_correctTotalFlow
-  print = er_nh3_correctTotalFlow,application,liquid,all        
+## better (but still incorrect) way
++pigs_share_tan_out_livestock_liquid
+  print = share      
+  ++units 
+    en = -
+  ++description
+    Pigs share of TAN flux out of livestock liquid manure
+  ++formula
+    scalar(
+      multiplyPairwise(
+        Val(has_pigs, ::Livestock),
+        Val(tan_out_livestock_liquid, ::Livestock)
+      )
+    ) / scalar(Val(tan_out_livestock_liquid, ::Livestock));
+
++er_App_liquid_better
+  print = er_nh3_better,application,liquid,all        
   ++units 
     en = -
   ++description
     Emission rate for slurry application based on TAN of the slurry. The 
     average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al (1998), Menzi et al. (1997a) and Sogaard et al. (2002)
   ++formula
-    Val(tan_into_application_liquid_pigsratio_scalar, ::Storage) * 
+    Out(pigs_share_tan_out_livestock_liquid) * 
     Tech(er_App_pigs_liquid) + 
-    ( 1 - Val(tan_into_application_liquid_pigsratio_scalar, ::Storage) ) * 
+    (1 - Out(pigs_share_tan_out_livestock_liquid)) * 
     Tech(er_App_cattle_liquid);
 
-
-+nh3_napplication_liquid_correctTotalFlow
-  print = nh3_correctTotalFlow,application,liquid,all
++nh3_napplication_liquid_better
+  print = nh3_better,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -180,14 +208,15 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NH3 emission from slurry application.
   ++formula
-    scale( Val(tan_into_application_liquid, ::Storage),
+    scale( 
+      Val(tan_into_application_liquid, ::Storage),
       Val(c_tech, Slurry::Ctech) *
       Val(c_soft, Slurry::Csoft) *
       Val(c_season, Slurry::Cseason) *
       Val(c_free_factor_application, Slurry::CfreeFactor) *
       (
-        ( 1 - Val(share_fermented_slurry, Slurry::Cfermented) ) *
-        Out(er_App_liquid_correctTotalFlow) +
+        (1 - Val(share_fermented_slurry, Slurry::Cfermented)) *
+        Out(er_App_liquid_better) +
         Val(share_fermented_slurry, Slurry::Cfermented) *
         Tech(er_App_fermented_slurry) + 
         Val(c_app, Slurry::Applrate)
@@ -195,9 +224,9 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     );
 
 
-## correct total flow & detail report
-+nh3_napplication_liquid_noCat
-  print = nh3_correctTotalFlow_and_correctDetailReport,application,liquid,noCat
+## correct total flow & detail report based on actual flow into application
++nh3_napplication_liquid_correct
+  print = nh3_correct,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -205,64 +234,54 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NH3 emission from slurry application.
   ++formula
-    scale( Val(tan_into_application_liquid, ::Storage),
-      Val(c_tech, Slurry::Ctech) *
-      Val(c_soft, Slurry::Csoft) *
-      Val(c_season, Slurry::Cseason) *
-      Val(c_free_factor_application, Slurry::CfreeFactor) *
-      ( Val(share_fermented_slurry, Slurry::Cfermented) *
+    scale(
+      # only pigs
+      scale(
+        multiplyPairwise(
+          Val(has_pigs, ::Livestock),
+          Val(tan_into_application_liquid, ::Storage)
+        ),
+        (1 - Val(share_fermented_slurry, Slurry::Cfermented)) *
+        Tech(er_App_pigs_liquid)
+      ) P+
+      # only cattle
+      scale(
+        multiplyPairwise(
+          Val(has_cattle, ::Livestock),
+          Val(tan_into_application_liquid, ::Storage)
+        ),
+        (1 - Val(share_fermented_slurry, Slurry::Cfermented)) *
+        Tech(er_App_cattle_liquid)
+      ) P+    
+      # both
+      scale(
+        Val(tan_into_application_liquid, ::Storage),
+        Val(share_fermented_slurry, Slurry::Cfermented) *
         Tech(er_App_fermented_slurry) + 
-        Val(c_app, Slurry::Applrate) )
-    );
-
-+nh3_napplication_liquid_pigs
-  print = nh3_correctTotalFlow_and_correctDetailReport,application,liquid,pigs
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Total annual NH3 emission from slurry application.
-  ++formula
-    scale( Val(tan_into_application_liquid_pigs, ::Storage),
+        Val(c_app, Slurry::Applrate)
+      ),
+      # other factors affecting emission
       Val(c_tech, Slurry::Ctech) *
       Val(c_soft, Slurry::Csoft) *
       Val(c_season, Slurry::Cseason) *
-      Val(c_free_factor_application, Slurry::CfreeFactor) *
-      ( 1 - Val(share_fermented_slurry, Slurry::Cfermented) ) *
-      Tech(er_App_pigs_liquid)
+      Val(c_free_factor_application, Slurry::CfreeFactor)
     );
 
-+nh3_napplication_liquid_cattle
-  print = nh3_correctTotalFlow_and_correctDetailReport,application,liquid,cattle
++er_nh3_application_liquid_correct
+  print = er_nh3_correct,application,liquid,all
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = 
   ++description
-    Total annual NH3 emission from slurry application.
+    Emission rate
   ++formula
-    scale( Val(tan_into_application_liquid_cattle, ::Storage),
-      Val(c_tech, Slurry::Ctech) *
-      Val(c_soft, Slurry::Csoft) *
-      Val(c_season, Slurry::Cseason) *
-      Val(c_free_factor_application, Slurry::CfreeFactor) *
-      ( 1 - Val(share_fermented_slurry, Slurry::Cfermented) ) *
-      Tech(er_App_cattle_liquid)
+    Out(nh3_napplication_liquid_correct) P/
+      (
+        Val(tan_into_application_liquid, ::Storage) P+
+        add(
+          hashsign(Val(tan_into_application_liquid, ::Storage)),
+          -1
+      )
     );
-
-+nh3_napplication_liquid_correctTotalFlow_and_correctDetailReport
-  print = nh3_correctTotalFlow_and_correctDetailReport,application,liquid,all
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Total annual NH3 emission from slurry application.
-  ++formula
-    Out(nh3_napplication_liquid_noCat) P+
-    Out(nh3_napplication_liquid_pigs) P+
-    Out(nh3_napplication_liquid_cattle);
 
 ####################################################
 
@@ -271,8 +290,8 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 ####################################################
 #### NxOx loss
 
-+n2_napplication_liquid
-  print = n2,application,liquid,all
++er_n2_napplication_liquid
+  print = er_n2,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -280,11 +299,13 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual N2 emission from slurry application.
   ++formula
-    scale( Val(n_into_application_liquid, ::Storage),
-      Tech(er_n2_App_liquid) );
+    scale( 
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_n2_App_liquid)
+    );
 
-+no_napplication_liquid
-  print = no,application,liquid,all
++er_no_napplication_liquid
+  print = er_no,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -292,11 +313,13 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NO emission from slurry application.
   ++formula
-    scale( Val(n_into_application_liquid, ::Storage),
-      Tech(er_no_App_liquid) );
+    scale( 
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_no_App_liquid)
+    );
 
-+n2o_napplication_liquid
-  print = n2o,application,liquid,all
++er_n2o_napplication_liquid
+  print = er_n2o,application,liquid,all
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -304,7 +327,9 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual N2O emission from slurry application.
   ++formula
-    scale( Val(n_into_application_liquid, ::Storage),
-      Tech(er_n2o_App_liquid) );
+    scale( 
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_n2o_App_liquid)
+    );
     
 ####################################################

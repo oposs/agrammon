@@ -130,6 +130,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_excretion, Livestock::FatteningPigs) P+
     Sum(n_excretion, Livestock::Equides) P+
     Sum(n_excretion, Livestock::SmallRuminants) P+
+    Sum(n_excretion, Livestock::RoughageConsuming) P+
     Sum(n_excretion, Livestock::Poultry);
 
 +tan_into_livestock
@@ -163,10 +164,105 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 ####################################################
 ##### Prepare animal master categories
 
-+test
-  print = check
++has_cattle
+  print = mastercategory,livestock
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Animal categories belonging to mastercategory _cattle_ (dairy cows and other cattle). 
+    Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
+  ++formula
+    hashsign( 
+      Sum(n_excretion, Livestock::OtherCattle) P+ 
+      Sum(n_excretion, Livestock::DairyCow)
+    );
+
++has_pigs
+  print = mastercategory,livestock
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Animal categories belonging to mastercategory _pigs_ (fattening pigs and other pigs). 
+    Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
+  ++formula
+    hashsign( 
+      Sum(n_excretion, Livestock::Pig) P+ 
+      Sum(n_excretion, Livestock::FatteningPigs)
+    );
+
++has_others
+  print = mastercategory,livestock
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Animal categories belonging to mastercategory _others_ (equides, small ruminants and 
+    roughage consuming). Hash entry of 1, if N flux into livestock > 0. 
+    Hash entry of 0, if N flux into livestock = 0.
+  ++formula
+    hashsign( 
+      Sum(n_excretion, Livestock::Equides) P+ 
+      Sum(n_excretion, Livestock::SmallRuminants) P+ 
+      Sum(n_excretion, Livestock::RoughageConsuming)
+    );
+
++has_poultry_LGO
+  print = mastercategory,livestock
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Animal categories belonging to mastercategory *poultry_LGO* (layers, growers and other poultry). 
+    Hash entry of 1, if N flux out of housing > 0. Hash entry of 0, if N flux out of housing = 0.
   ++formula
     hashsign( Sum(n_from_poultry_layers_growers_other_poultry,Livestock::Poultry) );
+
++has_poultry_TB
+  print = mastercategory,livestock
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Animal categories belonging to mastercategory *poultry_TB* (turkeys and broilers). 
+    Hash entry of 1, if N flux out of housing > 0. Hash entry of 0, if N flux out of housing = 0.
+  ++formula
+    hashsign( 
+      Sum(n_from_poultry_turkeys_broilers,Livestock::Poultry)
+    );
+
++has_no_poultry
+  print = mastercategory,livestock
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Animal categories belonging to mastercategory *no_poultry* (all except poultry). 
+    Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
+  ++formula
+    Out(has_pigs) P+
+    Out(has_cattle) P+
+    Out(has_others);
+
++has_poultry
+  print = mastercategory,livestock
+  ++units
+    en = 
+    de = 
+    fr = 
+  ++description
+    Animal categories belonging to mastercategory _poultry_ (all poultry). 
+    Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
+  ++formula
+    Out(has_poultry_LGO) P+
+    Out(has_poultry_TB);
  
 ####################################################
 
