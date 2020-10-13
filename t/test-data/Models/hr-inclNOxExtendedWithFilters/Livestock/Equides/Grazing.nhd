@@ -178,7 +178,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual total NH3 emission from all grazing dairy cows.
   ++formula
-    Tech(er_dairycow_grazing);
+    Tech(er_equides_grazing);
 
 +nh3_ngrazing
   print = Equides
@@ -189,7 +189,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual NH3 emission from equides from grazing.
   ++formula
-    Out(tan_into_grazing) * Tech(er_equides_grazing);
+    Out(tan_into_grazing) * Out(ef_nh3_ngrazing);
 
 +n2_ngrazing
   print = Equides

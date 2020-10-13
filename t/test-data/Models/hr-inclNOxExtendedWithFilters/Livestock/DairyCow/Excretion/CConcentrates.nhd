@@ -111,7 +111,7 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
 *** output ***
 
 +amount_summer
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -120,7 +120,7 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
     In(amount_summer); 
  
 +amount_winter
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -129,7 +129,7 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
     In(amount_winter);
   
 +c_concentrates_summer
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -145,7 +145,7 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
        
         
 +c_concentrates_winter
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description

@@ -606,7 +606,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** output ***
 
 +animals
-  print = animalcategory,excretion,other_pigs
+  print = Pig
   ++description
     Number of pigs of a specific category.
   ++units
@@ -615,7 +615,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(pigs);
 
 +animalcategory
-  print = animalcategory,excretion,other_pigs
+  print = Pig
   ++units
     en = -
   ++description
@@ -624,7 +624,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(animalcategory);
 
 +n_excretion_animal
-  print = n,excretion,other_pigs
+  print = Pig
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -679,7 +679,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     }
 
 +n_excretion
-  print = n,excretion,other_pigs
+  print = Pig
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -690,7 +690,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Out(n_excretion_animal) * Out(animals);
 
 +tan_excretion
-  print = tan,excretion,other_pigs
+  print = Pig
   ++units
     en = kg N/year
     de = kg N/Jahr

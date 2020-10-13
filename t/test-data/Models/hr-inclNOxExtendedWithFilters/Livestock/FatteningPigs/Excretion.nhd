@@ -534,7 +534,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** output ***
 
 +animals
-  print = animals,excretion,fattening_pigs
+  print = FatteningPigs
   ++units
     en = -
   ++description
@@ -543,7 +543,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(fattening_pigs);
 
 +animalcategory
-  print = animalcategory,excretion,fattening_pigs
+  print = FatteningPigs
   ++units
     en = -
   ++description
@@ -552,7 +552,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(animalcategory);
 
 +crude_protein
-  print = n,excretion,fattening_pigs
+  print = FatteningPigs
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -577,7 +577,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     }
 
 +n_excretion_animal
-  print = n,excretion,fattening_pigs
+  print = FatteningPigs
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -633,7 +633,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     }
 
 +n_excretion
-  print = n,excretion,fattening_pigs
+  print = FatteningPigs
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -644,7 +644,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Out(n_excretion_animal) * Out(animals);
 
 +tan_excretion
-  print = tan,excretion,fattening_pigs
+  print = FatteningPigs
   ++units
     en = kg N/year
     de = kg N/Jahr

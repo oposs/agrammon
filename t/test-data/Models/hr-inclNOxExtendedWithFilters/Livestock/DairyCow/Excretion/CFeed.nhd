@@ -31,7 +31,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** output ***
 
 +c_feed_ration
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description

@@ -253,53 +253,53 @@ livestock. Atmospheric Environment 35:5331-5338.
 *** output ***
 
 +c_floor_properties_exercise_yard_SHL 
-  print = 15
+  print = Equides
   ++units  
     en = -
   ++description
-    Reduction factor for the emission due to the use of the floor properties in housing systems.
+    Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula 
     given ( In(floor_properties_exercise_yard_SHL) ) { 
       when 'unpaved_floor' {
-       	 return Tech(red_floor_properties_unpaved_floor);
+       	 return 1 - Tech(red_floor_properties_unpaved_floor);
       } 
       when 'solid_floor' {
-       	 return Tech(red_floor_properties_solid_floor);
+       	 return 1 - Tech(red_floor_properties_solid_floor);
       } 
       when 'paddock_or_pasture_used_as_exercise_yard' {
-       	 return Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
+       	 return 1 - Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
       } 
       default { 
-        return 0;
+        return 1;
       }
     }
 
 +c_floor_properties_exercise_yard_LU
-  print = 15
+  print = Equides
   ++units  
     en = -
   ++description
-    Reduction factor for the emission due to the use of the floor properties in housing systems.
+    Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula 
-    return 0 unless defined In(floor_properties_exercise_yard_LU);
+    return 1 unless defined In(floor_properties_exercise_yard_LU);
     given ( In(floor_properties_exercise_yard_LU) ) { 
       when 'unpaved_floor' {
-         return Tech(red_floor_properties_unpaved_floor);
+         return 1 - Tech(red_floor_properties_unpaved_floor);
       } 
       when 'solid_floor' {
-         return Tech(red_floor_properties_solid_floor);
+         return 1 - Tech(red_floor_properties_solid_floor);
       } 
       default { 
-        return 0;
+        return 1;
       }
     }
 
 +c_free_factor_yard
-  print = 10
+  print = Equides
   ++units 
     en = -
   ++description
-    Free reduction of the Emission rate for the Yard.
+    Free correction factor of the Emission rate for the Yard.
   ++formula
   if ( In(free_correction_factor) // 0 != 0 ) {
       writeLog({en=>"You have entered an additional emission mitigation measure for the exercise yard of " 
@@ -319,7 +319,7 @@ livestock. Atmospheric Environment 35:5331-5338.
 
 
 +n_into_yard
-  print = 7
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -327,11 +327,12 @@ livestock. Atmospheric Environment 35:5331-5338.
   ++description
     Annual N excretion on yard for a defined animal category.
   ++formula
-    Val(n_excretion, Excretion)
-    * (( In(yard_days)  / 365 ) * (In(yard_hours) /24));
+    Val(n_excretion, Excretion) * 
+    In(yard_days)  / 365 * 
+    In(yard_hours) / 24;
 
 +tan_into_yard
-  print = 7
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -339,11 +340,26 @@ livestock. Atmospheric Environment 35:5331-5338.
   ++description
     Annual soluble N excretion on yard for a defined animal category.
   ++formula
-    Val(tan_excretion, Excretion)
-    * ((In(yard_days)  / 365) * (In(yard_hours) /24));
+    Val(tan_excretion, Excretion) * 
+    In(yard_days)  / 365 * 
+    In(yard_hours) / 24;
+
++ef_nh3_nyard
+  print = Equides,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    NH3 emission factor for dairy cow yard.
+  ++formula
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard_SHL) * 
+    Out(c_floor_properties_exercise_yard_LU) * 
+    Out(c_free_factor_yard);
 
 +nh3_nyard
-  print = 5c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -351,26 +367,10 @@ livestock. Atmospheric Environment 35:5331-5338.
   ++description
     Annual NH3 emission from yard.
   ++formula
-    Out(tan_into_yard) * Tech(er_yard)
-    * (1 - (Out(c_floor_properties_exercise_yard_SHL)))
-    * (1 - (Out(c_floor_properties_exercise_yard_LU)))
-    * Out(c_free_factor_yard);
-
-+nh3_nyard_animal
-  print = 7c
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual NH3 emission per anmimal from yard.
-  ++formula
-    if(  Val(animals, Excretion) != 0 ){
-	 return Out(nh3_nyard) / Val(animals, Excretion);
-    } else { return 0;};
+    Out(tan_into_yard) * Out(ef_nh3_nyard);
 
 +n_outyard
-  print = 7c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -381,7 +381,7 @@ livestock. Atmospheric Environment 35:5331-5338.
     Out(n_into_yard) - Out(nh3_nyard);
 
 +tan_outyard
-  print = 7c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -392,7 +392,7 @@ livestock. Atmospheric Environment 35:5331-5338.
     Out(tan_into_yard) - Out(nh3_nyard);
 	
 +n_outyard_liquid
-  print = 7c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -403,7 +403,7 @@ livestock. Atmospheric Environment 35:5331-5338.
     0;
 
 +tan_outyard_liquid
-  print = 7c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -414,7 +414,7 @@ livestock. Atmospheric Environment 35:5331-5338.
     0;
 
 +n_outyard_solid
-  print = 7c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -422,11 +422,11 @@ livestock. Atmospheric Environment 35:5331-5338.
   ++description
     Annual N flux from solid part out of yard.
   ++formula
-    Out(n_into_yard) - Out(nh3_nyard);
+    Out(n_outyard);
 
 
 +tan_outyard_solid
-  print = 7c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -434,13 +434,4 @@ livestock. Atmospheric Environment 35:5331-5338.
   ++description
     Annual N flux as TAN from solid part out of yard into storage.
   ++formula
-    Out(tan_into_yard) - Out(nh3_nyard);
-
-+animalcategory
-  print = 9
-  ++units  
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, Excretion);
+    Out(tan_outyard);

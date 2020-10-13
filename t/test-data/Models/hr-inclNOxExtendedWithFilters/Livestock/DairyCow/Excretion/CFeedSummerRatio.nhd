@@ -139,7 +139,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 *** output ***
 
 +share_hay_summer
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -152,7 +152,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
     }
 
 +share_maize_silage_summer
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -165,7 +165,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
     }
 
 +share_maize_pellets_summer
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -178,7 +178,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
     }
 
 +share_grass_only_summer
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -196,7 +196,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 
 
 +c_summer_ration
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
