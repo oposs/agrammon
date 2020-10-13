@@ -79,14 +79,14 @@ taxonomy = Livestock::DairyCow::Housing
       0; 
     }
 
-+nh3_nhousing
-  print = nh3,housing,total,dairy_cows
++ef_nh3_nhousing
+  print = ef_nh3,housing,total,dairy_cows
   ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an	
+     en = -
+     de = -
+     fr = - 
   ++description
-    Annual NH3 emission from dairy cow housing systems per animal place.
+    NH3 emission factor for dairy cow housing systems.
   ++formula
     my $c_housing = Val(c_grazing, Housing::KGrazing) * 
                     Val(er_housing, Housing::Type) * 
@@ -99,9 +99,20 @@ taxonomy = Livestock::DairyCow::Housing
                       (1 - Val(c_housing_air, Housing::ClimateAir))
                     ) * 
                     Val(c_free_factor_housing, Housing::CFreeFactor);
-    #FIXME: Check: Is it in any way even possible that nh3_nhousing > tan_into_housing???
+    #FIXME: Check: Is it in any way even possible that $c_housing > 1???
     $c_housing = 1 unless $c_housing < 1;
-    Out(tan_into_housing) * $c_housing;
+    return $c_housing;
+
++nh3_nhousing
+  print = nh3,housing,total,dairy_cows
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual NH3 emission from dairy cow housing systems per animal place.
+  ++formula
+    Out(tan_into_housing) * Out(ef_nh3_nhousing);
  
 +n_outhousing
   print = n,out,housing,total,dairy_cows 
