@@ -57,42 +57,38 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
 
 *** output ***
 
-
 +n2_nsolid
-  print = 5
+  print = Equides
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2 emission from equides housing, yard and grazing (production).
+    Annual N2 emission from equides housing and yard (production).
   ++formula
      ( Val(n_into_housing, Equides::Housing) + Val(n_into_yard, Equides::Yard)
      ) *  Tech(er_n2_nsolid);
          
-
 +no_nsolid
-  print = 5
+  print = Equides
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NO emission from equides housing, yard and grazing (production).
+    Annual NO emission from equides housing and yard (production).
   ++formula
      ( Val(n_into_housing, Equides::Housing) + Val(n_into_yard, Equides::Yard)
      ) *  Tech(er_no_nsolid);
 
-         
-
 +n2o_nsolid
-  print = 5
+  print = Equides
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2O emission from equides housing, yard and grazing (production).
+    Annual N2O emission from equides housing and yard (production).
   ++formula
      ( Val(n_into_housing, Equides::Housing) + Val(n_into_yard, Equides::Yard)
      ) *  Tech(er_n2o_nsolid);

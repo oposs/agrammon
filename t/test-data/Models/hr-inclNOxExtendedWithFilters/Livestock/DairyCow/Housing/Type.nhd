@@ -161,7 +161,7 @@ Selects the emission rate and other correction factors for the specific housing 
 *** output ***
 
 +housing_type
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -177,7 +177,7 @@ Selects the emission rate and other correction factors for the specific housing 
     In(housing_type);
 
 +er_housing
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -192,7 +192,7 @@ Selects the emission rate and other correction factors for the specific housing 
     }
 
 +share_liquid
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -207,7 +207,7 @@ Selects the emission rate and other correction factors for the specific housing 
     }
 
 +k_area_type
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -222,7 +222,7 @@ Selects the emission rate and other correction factors for the specific housing 
     }
 
 +area_increase
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -241,7 +241,7 @@ Selects the emission rate and other correction factors for the specific housing 
     }
 
 +c_area
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -250,7 +250,7 @@ Selects the emission rate and other correction factors for the specific housing 
     1 + (Out(area_increase) * Out(k_area_type));
 
 +dimensioning_barn
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -259,7 +259,7 @@ Selects the emission rate and other correction factors for the specific housing 
     In(dimensioning_barn);
 
 +c_feeding_boxes
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description

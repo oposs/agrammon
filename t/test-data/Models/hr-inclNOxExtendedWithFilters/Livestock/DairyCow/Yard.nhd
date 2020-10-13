@@ -357,7 +357,7 @@ taxonomy = Livestock::DairyCow::Yard
 
 
 +yard_days
-  print = c_yard,dairy_cows
+  print = DairyCow
   ++units  
     en = days/year
     de = Tage/Jahr
@@ -368,7 +368,7 @@ taxonomy = Livestock::DairyCow::Yard
     In(yard_days);
 
 +days_with_grazing_and_yard
-  print = c_yard,dairy_cows
+  print = DairyCow
   ++units  
     en = days
     de = Tage
@@ -390,7 +390,7 @@ taxonomy = Livestock::DairyCow::Yard
     }
 
 +c_free_factor_yard
-  print = c_yard,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -411,7 +411,7 @@ taxonomy = Livestock::DairyCow::Yard
     } 
 
 +c_floor_properties_exercise_yard_SHL
-  print = c_yard,dairy_cows
+  print = DairyCow
   ++units
     en = -
   ++description
@@ -441,7 +441,7 @@ taxonomy = Livestock::DairyCow::Yard
     }
 
 +c_floor_properties_exercise_yard_LU
-  print = c_yard,dairy_cows
+  print = DairyCow
   ++units
     en = -
   ++description
@@ -470,7 +470,7 @@ taxonomy = Livestock::DairyCow::Yard
     }
 
 +share_excretion
-  print = c_yard,dairy_cows
+  print = DairyCow
   ++units
     en = -
   ++description
@@ -494,7 +494,7 @@ taxonomy = Livestock::DairyCow::Yard
     }
 
 +share_excretion_with_grazing
-  print = c_yard,dairy_cows
+  print = DairyCow
   ++units  
     en = -
     de = -
@@ -517,7 +517,7 @@ taxonomy = Livestock::DairyCow::Yard
     }
 
 +n_into_yard
-  print = n,into,yard,total,dairy_cows
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -534,7 +534,7 @@ taxonomy = Livestock::DairyCow::Yard
     );
 
 +tan_into_yard
-  print = tan,into,yard,total,dairy_cows
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -551,7 +551,7 @@ taxonomy = Livestock::DairyCow::Yard
     );
 
 +ef_nh3_nyard
-  print = ef_nh3,yard,total,dairy_cows
+  print = DairyCow,ef_nh3
   ++units
      en = -
      de = -
@@ -565,7 +565,7 @@ taxonomy = Livestock::DairyCow::Yard
     Out(c_free_factor_yard);
 
 +nh3_nyard
-  print = nh3,yard,total,dairy_cows
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -588,7 +588,7 @@ taxonomy = Livestock::DairyCow::Yard
     Out(n_into_yard) - Out(nh3_nyard);
 
 +tan_outyard_liquid
-  print = tan,out,yard,liquid,dairy_cows
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -599,7 +599,7 @@ taxonomy = Livestock::DairyCow::Yard
     Out(tan_into_yard) - Out(nh3_nyard);
 
 +n_outyard_solid
-  print = n,out,yard,solid,dairy_cows
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -610,7 +610,7 @@ taxonomy = Livestock::DairyCow::Yard
     0;
 
 +tan_outyard_solid
-  print = tan,out,yard,solid,dairy_cows
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr

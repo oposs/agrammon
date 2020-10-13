@@ -50,7 +50,7 @@ Describes correction factors for the loose housing liquid solid system for dairy
 *** output ***
      
 +er_housing
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units  
     en = -
   ++description
@@ -59,7 +59,7 @@ Describes correction factors for the loose housing liquid solid system for dairy
     Tech(er);
 
 +share_liquid
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units  
     en = -
   ++description
@@ -68,7 +68,7 @@ Describes correction factors for the loose housing liquid solid system for dairy
     Tech(share_liquid);
 
 +k_area
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units  
     en = -
   ++description

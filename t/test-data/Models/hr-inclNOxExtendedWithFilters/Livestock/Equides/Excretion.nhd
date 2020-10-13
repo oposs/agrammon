@@ -230,7 +230,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** output ***
 
 +animals
-  print = animals,excretion,equides
+  print = Equides
   ++units
     en = -
   ++description
@@ -239,7 +239,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(animals);
 
 +animalcategory
-  print = animalcategory,excretion,equides
+  print = Equides
   ++units
     en = -
   ++description
@@ -248,7 +248,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(animalcategory);
 
 +n_excretion_animal
-  print = n,excretion,equides
+  print = Equides
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -271,7 +271,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     return $exc;
 
 +n_excretion
-  print = n,excretion,equides
+  print = Equides
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -282,7 +282,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Out(n_excretion_animal) * Out(animals);
 
 +tan_excretion
-  print = tan,excretion,equides
+  print = Equides
   ++units
     en = kg N/year
     de = kg N/Jahr

@@ -121,7 +121,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 
 
 +grazing_hours
-  print = 15
+  print = Equides
   ++units  
     en = hours/day
     de = Stunden/Tag
@@ -132,7 +132,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     In(grazing_hours);
  
 +grazing_days
-  print = 15
+  print = Equides
   ++units  
     en = days/year
     de = Tage/Jahr
@@ -144,7 +144,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 
 
 +n_into_grazing
-  print = 7e
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -157,7 +157,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(grazing_hours) /  24;
 
 +tan_into_grazing
-  print = 7e
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -169,8 +169,19 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(grazing_days)  / 365 * 
     Out(grazing_hours) /  24;
 
++ef_nh3_ngrazing
+  print = Equides,ef_nh3
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total NH3 emission from all grazing dairy cows.
+  ++formula
+    Tech(er_dairycow_grazing);
+
 +nh3_ngrazing
-  print = 5e
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -181,7 +192,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(tan_into_grazing) * Tech(er_equides_grazing);
 
 +n2_ngrazing
-  print = 5c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -192,7 +203,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n_into_grazing) * Tech(er_n2_equides_grazing);
 
 +no_ngrazing
-  print = 5c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -203,7 +214,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n_into_grazing) * Tech(er_no_equides_grazing);
 
 +n2o_ngrazing
-  print = 5c
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -214,7 +225,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n_into_grazing) * Tech(er_n2o_equides_grazing);
 
 +n_remain_grazing
-  print = 7e
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -229,7 +240,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n2o_ngrazing);
 
 +tan_remain_grazing
-  print = 7e
+  print = Equides
   ++units
      en = kg N/year
      de = kg N/Jahr

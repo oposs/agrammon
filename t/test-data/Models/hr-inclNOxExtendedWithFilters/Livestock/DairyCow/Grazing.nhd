@@ -76,7 +76,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 *** output ***
 
 +n_into_grazing
-  print = 7c
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -93,7 +93,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     );
 
 +tan_into_grazing
-  print = 7c
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -109,8 +109,8 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
       Val(days_with_grazing_and_yard, Yard) / 365
     );
 
-+nh3_ngrazing
-  print = 5c
++ef_nh3_ngrazing
+  print = DairyCow,ef_nh3
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -118,10 +118,21 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual total NH3 emission from all grazing dairy cows.
   ++formula
-    Out(tan_into_grazing) * Tech(er_dairycow_grazing);
+    Tech(er_dairycow_grazing);
+
++nh3_ngrazing
+  print = DairyCow
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total NH3 emission from all grazing dairy cows.
+  ++formula
+    Out(tan_into_grazing) * Out(ef_nh3_ngrazing);
 
 +n2_ngrazing
-  print = 5c
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -132,7 +143,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n_into_grazing) * Tech(er_n2_dairycow_grazing);
 
 +no_ngrazing
-  print = 5c
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -143,7 +154,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n_into_grazing) * Tech(er_no_dairycow_grazing);
 
 +n2o_ngrazing
-  print = 5c
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -154,7 +165,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n_into_grazing) * Tech(er_n2o_dairycow_grazing);
 
 +n_remain_grazing
-  print = 7c
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -169,7 +180,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n2o_ngrazing);
 
 +tan_remain_grazing
-  print = 7c
+  print = DairyCow
   ++units
      en = kg N/year
      de = kg N/Jahr
