@@ -21,41 +21,19 @@ taxonomy = Livestock::RoughageConsuming::Housing::KGrazing
 
 *** technical ***
 
-+k_grazing_lw5h
-  value = 1.1
++k_grazing_a
+  value = 0.9989
   ++units  
     en = -
   ++description
-    Multiplication of housing emissions factor to 110% due to grazing/alping. 
-    When Grazing is from > 0  to 5 Hours per Day.
-    Empirical estimation. 
+    Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
 
-+k_grazing_lw12h
-  value = 1.4
++k_grazing_b
+  value = 0.0403
   ++units  
     en = -
   ++description
-    Multiplication of housing emissions factor to 140% due to grazing/alping. 
-    When Grazing is from 5 to 12 Hours per Day.
-    Empirical estimation. 
-
-+k_grazing_lw22h
-  value = 2.0
-  ++units  
-    en = -
-  ++description
-    Multiplication of housing emissions factor to 200% due to grazing/alping. 
-    When Grazing is from 12 to 22 Hours per Day.
-    Empirical estimation. 
-
-+k_grazing_gt22h
-  value = 2.5
-  ++units  
-    en = -
-  ++description
-    Multiplication of housing emissions factor to 250% due to grazing/alping. 
-    When Grazing is greater 22 Hours per Day.
-    Empirical estimation. 
+    Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
 
 
 *** external ***
@@ -65,37 +43,15 @@ taxonomy = Livestock::RoughageConsuming::Housing::KGrazing
     
 *** output ***
 
-+k_grazing
-  print = 15
++c_grazing
+  print = c_housing,roughage_consuming
   ++units  
     en = -
   ++description
     The correction factor for the reduction of the housing emission
     depending on the number of grazing hours per day and the grazing days per year.
   ++formula
-    if (Val(grazing_hours, ..::Grazing) == 0){
-        return  ( 1 );
-    } 
-    elsif (Val(grazing_hours, ..::Grazing) < 5){
-        return  ( (365.0-Val(grazing_days, ..::Grazing))*24 +
-                  Tech(k_grazing_lw5h)*Val(grazing_days, ..::Grazing)*(24-Val(grazing_hours, ..::Grazing)) )
-  		 / (365.0*24 - Val(grazing_hours, ..::Grazing)*Val(grazing_days, ..::Grazing)) ; 
-    } 
-    elsif (Val(grazing_hours, ..::Grazing)  < 12.0 ){
-        return  ( (365.0-Val(grazing_days, ..::Grazing))*24 +
-                  Tech(k_grazing_lw12h)*Val(grazing_days, ..::Grazing)*(24-Val(grazing_hours, ..::Grazing)) )
-  		 / (365.0*24 - Val(grazing_hours, ..::Grazing)*Val(grazing_days, ..::Grazing)) ; 
-    } 
-    elsif (Val(grazing_hours, ..::Grazing) < 22.0) {
-        return  ( (365.0-Val(grazing_days, ..::Grazing))*24 +
-                  Tech(k_grazing_lw22h)*Val(grazing_days, ..::Grazing)*(24-Val(grazing_hours, ..::Grazing)) )
-  		 / (365.0*24 - Val(grazing_hours, ..::Grazing)*Val(grazing_days, ..::Grazing)) ; 
-    }
-    elsif (Val(grazing_hours, ..::Grazing) >= 22.0) {
-        return  ( (365.0-Val(grazing_days, ..::Grazing))*24 +
-                  Tech(k_grazing_gt22h)*Val(grazing_days, ..::Grazing)*(24-Val(grazing_hours, ..::Grazing)) )
-  		 / (365.0*24 - Val(grazing_hours, ..::Grazing)*Val(grazing_days, ..::Grazing)) ; 
-    }
-    else{
-        return 1;  # no correction
-    };
+    # calculate correction factor per 'grazing event' i.e. per day
+    my $k_grazing = Tech(k_grazing_a) * exp(Tech(k_grazing_b) * Val(grazing_hours, ..::Grazing));
+    # scale with ratio grazing_days per year
+    ($k_grazing - 1) * Val(grazing_days, ..::Grazing) / 365 + 1;

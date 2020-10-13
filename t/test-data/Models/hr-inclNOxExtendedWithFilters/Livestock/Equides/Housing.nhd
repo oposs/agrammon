@@ -175,7 +175,7 @@ taxonomy = Livestock::Equides::Housing
   ++description
     Annual NH3 emission from equides housing systems.
   ++formula
-    my $c_housing = Val(k_grazing, Housing::KGrazing) * 
+    my $c_housing = Val(c_grazing, Housing::KGrazing) * 
                     Tech(er_housing) * 
                     Out(c_free_factor_housing) ;
     #FIXME: Check: Is it in any way even possible that nh3_nhousing > tan_into_housing???

@@ -160,7 +160,7 @@ taxonomy = Livestock::SmallRuminants::Housing
     per animal place.
   ++formula
    Out(tan_into_housing) 
-    * Val(k_grazing, Housing::KGrazing) 
+    * Val(c_grazing, Housing::KGrazing) 
     * Tech(er_housing) 
     * Out(c_free_factor_housing) ;
 

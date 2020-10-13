@@ -35,7 +35,6 @@ taxonomy = Livestock::DairyCow::Housing::KGrazing
   ++description
     Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
 
-
 *** external ***
 
 +..::GrazingInput
