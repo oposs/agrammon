@@ -86,7 +86,7 @@ Selects an free  correction factors for the specific housing types for dairy cow
   ++units 
     en = -
   ++description
-    Emission rate for the housing type.
+    Free correction factor for NH3 emission factor from dairy cow housing.
   ++formula
   if(In(free_correction_factor)//0 != 0) {
     writeLog({

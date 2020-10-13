@@ -174,25 +174,25 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to the use of a grooved floor in housing systems.
+    Correction factor for the emission due to the use of a grooved floor in housing systems.
   ++formula
     # TODO: is next line correct? Was missing compared to OtherCattle
-    return 0 unless defined In(UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows);
+    return 1 unless defined In(UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows);
     given ( In(UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows) ) {
       when 'raised_feeding_stands' {
-        Tech(red_raised_feeding_stands);
+        1 - Tech(red_raised_feeding_stands);
       }
       when 'floor_with_cross_slope_and_collection_gutter' {
-        Tech(red_floor_with_cross_slope_and_collection_gutter);
+        1 - Tech(red_floor_with_cross_slope_and_collection_gutter);
       }
       when 'floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands' {
-        Tech(red_floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands);
+        1 - Tech(red_floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands);
       }
       when 'toothed_scrapper_running_over_a_grooved_floor' {
-        Tech(red_toothed_scrapper_running_over_a_grooved_floor);
+        1 - Tech(red_toothed_scrapper_running_over_a_grooved_floor);
       }
       default {
-        0;
+        1;
       }
     }
 
@@ -201,21 +201,21 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to the use of housing system adaptations.
+    Correction factor for the emission due to the use of housing system adaptations.
   ++formula 
-    return 0 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_floor);
+    return 1 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_floor);
     given ( In(mitigation_options_for_housing_systems_for_dairy_cows_floor) ) {
       when 'toothed_scrapper_running_over_a_grooved_floor' {
-     	  Tech(red_toothed_scrapper_running_over_a_grooved_floor);
+     	  1 - Tech(red_toothed_scrapper_running_over_a_grooved_floor);
       } 
       when 'sloped_concrete_floor_with_drain_and_stationary_scarp_cleaning_every_two_hours' {
-     	  Tech(red_sloped_concrete_floor_with_drain_and_stationary_scarp_cleaning_every_two_hours);
+     	  1 - Tech(red_sloped_concrete_floor_with_drain_and_stationary_scarp_cleaning_every_two_hours);
       } 
       when 'system_Comfort_Slat_Mat_with_Mat_and_Valve' {
-     	  Tech(red_system_Comfort_Slat_Mat_with_Mat_and_Valve);
+     	  1 - Tech(red_system_Comfort_Slat_Mat_with_Mat_and_Valve);
       } 
       default { 
-        0;
+        1;
       }
     }
     

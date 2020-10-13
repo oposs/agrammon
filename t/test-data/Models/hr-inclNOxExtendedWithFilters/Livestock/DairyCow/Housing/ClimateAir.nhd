@@ -162,27 +162,27 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to the use of housing system adaptations.
+    Correction factor for the emission due to the use of housing system adaptations.
   ++formula 
-    return 0 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_climate);
+    return 1 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_climate);
     given ( In(mitigation_options_for_housing_systems_for_dairy_cows_climate) ) {
       when 'roof_insulation' {
-        Tech(red_roof_insulation);
+        1 - Tech(red_roof_insulation);
       } 
       when 'water_spraying' {
-        Tech(red_water_spraying);
+        1 - Tech(red_water_spraying);
       } 
       when 'roof_insulation_inclusive_water_spraying' {
-        Tech(red_roof_insulation_inclusive_water_spraying);
+        1 - Tech(red_roof_insulation_inclusive_water_spraying);
       } 
       when 'sprinkling_onto_the_roof' {
-        Tech(red_sprinkling_onto_the_roof);
+        1 - Tech(red_sprinkling_onto_the_roof);
       } 
       when 'sprinkling_onto_the_roof_inclusive_water_spraying' {
-        Tech(red_sprinkling_onto_the_roof_inclusive_water_spraying);
+        1 - Tech(red_sprinkling_onto_the_roof_inclusive_water_spraying);
       } 
       default { 
-        0;
+        1;
       }
     }
 
@@ -192,13 +192,13 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to the use of housing system adaptations.
+    Correction factor for the emission due to the use of housing system adaptations.
   ++formula 
-    return 0 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_air);
+    return 1 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_air);
     if ( In(mitigation_options_for_housing_systems_for_dairy_cows_air)  eq 'well_adapted_aeration' ) {
-      Tech(red_well_adapted_aeration);
+      1 - Tech(red_well_adapted_aeration);
     } else { 
-      0;
+      1;
     }
     
      

@@ -256,7 +256,7 @@ Selects the emission rate and other correction factors for the specific housing 
   ++units 
     en = -
   ++description
-    Are feeding boxes available?
+    Correction factor for feeding boxes
   ++formula
     if ( defined In(feeding_boxes) and In(feeding_boxes) eq 'yes' ) { 
       if ( (In(housing_type) eq 'Tied_Housing_Slurry') or (In(housing_type) eq 'Tied_Housing_Slurry_Plus_Solid_Manure') ) {
@@ -265,13 +265,13 @@ Selects the emission rate and other correction factors for the specific housing 
           de=>"Fütterungsbuchten sind nur für Laufställe anwendbar!",
           fr=>"Franz.: Fütterungsbuchten sind nur für Laufställe anwendbar!"
           });
-        return 0;
+        return 1;
       } 
       else{
-        Tech(red_feeding_boxes);
+        1 - Tech(red_feeding_boxes);
       }
     }
     else {
-      0;
+      1;
     }
 
