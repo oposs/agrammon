@@ -9,6 +9,8 @@ use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
+use Spreadsheet::XLSX;
+use Text::CSV;
 
 # FIX ME: use separate test database
 
@@ -61,10 +63,25 @@ subtest "get-cfg()" => {
     is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
 }
 
+subtest "get-csv-export" => {
+    my @print-tags = ['FluxSummary', 'Total', ];
+
+    dd "get-csv-export(): print-tags=", @print-tags;
+
+    my $export = $ws.get-csv-export($user, 'Agrammon6Testing', @print-tags);
+    dd $export;
+
+
+}
+
 subtest "get-excel-export" => {
-    my @print-tags = ['FluxSummary', 'Total'];
-    lives-ok { $ws.get-excel-export($user, "MyTestDataset", @print-tags) }, 'Get Excel export';
-#    is $dataset-name, "MyTestDataset", "Dataset has correct name";
+    my @print-tags = ['FluxSummary', 'Total', ];
+
+    dd "get-excel-export(): print-tags=", @print-tags;
+
+    my $export = $ws.get-excel-export($user, 'Agrammon6Testing', @print-tags);
+    dd $export;
+
 }
 
 done-testing; exit;

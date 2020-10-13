@@ -7,6 +7,8 @@ use Agrammon::DB::User;
 use Agrammon::DB::Tags;
 use Agrammon::Model;
 use Agrammon::OutputsCache;
+use Agrammon::OutputFormatter::CSV;
+use Agrammon::OutputFormatter::Excel;
 use Agrammon::OutputFormatter::GUI;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
@@ -56,27 +58,6 @@ class Agrammon::Web::Service {
         return @data;
     }
 
-    method get-excel-export(Agrammon::Web::SessionUser $user, Str $dataset-name, @print-tags) {
-        dd "get-excel-export(): print-tags=", @print-tags;
-        use Spreadsheet::XLSX;
-
-        # Create a new workbook and add some worksheets to it.
-        my $workbook = Spreadsheet::XLSX.new;
-        my $sheet-a = $workbook.create-worksheet('Ingredients');
-
-        # Put some data into a worksheet and style it.
-        # THis is a convenience form.
-        $sheet-a.set(0, 0, 'Ingredient', :bold);
-        $sheet-a.set(0, 1, 'Quantity', :bold);
-        $sheet-a.set(1, 0, 'Eggs');
-        $sheet-a.set(1, 1, 6, :number-format('#,###'));
-
-
-        # Get it as a blob, e.g. for a HTTP response.
-        my $report = $workbook.to-blob();
-        dd $report;
-        return $report;
-        }
 
     method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         my $model = self.cfg.model-variant; # model 'SingleSHL';
@@ -130,8 +111,8 @@ class Agrammon::Web::Service {
         return $!ui-web.get-input-variables;
     }
 
-    method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
-        my $outputs = $!outputs-cache.get-or-calculate: $user.username, $dataset-name, -> {
+    method !get-outputs(Agrammon::Web::SessionUser $user, Str $dataset-name) {
+        return $!outputs-cache.get-or-calculate: $user.username, $dataset-name, -> {
             my $input = Agrammon::DataSource::DB.new.read($user.username, $dataset-name,
                     $!model.distribution-map);
             timed "$dataset-name", {
@@ -140,11 +121,40 @@ class Agrammon::Web::Service {
                         technical => %!technical-parameters;
             }
         }
+    }
+
+    method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
+        my $outputs = self!get-outputs($user, $dataset-name);
 
         # TODO: get with-filters from frontend
         my %gui-output = output-for-gui($!model, $outputs, True);
         warn '**** get-output-variables() not yet completely implemented';
         return %gui-output;
+    }
+
+    method get-csv-export(Agrammon::Web::SessionUser $user, Str $dataset-name, @print-tags) {
+        my $outputs  = self!get-outputs($user, $dataset-name);
+        my $language = 'de';
+        my $simulation-name = 'test';
+        my $dataset = Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup;
+
+        # TODO: get with-filters from frontend
+        my %csv-output = output-as-csv($simulation-name, $dataset.id, $!model, $outputs, $language);
+        warn '**** get-csv-export() not yet completely implemented';
+        return %csv-output;
+    }
+
+    method get-excel-export(Agrammon::Web::SessionUser $user, Str $dataset-name, @print-tags) {
+        dd "get-excel-export(): print-tags=", @print-tags;
+        my $outputs = self!get-outputs($user, $dataset-name);
+        my $language = 'de';
+        my $simulation-name = 'test';
+        my $dataset = Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup;
+
+        # TODO: get with-filters from frontend
+        my %excel-output = output-as-excel($simulation-name, $dataset.id, $!model, $outputs, $language);
+        warn '**** get-excel-export() not yet completely implemented';
+        return %excel-output;
     }
 
     method create-account(Agrammon::Web::SessionUser $user, $email, $password, $key, $firstname, $lastname, $org, $role?) {
