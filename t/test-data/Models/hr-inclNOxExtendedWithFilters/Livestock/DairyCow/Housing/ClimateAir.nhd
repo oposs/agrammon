@@ -158,36 +158,47 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 
 +c_housing_climate
-  print = 15
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to the use of housing system adaptations.
+    Correction factor for the emission due to the use of housing system adaptations.
   ++formula 
-      return 0 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_climate);
-      if (In(mitigation_options_for_housing_systems_for_dairy_cows_climate) eq 'roof_insulation'){
-       	    return( Tech(red_roof_insulation));
-       } elsif (In(mitigation_options_for_housing_systems_for_dairy_cows_climate) eq 'water_spraying'){
-       	    return( Tech(red_water_spraying));
-       } elsif (In(mitigation_options_for_housing_systems_for_dairy_cows_climate) eq 'roof_insulation_inclusive_water_spraying'){
-       	    return( Tech(red_roof_insulation_inclusive_water_spraying));
-       } elsif (In(mitigation_options_for_housing_systems_for_dairy_cows_climate) eq 'sprinkling_onto_the_roof'){
-       	    return( Tech(red_sprinkling_onto_the_roof));
-       } elsif (In(mitigation_options_for_housing_systems_for_dairy_cows_climate) eq 'sprinkling_onto_the_roof_inclusive_water_spraying'){
-       	    return( Tech(red_sprinkling_onto_the_roof_inclusive_water_spraying));
-       } else { return 0;};
+    return 1 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_climate);
+    given ( In(mitigation_options_for_housing_systems_for_dairy_cows_climate) ) {
+      when 'roof_insulation' {
+        1 - Tech(red_roof_insulation);
+      } 
+      when 'water_spraying' {
+        1 - Tech(red_water_spraying);
+      } 
+      when 'roof_insulation_inclusive_water_spraying' {
+        1 - Tech(red_roof_insulation_inclusive_water_spraying);
+      } 
+      when 'sprinkling_onto_the_roof' {
+        1 - Tech(red_sprinkling_onto_the_roof);
+      } 
+      when 'sprinkling_onto_the_roof_inclusive_water_spraying' {
+        1 - Tech(red_sprinkling_onto_the_roof_inclusive_water_spraying);
+      } 
+      default { 
+        1;
+      }
+    }
 
 
 +c_housing_air
-  print = 15
+  print = c_housing,dairy_cows
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to the use of housing system adaptations.
+    Correction factor for the emission due to the use of housing system adaptations.
   ++formula 
-      return 0 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_air);
-      if (In(mitigation_options_for_housing_systems_for_dairy_cows_air)  eq 'well_adapted_aeration'){
-       	    return( Tech(red_well_adapted_aeration));
-       } else { return 0;};
-      
-       
+    return 1 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_air);
+    if ( In(mitigation_options_for_housing_systems_for_dairy_cows_air)  eq 'well_adapted_aeration' ) {
+      1 - Tech(red_well_adapted_aeration);
+    } else { 
+      1;
+    }
+    
+     

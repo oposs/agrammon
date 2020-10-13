@@ -65,8 +65,8 @@ taxonomy = Livestock::DairyCow::Housing::KGrazing
     
 *** output ***
 
-+k_grazing
-  print = 15
++c_grazing
+  print = c_housing,dairy_cows
   ++units  
     en = -
   ++description

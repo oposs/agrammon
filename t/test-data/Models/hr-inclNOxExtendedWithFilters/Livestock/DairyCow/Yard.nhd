@@ -357,7 +357,7 @@ taxonomy = Livestock::DairyCow::Yard
 
 
 +yard_days
-  print = 7
+  print = c_yard,dairy_cows
   ++units  
     en = days/year
     de = Tage/Jahr
@@ -368,6 +368,7 @@ taxonomy = Livestock::DairyCow::Yard
     In(yard_days);
 
 +days_with_grazing_and_yard
+  print = c_yard,dairy_cows
   ++units  
     en = days
     de = Tage
@@ -389,83 +390,87 @@ taxonomy = Livestock::DairyCow::Yard
     }
 
 +c_free_factor_yard
-  print = 10
+  print = c_yard,dairy_cows
   ++units 
     en = -
   ++description
     Free reduction of the Emission rate for the Yard.
   ++formula
-  if ( In(free_correction_factor) // 0 != 0 ) {
-    writeLog({en=>"You have entered an additional emission mitigation measure for a dairy cows exercise yard of " 
-                  . In(free_correction_factor) 
-                  . "\%!\n", 
-              de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Laufhof der Milchkühe von " 
-                  . In(free_correction_factor) 
-                  . "\% eingegeben!\n", 
-              fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un parcours "
-                 . "extérieur pour vâches laitières de " . In(free_correction_factor) . "\% !\n"
-             });
-         return 1 - In(free_correction_factor)/100;     
-  } else {
-    return 1;
-  } 
+    if ( In(free_correction_factor) // 0 != 0 ) {
+      writeLog({
+        en => "You have entered an additional emission mitigation measure for a dairy cows exercise yard of " 
+              . In(free_correction_factor) . "\%!\n", 
+        de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Laufhof der Milchkühe von " 
+              . In(free_correction_factor) . "\% eingegeben!\n", 
+        fr => "Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un parcours "
+              . "extérieur pour vâches laitières de " . In(free_correction_factor) . "\% !\n"
+      });
+      return 1 - In(free_correction_factor) / 100;     
+    } else {
+      return 1;
+    } 
 
 +c_floor_properties_exercise_yard_SHL
-  print = 15
+  print = c_yard,dairy_cows
   ++units
     en = -
   ++description
-    Reduction factor for the emission due to the use of the floor properties in housing systems.
+    Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula
     given ( In(floor_properties_exercise_yard_SHL) ) {
       when 'solid_floor' { 
-        return Tech(red_floor_properties_solid_floor); 
+        1 - Tech(red_floor_properties_solid_floor); 
       }
       when 'unpaved_floor' { 
-        return Tech(red_floor_properties_unpaved_floor); 
+        1 - Tech(red_floor_properties_unpaved_floor); 
       }
       when 'perforated_floor' { 
-        return Tech(red_floor_properties_perforated_floor); 
+        1 - Tech(red_floor_properties_perforated_floor); 
       }
       when 'paddock_or_pasture_used_as_exercise_yard' { 
-        return Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
+        1 - Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
       }
-      default { 
-        return 0; 
+      default {
+        writeLog({
+          en => "TODO: dairy cow input 'floor_properties_exercise_yard_SHL' is either not defined or not valid!",
+          de => "TODO: dairy cow input 'floor_properties_exercise_yard_SHL' is either not defined or not valid!",
+          fr => "TODO: dairy cow input 'floor_properties_exercise_yard_SHL' is either not defined or not valid!"
+        });
+        1; 
       }
     }
 
 +c_floor_properties_exercise_yard_LU
-  print = 15
+  print = c_yard,dairy_cows
   ++units
     en = -
   ++description
-    Reduction factor for the emission due to the use of the floor properties in housing systems.
+    Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula
-    return 0 unless defined In(floor_properties_exercise_yard_LU);
+    return 1 unless defined In(floor_properties_exercise_yard_LU);
     given ( In(floor_properties_exercise_yard_LU) ) {
       when 'solid_floor' { 
-        return Tech(red_floor_properties_solid_floor); 
+        1 - Tech(red_floor_properties_solid_floor); 
       }
       when 'perforated_floor' { 
-        return Tech(red_floor_properties_perforated_floor); 
+        1 - Tech(red_floor_properties_perforated_floor); 
       }
       when 'sloped_concrete_floor_with_central_drain_and_stationary_scraper' { 
-        return Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper);
+        1 - Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper);
       }
       when 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading' { 
-        return Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading);
+        1 - Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading);
       }
       when 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower' { 
-        return Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower);
+        1 - Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower);
       }      
       default { 
-        return 0; 
+        1; 
       }
     }
 
 +share_excretion
-  print = 7
+  print = c_yard,dairy_cows
   ++units
     en = -
   ++description
@@ -475,21 +480,21 @@ taxonomy = Livestock::DairyCow::Yard
   ++formula 
     given ( In(exercise_yard) ) {
       when 'available_roughage_is_not_supplied_in_the_exercise_yard' {
-        return Tech(share_available_roughage_is_not_supplied_in_the_exercise_yard);
+        Tech(share_available_roughage_is_not_supplied_in_the_exercise_yard);
       } 
       when 'available_roughage_is_partly_supplied_in_the_exercise_yard' {
-        return Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard);
+        Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard);
       }
       when 'available_roughage_is_exclusively_supplied_in_the_exercise_yard' {
-        return Tech(share_available_roughage_is_exclusively_supplied_in_the_exercise_yard);
+        Tech(share_available_roughage_is_exclusively_supplied_in_the_exercise_yard);
       }
       when 'not_available' {
-        return 0;
+        0;
       }
     }
 
 +share_excretion_with_grazing
-  print = debug
+  print = c_yard,dairy_cows
   ++units  
     en = -
     de = -
@@ -501,18 +506,18 @@ taxonomy = Livestock::DairyCow::Yard
   ++formula
     if( (Out(days_with_grazing_and_yard) > 0) and (Out(share_excretion) > 0.2) ){
       writeLog({
-        en=>"The category \"roughage is exclusively supplied in the exercise yard\" is not compatible with the number of grazing days entered!\n",
-        de=>"Verabreichung von Grundfutter ausschliesslich auf dem Laufhof ist nicht möglich mit den eingegebenen Weidetagen!\n",
-        fr=>"La distribution de fourrage exclusivement dans le parcours extérieur "
-                   . "pour les vâches laitières n'est pas possible pendant les jours de pâturage !\n",
-             }); 
+        en => "The category \"roughage is exclusively supplied in the exercise yard\" is not compatible with the number of grazing days entered!\n",
+        de => "Verabreichung von Grundfutter ausschliesslich auf dem Laufhof ist nicht möglich mit den eingegebenen Weidetagen!\n",
+        fr => "La distribution de fourrage exclusivement dans le parcours extérieur "
+              . "pour les vâches laitières n'est pas possible pendant les jours de pâturage !\n",
+      }); 
       return 0.2;
     } else {
       return Out(share_excretion);
     }
 
 +n_into_yard
-  print = 7
+  print = n,into,yard,total,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -529,7 +534,7 @@ taxonomy = Livestock::DairyCow::Yard
     );
 
 +tan_into_yard
-  print = 7
+  print = tan,into,yard,total,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -545,8 +550,22 @@ taxonomy = Livestock::DairyCow::Yard
       Out(days_with_grazing_and_yard) / 365
     );
 
++ef_nh3_nyard
+  print = ef_nh3,yard,total,dairy_cows
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    NH3 emission factor for dairy cow yard.
+  ++formula
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard_SHL) * 
+    Out(c_floor_properties_exercise_yard_LU) * 
+    Out(c_free_factor_yard);
+
 +nh3_nyard
-  print = 5c
+  print = nh3,yard,total,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -555,26 +574,10 @@ taxonomy = Livestock::DairyCow::Yard
     Annual NH3 emission from yard.
   ++formula
     Out(tan_into_yard) * 
-    Tech(er_yard) * 
-    (1 - Out(c_floor_properties_exercise_yard_SHL)) * 
-    (1 - Out(c_floor_properties_exercise_yard_LU)) * 
-    Out(c_free_factor_yard);
-
-# +nh3_nyard_animal
-#   print = 7c
-#   ++units
-#      en = kg N/year
-#      de = kg N/Jahr
-#      fr = kg N/an
-#   ++description
-#     Annual NH3 emission per anmimal from yard.
-#   ++formula
-#     if(  Val(animals, Excretion) != 0 ){
-#         return Out(nh3_nyard) / Val(animals, Excretion);
-#     } else { return 0;};
+    Out(ef_nh3_nyard);
 
 +n_outyard_liquid
-  print = 7c
+  print = n,out,yard,liquid,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -585,7 +588,7 @@ taxonomy = Livestock::DairyCow::Yard
     Out(n_into_yard) - Out(nh3_nyard);
 
 +tan_outyard_liquid
-  print = 7c
+  print = tan,out,yard,liquid,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -596,7 +599,7 @@ taxonomy = Livestock::DairyCow::Yard
     Out(tan_into_yard) - Out(nh3_nyard);
 
 +n_outyard_solid
-  print = 7c
+  print = n,out,yard,solid,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -607,7 +610,7 @@ taxonomy = Livestock::DairyCow::Yard
     0;
 
 +tan_outyard_solid
-  print = 7c
+  print = tan,out,yard,solid,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr

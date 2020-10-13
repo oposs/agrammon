@@ -160,6 +160,22 @@ Selects the emission rate and other correction factors for the specific housing 
 
 *** output ***
 
++housing_type
+  print = c_housing,dairy_cows
+  ++units 
+    en = -
+  ++description
+    Housing type (needed in other modules).
+  ++formula
+    if ( not defined In(housing_type) ) {
+      writeLog({
+        en => "TODO: dairy cow input 'housing_type' not defined!",
+        de => "TODO: dairy cow input 'housing_type' not defined!",
+        fr => "TODO: dairy cow input 'housing_type' not defined!"
+      });
+    }
+    In(housing_type);
+
 +er_housing
   print = c_housing,dairy_cows
   ++units 
@@ -167,14 +183,13 @@ Selects the emission rate and other correction factors for the specific housing 
   ++description
     Emission rate for the housing type.
   ++formula
-#    Val(er_housing, 'Type::' . In(housing_type));
-       given ( In(housing_type) ) {
-           return Val(er_housing,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
-           return Val(er_housing,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-           return Val(er_housing,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
-           return Val(er_housing,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-           return Val(er_housing,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
-       }
+    given ( In(housing_type) ) {
+      return Val(er_housing,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
+      return Val(er_housing,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Val(er_housing,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
+      return Val(er_housing,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Val(er_housing,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
+    }
 
 +share_liquid
   print = c_housing,dairy_cows
@@ -183,13 +198,13 @@ Selects the emission rate and other correction factors for the specific housing 
   ++description
     Liquid share for the housing type.
   ++formula
-       given ( In(housing_type) ) {
-           return Val(share_liquid,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
-           return Val(share_liquid,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-       return Val(share_liquid,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
-           return Val(share_liquid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-           return Val(share_liquid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
-       }
+    given ( In(housing_type) ) {
+      return Val(share_liquid,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
+      return Val(share_liquid,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Val(share_liquid,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
+      return Val(share_liquid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Val(share_liquid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
+    }
 
 +k_area_type
   print = c_housing,dairy_cows
@@ -198,15 +213,13 @@ Selects the emission rate and other correction factors for the specific housing 
   ++description
     Correction factor for the housing type area.
   ++formula
-#      Val(k_area, 'Type::' . In(housing_type));
-       given ( In(housing_type) ) {
-           return Val(k_area,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
-           return Val(k_area,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-       return Val(k_area,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
-           return Val(k_area,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-           return Val(k_area,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
-       }
-
+    given ( In(housing_type) ) {
+      return Val(k_area,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
+      return Val(k_area,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Val(k_area,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
+      return Val(k_area,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Val(k_area,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
+    }
 
 +area_increase
   print = c_housing,dairy_cows
@@ -215,24 +228,19 @@ Selects the emission rate and other correction factors for the specific housing 
   ++description
     Factor on what barn size does increase the regularized minimal, limited to 0.5.
   ++formula 
-    if((Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0)){ 
-        if(In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5)){   
-            return 0.5; 
-        }
-        else { 
-            if(Val(animals , ..::Excretion) > 0){ 
-                return((In(dimensioning_barn) / Val(animals, ..::Excretion)) -1);
-            }
-            else {
-                 return 0;
-            }
-        }
+    if( (Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0) ){ 
+      if(In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5)){   
+        0.5; 
+      }
+      else {
+        (In(dimensioning_barn) / Val(animals, ..::Excretion)) - 1;
+      }
     }
     else {
-        return 0.0;
-    };
+      0.0;
+    }
 
-+k_area
++c_area
   print = c_housing,dairy_cows
   ++units 
     en = -
@@ -240,15 +248,6 @@ Selects the emission rate and other correction factors for the specific housing 
     Correction factor for area per animal.
   ++formula
     1 + (Out(area_increase) * Out(k_area_type));
-
-+housing_type
-  print = c_housing,dairy_cows
-  ++units 
-    en = -
-  ++description
-    Housing type (needed in other modules).
-  ++formula
-    In(housing_type);
 
 +dimensioning_barn
   print = c_housing,dairy_cows
@@ -264,20 +263,22 @@ Selects the emission rate and other correction factors for the specific housing 
   ++units 
     en = -
   ++description
-    Are feeding boxes available?
+    Correction factor for feeding boxes
   ++formula
-    if(defined In(feeding_boxes) and In(feeding_boxes) eq 'yes'){ 
-        if((In(housing_type) eq 'Tied_Housing_Slurry') or (In(housing_type) eq 'Tied_Housing_Slurry_Plus_Solid_Manure')){
-            writeLog({en=>"Feeding boxes are applicable for loose housing systems only!",
-              de=>"Fütterungsbuchten sind nur für Laufställe anwendbar!",
-              fr=>"Franz.: Fütterungsbuchten sind nur für Laufställe anwendbar!"});
-            return 0;
-       } 
-       else{
-               return( Tech(red_feeding_boxes));
-       }
+    if ( defined In(feeding_boxes) and In(feeding_boxes) eq 'yes' ) { 
+      if ( (In(housing_type) eq 'Tied_Housing_Slurry') or (In(housing_type) eq 'Tied_Housing_Slurry_Plus_Solid_Manure') ) {
+        writeLog({
+          en=>"Feeding boxes are applicable for loose housing systems only!",
+          de=>"Fütterungsbuchten sind nur für Laufställe anwendbar!",
+          fr=>"Franz.: Fütterungsbuchten sind nur für Laufställe anwendbar!"
+          });
+        return 1;
+      } 
+      else{
+        1 - Tech(red_feeding_boxes);
+      }
     }
     else {
-        return 0;
-    };
+      1;
+    }
 
