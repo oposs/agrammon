@@ -355,18 +355,6 @@ taxonomy = Livestock::DairyCow::Yard
 
 *** output ***
 
-
-+yard_days
-  print = DairyCow
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Access to exercise yards days per year.
-  ++formula
-    In(yard_days);
-
 +days_with_grazing_and_yard
   print = DairyCow
   ++units  
@@ -376,7 +364,7 @@ taxonomy = Livestock::DairyCow::Yard
   ++description
     Number of Days whith access to yard and pasture
   ++formula
-    if( (Val(grazing_days, GrazingInput) + Out(yard_days)) > 365 ){
+    if( (Val(grazing_days, GrazingInput) + In(yard_days)) > 365 ){
       writeLog({
         en => "The sum of days with access to the exercise yard and of grazing "
               . "days per year for dairy cows is higher than 365!\n",
@@ -384,7 +372,7 @@ taxonomy = Livestock::DairyCow::Yard
         fr => "La somme des jours de pâturage et des jours avec accès au parcours extérieur " 
               . "pour les vâches laitières est supérieure à 365 !\n",
                }); 
-      return Val(grazing_days, GrazingInput) + Out(yard_days) - 365;
+      return Val(grazing_days, GrazingInput) + In(yard_days) - 365;
     } else {
       return 0;
     }
@@ -431,11 +419,6 @@ taxonomy = Livestock::DairyCow::Yard
         1 - Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
       }
       default {
-        writeLog({
-          en => "TODO: dairy cow input 'floor_properties_exercise_yard_SHL' is either not defined or not valid!",
-          de => "TODO: dairy cow input 'floor_properties_exercise_yard_SHL' is either not defined or not valid!",
-          fr => "TODO: dairy cow input 'floor_properties_exercise_yard_SHL' is either not defined or not valid!"
-        });
         1; 
       }
     }
@@ -504,14 +487,14 @@ taxonomy = Livestock::DairyCow::Yard
     If the basic feeding is on the yard the share_basicfeeding is assumed. 
     Otherwise the share is selected according to the access.
   ++formula
-    if( (Out(days_with_grazing_and_yard) > 0) and (Out(share_excretion) > 0.2) ){
+    if( (Out(days_with_grazing_and_yard) > 0) and (Out(share_excretion) > Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard)) ){
       writeLog({
         en => "The category \"roughage is exclusively supplied in the exercise yard\" is not compatible with the number of grazing days entered!\n",
         de => "Verabreichung von Grundfutter ausschliesslich auf dem Laufhof ist nicht möglich mit den eingegebenen Weidetagen!\n",
         fr => "La distribution de fourrage exclusivement dans le parcours extérieur "
               . "pour les vâches laitières n'est pas possible pendant les jours de pâturage !\n",
       }); 
-      return 0.2;
+      return Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard);
     } else {
       return Out(share_excretion);
     }
