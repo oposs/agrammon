@@ -605,8 +605,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** output ***
 
-+pigs
-  print = 20
++animals
+  print = animalcategory,excretion,other_pigs
   ++description
     Number of pigs of a specific category.
   ++units
@@ -614,83 +614,72 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++formula
     In(pigs);
 
-+standard_N_excretion
-  print = 7
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual standard N excretion for specified animal category according to
-    Flisch et al. (2009).
-  ++formula
-    my $cat = In(animalcategory);
-    my $key = 'standard_N_excretion_' . $cat;
-
-    my $exc = $TE->{$key};
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    if ( ($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
-        writeLog({
-            en => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
-            de => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
-            fr => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
-        });
-    }
-    return $exc;
-
-
-+standard_crude_protein
-  print = 7
-  ++units
-     en = g CP/kg
-     de = g RP/kg
-     fr = g MA/kg
-  ++description
-    Annual standard N excretion for specified pig category according to
-    Flisch et al. (2009).
-  ++formula
-    return $TE->{'standard_crude_protein_'.In(animalcategory)};
-
-+standard_energy_content
-  print = 7
-  ++units
-    en = MJ DE
-    de = MJ VES/kg
-    fr = MJ EDP/kg
-  ++description
-    Standard energy content of the feed ration for selected pig category.
-  ++formula
-#    my $key = "standard_energy_content_" . In(animalcategory);
-#    return Tech($key);
-    return $TE->{'standard_energy_content_'.In(animalcategory)};
-
-+cfeed
-  print = 7
++animalcategory
+  print = animalcategory,excretion,other_pigs
   ++units
     en = -
   ++description
-    Correction factor for feed with reduced crude protein content (BLW, SRVA, LBL 2003).
+    Animal category
   ++formula
-#    my $key = "cfeed_" . In(animalcategory);
-#    return Tech($key);
-    return $TE->{'cfeed_'.In(animalcategory)};
+    In(animalcategory);
 
-+minimal_N_excretion
-  print = 7
++n_excretion_animal
+  print = n,excretion,other_pigs
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Minimal annual N excretion for specified pig category according to
-    Flisch et al. (2009).
+    Annual total N excreted per animal.
   ++formula
-#    my $key = "minimal_N_excretion_" . In(animalcategory);
-#    return Tech($key);
-    return $TE->{'minimal_N_excretion_'.In(animalcategory)};
+    my $minimal = $TE->{'minimal_N_excretion_' . Out(animalcategory)};
+    my $stdN = $TE->{'standard_N_excretion_' . Out(animalcategory)};
+    if ( lc In(inp_n_excretion) eq 'standard' ) {
+      my $Nexcr =  $stdN* 
+                (1 - 
+                  ($TE->{'standard_crude_protein_' . Out(animalcategory)} - 
+                    In(crude_protein) * $TE->{'standard_energy_content_' . Out(animalcategory)} / In(energy_content)
+                  ) * 
+                $TE->{'cfeed_' . Out(animalcategory)});
+      if( $Nexcr < $minimal ) {
+        writeLog({
+          en => "The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
+                . "The excretion was set to " . $minimal ." kg N per animal!",
+          de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!",
+          fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!"
+        });
+        return $minimal;
+      } else {
+        return $Nexcr;
+      }
+    } else {
+      if( In(inp_n_excretion) < $minimal ) {
+        writeLog({
+          en => "The entry for N excretion is below the minimum for pigs.\n"
+                . "The excretion was set to " . $minimal ." kg N per animal!",
+          de => "Der gewählte N Ausscheidung liegt unterhalb des Minimums für Schweine! \n"
+                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!",
+          fr => "Franz.: Der gewählte N Ausscheidung liegt unterhalb des Minimums für Schweine! \n"
+                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!"
+        });
+        return $minimal;
+      } else {
+        if ( In(inp_n_excretion) < 0.25 * $stdN or 
+             In(inp_n_excretion) > 1.75 * $stdN ) {
+          writeLog({
+            en => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+            de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+            fr => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+          });
+        }
+        return In(inp_n_excretion);
+      }
+    }
 
 +n_excretion
-  print = 7
+  print = n,excretion,other_pigs
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -698,23 +687,10 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual total N excreted by a specified number of animals.
   ++formula
-    if(  Out(standard_N_excretion)
-    	   * (1 - (Out(standard_crude_protein) - (In(crude_protein) * Out(standard_energy_content) / In(energy_content) )) * Out(cfeed)) >= Out(minimal_N_excretion) ){
-	return( Out(standard_N_excretion)
-    	   * (1 - (Out(standard_crude_protein) - (In(crude_protein) * Out(standard_energy_content) / In(energy_content) )) * Out(cfeed)) * In(pigs) );
-    } else {
-
-        writeLog({en => "The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
-		     . "The excretion was set to " . Out(minimal_N_excretion) ." kg N per animal!",
-                  de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
-		     . "Die Ausscheidung wurde auf ". Out(minimal_N_excretion) ."  kg N pro Tier gesetzt!",
-                  fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
-		     . "Die Ausscheidung wurde auf ". Out(minimal_N_excretion) ."  kg N pro Tier gesetzt!"});
-        return( Out(minimal_N_excretion) * In(pigs) );
-    }
+    Out(n_excretion_animal) * Out(animals);
 
 +tan_excretion
-  print = 7
+  print = tan,excretion,other_pigs
   ++units
     en = kg N/year
     de = kg N/Jahr

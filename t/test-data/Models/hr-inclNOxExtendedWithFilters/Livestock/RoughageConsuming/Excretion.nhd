@@ -416,8 +416,26 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** output ***
 
-+standard_N_excretion
-  print = 7
++animals
+  print = animals,excretion,roughage_consuming
+  ++units
+    en = -
+  ++description
+    Number of small ruminants for the selected type in barn.
+  ++formula
+    In(animals);
+
++animalcategory
+  print = animalcategory,excretion,roughage_consuming
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    In(animalcategory);
+
++n_excretion_animal
+  print = n,excretion,roughage_consuming
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -426,7 +444,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual standard N excretion for specified other animal category according to
     Flisch et al. (2009).
   ++formula
-    my $cat = In(animalcategory);
+    my $cat = Out(animalcategory);
     my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
     $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
@@ -439,18 +457,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     }
     return $exc;
 
-+share_Nsol
-  print = 7
-  ++units
-    en = -
-  ++description
-    Nsol content of excreta of small ruminants. Derived from e.g.
-    Peterson et al. (1998) or Burgos et al. (2005).
-  ++formula
-    return $TE->{'share_Nsol_'.In(animalcategory)};
-
 +n_excretion
-  print = 7
+  print = n,excretion,roughage_consuming
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -458,10 +466,10 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual N excreted by a specified number of small ruminants.
   ++formula
-    Out(standard_N_excretion) * In(animals);
+    Out(n_excretion_animal) * Out(animals);
 
 +tan_excretion
-  print = 7
+  print = tan,excretion,roughage_consuming
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -469,22 +477,4 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual soluble N excreted by a specified number of small ruminants.
   ++formula
-     Out(share_Nsol) * Out(n_excretion);
-
-+animals
-  print = 9
-  ++units
-    en = -
-  ++description
-    Number of small ruminants for the selected type in barn.
-  ++formula
-    In(animals);
-
-+animalcategory
-  print = 9
-  ++units
-    en = -
-  ++description
-    Animal category
-  ++formula
-    In(animalcategory);
+    $TE->{'share_Nsol_'.Out(animalcategory)} * Out(n_excretion);

@@ -534,7 +534,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** output ***
 
 +animals
-  print = 20
+  print = animals,excretion,fattening_pigs
   ++units
     en = -
   ++description
@@ -542,84 +542,17 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++formula
     In(fattening_pigs);
 
-# delete?
 +animalcategory
-  print = 9
+  print = animalcategory,excretion,fattening_pigs
   ++units
     en = -
   ++description
-    Animal category (needed only for Detail Report)
+    Animal category
   ++formula
-    'FatteningPigs';
-
-+standard_N_excretion
-  print = 7
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual standard N excretion for fattening pigs according to
-    Walther et al. (2001).
-  ++formula
-    my $exc = Tech(standard_N_excretion_fattening_pigs);
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
-    if ( ($exc < 0.25 * Tech(standard_N_excretion_fattening_pigs)) or ($exc > 1.75 * Tech(standard_N_excretion_fattening_pigs)) ) {
-        writeLog({
-            en => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-            de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-            fr => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-        });
-    }
-    return $exc;
-
-
-+standard_crude_protein
-  print = 7
-  ++units
-     en = g CP/kg
-     de = g RP/kg
-     fr = g MA/kg
-  ++description
-    Annual standard N excretion for fattening pigs according to
-    Walther et al. (2001).
-  ++formula
-    Tech(standard_crude_protein_fattening_pigs);
-
-+standard_energy_content
-  print = 7
-  ++units
-    en = MJ DE
-    de = MJ VES/kg
-    fr = MJ EDP/kg
-  ++description
-    Standard energy content of the feed ration for fattening pigs.
-  ++formula
-    Tech(standard_energy_content_fattening_pigs);
-
-+cfeed
-  print = 7
-  ++units
-    en = -
-  ++description
-    Correction factor for feed with reduced crude protein content (BLW, SRVA, LBL 2003).
-  ++formula
-    Tech(cfeed_fattening_pigs);
-
-+minimal_N_excretion
-  print = 7
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Minimal annual N excretion for fattening pigs according to
-    Walther et al. (2001).
-  ++formula
-    Tech(minimal_N_excretion_fattening_pigs);
+    In(animalcategory);
 
 +crude_protein
-  print = 7
+  print = n,excretion,fattening_pigs
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -627,25 +560,80 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Crude protein content of feed ration - for 1-, 2- or 3-phase-feeding.
   ++formula
-    if ( In(feeding_phase_3_crude_protein) == 0
-         or In(feeding_phase_2_crude_protein) == In(feeding_phase_3_crude_protein)
-       ) {
-       	   if ( In(feeding_phase_2_crude_protein) == 0 ) {
-	      In(feeding_phase_1_crude_protein)
-           }
-           else {
-	      (In(feeding_phase_1_crude_protein)*Tech(phase_1_2_duration)+
-    	       In(feeding_phase_2_crude_protein)*Tech(phase_2_2_duration))
-           }
+    if ( In(feeding_phase_3_crude_protein) == 0 or 
+         In(feeding_phase_2_crude_protein) == In(feeding_phase_3_crude_protein) ) {
+      if ( In(feeding_phase_2_crude_protein) == 0 ) {
+        In(feeding_phase_1_crude_protein);
+      }
+      else {
+        In(feeding_phase_1_crude_protein) * Tech(phase_1_2_duration) +
+        In(feeding_phase_2_crude_protein) * Tech(phase_2_2_duration);
+      }
     }
     else {
-       	    ( In(feeding_phase_1_crude_protein)*Tech(phase_1_3_duration)+
-    	      In(feeding_phase_2_crude_protein)*Tech(phase_2_3_duration)+
-              In(feeding_phase_3_crude_protein)*Tech(phase_3_3_duration))
+      In(feeding_phase_1_crude_protein) * Tech(phase_1_3_duration) +
+      In(feeding_phase_2_crude_protein) * Tech(phase_2_3_duration) +
+      In(feeding_phase_3_crude_protein) * Tech(phase_3_3_duration)
+    }
+
++n_excretion_animal
+  print = n,excretion,fattening_pigs
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for fattening pigs according to
+    Walther et al. (2001).
+  ++formula
+    if ( lc In(inp_n_excretion) eq 'standard' ) {
+      my $exc = Tech(standard_N_excretion_fattening_pigs) * 
+                (1 - (
+                  Tech(standard_crude_protein_fattening_pigs) - 
+                  (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / In(energy_content))
+                ) * 
+                Tech(cfeed_fattening_pigs));
+      if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
+        writeLog({
+          en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
+                . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
+          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
+                . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
+          fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
+                ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
+                ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
+        });
+        return Tech(minimal_N_excretion_fattening_pigs);
+      } else {
+        return $exc;
+      }
+    } else {
+      if ( In(inp_n_excretion) < Tech(minimal_N_excretion_fattening_pigs) ) {
+        writeLog({
+          en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
+                . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
+          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
+                . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
+          fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
+                ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
+                ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
+        });
+        return Tech(minimal_N_excretion_fattening_pigs);
+      } else {
+        if ( (In(inp_n_excretion) < 0.25 * Tech(standard_N_excretion_fattening_pigs)) or (In(inp_n_excretion) > 1.75 * Tech(standard_N_excretion_fattening_pigs)) ) {
+          writeLog({
+            en => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+            de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+            fr => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+          });
+        }
+        return In(inp_n_excretion);
+      }
+
     }
 
 +n_excretion
-  print = 7
+  print = n,excretion,fattening_pigs
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -653,30 +641,10 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual total N excreted by a specified number of fattening pigs.
   ++formula
-    my $excr = Out(standard_N_excretion) * 
-               (1 - (
-                Out(standard_crude_protein) - 
-                (Out(crude_protein) * Out(standard_energy_content) / In(energy_content))
-                ) * 
-               Out(cfeed));
-    if ( $excr >= Out(minimal_N_excretion) ) {
-      $excr * Out(animals);
-    } else {
-        writeLog({en => "The entries for the contents of energy and crude protein of the ration result in a N "
-		        . "excretion below the minimum for fattening pigs. \n"
-                . "The excretion was set to " . Out(minimal_N_excretion) . " kg N per animal!",
-                  de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung "
-                        . " unterhalb des Minimums für Mastschweine! \n"
-		        . "Die Ausscheidung wurde auf ". Out(minimal_N_excretion) ." kg N pro Tier gesetzt!",
-                  fr => "Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
-                        ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
-                        ."L'excrétion a été fixée à ". Out(minimal_N_excretion) ."kg N par animal. \n"
-                 });
-      Out(minimal_N_excretion) * Out(animals);
-    }
+    Out(n_excretion_animal) * Out(animals);
 
 +tan_excretion
-  print = 7
+  print = tan,excretion,fattening_pigs
   ++units
     en = kg N/year
     de = kg N/Jahr

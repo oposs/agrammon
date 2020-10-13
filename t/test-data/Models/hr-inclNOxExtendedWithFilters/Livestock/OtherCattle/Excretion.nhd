@@ -344,7 +344,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 *** output ***
 
 +animals
-  print = 9
+  print = animals,excretion,other_cattle
   ++units
     en = -
   ++description
@@ -353,7 +353,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     In(animals);
 
 +animalcategory
-  print = 9
+  print = animalcategory,excretion,other_cattle
   ++units
     en = -
   ++description
@@ -361,43 +361,30 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++formula
     In(animalcategory);
 
-+standard_N_excretion
-  print = 7
++n_excretion_animal
+  print = n,excretion,other_cattle
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual standard N excretion for specified animal category according to
-    Flisch et al. (2009).
+    Annual total N excreted per animal.
   ++formula
-    my $cat = In(animalcategory);
+    my $cat = Out(animalcategory);
     my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
     $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
     if ( ($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
-        writeLog({
-            en => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
-            de => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
-            fr => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
-        });
+      writeLog({
+        en => "FIX: Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+        de => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+        fr => "FIX: Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
+      });
     }
     return $exc;
 
-+share_Nsol
-  print = 7
-  ++units
-    en = -
-  ++description
-    Nsol content of excreta for a specific cattle category. Derived from e.g.
-    Peterson et al. (1998) or Burgos et al. (2005).
-  ++formula
-    my $key = "share_Nsol_" . In(animalcategory);
-    return $TE->{$key};
-
-
 +n_excretion
-  print = 7
+  print = n,excretion,other_cattle
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -405,22 +392,10 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual total N excreted by an animalgroup of selected cattle category.
   ++formula
-    Out(standard_N_excretion) * In(animals);
-
-
-+n_excretion_animal
-  print = 7
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual mean total N excreted of an animal of selected cattle category.
-  ++formula
-    Out(standard_N_excretion);
+    Out(n_excretion_animal) * Out(animals);
 
 +tan_excretion
-  print = 7
+  print = tan,excretion,other_cattle
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -428,4 +403,4 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual soluble N excreted by an animalgroup of selected cattle category.
   ++formula
-     Out(share_Nsol) * Out(n_excretion);
+    $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
