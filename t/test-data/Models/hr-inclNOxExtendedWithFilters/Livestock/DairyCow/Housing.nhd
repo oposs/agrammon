@@ -46,7 +46,7 @@ taxonomy = Livestock::DairyCow::Housing
 *** output ***
 
 +n_into_housing
-  print = 7c
+  print = n,into,housing,total,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -63,7 +63,7 @@ taxonomy = Livestock::DairyCow::Housing
     }
 
 +tan_into_housing
-  print = 7c
+  print = tan,into,housing,total,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -80,7 +80,7 @@ taxonomy = Livestock::DairyCow::Housing
     }
 
 +nh3_nhousing
-  print = 5c
+  print = nh3,housing,total,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -88,9 +88,9 @@ taxonomy = Livestock::DairyCow::Housing
   ++description
     Annual NH3 emission from dairy cow housing systems per animal place.
   ++formula
-    my $c_housing = Val(k_grazing, Housing::KGrazing) * 
+    my $c_housing = Val(c_grazing, Housing::KGrazing) * 
                     Val(er_housing, Housing::Type) * 
-                    Val(k_area, Housing::Type) * 
+                    Val(c_area, Housing::Type) * 
                     (
                       (1 - Val(c_feeding_boxes, Housing::Type)) * 
                       (1 - Val(c_UNECE, Housing::Floor)) * 
@@ -104,7 +104,7 @@ taxonomy = Livestock::DairyCow::Housing
     Out(tan_into_housing) * $c_housing;
  
 +n_outhousing
-  print = 7c 
+  print = n,out,housing,total,dairy_cows 
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -115,7 +115,7 @@ taxonomy = Livestock::DairyCow::Housing
     Out(n_into_housing) - Out(nh3_nhousing);
 
 +tan_outhousing
-  print = 9c
+  print = tan,into,housing,total,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -126,7 +126,7 @@ taxonomy = Livestock::DairyCow::Housing
     Out(tan_into_housing) - Out(nh3_nhousing);
 
 +n_outhousing_liquid
-  print = 7c
+  print = n,out,housing,liquid,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -138,7 +138,7 @@ taxonomy = Livestock::DairyCow::Housing
     Out(n_outhousing) * Val(share_liquid, Housing::Type);
 
 +tan_outhousing_liquid
-  print = 7c
+  print = tan,out,housing,liquid,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -150,7 +150,7 @@ taxonomy = Livestock::DairyCow::Housing
     Out(tan_outhousing) * Val(share_liquid, Housing::Type);
 
 +n_outhousing_solid
-  print = 7c
+  print = n,out,housing,solid,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -161,7 +161,7 @@ taxonomy = Livestock::DairyCow::Housing
     Out(n_outhousing) - Out(n_outhousing_liquid);
 
 +tan_outhousing_solid
-  print = 7c
+  print = tan,out,housing,solid,dairy_cows
   ++units
      en = kg N/year
      de = kg N/Jahr
