@@ -153,8 +153,8 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual N excretion during grazing for equides.
   ++formula
     Val(n_excretion, Excretion) * 
-    Out(grazing_days)  / 365 *
-    Out(grazing_hours) /  24;
+    In(grazing_days)  / 365 *
+    In(grazing_hours) /  24;
 
 +tan_into_grazing
   print = Equides
@@ -166,15 +166,15 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual solable N (TAN) excretion during grazing for equides.
   ++formula
     Val(tan_excretion,Excretion) * 
-    Out(grazing_days)  / 365 * 
-    Out(grazing_hours) /  24;
+    In(grazing_days)  / 365 * 
+    In(grazing_hours) /  24;
 
 +ef_nh3_ngrazing
   print = Equides,ef_nh3
   ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
+     en = -
+     de = -
+     fr = -
   ++description
     Annual total NH3 emission from all grazing dairy cows.
   ++formula

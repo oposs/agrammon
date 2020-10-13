@@ -85,23 +85,8 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 
 *** output ***
 
-+share_grazing
-  print = 25
-  ++units  
-    en = -
-  ++description
-    Share of N excretion during outdoor activities for a defined animal category.
-    If fattening pig housing type is 'Outdoor' 100% is assumed.
-  ++formula
-    if(Val(housing_type, Housing::Type) eq 'Outdoor'){
-        return 1;
-    }else {
-        return 0;  # no correction
-    };
-
-
 +n_into_grazing
-  print = 7
+  print = FatteningPigs
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -109,10 +94,14 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual N excretion during grazing for fattening pigs.
   ++formula
-    Val(n_excretion, Excretion) * Out(share_grazing);
+    if(Val(housing_type, Housing::Type) eq 'Outdoor'){
+      return Val(n_excretion, Excretion);
+    }else {
+      return 0;
+    }
 
 +tan_into_grazing
-  print = 7
+  print = FatteningPigs
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -120,10 +109,29 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual soluble N (TAN) excretion during grazing for fattening pigs.
   ++formula
-    Val(tan_excretion, Excretion)  * Out(share_grazing);
+    if(Val(housing_type, Housing::Type) eq 'Outdoor'){
+      return Val(tan_excretion, Excretion);
+    }else {
+      return 0;
+    }
+
++ef_nh3_ngrazing
+  print = FatteningPigs,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual total NH3 emission from all grazing dairy cows.
+  ++formula
+    if(Val(housing_type, Housing::Type) eq 'Outdoor'){
+      Tech(er_fattening_pig_grazing);
+    }else {
+      0;
+    }
  
 +nh3_ngrazing
-  print = 5b
+  print = FatteningPigs
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -131,10 +139,10 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++description
     Annual NH3 emission from all fattening pigs from grazing.
   ++formula
-    Out(tan_into_grazing) * Tech(er_fattening_pig_grazing); 
+    Out(tan_into_grazing) * Out(ef_nh3_ngrazing); 
 
 +n2_ngrazing
-  print = 5c
+  print = FatteningPigs
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -145,7 +153,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n_into_grazing) * Tech(er_n2_fattening_pig_grazing);
 
 +no_ngrazing
-  print = 5c
+  print = FatteningPigs
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -156,7 +164,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n_into_grazing) * Tech(er_no_fattening_pig_grazing);
 
 +n2o_ngrazing
-  print = 5c
+  print = FatteningPigs
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -167,7 +175,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n_into_grazing) * Tech(er_n2o_fattening_pig_grazing);
 
 +n_remain_grazing
-  print = 8
+  print = FatteningPigs
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -182,7 +190,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n2o_ngrazing);
 
 +tan_remain_grazing
-  print = 8
+  print = FatteningPigs
   ++units
      en = kg N/year
      de = kg N/Jahr
