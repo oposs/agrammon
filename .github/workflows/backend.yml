@@ -38,10 +38,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: Raku/setup-raku@v1
-        with:
-          raku-version: ${{ matrix.raku-version }}
-
       - name: Show environment infos
         run: |
           psql --version
@@ -57,12 +53,19 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: agrammon_test
-          PGPASSFILE: ./dev/pgpass
+          PGPASSFILE: $GITHUB_WORKSPACE/dev/pgpass
         run: |
+          ls -l $GITHUB_WORKSPACE/dev/pgpass
+          chmod 0600 $GITHUB_WORKSPACE/dev/pgpass
+          ls -l $GITHUB_WORKSPACE/dev/pgpass
           psql -U postgres -c "CREATE USER agrammon PASSWORD 'agrammonATwork'"  > /dev/null
           psql -U postgres -c "CREATE GROUP agrammon_user USER agrammon"        > /dev/null
           psql -U postgres -c "CREATE EXTENSION pgcrypto" agrammon_test         > /dev/null
           psql -U postgres --file=$GITHUB_WORKSPACE/t/test-data/agrammon_test.dump.sql agrammon_test > /dev/null
+
+      - uses: Raku/setup-raku@v1
+        with:
+          raku-version: ${{ matrix.raku-version }}
 
       - name: Cache dependencies
         id: cache-deps
