@@ -177,7 +177,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        <p>Proposition valeur standard: aucune</p>
 
 
-+mitigation_options_for_housing_systems_for_fattening_pigs_air
++mitigation_housing_air
   type  = enum
   default_calc = none
   ++enum
@@ -375,7 +375,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++description
     Reduction factor for the emission due to the use of housing system adaptations.
   ++formula 
-      if (In(mitigation_options_for_housing_systems_for_fattening_pigs_air)  eq 'low_impuls_air_supply'){
+      if (In(mitigation_housing_air)  eq 'low_impuls_air_supply'){
           return( Tech(red_low_impuls_air_supply));
       }
       else {
