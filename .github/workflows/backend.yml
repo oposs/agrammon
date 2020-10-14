@@ -42,15 +42,15 @@ jobs:
         with:
           raku-version: ${{ matrix.raku-version }}
 
-      - name: Show environment infos
-        run: |
-          psql --version
-          raku -v
-          which raku
-          pwd
-          ls -al
-          ls -al $HOME
-          env
+#      - name: Show environment infos
+#        run: |
+#          psql --version
+#          raku -v
+#          which raku
+#          pwd
+#          ls -al
+#          ls -al $HOME
+#          env
 
       - name: Load test database
         env:
@@ -77,7 +77,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt install libxml2
+          sudo apt install libxml2
           mkdir -p $GITHUB_WORKSPACE/.raku
           ls -al $GITHUB_WORKSPACE/.raku
           # zef --install-to=#inst$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
