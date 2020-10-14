@@ -81,6 +81,7 @@ jobs:
         env:
           RAKULIB: inst#/.raku
         run: |
+          mkdir -p $RAKULIB
           zef --install-to=$RAKULIB --debug --deps-only --/test --test-depends install .
           zef locate Spreadsheet::XLSX
 
