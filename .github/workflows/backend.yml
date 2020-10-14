@@ -59,9 +59,10 @@ jobs:
           POSTGRES_DB: agrammon_test
           PGPASSFILE: $GITHUB_WORKSPACE/dev/pgpass
         run: |
-          ls -l $GITHUB_WORKSPACE/dev/pgpass
           chmod 0600 $GITHUB_WORKSPACE/dev/pgpass
           ls -l $GITHUB_WORKSPACE/dev/pgpass
+          cat $GITHUB_WORKSPACE/dev/pgpass
+          env
           psql -U postgres -h localhost -c "CREATE USER agrammon PASSWORD 'agrammonATwork'"  > /dev/null
           psql -U postgres -h localhost -c "CREATE GROUP agrammon_user USER agrammon"        > /dev/null
           psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" agrammon_test         > /dev/null
