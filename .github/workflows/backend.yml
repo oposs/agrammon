@@ -20,37 +20,58 @@ jobs:
           # - '2019.11'
     runs-on: ${{ matrix.os }}
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: agrammon_test
+        ports:
+          - 5432:5432
+        options:
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v2
-
-      - uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: '12' 
 
       - uses: Raku/setup-raku@v1
         with:
           raku-version: ${{ matrix.raku-version }}
 
-      - name: Show raku version
-        run: raku -v
+      - name: Show environment infos
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: agrammon_test
+          PGPASSFILE: ./dev/pgpass
+        run: |
+          psql --version
+          raku -v
+          which raku
+          pwd
+          ls -al
+          ls -al $HOME
+          env
 
-      - name: Show raku location
-        run: which raku
-
-      - name: Show current directory
-        run: pwd
-
-      - name: List current directory
-        run: ls -al
-
-      - name: Show environment variables
-        run: env
+      - name: Load test database
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: agrammon_test
+          PGPASSFILE: ./dev/pgpass
+        run: |
+          psql -U postgres -c "CREATE USER agrammon PASSWORD 'agrammonATwork'"  > /dev/null
+          psql -U postgres -c "CREATE GROUP agrammon_user USER agrammon"        > /dev/null
+          psql -U postgres -c "CREATE EXTENSION pgcrypto" agrammon_test         > /dev/null
+          psql -U postgres --file=$GITHUB_WORKSPACE/t/test-data/agrammon_test.dump.sql agrammon_test > /dev/null
 
       - name: Cache dependencies
         id: cache-deps
         uses: actions/cache@v2
         with:
-          path: .raku
+          path: /opt/hostedtoolcache/rakudo/2020.09-01/x86_64/share/perl6/site/sources
           key: ${{ runner.os }}-deps
 
       - name: Install dependencies
