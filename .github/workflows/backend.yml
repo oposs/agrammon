@@ -79,7 +79,7 @@ jobs:
 
       - name: Install dependencies
         env:
-          RAKULIB: inst#/.raku
+          RAKULIB: #inst.raku
         run: |
           mkdir -p $RAKULIB
           zef --install-to=$RAKULIB --debug --deps-only --/test --test-depends install .
@@ -87,5 +87,5 @@ jobs:
 
       - name: Run tests
         env:
-          RAKULIB: inst#/.raku
+          RAKULIB: inst#.raku
         run: prove6 -l -v t/config.t t/datasource-db.t
