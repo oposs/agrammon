@@ -73,11 +73,6 @@ jobs:
           path: $GITHUB_WORKSPACE/.raku
           key: ${{ runner.os }}-raku-deps
 
-#      - name: Install libraries
-#        run: |
-#          # might not be needed ...
-#          sudo apt install libxml2 libxml2-dev
-
       - name: Install modules
         run: |
           mkdir -p $GITHUB_WORKSPACE/.raku
