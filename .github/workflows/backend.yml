@@ -43,10 +43,6 @@ jobs:
           raku-version: ${{ matrix.raku-version }}
 
       - name: Show environment infos
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: agrammon_test
-          PGPASSFILE: ./dev/pgpass
         run: |
           psql --version
           raku -v
@@ -57,6 +53,7 @@ jobs:
           env
 
       - name: Load test database
+        env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: agrammon_test
