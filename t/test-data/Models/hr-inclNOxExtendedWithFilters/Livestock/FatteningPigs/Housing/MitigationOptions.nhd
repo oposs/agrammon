@@ -18,7 +18,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** input ***
  
-+UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs
++mitigation_housing_floor
   type  = enum
   default_calc = none
   ++enum
@@ -106,7 +106,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        <p>Proposition de valeur standard: aucune</p>
 
 
-+mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel
++mitigation_housing_floor_LU
   models = LU
   type  = enum
   default_calc = none
@@ -281,14 +281,14 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 *** output ***
 
 
-+red_UNECE_housing_task
++red_housing_floor_SHL
   print = 15
   ++units 
     en = -
   ++description
     Reduction factor for the emission due to UNECE housing systems tasks for fully and partly slatted floors.
   ++formula
-    given ( In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) ) {
+    given ( In(mitigation_housing_floor) ) {
       when "with_scraper_concrete_slats" {
         Tech(red_PSF_with_scraper_concrete_slats);
       }  
@@ -317,21 +317,21 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
         0;
       }
       default {
-        # Warning falls not defined mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel
+        # Warning falls not defined mitigation_housing_floor_LU
         0;
       }
     }
 
 
-+red_housing_slurry_channel
++red_housing_floor_LU
   print = 15
   ++units 
     en = -
   ++description
     Reduction factor for the emission due to housing systems tasks.
   ++formula 
-    return 0 unless not defined In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs);
-    given ( In(mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel) ) {
+    return 0 unless not defined In(mitigation_housing_floor);
+    given ( In(mitigation_housing_floor_LU) ) {
       when "with_scraper_concrete_slats" {
         Tech(red_PSF_with_scraper_concrete_slats);
       }  
@@ -366,7 +366,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++description
     Capture floor mitigation for either model.
   ++formula
-    Out(red_UNECE_housing_task) + Out(red_housing_slurry_channel);
+    Out(red_housing_floor_SHL) + Out(red_housing_floor_LU);
 
 +red_housing_air
   print = 15
