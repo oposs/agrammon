@@ -78,7 +78,7 @@ jobs:
       - name: Install dependencies
         run: |
           mkdir -p $GITHUB_WORKSPACE/.raku
-          tree $GITHUB_WORKSPACE/.raku
+          ls -al $GITHUB_WORKSPACE/.raku
           # zef --install-to=#inst$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
           zef --install-to=#inst$GITHUB_WORKSPACE/.raku --debug --/test install Spreadsheet::XLSX
           zef locate Spreadsheet::XLSX
