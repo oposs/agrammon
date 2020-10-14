@@ -57,12 +57,10 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: agrammon_test
-          PGPASSFILE: $GITHUB_WORKSPACE/dev/pgpass
+          PGPASSFILE: ./dev/pgpass
         run: |
-          chmod 0600 $GITHUB_WORKSPACE/dev/pgpass
-          ls -l $GITHUB_WORKSPACE/dev/pgpass
+          chmod 0600 $PGPASSFILE
           ls -l $PGPASSFILE
-          env
           cat $PGPASSFILE
           psql -U postgres -h localhost -c "CREATE USER agrammon PASSWORD 'agrammonATwork'"  > /dev/null
           psql -U postgres -h localhost -c "CREATE GROUP agrammon_user USER agrammon"        > /dev/null
