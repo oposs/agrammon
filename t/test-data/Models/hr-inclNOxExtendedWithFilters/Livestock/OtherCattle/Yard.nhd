@@ -745,9 +745,9 @@ taxonomy = Livestock::OtherCattle::Yard
 +ef_nh3_nyard
   print = OtherCattle,ef_nh3
   ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
+     en = -
+     de = -
+     fr = -
   ++description
     Annual NH3 emission from yard.
   ++formula

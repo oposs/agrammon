@@ -88,7 +88,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++units  
     en = -
   ++description
-    Reduction factor for the emission due to the use of an air exhaust scrubber in housing systems.
+    Correction factor for the emission due to the use of an air exhaust scrubber in housing systems.
   ++formula 
     if (In(air_scrubber) eq 'acid'){
        return (1 - Tech(red_acid_air_scrubber));

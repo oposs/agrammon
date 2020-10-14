@@ -199,16 +199,16 @@ Selects the emission rate and other correciton factors for the specific housing 
     }
 
 
-+share_outdoor
-  print=15
++share_indoor
+  print = 15
   ++units
-     en = -
+    en = -
   ++description
-    Factor for considering outdoor part.
+    Factor for considering indoor mitigation efficiencies.
   ++formula 
-    if ( (Out(housing_type) eq 'Slurry_Label') or (Out(housing_type) eq 'Slurry_Label_Open') ){
-       return 0.5;
+    if ( (Out(housing_type) eq 'Slurry_Label') or (Out(housing_type) eq 'Slurry_Label_Open') ) {
+      return 0.5;
     }
     else {
-       return( 1 );
+      return 1;
     }
