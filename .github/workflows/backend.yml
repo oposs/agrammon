@@ -1,0 +1,30 @@
+name: backend
+
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+  raku:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          # - macOS-latest
+        raku-version:
+          - 'latest'
+          # - '2019.11'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Raku/setup-raku@v1
+        with:
+          raku-version: ${{ matrix.raku-version }}
+      - name: Install Dependencies
+        run: zef install --deps-only --/test --test-depends .
+      - name: Run Tests
+        run: prove6 -l -v t
