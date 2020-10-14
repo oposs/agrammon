@@ -11,15 +11,16 @@
 2010v2.1_20120425;2648;Application::Slurry::Ctech;share_trailing_hose;20
 2010v2.1_20120425;2648;Application::Slurry::Ctech;share_trailing_shoe;20
 2010v2.1_20120425;2648;Application::Slurry::CfreeFactor;free_correction_factor;5
-2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_gt3d;0
-2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw1d;0
-2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw1h;0
-2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw3d;100
-2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw4h;0
-2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw8h;0
-2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_none;0
+2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_gt3d;10
+2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw1d;10
+2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw1h;10
+2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw3d;10
+2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw4h;10
+2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_lw8h;10
+2010v2.1_20120425;2648;Application::SolidManure::CincorpTime;incorp_none;40
 2010v2.1_20120425;2648;Application::SolidManure::Cseason;appl_autumn_winter_spring;70
 2010v2.1_20120425;2648;Application::SolidManure::Cseason;appl_summer;30
+2010v2.1_20120425;2648;Application::SolidManure::CfreeFactor;free_correction_factor;-5
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion;animalcategory;dairy_cow
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CConcentrates;amount_summer;1.5
 2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CConcentrates;amount_winter;2.5
