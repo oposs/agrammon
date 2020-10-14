@@ -33,22 +33,30 @@ lives-ok
     },
     'Successfully executed model';
 
-#dd %output<Total><nh3_ntotal>;
-#dd %output<Total><nh3_nanimalproduction>;
+dd %output<Total><nh3_ntotal>;
+dd %output<Total><nh3_nanimalproduction>;
 
+note %output<Total><nh3_ntotal>;
+note %output<Total><nh3_nanimalproduction>;
+
+say %output<Total><nh3_ntotal>;
+say %output<Total><nh3_nanimalproduction>;
+
+my $nh3-ntotal = 270.851;
+my $nh3-nanimalproduction = 270.851;
 given $model-version {
     when   'hr-inclNOx' {
-        is %output<Total><nh3_ntotal>, <1034973404862461426773/2623437500000000000>,
-                "Correct nh3_ntotal result: %output<Total><nh3_ntotal>";
-        is %output<Total><nh3_nanimalproduction>, <764444529862461426773/2623437500000000000>,
-                "Correct nh3_nanimalproduction result: %output<Total><nh3_nanimalproduction>";
+        is %output<Total><nh3_ntotal>.round(.001), $nh3-ntotal,
+                "Correct nh3_ntotal result: $nh3-ntotal";
+        is %output<Total><nh3_nanimalproduction>.round(.001), $nh3-nanimalproduction,
+                "Correct nh3_nanimalproduction result: $nh3-nanimalproduction";
     }
 
     when   'hr-inclNOxExtended' {
-        is %output<Total><nh3_ntotal>, <2831516334992619272501/10493750000000000000>,
-                "Correct nh3_ntotal result: %output<Total><nh3_ntotal>";
-        is %output<Total><nh3_nanimalproduction>, <2831516334992619272501/10493750000000000000>,
-                "Correct nh3_nanimalproduction result: %output<Total><nh3_nanimalproduction>";
+        is %output<Total><nh3_ntotal>.round(.001), $nh3-ntotal,
+                "Correct nh3_ntotal result: $nh3-ntotal";
+        is %output<Total><nh3_nanimalproduction>.round(.001), $nh3-nanimalproduction,
+                "Correct nh3_nanimalproduction result: $nh3-nanimalproduction";
     }
 }
 todo "Detailed tests for intermediate results", 1;
