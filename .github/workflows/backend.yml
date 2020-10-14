@@ -65,7 +65,7 @@ jobs:
           psql -U postgres -h localhost -c "CREATE USER agrammon PASSWORD 'agrammonATwork'"  > /dev/null
           psql -U postgres -h localhost -c "CREATE GROUP agrammon_user USER agrammon"        > /dev/null
           psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" agrammon_test         > /dev/null
-          psql -U postgres --file=$GITHUB_WORKSPACE/t/test-data/agrammon_test.dump.sql agrammon_test > /dev/null
+          psql -U postgres -h localhost --file=$GITHUB_WORKSPACE/t/test-data/agrammon_test.dump.sql agrammon_test > /dev/null
 
       - name: Cache dependencies
         id: cache-deps
