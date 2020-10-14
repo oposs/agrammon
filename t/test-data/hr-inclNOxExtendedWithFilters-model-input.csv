@@ -116,30 +116,50 @@
 2010v2.1_20120425;2648;Livestock::Equides[Mules]::Yard;floor_properties_exercise_yard_SHL;paddock_or_pasture_used_as_exercise_yard
 2010v2.1_20120425;2648;Livestock::Equides[Mules]::Yard;yard_days;0
 2010v2.1_20120425;2648;Livestock::Equides[Mules]::Yard;yard_hours;0
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Excretion;energy_content;13.5
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Excretion;fattening_pigs;20
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Excretion;animalcategory;fattening_pigs
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Excretion;feeding_phase_1_crude_protein;170
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Excretion;feeding_phase_2_crude_protein;0
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Excretion;feeding_phase_3_crude_protein;0
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Housing::AirScrubber;air_scrubber;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_air;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_climate;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Housing::Type;housing_type;Slurry_Label
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Excretion;energy_content;13.5
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Excretion;fattening_pigs;20
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Excretion;animalcategory;fattening_pigs
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Excretion;feeding_phase_1_crude_protein;170
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Excretion;feeding_phase_2_crude_protein;0
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Excretion;feeding_phase_3_crude_protein;0
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Housing::AirScrubber;air_scrubber;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_air;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_climate;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 2]::Housing::Type;housing_type;Deep_Litter
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;energy_content;13.5
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;fattening_pigs;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;animalcategory;fattening_pigs
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;feeding_phase_1_crude_protein;170
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;feeding_phase_2_crude_protein;0
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;feeding_phase_3_crude_protein;0
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::AirScrubber;air_scrubber;none
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_air;none
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_climate;none
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel;none
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;none
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::Type;housing_type;Slurry_Label
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;energy_content;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;fattening_pigs;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;animalcategory;fattening_pigs
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;feeding_phase_1_crude_protein;140
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;feeding_phase_2_crude_protein;145
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;feeding_phase_3_crude_protein;0
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Housing::AirScrubber;air_scrubber;acid
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Housing::CFreeFactor;free_correction_factor;5
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_air;low_impuls_air_supply
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;with_flush_channels_no_areation
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Housing::Type;housing_type;Slurry_Conventional
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;energy_content;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;fattening_pigs;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;animalcategory;fattening_pigs
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;feeding_phase_1_crude_protein;140
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;feeding_phase_2_crude_protein;145
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;feeding_phase_3_crude_protein;145
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Housing::AirScrubber;air_scrubber;biotrickling
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_air;low_impuls_air_supply
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;with_flush_channels_no_areation
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Housing::Type;housing_type;Deep_Litter
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;energy_content;16
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;fattening_pigs;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;animalcategory;fattening_pigs
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;feeding_phase_1_crude_protein;140
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;feeding_phase_2_crude_protein;145
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;feeding_phase_3_crude_protein;150
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Housing::AirScrubber;air_scrubber;acid
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Housing::CFreeFactor;free_correction_factor;5
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_air;low_impuls_air_supply
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;with_flush_channels_no_areation
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Housing::Type;housing_type;Outdoor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Excretion;animalcategory;beef_cattle
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Excretion;animals;20
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::GrazingInput;grazing_days;0
