@@ -42,6 +42,12 @@ jobs:
         with:
           raku-version: ${{ matrix.raku-version }}
 
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: .raku
+          key: ${{ runner.os }}-raku-modules-${{ hashFiles('./dev/META6.json') }}
+
       - name: Load test database
         env:
           POSTGRES_USER: postgres
@@ -56,19 +62,13 @@ jobs:
           psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" agrammon_test        > /dev/null
           psql -U postgres -h localhost --file=$AGRAMMON_DUMP $POSTGRES_DB                  > /dev/null
 
-      - name: Cache dependencies
-        id: cache-deps
-        uses: actions/cache@v2
-        with:
-          path: .raku
-          key: ${{ runner.os }}-raku-modules
-
       - name: Install modules
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p $GITHUB_WORKSPACE/.raku
           ls -al $GITHUB_WORKSPACE/.raku
           zef --install-to=inst#$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
-          RAKULIB=inst#$GITHUB_WORKSPACE/.raku zef locate Spreadsheet::XLSX
+          # RAKULIB=inst#$GITHUB_WORKSPACE/.raku zef locate Spreadsheet::XLSX
 
       - name: Run backend tests
         run: |
