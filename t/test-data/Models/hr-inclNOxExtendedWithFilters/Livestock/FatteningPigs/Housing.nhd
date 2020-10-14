@@ -78,8 +78,7 @@ taxonomy = Livestock::FatteningPigs::Housing
        * (1 - Val(c_housing_slurry_channel, Housing::MitigationOptions) * Val(share_outdoor, Housing::Type) )
        * (1 - Val(c_housing_climate, Housing::MitigationOptions) * Val(share_outdoor, Housing::Type) )
        * (1 - Val(c_housing_air, Housing::MitigationOptions) * Val(share_outdoor, Housing::Type))
-       - Val(c_exercise_place, Housing::Type)
-      )
+        )
     * Val(c_free_factor_housing, Housing::CFreeFactor) ; 
 	   
 
@@ -99,8 +98,7 @@ taxonomy = Livestock::FatteningPigs::Housing
          (1 - Val(c_UNECE_housing_task,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type) )
          * (1 - Val(c_housing_slurry_channel,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type ) )
          * (1 - Val(c_housing_climate,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type ) )
-         * (1 - Val(c_housing_air,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type) )  -
-          Val(c_exercise_place,Housing::Type)
+         * (1 - Val(c_housing_air,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type))
       )
     * Val(c_free_factor_housing, Housing::CFreeFactor) ;  
 

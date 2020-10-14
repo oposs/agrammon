@@ -19,8 +19,6 @@ Selects the emission rate and other correciton factors for the specific housing 
   type  = enum
   default_calc = ignore
   ++enum
-    +++ignore
-       en = Dummy entry LU
     +++Slurry_Conventional
        en = slurry conventional
        de = Konventioneller Stall ohne Auslauf
@@ -105,48 +103,8 @@ Selects the emission rate and other correciton factors for the specific housing 
        <p>Porcelets sevrés (jusqu'à 25 kg): système conventionnel sans parcours extérieur </p>
        <p>Verrats: système labellisé à aires multiples et parcours extérieur </p>
 
-+exercise_place
-  models = LU
-  type  = enum
-  default_calc = none
-  ++enum
-    +++none
-       en = none
-       de = keine
-       fr = aucune
-       it = none
-    +++exercise_place
-       en = Tasks see help 
-       de = Massnahmen siehe Hilfetext
-       fr = Mesures voir aide
-       it = Tasks see help
-  ++labels 
-    en = Mitigation tasks for exercise place
-    de = Emissionsmindernde Massnahmen Auslauf
-    fr = Mesures limitant les émissions parcours exterieur 
-  ++units  
-    en = -
-  ++description
-    Mitigation tasks for exercise place
-  ++help
-    +++en
-       <p>Outside yards with partly slatted floor or solid floor with stationary scraper (scraper cleaning every two hours) in combination with windbraker, shading and shower. </p>
-       <p>Standard value for Switzerland: „none“</p>
-    +++de
-       <p>Auslauf mit Teilspaltenboden oder planbefestigter Boden mit stationärem Schieber (Reinigung alle 2 Stunden) in Kombination mit Windschutz, Beschattung und einer Schweinedusche im Kotbereich.</p>
-       <p>Vorschlag für Standardwert: keine</p>
-    +++fr
-       <p>Parcours exterieur avec caillebotis partiel ou sol en dur avec un racleur stationnaire (nettoyage toutes les 2 heures) combiné avec brise-vent, ombrage et douche dans la zone de défécation. </p>
-       <p>Proposition valeur standard: aucune</p>
 
 *** technical ***
-
-+red_exercise_place
-  value = 0.2
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency for LU Model Version (Workshop SHL Zollikofen, 08.02.2010).
 
 
 *** external ***
@@ -260,30 +218,4 @@ Selects the emission rate and other correciton factors for the specific housing 
     else {
        return( 1 );
     }
-
-
-+c_exercise_place
-  print = 15
-  ++units  
-    en = -
-  ++description
-    Reduction exercise place.
-  ++formula
-    if (defined In(exercise_place) and In(exercise_place) eq 'exercise_place' ){ 
-        if ((Out(housing_type) eq 'Slurry_Conventional') or (Out(housing_type) eq 'Deep_Litter') or (Out(housing_type) eq 'Outdoor')) {
-	    writeLog({en=>"An outside exercise yard is applicable for the label system only!",
-                 de=>"Auslauf ist nur für Labelställe anwendbar!",
-                 fr=>"Le paramètre ‘Mesures limitant les émissions sur le parcours extérieur' "
-		     ."n'est utilisable que pour les stabulations labellisées!"
-	        });
-	    return 0;
-	}
-	else {
-	     return( Tech(red_exercise_place));
-	}
-    }
-    else {
-	    return 0;
-       } ;
-
 
