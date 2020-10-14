@@ -23,6 +23,7 @@
   ],
   "build-depends": [],
   "test-depends": [
+    "App::Prove6",
     "Cro::HTTP::Test",
     "Test::Mock",
     "Test::NoTabs"

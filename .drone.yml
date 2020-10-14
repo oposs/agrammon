@@ -1,3 +1,10 @@
+##
+## Activate webhook in GitHub for
+## - Branch/Tag creation/deletion
+## - Deployments
+## - Pull requests
+## - Pushes
+##
 ---
 kind: pipeline
 name: agrammon
