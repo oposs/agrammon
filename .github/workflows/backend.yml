@@ -77,12 +77,13 @@ jobs:
 
       - name: Install dependencies
         run: |
+          apt install libxml2
           mkdir -p $GITHUB_WORKSPACE/.raku
           ls -al $GITHUB_WORKSPACE/.raku
           # zef --install-to=#inst$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
           zef --install-to=inst#$GITHUB_WORKSPACE/.raku --debug --/test install Spreadsheet::XLSX
-          zef locate Spreadsheet::XLSX
+          RAKULIB=inst#$GITHUB_WORKSPACE/.raku zef locate Spreadsheet::XLSX
 
       - name: Run tests
         run: |
-          RAKULIB=$GITHUB_WORKSPACE/.raku prove6 -l -v t/config.t t/datasource-db.t
+          RAKULIB=inst#$GITHUB_WORKSPACE/.raku prove6 -l -v t/config.t t/datasource-db.t
