@@ -19,14 +19,39 @@ jobs:
           - 'latest'
           # - '2019.11'
     runs-on: ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v2
+
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '12' 
+
       - uses: Raku/setup-raku@v1
         with:
           raku-version: ${{ matrix.raku-version }}
-      - name: Show Rakudo Version
+
+      - name: Show raku version
         run: raku -v
-      - name: Install Dependencies
-        run: zef install --deps-only --/test --test-depends .
-      - name: Run Tests
+
+      - name: Show raku location
+        run: which raku
+
+      - name: Show current directory
+        run: pwd
+
+      - name: Cache dependencies
+        id: cache-deps
+        uses: actions/cache@v2
+        with:
+          path: .raku
+          key: ${{ runner.os }}-deps
+
+      - name: Install dependencies
+        run: zef --debug --deps-only --/test --test-depends install .
+
+      - name: Show module location
+        run: zef --debug --deps-only --/test --test-depends install .
+
+      - name: Run tests
         run: prove6 -l -v t
