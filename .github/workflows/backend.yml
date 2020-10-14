@@ -69,23 +69,18 @@ jobs:
           psql -U postgres -h localhost --file=$AGRAMMON_DUMP $POSTGRES_DB                  > /dev/null
 
       - name: Cache dependencies
-        env:
-          RAKULIB: .raku
         id: cache-deps
         uses: actions/cache@v2
         with:
-          path: $RAKULIB
+          path: $GITHUB_WORKSPACE/.raku
           key: ${{ runner.os }}-deps
 
       - name: Install dependencies
-        env:
-          RAKULIB: .raku
         run: |
-          mkdir -p $RAKULIB
-          zef --install-to=#inst$RAKULIB --debug --deps-only --/test --test-depends install .
+          mkdir -p $GITHUB_WORKSPACE/.raku
+          zef --install-to=#inst$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
           zef locate Spreadsheet::XLSX
 
       - name: Run tests
-        env:
-          RAKULIB: inst#.raku
-        run: prove6 -l -v t/config.t t/datasource-db.t
+        run: |
+          RAKULIB=$GITHUB_WORKSPACE/.raku prove6 -l -v t/config.t t/datasource-db.t
