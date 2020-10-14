@@ -79,10 +79,10 @@ jobs:
 
       - name: Install dependencies
         env:
-          RAKULIB: #inst.raku
+          RAKULIB: .raku
         run: |
           mkdir -p $RAKULIB
-          zef --install-to=$RAKULIB --debug --deps-only --/test --test-depends install .
+          zef --install-to=#inst$RAKULIB --debug --deps-only --/test --test-depends install .
           zef locate Spreadsheet::XLSX
 
       - name: Run tests
