@@ -16,6 +16,7 @@ sub get-builtins is export {
         },
         abs => &abs,
         sign => &sign,
+        exp => &exp,
         # Construct a filter group from data
         filterGroup => &filter-group,
         # Turn a filter group into a simple scalar value

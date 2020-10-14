@@ -86,7 +86,7 @@ taxonomy = Livestock::OtherCattle::Housing
     Annual NH3 emission from cattle housing systems per animal place.
   ++formula
    Out(tan_into_housing) 
-    * Val(k_grazing, Housing::KGrazing) 
+    * Val(c_grazing, Housing::KGrazing) 
     * Val(er_housing, Housing::Type) 
     * Val(k_area, Housing::Type) 
     * (
