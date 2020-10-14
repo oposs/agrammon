@@ -71,7 +71,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: $GITHUB_WORKSPACE/.raku
-          key: ${{ runner.os }}-deps
+          key: ${{ runner.os }}-raku-deps
 
 #      - name: Install libraries
 #        run: |
