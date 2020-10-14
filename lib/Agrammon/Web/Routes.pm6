@@ -268,6 +268,17 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'getCsvExport', -> LoggedIn $user {
+            request-body -> ( :datasetName($dataset-name)!, :printTags(@print-tags) ) {
+                my %export = $ws.get-csv-export($user, $dataset-name, @print-tags);
+                content 'application/json', { %export };
+                CATCH {
+                    note "$_";
+                    response.status = 500;
+                    content 'application/json', %( error => $_ )
+                }
+            }
+        }
         operation 'getOutputVariables', -> LoggedIn $user {
             request-body -> ( :datasetName($dataset-name)! ) {
                 my %output = $ws.get-output-variables($user, $dataset-name);

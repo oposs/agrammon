@@ -68,23 +68,23 @@ subtest "get-csv-export" => {
 
     dd "get-csv-export(): print-tags=", @print-tags;
 
-    my $export = $ws.get-csv-export($user, 'Agrammon6Testing', @print-tags);
-    dd $export;
-
-
+    ok my $export = $ws.get-csv-export($user, 'TestSingle', @print-tags);
+    # say $export;
+    ok $export ~~ 'nh3_ntotal;1695', "Output has correct nh3_ntotal";
 }
+
+done-testing; exit;
 
 subtest "get-excel-export" => {
     my @print-tags = ['FluxSummary', 'Total', ];
 
     dd "get-excel-export(): print-tags=", @print-tags;
 
-    my $export = $ws.get-excel-export($user, 'Agrammon6Testing', @print-tags);
-    dd $export;
-
+    ok my $export = $ws.get-excel-export($user, 'TestSingle', @print-tags);
+    # dd $export;
+    ok $export ~~ 'nh3_ntotal;1695', "Output has correct nh3_ntotal";
 }
 
-done-testing; exit;
 
 transactionally {
 

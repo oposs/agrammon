@@ -135,26 +135,27 @@ class Agrammon::Web::Service {
     method get-csv-export(Agrammon::Web::SessionUser $user, Str $dataset-name, @print-tags) {
         my $outputs  = self!get-outputs($user, $dataset-name);
         my $language = 'de';
-        my $simulation-name = 'test';
-        my $dataset = Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup;
+        my $simulation-name;
+        my $dataset-id;
 
+        my %inputs;
         # TODO: get with-filters from frontend
-        my %csv-output = output-as-csv($simulation-name, $dataset.id, $!model, $outputs, $language);
+        my $csv-outputs = output-as-csv($simulation-name, $dataset-id, $!model, $outputs, $language);
         warn '**** get-csv-export() not yet completely implemented';
-        return %csv-output;
+        return { :%inputs, :$outputs($csv-outputs) };
     }
 
     method get-excel-export(Agrammon::Web::SessionUser $user, Str $dataset-name, @print-tags) {
-        dd "get-excel-export(): print-tags=", @print-tags;
         my $outputs = self!get-outputs($user, $dataset-name);
         my $language = 'de';
-        my $simulation-name = 'test';
-        my $dataset = Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup;
+        my $simulation-name;
+        my $dataset-id;
 
+        my %inputs;
         # TODO: get with-filters from frontend
-        my %excel-output = output-as-excel($simulation-name, $dataset.id, $!model, $outputs, $language);
+        my $excel-outputs = output-as-excel($simulation-name, $dataset-id, $!model, $outputs, $language);
         warn '**** get-excel-export() not yet completely implemented';
-        return %excel-output;
+        return { :%inputs, :outputs($excel-outputs) };
     }
 
     method create-account(Agrammon::Web::SessionUser $user, $email, $password, $key, $firstname, $lastname, $org, $role?) {

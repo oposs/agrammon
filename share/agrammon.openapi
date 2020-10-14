@@ -395,6 +395,40 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /get_csv_export:
+        post:
+            summary: Get CSV export
+            operationId: getCsvExport
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasetName
+                            properties:
+                                datasetName:
+                                    description: Dataset name
+                                    type: string
+                                printTags:
+                                    description: Output selection tags
+                                    type: array
+                                    items:
+                                        type: string
+            responses:
+                '200':
+                    description: Export
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Export"
+                '500':
+                    description: Getting CSV export failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
 components:
     schemas:
@@ -611,6 +645,16 @@ components:
                     oneOf:
                         - type: integer
                         - type: string
+        Export:
+            type: object
+            required:
+                - inputs
+                - outputs
+            properties:
+                outputs:
+                    description: Output variables
+                inputs:
+                    description: Input variables
         Data:
             type: object
             required:
