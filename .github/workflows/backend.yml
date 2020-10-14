@@ -72,8 +72,4 @@ jobs:
       - name: Run backend tests
         run: |
           ls -al $GITHUB_WORKSPACE/.raku
-          RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/config.t t/datasource-db.t
-
-      - name: Run frontend tests
-        run: |
-          echo "There are no frontend tests yet."
+          RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
