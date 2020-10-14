@@ -448,9 +448,9 @@
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4];depth;2.5
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4];mixing_frequency;7_to_12_times_per_year
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 4];volume;100
-2010v2.1_20120425;2648;Storage::SolidManure::Poultry;share_applied_direct_poultry_manure;0
-2010v2.1_20120425;2648;Storage::SolidManure::Poultry;share_covered_basin;0
-2010v2.1_20120425;2648;Storage::SolidManure::Solid;share_applied_direct_cattle_other_manure;0
-2010v2.1_20120425;2648;Storage::SolidManure::Solid;share_applied_direct_pig_manure;0
-2010v2.1_20120425;2648;Storage::SolidManure::Solid;share_covered_basin_cattle_manure;0
-2010v2.1_20120425;2648;Storage::SolidManure::Solid;share_covered_basin_pig_manure;0
+2010v2.1_20120425;2648;Storage::SolidManure::Poultry;share_applied_direct_poultry_manure;20
+2010v2.1_20120425;2648;Storage::SolidManure::Poultry;share_covered_basin;20
+2010v2.1_20120425;2648;Storage::SolidManure::Solid;share_applied_direct_cattle_other_manure;20
+2010v2.1_20120425;2648;Storage::SolidManure::Solid;share_applied_direct_pig_manure;20
+2010v2.1_20120425;2648;Storage::SolidManure::Solid;share_covered_basin_cattle_manure;20
+2010v2.1_20120425;2648;Storage::SolidManure::Solid;share_covered_basin_pig_manure;20
