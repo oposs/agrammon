@@ -125,8 +125,6 @@
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::AirScrubber;air_scrubber;none
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_air;none
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_housing_air;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_climate;none
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel;none
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;none
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_housing_floor;none
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::Type;housing_type;Slurry_Label
