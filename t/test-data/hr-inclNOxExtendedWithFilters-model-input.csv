@@ -418,11 +418,12 @@
 2010v2.1_20120425;2648;Livestock::RoughageConsuming[Rabbits]::Grazing;grazing_days;365
 2010v2.1_20120425;2648;Livestock::RoughageConsuming[Rabbits]::Grazing;grazing_hours;24
 2010v2.1_20120425;2648;PlantProduction::AgriculturalArea;agricultural_area;36.56
-2010v2.1_20120425;2648;PlantProduction::MineralFertiliser;mineral_nitrogen_fertiliser_except_urea;1500
-2010v2.1_20120425;2648;PlantProduction::MineralFertiliser;mineral_nitrogen_fertiliser_urea;0
-2010v2.1_20120425;2648;PlantProduction::RecyclingFertiliser;compost;0
-2010v2.1_20120425;2648;PlantProduction::RecyclingFertiliser;liquid_digestate;0
-2010v2.1_20120425;2648;PlantProduction::RecyclingFertiliser;solid_digestate;0
+2010v2.1_20120425;2648;PlantProduction::MineralFertiliser;soil_ph;low
+2010v2.1_20120425;2648;PlantProduction::MineralFertiliser;mineral_fertiliser_ammoniumNitrate_amount;1500
+2010v2.1_20120425;2648;PlantProduction::MineralFertiliser;mineral_fertiliser_ammoniumNitrate_N_content;50
+2010v2.1_20120425;2648;PlantProduction::RecyclingFertiliser;compost;10
+2010v2.1_20120425;2648;PlantProduction::RecyclingFertiliser;liquid_digestate;10
+2010v2.1_20120425;2648;PlantProduction::RecyclingFertiliser;solid_digestate;10
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 1]::EFLiquid;contains_cattle_manure;yes
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 1]::EFLiquid;contains_pig_manure;no
 2010v2.1_20120425;2648;Storage::Slurry[Store Liquid 1]::EFLiquid;cover_type;solid_cover
