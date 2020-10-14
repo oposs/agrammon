@@ -58,27 +58,33 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: agrammon_test
           PGPASSFILE: ./dev/pgpass
+          AGRAMMON_DUMP: ./t/test-data/agrammon_test.dump.sql
         run: |
           chmod 0600 $PGPASSFILE
           ls -l $PGPASSFILE
           cat $PGPASSFILE
-          psql -U postgres -h localhost -c "CREATE USER agrammon PASSWORD 'agrammonATwork'"  > /dev/null
-          psql -U postgres -h localhost -c "CREATE GROUP agrammon_user USER agrammon"        > /dev/null
-          psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" agrammon_test         > /dev/null
-          psql -U postgres -h localhost --file=$GITHUB_WORKSPACE/t/test-data/agrammon_test.dump.sql agrammon_test > /dev/null
+          psql -U postgres -h localhost -c "CREATE USER agrammon PASSWORD 'agrammonATwork'" > /dev/null
+          psql -U postgres -h localhost -c "CREATE GROUP agrammon_user USER agrammon"       > /dev/null
+          psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" agrammon_test        > /dev/null
+          psql -U postgres -h localhost --file=$AGRAMMON_DUMP $POSTGRES_DB                  > /dev/null
 
       - name: Cache dependencies
+        env:
+          RAKULIB: .raku
         id: cache-deps
         uses: actions/cache@v2
         with:
-          path: /opt/hostedtoolcache/rakudo/2020.09-01/x86_64/share/perl6/site/sources
+          path: $RAKULIB
           key: ${{ runner.os }}-deps
 
       - name: Install dependencies
-        run: zef --debug --deps-only --/test --test-depends install .
-
-      - name: Show module location
-        run: zef locate Spreadsheet::XLSX
+        env:
+          RAKULIB: inst#/.raku
+        run: |
+          zef --install-to=$RAKULIB --debug --deps-only --/test --test-depends install .
+          zef locate Spreadsheet::XLSX
 
       - name: Run tests
-        run: prove6 -l -v t/config.t
+        env:
+          RAKULIB: inst#/.raku
+        run: prove6 -l -v t/config.t t/datasource-db.t
