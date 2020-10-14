@@ -42,16 +42,6 @@ jobs:
         with:
           raku-version: ${{ matrix.raku-version }}
 
-#      - name: Show environment infos
-#        run: |
-#          psql --version
-#          raku -v
-#          which raku
-#          pwd
-#          ls -al
-#          ls -al $HOME
-#          env
-
       - name: Load test database
         env:
           POSTGRES_USER: postgres
