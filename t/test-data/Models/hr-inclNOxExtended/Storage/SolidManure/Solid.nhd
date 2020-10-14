@@ -466,7 +466,7 @@ This option mainly targets users who predict emissions and are obliged to consid
   ++description
     Annual NH3 emission from solid storage.
   ++formula
-    Tech(er_tan_cattle_other) * Out(tan_into_storage_horses_otherequides_smallruminants)
+    Tech(er_tan_cattle_other) * Out(tan_into_storage_horses_otherequides_smallruminants) * Out(c_covered_basin_cattle)
     * Out(c_free_factor_storage_solidmanure_cattle); 
 
 
