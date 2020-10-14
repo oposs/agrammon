@@ -12,9 +12,9 @@ use Agrammon::TechnicalParser;
 my $temp-dir = $*TMPDIR.add('agrammon_testing');
 
 #| Expected results
-my $nh3-ntotal = 3087.426;
-my $nh3-nanimalproduction = 3087.426;
-my $nh3-napplication = 1321.192;
+my $nh3-ntotal = 2761.815;
+my $nh3-nanimalproduction = 2761.815;
+my $nh3-napplication = 995.582;
 my $n-into-application = 6249.844;
 my $tan-into-application = 2421.716;
 
