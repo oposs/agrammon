@@ -21,57 +21,71 @@
 2010v2.1_20120425;2648;Application::SolidManure::Cseason;appl_autumn_winter_spring;70
 2010v2.1_20120425;2648;Application::SolidManure::Cseason;appl_summer;30
 2010v2.1_20120425;2648;Application::SolidManure::CfreeFactor;free_correction_factor;-5
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion;animalcategory;dairy_cow
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CConcentrates;amount_summer;1.5
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CConcentrates;amount_winter;2.5
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedSummerRatio;share_hay_summer;100
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedSummerRatio;share_maize_silage_summer;100
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedWinterRatio;share_beets_winter;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedWinterRatio;share_grass_silage_winter;100
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedWinterRatio;share_maize_silage_winter;100
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CFeedWinterRatio;share_potatoes_winter;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion::CMilk;milk_yield;7000
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Excretion;dairy_cows;10
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::GrazingInput;grazing_days;165
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::GrazingInput;grazing_hours;8.5
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Housing::ClimateAir;mitigation_options_for_housing_systems_for_dairy_cows_air;none
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Housing::ClimateAir;mitigation_options_for_housing_systems_for_dairy_cows_climate;none
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Housing::Floor;mitigation_options_for_housing_systems_for_dairy_cows_floor;none
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;none
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Housing::Type;dimensioning_barn;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Housing::Type;feeding_boxes;no
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Housing::Type;housing_type;Tied_Housing_Slurry_Plus_Solid_Manure
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Yard;floor_properties_exercise_yard_LU;solid_floor
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Yard;yard_days;200
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 1]::Yard;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion;animalcategory;dairy_cow
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CConcentrates;amount_summer;1.5
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CConcentrates;amount_winter;2.5
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedSummerRatio;share_hay_summer;100
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedSummerRatio;share_maize_silage_summer;100
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedWinterRatio;share_maize_silage_winter;100
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedWinterRatio;share_beets_winter;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedWinterRatio;share_grass_silage_winter;100
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CFeedWinterRatio;share_potatoes_winter;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion::CMilk;milk_yield;7000
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Excretion;dairy_cows;5
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::GrazingInput;grazing_days;165
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::GrazingInput;grazing_hours;8.5
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Housing::ClimateAir;mitigation_options_for_housing_systems_for_dairy_cows_air;none
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Housing::ClimateAir;mitigation_options_for_housing_systems_for_dairy_cows_climate;none
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Housing::Floor;mitigation_options_for_housing_systems_for_dairy_cows_floor;none
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Housing::Type;dimensioning_barn;0
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Housing::Type;feeding_boxes;no
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Yard;floor_properties_exercise_yard_LU;solid_floor
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Yard;floor_properties_exercise_yard_SHL;solid_floor
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Yard;yard_days;200
-2010v2.1_20120425;2648;Livestock::DairyCow[Dairy Cow 2]::Yard;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion;animalcategory;dairy_cow
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion;dairy_cows;10
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CConcentrates;amount_summer;1.5
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CConcentrates;amount_winter;2.5
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CFeedSummerRatio;share_hay_summer;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CFeedSummerRatio;share_maize_silage_summer;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_beets_winter;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_grass_silage_winter;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_maize_silage_winter;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_potatoes_winter;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CMilk;milk_yield;7500
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::GrazingInput;grazing_days;180
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::GrazingInput;grazing_hours;8.5
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;none
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Type;dimensioning_barn;12
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;floor_properties_exercise_yard_SHL;solid_floor
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;yard_days;270
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion;animalcategory;dairy_cow
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion;dairy_cows;10
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CConcentrates;amount_summer;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CConcentrates;amount_winter;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CFeedSummerRatio;share_hay_summer;100
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;100
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CFeedSummerRatio;share_maize_silage_summer;100
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_beets_winter;100
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_grass_silage_winter;100
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;100
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_maize_silage_winter;100
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_potatoes_winter;100
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CMilk;milk_yield;1000
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::GrazingInput;grazing_days;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::GrazingInput;grazing_hours;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;raised_feeding_stands
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Type;housing_type;Loose_Housing_Slurry
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;yard_days;270
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;exercise_yard;not_available
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion;animalcategory;dairy_cow
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion;dairy_cows;10
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CConcentrates;amount_summer;6
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CConcentrates;amount_winter;6
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CFeedSummerRatio;share_hay_summer;50
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;40
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CFeedSummerRatio;share_maize_silage_summer;30
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_beets_winter;50
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_grass_silage_winter;40
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;30
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_maize_silage_winter;20
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_potatoes_winter;10
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CMilk;milk_yield;15000
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::GrazingInput;grazing_days;270
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::GrazingInput;grazing_hours;24
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;toothed_scrapper_running_over_a_grooved_floor
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Type;dimensioning_barn;50
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Type;housing_type;Loose_Housing_Deep_Litter
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::CFreeFactor;free_correction_factor;5
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;floor_properties_exercise_yard_SHL;paddock_or_pasture_used_as_exercise_yard
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;yard_days;270
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;exercise_yard;available_roughage_is_exclusively_supplied_in_the_exercise_yard
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::Equides[Asses]::Excretion;animalcategory;ponies_and_asses
 2010v2.1_20120425;2648;Livestock::Equides[Asses]::Excretion;animals;5
 2010v2.1_20120425;2648;Livestock::Equides[Asses]::Grazing;grazing_days;165
