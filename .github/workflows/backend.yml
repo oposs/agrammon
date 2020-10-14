@@ -46,7 +46,7 @@ jobs:
         id: cache
         with:
           path: .raku
-          key: ${{ runner.os }}-raku-modules-${{ hashFiles('./dev/META6.json') }}
+          key: ${{ runner.os }}-${{ matrix.raku-version }}-${{ hashFiles('./dev/META6.json') }}
 
       - name: Load test database
         env:
