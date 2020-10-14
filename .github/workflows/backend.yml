@@ -40,6 +40,12 @@ jobs:
       - name: Show current directory
         run: pwd
 
+      - name: List current directory
+        run: ls -al
+
+      - name: Show environment variables
+        run: env
+
       - name: Cache dependencies
         id: cache-deps
         uses: actions/cache@v2
@@ -51,7 +57,7 @@ jobs:
         run: zef --debug --deps-only --/test --test-depends install .
 
       - name: Show module location
-        run: zef --debug --deps-only --/test --test-depends install .
+        run: zef locate Spreadsheet::XLSX
 
       - name: Run tests
-        run: prove6 -l -v t
+        run: prove6 -l -v t/config.t
