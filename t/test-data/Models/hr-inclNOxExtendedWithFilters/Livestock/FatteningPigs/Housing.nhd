@@ -75,10 +75,8 @@ taxonomy = Livestock::FatteningPigs::Housing
     Val(c_free_factor_housing, Housing::CFreeFactor) *
     # indoor reductions
     (1 - Val(red_air_scrubber, Housing::AirScrubber) * Val(share_indoor, Housing::Type) ) * 
-    (1 - Val(red_UNECE_housing_task, Housing::MitigationOptions) * Val(share_indoor, Housing::Type) ) * 
-    (1 - Val(red_housing_air, Housing::MitigationOptions) * Val(share_indoor, Housing::Type))
-       * (1 - Val(c_housing_slurry_channel, Housing::MitigationOptions) * Val(share_indoor, Housing::Type) );
-	   
+    (1 - Val(red_housing_floor, Housing::MitigationOptions) * Val(share_indoor, Housing::Type) ) * 
+    (1 - Val(red_housing_air, Housing::MitigationOptions) * Val(share_indoor, Housing::Type));
 
 +n_housing_filter
   print = 5b
@@ -93,8 +91,7 @@ taxonomy = Livestock::FatteningPigs::Housing
     * Val(er_housing,Housing::Type) 
     * Val(red_air_scrubber,Housing::AirScrubber) 
     * (
-         (1 - Val(red_UNECE_housing_task,Housing::MitigationOptions)*Val(share_indoor,Housing::Type) )
-         * (1 - Val(c_housing_slurry_channel,Housing::MitigationOptions)*Val(share_indoor,Housing::Type ) )
+         (1 - Val(red_housing_floor,Housing::MitigationOptions)*Val(share_indoor,Housing::Type) )
          * (1 - Val(red_housing_air,Housing::MitigationOptions)*Val(share_indoor,Housing::Type))
       )
     * Val(c_free_factor_housing, Housing::CFreeFactor) ;  
