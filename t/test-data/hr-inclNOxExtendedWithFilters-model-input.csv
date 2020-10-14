@@ -88,26 +88,34 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::Equides[Asses]::Excretion;animalcategory;ponies_and_asses
 2010v2.1_20120425;2648;Livestock::Equides[Asses]::Excretion;animals;5
-2010v2.1_20120425;2648;Livestock::Equides[Asses]::Grazing;grazing_days;165
-2010v2.1_20120425;2648;Livestock::Equides[Asses]::Grazing;grazing_hours;0
+2010v2.1_20120425;2648;Livestock::Equides[Asses]::Grazing;grazing_days;220
+2010v2.1_20120425;2648;Livestock::Equides[Asses]::Grazing;grazing_hours;8
 2010v2.1_20120425;2648;Livestock::Equides[Asses]::Yard;floor_properties_exercise_yard_SHL;solid_floor
-2010v2.1_20120425;2648;Livestock::Equides[Asses]::Yard;yard_days;115
-2010v2.1_20120425;2648;Livestock::Equides[Asses]::Yard;yard_hours;9
+2010v2.1_20120425;2648;Livestock::Equides[Asses]::Yard;yard_days;220
+2010v2.1_20120425;2648;Livestock::Equides[Asses]::Yard;yard_hours;12
 2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Excretion;animalcategory;horses_younger_than_3yr
 2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Excretion;animals;5
-2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Grazing;grazing_days;165
-2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Grazing;grazing_hours;0
-2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;floor_properties_exercise_yard_SHL;solid_floor
-2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;yard_days;115
-2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;yard_hours;9
+2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Grazing;grazing_days;365
+2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Grazing;grazing_hours;24
+2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Housing;free_correction_factor;5
+2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;floor_properties_exercise_yard_SHL;unpaved_floor
+2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;yard_days;365
+2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;yard_hours;24
+2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Excretion;animalcategory;horses_older_than_3yr
-2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Excretion;animals;7
+2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Excretion;animals;5
 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Grazing;grazing_days;165
 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Grazing;grazing_hours;0
-2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Yard;floor_properties_exercise_yard_LU;solid_floor
-2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Yard;floor_properties_exercise_yard_SHL;solid_floor
+2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Yard;floor_properties_exercise_yard_SHL;paddock_or_pasture_used_as_exercise_yard
 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Yard;yard_days;115
-2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Yard;yard_hours;9
+2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Yard;yard_hours;0
+2010v2.1_20120425;2648;Livestock::Equides[Mules]::Excretion;animalcategory;mules
+2010v2.1_20120425;2648;Livestock::Equides[Mules]::Excretion;animals;5
+2010v2.1_20120425;2648;Livestock::Equides[Mules]::Grazing;grazing_days;0
+2010v2.1_20120425;2648;Livestock::Equides[Mules]::Grazing;grazing_hours;0
+2010v2.1_20120425;2648;Livestock::Equides[Mules]::Yard;floor_properties_exercise_yard_SHL;paddock_or_pasture_used_as_exercise_yard
+2010v2.1_20120425;2648;Livestock::Equides[Mules]::Yard;yard_days;0
+2010v2.1_20120425;2648;Livestock::Equides[Mules]::Yard;yard_hours;0
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Excretion;energy_content;13.5
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Excretion;fattening_pigs;20
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FatteningPigs 1]::Excretion;animalcategory;fattening_pigs
