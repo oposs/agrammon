@@ -116,12 +116,14 @@ subtest 'Get output variables' => {
 subtest 'Get excel export' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/get_excel_export', {
-            test post(json => {
-                :datasetName('TestSingle'),
-                :language('de'),
-                :withFilters(False)
-            });
-            status => 200,
+            test post(
+                content-type => 'application/x-www-form-urlencoded',
+                body => {
+                    :datasetName('TestSingle'),
+                    :language('de'),
+                    :withFilters(False)
+                }),
+                status => 200;
         };
         check-mock $fake-store,
             *.called('get-excel-export', times => 1);
