@@ -82,7 +82,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++formula 
     In(air_scrubber);
 
-+c_air_scrubber
++red_air_scrubber
   print = 15
   ++units  
     en = -

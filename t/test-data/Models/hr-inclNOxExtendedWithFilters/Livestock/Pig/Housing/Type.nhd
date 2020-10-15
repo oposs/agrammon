@@ -205,7 +205,7 @@ Selects the emission rate and other correciton factors for the specific housing 
         return Val(share_solid,Type::Deep_Litter);
     }
 
-+share_outdoor
++share_indoor
   print=15
   ++units
      en = -

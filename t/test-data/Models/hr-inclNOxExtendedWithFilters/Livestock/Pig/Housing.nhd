@@ -72,35 +72,39 @@ taxonomy = Livestock::Pig::Housing
   ++description
     Annual NH3 emission from pig housing systems.
   ++formula
-   Val(tan_excretion, Excretion) 
-    * Val(er_housing, Housing::Type) 
-    * (
-       (1 - Val(c_air_scrubber, Housing::AirScrubber) * Val(share_outdoor, Housing::Type) )
-       * (1 - Val(c_UNECE_housing_task, Housing::MitigationOptions) * Val(share_outdoor, Housing::Type) )
-       * (1 - Val(c_housing_slurry_channel, Housing::MitigationOptions) * Val(share_outdoor, Housing::Type) )
-       * (1 - Val(c_housing_air, Housing::MitigationOptions) * Val(share_outdoor, Housing::Type))
-        )
-    * Val(c_free_factor_housing, Housing::CFreeFactor) ; 
-	   
+    # change effect of mitigation strategies for indoor/outdoor? -> check with Thomas
+    Out(tan_into_housing) * 
+    Val(er_housing, Housing::Type) * 
+    Val(c_free_factor_housing, Housing::CFreeFactor) *
+    (
+      # indoor part + mitigation
+      Val(share_indoor, Housing::Type) * 
+      (1 - Val(red_air_scrubber, Housing::AirScrubber)) * 
+      (1 - Val(red_housing_floor, Housing::MitigationOptions)) * 
+      (1 - Val(red_housing_air, Housing::MitigationOptions)) +
+      # outdoor part + mitigation
+      (1 - Val(share_indoor, Housing::Type))
+    );
 
-+n_housing_filter
++n_air_scrubber
   print = 5b
   ++units
      en = kg N/year
      de = kg N/Jahr
-     fr = kg N/an	
+     fr = kg N/an 
   ++description
     Annual N of NH3 emission remaining in air scrubber from pig housing systems.
   ++formula
-   Val(tan_excretion, Excretion) 
-    * Val(er_housing, Housing::Type) 
-    * Val(c_air_scrubber, Housing::AirScrubber) 
-    * (
-         (1 - Val(c_UNECE_housing_task, Housing::MitigationOptions)*Val(share_outdoor, Housing::Type) )
-         * (1 - Val(c_housing_slurry_channel, Housing::MitigationOptions)*Val(share_outdoor, Housing::Type ) )
-         * (1 - Val(c_housing_air, Housing::MitigationOptions)*Val(share_outdoor, Housing::Type))
-       ); 
-
+    # change effect of mitigation strategies for indoor/outdoor? -> check with Thomas
+    # reduction efficiency of air scrubber
+    Val(red_air_scrubber, Housing::AirScrubber) *
+    # multiplied with indoor loss without air scrubber mitigation
+    Val(tan_excretion,Excretion) * 
+    Val(er_housing, Housing::Type) * 
+    Val(c_free_factor_housing, Housing::CFreeFactor) *
+    Val(share_indoor, Housing::Type) *  
+    (1 - Val(red_housing_floor, Housing::MitigationOptions)) *
+    (1 - Val(red_housing_air, Housing::MitigationOptions));  
 
 +n_outhousing
   print = 7
@@ -114,8 +118,8 @@ taxonomy = Livestock::Pig::Housing
      if(Val(housing_type, Housing::Type) eq 'Outdoor'){
         0
      }else {
-     	   if(Val(air_scrubber, Housing::AirScrubber) eq 'acid'){
-	   Out(n_into_housing) - Out(nh3_nhousing) - Out(n_housing_filter)
+     	   if(Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling'){
+	   Out(n_into_housing) - Out(nh3_nhousing) - Out(n_air_scrubber)
      	   }else{
 	   Out(n_into_housing) - Out(nh3_nhousing)
 	   };
@@ -134,8 +138,8 @@ taxonomy = Livestock::Pig::Housing
     if(Val(housing_type, Housing::Type) eq 'Outdoor'){
         0
     }else {
-     	   if(Val(air_scrubber, Housing::AirScrubber) eq 'acid'){
-	   Out(tan_into_housing) - Out(nh3_nhousing) - Out(n_housing_filter)
+     	   if(Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling'){
+	   Out(tan_into_housing) - Out(nh3_nhousing) - Out(n_air_scrubber)
      	   }else{
     	   Out(tan_into_housing) - Out(nh3_nhousing)
 	   };
