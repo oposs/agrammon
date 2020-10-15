@@ -76,7 +76,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 *** output ***
 
 +air_scrubber
-  print = 15
+  print = FatteningPigs
   ++units  
     en = -
   ++description
@@ -93,20 +93,21 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++formula 
     given ( In(air_scrubber) ) { 
       when 'acid' {
-       return Tech(red_acid_air_scrubber);
+        return Tech(red_acid_air_scrubber);
       } 
       when 'biotrickling' {
-       return Tech(red_biotrickling_filter_air_scrubber);
+        return Tech(red_biotrickling_filter_air_scrubber);
       } 
       when 'none' {
-       return 0;
+        return 0;
       } 
       default {
-       writeLog({en => "Invalid 'exhaust air scrubber' entered!",
-                 de => "Ungültige 'Abluftreinigung' eingegeben!",
-                 fr => "Entrée non valable pour ‘Traitement des effluents gazeux'!"
-                });
-       return 0;
+        writeLog({
+          en => "Invalid 'exhaust air scrubber' entered!",
+          de => "Ungültige 'Abluftreinigung' eingegeben!",
+          fr => "Entrée non valable pour ‘Traitement des effluents gazeux'!"
+        });
+        return 0;
       }
     }
         
