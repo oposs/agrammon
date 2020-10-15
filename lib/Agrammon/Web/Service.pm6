@@ -139,12 +139,11 @@ class Agrammon::Web::Service {
 
         my %inputs; # TODO: handle inputs
         my $outputs = self!get-outputs($user, $dataset-name);
-        my $export = output-as-excel(
+        output-as-excel(
             $dataset-name,
             $!model, $outputs, $language,
             $with-filters
         );
-        return $export;
     }
 
     method create-account(Agrammon::Web::SessionUser $user, $email, $password, $key, $firstname, $lastname, $org, $role?) {
