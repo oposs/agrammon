@@ -97,7 +97,7 @@
 2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Excretion;animals;5
 2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Grazing;grazing_days;365
 2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Grazing;grazing_hours;24
-2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Housing;free_correction_factor;5
+2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Housing::CFreeFactor;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;floor_properties_exercise_yard_SHL;unpaved_floor
 2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;yard_days;365
 2010v2.1_20120425;2648;Livestock::Equides[HorsesLw3yr]::Yard;yard_hours;24
