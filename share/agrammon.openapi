@@ -415,8 +415,7 @@ paths:
                 '200':
                     description: Export
                     content:
-                        # change to application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-                        text/csv: {}
+                        text/csv: {} # change to application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
                 '500':
                     description: Getting Excel export failed
                     content:
@@ -453,8 +452,8 @@ components:
         Rename:
             type: object
             required:
-                 - oldName
-                 - newName
+                - oldName
+                - newName
             properties:
                 oldName:
                     description: Current name
@@ -550,21 +549,18 @@ components:
                                 - type: string
                                 - type: number
                 enum:
-                    description: XXX
+                    description: Elements of select box
                     type: object
                     additionalProperties: true
                 gui:
                     description: GUI navigation label
-                    schema:
-                        $ref: '#/components/schemas/LanguageLabels'
+                    $ref: '#/components/schemas/LanguageLabels'
                 help:
                     description: Help texts
-                    schema:
-                        $ref: '#/components/schemas/LanguageLabels'
+                    $ref: '#/components/schemas/LanguageLabels'
                 labels:
                     description: Input labels
-                    schema:
-                        $ref: '#/components/schemas/LanguageLabels'
+                    $ref: '#/components/schemas/LanguageLabels'
                 models:
                     description: Model variants this input is used for
                     type: array
@@ -581,8 +577,7 @@ components:
                     description: XXX
                     type: array
                     items:
-                        schema:
-                            $ref: '#/components/schemas/LanguageLabels'
+                        $ref: '#/components/schemas/LanguageLabels'
                 order:
                     description: Number used for sorting
                     type: integer
@@ -598,20 +593,15 @@ components:
                         - 'enum{ignore}'
                 units:
                     description: Input labels
-                    schema:
-                        $ref: '#/components/schemas/LanguageLabels'
+                    $ref: '#/components/schemas/LanguageLabels'
                 variable:
                     description: bla
                     type: string
                 validator:
                     description: Input validator
-                    schema:
-                        oneOf:
-                            - $ref: '#/components/schemas/EmptyHash'
-                            - $ref: '#/components/schemas/ValidatorHash'
-                variable:
-                    description: bla
-                    type: string
+                    oneOf:
+                        - $ref: '#/components/schemas/EmptyHash'
+                        - $ref: '#/components/schemas/ValidatorHash'
         EmptyHash:
             type: object
             properties: {}
