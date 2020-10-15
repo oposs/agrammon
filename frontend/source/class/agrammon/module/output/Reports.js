@@ -222,7 +222,7 @@ qx.Class.define('agrammon.module.output.Reports', {
 //            var guiVariant   = 'guiVariant='+agrammon.Info.getInstance().getGuiVariant();
 //            var versionUrl  = 'version=' + version;
 
-            var url = '/get_csv_export';
+            var url = '/get_excel_export';
             var params = {
                 language     : lang,
                 username     : userName,
