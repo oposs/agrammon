@@ -33,6 +33,7 @@ taxonomy = Livestock::FatteningPigs::Housing
 +Excretion
 +Grazing
 +Housing::Type
++Housing::KArea
 +Housing::AirScrubber
 +Housing::MitigationOptions
 +Housing::CFreeFactor
@@ -84,6 +85,7 @@ taxonomy = Livestock::FatteningPigs::Housing
     # change effect of mitigation strategies for indoor/outdoor? -> check with Thomas
     Out(tan_into_housing) * 
     Val(er_housing, Housing::Type) * 
+    Val(c_area, Housing::KArea) *
     Val(c_free_factor_housing, Housing::CFreeFactor) *
     (
       # indoor part + mitigation
@@ -110,6 +112,7 @@ taxonomy = Livestock::FatteningPigs::Housing
     # multiplied with indoor loss without air scrubber mitigation
     Val(tan_excretion,Excretion) * 
     Val(er_housing, Housing::Type) * 
+    Val(c_area, Housing::KArea) *
     Val(c_free_factor_housing, Housing::CFreeFactor) *
     Val(share_indoor, Housing::Type) *  
     (1 - Val(red_housing_floor, Housing::MitigationOptions)) *
