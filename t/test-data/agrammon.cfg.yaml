@@ -6,7 +6,7 @@ General:
 
 Database:
     name:     agrammon_test
-    host:     localhost
+    host:     erika
     user:     agrammon
     password: agrammonATwork
 

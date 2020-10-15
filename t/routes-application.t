@@ -6,7 +6,7 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 12;
+plan 13;
 
 # routing tests related to application logic
 
@@ -116,12 +116,15 @@ subtest 'Get output variables' => {
 subtest 'Get excel export' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/get_excel_export', {
-            test post(json => { :datasetName('DatasetA') } ),
-                    status => 200,
-#                    text   => { :variable('x'), :value(2) }
+            test post(json => {
+                :datasetName('TestSingle'),
+                :language('de'),
+                :withFilters(False)
+            });
+            status => 200,
         };
         check-mock $fake-store,
-                *.called('get-excel-export', times => 1);
+            *.called('get-excel-export', times => 1);
     }
 }
 
