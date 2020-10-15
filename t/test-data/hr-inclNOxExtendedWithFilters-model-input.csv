@@ -424,6 +424,7 @@
 2010v2.1_20120425;2648;Livestock::RoughageConsuming[Deer]::Grazing;grazing_days;165
 2010v2.1_20120425;2648;Livestock::RoughageConsuming[Deer]::Grazing;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::RoughageConsuming[Deer]::Housing;free_correction_factor;5
+2010v2.1_20120425;2648;Livestock::RoughageConsuming[Deer]::Housing::CFreeFactor;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::RoughageConsuming[Bisons]::Excretion;animalcategory;bison_younger_than_3yr
 2010v2.1_20120425;2648;Livestock::RoughageConsuming[Bisons]::Excretion;animals;10
 2010v2.1_20120425;2648;Livestock::RoughageConsuming[Bisons]::Grazing;grazing_days;165
