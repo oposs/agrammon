@@ -74,7 +74,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 *** output ***
 
 +air_scrubber
-  print = 15
+  print = Pig
   ++units  
     en = -
   ++description
@@ -83,24 +83,29 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     In(air_scrubber);
 
 +red_air_scrubber
-  print = 15
+  print = Pig
   ++units  
     en = -
   ++description
     Reduction factor for the emission due to the use of an air exhaust scrubber in housing systems.
-  ++formula 
-    if ( In(air_scrubber) eq 'acid'){
-       return( Tech(red_acid_air_scrubber));
-    } elsif( In(air_scrubber) eq 'biotrickling'){
-       return( Tech(red_biotrickling_filter_air_scrubber));
-    } elsif( In(air_scrubber) eq 'none'){
-       return 0;
-    } else{
-       writeLog({en => "Invalid 'exhaust air scrubber' defined!",
-                 de => "Ungültige 'Abluftreinigung' eingegeben!",
-                 fr => "Entrée non valable pour ‘Traitement des effluents gazeux'!"
-		 });
-       return 0;
-    }
-      
+  ++formula
+    given ( In(air_scrubber) ) { 
+      when 'acid' {
+        return Tech(red_acid_air_scrubber);
+      } 
+      when 'biotrickling' {
+        return Tech(red_biotrickling_filter_air_scrubber);
+      } 
+      when 'none' {
+        return 0;
+      } 
+      default {
+        writeLog({
+          en => "Invalid 'exhaust air scrubber' entered!",
+          de => "Ungültige 'Abluftreinigung' eingegeben!",
+          fr => "Entrée non valable pour ‘Traitement des effluents gazeux'!"
+        });
+        return 0;
+      }
+    }    
       

@@ -40,7 +40,7 @@ taxonomy = Livestock::Pig::Housing
 *** output ***
 
 +n_into_housing
-  print = 7
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -48,11 +48,10 @@ taxonomy = Livestock::Pig::Housing
   ++description
     Annual N flux into the house.
   ++formula
-    Val(n_excretion, Excretion)
-    - Val(n_into_grazing, Grazing);
+    Val(n_excretion, Excretion) - Val(n_into_grazing, Grazing);
 
 +tan_into_housing
-  print = 7
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -60,8 +59,7 @@ taxonomy = Livestock::Pig::Housing
   ++description
     Annual N flux as TAN into the house.
   ++formula
-    Val(tan_excretion, Excretion)
-       - Val(tan_into_grazing, Grazing);
+    Val(tan_excretion, Excretion) - Val(tan_into_grazing, Grazing);
 
 +nh3_nhousing
   print = 5b
@@ -107,7 +105,7 @@ taxonomy = Livestock::Pig::Housing
     (1 - Val(red_housing_air, Housing::MitigationOptions));  
 
 +n_outhousing
-  print = 7
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -126,7 +124,7 @@ taxonomy = Livestock::Pig::Housing
      };
 
 +tan_outhousing
-  print = 9
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -146,7 +144,7 @@ taxonomy = Livestock::Pig::Housing
     };
 
 +share_tan_out
-  print = 8
+  print = Pig
   ++units  
     en = -
   ++description 
@@ -159,7 +157,7 @@ taxonomy = Livestock::Pig::Housing
     }else{0};
 
 +n_outhousing_liquid
-  print = 7
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -174,7 +172,7 @@ taxonomy = Livestock::Pig::Housing
     };
 
 +tan_outhousing_liquid
-  print = 7
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -189,7 +187,7 @@ taxonomy = Livestock::Pig::Housing
     };
 
 +n_outhousing_solid
-  print = 7
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -204,7 +202,7 @@ taxonomy = Livestock::Pig::Housing
     };
 
 +tan_outhousing_solid
-  print = 7
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr

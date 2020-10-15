@@ -193,7 +193,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        it = low_impulse_air_supply
   ++labels 
     en = Mitigation options for housing systems: air supply
-    de = Emissionsmindernde Massnahme Zuluftführung
+    de = Emissionsmindernde Massnahmen Zuluftführung
     fr = Mesures limitant les émissions amenée d'air
   ++units 
     en = -
@@ -282,7 +282,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 
 +red_housing_floor_SHL
-  print = 15
+  print = FatteningPigs
   ++units 
     en = -
   ++description
@@ -324,7 +324,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 
 +red_housing_floor_LU
-  print = 15
+  print = FatteningPigs
   ++units 
     en = -
   ++description
@@ -360,7 +360,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     }
 
 +red_housing_floor
-  print = 15
+  print = FatteningPigs
   ++units 
     en = -
   ++description
@@ -369,7 +369,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     Out(red_housing_floor_SHL) + Out(red_housing_floor_LU);
 
 +red_housing_air
-  print = 15
+  print = FatteningPigs
   ++units 
     en = -
   ++description
