@@ -415,7 +415,9 @@ paths:
                 '200':
                     description: Export
                     content:
-                        text/csv: {} # change to application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                        text/csv:
+                            schema:
+                                type: string
                 '500':
                     description: Getting Excel export failed
                     content:
@@ -618,7 +620,8 @@ components:
                     description: Arguments
                     type: array
                     items:
-                        anyOf: # TODO: convert to numbers in backend
+# TODO: convert to numbers in backend
+                        oneOf:
                             - type: number
                             - type: string
         OutputVariables:
