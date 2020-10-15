@@ -404,25 +404,20 @@ paths:
                 content:
                     application/x-www-form-urlencoded:
                         schema:
-                            type: object
-                            additionalProperties: true
-                            properties:
-                                datasetName:
-                                    description: Name of ther dataset
-                                    type: string
-                                language:
-                                    description: Language for output translation
-                                    type: string
-                                withFilters:
-                                    description: Show filter groups
-                                    type: boolean
+                            $ref: "#/components/schemas/GetReport"
             responses:
                 '200':
                     description: Export
                     content:
-                        text/csv:
+                        'text/csv; charset=utf-8':
                             schema:
                                 type: string
+                '400':
+                    description: Getting Excel export failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
                 '500':
                     description: Getting Excel export failed
                     content:
@@ -432,6 +427,19 @@ paths:
 
 components:
     schemas:
+        GetReport:
+            type: object
+            additionalProperties: true
+            properties:
+                datasetName:
+                    description: Name of ther dataset
+                    type: string
+                language:
+                    description: Language for output translation
+                    type: string
+                withFilters:
+                    description: Show filter groups
+                    type: boolean
         DeleteInstance:
             type: object
             required:
