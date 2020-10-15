@@ -118,7 +118,7 @@ taxonomy = Livestock::Pig::Housing
      if(Val(housing_type, Housing::Type) eq 'Outdoor'){
         0
      }else {
-     	   if(Val(air_scrubber, Housing::AirScrubber) eq 'acid'){
+     	   if(Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling'){
 	   Out(n_into_housing) - Out(nh3_nhousing) - Out(n_air_scrubber)
      	   }else{
 	   Out(n_into_housing) - Out(nh3_nhousing)
@@ -138,7 +138,7 @@ taxonomy = Livestock::Pig::Housing
     if(Val(housing_type, Housing::Type) eq 'Outdoor'){
         0
     }else {
-     	   if(Val(air_scrubber, Housing::AirScrubber) eq 'acid'){
+     	   if(Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling'){
 	   Out(tan_into_housing) - Out(nh3_nhousing) - Out(n_air_scrubber)
      	   }else{
     	   Out(tan_into_housing) - Out(nh3_nhousing)
