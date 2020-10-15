@@ -38,6 +38,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::GrazingInput;grazing_hours;8.5
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;none
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Type;dimensioning_barn;12
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::KArea;dimensioning_barn;12
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;yard_days;270
@@ -59,6 +60,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;raised_feeding_stands
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Type;housing_type;Loose_Housing_Slurry
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;yard_days;270
@@ -80,6 +82,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::GrazingInput;grazing_hours;24
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;toothed_scrapper_running_over_a_grooved_floor
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Type;dimensioning_barn;50
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::KArea;dimensioning_barn;50
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Type;housing_type;Loose_Housing_Deep_Litter
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::CFreeFactor;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;floor_properties_exercise_yard_SHL;paddock_or_pasture_used_as_exercise_yard

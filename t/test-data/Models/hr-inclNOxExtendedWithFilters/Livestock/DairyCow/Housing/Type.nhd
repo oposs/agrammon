@@ -85,28 +85,6 @@ Selects the emission rate and other correction factors for the specific housing 
        <p>Stabulation libre avec production de lisier et de fumier: 10%</p>
        <p>Stabulation libre avec litière profonde ou litière sur plan incliné: 1%</p>
 
-+dimensioning_barn
-  type = integer
-  adjustBranching = true
-  ++labels 
-    en = Number of available animal places
-    de = Anzahl Tierplätze im Stall
-    fr = Nombre de places dans l'étable
-  ++units 
-    en = -
-  ++description
-    Number of available animal places.
-  ++help
-    +++en
-       <p>For loose housing systems: all animal places accessible for the animals must be entered. The number of animal places is higher than the stocking rate if reserve capacities are available, e.g. for a future increase of the herd size</p> 
-       <p>Standard value for Switzerland: number of available animal places equal to number of animals</p>
-    +++de
-       <p>Für Laufställe: es sind sämtliche Tierplätze anzugeben, welche für die Tiere zugänglich sind. Die Anzahl Tierplätze im Stall ist grösser als der Bestand, wenn etwa im Hinblick auf eine zukünftige Vergrösserung des Betriebs zusätzliche Tierplätze vorhanden sind. Mehr Tierplätze als Tiere bedeuten für Laufställe eine Erhöhung der verschmutzten Fläche pro Tier. Im Gegensatz dazu führen mehr Tierplätze als Tiere bei Anbindeställen kaum zu einer Erhöhung der verschmutzten Fläche pro Tier, da die freien Tierplätze für die Tiere nicht zugänglich sind.</p>
-       <p>Vorschlag für Standardwert: gleiche Anzahl Tierplätze wie Tierzahl</p>
-    +++fr
-       <p>Pour les stabulations libres: mentionner toutes les places accessibles aux animaux. Le nombre de places dans l'étable peut être supérieur au cheptel actuel, dans la perspective d'un agrandissement futur de l'exploitation p.ex. Dans les stabulations libres, un nombre de places supérieur au nombre d'animaux signifie une augmentation de la surface souillée par animal. Au contraire, dans les stabulations entravées, un nombre de places supérieur au nombre d'animaux ne conduit pas à une augmentation de la surface souillée par animal, vu que ces places libres ne sont pas accessibles aux animaux.  </p>
-       <p>Proposition de valeur standard: nombre de places identique au nombre d'animaux </p>
-
 +feeding_boxes
   models = LU
   type = enum
@@ -176,6 +154,21 @@ Selects the emission rate and other correction factors for the specific housing 
     }
     In(housing_type);
 
++k_area
+  print = DairyCow
+  ++units 
+    en = -
+  ++description
+    Correction factor for the housing type area.
+  ++formula
+    given ( In(housing_type) ) {
+      return Val(k_area,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
+      return Val(k_area,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Val(k_area,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
+      return Val(k_area,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Val(k_area,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
+    }
+
 +er_housing
   print = DairyCow
   ++units 
@@ -205,58 +198,6 @@ Selects the emission rate and other correction factors for the specific housing 
       return Val(share_liquid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
       return Val(share_liquid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
     }
-
-+k_area_type
-  print = DairyCow
-  ++units 
-    en = -
-  ++description
-    Correction factor for the housing type area.
-  ++formula
-    given ( In(housing_type) ) {
-      return Val(k_area,Type::Tied_Housing_Slurry)                    when 'Tied_Housing_Slurry';
-      return Val(k_area,Type::Tied_Housing_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
-      return Val(k_area,Type::Loose_Housing_Slurry)                   when 'Loose_Housing_Slurry';
-      return Val(k_area,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
-      return Val(k_area,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
-    }
-
-+area_increase
-  print = DairyCow
-  ++units 
-    en = -
-  ++description
-    Factor on what barn size does increase the regularized minimal, limited to 0.5.
-  ++formula 
-    if( (Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0) ){ 
-      if(In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5)){   
-        0.5; 
-      }
-      else {
-        (In(dimensioning_barn) / Val(animals, ..::Excretion)) - 1;
-      }
-    }
-    else {
-      0.0;
-    }
-
-+c_area
-  print = DairyCow
-  ++units 
-    en = -
-  ++description
-    Correction factor for area per animal.
-  ++formula
-    1 + (Out(area_increase) * Out(k_area_type));
-
-+dimensioning_barn
-  print = DairyCow
-  ++units 
-    en = -
-  ++description
-    Number of anymal places (needed in other modules).
-  ++formula
-    In(dimensioning_barn);
 
 +c_feeding_boxes
   print = DairyCow
