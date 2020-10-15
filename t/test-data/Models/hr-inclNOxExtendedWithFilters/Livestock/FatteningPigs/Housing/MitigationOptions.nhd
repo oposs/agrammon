@@ -18,7 +18,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** input ***
  
-+UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs
++mitigation_housing_floor
   type  = enum
   default_calc = none
   ++enum
@@ -106,7 +106,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        <p>Proposition de valeur standard: aucune</p>
 
 
-+mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel
++mitigation_housing_floor_LU
   models = LU
   type  = enum
   default_calc = none
@@ -177,67 +177,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        <p>Proposition valeur standard: aucune</p>
 
 
-+mitigation_options_for_housing_systems_for_fattening_pigs_climate
-  models = LU
-  type  = enum
-  default_calc = none
-  ++enum
-    +++none
-       en = none
-       de = keine
-       fr = aucune
-       it = none
-    +++roof_insulation
-       en = roof_insulation
-       de = Wärmedämmung_des_Daches
-       fr = Isolation_thermique_de_la_toiture
-       it = roof_insulation
-    +++water_spraying
-       en = water_spraying
-       de = Vernebelung
-       fr = Vaporisation d'eau
-       it = water_spraying
-    +++roof_insulation_inclusive_water_spraying
-       en = roof_insulation_inclusive_water_spraying
-       de = Wärmedämmung_des_Daches_plus_Vernebelung
-       fr = Isolation_thermique_de_la_toiture_avec_vaporisation d'eau
-       it = roof_insulation_inclusive_water_spraying
-    +++sprinkling_onto_the_roof
-       en = sprinkling_onto_the_roof
-       de = Dachberieselung
-       fr = Arrosage_de_la_toiture
-       it = sprinkling_onto_the_roof
-    +++sprinkling_onto_the_roof_inclusive_water_spraying
-       en = sprinkling_onto_the_roof_inclusive_water_spraying
-       de = Dachberieselung_plus_Vernebelung
-       fr = Arrosage_de_la_toiture_avec_vaporisation d'eau
-       it = sprinkling_onto_the_roof_inclusive_water_spraying
-  ++labels 
-    en = Mitigation options housing climate
-    de = Emissionsmindernde Massnahmen Stallklima
-    fr = Mesures limitant les émissions stabulation climat
-  ++units 
-    en = -
-  ++description
-    Mitigation option housing climate
-  ++help
-    +++en
-       <p>Standard value for Switzerland: „none“</p>
-    +++de
-       <p></p>
-       <p>Vorschlag für Standardwert: keine</p>
-    +++fr
-       <p></p>
-        <dl>
-       <dt>Isolation thermique de la toiture:</dt>
-       <dd>Une installation photovoltaïque ventilée par derrière et arrosée peut être considérée comme une isolation thermique</dd>
-       <dt>Vaporisation d‘eau:</dt>
-       <dd>En cas d'isolation thermique, la réduction apportée par la vaporisation d'eau n'est que de 50% supplémentaires (i.e. 7.5%)</dd>
-       </dl>
-       <p>Proposition valeur standard: aucune</p>
-
-
-+mitigation_options_for_housing_systems_for_fattening_pigs_air
++mitigation_housing_air
   type  = enum
   default_calc = none
   ++enum
@@ -330,42 +270,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++description
     Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
 
-
-+red_roof_insulation
-  value = 0.1
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency for LU Model Version (Workshop SHL Zollikofen, 08.02.2010).
-
-+red_water_spraying
-  value = 0.15
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency for LU Model Version (Workshop SHL Zollikofen, 08.02.2010).
-
-+red_roof_insulation_inclusive_water_spraying
-  value = 0.175
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency for LU Model Version (Workshop SHL Zollikofen, 08.02.2010).
-
-+red_sprinkling_onto_the_roof
-  value = 0.075
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency for LU Model Version (Workshop SHL Zollikofen, 08.02.2010).
-
-+red_sprinkling_onto_the_roof_inclusive_water_spraying
-  value = 0.225
-  ++units
-    en = -
-  ++description
-    Reduction efficiency for LU Model version (Workshop SHL Zollikofen, 08.02.2010)
-
 +red_low_impuls_air_supply
   value = 0.2
   ++units 
@@ -377,109 +281,101 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 *** output ***
 
 
-+c_UNECE_housing_task
++red_housing_floor_SHL
   print = 15
   ++units 
     en = -
   ++description
     Reduction factor for the emission due to UNECE housing systems tasks for fully and partly slatted floors.
-  ++formula 
-    if (In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) eq "with_scraper_concrete_slats"){
-       return Tech(red_PSF_with_scraper_concrete_slats);
-    }  
-    elsif(In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) eq "with_flush_channels_no_areation"){
-       return  Tech(red_PSF_with_flush_channels_no_areation);
-    } 
-    elsif(In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) eq "with_flush_channels_areation"){
-       return Tech(red_PSF_with_flush_channels_areation);
-    } 
-    elsif(In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) eq "with_flush_gutters_tubes_no_areation"){
-       return Tech(red_PSF_with_flush_gutters_tubes_no_areation);
-    } 
-    elsif(In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) eq "with_flush_gutters_tubes_areation"){
-       return Tech(red_PSF_with_flush_gutters_tubes_areation);
-    } 
-    elsif(In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) eq "with_channels_slanted_walls_concrete_slats"){
-       return Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
-    } 
-    elsif(In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) eq "with_channel_slanted_walls_metal_slats"){
-       return Tech(red_PSF_with_channel_slanted_walls_metal_slats);
-    } 
-    elsif(In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) eq "with_scraper_metal_slats"){
-       return Tech(red_PSF_with_scraper_metal_slats);
-    } 
-    elsif(In(UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs) eq "none"){
-       return 0;
-    };
+  ++formula
+    given ( In(mitigation_housing_floor) ) {
+      when "with_scraper_concrete_slats" {
+        Tech(red_PSF_with_scraper_concrete_slats);
+      }  
+      when "with_flush_channels_no_areation" {
+        Tech(red_PSF_with_flush_channels_no_areation);
+      } 
+      when "with_flush_channels_areation" {
+        Tech(red_PSF_with_flush_channels_areation);
+      } 
+      when "with_flush_gutters_tubes_no_areation" {
+        Tech(red_PSF_with_flush_gutters_tubes_no_areation);
+      } 
+      when "with_flush_gutters_tubes_areation" {
+        Tech(red_PSF_with_flush_gutters_tubes_areation);
+      } 
+      when "with_channels_slanted_walls_concrete_slats" {
+        Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
+      } 
+      when "with_channel_slanted_walls_metal_slats" {
+        Tech(red_PSF_with_channel_slanted_walls_metal_slats);
+      } 
+      when "with_scraper_metal_slats" {
+        Tech(red_PSF_with_scraper_metal_slats);
+      } 
+      when "none" {
+        0;
+      }
+      default {
+        # Warning falls not defined mitigation_housing_floor_LU
+        0;
+      }
+    }
 
 
-+c_housing_slurry_channel
++red_housing_floor_LU
   print = 15
   ++units 
     en = -
   ++description
     Reduction factor for the emission due to housing systems tasks.
   ++formula 
-    return 0 unless defined In(mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel);
-    if (In(mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel) eq "with_scraper_concrete_slats"){
-       return Tech(red_PSF_with_scraper_concrete_slats);
-    }  
-    elsif(In(mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel) eq "with_flush_channels_no_areation"){
-       return  Tech(red_PSF_with_flush_channels_no_areation);
-    } 
-    elsif(In(mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel) eq "with_flush_gutters_tubes_no_areation"){
-       return Tech(red_PSF_with_flush_gutters_tubes_no_areation);
-    }  
-    elsif(In(mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel) eq "with_scraper_metal_slats"){
-       return  Tech(red_PSF_with_scraper_metal_slats);
-    }  
-    elsif(In(mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel) eq "with_channels_slanted_walls_concrete_slats"){
-       return  Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
-    }  
-    elsif(In(mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel) eq "with_channel_slanted_walls_metal_slats"){
-       return  Tech(red_PSF_with_channel_slanted_walls_metal_slats);
-    } 
-    elsif(In(mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel) eq "none"){
-       return 0;
-    };
+    return 0 unless not defined In(mitigation_housing_floor);
+    given ( In(mitigation_housing_floor_LU) ) {
+      when "with_scraper_concrete_slats" {
+        Tech(red_PSF_with_scraper_concrete_slats);
+      }  
+      when "with_flush_channels_no_areation" {
+        Tech(red_PSF_with_flush_channels_no_areation);
+      } 
+      when "with_flush_gutters_tubes_no_areation" {
+        Tech(red_PSF_with_flush_gutters_tubes_no_areation);
+      }  
+      when "with_scraper_metal_slats" {
+        Tech(red_PSF_with_scraper_metal_slats);
+      }  
+      when "with_channels_slanted_walls_concrete_slats" {
+        Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
+      }  
+      when "with_channel_slanted_walls_metal_slats" {
+        Tech(red_PSF_with_channel_slanted_walls_metal_slats);
+      } 
+      when "none" {
+        0;
+      }
+      default {
+        # Warning
+        0;
+      }
+    }
 
++red_housing_floor
+  print = 15
+  ++units 
+    en = -
+  ++description
+    Capture floor mitigation for either model.
+  ++formula
+    Out(red_housing_floor_SHL) + Out(red_housing_floor_LU);
 
-+c_housing_climate
++red_housing_air
   print = 15
   ++units 
     en = -
   ++description
     Reduction factor for the emission due to the use of housing system adaptations.
   ++formula 
-       return 0 unless defined In(mitigation_options_for_housing_systems_for_fattening_pigs_climate);
-       if (In(mitigation_options_for_housing_systems_for_fattening_pigs_climate) eq 'roof_insulation'){
-           return( Tech(red_roof_insulation) );
-       }
-       elsif (In(mitigation_options_for_housing_systems_for_fattening_pigs_climate) eq 'water_spraying'){
-           return( Tech(red_water_spraying) );
-       }
-       elsif (In(mitigation_options_for_housing_systems_for_fattening_pigs_climate) eq 'roof_insulation_inclusive_water_spraying'){
-           return( Tech(red_roof_insulation_inclusive_water_spraying) );
-       }
-       elsif (In(mitigation_options_for_housing_systems_for_fattening_pigs_climate) eq 'sprinkling_onto_the_roof'){
-           return( Tech(red_sprinkling_onto_the_roof)  );
-       }
-       elsif (In(mitigation_options_for_housing_systems_for_fattening_pigs_climate) eq 'sprinkling_onto_the_roof_inclusive_water_spraying'){
-           return( Tech(red_sprinkling_onto_the_roof_inclusive_water_spraying) );
-       }
-       else {
-           return 0;
-       }
-
-
-+c_housing_air
-  print = 15
-  ++units 
-    en = -
-  ++description
-    Reduction factor for the emission due to the use of housing system adaptations.
-  ++formula 
-      if (In(mitigation_options_for_housing_systems_for_fattening_pigs_air)  eq 'low_impuls_air_supply'){
+      if (In(mitigation_housing_air)  eq 'low_impuls_air_supply'){
           return( Tech(red_low_impuls_air_supply));
       }
       else {
