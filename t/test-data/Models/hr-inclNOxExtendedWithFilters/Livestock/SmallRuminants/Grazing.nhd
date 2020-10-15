@@ -121,80 +121,8 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 
 *** output ***
 
-+n_into_grazing
-  print = 7e
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual N excretion during grazing for small ruminants.
-  ++formula
-    Val(n_excretion,Excretion) 
-      * In(grazing_days)  / 365
-      * In(grazing_hours) /  24;
-
-+tan_into_grazing
-  print = 7e
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual solable N (TAN) excretion during grazing for small ruminants.
-  ++formula
-    Val(tan_excretion,Excretion) 
-      * In(grazing_days)  / 365
-      * In(grazing_hours) /  24;
-
-+nh3_ngrazing
-  print = 5e
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual NH3 emission from small ruminants from grazing.
-  ++formula
-    Out(tan_into_grazing)
-    * Tech(er_small_ruminants_grazing);
-
-+n2_ngrazing
-  print = 5c
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual total N2 emission from all grazing dairy cows.
-  ++formula
-    Out(n_into_grazing) * Tech(er_n2_small_ruminants_grazing);
-
-+no_ngrazing
-  print = 5c
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual total N2 emission from all grazing dairy cows.
-  ++formula
-    Out(n_into_grazing) * Tech(er_no_small_ruminants_grazing);
-
-+n2o_ngrazing
-  print = 5c
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual total N2O emission from all grazing dairy cows.
-  ++formula
-    Out(n_into_grazing) * Tech(er_n2o_small_ruminants_grazing);
-
-
 +grazing_hours
-  print = 15
+  print = SmallRuminants
   ++units  
     en = hours/day
     de = Stunden/Tag
@@ -205,7 +133,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     In(grazing_hours);
  
 +grazing_days
-  print = 15
+  print = SmallRuminants
   ++units  
     en = days/year
     de = Tage/Jahr
@@ -215,9 +143,89 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++formula
     In(grazing_days);
 
++n_into_grazing
+  print = SmallRuminants
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N excretion during grazing for small ruminants.
+  ++formula
+    Val(n_excretion,Excretion) * 
+    In(grazing_days)  / 365 * 
+    In(grazing_hours) /  24;
+
++tan_into_grazing
+  print = SmallRuminants
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual solable N (TAN) excretion during grazing for small ruminants.
+  ++formula
+    Val(tan_excretion,Excretion) *
+    In(grazing_days)  / 365 * 
+    In(grazing_hours) /  24;
+
++ef_nh3_ngrazing
+  print = SmallRuminants,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual total NH3 emission from all grazing dairy cows.
+  ++formula
+    Tech(er_small_ruminants_grazing);
+
++nh3_ngrazing
+  print = SmallRuminants
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual NH3 emission from small ruminants from grazing.
+  ++formula
+    Out(tan_into_grazing) * Out(ef_nh3_ngrazing);
+
++n2_ngrazing
+  print = SmallRuminants
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total N2 emission from all grazing dairy cows.
+  ++formula
+    Out(n_into_grazing) * Tech(er_n2_small_ruminants_grazing);
+
++no_ngrazing
+  print = SmallRuminants
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total N2 emission from all grazing dairy cows.
+  ++formula
+    Out(n_into_grazing) * Tech(er_no_small_ruminants_grazing);
+
++n2o_ngrazing
+  print = SmallRuminants
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual total N2O emission from all grazing dairy cows.
+  ++formula
+    Out(n_into_grazing) * Tech(er_n2o_small_ruminants_grazing);
 
 +n_remain_grazing
-  print = 7e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -232,7 +240,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n2o_ngrazing);
 
 +tan_remain_grazing
-  print = 7e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -245,12 +253,3 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Out(n2_ngrazing) -
     Out(no_ngrazing) - 
     Out(n2o_ngrazing);
-
-+animalcategory
-  print = 9
-  ++units  
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, Excretion);

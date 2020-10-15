@@ -65,7 +65,7 @@ taxonomy = Livestock::DairyCow::GrazingInput
 *** output ***
 
 +grazing_hours
-  print = 15
+  print = DairyCow
   ++units
      en = hours/day
      de = Stunden/Tag
@@ -76,7 +76,7 @@ taxonomy = Livestock::DairyCow::GrazingInput
     In(grazing_hours);
 
 +grazing_days
-  print = 15
+  print = DairyCow
   ++units
      en = days/year
      de = Tage/Jahr

@@ -457,8 +457,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual N flux (liquid share) out of yard.
   ++formula
-    Sum(n_outyard_solid, Livestock::OtherCattle::Yard) P+
-    Sum(n_outyard_solid, Livestock::DairyCow::Yard) P+
     Sum(n_outyard_solid, Livestock::Equides::Yard);
  
 ####################################################
@@ -599,8 +597,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual N flux (solid share) as TAN from yard and yard into
     the storage from all animals besides poultry.
   ++formula
-    Sum(tan_outyard_solid, Livestock::OtherCattle::Yard) P+
-    Sum(tan_outyard_solid, Livestock::DairyCow::Yard) P+
     Sum(tan_outyard_solid, Livestock::Equides::Yard);
   
 ####################################################

@@ -157,29 +157,28 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 
 *** output ***
 
-+n_check
-  print = 7
++dimensioning_check
+  print = DairyCow
   ++units
     en = -
   ++description
    Check if number of animals <= number of animal places.
   ++formula
-        if (  Val(dimensioning_barn, DairyCow::Housing::Type) < Val(animals, DairyCow::Excretion) ) {
-        writeLog({en=>"The number of available animal places must be equal or higher than the number of animals.",
-                  de=>"Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
-                  fr=>"Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
-                 });
+    if ( Val(dimensioning_barn, DairyCow::Housing::Type) < Val(animals, DairyCow::Excretion) ) {
+      writeLog({
+        en => "The number of available animal places must be equal or higher than the number of animals.",
+        de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+        fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+      });
+      return "not ok";
+    } else {
+      return "ok";
     }
-    return;
-
-
-########### Other Voltaile N Flux
-
 
 +er_n2_nsolid
-  print=all
+  print = DairyCow
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
@@ -193,9 +192,9 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
     };
 
 +er_no_nsolid
-  print=all
+  print = DairyCow
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
@@ -209,9 +208,9 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
     };
 
 +er_n2o_nsolid
-  print=all
+  print = DairyCow
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
@@ -225,9 +224,9 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
     };
 
 +er_n2_nliquid
-  print=all
+  print = DairyCow
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
@@ -241,9 +240,9 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
     };
 
 +er_no_nliquid
-  print=all
+  print = DairyCow
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
@@ -257,9 +256,9 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
     };
 
 +er_n2o_nliquid
-  print=all
+  print = DairyCow
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
@@ -275,67 +274,67 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 
 
 +n2_nsolid
-  print = 7
+  print = DairyCow
   ++labels
-     en = Grazing, housing, yard storage dairy cow N2-emissions
-        de = Weide, Stall und Laufhof Milchkühe N2-Emission
-        fr = Vâches laitières Emissions de N2 pâturage, l'étable et parcours extérieur
-  ++units
-    en = kg N/year
-        de = kg N/Jahr
-        fr = kg N/an
-  ++description
-    Annual N2 emissions from dairy cows housing, yard and grazing (production).
-  ++formula
-     ( Val(n_into_housing, DairyCow::Housing) * (1-Val(share_liquid, DairyCow::Housing::Type) ) 
-     ) * Out(er_n2_nsolid);
-
-
-+no_nsolid
-  print = 7
-  ++labels
-    en = Grazing, housing and yard dairy cow NO-emissions
-        de = Weide, Stall und Laufhof Milchkühe NO-Emission
-        fr = Vâches laitières Emissions de NO pâturage, l'étable et parcours extérieur
-  ++units
-    en = kg N/year
-        de = kg N/Jahr
-        fr = kg N/an
-  ++description
-    Annual NO emissions from dairy cows housing, yard and grazing (production).
-  ++formula
-     ( Val(n_into_housing, DairyCow::Housing) * (1-Val(share_liquid, DairyCow::Housing::Type) ) 
-     ) * Out(er_no_nsolid);
-
-+n2o_nsolid
-  print = 7
-  ++labels
-    en = housing, yard and storage dairy cow N2O-emissions
-    de = Stall, Laufhof und LagerMilchkühe N2O-Emission
-    fr = Vâches laitières Emissions de N2O pâturage, l'étable et parcours extÃ©rieur
+    en = N2-emissions from solid manure in housing, yard and storage from dairy cows 
+    de = FIX: N2-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2 stockage, l'étable et parcours extérieur
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2O emissions from dairy cows housing, yard and grazing (production).
+    FIX: Annual N2 emissions from dairy cows housing, yard and storage.
   ++formula
-     ( Val(n_into_housing, DairyCow::Housing) * (1-Val(share_liquid, DairyCow::Housing::Type) ) 
+     ( Val(n_into_housing, DairyCow::Housing) * (1 - Val(share_liquid, DairyCow::Housing::Type) ) 
+     ) * Out(er_n2_nsolid);
+
+
++no_nsolid
+  print = DairyCow
+  ++labels
+    en = NO-emissions from solid manure in housing, yard and storage from dairy cows 
+    de = FIX: NO-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de NO stockage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    FIX: Annual NO emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, DairyCow::Housing) * (1 - Val(share_liquid, DairyCow::Housing::Type) ) 
+     ) * Out(er_no_nsolid);
+
++n2o_nsolid
+  print = DairyCow
+  ++labels
+    en = N2O-emissions from solid manure in housing, yard and storage from dairy cows 
+    de = FIX: N2O-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2O stockage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    FIX: Annual N2O emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, DairyCow::Housing) * (1 - Val(share_liquid, DairyCow::Housing::Type) ) 
      ) * Out(er_n2o_nsolid);
 
    
 +n2_nliquid
-  print = 7
+  print = DairyCow
   ++labels
-     en = housing, yard and storage dairy cow N2-emissions
-        de = Weide, Stall und Laufhof Milchkühe N2-Emission
-        fr = Vâches laitières Emissions de N2 pâturage, l'étable et parcours extérieur
+    en = FIX: N2-emissions from liquid manure in housing, yard and storage dairy cow 
+    de = FIX: N2-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2 stockage, l'étable et parcours extérieur
   ++units
     en = kg N/year
-        de = kg N/Jahr
-        fr = kg N/an
+    de = kg N/Jahr
+    fr = kg N/an
   ++description
-    Annual N2 emissions from dairy cows housing, yard and grazing (production).
+    FIX: Annual N2 emissions from dairy cows housing, yard and grazing (production).
   ++formula
      ( Val(n_into_housing, DairyCow::Housing) * Val(share_liquid, DairyCow::Housing::Type)  +
        Val(n_into_yard, DairyCow::Yard)
@@ -343,34 +342,34 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 
 
 +no_nliquid
-  print = 7
+  print = DairyCow
   ++labels
-    en = housing, yard and storage dairy cow NO-emissions
-        de = Weide, Stall und Laufhof Milchkühe NO-Emission
-        fr = Vâches laitières Emissions de NO pâturage, l'étable et parcours extérieur
+    en = FIX: N2-emissions from liquid manure in housing, yard and storage dairy cow 
+    de = FIX: N2-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2 stockage, l'étable et parcours extérieur
   ++units
     en = kg N/year
-        de = kg N/Jahr
-        fr = kg N/an
+    de = kg N/Jahr
+    fr = kg N/an
   ++description
-    Annual NO emissions from dairy cows housing, yard and grazing (production).
+    FIX: Annual NO emissions from dairy cows housing, yard and grazing (production).
   ++formula
      ( Val(n_into_housing, DairyCow::Housing) * Val(share_liquid, DairyCow::Housing::Type)  +
        Val(n_into_yard, DairyCow::Yard)
      ) * Out(er_no_nliquid); 
 
 +n2o_nliquid
-  print = 7
+  print = DairyCow
   ++labels
-    en = Grazing, housing and yard dairy cow N2O-emissions
-    de = Weide, Stall und Laufhof Milchkühe N2O-Emission
-    fr = Vâches laitières Emissions de N2O pâturage, l'étable et parcours extérieur
+    en = FIX: N2-emissions from liquid manure in housing, yard and storage dairy cow 
+    de = FIX: N2-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2 stockage, l'étable et parcours extérieur
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2O emissions from dairy cows housing, yard and grazing (production).
+    FIX: Annual N2O emissions from dairy cows housing, yard and grazing (production).
   ++formula
      ( Val(n_into_housing, DairyCow::Housing) * Val(share_liquid, DairyCow::Housing::Type)  +
        Val(n_into_yard, DairyCow::Yard)

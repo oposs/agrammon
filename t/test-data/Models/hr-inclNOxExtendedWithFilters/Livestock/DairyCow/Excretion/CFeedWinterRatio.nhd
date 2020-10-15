@@ -196,7 +196,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 *** output ***
 
 +share_grass_silage_winter
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = %
   ++description
@@ -209,7 +209,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
     }
 
 +share_maize_silage_winter
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = %
   ++description
@@ -222,7 +222,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
     }
 
 +share_maize_pellets_winter
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = %
   ++description
@@ -235,7 +235,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
     }
 
 +share_potatoes_winter
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = %
   ++description
@@ -248,7 +248,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
     }
 
 +share_beets_winter
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = %
   ++description
@@ -261,7 +261,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
     }
 
 +share_hay_only_winter
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = %
   ++description
@@ -280,7 +280,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
  
 
 +c_winter_ration
-  print = c_excretion,dairy_cows
+  print = DairyCow
   ++units 
     en = %
   ++description

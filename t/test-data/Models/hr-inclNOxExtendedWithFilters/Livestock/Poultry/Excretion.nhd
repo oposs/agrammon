@@ -250,8 +250,26 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** output ***
 
-+standard_N_excretion
-  print = 7d
++animals
+  print = Poultry
+  ++units
+    en = -
+  ++description
+    Number of poultry animals for the selected type in barn.
+  ++formula
+    In(animals);
+
++animalcategory
+  print = Poultry
+  ++units
+    en = -
+  ++description
+    Poultry category (layers, growers, broilers, turkeys, and other poultry).
+  ++formula
+    In(animalcategory);
+
++n_excretion_animal
+  print = Poultry
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -260,7 +278,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual standard N excretion for specified poultry category according to
     Flisch et al. (2009).
   ++formula
-    my $cat = In(animalcategory);
+    my $cat = Out(animalcategory);
     my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
     $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
@@ -273,18 +291,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     }
     return $exc;
 
-+share_Nsol
-  print = 7
-  ++units
-    en = -
-  ++description
-    Nsol content of excreta for a specific poultry category. Derived from e.g.
-    TODO
-  ++formula
-    return $TE->{'share_Nsol_'.In(animalcategory)};
-
 +n_excretion
-  print = 7d
+  print = Poultry
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -292,10 +300,10 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual N excreted by a specified number of animals.
   ++formula
-    Out(standard_N_excretion) * In(animals);
+    Out(n_excretion_animal) * Out(animals);
 
 +tan_excretion
-  print = 7
+  print = Poultry
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -303,22 +311,4 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual soluble N excreted by an animalgroup of selected poultry category.
   ++formula
-     Out(share_Nsol) * Out(n_excretion)
-
-+animals
-  print = 9
-  ++units
-    en = -
-  ++description
-    Number of poultry animals for the selected type in barn.
-  ++formula
-    In(animals);
-
-+animalcategory
-  print = 9
-  ++units
-    en = -
-  ++description
-    Poultry category (layers, growers, broilers, turkeys, and other poultry).
-  ++formula
-    In(animalcategory);
+     $TE->{'share_Nsol_'.Out(animalcategory)} * Out(n_excretion);

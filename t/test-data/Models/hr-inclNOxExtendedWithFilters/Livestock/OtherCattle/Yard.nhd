@@ -562,19 +562,8 @@ taxonomy = Livestock::OtherCattle::Yard
 *** output ***
 
 
-+yard_days
-  print = 7
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Access to exercise yards days per year.
-  ++formula
-    In(yard_days);
-
 +days_with_grazing_and_yard
-  print = 7
+  print = OtherCattle
   ++units  
     en = days
     de = Tage
@@ -582,25 +571,25 @@ taxonomy = Livestock::OtherCattle::Yard
   ++description
     Number of Days whith access to yard and pasture
   ++formula
-     if( (Val(grazing_days, GrazingInput) + Out(yard_days)) > 365 ){
-         my $yardDays = Out(yard_days);
+     if( (Val(grazing_days, GrazingInput) + In(yard_days)) > 365 ){
+         my $yardDays = In(yard_days);
          my $grazingDays = Val(grazing_days, GrazingInput);
          writeLog({en=>"The sum of days with access to the exercise yard and of grazing days per year for other cattle is $yardDays+$grazingDays and higher than 365!\n",
                    de=>"Die Summe der Weide- und Laufhoftage für übriges Rindvieh ist grösser als 365!\n",
                   fr=>"La somme des jours de pâturage et des jours avec accès au parcours extérieur pour "
                       . "la catégorie autres bovons est supérieure à 365 !\n",
                  }); 
-         return ( Val(grazing_days, GrazingInput) + Out(yard_days) - 365) ;
+         return ( Val(grazing_days, GrazingInput) + In(yard_days) - 365) ;
      } else{
          return (0);
      };
 
 +c_free_factor_yard
-  print = 10
+  print = OtherCattle
   ++units 
     en = -
   ++description
-    Free reduction of the Emission rate for the Yard.
+    Free correction factor of the Emission rate for the Yard.
   ++formula
   if(In(free_correction_factor)//0 != 0) {           
       writeLog({en=>"You have entered an additional emission mitigation measure for an exercise yard of the category other cattle of " 
@@ -619,52 +608,61 @@ taxonomy = Livestock::OtherCattle::Yard
   } 
 
 +c_floor_properties_exercise_yard_SHL
-  print = 15
+  print = OtherCattle
   ++units
     en = -
   ++description
-    Reduction factor for the emission due to the use of the floor properties in housing systems.
+    Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula
     given ( In(floor_properties_exercise_yard_SHL) ) {
       when 'solid_floor' {
-         return Tech(red_floor_properties_solid_floor);
+        1 - Tech(red_floor_properties_solid_floor);
       } 
       when  'unpaved_floor' {
-         return Tech(red_floor_properties_unpaved_floor);
+        1 - Tech(red_floor_properties_unpaved_floor);
       } 
       when  'perforated_floor' {
-         return Tech(red_floor_properties_perforated_floor);
+        1 - Tech(red_floor_properties_perforated_floor);
       } 
       when  'paddock_or_pasture_used_as_exercise_yard' {
-         return Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
+        1 - Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
       } 
       default { 
-        return 0;
+        1;
       }
     }
 
 +c_floor_properties_exercise_yard_LU
-  print = 15
+  print = OtherCattle
   ++units
     en = -
   ++description
-    Reduction factor for the emission due to the use of the floor properties in housing systems.
+    Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula
-    return 0 unless defined In(floor_properties_exercise_yard_LU);
-    if (In(floor_properties_exercise_yard_LU) eq 'solid_floor'){
-         return Tech(red_floor_properties_solid_floor);
-    } elsif (In(floor_properties_exercise_yard_LU) eq 'perforated_floor'){
-         return Tech(red_floor_properties_perforated_floor);
-    } elsif (In(floor_properties_exercise_yard_LU) eq 'sloped_concrete_floor_with_central_drain_and_stationary_scraper'){
-         return Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper);
-    } elsif (In(floor_properties_exercise_yard_LU) eq 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading'){
-         return Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading);
-    } elsif (In(floor_properties_exercise_yard_LU) eq 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower'){
-         return Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower);
-    } else{ return 0;};
+    return 1 unless defined In(floor_properties_exercise_yard_LU);
+    given ( In(floor_properties_exercise_yard_LU) ) {
+      when 'solid_floor' { 
+        1 - Tech(red_floor_properties_solid_floor); 
+      }
+      when 'perforated_floor' { 
+        1 - Tech(red_floor_properties_perforated_floor); 
+      }
+      when 'sloped_concrete_floor_with_central_drain_and_stationary_scraper' { 
+        1 - Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper);
+      }
+      when 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading' { 
+        1 - Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading);
+      }
+      when 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower' { 
+        1 - Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower);
+      }      
+      default { 
+        1; 
+      }
+    }
 
 +share_excretion
-  print = 7
+  print = OtherCattle
   ++units  
     en = -
   ++description
@@ -672,17 +670,23 @@ taxonomy = Livestock::OtherCattle::Yard
     If the basic feeding is on the yard the share_basicfeeding is assumed. 
     Otherwise the share is selected according to the access.
   ++formula 
-    if( In(exercise_yard) eq 'available_roughage_is_not_supplied_in_the_exercise_yard') {
-        return Tech(share_available_roughage_is_not_supplied_in_the_exercise_yard);
-    } elsif( In(exercise_yard) eq 'available_roughage_is_partly_supplied_in_the_exercise_yard') {
-        return Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard);
-    }  elsif( In(exercise_yard) eq 'available_roughage_is_exclusively_supplied_in_the_exercise_yard') {
-        return Tech(share_available_roughage_is_exclusively_supplied_in_the_exercise_yard);
-    }  elsif( In(exercise_yard) eq 'not_available') {
-        return 0;
-    };
+    given ( In(exercise_yard) ) {
+      when 'available_roughage_is_not_supplied_in_the_exercise_yard' {
+        Tech(share_available_roughage_is_not_supplied_in_the_exercise_yard);
+      } 
+      when 'available_roughage_is_partly_supplied_in_the_exercise_yard' {
+        Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard);
+      }
+      when 'available_roughage_is_exclusively_supplied_in_the_exercise_yard' {
+        Tech(share_available_roughage_is_exclusively_supplied_in_the_exercise_yard);
+      }
+      when 'not_available' {
+        0;
+      }
+    }
+
 +share_excretion_with_grazing
-  print = debug
+  print = OtherCattle
   ++units  
     en = -
     de = -
@@ -692,20 +696,20 @@ taxonomy = Livestock::OtherCattle::Yard
     If the basic feeding is on the yard the share_basicfeeding is assumed. 
     Otherwise the share is selected according to the access.
   ++formula
-     if( (Out(days_with_grazing_and_yard) > 0) and (Out(share_excretion) > 0.2) ){
-         writeLog({en=>"The category \"roughage is exclusively supplied in the exercise yard\" is not compatible with"
-                       . " the number of grazing days entered!\n",
-                   de=>"Verabreichung von Grundfutter ausschliesslich auf dem Laufhof ist nicht möglich mit den eingegebenen Weidetagen!\n",
-                  fr=>"La distribution de fourrage exclusivement dans le parcours extérieur pour les "
-                      . " autres bovins n'est pas possible pendant les jours de pâturage !\n",
-                 }); 
-         return( 0.2 );
-     }else{
-         Out(share_excretion);
-     };
+    if( (Out(days_with_grazing_and_yard) > 0) and (Out(share_excretion) > Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard)) ){
+      writeLog({
+        en => "The category \"roughage is exclusively supplied in the exercise yard\" is not compatible with the number of grazing days entered!\n",
+        de => "Verabreichung von Grundfutter ausschliesslich auf dem Laufhof ist nicht möglich mit den eingegebenen Weidetagen!\n",
+        fr => "La distribution de fourrage exclusivement dans le parcours extérieur "
+              . "pour les vâches laitières n'est pas possible pendant les jours de pâturage !\n",
+      }); 
+      return Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard);
+    } else {
+      return Out(share_excretion);
+    }
          
 +n_into_yard
-  print = 7
+  print = OtherCattle
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -713,12 +717,16 @@ taxonomy = Livestock::OtherCattle::Yard
   ++description
     Annual N excretion on yard for a defined animal category.
   ++formula
-    Val(n_excretion,Excretion) * Out(share_excretion) * (In(yard_days)-Out(days_with_grazing_and_yard))/365 +
-    Val(n_excretion,Excretion) * Out(share_excretion_with_grazing) 
-    * (Out(days_with_grazing_and_yard)/365); 
+    Val(n_excretion, Excretion) * 
+    (
+      Out(share_excretion) * 
+      (In(yard_days) - Out(days_with_grazing_and_yard)) / 365 +
+      Out(share_excretion_with_grazing) * 
+      Out(days_with_grazing_and_yard) / 365
+    );
 
 +tan_into_yard
-  print = 7
+  print = OtherCattle
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -726,12 +734,16 @@ taxonomy = Livestock::OtherCattle::Yard
   ++description
     Annual soluble N excretion on yard for a defined animal category.
   ++formula
-    Val(tan_excretion,Excretion) * Out(share_excretion) * (In(yard_days) - Out(days_with_grazing_and_yard))/365 +
-    Val(tan_excretion,Excretion) * Out(share_excretion_with_grazing) 
-    * Out(days_with_grazing_and_yard) / 365;
+    Val(tan_excretion,Excretion) *
+    (
+      Out(share_excretion) * 
+      (In(yard_days) - Out(days_with_grazing_and_yard)) / 365 +
+      Out(share_excretion_with_grazing) * 
+      Out(days_with_grazing_and_yard) / 365
+    );
 
-+nh3_nyard
-  print = 5a
++ef_nh3_nyard
+  print = OtherCattle,ef_nh3
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -739,45 +751,24 @@ taxonomy = Livestock::OtherCattle::Yard
   ++description
     Annual NH3 emission from yard.
   ++formula
-    Out(tan_into_yard) * Tech(er_yard) * (1 - (Out(c_floor_properties_exercise_yard_SHL))) * (1 - (Out(c_floor_properties_exercise_yard_LU))) * Out(c_free_factor_yard);
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard_SHL) * 
+    Out(c_floor_properties_exercise_yard_LU) * 
+    Out(c_free_factor_yard);
 
-+nh3_nyard_animal
-  print = 7
++nh3_nyard
+  print = OtherCattle
   ++units
      en = kg N/year
      de = kg N/Jahr
      fr = kg N/an
   ++description
-    Annual NH3 emission per anmimal from yard.
+    Annual NH3 emission from yard.
   ++formula
-    if(  Val(animals,Excretion) != 0 ){
-         return Out(nh3_nyard) / Val(animals,Excretion);
-    } else { return 0;};
-        
-+n_outyard
-  print = 7
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual N flux out of yard.
-  ++formula
-    Out(n_into_yard) - Out(nh3_nyard);
-
-+tan_outyard
-  print = 7
-  ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
-  ++description
-    Annual N flux as TAN out of yard into storage.
-  ++formula
-    Out(tan_into_yard) - Out(nh3_nyard);
+    Out(tan_into_yard) * Out(ef_nh3_nyard);
 
 +n_outyard_liquid
-  print = 7
+  print = OtherCattle
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -788,7 +779,7 @@ taxonomy = Livestock::OtherCattle::Yard
     Out(n_into_yard) - Out(nh3_nyard);
 
 +tan_outyard_liquid
-  print = 7
+  print = OtherCattle
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -799,7 +790,7 @@ taxonomy = Livestock::OtherCattle::Yard
     Out(tan_into_yard) - Out(nh3_nyard);
 
 +n_outyard_solid
-  print = 7
+  print = OtherCattle
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -810,7 +801,7 @@ taxonomy = Livestock::OtherCattle::Yard
     0;
 
 +tan_outyard_solid
-  print = 7
+  print = OtherCattle
   ++units
      en = kg N/year
      de = kg N/Jahr
