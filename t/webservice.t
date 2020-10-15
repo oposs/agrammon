@@ -61,20 +61,6 @@ subtest "get-cfg()" => {
     is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
 }
 
-subtest "get-excel-export" => {
-    my %params = %(
-        :datasetName('TestSingle'),
-        :language('de'),
-        :withFilters(False)
-    );
-
-    ok my $export = $ws.get-excel-export($user, %params);
-#    note $export;
-    ok $export ~~ /'Total;nh3_ntotal;' .+ 'kg N/Jahr'/, "Output has nh3_ntotal";
-}
-
-#done-testing; exit;
-
 transactionally {
 
     subtest "create-dataset" => {
@@ -376,6 +362,15 @@ subtest "Get model data" => {
 
 }
 
+subtest "get-excel-export" => {
+    my %params = %(
+        :datasetName('TestSingle'),
+        :language('de'),
+        :withFilters(False)
+    );
+    ok my $export = $ws.get-excel-export($user, %params);
+    ok $export ~~ /'Total;nh3_ntotal;' .+ 'kg N/Jahr'/, "Output has nh3_ntotal";
+}
 
 done-testing;
 

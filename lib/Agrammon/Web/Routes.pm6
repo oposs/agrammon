@@ -270,7 +270,6 @@ sub api-routes (Str $schema, $ws) {
         }
         operation 'getExcelExport', -> LoggedIn $user {
             request-body -> ( :%params ) {
-                dd %params;
                 my $export = $ws.get-excel-export($user, %params);
                 # change to application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
                 # once Spreadsheet::XLSX is working again

@@ -134,10 +134,8 @@ class Agrammon::Web::Service {
 
     method get-excel-export(Agrammon::Web::SessionUser $user, %params) {
         my $dataset-name = %params<datasetName>;
-        my $language = %params<language>;
+        my $language     = %params<language>;
         my $with-filters = %params<withFilters>;
-        my $simulation-name;
-        my $dataset-id;
 
         my %inputs; # TODO: handle inputs
         my $outputs = self!get-outputs($user, $dataset-name);

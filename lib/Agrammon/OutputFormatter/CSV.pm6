@@ -14,7 +14,7 @@ sub output-as-csv(
             for .value.sort(*.key) {
                 my @data = (
                     $module, .key, flat-value(.value) // '',
-                    $model.output-unit($module, .key, $unit-language),
+                    $model.output-unit($module, .key, $unit-language)
                 );
                 @data.unshift($prefix) if $prefix;
                 take @data.join(';');
