@@ -329,74 +329,93 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** output ***
 
-+c_UNECE_housing_task
++red_housing_floor_SHL
   print = 15
   ++units 
     en = -
   ++description
     Reduction factor for the emission due to UNECE housing systems tasks for fully and partly slatted floors.
-  ++formula 
-    return 0 unless defined In(mitigation_housing_floor);
-    if (In(mitigation_housing_floor) eq "with_scraper_concrete_slats"){
-       return Tech(red_PSF_with_scraper_concrete_slats);
-    }  
-    elsif(In(mitigation_housing_floor) eq "with_flush_channels_no_areation"){
-       return  Tech(red_PSF_with_flush_channels_no_areation);
-    } 
-    elsif(In(mitigation_housing_floor) eq "with_flush_channels_areation"){
-       return Tech(red_PSF_with_flush_channels_areation);
-    } 
-    elsif(In(mitigation_housing_floor) eq "with_flush_gutters_tubes_no_areation"){
-       return Tech(red_PSF_with_flush_gutters_tubes_no_areation);
-    } 
-    elsif(In(mitigation_housing_floor) eq "with_flush_gutters_tubes_areation"){
-       return Tech(red_PSF_with_flush_gutters_tubes_areation);
-    } 
-    elsif(In(mitigation_housing_floor) eq "with_channels_slanted_walls_concrete_slats"){
-       return Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
-    } 
-    elsif(In(mitigation_housing_floor) eq "with_channel_slanted_walls_metal_slats"){
-       return Tech(red_PSF_with_channel_slanted_walls_metal_slats);
-    } 
-    elsif(In(mitigation_housing_floor) eq "with_scraper_metal_slats"){
-       return Tech(red_PSF_with_scraper_metal_slats);
-    } 
-    elsif(In(mitigation_housing_floor) eq "none"){
-       return 0;
-    };
+  ++formula
+    given ( In(mitigation_housing_floor) ) {
+      when "with_scraper_concrete_slats" {
+        Tech(red_PSF_with_scraper_concrete_slats);
+      }  
+      when "with_flush_channels_no_areation" {
+        Tech(red_PSF_with_flush_channels_no_areation);
+      } 
+      when "with_flush_channels_areation" {
+        Tech(red_PSF_with_flush_channels_areation);
+      } 
+      when "with_flush_gutters_tubes_no_areation" {
+        Tech(red_PSF_with_flush_gutters_tubes_no_areation);
+      } 
+      when "with_flush_gutters_tubes_areation" {
+        Tech(red_PSF_with_flush_gutters_tubes_areation);
+      } 
+      when "with_channels_slanted_walls_concrete_slats" {
+        Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
+      } 
+      when "with_channel_slanted_walls_metal_slats" {
+        Tech(red_PSF_with_channel_slanted_walls_metal_slats);
+      } 
+      when "with_scraper_metal_slats" {
+        Tech(red_PSF_with_scraper_metal_slats);
+      } 
+      when "none" {
+        0;
+      }
+      default {
+        # Warning falls not defined mitigation_housing_floor_LU
+        0;
+      }
+    }
 
-+c_housing_slurry_channel
++red_housing_floor_LU
   print = 15
   ++units 
     en = -
   ++description
     Reduction factor for the emission due to housing systems tasks.
   ++formula 
-      return 0 unless defined In(mitigation_housing_floor_LU);
-    if (In(mitigation_housing_floor_LU) eq "with_scraper_concrete_slats"){
-       return Tech(red_PSF_with_scraper_concrete_slats);
-    }  
-    elsif(In(mitigation_housing_floor_LU) eq "with_flush_channels_no_areation"){
-       return  Tech(red_PSF_with_flush_channels_no_areation);
-    } 
-    elsif(In(mitigation_housing_floor_LU) eq "with_flush_gutters_tubes_no_areation"){
-       return Tech(red_PSF_with_flush_gutters_tubes_no_areation);
-    }  
-    elsif(In(mitigation_housing_floor_LU) eq "with_scraper_metal_slats"){
-       return  Tech(red_PSF_with_scraper_metal_slats);
-    }  
-    elsif(In(mitigation_housing_floor_LU) eq "with_channels_slanted_walls_concrete_slats"){
-       return  Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
-    }  
-    elsif(In(mitigation_housing_floor_LU) eq "with_channel_slanted_walls_metal_slats"){
-       return  Tech(red_PSF_with_channel_slanted_walls_metal_slats);
-    }  
-    elsif(In(mitigation_housing_floor_LU) eq "none"){
-       return 0;
-    };
+    return 0 unless not defined In(mitigation_housing_floor);
+    given ( In(mitigation_housing_floor_LU) ) {
+      when "with_scraper_concrete_slats" {
+        Tech(red_PSF_with_scraper_concrete_slats);
+      }  
+      when "with_flush_channels_no_areation" {
+        Tech(red_PSF_with_flush_channels_no_areation);
+      } 
+      when "with_flush_gutters_tubes_no_areation" {
+        Tech(red_PSF_with_flush_gutters_tubes_no_areation);
+      }  
+      when "with_scraper_metal_slats" {
+        Tech(red_PSF_with_scraper_metal_slats);
+      }  
+      when "with_channels_slanted_walls_concrete_slats" {
+        Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
+      }  
+      when "with_channel_slanted_walls_metal_slats" {
+        Tech(red_PSF_with_channel_slanted_walls_metal_slats);
+      } 
+      when "none" {
+        0;
+      }
+      default {
+        # Warning
+        0;
+      }
+    }
 
++red_housing_floor
+  print = 15
+  ++units 
+    en = -
+  ++description
+    Capture floor mitigation for either model.
+  ++formula
+    Out(red_housing_floor_SHL) + Out(red_housing_floor_LU);
 
-+c_housing_air
++red_housing_air
   print = 15
   ++units 
     en = -
@@ -409,7 +428,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
       else {
           return 0;
       }
-      
+       
        
 
 
