@@ -81,23 +81,23 @@ Selects other correction factors for the specific housing types for poultry.
 *** output ***
 
 +c_free_factor_housing
-  print = 10
+  print = Poultry
   ++units 
     en = -
   ++description
-    Emission rate for the housing type.
+    Free correction factor for NH3 housing emission.
   ++formula
-  if(In(free_correction_factor)//0 != 0) {
-      writeLog({en=>"You have entered an additional emission mitigation measure for a poultry housing of " 
-      	            . In(free_correction_factor) 
-                    . "\%!\n", 
-                de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Geflügelstall von "
-	            . In(free_correction_factor) 
-                    . "\% eingegeben!\n", 
-                fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'une "
-		    . "stabulation pour volaille de " . In(free_correction_factor) . "\%.\n" });
-	    return 1 - In(free_correction_factor)/100;
-     
-  } else {
-    return 1;
-  } 
+    if( In(free_correction_factor) // 0 != 0 ) {
+      writeLog({
+        en => "You have entered an additional emission mitigation measure for a poultry housing of " 
+              . In(free_correction_factor) . "\%!\n", 
+        de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Geflügelstall von "
+              . In(free_correction_factor) . "\% eingegeben!\n", 
+        fr => "Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'une "
+              . "stabulation pour volaille de " . In(free_correction_factor) . "\%.\n" 
+      });
+	    return 1 - In(free_correction_factor) / 100;
+    } 
+    else {
+      return 1;
+    } 

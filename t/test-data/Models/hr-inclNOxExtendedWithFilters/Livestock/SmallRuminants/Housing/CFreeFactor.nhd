@@ -9,7 +9,6 @@ taxonomy = Livestock::SmallRuminants::Housing::CFreeFactor
 Selects the free correction factor for housing emission for roughage consuming.
 
 +description
-  
  TODO
 
 
@@ -31,8 +30,17 @@ Selects the free correction factor for housing emission for roughage consuming.
     Factor to define free.
   ++help
     +++en
-       <p> </p>
-    +++de
+        <p>The emission reduction of a new technique can be entered
+           (e.g. a new type of floor). The number entered corresponds
+           to the emission reduction in percent (e.g. 30%; the
+           emission from the housing decreases by 30%). It is
+           recommended to mention the selected measure in the column
+           comment and to justify the number selected for emission
+           reduction.</p>
+        <p>This option mainly targets users who predict emissions and
+        are obliged to consider the effects of new and actually
+        unknown techniques.</p>
++++de
   <p>
      Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme 
      eingesetzt werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene 
@@ -74,21 +82,22 @@ Selects the free correction factor for housing emission for roughage consuming.
   ++units 
     en = -
   ++description
-    Free reduction of the Emission rate for the Housing.
+    Free correction factor for NH3 housing emission.
   ++formula
-  if(In(free_correction_factor)//0 != 0) {
-    writeLog({
-      en => "You have entered an additional emission mitigation measure for a housing of the "
-            . "category small ruminants of " . In(free_correction_factor) 
-            . "\%!\n",
-      de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Stall der "
-            . "Kategorie Kleinwiederkäuer von " . In(free_correction_factor) 
-            . "\% eingegeben!\n", 
-      fr => "Vous avez introduit une mesure supplémentaire limitant les émissions dans les "
-            ."stabulations de la catégorie de petits ruminants de " . In(free_correction_factor) 
-            . "\%.\n"
-      });
-    return 1 - In(free_correction_factor) / 100;  
-  } else {
-    return 1;
-  } 
+    if ( In(free_correction_factor) // 0 != 0 ) {
+      writeLog({
+        en => "You have entered an additional emission mitigation measure for a housing of the "
+              . "category small ruminants of " . In(free_correction_factor) 
+              . "\%!\n",
+        de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Stall der "
+              . "Kategorie Kleinwiederkäuer von " . In(free_correction_factor) 
+              . "\% eingegeben!\n", 
+        fr => "Vous avez introduit une mesure supplémentaire limitant les émissions dans les "
+              ."stabulations de la catégorie de petits ruminants de " . In(free_correction_factor) 
+              . "\%.\n"
+        });
+      return 1 - In(free_correction_factor) / 100;  
+    } 
+    else {
+      return 1;
+    } 

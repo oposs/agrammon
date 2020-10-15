@@ -85,24 +85,24 @@ specific housing types for fattening pigs.
 *** output ***
 
 +c_free_factor_housing
-  print = 10
+  print = FatteningPigs
   ++units 
     en = -
   ++description
-    Emission rate for the housing type.
+    Free correction factor for NH3 housing emission.
   ++formula
-  if(In(free_correction_factor)//0 != 0) {   	    
-      writeLog({en=>"You have entered an additional emission mitigation measure for a fattening pigs housing of " 
-      	            . In(free_correction_factor) 
-                    . "\%.\n", 
-                de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Stall der Mastschweine von "
-                    . In(free_correction_factor) 
-                    . "\% eingegeben.\n", 
-                fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions dans les "
-                    . "stabulations pour porcs à l'engrais de " .  In(free_correction_factor) . "\%.\n" });
-	    return 1 - In(free_correction_factor)/100;
-     
-  } else {
-    return 1;
-  } 
+    if ( In(free_correction_factor) // 0 != 0 ) {   	    
+      writeLog({
+        en => "You have entered an additional emission mitigation measure for a fattening pigs housing of " 
+              . In(free_correction_factor) . "\%.\n", 
+        de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Stall der Mastschweine von "
+              . In(free_correction_factor) . "\% eingegeben.\n", 
+        fr => "Vous avez introduit une mesure supplémentaire limitant les émissions dans les "
+              . "stabulations pour porcs à l'engrais de " .  In(free_correction_factor) . "\%.\n"
+      });
+      return 1 - In(free_correction_factor)/100;
+    } 
+    else {
+      return 1;
+    } 
 
