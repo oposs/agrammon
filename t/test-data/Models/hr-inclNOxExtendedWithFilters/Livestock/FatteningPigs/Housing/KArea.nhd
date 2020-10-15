@@ -2,7 +2,7 @@
 
 author   = Agrammon Group
 date     = 2008-04-22
-taxonomy = Livestock:Pig::Housing::KArea
+taxonomy = Livestock::FatteningPigs::Housing::KArea
 
 +short
 
@@ -28,9 +28,9 @@ taxonomy = Livestock:Pig::Housing::KArea
   type = integer
   adjustBranching = true
   ++labels 
-    en = Number of animal places in building of category
-    de = Stallkapazität (Anzahl Tierplätze der Kategorie)
-    fr = Places dans la stabulation (Nombre de places d'animaux par catégorie d'animaux)
+    en = Number of available animal places
+    de = Anzahl Tierplätze im Stall
+    fr = Nombre de places dans l'étable
   ++units  
     en = -
   ++description
@@ -43,38 +43,37 @@ taxonomy = Livestock:Pig::Housing::KArea
   ++units  
     en = -
   ++description
-    Increasing factor for larger loose housing barns, 10 0/0 bigger leads to 5  0/0 more emission.
+    Increasing factor for larger loose housing barns, +10\% excess place leads 
+    to +5\% increase in the NH3 emission.
 
 *** external ***
+
 +..::Excretion 
-
-
 
 *** output ***
 
 +area_increase
-  print = 15
+  print = FatteningPigs
   ++units  
     en = -
   ++description
     Factor on what barn size does increase the regularized minimal, limited to 0.5
 
   ++formula 
-    if(    ( Val(pigs,..::Excretion) < In(dimensioning_barn) )
-       and ( Val(pigs, ..::Excretion) != 0 ) ) { 
-    	 if( In(dimensioning_barn) >= (Val(pigs,..::Excretion) * 1.5) ){   
- 	     return 0.5; 
- 	 }
- 	 else { 
- 	     return( ( In(dimensioning_barn) / Val(pigs, ..::Excretion) ) -1 );
-        }  			
+    if ( ( Val(animals, ..::Excretion) < In(dimensioning_barn) ) and ( Val(animals, ..::Excretion) != 0 ) ) { 
+      if( In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5) ){   
+        0.5; 
+      }
+      else { 
+        In(dimensioning_barn) / Val(animals, ..::Excretion) - 1;
+      }  			
     }
     else {
- 	return 0.0;
-    };
+      0.0;
+    }
 
-+k_area
-  print = 15
++c_area
+  print = FatteningPigs
   ++units  
     en = -
   ++description
