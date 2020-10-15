@@ -6,16 +6,10 @@ taxonomy = Livestock::DairyCow::Housing::CFreeFactor
 
 +short
 
-Selects an free  correction factors for the specific housing types for dairy cows. 
+Selects the free correction factor for housing emission for dairy cows.
 
 +description
-
- This process selects the correction factor for the specific housing
- types for dairy cows. Among these correction factors are the emission
- rate for the housing type, the correction factor for the housing type
- area, the correction factor for the area per animal, the liquid and
- solid share for the housing type as well as the factor on what barn
- size increases the regularized minimal (limited to 0.5).
+ TODO
 
 
 *** input ***
@@ -26,7 +20,7 @@ Selects an free  correction factors for the specific housing types for dairy cow
   default_gui = 0
   validator = between(-100,100);
   ++labels 
-    en = Additional emission mitigation measure for the housing
+    en = Additional emission mitigation measure for the housing (see column Help)
     de = Zusätzliche emissionsmindernde Massnahme Stall (siehe Spalte Hilfe)
     fr = Mesure supplémentaire limitant les émissions dans les stabulations (cf. aide)
   ++units 
@@ -35,45 +29,49 @@ Selects an free  correction factors for the specific housing types for dairy cow
     Factor to define free.
   ++help
     +++en
-        <p>The emission reduction of a new technique can be entered
-           (e.g. a new type of floor). The number entered corresponds
-           to the emission reduction in percent (e.g. 30%; the
-           emission from the housing decreases by 30%). It is
-           recommended to mention the selected measure in the column
-           comment and to justify the number selected for emission
-           reduction.</p>
-        <p>This option mainly targets users who predict emissions and
-        are obliged to consider the effects of new and actually
-        unknown techniques.</p>
-+++de
-	<p>
-	   Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme 
-	   eingesetzt werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene 
-           Zahl entspricht der Emissionsminderung in Prozent (z.B. Eingabe 30%; die Emission 
-           aus dem Stall nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der 
-           Spalte Kommentar aufzuführen und den gewählten Wert zur Emissionsminderung 
-           zu begründen.
+        <p>
+          The emission reduction of a new technique can be entered
+          (e.g. a new type of floor). The number entered corresponds
+          to the emission reduction in percent (e.g. 30%; the
+          emission from the housing decreases by 30%). It is
+          recommended to mention the selected measure in the column
+          comment and to justify the number selected for emission
+          reduction.
         </p>
-       	<p>
-	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
-           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
-           zur Emissionsminderung berücksichtigen müssen. 
+        <p>
+          This option mainly targets users who predict emissions and
+          are obliged to consider the effects of new and actually
+          unknown techniques.
         </p>
-        <p> Vorschlag fÃ¼r Standardwert: 0 %. </p>
+    +++de
+        <p>
+          Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme 
+          eingesetzt werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene 
+          Zahl entspricht der Emissionsminderung in Prozent (z.B. Eingabe 30%; die Emission 
+          aus dem Stall nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der 
+          Spalte Kommentar aufzuführen und den gewählten Wert zur Emissionsminderung 
+          zu begründen.
+        </p>
+        <p>
+          Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+          prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+          zur Emissionsminderung berücksichtigen müssen. 
+        </p>
+        <p> Vorschlag für Standardwert: 0 %.</p>
     +++fr
         <p>
-	   Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les émissions 
-	   (p.ex. un nouveau type de sol limitant les émissions). Le chiffre introduit correspond 
-	   à la réduction d'émission en pourcent (p.ex. 30%: l'émission provenant de la stabulation 
-	   diminue de 30%). Il est recommandé de mentionner la mesure choisie dans la colonne 
-	   ‘Commentaire' et de justifier le taux de réduction choisi.
-	</p>
-	<p>
-	   Cette fonction s'adresse principalement aux utilisateurs/trices qui font des 
-	   pronostiques d'émissions et qui doivent prendre en compte l'effet de nouvelles 
-	   technologies destinées à limiter les émissions et encore méconnues actuellement.
-	</p>
- 	<p>Proposition valeur standard: 0 %.</p>
+          Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les émissions 
+          (p.ex. un nouveau type de sol limitant les émissions). Le chiffre introduit correspond 
+          à la réduction d'émission en pourcent (p.ex. 30%: l'émission provenant de la stabulation 
+          diminue de 30%). Il est recommandé de mentionner la mesure choisie dans la colonne 
+          ‘Commentaire' et de justifier le taux de réduction choisi.
+        </p>
+        <p>
+          Cette fonction s'adresse principalement aux utilisateurs/trices qui font des 
+          pronostiques d'émissions et qui doivent prendre en compte l'effet de nouvelles 
+          technologies destinées à limiter les émissions et encore méconnues actuellement.
+        </p>
+        <p>Proposition valeur standard: 0 %.</p>
 
 *** technical ***
 
@@ -82,22 +80,23 @@ Selects an free  correction factors for the specific housing types for dairy cow
 *** output ***
 
 +c_free_factor_housing
-  print = c_housing,dairy_cows
+  print = DairyCow
   ++units 
     en = -
   ++description
-    Free correction factor for NH3 emission factor from dairy cow housing.
+    Free correction factor for NH3 housing emission.
   ++formula
-  if(In(free_correction_factor)//0 != 0) {
-    writeLog({
-      en => "You have entered an additional emission mitigation measure for a dairy cows housing of"
-            . In(free_correction_factor) . "%\!\n" ,
-      de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Stall der Milchkühe von " 
-            . In(free_correction_factor) . "\% eingegeben!\n" ,
-      fr => "Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'une "
-            . "stabulation pour vâches laitières de " . In(free_correction_factor) . "\% !\n" 
-    });
-    return 1 - In(free_correction_factor) / 100;  
-  } else {
-    return 1;
-  } 
+    if ( In(free_correction_factor) // 0 != 0 ) {
+      writeLog({
+        en => "You have entered an additional emission mitigation measure for a dairy cows housing of"
+              . In(free_correction_factor) . "%\!\n" ,
+        de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Stall der Milchkühe von " 
+              . In(free_correction_factor) . "\% eingegeben!\n" ,
+        fr => "Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'une "
+              . "stabulation pour vâches laitières de " . In(free_correction_factor) . "\% !\n" 
+      });
+      return 1 - In(free_correction_factor) / 100;  
+    } 
+    else {
+      return 1;
+    } 

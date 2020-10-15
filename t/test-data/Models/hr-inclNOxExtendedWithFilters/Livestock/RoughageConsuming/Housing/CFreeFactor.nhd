@@ -1,13 +1,17 @@
 *** general ***
 
 author   = Agrammon Group
-date     = 2013-01-04
-taxonomy = Livestock::OtherCattle::Housing::CFreeFactor
+date     = 2020-10-15
+taxonomy = Livestock::RoughageConsuming::Housing::CFreeFactor
 
 +short
-	Provides a Free factor for Housing Emission of Cattle
 
-+description 
+Selects the free correction factor for housing emission for roughage consuming.
+
++description
+  
+ TODO
+
 
 *** input ***
 
@@ -38,35 +42,35 @@ taxonomy = Livestock::OtherCattle::Housing::CFreeFactor
         are obliged to consider the effects of new and actually
         unknown techniques.</p>
     +++de
-	<p>
-	   Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme 
-	   eingesetzt werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene 
+  <p>
+     Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme 
+     eingesetzt werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene 
            Zahl entspricht der Emissionsminderung in Prozent (z.B. Eingabe 30%; die Emission 
            aus dem Stall nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der 
            Spalte Kommentar aufzuführen und den gewählten Wert zur Emissionsminderung 
            zu begründen.
         </p>
-       	<p>
-	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+        <p>
+     Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
            prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
            zur Emissionsminderung berücksichtigen müssen. 
         </p>
         <p> Vorschlag für Standardwert: 0 %. </p>
     +++fr
         <p>
-	   Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les 
-	   émissions (p.ex. un nouveau type de sol limitant les émissions). Le chiffre 
-	   introduit correspond à la réduction d'émission en pourcent (p.ex. 30%: l'émission 
-	   provenant de la stabulation diminue de 30%). Il est recommandé de mentionner la 
-	   mesure choisie dans la colonne ‘Commentaire' et de justifier le taux de réduction 
-	   choisi.
-	</p>
- 	<p>
-	   Cette fonction s'adresse principalement aux utilisateurs/trices qui font des 
-	   pronostiques d'émissions et qui doivent prendre en compte l'effet de nouvelles 
-	   technologies destinées à limiter les émissions et encore méconnues actuellement.
-	</p>
-	 <p>Proposition valeur standard: 0 %.</p>
+    Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les 
+    émissions (p.ex. un nouveau type de sol limitant les émissions). Le chiffre 
+    introduit correspond à la réduction d'émission en pourcent (p.ex. 30%: l'émission 
+    provenant de la stabulation diminue de 30%). Il est recommandé de mentionner la 
+    mesure choisie dans la colonne ‘Commentaire' et de justifier le taux de réduction 
+    choisi.
+  </p>
+  <p>
+    Cette fonction s'adresse principalement aux utilisateurs/trices qui font des 
+    pronostiques d'émissions et qui doivent prendre en compte l'effet de nouvelles 
+    technologies destinées à limiter les émissions et encore méconnues actuellement.
+  </p>
+  <p>Proposition valeur standard: 0 %.</p>
 
 *** technical ***
 
@@ -75,23 +79,27 @@ taxonomy = Livestock::OtherCattle::Housing::CFreeFactor
 *** output ***
 
 +c_free_factor_housing
-  print = OtherCattle
+  print = RoughageConsuming
   ++units 
     en = -
   ++description
     Free correction factor for NH3 housing emission.
   ++formula
     if ( In(free_correction_factor) // 0 != 0 ) {
-        writeLog({
-          en => "You have entered an additional emission mitigation measure for a housing of the category other cattle of " 
-                . In(free_correction_factor) . "\%!\n", 
-          de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Stall der Kategorie Übriges Rindvieh von "
-                . In(free_correction_factor) . "\% eingegeben!\n" ,
-          fr => "Vous avez introduit une mesure supplémentaire limitant les émissions " 
-                . "provenant d'une stabulation pour autres bovins de " . In(free_correction_factor) . "\%.\n" 
+      writeLog({
+        en => "You have entered an additional emission mitigation measure for a housing of the "
+              . "category other roughage consuming of " . In(free_correction_factor) 
+              . "\%!\n",
+        de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Stall der "
+              . "Kategorie andere Raufutter Verzehrer von " . In(free_correction_factor) 
+              . "\% eingegeben!\n", 
+        fr => "Vous avez introduit une mesure supplémentaire limitant les émissions dans les "
+              ."stabulations pour 'other roughage consuming' " . In(free_correction_factor) 
+              . "\%.\n"
         });
-  	    return 1 - In(free_correction_factor) / 100;
+      return 1 - In(free_correction_factor) / 100;  
     } 
     else {
       return 1;
     } 
+
