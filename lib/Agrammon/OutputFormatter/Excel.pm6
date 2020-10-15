@@ -7,7 +7,7 @@ use Agrammon::OutputFormatter::CSV;
 sub output-as-excel(
     Str $dataset-name, Agrammon::Model $model,
     Agrammon::Outputs $outputs, Str $unit-language,
-    Bool $with-filters --> Str
+    $with-filters? --> Str
 ) is export {
     warn '**** output-as-excel() not yet completely implemented';
     my $simulation-name;

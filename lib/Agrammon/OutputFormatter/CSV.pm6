@@ -4,7 +4,7 @@ use Agrammon::Outputs;
 sub output-as-csv(
         $simulation-name, $dataset-id, Agrammon::Model $model,
         Agrammon::Outputs $outputs, Str $unit-language,
-        Bool $with-filters --> Str
+        $with-filters? --> Str
 ) is export {
     # TODO: handle with-filters
     return (gather for $outputs.get-outputs-hash.sort(*.key) {
