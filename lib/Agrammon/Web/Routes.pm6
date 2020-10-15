@@ -437,12 +437,5 @@ sub application-routes(Agrammon::Web::Service $ws) {
                 content 'application/json', $data;
             }
         }
-
-        post -> LoggedIn $user, 'excel_export' {
-            request-body -> (:datasetName($dataset-name)!, :printTags(@print-tags) {
-                my $report = $ws.get-excel-report($user, $dataset-name, @print-tags);
-                content 'application/xlsx', $report;
-            }
-        }
     }
 }
