@@ -50,7 +50,7 @@ taxonomy = Livestock::DairyCow::Housing::KArea
 
 *** external ***
 
-+..::Excretion 
++..::Excretion
 +Type
 
 *** output ***
@@ -69,14 +69,14 @@ taxonomy = Livestock::DairyCow::Housing::KArea
   ++units 
     en = -
   ++description
-    Factor on what barn size does increase the regularized minimal, limited to 0.5.
+    Factor on what barn size does increase the regularized minimal, limited to 0.5
   ++formula 
-    if( (Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0) ){ 
-      if(In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5)){   
+    if ( (Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0) ) { 
+      if ( In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5) ) {   
         0.5; 
       }
       else {
-        (In(dimensioning_barn) / Val(animals, ..::Excretion)) - 1;
+        In(dimensioning_barn) / Val(animals, ..::Excretion) - 1;
       }
     }
     else {

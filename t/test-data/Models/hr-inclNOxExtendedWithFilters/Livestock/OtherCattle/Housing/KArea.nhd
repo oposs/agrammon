@@ -17,8 +17,8 @@ taxonomy = Livestock::OtherCattle::Housing::KArea
   the double of the regularized minimal area.
 
   \begin{todo}{All}{}
-	Provide Articles which confirm/justify the assumption. As decided on
-	workshop from 2.11.2007.
+  Provide Articles which confirm/justify the assumption. As decided on
+  workshop from 2.11.2007.
   \end{todo}
 
 
@@ -56,7 +56,7 @@ taxonomy = Livestock::OtherCattle::Housing::KArea
 *** output ***
 
 +dimensioning_barn
-  print = 15
+  print = OtherCattle
   ++units 
     en = -
   ++description
@@ -65,19 +65,19 @@ taxonomy = Livestock::OtherCattle::Housing::KArea
     In(dimensioning_barn);
 
 +area_increase
-  print = 15
+  print = OtherCattle
   ++units 
     en = -
   ++description
     Factor on what barn size does increase the regularized minimal, limited to 0.5
 
   ++formula 
-    if( (Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0) ){ 
-      if(In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5)){   
+    if ( (Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0) ) { 
+      if ( In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5) ) {   
         0.5; 
       }
       else {
-        (In(dimensioning_barn) / Val(animals, ..::Excretion)) - 1;
+        In(dimensioning_barn) / Val(animals, ..::Excretion) - 1;
       }
     }
     else {
@@ -85,11 +85,10 @@ taxonomy = Livestock::OtherCattle::Housing::KArea
     }
 
 +c_area
-  print = 15
+  print = OtherCattle
   ++units 
     en = -
   ++description
-    correction factor for area per animal
-
+    Correction factor for area per animal.
   ++formula
     1 + (Out(area_increase) * Val(k_area, Type));
