@@ -1,32 +1,20 @@
 use Agrammon::Model;
 use Agrammon::Outputs;
 use Spreadsheet::XLSX;
+use Agrammon::OutputFormatter::CSV;
 
 # TODO: output Excel instead of CSV
-sub output-as-excel(Str $simulation-name, Str $dataset-id, Agrammon::Model $model,
-                  Agrammon::Outputs $outputs, Str $unit-language --> Str) is export {
-    return (gather for $outputs.get-outputs-hash.sort(*.key) {
-        my $module = .key;
-        if .value.isa(Hash) {
-            for .value.sort(*.key) {
-                take ($simulation-name, $dataset-id, $module, .key, flat-value(.value),
-                        $model.output-unit($module, .key, $unit-language)).join(';');
-            }
-        }
-        else {
-            for .value.sort(*.key) {
-                my $instance-id = .key;
-                for .value.sort(*.key) {
-                    my $fq-name = .key;
-                    my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
-                    for .value.sort(*.key) {
-                        take ($simulation-name, $dataset-id, $q-name, .key, flat-value(.value) // '',
-                                $model.output-unit($fq-name, .key, $unit-language)).join(';');
-                    }
-                }
-            }
-        }
-    }).join("\n") ~ "\n";
+sub output-as-excel(
+    Str $dataset-name, Agrammon::Model $model,
+    Agrammon::Outputs $outputs, Str $unit-language,
+    Bool $with-filters --> Str
+) is export {
+    warn '**** output-as-excel() not yet completely implemented';
+    my $simulation-name;
+    output-as-csv(
+        $simulation-name, $dataset-name, $model,
+        $outputs, $unit-language, $with-filters
+    );
 }
 
 multi sub flat-value($value) {

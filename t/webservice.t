@@ -9,12 +9,10 @@ use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
-use Spreadsheet::XLSX;
-use Text::CSV;
 
 # FIX ME: use separate test database
 
-plan 37;
+plan 38;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -63,28 +61,19 @@ subtest "get-cfg()" => {
     is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
 }
 
-subtest "get-csv-export" => {
-    my @print-tags = ['FluxSummary', 'Total', ];
-
-    dd "get-csv-export(): print-tags=", @print-tags;
-
-    ok my $export = $ws.get-csv-export($user, 'TestSingle', @print-tags);
-    # say $export;
-    ok $export ~~ 'nh3_ntotal;1695', "Output has correct nh3_ntotal";
-}
-
-done-testing; exit;
-
 subtest "get-excel-export" => {
-    my @print-tags = ['FluxSummary', 'Total', ];
+    my %params = %(
+        :datasetName('TestSingle'),
+        :language('de'),
+        :withFilters(False)
+    );
 
-    dd "get-excel-export(): print-tags=", @print-tags;
-
-    ok my $export = $ws.get-excel-export($user, 'TestSingle', @print-tags);
-    # dd $export;
-    ok $export ~~ 'nh3_ntotal;1695', "Output has correct nh3_ntotal";
+    ok my $export = $ws.get-excel-export($user, %params);
+#    note $export;
+    ok $export ~~ /'Total;nh3_ntotal;' .+ 'kg N/Jahr'/, "Output has nh3_ntotal";
 }
 
+#done-testing; exit;
 
 transactionally {
 

@@ -395,10 +395,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-    /get_csv_export:
+    /get_excel_export:
         post:
-            summary: Get CSV export
-            operationId: getCsvExport
+            summary: Get Excel export
+            operationId: getExcelExport
             requestBody:
                 required: true
                 content:
@@ -406,25 +406,19 @@ paths:
                         schema:
                             type: object
                             required:
-                                - datasetName
+                                - params
                             properties:
-                                datasetName:
-                                    description: Dataset name
-                                    type: string
-                                printTags:
-                                    description: Output selection tags
-                                    type: array
-                                    items:
-                                        type: string
+                                params:
+                                    description: Report parameters
+                                    type: object
             responses:
                 '200':
                     description: Export
                     content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Export"
+                        # change to application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                        text/csv: {}
                 '500':
-                    description: Getting CSV export failed
+                    description: Getting Excel export failed
                     content:
                         application/json:
                             schema:

@@ -268,10 +268,13 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
-        operation 'getCsvExport', -> LoggedIn $user {
-            request-body -> ( :datasetName($dataset-name)!, :printTags(@print-tags) ) {
-                my %export = $ws.get-csv-export($user, $dataset-name, @print-tags);
-                content 'application/json', { %export };
+        operation 'getExcelExport', -> LoggedIn $user {
+            request-body -> ( :%params ) {
+                dd %params;
+                my $export = $ws.get-excel-export($user, %params);
+                # change to application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                # once Spreadsheet::XLSX is working again
+                content 'text/csv', { $export };
                 CATCH {
                     note "$_";
                     response.status = 500;

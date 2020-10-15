@@ -38,7 +38,10 @@ my $fake-store = mocked(Agrammon::Web::Service,
             ),
         },
         get-output-variables => -> $user, $dataset-name {
-             %( :variable('x'), :value(2) )
+            %( :variable('x'), :value(2) )
+        },
+        get-excel-export => -> $user, %params {
+            "Total;nh3_ntotal;1699.4594585882503;kg N/Jahr";
         },
         delete-instance => -> $user, $dataset-name, $instance, $pattern {
         },
@@ -102,11 +105,23 @@ subtest 'Get output variables' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/get_output_variables', {
             test post(json => { :datasetName('DatasetA') } ),
-            status => 200,
-            json   => { :variable('x'), :value(2) }
+                    status => 200,
+                    json   => { :variable('x'), :value(2) }
         };
         check-mock $fake-store,
-            *.called('get-output-variables', times => 1);
+                *.called('get-output-variables', times => 1);
+    }
+}
+
+subtest 'Get excel export' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/get_excel_export', {
+            test post(json => { :datasetName('DatasetA') } ),
+                    status => 200,
+#                    text   => { :variable('x'), :value(2) }
+        };
+        check-mock $fake-store,
+                *.called('get-excel-export', times => 1);
     }
 }
 
