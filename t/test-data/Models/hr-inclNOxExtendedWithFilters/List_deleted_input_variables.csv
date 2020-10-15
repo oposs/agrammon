@@ -4,3 +4,5 @@ Livestock::FatteningPigs[]::Housing::Type::exercise_place
 Livestock::Pig[]::Housing::Type::exercise_place
 Livestock::DairyCow[]::Housing::ClimateAir::mitigation_options_for_housing_systems_for_dairy_cows_climate
 Livestock::DairyCow[]::Housing::ClimateAir::mitigation_options_for_housing_systems_for_dairy_cows_air
+Livestock::OtherCattle[]::Housing::ClimateAir::mitigation_options_for_housing_systems_for_other_cattle_climate
+Livestock::OtherCattle[]::Housing::ClimateAir::mitigation_options_for_housing_systems_for_other_cattle_air
