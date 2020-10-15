@@ -75,12 +75,14 @@ taxonomy = Livestock::FatteningPigs::Housing
    Val(tan_excretion,Excretion) 
     * Val(er_housing,Housing::Type) 
     * (
-         (1 - Val(c_air_scrubber,Housing::AirScrubber)*Val(share_outdoor,Housing::Type) )
-         * (1 - Val(c_UNECE_housing_task,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type) )
-         * (1 - Val(c_housing_slurry_channel,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type) )
-         * (1 - Val(c_housing_climate,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type) )
-         * (1 - Val(c_housing_air,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type))  -
-          Val(c_exercise_place,Housing::Type)
+      Val(share_outdoor,Housing::Type) *
+         (1 - Val(c_air_scrubber,Housing::AirScrubber) )
+         * (1 - Val(c_UNECE_housing_task,Housing::MitigationOptions) )
+         * (1 - Val(c_housing_slurry_channel,Housing::MitigationOptions) )
+         * (1 - Val(c_housing_climate,Housing::MitigationOptions) )
+         * (1 - Val(c_housing_air,Housing::MitigationOptions))  +
+      (1 - Val(share_outdoor,Housing::Type)) * 
+          (1 - Val(c_exercise_place,Housing::Type))
        )
     * Val(c_free_factor_housing, Housing::CFreeFactor) ; 
 	   
@@ -97,12 +99,12 @@ taxonomy = Livestock::FatteningPigs::Housing
    Val(tan_excretion,Excretion) 
     * Val(er_housing,Housing::Type) 
     * Val(c_air_scrubber,Housing::AirScrubber) 
+    * Val(share_outdoor,Housing::Type)
     * (
-         (1 - Val(c_UNECE_housing_task,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type) )
-         * (1 - Val(c_housing_slurry_channel,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type ) )
-         * (1 - Val(c_housing_climate,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type ) )
-         * (1 - Val(c_housing_air,Housing::MitigationOptions)*Val(share_outdoor,Housing::Type) )  -
-          Val(c_exercise_place,Housing::Type)
+         (1 - Val(c_UNECE_housing_task,Housing::MitigationOptions) )
+         * (1 - Val(c_housing_slurry_channel,Housing::MitigationOptions) )
+         * (1 - Val(c_housing_climate,Housing::MitigationOptions) )
+         * (1 - Val(c_housing_air,Housing::MitigationOptions) )
       )
     * Val(c_free_factor_housing, Housing::CFreeFactor) ;  
 
@@ -120,7 +122,7 @@ taxonomy = Livestock::FatteningPigs::Housing
      if(Val(housing_type,Housing::Type) eq 'Outdoor'){
         0
      }else {
-     	   if(Val(air_scrubber,Housing::AirScrubber) eq 'acid'){
+     	   if(Val(air_scrubber,Housing::AirScrubber) eq 'biotrickling'){
 	   Out(n_into_housing) - Out(nh3_nhousing) - Out(n_housing_filter)
      	   }else{
 	   Out(n_into_housing) - Out(nh3_nhousing)
@@ -139,7 +141,7 @@ taxonomy = Livestock::FatteningPigs::Housing
     if(Val(housing_type,Housing::Type) eq 'Outdoor'){
         0
     }else {
-     	   if(Val(air_scrubber,Housing::AirScrubber) eq 'acid'){
+     	   if(Val(air_scrubber,Housing::AirScrubber) eq 'biotrickling'){
 	   Out(tan_into_housing) - Out(nh3_nhousing) - Out(n_housing_filter)
      	   }else{
     	   Out(tan_into_housing) - Out(nh3_nhousing)
