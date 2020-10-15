@@ -363,6 +363,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_pigs;with_flush_channels_no_areation
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::MitigationOptions;mitigation_housing_floor;with_flush_channels_no_areation
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::Type;housing_type;Slurry_Label
+2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;animalcategory;dry_sows
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;crude_protein;145
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;energy_content;11.9
@@ -373,6 +374,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_pigs;none
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::MitigationOptions;mitigation_housing_floor;none
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::Type;housing_type;Deep_Litter
+2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::KArea;dimensioning_barn;8
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;animalcategory;nursing_sows
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;crude_protein;165
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;energy_content;13.5
@@ -383,6 +385,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_pigs;none
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::MitigationOptions;mitigation_housing_floor;none
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::Type;housing_type;Slurry_Conventional
+2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;animalcategory;weaned_piglets_up_to_25kg
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;crude_protein;180
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;energy_content;13.5
@@ -393,12 +396,14 @@
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_pigs;none
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::MitigationOptions;mitigation_housing_floor;none
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::Type;housing_type;Slurry_Conventional
+2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Excretion;animalcategory;broilers
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Excretion;animals;50
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Housing::AirScrubber;air_scrubber;none
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Housing::Type;drinking_system;bell_drinkers
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Housing::Type;housing_type;deep_litter
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Housing::Type;manure_removal_interval;no_manure_belt
+2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Outdoor;free_range;yes
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Excretion;animalcategory;growers
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Excretion;animals;30
@@ -406,6 +411,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::Type;drinking_system;bell_drinkers
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::Type;housing_type;manure_belt_with_manure_belt_drying_system
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::Type;manure_removal_interval;twice_a_month
+2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Outdoor;free_range;yes
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Excretion;animalcategory;layers
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Excretion;animals;20
@@ -413,6 +419,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Housing::Type;drinking_system;bell_drinkers
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Housing::Type;housing_type;manure_belt_without_manure_belt_drying_system
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Housing::Type;manure_removal_interval;more_than_4_times_a_month
+2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Outdoor;free_range;yes
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Excretion;animalcategory;other_poultry
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Excretion;animals;20
@@ -420,6 +427,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Housing::Type;drinking_system;bell_drinkers
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Housing::Type;housing_type;deep_pit
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Housing::Type;manure_removal_interval;no_manure_belt
+2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Outdoor;free_range;no
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Excretion;animalcategory;turkeys
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Excretion;animals;25
@@ -427,6 +435,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Housing::Type;drinking_system;drinking_nipples
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Housing::Type;housing_type;deep_litter
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Housing::Type;manure_removal_interval;no_manure_belt
+2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Housing::CFreeFactor;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Outdoor;free_range;no
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Goats]::Excretion;animalcategory;goats

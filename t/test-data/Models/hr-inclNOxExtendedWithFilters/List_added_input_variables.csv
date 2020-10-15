@@ -1,1 +1,3 @@
 Livestock::FatteningPigs[]::Housing::KArea::dimensioning_barn
+Livestock::Pig[]::Housing::KArea::dimensioning_barn
+Livestock::Poultry[]::Housing::KArea::dimensioning_barn

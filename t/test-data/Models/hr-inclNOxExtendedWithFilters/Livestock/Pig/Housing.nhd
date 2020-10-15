@@ -32,6 +32,7 @@ taxonomy = Livestock::Pig::Housing
 
 +Excretion
 +Grazing
++Housing::KArea
 +Housing::Type
 +Housing::AirScrubber
 +Housing::MitigationOptions
@@ -74,6 +75,7 @@ taxonomy = Livestock::Pig::Housing
     Out(tan_into_housing) * 
     Val(er_housing, Housing::Type) * 
     Val(c_free_factor_housing, Housing::CFreeFactor) *
+    Val(c_area, Housing::KArea) *
     (
       # indoor part + mitigation
       Val(share_indoor, Housing::Type) * 
@@ -99,6 +101,7 @@ taxonomy = Livestock::Pig::Housing
     # multiplied with indoor loss without air scrubber mitigation
     Val(tan_excretion,Excretion) * 
     Val(er_housing, Housing::Type) * 
+    Val(c_area, Housing::KArea) *
     Val(c_free_factor_housing, Housing::CFreeFactor) *
     Val(share_indoor, Housing::Type) *  
     (1 - Val(red_housing_floor, Housing::MitigationOptions)) *

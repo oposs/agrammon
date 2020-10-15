@@ -1,8 +1,8 @@
 *** general ***
 
 author   = Agrammon Group
-date     = 2008-04-22
-taxonomy = Livestock::Pig::Housing::KArea
+date     = 2020-10-15
+taxonomy = Livestock::Poultry::Housing::KArea
 
 +short
 
@@ -17,8 +17,8 @@ taxonomy = Livestock::Pig::Housing::KArea
   the double of the regularized minimal area.
 
   \begin{todo}{All}{}
-	Provide Articles which confirm/justify the assumption. As decided on
-	workshop from 2.11.2007.
+  Provide Articles which confirm/justify the assumption. As decided on
+  workshop from 2.11.2007.
   \end{todo}
 
 
@@ -28,9 +28,9 @@ taxonomy = Livestock::Pig::Housing::KArea
   type = integer
   adjustBranching = true
   ++labels 
-    en = Number of animal places in building of category
-    de = Stallkapazitaet (Anzahl Tierplaetze der Kategorie)
-    fr = Places dans la stabulation (Nombre de places d'animaux par catégorie d'animaux)
+    en = Number of available animal places
+    de = Anzahl Tierplätze im Stall
+    fr = Nombre de places dans l'étable
   ++units  
     en = -
   ++description
@@ -52,7 +52,7 @@ taxonomy = Livestock::Pig::Housing::KArea
 *** output ***
 
 +area_increase
-  print = Pig
+  print = Poultry
   ++units  
     en = -
   ++description
@@ -71,7 +71,7 @@ taxonomy = Livestock::Pig::Housing::KArea
     }
 
 +c_area
-  print = Pig
+  print = Poultry
   ++units  
     en = -
   ++description
