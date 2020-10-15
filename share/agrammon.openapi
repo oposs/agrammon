@@ -402,7 +402,7 @@ paths:
             requestBody:
                 required: true
                 content:
-                    application/json:
+                    application/x-www-form-urlencoded:
                         schema:
                             type: object
                             additionalProperties: true
@@ -606,7 +606,7 @@ components:
                     type: string
                 validator:
                     description: Input validator
-                    oneOf:
+                    anyOf:
                         - $ref: '#/components/schemas/EmptyHash'
                         - $ref: '#/components/schemas/ValidatorHash'
         EmptyHash:

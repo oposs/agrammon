@@ -205,12 +205,12 @@ qx.Class.define('agrammon.module.output.Reports', {
 //        }, this);
 
         this.__excelButton.addListener('execute', function(e) {
-            var locale      = qx.locale.Manager.getInstance().getLocale();
-            var lang        = 'lang=' + locale.replace(/_.+/,'');
+            var locale      = qx.locale.Manager.getInstance().getLocale().replace(/_.+/,'');
             var userName    = this.__info.getUserName();
             var variant     = agrammon.Info.getInstance().getVariant();
             var version     = agrammon.Info.getInstance().getVersion();
             var datasetName = this.__info.getDatasetName();
+//            var lang        = 'lang=' + locale.replace(/_.+/,'');
 //            var format = 'format=excel';
 //            var reportUrl   = 'reports=' + this.reportSelected;
 //            var pidUrl      = 'pid=' + outputData.getPid();
@@ -224,7 +224,7 @@ qx.Class.define('agrammon.module.output.Reports', {
 
             var url = '/get_excel_export';
             var params = {
-                language     : lang,
+                language     : locale,
                 username     : userName,
                 reports      : this.reportSelected,
                 format       : 'excel',
@@ -234,6 +234,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                 guiVariant   : agrammon.Info.getInstance().getGuiVariant(),
                 version      : version
             };
+            console.log('params=', params);
 
 //            this.debug('Excel: baseUrl='+baseUrl);
 //            this.debug('Excel: url='+url);
@@ -246,8 +247,11 @@ qx.Class.define('agrammon.module.output.Reports', {
             form.method = "POST"; // or "post" if appropriate
             form.action = url;
 
-            this.__addTextInput(form, 'reportParams', qx.util.Serializer.toJson(params));
-
+            // this.__addTextInput(form, 'reportParams', qx.util.Serializer.toJson(params));
+            for (var key in params) {
+                this.__addTextInput(form, key, params[key]);
+            }
+            console.log("form=", form);
             document.body.appendChild(form);
 
             // status=1 open's in new tab in Chrome at least
@@ -259,22 +263,6 @@ qx.Class.define('agrammon.module.output.Reports', {
             else {
                 alert('You must allow popups for reports to work.');
             }
-//            var url = 'export/excel'
-//                               + '?' + 'mode=public'
-//                               + '&' + reportUrl
-//                               + '&' + titleUrl
-//                               + '&' + pidUrl
-//                               + '&' + sessionUrl
-//                               + '&' + userUrl
-//                               + '&' + datasetUrl
-//                               + '&' + lang
-//                               + '&' + versionUrl
-//                               + '&' + format
-//                               + '&' + guiVariant
-//                               + '&' + modelVariant;
-        // works in source with FF 21 on Ubuntu
-//            document.location=url;
-//            window.open(url);
         }, this);
 
         this.__pdfButton =
@@ -371,7 +359,7 @@ qx.Class.define('agrammon.module.output.Reports', {
 
         __addTextInput: function(form, name, value) {
             var input = document.createElement("input");
-            input.type  = "text";
+            input.type  = 'hidden';
             input.name  = name;
             input.value = value;
             form.appendChild(input);
