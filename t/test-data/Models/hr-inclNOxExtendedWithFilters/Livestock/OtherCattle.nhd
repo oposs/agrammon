@@ -162,6 +162,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
 
 +OtherCattle::Excretion
 +OtherCattle::Housing::Type
++OtherCattle::Housing::KArea
 +OtherCattle::Housing
 +OtherCattle::Yard
 +OtherCattle::Grazing
@@ -169,14 +170,14 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
 
 *** output ***
 
-+n_check
++dimensioning_check
   print=all
   ++units 
     en = -
   ++description
    Check if number of animals <= number of animal places.
   ++formula
-    if (  Val(dimensioning_barn, OtherCattle::Housing::Type) < Val(animals, OtherCattle::Excretion) ) {
+    if (  Val(dimensioning_barn, OtherCattle::Housing::KArea) < Val(animals, OtherCattle::Excretion) ) {
         writeLog({en=>"The number of available animal places must be equal or higher than the number of animals.",
                   de=>"Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
                   fr=>"Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."

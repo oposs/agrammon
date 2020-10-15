@@ -151,6 +151,7 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 
 +DairyCow::Excretion
 +DairyCow::Housing::Type
++DairyCow::Housing::KArea
 +DairyCow::Housing
 +DairyCow::Yard
 +DairyCow::Grazing
@@ -164,14 +165,15 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
   ++description
    Check if number of animals <= number of animal places.
   ++formula
-    if ( Val(dimensioning_barn, DairyCow::Housing::Type) < Val(animals, DairyCow::Excretion) ) {
+    if ( Val(dimensioning_barn, DairyCow::Housing::KArea) < Val(animals, DairyCow::Excretion) ) {
       writeLog({
         en => "The number of available animal places must be equal or higher than the number of animals.",
         de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
         fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
       });
       return "not ok";
-    } else {
+    } 
+    else {
       return "ok";
     }
 

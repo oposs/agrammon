@@ -36,6 +36,7 @@ taxonomy = Livestock::OtherCattle::Housing
 
 +Excretion
 +Housing::Type
++Housing::KArea
 +Housing::Floor
 +Housing::ClimateAir
 +Housing::CFreeFactor
@@ -88,7 +89,7 @@ taxonomy = Livestock::OtherCattle::Housing
    Out(tan_into_housing) 
     * Val(c_grazing, Housing::KGrazing) 
     * Val(er_housing, Housing::Type) 
-    * Val(k_area, Housing::Type) 
+    * Val(c_area, Housing::KArea) 
     * (
       (1 - Val(c_feeding_boxes, Housing::Type) )
       * (1 - Val(c_UNECE, Housing::Floor) )

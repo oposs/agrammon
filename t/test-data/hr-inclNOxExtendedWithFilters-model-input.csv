@@ -38,6 +38,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::GrazingInput;grazing_hours;8.5
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;none
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Type;dimensioning_barn;12
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::KArea;dimensioning_barn;12
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;yard_days;270
@@ -59,6 +60,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;raised_feeding_stands
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Type;housing_type;Loose_Housing_Slurry
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;yard_days;270
@@ -80,6 +82,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::GrazingInput;grazing_hours;24
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows;toothed_scrapper_running_over_a_grooved_floor
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Type;dimensioning_barn;50
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::KArea;dimensioning_barn;50
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Type;housing_type;Loose_Housing_Deep_Litter
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::CFreeFactor;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;floor_properties_exercise_yard_SHL;paddock_or_pasture_used_as_exercise_yard
@@ -173,6 +176,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Housing::Type;housing_type;Loose_Housing_Slurry
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -183,6 +187,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 2]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 2]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 2]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 2]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 2]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -193,6 +198,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 1]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 1]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 1]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 1]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 1]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -203,6 +209,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 2]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 2]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 2]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 2]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Calves Suckling Cows 2]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -213,6 +220,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 1]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 1]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 1]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 1]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 1]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -223,6 +231,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 2]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 2]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 2]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 2]::Housing::Type;housing_type;Loose_Housing_Deep_Litter
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 2]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[FatteningCalves 2]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -233,6 +242,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 1]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 1]::Housing::Type;dimensioning_barn;2.625
+2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 1]::Housing::KArea;dimensioning_barn;2.625
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 1]::Housing::Type;housing_type;Loose_Housing_Slurry
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 1]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -243,6 +253,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 2]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 2]::Housing::Type;dimensioning_barn;2.625
+2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 2]::Housing::KArea;dimensioning_barn;2.625
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 2]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers1yr 2]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -253,6 +264,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 1]::GrazingInput;grazing_hours;24
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 1]::Housing::Type;dimensioning_barn;5.25
+2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 1]::Housing::KArea;dimensioning_barn;5.25
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 1]::Housing::Type;housing_type;Tied_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 1]::Yard;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
@@ -263,6 +275,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 2]::GrazingInput;grazing_hours;24
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 2]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 2]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 2]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers2yr 2]::Yard;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
@@ -273,6 +286,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 1]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 1]::Housing::Type;dimensioning_barn;4.725
+2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 1]::Housing::KArea;dimensioning_barn;4.725
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 1]::Housing::Type;housing_type;Loose_Housing_Slurry
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 1]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -283,6 +297,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 2]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 2]::Housing::Type;dimensioning_barn;4.725
+2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 2]::Housing::KArea;dimensioning_barn;4.725
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 2]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Heifers3yr 2]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -293,6 +308,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 1]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 1]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 1]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 1]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 1]::Housing::Type;housing_type;Tied_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 1]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -303,6 +319,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 2]::GrazingInput;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 2]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;none
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 2]::Housing::Type;dimensioning_barn;0
+2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 2]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 2]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[Suckling Cows 2]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -313,6 +330,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_lt]::GrazingInput;grazing_hours;22
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_lt]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;floor_with_cross_slope_and_collection_gutter
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_lt]::Housing::Type;dimensioning_barn;10
+2010v2.1_20120425;2648;Livestock::OtherCattle[SC_lt]::Housing::KArea;dimensioning_barn;10
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_lt]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_lt]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_lt]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
@@ -324,6 +342,7 @@
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_gt]::Housing::CFreeFactor;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_gt]::Housing::Floor;UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle;floor_with_cross_slope_and_collection_gutter
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_gt]::Housing::Type;dimensioning_barn;10
+2010v2.1_20120425;2648;Livestock::OtherCattle[SC_gt]::Housing::KArea;dimensioning_barn;10
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_gt]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_gt]::Yard;floor_properties_exercise_yard_SHL;solid_floor
 2010v2.1_20120425;2648;Livestock::OtherCattle[SC_gt]::Yard;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard

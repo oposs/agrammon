@@ -1,8 +1,8 @@
 *** general ***
 
 author   = Agrammon Group
-date     = 2008-02-19
-taxonomy = Livestock::OtherCattle::Housing::KArea
+date     = 2020-10-15
+taxonomy = Livestock::DairyCow::Housing::KArea
 
 +short
 
@@ -17,8 +17,8 @@ taxonomy = Livestock::OtherCattle::Housing::KArea
   the double of the regularized minimal area.
 
   \begin{todo}{All}{}
-	Provide Articles which confirm/justify the assumption. As decided on
-	workshop from 2.11.2007.
+  Provide Articles which confirm/justify the assumption. As decided on
+  workshop from 2.11.2007.
   \end{todo}
 
 
@@ -37,26 +37,26 @@ taxonomy = Livestock::OtherCattle::Housing::KArea
     Number of available animal places.
   ++help
     +++en
-       <p>For loose housing systems: all animal places accessible for the animals must be entered. The number of animal places is higher than the stocking rate if reserve capacities are available, e.g. for a future increase of the herd size</p>
+       <p>For loose housing systems: all animal places accessible for the animals must be entered. The number of animal places is higher than the stocking rate if reserve capacities are available, e.g. for a future increase of the herd size</p> 
+       <p>Standard value for Switzerland: number of available animal places equal to number of animals</p>
     +++de
        <p>Für Laufställe: es sind sämtliche Tierplätze anzugeben, welche für die Tiere zugänglich sind. Die Anzahl Tierplätze im Stall ist grösser als der Bestand, wenn etwa im Hinblick auf eine zukünftige Vergrösserung des Betriebs zusätzliche Tierplätze vorhanden sind. Mehr Tierplätze als Tiere bedeuten für Laufställe eine Erhöhung der verschmutzten Fläche pro Tier. Im Gegensatz dazu führen mehr Tierplätze als Tiere bei Anbindeställen kaum zu einer Erhöhung der verschmutzten Fläche pro Tier, da die freien Tierplätze für die Tiere nicht zugänglich sind.</p>
        <p>Vorschlag für Standardwert: gleiche Anzahl Tierplätze wie Tierzahl</p>
     +++fr
-       <p>Pour les stabulations libres: mentionner toutes les places accessibles aux animaux. Le nombre de places dans l'étable peut être supérieur au cheptel actuel, dans la perspective d'un agrandissement futur de l'exploitation p.ex. Dans les stabulations libres, un nombre de places supérieur au nombre d'animaux signifie une augmentation de la surface souillée par animal. Au contraire, dans les stabulations entravées, un nombre de places supérieur au nombre d'animaux ne conduit pas à une augmentation de la surface souillée par animal, vu que ces places libres ne sont pas accessibles aux animaux. </p>
-       <p>Proposition de valeur standard: nombre de places identique au nombre d'animaux</p>
-
+       <p>Pour les stabulations libres: mentionner toutes les places accessibles aux animaux. Le nombre de places dans l'étable peut être supérieur au cheptel actuel, dans la perspective d'un agrandissement futur de l'exploitation p.ex. Dans les stabulations libres, un nombre de places supérieur au nombre d'animaux signifie une augmentation de la surface souillée par animal. Au contraire, dans les stabulations entravées, un nombre de places supérieur au nombre d'animaux ne conduit pas à une augmentation de la surface souillée par animal, vu que ces places libres ne sont pas accessibles aux animaux.  </p>
+       <p>Proposition de valeur standard: nombre de places identique au nombre d'animaux </p>
 
 *** technical ***
 
 *** external ***
 
-+..::Excretion
++..::Excretion 
 +Type
 
 *** output ***
 
 +dimensioning_barn
-  print = 15
+  print = DairyCow
   ++units 
     en = -
   ++description
@@ -65,12 +65,11 @@ taxonomy = Livestock::OtherCattle::Housing::KArea
     In(dimensioning_barn);
 
 +area_increase
-  print = 15
+  print = DairyCow
   ++units 
     en = -
   ++description
-    Factor on what barn size does increase the regularized minimal, limited to 0.5
-
+    Factor on what barn size does increase the regularized minimal, limited to 0.5.
   ++formula 
     if( (Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0) ){ 
       if(In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5)){   
@@ -85,11 +84,10 @@ taxonomy = Livestock::OtherCattle::Housing::KArea
     }
 
 +c_area
-  print = 15
+  print = DairyCow
   ++units 
     en = -
   ++description
-    correction factor for area per animal
-
+    Correction factor for area per animal.
   ++formula
     1 + (Out(area_increase) * Val(k_area, Type));
