@@ -34,7 +34,7 @@ taxonomy = Livestock::Poultry::Housing::KArea
   ++units  
     en = -
   ++description
-    Number of animals which area allowed in a barn.
+    Number of available animal places.
 
 *** technical ***
 
@@ -43,13 +43,23 @@ taxonomy = Livestock::Poultry::Housing::KArea
   ++units  
     en = -
   ++description
-    Increasing factor for larger loose housing barns, 10 0/0 bigger leads to 5  0/0 more emission.
+    Increasing factor for larger loose housing barns, +10\% excess place leads 
+    to +5\% increase in the NH3 emission.
 
 *** external ***
 
 +..::Excretion 
 
 *** output ***
+
++dimensioning_barn
+  print = DairyCow
+  ++units 
+    en = -
+  ++description
+    Number of anymal places (needed in other modules).
+  ++formula
+    In(dimensioning_barn);
 
 +area_increase
   print = Poultry
@@ -58,13 +68,13 @@ taxonomy = Livestock::Poultry::Housing::KArea
   ++description
     Factor on what barn size does increase the regularized minimal, limited to 0.5
   ++formula 
-    if ( ( Val(animals, ..::Excretion) < In(dimensioning_barn) ) and ( Val(animals, ..::Excretion) != 0 ) ) { 
-      if( In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5) ){   
+    if ( (Val(animals, ..::Excretion) < In(dimensioning_barn) ) and (Val(animals, ..::Excretion) != 0) ) { 
+      if ( In(dimensioning_barn) >= (Val(animals, ..::Excretion) * 1.5) ) {   
         0.5; 
       }
-      else { 
+      else {
         In(dimensioning_barn) / Val(animals, ..::Excretion) - 1;
-      }       
+      }
     }
     else {
       0.0;
@@ -75,6 +85,6 @@ taxonomy = Livestock::Poultry::Housing::KArea
   ++units  
     en = -
   ++description
-    correction factor for area per animal
+    Correction factor for area per animal.
   ++formula
-    1 + ( Out(area_increase) * Tech(k_area) );
+    1 + (Out(area_increase) * Tech(k_area));
