@@ -405,12 +405,17 @@ paths:
                     application/json:
                         schema:
                             type: object
-                            required:
-                                - params
+                            additionalProperties: true
                             properties:
-                                params:
-                                    description: Report parameters
-                                    type: object
+                                datasetName:
+                                    description: Name of ther dataset
+                                    type: string
+                                language:
+                                    description: Language for output translation
+                                    type: string
+                                withFilters:
+                                    description: Show filter groups
+                                    type: boolean
             responses:
                 '200':
                     description: Export
