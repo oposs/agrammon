@@ -38,7 +38,6 @@ taxonomy = Livestock::DairyCow::Housing
 +Housing::Type
 +Housing::KArea
 +Housing::Floor
-+Housing::ClimateAir
 +Housing::CFreeFactor
 +Yard
 +Grazing
@@ -95,8 +94,6 @@ taxonomy = Livestock::DairyCow::Housing
                     Val(c_feeding_boxes, Housing::Type) *
                     Val(c_UNECE, Housing::Floor) * 
                     Val(c_housing_floor, Housing::Floor) * 
-                    Val(c_housing_climate, Housing::ClimateAir) * 
-                    Val(c_housing_air, Housing::ClimateAir) *
                     Val(c_free_factor_housing, Housing::CFreeFactor);
     #FIXME: Check: Is it in any way even possible that $c_housing > 1???
     $c_housing = 1 unless $c_housing < 1;
