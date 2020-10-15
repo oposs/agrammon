@@ -161,6 +161,7 @@ is applied.
                   fr => "Veuillez corriger: la somme des catégories «Part de lisier épandu en été» et «de "
  		        . "septembre à mai» n'est pas égale à 100% !\n"
                   });
+        # Warning!
     	return (1 + ( Out(appl_summer) * Tech(c_summer) +
          	Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
     }

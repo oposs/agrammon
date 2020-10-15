@@ -364,6 +364,7 @@ taxonomy = Livestock::DairyCow::Yard
   ++description
     Number of Days whith access to yard and pasture
   ++formula
+    # check yard exists?! -> 0
     if( (Val(grazing_days, GrazingInput) + In(yard_days)) > 365 ){
       writeLog({
         en => "The sum of days with access to the exercise yard and of grazing "
@@ -405,6 +406,7 @@ taxonomy = Livestock::DairyCow::Yard
   ++description
     Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula
+    # check yard exists?! -> default
     given ( In(floor_properties_exercise_yard_SHL) ) {
       when 'solid_floor' { 
         1 - Tech(red_floor_properties_solid_floor); 
