@@ -411,6 +411,7 @@
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Goats]::Grazing;grazing_days;165
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Goats]::Grazing;grazing_hours;0
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Goats]::Housing;free_correction_factor;5
+2010v2.1_20120425;2648;Livestock::SmallRuminants[Goats]::Housing::CFreeFactor;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Milksheep]::Excretion;animalcategory;milksheep
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Milksheep]::Excretion;animals;0
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Milksheep]::Grazing;grazing_days;165

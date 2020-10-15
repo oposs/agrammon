@@ -6,3 +6,4 @@ Livestock::Pig[]::Housing::MitigationOptions::mitigation_options_for_housing_sys
 Livestock::Pig[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_pigs_air,Livestock::Pig[]::Housing::MitigationOptions::mitigation_housing_air
 Livestock::Equides[]::Housing::free_correction_factor,Livestock::Equides[]::Housing::CFreeFactor::free_correction_factor
 Livestock::RoughageConsuming[]::Housing::free_correction_factor,Livestock::RoughageConsuming[]::Housing::CFreeFactor::free_correction_factor
+Livestock::SmallRuminants[]::Housing::free_correction_factor,Livestock::SmallRuminants[]::Housing::CFreeFactor::free_correction_factor
