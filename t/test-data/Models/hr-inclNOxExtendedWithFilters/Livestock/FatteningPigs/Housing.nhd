@@ -61,6 +61,17 @@ taxonomy = Livestock::FatteningPigs::Housing
   ++formula
     Val(tan_excretion, Excretion) - Val(tan_into_grazing, Grazing);
 
++tan_into_housing_indoor
+  print = 7
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an 
+  ++description
+    Annual N flux as TAN into the house.
+  ++formula
+    Out(tan_into_housing) * Val(share_indoor, Housing::Type);
+
 +nh3_nhousing
   print = 5b
   ++units
@@ -71,13 +82,18 @@ taxonomy = Livestock::FatteningPigs::Housing
     Annual NH3 emission from fattening pig housing systems.
   ++formula
     # change effect of mitigation strategies for indoor/outdoor? -> check with Thomas
-    Val(tan_excretion, Excretion) * 
+    Out(tan_into_housing) * 
     Val(er_housing, Housing::Type) * 
     Val(c_free_factor_housing, Housing::CFreeFactor) *
-    # indoor reductions
-    (1 - Val(red_air_scrubber, Housing::AirScrubber) * Val(share_indoor, Housing::Type)) * 
-    (1 - Val(red_housing_floor, Housing::MitigationOptions) * Val(share_indoor, Housing::Type)) * 
-    (1 - Val(red_housing_air, Housing::MitigationOptions) * Val(share_indoor, Housing::Type));
+    (
+      # indoor part + mitigation
+      Val(share_indoor, Housing::Type) * 
+      (1 - Val(red_air_scrubber, Housing::AirScrubber)) * 
+      (1 - Val(red_housing_floor, Housing::MitigationOptions)) * 
+      (1 - Val(red_housing_air, Housing::MitigationOptions)) +
+      # outdoor part + mitigation
+      (1 - Val(share_indoor, Housing::Type))
+    );
 
 +n_air_scrubber
   print = 5b
@@ -89,14 +105,15 @@ taxonomy = Livestock::FatteningPigs::Housing
     Annual N of NH3 emission remaining in air scrubber from pig housing systems.
   ++formula
     # change effect of mitigation strategies for indoor/outdoor? -> check with Thomas
+    # reduction efficiency of air scrubber
+    Val(red_air_scrubber, Housing::AirScrubber) *
+    # multiplied with indoor loss without air scrubber mitigation
     Val(tan_excretion,Excretion) * 
-    Val(er_housing,Housing::Type) * 
-    Val(c_free_factor_housing, Housing::CFreeFactor) * 
-    # indoor reductions
-    (1 - Val(red_housing_floor,Housing::MitigationOptions)*Val(share_indoor,Housing::Type)) *
-    (1 - Val(red_housing_air,Housing::MitigationOptions)*Val(share_indoor,Housing::Type)) *
-    Val(red_air_scrubber,Housing::AirScrubber);  
-
+    Val(er_housing, Housing::Type) * 
+    Val(c_free_factor_housing, Housing::CFreeFactor) *
+    Val(share_indoor, Housing::Type) *  
+    (1 - Val(red_housing_floor, Housing::MitigationOptions)) *
+    (1 - Val(red_housing_air, Housing::MitigationOptions));  
 
 +n_outhousing
   print = 7
