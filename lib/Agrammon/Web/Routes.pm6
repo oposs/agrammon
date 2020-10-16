@@ -250,7 +250,8 @@ sub api-routes (Str $schema, $ws) {
             request-body -> %params {
                 response.append-header(
                         'Content-disposition',
-                        "attachment; filename=%params<datasetName>.xlsx"
+                        # prevent header injection
+                        "attachment; filename=%params<datasetName>.subst(/<-[\w_-.]>/, '', :g).xlsx"
                 );
                 content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         $ws.get-excel-export($user, %params).to-blob;
