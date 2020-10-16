@@ -1,6 +1,7 @@
 use Agrammon::Web::Routes;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
+use Spreadsheet::XLSX;
 
 use Cro::HTTP::Test;
 use Test::Mock;
