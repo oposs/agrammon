@@ -248,6 +248,10 @@ sub api-routes (Str $schema, $ws) {
         }
         operation 'getExcelExport', -> LoggedIn $user {
             request-body -> %params {
+                response.append-header(
+                        'Content-disposition',
+                        "attachment; filename=%params<datasetName>.xlsx"
+                );
                 content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         $ws.get-excel-export($user, %params).to-blob;
                 CATCH {
