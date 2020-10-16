@@ -7,7 +7,6 @@ use Agrammon::DB::User;
 use Agrammon::DB::Tags;
 use Agrammon::Model;
 use Agrammon::OutputsCache;
-use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::Excel;
 use Agrammon::OutputFormatter::GUI;
 use Agrammon::OutputFormatter::Text;
