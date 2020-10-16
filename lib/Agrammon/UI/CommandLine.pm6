@@ -6,6 +6,7 @@ use DB::Pg;
 
 use Agrammon::Config;
 use Agrammon::DataSource::CSV;
+use Agrammon::Documentation;
 use Agrammon::ModelCache;
 use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::Text;
@@ -58,9 +59,12 @@ multi sub MAIN('dump', ExistingFile $filename) is export {
     say chomp dump $filename.IO;
 }
 
+multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?) is export {
+    latex $filename.IO, $tech-file;
+}
+
 #| Create LaTeX docu
-sub latex (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv, Bool $include-filters,
-         $batch, $degree, $max-runs) is export {
+sub latex (IO::Path $path, $tech-file) is export {
     die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -68,18 +72,14 @@ sub latex (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints,
     my $module      = $path.extension('').basename;
 
     my $tech-input = $tech-file // $module-path.add('technical.cfg');
-    my %technical-parameters = timed "Load parameters from $tech-input", {
-        my $params = parse-technical( $tech-input.IO.slurp );
-        %($params.technical.map(-> %module {
-            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-        }));
-    }
+    my $params = parse-technical( $tech-input.IO.slurp );
 
-    my $model = timed "Load $module", {
+    my $model = timed "Load $module of $module-path from cache", {
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
     };
 
-    @sections = $model.create-docu(
+    my @sections = create-latex(
+        $model,
         technical => %($params.technical.map(-> %module {
             %module.keys[0] => %(%module.values[0].map({ .name => .value }))
         }))
@@ -93,7 +93,7 @@ sub latex (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints,
             say '\subsubsection{Inputs}';
             say '\begin{description}';
             for @(%section<inputs>) -> $input {
-                say "\\item\[$input<name>\]";
+                say Q:s"\item[$input<name>]";
                 say "$input<description>";
             }
             say '\end{description}';
@@ -103,7 +103,7 @@ sub latex (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints,
             say '\subsubsection{Outputs}';
             say '\begin{description}';
             for @(%section<outputs>) -> $output {
-                say "\\item\[$output<name>\]";
+                say Q:s"\item[$output<name>]";
                 say "$output<description>";
             }
             say '\end{description}';
