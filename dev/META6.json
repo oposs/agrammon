@@ -17,6 +17,7 @@
     "Digest::SHA1::Native",
     "OO::Monitors",
     "Shell::Command",
+    "LibXML:ver<0.5.10>",
     "Spreadsheet::XLSX",
     "Text::CSV",
     "YAMLish"

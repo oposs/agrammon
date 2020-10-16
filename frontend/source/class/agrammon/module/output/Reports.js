@@ -164,44 +164,47 @@ qx.Class.define('agrammon.module.output.Reports', {
 
 
         this.__excelButton.addListener('execute', function(e) {
-            var locale = qx.locale.Manager.getInstance().getLocale();
-            var lang   = 'lang=' + locale.replace(/_.+/,'');
-            var format = 'format=excel';
-            var reportUrl   = 'reports=' + this.reportSelected;
-            var pidUrl      = 'pid=' + outputData.getPid();
-            var titleUrl    = 'titles='  + this.titleSelected;
-            var sessionUrl  = 'session=' + outputData.getSession();
+            var locale      = qx.locale.Manager.getInstance().getLocale().replace(/_.+/,'');
             var userName    = this.__info.getUserName();
-            var userUrl     = 'user=' + userName;
+            var variant     = agrammon.Info.getInstance().getVariant();
+            var version     = agrammon.Info.getInstance().getVersion();
             var datasetName = this.__info.getDatasetName();
-            var datasetUrl  = 'dataset=' + datasetName;
-            var modelVariant = 'modelVariant='+agrammon.Info.getInstance().getModelVariant();
-            var guiVariant   = 'guiVariant='+agrammon.Info.getInstance().getGuiVariant();
-// 	        var variant = agrammon.Info.getInstance().getVariant();
-            var version = agrammon.Info.getInstance().getVersion();
-            var versionUrl  = 'version=' + version;
-            var url = 'export/excel'
-                               + '?' + 'mode=public'
-                               + '&' + reportUrl
-                               + '&' + titleUrl
-                               + '&' + pidUrl
-                               + '&' + sessionUrl
-                               + '&' + userUrl
-                               + '&' + datasetUrl
-                               + '&' + lang
-                               + '&' + versionUrl
-                               + '&' + format
-                               + '&' + guiVariant
-                               + '&' + modelVariant;
+            var params = {
+                language     : locale,
+                username     : userName,
+                reports      : this.reportSelected,
+                format       : 'excel',
+                titles       : this.titleSelected,
+                datasetName  : datasetName,
+                modelVariant : agrammon.Info.getInstance().getModelVariant(),
+                guiVariant   : agrammon.Info.getInstance().getGuiVariant(),
+                version      : version
+            };
+
+            var url = '/get_excel_export';
             if (baseUrl != null) {
                 url = baseUrl + url;
             }
-//            this.debug('Excel: baseUrl='+baseUrl);
-//            this.debug('Excel: url='+url);
-        // works in source with FF 21 on Ubuntu
-//            document.location=url;
-               window.open(url);
-//            agrammon.ui.ViewerIframe.getInstance().loadDocument(url);
+
+            var form    = document.createElement("form");
+            form.target = 'AgrammonExcelExport' + Math.random();
+            form.method = "POST";
+            form.action = url;
+
+            for (var key in params) {
+                this.__addTextInput(form, key, params[key]);
+            }
+            document.body.appendChild(form);
+
+            // status=1 open's in new tab in Chrome at least
+            var options = "menubar=1,scrollbars=1,resizable=1,status=0,titlebar=1,height=600,width=800,toolbar=1"
+            var win = window.open('', form.target, options);
+            if (win) {
+                form.submit();
+            }
+            else {
+                alert('You must allow popups for reports to work.');
+            }
         }, this);
 
         this.__pdfButton =
@@ -295,6 +298,14 @@ qx.Class.define('agrammon.module.output.Reports', {
         __log: null,
         __logAreaOutput:    null,
         __logAreaReference: null,
+
+        __addTextInput: function(form, name, value) {
+            var input = document.createElement("input");
+            input.type  = 'hidden';
+            input.name  = name;
+            input.value = value;
+            form.appendChild(input);
+        },
 
     __setModelVariant: function(msg) {
         var model=msg.getData();

@@ -25,7 +25,8 @@ given $outputs.new-instance('Test::SubModule', 'Monkey C') {
     .add-output('Test::SubModule::SubTest', 'kids', Agrammon::Outputs::FilterGroupCollection.from-scalar(15));
 }
 
-my $csv = output-as-csv($test-simulation-name, $test-dataset-id, $model, $outputs, "en");
+my $with-filters = False;
+my $csv = output-as-csv($test-simulation-name, $test-dataset-id, $model, $outputs, "en", $with-filters);
 $csv = $csv.split(/^^/).sort.join;
 is $csv, q:to/OUTPUT/, 'Correctly formed CSV output';
     2010v2.1_20120425;2648;Test::SubModule[Monkey A]::SubTest;kids;5;monkey kids
@@ -37,4 +38,5 @@ is $csv, q:to/OUTPUT/, 'Correctly formed CSV output';
     2010v2.1_20120425;2648;Test;result;142;monkeys/hour
     OUTPUT
 
+# TODO: add $with-filters = True test
 done-testing;

@@ -12,7 +12,7 @@ use Test;
 
 # FIX ME: use separate test database
 
-plan 37;
+plan 38;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -362,6 +362,23 @@ subtest "Get model data" => {
 
 }
 
+subtest "get-excel-export" => {
+    my $dataset-name = 'TestSingle';
+    my %params = %(
+        :datasetName($dataset-name),
+        :language('de'),
+        :withFilters(False)
+    );
+    ok my $workbook = $ws.get-excel-export($user, %params);
+
+    is $workbook.worksheets[0;0].name,  $dataset-name, "Excel workbook has correct name";
+
+    # TODO: add real tests once implementation is complete
+    my $cells = $workbook.worksheets[0].cells;
+    is $cells[0;0].value,  $dataset-name, "A1 has correct value";
+    is $cells[1;1].value,  42, "B2 has correct value";
+
+}
 
 done-testing;
 

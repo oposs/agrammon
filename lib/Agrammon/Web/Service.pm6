@@ -7,6 +7,7 @@ use Agrammon::DB::User;
 use Agrammon::DB::Tags;
 use Agrammon::Model;
 use Agrammon::OutputsCache;
+use Agrammon::OutputFormatter::Excel;
 use Agrammon::OutputFormatter::GUI;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
@@ -55,6 +56,7 @@ class Agrammon::Web::Service {
         my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
         return @data;
     }
+
 
     method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         my $model = self.cfg.model-variant; # model 'SingleSHL';
@@ -108,8 +110,8 @@ class Agrammon::Web::Service {
         return $!ui-web.get-input-variables;
     }
 
-    method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
-        my $outputs = $!outputs-cache.get-or-calculate: $user.username, $dataset-name, -> {
+    method !get-outputs(Agrammon::Web::SessionUser $user, Str $dataset-name) {
+        return $!outputs-cache.get-or-calculate: $user.username, $dataset-name, -> {
             my $input = Agrammon::DataSource::DB.new.read($user.username, $dataset-name,
                     $!model.distribution-map);
             timed "$dataset-name", {
@@ -118,11 +120,29 @@ class Agrammon::Web::Service {
                         technical => %!technical-parameters;
             }
         }
+    }
+
+    method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
+        my $outputs = self!get-outputs($user, $dataset-name);
 
         # TODO: get with-filters from frontend
         my %gui-output = output-for-gui($!model, $outputs, True);
         warn '**** get-output-variables() not yet completely implemented';
         return %gui-output;
+    }
+
+    method get-excel-export(Agrammon::Web::SessionUser $user, %params) {
+        my $dataset-name = %params<datasetName>;
+        my $language     = %params<language>;
+        my $with-filters = %params<withFilters>;
+
+        my %inputs; # TODO: handle inputs
+        my $outputs = self!get-outputs($user, $dataset-name);
+        output-as-excel(
+            $dataset-name,
+            $!model, $outputs, $language,
+            $with-filters
+        );
     }
 
     method create-account(Agrammon::Web::SessionUser $user, $email, $password, $key, $firstname, $lastname, $org, $role?) {

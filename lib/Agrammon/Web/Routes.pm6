@@ -83,20 +83,14 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::User::CreateFailed  {
-                        not-found 'application/json', %(
-                            error => .message
-                        );
+                        not-found 'application/json', %( error => .message );
                     }
                     when X::Agrammon::DB::User::AlreadyExists
                        | X::Agrammon::DB::User::CreateFailed  {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
+                        conflict 'application/json', %( error => .message );
                     }
                     when X::Agrammon::DB::User::NoUsername {
-                        bad-request 'application/json', %(
-                            error => .message
-                        );
+                        bad-request 'application/json', %( error => .message );
                     }
                     when X::Agrammon::DB::User::UnknownRole  {
                         response.status = 422;
@@ -112,9 +106,7 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Dataset::AlreadyExists {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
+                        conflict 'application/json', %( error => .message );
                     }
                     when X::Agrammon::DB::Dataset::CloneFailed {
                         response.status = 500;
@@ -129,9 +121,7 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Dataset::AlreadyExists | X::Agrammon::DB::Dataset::RenameFailed {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
+                        conflict 'application/json', %( error => .message );
                     }
                 }
             }
@@ -142,9 +132,7 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Tag::AlreadyExists | X::Agrammon::DB::Tag::CreateFailed {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
+                        conflict 'application/json', %( error => .message );
                     }
                 }
             }
@@ -155,9 +143,7 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Tag::DeleteFailed {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
+                        conflict 'application/json', %( error => .message );
                     }
                 }
             }
@@ -168,9 +154,7 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Tag::AlreadyExists | X::Agrammon::DB::Tag::RenameFailed {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
+                        conflict 'application/json', %( error => .message );
                     }
                 }
             }
@@ -181,9 +165,7 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Dataset::InstanceAlreadyExists | X::Agrammon::DB::Dataset::InstanceRenameFailed {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
+                        conflict 'application/json', %( error => .message );
                     }
                 }
             }
@@ -194,9 +176,7 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Dataset::InstanceDeleteFailed {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
+                        conflict 'application/json', %( error => .message );
                     }
                 }
             }
@@ -207,9 +187,7 @@ sub api-routes (Str $schema, $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::User::PasswordsIdentical {
-                        conflict 'application/json', %(
-                            error => .message
-                        );
+                        conflict 'application/json', %( error => .message );
                     }
                     when X::Agrammon::DB::User::InvalidPassword {
                         response.status = 422;
@@ -268,14 +246,34 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'getExcelExport', -> LoggedIn $user {
+            request-body -> %params {
+                response.append-header(
+                        'Content-disposition',
+                        # prevent header injection
+                        "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).xlsx"
+                );
+                content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        $ws.get-excel-export($user, %params).to-blob;
+                CATCH {
+                    default {
+                        note "$_";
+                        response.status = 500;
+                        content 'application/json', %( error => .message )
+                    }
+                }
+            }
+        }
         operation 'getOutputVariables', -> LoggedIn $user {
             request-body -> ( :datasetName($dataset-name)! ) {
                 my %output = $ws.get-output-variables($user, $dataset-name);
                 content 'application/json', { %output };
                 CATCH {
-                    note "$_";
-                    response.status = 500;
-                    content 'application/json', %( error => $_ )
+                    default {
+                        note "$_";
+                        response.status = 500;
+                        content 'application/json', %( error => .message )
+                    }
                 }
             }
         }
@@ -285,9 +283,11 @@ sub api-routes (Str $schema, $ws) {
                 %data<datasetName> = $dataset-name;
                 content 'application/json', %data;
                 CATCH {
-                    note "$_";
-                    response.status = 500;
-                    content 'application/json', %( error => $_ )
+                    default {
+                        note "$_";
+                        response.status = 500;
+                        content 'application/json', %( error => .message )
+                    }
                 }
             }
         }

@@ -395,9 +395,51 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-
+    /get_excel_export:
+        post:
+            summary: Get Excel export
+            operationId: getExcelExport
+            requestBody:
+                required: true
+                content:
+                    application/x-www-form-urlencoded:
+                        schema:
+                            $ref: "#/components/schemas/GetReport"
+            responses:
+                '200':
+                    description: Export
+                    content:
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                            schema:
+                                type: string
+                                format: binary
+                '400':
+                    description: Getting Excel export failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                '500':
+                    description: Getting Excel export failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 components:
     schemas:
+        GetReport:
+            type: object
+            additionalProperties: true
+            properties:
+                datasetName:
+                    description: Name of ther dataset
+                    type: string
+                language:
+                    description: Language for output translation
+                    type: string
+                withFilters:
+                    description: Show filter groups
+                    type: boolean
         DeleteInstance:
             type: object
             required:
@@ -425,8 +467,8 @@ components:
         Rename:
             type: object
             required:
-                 - oldName
-                 - newName
+                - oldName
+                - newName
             properties:
                 oldName:
                     description: Current name
@@ -522,21 +564,18 @@ components:
                                 - type: string
                                 - type: number
                 enum:
-                    description: XXX
+                    description: Elements of select box
                     type: object
                     additionalProperties: true
                 gui:
                     description: GUI navigation label
-                    schema:
-                        $ref: '#/components/schemas/LanguageLabels'
+                    $ref: '#/components/schemas/LanguageLabels'
                 help:
                     description: Help texts
-                    schema:
-                        $ref: '#/components/schemas/LanguageLabels'
+                    $ref: '#/components/schemas/LanguageLabels'
                 labels:
                     description: Input labels
-                    schema:
-                        $ref: '#/components/schemas/LanguageLabels'
+                    $ref: '#/components/schemas/LanguageLabels'
                 models:
                     description: Model variants this input is used for
                     type: array
@@ -553,8 +592,7 @@ components:
                     description: XXX
                     type: array
                     items:
-                        schema:
-                            $ref: '#/components/schemas/LanguageLabels'
+                        $ref: '#/components/schemas/LanguageLabels'
                 order:
                     description: Number used for sorting
                     type: integer
@@ -570,20 +608,15 @@ components:
                         - 'enum{ignore}'
                 units:
                     description: Input labels
-                    schema:
-                        $ref: '#/components/schemas/LanguageLabels'
+                    $ref: '#/components/schemas/LanguageLabels'
                 variable:
                     description: bla
                     type: string
                 validator:
                     description: Input validator
-                    schema:
-                        oneOf:
-                            - $ref: '#/components/schemas/EmptyHash'
-                            - $ref: '#/components/schemas/ValidatorHash'
-                variable:
-                    description: bla
-                    type: string
+                    anyOf:
+                        - $ref: '#/components/schemas/EmptyHash'
+                        - $ref: '#/components/schemas/ValidatorHash'
         EmptyHash:
             type: object
             properties: {}
@@ -600,7 +633,8 @@ components:
                     description: Arguments
                     type: array
                     items:
-                        anyOf: # TODO: convert to numbers in backend
+# TODO: convert to numbers in backend
+                        oneOf:
                             - type: number
                             - type: string
         OutputVariables:
@@ -611,6 +645,16 @@ components:
                     oneOf:
                         - type: integer
                         - type: string
+        Export:
+            type: object
+            required:
+                - inputs
+                - outputs
+            properties:
+                outputs:
+                    description: Output variables
+                inputs:
+                    description: Input variables
         Data:
             type: object
             required:
