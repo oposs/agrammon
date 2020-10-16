@@ -409,9 +409,7 @@ paths:
                 '200':
                     description: Export
                     content:
-                        'text/csv; charset=utf-8':
-                            schema:
-                                type: string
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 '400':
                     description: Getting Excel export failed
                     content:
@@ -424,7 +422,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-
 components:
     schemas:
         GetReport:
