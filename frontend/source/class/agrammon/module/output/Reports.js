@@ -163,66 +163,12 @@ qx.Class.define('agrammon.module.output.Reports', {
         selectRow.add(this.__excelButton);
 
 
-//        this.__excelButton.addListener('execute', function(e) {
-//            var locale = qx.locale.Manager.getInstance().getLocale();
-//            var lang   = 'lang=' + locale.replace(/_.+/,'');
-//            var format = 'format=excel';
-//            var reportUrl   = 'reports=' + this.reportSelected;
-//            var pidUrl      = 'pid=' + outputData.getPid();
-//            var titleUrl    = 'titles='  + this.titleSelected;
-//            var sessionUrl  = 'session=' + outputData.getSession();
-//            var userName    = this.__info.getUserName();
-//            var userUrl     = 'user=' + userName;
-//            var datasetName = this.__info.getDatasetName();
-//            var datasetUrl  = 'dataset=' + datasetName;
-//            var modelVariant = 'modelVariant='+agrammon.Info.getInstance().getModelVariant();
-//            var guiVariant   = 'guiVariant='+agrammon.Info.getInstance().getGuiVariant();
-//// 	        var variant = agrammon.Info.getInstance().getVariant();
-//            var version = agrammon.Info.getInstance().getVersion();
-//            var versionUrl  = 'version=' + version;
-//            var url = 'export/excel'
-//                               + '?' + 'mode=public'
-//                               + '&' + reportUrl
-//                               + '&' + titleUrl
-//                               + '&' + pidUrl
-//                               + '&' + sessionUrl
-//                               + '&' + userUrl
-//                               + '&' + datasetUrl
-//                               + '&' + lang
-//                               + '&' + versionUrl
-//                               + '&' + format
-//                               + '&' + guiVariant
-//                               + '&' + modelVariant;
-//            if (baseUrl != null) {
-//                url = baseUrl + url;
-//            }
-////            this.debug('Excel: baseUrl='+baseUrl);
-////            this.debug('Excel: url='+url);
-//        // works in source with FF 21 on Ubuntu
-////            document.location=url;
-//               window.open(url);
-////            agrammon.ui.ViewerIframe.getInstance().loadDocument(url);
-//        }, this);
-
         this.__excelButton.addListener('execute', function(e) {
             var locale      = qx.locale.Manager.getInstance().getLocale().replace(/_.+/,'');
             var userName    = this.__info.getUserName();
             var variant     = agrammon.Info.getInstance().getVariant();
             var version     = agrammon.Info.getInstance().getVersion();
             var datasetName = this.__info.getDatasetName();
-//            var lang        = 'lang=' + locale.replace(/_.+/,'');
-//            var format = 'format=excel';
-//            var reportUrl   = 'reports=' + this.reportSelected;
-//            var pidUrl      = 'pid=' + outputData.getPid();
-//            var titleUrl    = 'titles='  + this.titleSelected;
-//            var sessionUrl  = 'session=' + outputData.getSession();
-//            var userUrl     = 'user=' + userName;
-//            var datasetUrl  = 'dataset=' + datasetName;
-//            var modelVariant = 'modelVariant='+agrammon.Info.getInstance().getModelVariant();
-//            var guiVariant   = 'guiVariant='+agrammon.Info.getInstance().getGuiVariant();
-//            var versionUrl  = 'version=' + version;
-
-            var url = '/get_excel_export';
             var params = {
                 language     : locale,
                 username     : userName,
@@ -234,24 +180,20 @@ qx.Class.define('agrammon.module.output.Reports', {
                 guiVariant   : agrammon.Info.getInstance().getGuiVariant(),
                 version      : version
             };
-            console.log('params=', params);
 
-//            this.debug('Excel: baseUrl='+baseUrl);
-//            this.debug('Excel: url='+url);
+            var url = '/get_excel_export';
             if (baseUrl != null) {
                 url = baseUrl + url;
             }
 
             var form    = document.createElement("form");
-            form.target = 'AgrammonExport' + Math.random();
-            form.method = "POST"; // or "post" if appropriate
+            form.target = 'AgrammonExcelExport' + Math.random();
+            form.method = "POST";
             form.action = url;
 
-            // this.__addTextInput(form, 'reportParams', qx.util.Serializer.toJson(params));
             for (var key in params) {
                 this.__addTextInput(form, key, params[key]);
             }
-            console.log("form=", form);
             document.body.appendChild(form);
 
             // status=1 open's in new tab in Chrome at least
