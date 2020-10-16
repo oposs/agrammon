@@ -59,8 +59,56 @@ multi sub MAIN('dump', ExistingFile $filename) is export {
 }
 
 #| Create LaTeX docu
-multi sub MAIN('latex', ExistingFile $filename) is export {
-    say "Will create LaTeX docu; NYI";
+sub latex (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv, Bool $include-filters,
+         $batch, $degree, $max-runs) is export {
+    die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
+
+    my $module-path = $path.parent;
+    my $module-file = $path.basename;
+    my $module      = $path.extension('').basename;
+
+    my $tech-input = $tech-file // $module-path.add('technical.cfg');
+    my %technical-parameters = timed "Load parameters from $tech-input", {
+        my $params = parse-technical( $tech-input.IO.slurp );
+        %($params.technical.map(-> %module {
+            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+        }));
+    }
+
+    my $model = timed "Load $module", {
+        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
+    };
+
+    @sections = $model.create-docu(
+        technical => %($params.technical.map(-> %module {
+            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+        }))
+    );
+
+    for @sections -> %section {
+        say %section<title>;
+        say %section<description>;
+
+        if @(%section<inputs>).elems {
+            say '\subsubsection{Inputs}';
+            say '\begin{description}';
+            for @(%section<inputs>) -> $input {
+                say "\\item\[$input<name>\]";
+                say "$input<description>";
+            }
+            say '\end{description}';
+        }
+
+        if @(%section<outputs>).elems {
+            say '\subsubsection{Outputs}';
+            say '\begin{description}';
+            for @(%section<outputs>) -> $output {
+                say "\\item\[$output<name>\]";
+                say "$output<description>";
+            }
+            say '\end{description}';
+        }
+    }
 }
 
 #| Create Agrammon user
