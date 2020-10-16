@@ -381,33 +381,4 @@ class Agrammon::Model {
         %$!distribution-map-cache
     }
 
-    # Create LaTeX docu
-    method create-docu( :%technical! ) {
-        my @sections;
-        for @!evaluation-order.reverse -> $module {
-
-            my @inputs;
-            for $module.input -> $input (:$name, :$description, *%) {
-                @inputs.push( %( :name(latex-escape($input.name)), :description(latex-escape($input.description)) ) );
-            }
-
-            my @outputs;
-            for $module.output -> $output (:$name, :$formula, :$description, *%) {
-                @outputs.push( %(:name(latex-escape($output.name)), :$formula, :description(latex-escape($output.description)) ) );
-            }
-
-            my $tax = latex-escape($module.taxonomy);
-
-            @sections.push( %(
-                :title("\\subsection\{$tax\}"), :description(latex-escape($module.description)),
-                :@inputs, :@outputs
-            ));
-
-        }
-        return @sections;
-    }
-
-    sub latex-escape($in) {
-        $in.subst(/_/, '\\_', :g);
-    }
 }

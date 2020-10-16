@@ -1,6 +1,7 @@
 use Test;
 use Data::Dump::Tree;
 use Agrammon::DataSource::CSV;
+use Agrammon::Documentation;
 use Agrammon::Model;
 use Agrammon::Model::Parameters;
 use Agrammon::OutputFormatter::CSV;
@@ -18,7 +19,8 @@ lives-ok
     'Parsed technical file';
 isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
 
-lives-ok { $model.create-docu(
+lives-ok { create-latex(
+               $model,
                technical => %($params.technical.map(-> %module {
                    %module.keys[0] => %(%module.values[0].map({ .name => .value }))
                }))
