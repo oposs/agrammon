@@ -41,7 +41,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
             %( :variable('x'), :value(2) )
         },
         get-excel-export => -> $user, %params {
-            "Total;nh3_ntotal;1699.4594585882503;kg N/Jahr";
+            Spreadsheet::XLSX.new;
         },
         delete-instance => -> $user, $dataset-name, $instance, $pattern {
         },
