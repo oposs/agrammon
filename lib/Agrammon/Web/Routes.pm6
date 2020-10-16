@@ -248,10 +248,8 @@ sub api-routes (Str $schema, $ws) {
         }
         operation 'getExcelExport', -> LoggedIn $user {
             request-body -> %params {
-                my $export = $ws.get-excel-export($user, %params);
-                # change to application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-                # once Spreadsheet::XLSX is working again
-                content 'text/csv', $export;
+                content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        $ws.get-excel-export($user, %params).to-blob;
                 CATCH {
                     default {
                         note "$_";

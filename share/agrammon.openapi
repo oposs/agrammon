@@ -409,7 +409,10 @@ paths:
                 '200':
                     description: Export
                     content:
-                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                            schema:
+                                type: string
+                                format: binary
                 '400':
                     description: Getting Excel export failed
                     content:
