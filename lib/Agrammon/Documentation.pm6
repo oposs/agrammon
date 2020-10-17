@@ -47,6 +47,8 @@ sub create-latex( Str $model-name, Agrammon::Model $model, :%technical! ) is exp
     \pagestyle{fancy}
     \setlength\headheight{54.66464pt}
 
+    \newenvironment{todo}[2]{\textbf{TODO (#1):} }{}
+
     \begin{document}
     \begin{titlepage}
     \title{Model: $model-name}
@@ -54,7 +56,7 @@ sub create-latex( Str $model-name, Agrammon::Model $model, :%technical! ) is exp
     \maketitle
     \tableofcontents
     \clearpage
-    \section Model}
+    \section{Model}
     LATEX
 
     for @sections -> %section {
