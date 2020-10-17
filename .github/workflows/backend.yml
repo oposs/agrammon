@@ -14,7 +14,8 @@ jobs:
       matrix:
         os:
           - 'ubuntu-18.04'
-          - 'macos-10.15'
+          - 'ubuntu-20.04'
+#          - 'macos-10.15'
         raku-version:
           - '2020.09'
     runs-on: ${{ matrix.os }}
