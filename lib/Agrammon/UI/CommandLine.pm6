@@ -56,7 +56,7 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-fil
 
 #| Dump model
 multi sub MAIN('dump', ExistingFile $filename) is export {
-    say chomp dump $filename.IO;
+    say chomp dump-model $filename.IO;
 }
 
 multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?) is export {
@@ -73,42 +73,20 @@ sub latex (IO::Path $path, $tech-file) is export {
 
     my $tech-input = $tech-file // $module-path.add('technical.cfg');
     my $params = parse-technical( $tech-input.IO.slurp );
-
+    $path.dirname ~~ / .* '/' (.+) /;
+    my $model-name = ~$0;
     my $model = timed "Load $module of $module-path from cache", {
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
+        load-model-using-cache( $*HOME.add('.agrammon'), $module-path, $module)
     };
 
-    my @sections = create-latex(
+    create-latex(
+        $model-name,
         $model,
         technical => %($params.technical.map(-> %module {
             %module.keys[0] => %(%module.values[0].map({ .name => .value }))
         }))
     );
 
-    for @sections -> %section {
-        say %section<title>;
-        say %section<description>;
-
-        if @(%section<inputs>).elems {
-            say '\subsubsection{Inputs}';
-            say '\begin{description}';
-            for @(%section<inputs>) -> $input {
-                say Q:s"\item[$input<name>]";
-                say "$input<description>";
-            }
-            say '\end{description}';
-        }
-
-        if @(%section<outputs>).elems {
-            say '\subsubsection{Outputs}';
-            say '\begin{description}';
-            for @(%section<outputs>) -> $output {
-                say Q:s"\item[$output<name>]";
-                say "$output<description>";
-            }
-            say '\end{description}';
-        }
-    }
 }
 
 #| Create Agrammon user
@@ -123,7 +101,7 @@ sub USAGE() is export {
 }
 
 
-sub dump (IO::Path $path) is export {
+sub dump-model (IO::Path $path) is export {
     die "ERROR: dump expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;

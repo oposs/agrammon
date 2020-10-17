@@ -48,6 +48,7 @@ class Agrammon::ModuleBuilder {
         make 'output' => [$<output>.map(sub ($_) {
             my %output-props = .ast;
             with %output-props<formula> <-> $formula {
+                %output-props<code> = $formula;
                 with $*TAXONOMY -> $taxonomy {
                     $formula = parse-formula($formula, $taxonomy);
                     CATCH {

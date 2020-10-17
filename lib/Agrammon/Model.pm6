@@ -1,5 +1,4 @@
 use v6;
-use Data::Dump::Tree;
 use Agrammon::Formula::Compiler;
 use Agrammon::Inputs;
 use Agrammon::ModuleBuilder;

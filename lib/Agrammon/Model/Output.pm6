@@ -8,6 +8,7 @@ class Agrammon::Model::Output {
     has Str %.units{Str};
     has Str %.labels{Str};
     has Str $.format;
+    has Str $.code;
     has Str $.order;
     has Agrammon::Formula $.formula;
     has &.compiled-formula is rw;

@@ -1,7 +1,7 @@
 use Agrammon::Model;
 
 #| Create LaTeX document of Model
-sub create-latex( Agrammon::Model $model, :%technical! ) is export {
+sub prepare-model( Agrammon::Model $model, :%technical! ) is export {
 
     my @sections;
     for $model.evaluation-order.reverse -> $module {
@@ -13,7 +13,7 @@ sub create-latex( Agrammon::Model $model, :%technical! ) is export {
 
         my @outputs;
         for $module.output -> $output (:$name, :$formula, :$description, *%) {
-            @outputs.push( %(:name(latex-escape($output.name)), :$formula, :description(latex-escape($output.description)) ) );
+            @outputs.push( %(:name(latex-escape($output.name)), :code($output.code), :$formula, :description(latex-escape($output.description)) ) );
         }
 
         my $tax = latex-escape($module.taxonomy);
@@ -27,7 +27,70 @@ sub create-latex( Agrammon::Model $model, :%technical! ) is export {
     return @sections;
 }
 
+sub create-latex( Str $model-name, Agrammon::Model $model, :%technical! ) is export {
+    my @sections = prepare-model( $model, :%technical );
+
+    say Qs:to/LATEX/;
+    \documentclass[11pt]{article}
+    \usepackage[a4paper,top=1.5cm,bottom=2.0cm,left=2cm,right=2cm]{geometry}
+    \usepackage[utf8]{luainputenc}
+    \usepackage{hyphenat}
+    \usepackage[T1]{fontenc}
+    \usepackage[default]{opensans}
+    \usepackage{parskip}
+    \usepackage{fancyhdr}
+    \usepackage{xcolor}
+    \usepackage{graphicx}
+    \usepackage{fancyvrb}
+    %\usepackage{longtable}
+
+    \pagestyle{fancy}
+    \setlength\headheight{54.66464pt}
+
+    \begin{document}
+    \begin{titlepage}
+    \title{Model: $model-name}
+    \end{titlepage}
+    \maketitle
+    \tableofcontents
+    \clearpage
+    \section Model}
+    LATEX
+
+    for @sections -> %section {
+        say %section<title>;
+        say %section<description>;
+
+        if @(%section<inputs>).elems {
+            say '\subsubsection{Inputs}';
+
+            say '\begin{description}';
+            for @(%section<inputs>) -> $input {
+                say Q:s"\item[$input<name>] $input<description>";
+            }
+            say '\end{description}';
+        }
+
+        if @(%section<outputs>).elems {
+            say '\subsubsection{Outputs}';
+
+            say '\begin{description}';
+            for @(%section<outputs>) -> $output {
+                say Qs:to/LATEX/;
+                \item[$output<name>] $output<description>
+                \begin{Verbatim}[fontsize=\footnotesize]
+                $output<code>
+                \end{Verbatim}
+                LATEX
+            }
+            say '\end{description}';
+        }
+    }
+    say '\end{document}';
+}
+
 #| Escape LaTeX special characters
 sub latex-escape($in) {
-    $in.subst(/_/, '\\_', :g);
+    $in.subst(/_/, '\\_', :g)
+       .subst(/'%'/, '\\%', :g);
 }
