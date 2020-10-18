@@ -19,7 +19,7 @@ sub prepare-model( Agrammon::Model $model, :%technical! ) is export {
         my $tax = latex-escape($module.taxonomy);
 
         @sections.push( %(
-            :title(Q:s"\subsection{$tax}"), :description(latex-escape($module.description)),
+            :module($tax), :title(Q:s"\subsection{$tax}"), :description(latex-escape($module.description)),
             :@inputs, :@outputs
         ));
 
@@ -43,6 +43,7 @@ sub create-latex( Str $model-name, Agrammon::Model $model, :%technical! ) is exp
     \usepackage{graphicx}
     \usepackage{fancyvrb}
     %\usepackage{longtable}
+    \usepackage{dcolumn}
 
     \pagestyle{fancy}
     \setlength\headheight{54.66464pt}
@@ -60,6 +61,8 @@ sub create-latex( Str $model-name, Agrammon::Model $model, :%technical! ) is exp
     LATEX
 
     for @sections -> %section {
+        my $module = %section<module>;
+
         say %section<title>;
         say %section<description>;
 
@@ -86,6 +89,16 @@ sub create-latex( Str $model-name, Agrammon::Model $model, :%technical! ) is exp
                 LATEX
             }
             say '\end{description}';
+        }
+
+        if %technical{$module}.keys.elems {
+            say '\subsubsection{Technical parameters}';
+
+            say '\begin{tabular}{lD{.}{.}{3.3}}';
+            for %technical{$module}.kv -> $name, $value {
+                say latex-escape($name) ~ ' & ' ~  latex-escape($value) ~ Q:s"\\";
+            }
+            say '\end{tabular}';
         }
     }
     say '\end{document}';
