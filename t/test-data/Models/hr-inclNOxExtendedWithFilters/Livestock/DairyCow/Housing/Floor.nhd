@@ -20,7 +20,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** input ***
 
-+UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows
++mitigation_housing_floor
   type  = enum
   default_calc = none
   ++enum
@@ -68,7 +68,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        <p>Proposition de valeur standard: aucune</p>
 
 
-+mitigation_options_for_housing_systems_for_dairy_cows_floor
++mitigation_housing_floor_LU
   models= LU
   type  = enum
   default_calc = none
@@ -117,13 +117,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** technical ***
 
-#+red_UNECE
-#  value = 0.25
-#  ++units 
-#    en = -
-#  ++description
-#    Reduction efficiency as compared to cubicle house (UNECE 2007, paragraph 57, table 4).
-
 +red_raised_feeding_stands
   value = 0.1
   ++units 
@@ -169,16 +162,16 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** output ***
 
-+c_UNECE
-  print = c_housing,dairy_cows
++c_housing_floor_SHL
+  print = DairyCow
   ++units 
     en = -
   ++description
     Correction factor for the emission due to the use of a grooved floor in housing systems.
   ++formula
     # TODO: is next line correct? Was missing compared to OtherCattle
-    return 1 unless defined In(UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows);
-    given ( In(UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows) ) {
+    return 1 unless defined In(mitigation_housing_floor);
+    given ( In(mitigation_housing_floor) ) {
       when 'raised_feeding_stands' {
         1 - Tech(red_raised_feeding_stands);
       }
@@ -197,15 +190,15 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
       }
     }
 
-+c_housing_floor
-  print = c_housing,dairy_cows
++c_housing_floor_LU
+  print = DairyCow
   ++units 
     en = -
   ++description
     Correction factor for the emission due to the use of housing system adaptations.
   ++formula 
-    return 1 unless defined In(mitigation_options_for_housing_systems_for_dairy_cows_floor);
-    given ( In(mitigation_options_for_housing_systems_for_dairy_cows_floor) ) {
+    return 1 unless not defined In(mitigation_housing_floor);
+    given ( In(mitigation_housing_floor_LU) ) {
       when 'toothed_scrapper_running_over_a_grooved_floor' {
      	  1 - Tech(red_toothed_scrapper_running_over_a_grooved_floor);
       } 
@@ -220,4 +213,13 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
       }
     }
     
+
++c_housing_floor
+  print = DairyCow
+  ++units 
+    en = -
+  ++description
+    Capture floor mitigation for either model.
+  ++formula
+    Out(c_housing_floor_SHL) * Out(c_housing_floor_LU);
      

@@ -19,7 +19,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** input ***
 
-+UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle
++mitigation_housing_floor
   type  = enum
   default_calc = none
   ++enum
@@ -68,7 +68,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 
 
-+mitigation_options_for_housing_systems_for_other_cattle_floor
++mitigation_housing_floor_LU
   models= LU
   type  = enum
   default_calc = none
@@ -117,13 +117,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** technical ***
 
-#+red_UNECE
-#  value = 0.25
-#  ++units 
-#    en = -
-#  ++description
-#    Reduction efficiency as comppared to cubicle house (UNECE 2007, paragraph 57, table 4).
-
 +red_raised_feeding_stands
   value = 0.1
   ++units 
@@ -169,51 +162,63 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** output ***
 
-+c_UNECE
-  print = 15
++c_housing_floor_SHL
+  print = OtherCattle
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to the use of a grooved floor in housing systems.
+    Correction factor for the emission due to the use of a grooved floor in housing systems.
   ++formula 
-      return 0 unless defined In(UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle);
-      if (In(UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle) eq 'raised_feeding_stands') {
-          return( Tech(red_raised_feeding_stands) );
+    return 1 unless defined In(mitigation_housing_floor);
+    given ( In(mitigation_housing_floor) ) {
+      when 'raised_feeding_stands' {
+        1 - Tech(red_raised_feeding_stands);
       }
-      elsif (In(UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle) eq 'floor_with_cross_slope_and_collection_gutter') {
-          return( Tech(red_floor_with_cross_slope_and_collection_gutter) );
+      when 'floor_with_cross_slope_and_collection_gutter' {
+        1 - Tech(red_floor_with_cross_slope_and_collection_gutter);
       }
-      elsif (In(UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle) eq 'floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands') {
-          return( Tech(red_floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands) );
+      when 'floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands' {
+        1 - Tech(red_floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands);
       }
-      elsif (In(UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle) eq 'toothed_scrapper_running_over_a_grooved_floor') {
-          return( Tech(red_toothed_scrapper_running_over_a_grooved_floor) );
+      when 'toothed_scrapper_running_over_a_grooved_floor' {
+        1 - Tech(red_toothed_scrapper_running_over_a_grooved_floor);
       }
-      else {
-          return 0;
+      default {
+        # add when "none" & default Warning!
+        1;
       }
+    }
 
-
-
-#if (In(UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle) eq 'toothed_scrapper_running_over_a_grooved_floor'){
-#       return( Tech(red_UNECE));
-#       } else { return 0;};
-
++c_housing_floor_LU
+  print = OtherCattle
+  ++units 
+    en = -
+  ++description
+    Correction factor for the emission due to the use of housing system adaptations.
+  ++formula 
+    return 1 unless not defined In(mitigation_housing_floor);
+    given ( In(mitigation_housing_floor_LU) ) {
+      when 'toothed_scrapper_running_over_a_grooved_floor' {
+        1 - Tech(red_toothed_scrapper_running_over_a_grooved_floor);
+      } 
+      when 'sloped_concrete_floor_with_drain_and_stationary_scarp_cleaning_every_two_hours' {
+        1 - Tech(red_sloped_concrete_floor_with_drain_and_stationary_scarp_cleaning_every_two_hours);
+      } 
+      when 'system_Comfort_Slat_Mat_with_Mat_and_Valve' {
+        1 - Tech(red_system_Comfort_Slat_Mat_with_Mat_and_Valve);
+      } 
+      default { 
+        1;
+      }
+    }
 
 +c_housing_floor
-  print = 15
+  print = OtherCattle
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to the use of housing system adaptations.
-  ++formula 
-      return 0 unless defined In(mitigation_options_for_housing_systems_for_other_cattle_floor);
-      if (In(mitigation_options_for_housing_systems_for_other_cattle_floor) eq 'toothed_scrapper_running_over_a_grooved_floor'){
-       	    return( Tech(red_toothed_scrapper_running_over_a_grooved_floor));
-       } elsif (In(mitigation_options_for_housing_systems_for_other_cattle_floor) eq 'sloped_concrete_floor_with_drain_and_stationary_scarp_cleaning_every_two_hours'){
-       	    return( Tech(red_sloped_concrete_floor_with_drain_and_stationary_scarp_cleaning_every_two_hours));
-       } elsif (In(mitigation_options_for_housing_systems_for_other_cattle_floor) eq 'system_Comfort_Slat_Mat_with_Mat_and_Valve'){
-       	    return( Tech(red_system_Comfort_Slat_Mat_with_Mat_and_Valve));
-       } else { return 0;};
+    Capture floor mitigation for either model.
+  ++formula
+    Out(c_housing_floor_SHL) * Out(c_housing_floor_LU);
       
        
