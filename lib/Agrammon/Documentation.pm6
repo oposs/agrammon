@@ -61,7 +61,7 @@ sub create-latex-source( Str $model-name, Agrammon::Model $model, :%technical! )
             for @(%section<outputs>) -> $output {
                 my $name = latex-escape($output.name);
                 my $desc = latex-escape($output.description);
-                my $code = latex-escape($output.code);
+                my $code = $output.code;
                 @latex.push(Qs:to/LATEX/);
                     \item[$name] $desc
                     \begin{Verbatim}[fontsize=\footnotesize]
