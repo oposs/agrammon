@@ -1,0 +1,62 @@
+*** general ***
+
+author   = jnthn
+date     = 2020-10-19
+taxonomy = Preproc
+
++short
+
+  For testing.
+
++description
+
+  Test description.
+
+*** input ***
+
++input1
+  type = enum
+  ++enum
+    +++horses_older_than_3yr
+       en = horses_older_than_3yr
+       de = Pferde_über_3-jährig
+       fr = Chevaux_de_plus_de_3_ans
+       it = horses_older_than_3yr
+    +++horses_younger_than_3yr
+       en = horses_younger_than_3yr
+       de = Pferde_unter_3-jährig
+       fr = Chevaux_de_moins_de_3_ans
+       it = horses_younger_than_3yr
+?if HORSISH
+    +++mules
+       en = mules
+       de = Maultiere_und_Maulesel_jeden_Alters
+       fr = Mulets_et_baudets
+       it = mules
+    +++ponies_and_asses
+       en = ponies_and_asses
+       de = Ponies_Kleinpferde_und_Esel_jeden_Alters
+       fr = Anes_et_poneys
+       it = ponies_and_asses
+?endif
+  ++labels
+    en = Animal category
+    de = Tierkategorie
+    fr = Catégorie d'animaux
+  ++units
+    en = -
+  ++description
+    Animal category (horses younger than 3 years, horses older than 3 years, mules, ponies and asses).
+
+*** output ***
+
++output1
+  print = 7
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+  ++formula
+    In(input1);
+
+  ++description
+    output1

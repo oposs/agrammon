@@ -2,11 +2,11 @@ use Agrammon::Formula::Compiler;
 use Agrammon::Model;
 use Digest::SHA1::Native;
 
-sub load-model-using-cache(IO() $cache-dir, IO() $path, $module) is export {
-    my $hash = hash-path($path).trans('0'..'9' => 'A'..'J');
+sub load-model-using-cache(IO() $cache-dir, IO() $path, $module, %preprocessor-options?) is export {
+    my $hash = hash-model($path, %preprocessor-options).trans('0'..'9' => 'A'..'J');
     my $cached = $cache-dir.IO.add("$hash.pm6");
     unless $cached.e {
-        my $m = Agrammon::Model.new(:$path, :!compile-formulas);
+        my $m = Agrammon::Model.new(:$path, :%preprocessor-options, :!compile-formulas);
         $m.load($module);
         mkdir $cache-dir;
         spurt $cached, q:c:to/MODULE/;
@@ -23,7 +23,8 @@ sub load-model-using-cache(IO() $cache-dir, IO() $path, $module) is export {
     return EVAL "use lib '$cache-dir.absolute()'; use $hash; {$hash}::<\$model>";
 }
 
-sub hash-path($base) {
+sub hash-model($base, %preprocessor-options) {
+    # Hash all of the model files; we'll form a composite hash from them.
     my %path-hashes;
     react {
         sub hash-file($path) {
@@ -43,7 +44,13 @@ sub hash-path($base) {
 
         walk($base);
     }
-    return sha1-hex %path-hashes.sort(*.key).map({ "{.key}\0{.value}\0" }).join;
+    my $path-hashable = %path-hashes.sort(*.key).map({ "{ .key }\0{ .value }\0" }).join;
+
+    # Also create a preprocessor hashable consisting of all the options.
+    my $preproc-hashable = %preprocessor-options.grep(*.value).map(*.key).sort.join('\0');
+
+    # Hash them together.
+    return sha1-hex "$path-hashable\0$preproc-hashable";
 }
 
 sub set-formulas-code(Agrammon::Model $model) {

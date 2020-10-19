@@ -6,6 +6,7 @@ use Agrammon::ModuleParser;
 use Agrammon::Model::FilterSet;
 use Agrammon::Model::Module;
 use Agrammon::Outputs;
+use Agrammon::Preprocessor;
 
 class X::Agrammon::Model::FileNotFound is Exception {
     has $.file;
@@ -142,6 +143,7 @@ class Agrammon::Model {
     }
 
     has IO::Path $.path;
+    has %.preprocessor-options;
     has Agrammon::Model::Module @.evaluation-order;
     has ModuleRunner $!entry-point;
     has %!output-unit-cache;
@@ -171,8 +173,8 @@ class Agrammon::Model {
         die X::Agrammon::Model::FileNotReadable.new(:$file) unless $file.IO.r;
 
         {
-            return Agrammon::ModuleParser.parsefile(
-                $file,
+            return Agrammon::ModuleParser.parse(
+                preprocess($file.slurp, %!preprocessor-options),
                 actions => Agrammon::ModuleBuilder
             ).ast;
             CATCH {
