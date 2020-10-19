@@ -20,16 +20,6 @@ This process describes the correction factors for the loose housing liquid solid
 
 *** input ***
 
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-    de = ignorieren
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
-
 *** technical ***
 
 +er
@@ -60,7 +50,7 @@ This process describes the correction factors for the loose housing liquid solid
 *** output ***
 
 +er_housing
-  print = 15
+  print = OtherCattle
   ++units  
     en = -
   ++description
@@ -69,7 +59,7 @@ This process describes the correction factors for the loose housing liquid solid
     Tech(er),
 
 +share_liquid
-  print = 15
+  print = OtherCattle
   ++units  
     en = -
   ++description
@@ -77,17 +67,8 @@ This process describes the correction factors for the loose housing liquid solid
   ++formula
     Tech(share_liquid),
 
-+share_solid
-  print = 15
-  ++units  
-    en = -
-  ++description
-    Share of solid manure of Ntot for selected housing type.
-  ++formula
-    1-Tech(share_liquid);
-
 +k_area
-  print = 15
+  print = OtherCattle
   ++units  
     en = -
   ++description
