@@ -6,6 +6,7 @@ use DB::Pg;
 
 use Agrammon::Config;
 use Agrammon::DataSource::CSV;
+use Agrammon::Documentation;
 use Agrammon::ModelCache;
 use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::Text;
@@ -55,12 +56,37 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-fil
 
 #| Dump model
 multi sub MAIN('dump', ExistingFile $filename) is export {
-    say chomp dump $filename.IO;
+    say chomp dump-model $filename.IO;
+}
+
+multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?) is export {
+    latex $filename.IO, $tech-file;
 }
 
 #| Create LaTeX docu
-multi sub MAIN('latex', ExistingFile $filename) is export {
-    say "Will create LaTeX docu; NYI";
+sub latex (IO::Path $path, $tech-file) is export {
+    die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
+
+    my $module-path = $path.parent;
+    my $module-file = $path.basename;
+    my $module      = $path.extension('').basename;
+
+    my $tech-input = $tech-file // $module-path.add('technical.cfg');
+    my $params = parse-technical( $tech-input.IO.slurp );
+    $path.dirname ~~ / .* '/' (.+) /;
+    my $model-name = ~$0;
+    my $model = timed "Load $module of $module-path from cache", {
+        load-model-using-cache( $*HOME.add('.agrammon'), $module-path, $module)
+    };
+
+    say create-latex-source(
+        $model-name,
+        $model,
+        technical => %($params.technical.map(-> %module {
+            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+        }))
+    );
+
 }
 
 #| Create Agrammon user
@@ -75,7 +101,7 @@ sub USAGE() is export {
 }
 
 
-sub dump (IO::Path $path) is export {
+sub dump-model (IO::Path $path) is export {
     die "ERROR: dump expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;

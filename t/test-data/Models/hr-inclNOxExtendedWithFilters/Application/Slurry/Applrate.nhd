@@ -27,7 +27,7 @@ taxonomy = Application::Slurry::Applrate
   application. Atmospheric Environment 32: 301-307.
 
  \begin{todo}{Haral Menzi}{}
-  Please confirm, as description was not finished by Beat Reidy, appl\_rate
+  Please confirm, as description was not finished by Beat Reidy, appl_rate
   and tan was not included in calculation.
  \end{todo}
  
