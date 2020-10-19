@@ -6,3 +6,4 @@ Livestock::DairyCow[]::Housing::ClimateAir::mitigation_options_for_housing_syste
 Livestock::DairyCow[]::Housing::ClimateAir::mitigation_options_for_housing_systems_for_dairy_cows_air
 Livestock::OtherCattle[]::Housing::ClimateAir::mitigation_options_for_housing_systems_for_other_cattle_climate
 Livestock::OtherCattle[]::Housing::ClimateAir::mitigation_options_for_housing_systems_for_other_cattle_air
+Livestock::DairyCow[]::Housing::Type::feeding_boxes
