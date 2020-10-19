@@ -9,3 +9,7 @@ Livestock::RoughageConsuming[]::Housing::free_correction_factor,Livestock::Rough
 Livestock::SmallRuminants[]::Housing::free_correction_factor,Livestock::SmallRuminants[]::Housing::CFreeFactor::free_correction_factor
 Livestock::DairyCow[]::Housing::Type::dimensioning_barn,Livestock::DairyCow[]::Housing::KArea::dimensioning_barn
 Livestock::OtherCattle[]::Housing::Type::dimensioning_barn,Livestock::OtherCattle[]::Housing::KArea::dimensioning_barn
+Livestock::DairyCow[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows,Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor
+Livestock::DairyCow[]::Housing::Floor::mitigation_options_for_housing_systems_for_dairy_cows_floor,Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor_LU
+Livestock::OtherCattle[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle,Livestock::OtherCattle[]::Housing::Floor::mitigation_housing_floor
+Livestock::OtherCattle[]::Housing::Floor::mitigation_options_for_housing_systems_for_other_cattle_floor,Livestock::OtherCattle[]::Housing::Floor::mitigation_housing_floor_LU

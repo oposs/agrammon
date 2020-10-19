@@ -14,15 +14,6 @@ Describes correction factors for the conventional slurry fattening pig housing s
 
 
 *** input ***
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-    de = ignorieren
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
 
 *** technical ***
 
@@ -47,7 +38,7 @@ Describes correction factors for the conventional slurry fattening pig housing s
 *** output ***
     
 +er_housing
-  print = 15
+  print = FatteningPigs
   ++units  
     en = -
   ++description
@@ -56,20 +47,11 @@ Describes correction factors for the conventional slurry fattening pig housing s
     Tech(er);
 
 +share_liquid
-  print = 15
+  print = FatteningPigs
   ++units  
     en = -
   ++description
     Liquid part of Ntot for selected housing type.
   ++formula
     Tech(share_liquid);
-
-+share_solid
-  print = 15
-  ++units  
-    en = -
-  ++description
-    Solid part of Ntot for selected housing type.
-  ++formula
-    1-Tech(share_liquid);
 

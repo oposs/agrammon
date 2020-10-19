@@ -14,15 +14,6 @@ Describes correction factors for the label slurry open front pig housing system.
 
 
 *** input ***
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-    de = ignorieren
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
 
 *** technical ***
 
@@ -48,7 +39,7 @@ Describes correction factors for the label slurry open front pig housing system.
 *** output ***
     
 +er_housing
-  print = 15
+  print = Pig
   ++units  
     en = -
   ++description
@@ -57,20 +48,10 @@ Describes correction factors for the label slurry open front pig housing system.
     Tech(er);
 
 +share_liquid
-  print = 15
+  print = Pig
   ++units  
     en = -
   ++description
     Liquid part of Ntot for selected housing type.
   ++formula
     Tech(share_liquid);
-
-+share_solid
-  print = 15
-  ++units  
-    en = -
-  ++description
-    Solid part of Ntot for selected housing type.
-  ++formula
-    1-Tech(share_liquid);
-

@@ -76,8 +76,26 @@ taxonomy = Livestock::OtherCattle::Housing
            - Val(tan_into_yard, Yard); 
     } else { return 0; }
 
++ef_nh3_nhousing
+  print = OtherCattle,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for other cattle housing systems.
+  ++formula
+    my $c_housing = Val(c_grazing, Housing::KGrazing) * 
+                    Val(c_area, Housing::KArea) * 
+                    Val(er_housing, Housing::Type) * 
+                    Val(c_housing_floor, Housing::Floor) * 
+                    Val(c_free_factor_housing, Housing::CFreeFactor);
+    #FIXME: Check: Is it in any way even possible that $c_housing > 1???
+    $c_housing = 1 unless $c_housing < 1;
+    return $c_housing;
+
 +nh3_nhousing
-  print = 5a
+  print = OtherCattle
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -85,16 +103,7 @@ taxonomy = Livestock::OtherCattle::Housing
   ++description
     Annual NH3 emission from cattle housing systems per animal place.
   ++formula
-   Out(tan_into_housing) 
-    * Val(c_grazing, Housing::KGrazing) 
-    * Val(er_housing, Housing::Type) 
-    * Val(c_area, Housing::KArea) 
-    * (
-      (1 - Val(c_feeding_boxes, Housing::Type) )
-      * (1 - Val(c_UNECE, Housing::Floor) )
-      * (1 - Val(c_housing_floor, Housing::Floor) )
-    )
-    * Val(c_free_factor_housing, Housing::CFreeFactor) ;
+    Out(tan_into_housing) * Out(ef_nh3_nhousing);
  
 +n_outhousing
   print = 7

@@ -15,16 +15,6 @@ Describes correciton factors for the tide housing liquid solid system.
 
 *** input ***
 
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-    de = ignorieren
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
-
 *** technical ***
 
 +er
@@ -54,7 +44,7 @@ Describes correciton factors for the tide housing liquid solid system.
 *** output ***
     
 +er_housing
-  print = 15
+  print = OtherCattle
   ++units  
     en = -
   ++description
@@ -63,7 +53,7 @@ Describes correciton factors for the tide housing liquid solid system.
     Tech(er);
 
 +share_liquid
-  print = 15
+  print = OtherCattle
   ++units  
     en = -
   ++description    
@@ -71,17 +61,8 @@ Describes correciton factors for the tide housing liquid solid system.
   ++formula
     Tech(share_liquid);
 
-+share_solid
-  print = 15
-  ++units  
-    en = -
-  ++description
-    Share of solid manure of Ntot for selected housing type.
-  ++formula
-    1-Tech(share_liquid);
-
 +k_area
-  print = 15
+  print = OtherCattle
   ++units  
     en = -
   ++description

@@ -290,28 +290,17 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
 
 *** output ***
 
-+er_housing
-  print = 10
++housing_type
+  print = Poultry
   ++units  
     en = -
   ++description
-    Emission rate for the poultry housing type.
+    Housing type (needed in other modules).
   ++formula
     if ( Val(animalcategory, ..::Excretion) eq "layers" or 
          Val(animalcategory, ..::Excretion) eq "growers" ) {
-      if (In(housing_type) eq "manure_belt_without_manure_belt_drying_system"){
-        return Tech(er_housing_layers_growers_manure_belt_without_manure_belt_drying_system);
-      } 
-      elsif (In(housing_type) eq "manure_belt_with_manure_belt_drying_system"){
-        return Tech(er_housing_layers_growers_manure_belt_with_manure_belt_drying_system);
-    	} 
-      elsif (In(housing_type) eq "deep_pit"){
-        return Tech(er_housing_layers_growers_deep_pit);
-    	} 
-      elsif(In(housing_type) eq "deep_litter"){
-   	    return Tech(er_housing_layers_growers_deep_litter);
-      }
-  	} else {
+      return In(housing_type);
+    } else {
       if ( In(housing_type) eq "manure_belt_without_manure_belt_drying_system" ) {
         writeLog({
           en => "The category manure belt without manure belt drying system is not valid, please select the housing system deep litter for broilers.",
@@ -319,7 +308,7 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
                 . "(für die Berechnung wird Bodenhaltung gesetzt).",
           fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
                 . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
-		    });
+        });
       } 
       elsif ( In(housing_type) eq "manure_belt_with_manure_belt_drying_system" ) {
         writeLog({
@@ -328,7 +317,7 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
                 . "(für die Berechnung wird Bodenhaltung gesetzt).",
           fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
                 . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
-		    });
+        });
       }  
       elsif ( In(housing_type) eq "deep_pit" ) {
         writeLog({
@@ -336,125 +325,114 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
           de => "Für Mastpoulets ist Kotgrube als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung. "
                 . "(für die Berechnung wird Bodenhaltung gesetzt).",
           fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
-	               . "fosse à déjections. Choisissez plutôt ‘Litière profonde'."
+                 . "fosse à déjections. Choisissez plutôt ‘Litière profonde'."
         });
-    	}
-      return Tech(er_housing_other_deep_litter);
+      }
+      return "deep_litter";
     }
-
-
-# +c_manure_removal_interval
-#   print = 10
-#   ++units  
-#     en = -
-#   ++description
-#     Emission rate for the poultry housing type.
-#   ++formula
-#     if ( In(housing_type) eq "manure_belt_without_manure_belt_drying_system" or 
-#          In(housing_type) eq "manure_belt_with_manure_belt_drying_system" ) {
-#       switch ( In(manure_removal_interval) ) {
-#         case "less_than_twice_a_month" { return Tech(c_manure_removal_interval_less_than_twice_a_month) }
-#         case "twice_a_month" { return Tech(c_manure_removal_interval_twice_a_month) }
-#         case "3_to_4_times_a_month" { return Tech(c_manure_removal_interval_3_to_4_times_a_month) }
-#         case "more_than_4_times_a_month" { return Tech(c_manure_removal_interval_more_than_4_times_a_month) }
-#         case "once_a_day" { return Tech(c_manure_removal_interval_once_a_day) }
-#         else { 
-#           writeLog({
-#             en => "The category 'No manure belt' is not applicable for housing systems with a manure belt!",
-#             de => "Kategorie 'keine Kotbandentmistung', ist nicht erlaubt bei Aufstallung, Kotbandentmistung!",
-#             fr => "La catégorie ‘Pas de tapis d'évacuation' n'est pas valable pour une "
-#                   . "stabulation avec tapis d'évacuation du fumier!",
-#           });
-#           return Tech(c_manure_removal_interval_twice_a_month);
-#         }
-#       }
-#     }
-#     else { # Housing Type deep pit or deep litter
-#   		if( not (In(manure_removal_interval) eq "no_manure_belt") ){
-#           	writeLog({en => "Please enter under manure removal interval 'No manure belt' in combination with the housing systems deep pit or deep litter!",
-#                     	  de => "Bitte wählen Sie unter Entmistungsintervall 'keine Kotbandentmistung' in Kombination mit der Aufstallung, Bodenhaltung oder Kotgrube!",
-#   	                  fr => "Sous ‘Fréquence d'évacuation du fumier', veuillez choisir la catégorie "
-#                  		        . "‘Pas de tapis d'évacuation' en combinaison avec la stabulation ‘Litière "
-#                                   . "profonde' ou ‘Fosse à déjections' !",
-#   	      	        });
-#           }
-#   		return 1; # default no correctios
-#     }
-
-+c_manure_removal_interval
-  print = 10
-  ++units  
-    en = -
-  ++description
-    Emission rate for the poultry housing type.
-  ++formula
-    if ( (In(housing_type) eq "manure_belt_without_manure_belt_drying_system") 
-         or (In(housing_type) eq "manure_belt_with_manure_belt_drying_system")) {
-       if (In(manure_removal_interval) eq "less_than_twice_a_month"){
-         return Tech(c_manure_removal_interval_less_than_twice_a_month);
-      } elsif(In(manure_removal_interval) eq "twice_a_month"){
-         return Tech(c_manure_removal_interval_twice_a_month);
-      } elsif(In(manure_removal_interval) eq "3_to_4_times_a_month"){
-         return Tech(c_manure_removal_interval_3_to_4_times_a_month);
-      } elsif(In(manure_removal_interval) eq "more_than_4_times_a_month"){
-         return Tech(c_manure_removal_interval_more_than_4_times_a_month);
-      } elsif(In(manure_removal_interval) eq "once_a_day"){
-         return Tech(c_manure_removal_interval_once_a_day);
-      } elsif(In(manure_removal_interval) eq "no_manure_belt") {
-         writeLog({en => "The category 'No manure belt' is not applicable for housing systems with a manure belt!",
-                   de => "Kategorie 'keine Kotbandentmistung', ist nicht erlaubt bei Aufstallung, Kotbandentmistung!",
-                   fr => "La catégorie ‘Pas de tapis d'évacuation' n'est pas valable pour une "
-             . "stabulation avec tapis d'évacuation du fumier!",
-      });
-         return Tech(c_manure_removal_interval_twice_a_month);  # default no correctios
-         }
-     } 
-  else{                                           # Housing Type deep pit or deep litter
-    if( not (In(manure_removal_interval) eq "no_manure_belt") ){
-          writeLog({en => "Please enter under manure removal interval 'No manure belt' in combination with the housing systems deep pit or deep litter!",
-                      de => "Bitte wählen Sie unter Entmistungsintervall 'keine Kotbandentmistung' in Kombination mit der Aufstallung, Bodenhaltung oder Kotgrube!",
-                    fr => "Sous ‘Fréquence d'évacuation du fumier', veuillez choisir la catégorie "
-                          . "‘Pas de tapis d'évacuation' en combinaison avec la stabulation ‘Litière "
-                                . "profonde' ou ‘Fosse à déjections' !",
-                  });
-        }
-    return 1; # default no correctios
-     }
-
-
-+c_drinking_system
-  print = 10
-  ++units  
-    en = -
-  ++description
-    Correction factor for poultry drinking station.
-  ++formula
-    if (In(drinking_system) eq "drinking_nipples"){
-       return Tech(c_drinking_nipples);
-    } elsif(In(drinking_system) eq "bell_drinkers"){
-       return Tech(c_bell_drinkers);
-    }else {
-       writeLog({en => "Invalid 'drinking_system' entered!",
-                 de => "Ungültiges Tränkesystem eingegeben!",
-                 en => "Ce type d'abreuvoir n'est pas valable !",
-		 });
-       return 1.0;
-    }
-
-+housing_type
-  print = 15
-  ++units  
-    en = -
-  ++description
-    Housing type (needed in other modules).
-  ++formula
-    In(housing_type);
 
 +drinking_system
-  print = 15
+  print = Poultry
   ++units  
     en = -
   ++description
     Drinking system.
   ++formula
     In(drinking_system);
+
++er_housing
+  print = Poultry
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry housing type.
+  ++formula
+    if ( Val(animalcategory, ..::Excretion) eq "layers" or 
+         Val(animalcategory, ..::Excretion) eq "growers" ) {
+      given ( In(housing_type) ) {
+        when "manure_belt_without_manure_belt_drying_system" {
+          return Tech(er_housing_layers_growers_manure_belt_without_manure_belt_drying_system);
+        } 
+        when "manure_belt_with_manure_belt_drying_system" {
+          return Tech(er_housing_layers_growers_manure_belt_with_manure_belt_drying_system);
+      	} 
+        when "deep_pit" {
+          return Tech(er_housing_layers_growers_deep_pit);
+      	} 
+        when "deep_litter" {
+   	      return Tech(er_housing_layers_growers_deep_litter);
+        }
+      }
+  	} else {
+      return Tech(er_housing_other_deep_litter);
+    }
+
++c_manure_removal_interval
+  print = Poultry
+  ++units  
+    en = -
+  ++description
+    Emission rate for the poultry housing type.
+  ++formula
+    if ( In(housing_type) eq "manure_belt_without_manure_belt_drying_system" or 
+         In(housing_type) eq "manure_belt_with_manure_belt_drying_system" ) {
+      given ( In(manure_removal_interval) ) {
+        when "less_than_twice_a_month" {
+         return Tech(c_manure_removal_interval_less_than_twice_a_month);
+        } 
+        when "twice_a_month" {
+         return Tech(c_manure_removal_interval_twice_a_month);
+        } 
+        when "3_to_4_times_a_month" {
+         return Tech(c_manure_removal_interval_3_to_4_times_a_month);
+        } 
+        when "more_than_4_times_a_month" {
+         return Tech(c_manure_removal_interval_more_than_4_times_a_month);
+        } 
+        when "once_a_day" {
+         return Tech(c_manure_removal_interval_once_a_day);
+        } 
+        when "no_manure_belt" {
+          writeLog({
+            en => "The category 'No manure belt' is not applicable for housing systems with a manure belt!",
+            de => "Kategorie 'keine Kotbandentmistung', ist nicht erlaubt bei Aufstallung, Kotbandentmistung!",
+            fr => "La catégorie ‘Pas de tapis d'évacuation' n'est pas valable pour une "
+                  . "stabulation avec tapis d'évacuation du fumier!",
+          });
+         return Tech(c_manure_removal_interval_twice_a_month);  # default no correctios
+        }
+      }
+    } 
+    else{                                           # Housing Type deep pit or deep litter
+      if ( not (In(manure_removal_interval) eq "no_manure_belt") ) {
+        writeLog({
+          en => "Please enter under manure removal interval 'No manure belt' in combination with the housing systems deep pit or deep litter!",
+          de => "Bitte wählen Sie unter Entmistungsintervall 'keine Kotbandentmistung' in Kombination mit der Aufstallung, Bodenhaltung oder Kotgrube!",
+          fr => "Sous ‘Fréquence d'évacuation du fumier', veuillez choisir la catégorie "
+                . "‘Pas de tapis d'évacuation' en combinaison avec la stabulation ‘Litière "
+                . "profonde' ou ‘Fosse à déjections' !",
+        });
+      }
+      return 1; # default no correctios
+    }
+
+
++c_drinking_system
+  print = Poultry
+  ++units  
+    en = -
+  ++description
+    Correction factor for poultry drinking station.
+  ++formula
+    if ( In(drinking_system) eq "drinking_nipples" ) {
+       return Tech(c_drinking_nipples);
+    } elsif ( In(drinking_system) eq "bell_drinkers" ) {
+       return Tech(c_bell_drinkers);
+    } else {
+      writeLog({
+        en => "Invalid 'drinking_system' entered!",
+        de => "Ungültiges Tränkesystem eingegeben!",
+        fr => "Ce type d'abreuvoir n'est pas valable!",
+		  });
+      return 1.0;
+    }

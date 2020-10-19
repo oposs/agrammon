@@ -85,46 +85,7 @@ Selects the emission rate and other correction factors for the specific housing 
        <p>Stabulation libre avec production de lisier et de fumier: 10%</p>
        <p>Stabulation libre avec litière profonde ou litière sur plan incliné: 1%</p>
 
-+feeding_boxes
-  models = LU
-  type = enum
-  default_calc = no
-  ++enum
-    +++yes
-       en = yes
-       de = Ja
-       fr = oui
-       it = yes
-    +++no
-       en = no
-       de = Nein
-       fr = non
-       it = no
-  ++labels 
-    en = Are feeding boxes available?
-    de = Sind Fütterungsbuchten vorhanden?
-    fr = Sont des boxes d'alimentation existant?
-  ++units 
-    en = -
-  ++description
-    Are feeding boxes available?
-  ++help
-    +++en
-       <p> </p>
-    +++de
-       <p> </p>
-       <p> </p>
-    +++fr
-       <p> </p>
-
 *** technical ***
-
-+red_feeding_boxes
-  value = 0.1
-  ++units
-    en = -
-  ++description
-    Reduction efficiency for LU Model version (Workshop SHL Zollikofen, 08.02.2010)
 
 
 *** external ***
@@ -198,28 +159,3 @@ Selects the emission rate and other correction factors for the specific housing 
       return Val(share_liquid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
       return Val(share_liquid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
     }
-
-+c_feeding_boxes
-  print = DairyCow
-  ++units 
-    en = -
-  ++description
-    Correction factor for feeding boxes
-  ++formula
-    if ( defined In(feeding_boxes) and In(feeding_boxes) eq 'yes' ) { 
-      if ( (In(housing_type) eq 'Tied_Housing_Slurry') or (In(housing_type) eq 'Tied_Housing_Slurry_Plus_Solid_Manure') ) {
-        writeLog({
-          en=>"Feeding boxes are applicable for loose housing systems only!",
-          de=>"Fütterungsbuchten sind nur für Laufställe anwendbar!",
-          fr=>"Franz.: Fütterungsbuchten sind nur für Laufställe anwendbar!"
-          });
-        return 1;
-      } 
-      else{
-        1 - Tech(red_feeding_boxes);
-      }
-    }
-    else {
-      1;
-    }
-
