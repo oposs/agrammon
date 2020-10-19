@@ -23,6 +23,11 @@ taxonomy = Total
 #+DetailsByAnimalCategory
 +PlantProduction
 
++PlantProduction
++Application
++Storage
++Livestock
+
 *** output ***
 
 +nh3_nanimalproduction
