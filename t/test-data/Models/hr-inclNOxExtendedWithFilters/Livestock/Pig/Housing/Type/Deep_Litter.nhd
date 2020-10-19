@@ -40,7 +40,7 @@ Describes correction factors for the label deep litter pig housing system.
 *** output ***
     
 +er_housing
-  print = 15
+  print = Pig
   ++units  
     en = -
   ++description
@@ -49,20 +49,10 @@ Describes correction factors for the label deep litter pig housing system.
     Tech(er);
 
 +share_liquid
-  print = 15
+  print = Pig
   ++units  
     en = -
   ++description
     Liquid part of Ntot for selected housing type.
   ++formula
     Tech(share_liquid);
-
-+share_solid
-  print = 15
-  ++units  
-    en = -
-  ++description
-    Solid part of Ntot for selected housing type.
-  ++formula
-    1-Tech(share_liquid);
-

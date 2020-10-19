@@ -95,7 +95,7 @@ Selects the emission rate and other correciton factors for the specific housing 
 *** output ***
 
 +housing_type
-  print = 15
+  print = FatteningPigs
   ++units  
     en = -
   ++description
@@ -104,109 +104,64 @@ Selects the emission rate and other correciton factors for the specific housing 
     In(housing_type);
 
 +er_housing
-  print = 10
+  print = FatteningPigs
   ++units  
     en = -
   ++description
     Emission rate for the housing type.
   ++formula
-    if ( Out(housing_type) eq 'Outdoor' ) {
-	return Val(er_housing,Type::Outdoor);
-    }
-    elsif ( Out(housing_type) eq 'Slurry_Conventional' ) {
-	return Val(er_housing,Type::Slurry_Conventional);
-    }
-    elsif ( Out(housing_type) eq 'Slurry_Label' ) {
-	return Val(er_housing,Type::Slurry_Label);
-    }
-    elsif ( Out(housing_type) eq 'Slurry_Label_Open' ) {
-	return Val(er_housing,Type::Slurry_Label_Open);
-    }
-    elsif ( Out(housing_type) eq 'Deep_Litter' ) {
-	return Val(er_housing,Type::Deep_Litter);
+    given ( Out(housing_type) ) {
+      when 'Outdoor' {
+	     Val(er_housing, Type::Outdoor);
+      }
+      when 'Slurry_Conventional' {
+	     Val(er_housing, Type::Slurry_Conventional);
+      }
+      when 'Slurry_Label' {
+	     Val(er_housing, Type::Slurry_Label);
+      }
+      when 'Slurry_Label_Open' {
+	     Val(er_housing, Type::Slurry_Label_Open);
+      }
+      when 'Deep_Litter' {
+	     Val(er_housing, Type::Deep_Litter);
+      }
     }
 
 +share_liquid
-  print = 10
+  print = FatteningPigs
   ++units  
     en = -
   ++description
     Liquid share for the housing type.
   ++formula
-#	given ( Out(housing_type) ) {
-#	    when ('Slurry_Conventional') { return Val(share_liquid,Type::Slurry_Conventional); }
-#	    when ('Slurry_Label')        { return Val(share_liquid,Type::Slurry_Label); }
-#	    when ('Slurry_Label_Open')   { return Val(share_liquid,Type::Slurry_Label_Open); }
-#	    when ('Deep_Litter')         { return Val(share_liquid,Type::Deep_Litter); }
-#	    when ('Outdoor')             { return Val(share_liquid,Type::Outdoor); }
-#	}
-    if ( Out(housing_type) eq 'Outdoor' ) {
-        return Val(share_liquid,Type::Outdoor);
-    }
-    elsif ( Out(housing_type) eq 'Slurry_Conventional' ) {
-        return Val(share_liquid,Type::Slurry_Conventional);
-    }
-    elsif ( Out(housing_type) eq 'Slurry_Label' ) {
-        return Val(share_liquid,Type::Slurry_Label);
-    }
-    elsif ( Out(housing_type) eq 'Slurry_Label_Open' ) {
-        return Val(share_liquid,Type::Slurry_Label_Open);
-    }
-    elsif ( Out(housing_type) eq 'Deep_Litter' ) {
-        return Val(share_liquid,Type::Deep_Litter);
-    }
-
-+share_solid
-  print = 10
-  ++units  
-    en = -
-  ++description
-    Solid share for the housing type.
-  ++formula
-#    Val(share_solid, 'Type::' . Out(housing_type));
-#    Val(share_solid, 'Type_'.Out(housing_type));
-#	given (Out(housing_type)) {
-#	    when ('Slurry_Conventional') { 
-#            return Val(share_solid,Type::Slurry_Conventional); 
-#        };
-#	    when ('Slurry_Label')        { 
-#            return Val(share_solid,Type::Slurry_Label); 
-#        };
-#	    when ('Slurry_Label_Open')   { 
-#            return Val(share_solid,Type::Slurry_Label_Open); 
-#        };
-#	    when ('Deep_Litter')         { 
-#            return Val(share_solid,Type::Deep_Litter); 
-#        };
-#	    when ('Outdoor')             { 
-#            return Val(share_solid,Type::Outdoor); 
-#        };
-#	};
-    if ( Out(housing_type) eq 'Outdoor' ) {
-        return Val(share_solid,Type::Outdoor);
-    }
-    elsif ( Out(housing_type) eq 'Slurry_Conventional' ) {
-        return Val(share_solid,Type::Slurry_Conventional);
-    }
-    elsif ( Out(housing_type) eq 'Slurry_Label' ) {
-        return Val(share_solid,Type::Slurry_Label);
-    }
-    elsif ( Out(housing_type) eq 'Slurry_Label_Open' ) {
-        return Val(share_solid,Type::Slurry_Label_Open);
-    }
-    elsif ( Out(housing_type) eq 'Deep_Litter' ) {
-        return Val(share_solid,Type::Deep_Litter);
+    given ( Out(housing_type) ) {
+      when 'Outdoor' {
+       Val(share_liquid, Type::Outdoor);
+      }
+      when 'Slurry_Conventional' {
+       Val(share_liquid, Type::Slurry_Conventional);
+      }
+      when 'Slurry_Label' {
+       Val(share_liquid, Type::Slurry_Label);
+      }
+      when 'Slurry_Label_Open' {
+       Val(share_liquid, Type::Slurry_Label_Open);
+      }
+      when 'Deep_Litter' {
+       Val(share_liquid, Type::Deep_Litter);
+      }
     }
 
 
 +share_indoor
-  print = 15
+  print = FatteningPigs
   ++units
     en = -
   ++description
     Factor for considering indoor mitigation efficiencies.
   ++formula 
-    if ( (Out(housing_type) eq 'Slurry_Label') or (Out(housing_type) eq 'Slurry_Label_Open') ) {
+    if ( Out(housing_type) eq 'Slurry_Label' or Out(housing_type) eq 'Slurry_Label_Open' ) {
       return 0.5;
     }
     else {
