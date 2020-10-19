@@ -266,47 +266,7 @@ taxonomy = Livestock::OtherCattle::Housing::Type
         <p> * Les veaux jusqu'à l'âge de 4 mois ne doivent pas être détenus à l'attache, selon l'Ord. sur la protection des animaux. </p>
 
 
-+feeding_boxes
-  models = LU
-  type = enum
-  default_calc = no
-  ++enum
-    +++yes
-       en = yes
-       de = Ja
-       fr = oui
-       it = yes
-    +++no
-       en = no
-       de = Nein
-       fr = non
-       it = no
-  ++labels 
-    en = Are feeding boxes available?
-    de = Sind Fütterungsbuchten vorhanden?
-    fr = Sont des boxes d'alimentation existant?
-  ++units 
-    en = -
-  ++description
-    Are feeding boxes available?
-  ++help
-    +++en 
-       <p></p>
-    +++de 
-       <p></p>
-    +++fr 
-       <p></p>
-
-
 *** technical ***
-
-+red_feeding_boxes
-  value = 0.1
-  ++units
-    en = -
-  ++description
-    Reduction efficiency for LU Model version (Workshop SHL Zollikofen, 08.02.2010)
-
 
 *** external ***
 
@@ -319,101 +279,17 @@ taxonomy = Livestock::OtherCattle::Housing::Type
 
 *** output ***
 
-+er_housing
-  print = 10
++housing_type
+  print = OtherCattle
   ++units 
     en = -
   ++description
-    Emission rate for the housing type.
+    Housing type (needed in other modules).
   ++formula
-#    Val(er_housing, 'Type::' . In(housing_type) );
-#	given (In(housing_type)) {
-#	    when ('Tied_Housing_Slurry')                    { return Val(er_housing,Type::Tied_Housing_Slurry); }
-#	    when ('Tied_Housing_Slurry_Plus_Solid_Manure')  { return Val(er_housing,Type::Tied_Housing_Slurry_Plus_Solid_Manure); }
-#	    when ('Loose_Housing_Slurry')                   { return Val(er_housing,Type::Loose_Housing_Slurry); }
-#	    when ('Loose_Housing_Slurry_Plus_Solid_Manure') { return Val(er_housing,Type::Loose_Housing_Slurry_Plus_Solid_Manure); }
-#	    when ('Loose_Housing_Deep_Litter)               { return Val(er_housing,Type::Loose_Housing_Deep_Litter); }
-#	}
-       if ( In(housing_type) eq 'Tied_Housing_Slurry' ) {
- 	   return Val(er_housing,Type::Tied_Housing_Slurry);
-       }
-       elsif ( In(housing_type) eq 'Tied_Housing_Slurry_Plus_Solid_Manure')  {
-           return Val(er_housing,Type::Tied_Housing_Slurry_Plus_Solid_Manure); 
-       }
-       elsif ( In(housing_type) eq 'Loose_Housing_Slurry') { 
-           return Val(er_housing,Type::Loose_Housing_Slurry); 
-       }
-       elsif ( In(housing_type) eq 'Loose_Housing_Slurry_Plus_Solid_Manure') { 
-           return Val(er_housing,Type::Loose_Housing_Slurry_Plus_Solid_Manure); 
-       }
-       elsif ( In(housing_type) eq 'Loose_Housing_Deep_Litter') { 
-           return Val(er_housing,Type::Loose_Housing_Deep_Litter); 
-       }
-
-+share_liquid
-  print = 10
-  ++units 
-    en = -
-  ++description
-    Liquid share for the housing type.
-  ++formula
-#    Val(share_liquid, 'Type::' . In(housing_type));
-#	given (In(housing_type)) {
-#	    when ('Tied_Housing_Slurry')                    { return Val(share_liquid,Type::Tied_Housing_Slurry); }
-#	    when ('Tied_Housing_Slurry_Plus_Solid_Manure')  { return Val(share_liquid,Type::Tied_Housing_Slurry_Plus_Solid_Manure); }
-#	    when ('Loose_Housing_Slurry')                   { return Val(share_liquid,Type::Loose_Housing_Slurry); }
-#	    when ('Loose_Housing_Slurry_Plus_Solid_Manure') { return Val(share_liquid,Type::Loose_Housing_Slurry_Plus_Solid_Manure); }
-#	    when ('Loose_Housing_Deep_Litter)               { return Val(share_liquid,Type::Loose_Housing_Deep_Litter); }
-#	}
-       if ( In(housing_type) eq 'Tied_Housing_Slurry' ) {
- 	   return Val(share_liquid,Type::Tied_Housing_Slurry);
-       }
-       elsif ( In(housing_type) eq 'Tied_Housing_Slurry_Plus_Solid_Manure')  {
-           return Val(share_liquid,Type::Tied_Housing_Slurry_Plus_Solid_Manure); 
-       }
-       elsif ( In(housing_type) eq 'Loose_Housing_Slurry') { 
-           return Val(share_liquid,Type::Loose_Housing_Slurry); 
-       }
-       elsif ( In(housing_type) eq 'Loose_Housing_Slurry_Plus_Solid_Manure') { 
-           return Val(share_liquid,Type::Loose_Housing_Slurry_Plus_Solid_Manure); 
-       }
-       elsif ( In(housing_type) eq 'Loose_Housing_Deep_Litter') { 
-           return Val(share_liquid,Type::Loose_Housing_Deep_Litter); 
-       }
-
-+share_solid
-  print = 10
-  ++units 
-    en = -
-  ++description
-    Solid share for the housing type.
-  ++formula
-#    Val(share_solid, 'Type::' . In(housing_type));
-#	given (In(housing_type)) {
-#	    when ('Tied_Housing_Slurry')                    { return Val(share_solid,Type::Tied_Housing_Slurry); }
-#	    when ('Tied_Housing_Slurry_Plus_Solid_Manure')  { return Val(share_solid,Type::Tied_Housing_Slurry_Plus_Solid_Manure); }
-#	    when ('Loose_Housing_Slurry')                   { return Val(share_solid,Type::Loose_Housing_Slurry); }
-#	    when ('Loose_Housing_Slurry_Plus_Solid_Manure') { return Val(share_solid,Type::Loose_Housing_Slurry_Plus_Solid_Manure); }
-#	    when ('Loose_Housing_Deep_Litter)               { return Val(share_solid,Type::Loose_Housing_Deep_Litter); }
-#	}
-       if ( In(housing_type) eq 'Tied_Housing_Slurry' ) {
- 	   return Val(share_solid,Type::Tied_Housing_Slurry);
-       }
-       elsif ( In(housing_type) eq 'Tied_Housing_Slurry_Plus_Solid_Manure')  {
-           return Val(share_solid,Type::Tied_Housing_Slurry_Plus_Solid_Manure); 
-       }
-       elsif ( In(housing_type) eq 'Loose_Housing_Slurry') { 
-           return Val(share_solid,Type::Loose_Housing_Slurry); 
-       }
-       elsif ( In(housing_type) eq 'Loose_Housing_Slurry_Plus_Solid_Manure') { 
-           return Val(share_solid,Type::Loose_Housing_Slurry_Plus_Solid_Manure); 
-       }
-       elsif ( In(housing_type) eq 'Loose_Housing_Deep_Litter') { 
-           return Val(share_solid,Type::Loose_Housing_Deep_Litter); 
-       }
+    In(housing_type);
 
 +k_area
-  print = 25
+  print = OtherCattle
   ++units 
     en = -
   ++description
@@ -437,35 +313,53 @@ taxonomy = Livestock::OtherCattle::Housing::Type
       }
     }
 
-+housing_type
-  print = 15
++er_housing
+  print = OtherCattle
   ++units 
     en = -
   ++description
-    Housing type (needed in other modules).
+    Emission rate for the housing type.
   ++formula
-    In(housing_type);
-
-+c_feeding_boxes
-  print = 15
-  ++units 
-    en = -
-  ++description
-    Are feeding boxes available?
-  ++formula
-	 
-    if( defined In(feeding_boxes)  and In(feeding_boxes) eq 'yes' ){ 
-        if( (In(housing_type) eq 'Tied_Housing_Slurry') or (In(housing_type) eq 'Tied_Housing_Slurry_Plus_Solid_Manure')){
-    	    writeLog({en=>"Feeding are applicable for loose housing systems only!",
-              de=>"Fütterungsbuchten sind nur für Laufställe anwendbar!",
-              fr=>"Feeding boxes sont éligible seulement pour les stabulations libre!"});
-	    return 0;
-       } 
-       else{
-        	return( Tech(red_feeding_boxes) );
-       }
+    given ( In(housing_type) ) {
+      when 'Tied_Housing_Slurry' {
+        return Val(er_housing, Type::Tied_Housing_Slurry);
+      }
+      when 'Tied_Housing_Slurry_Plus_Solid_Manure' {
+        return Val(er_housing, Type::Tied_Housing_Slurry_Plus_Solid_Manure);
+      }
+      when 'Loose_Housing_Slurry' {
+        return Val(er_housing, Type::Loose_Housing_Slurry);
+      }
+      when 'Loose_Housing_Slurry_Plus_Solid_Manure' {
+        return Val(er_housing, Type::Loose_Housing_Slurry_Plus_Solid_Manure);
+      }
+      when 'Loose_Housing_Deep_Litter' {
+        return Val(er_housing, Type::Loose_Housing_Deep_Litter);
+      }
     }
-    else {
-	return 0;
-    };
+
++share_liquid
+  print = OtherCattle
+  ++units 
+    en = -
+  ++description
+    Liquid share for the housing type.
+  ++formula
+    given ( In(housing_type) ) {
+      when 'Tied_Housing_Slurry' {
+        return Val(share_liquid, Type::Tied_Housing_Slurry);
+      }
+      when 'Tied_Housing_Slurry_Plus_Solid_Manure' {
+        return Val(share_liquid, Type::Tied_Housing_Slurry_Plus_Solid_Manure);
+      }
+      when 'Loose_Housing_Slurry' {
+        return Val(share_liquid, Type::Loose_Housing_Slurry);
+      }
+      when 'Loose_Housing_Slurry_Plus_Solid_Manure' {
+        return Val(share_liquid, Type::Loose_Housing_Slurry_Plus_Solid_Manure);
+      }
+      when 'Loose_Housing_Deep_Litter' {
+        return Val(share_liquid, Type::Loose_Housing_Deep_Litter);
+      }
+    }
 

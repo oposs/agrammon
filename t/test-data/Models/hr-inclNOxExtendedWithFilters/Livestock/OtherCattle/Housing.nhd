@@ -88,7 +88,6 @@ taxonomy = Livestock::OtherCattle::Housing
     my $c_housing = Val(c_grazing, Housing::KGrazing) * 
                     Val(c_area, Housing::KArea) * 
                     Val(er_housing, Housing::Type) * 
-                    (1 - Val(c_feeding_boxes, Housing::Type)) *
                     Val(c_housing_floor, Housing::Floor) * 
                     Val(c_free_factor_housing, Housing::CFreeFactor);
     #FIXME: Check: Is it in any way even possible that $c_housing > 1???
