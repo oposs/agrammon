@@ -19,12 +19,18 @@ lives-ok
     'Parsed technical file';
 isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
 
-lives-ok { prepare-model(
-               $model,
-               technical => %($params.technical.map(-> %module {
-                   %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-               }))
-           );
-}, 'Successfully created docu';
+my $latex;
+lives-ok { $latex = create-latex-source(
+        'Model name',
+        $model,
+        technical => %($params.technical.map(-> %module {
+            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+        }))
+    );
+}, "Create LaTeX";
+
+ok $latex ~~ / '\begin{document}' .+ '\end{document}' /, "Contains a LaTeX document";
+
+# TODO: add a test running the create-latex output through pdflatex.
 
 done-testing;

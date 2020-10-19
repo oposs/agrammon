@@ -79,7 +79,7 @@ sub latex (IO::Path $path, $tech-file) is export {
         load-model-using-cache( $*HOME.add('.agrammon'), $module-path, $module)
     };
 
-    create-latex(
+    say create-latex-source(
         $model-name,
         $model,
         technical => %($params.technical.map(-> %module {
