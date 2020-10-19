@@ -88,6 +88,14 @@ class Agrammon::ModuleBuilder {
     }
 
     method multi-line-str-option($/) {
-        make ~$<key> => $<value>.Str.lines.map(*.trim).join("\n");
+        make ~$<key> => dedent($<value>.Str).trim-trailing;
+    }
+
+    #| Dedent a multi-line value going by the amount of indentation on the
+    #| first non-empty line.
+    sub dedent(Str $text) {
+        $text ~~ /^\n*(\h+)/
+            ?? quietly $text.indent(-$0.chars)
+            !! $text
     }
 }
