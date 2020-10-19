@@ -62,11 +62,13 @@ sub create-latex-source( Str $model-name, Agrammon::Model $model, :%technical! )
                 my $name = latex-escape($output.name);
                 my $desc = latex-escape($output.description);
                 my $code = $output.code;
+                # don't indent content of HEREDOC as this will
+                # add excessive indentation on $code's first line
                 @latex.push(Qs:to/LATEX/);
-                    \item[$name] $desc
-                    \begin{Verbatim}[fontsize=\footnotesize]
-                    $code
-                    \end{Verbatim}
+                \item[$name] $desc
+                \begin{Verbatim}[fontsize=\footnotesize]
+                $code
+                \end{Verbatim}
                 LATEX
             }
             @latex.push('\end{description}');
