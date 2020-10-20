@@ -155,7 +155,7 @@ taxonomy = Livestock::FatteningPigs::Housing
      de = kg N/Jahr
      fr = kg N/an	
   ++description
-    Annual N flux out of the housing including N remained in biotrickling filter,
+    Annual N flux out of the housing excluding N remained in biotrickling filter,
     (without remains in acid filter).
   ++formula
     # change n/tan into storage/application from air scrubber types? -> check with Thomas
@@ -174,7 +174,7 @@ taxonomy = Livestock::FatteningPigs::Housing
      de = kg N/Jahr
      fr = kg N/an	
   ++description
-    Annual N flux as TAN out of the housing indcluding N remained in biotrickling filter.
+    Annual N flux as TAN out of the housing excluding N remained in biotrickling filter.
   ++formula
     # change n/tan into storage/application from air scrubber types? -> check with Thomas
     if ( Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling' ) {
