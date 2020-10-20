@@ -323,12 +323,13 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual N excreted by poultry.
   ++formula
-    if ( Out(animalcategory) eq 'layers' || 
-         Out(animalcategory) eq 'growers' || 
-         Out(animalcategory) eq 'other_poultry' ) {
-      Out(n_excretion);
-    } else {
-      0;
+    given ( Out(animalcategory) ) {
+      when $_ eq 'layers' or $_ eq 'growers' or $_ eq 'other_poultry' {
+        Out(n_excretion);
+      } 
+      default {
+        0;
+      }
     }
 
 +n_excretion_turkeys_broilers
@@ -340,9 +341,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual N excreted by poultry.
   ++formula
-    if ( Out(animalcategory) eq 'turkeys' || 
-         Out(animalcategory) eq 'broilers' ) {
-      Out(n_excretion);
-    } else {
-      0;
+    given ( Out(animalcategory) ) {
+      when $_ eq 'turkeys' or $_ eq 'broilers' {
+        Out(n_excretion);
+      } 
+      default {
+        0;
+      }
     }
