@@ -111,9 +111,9 @@ taxonomy = Livestock::Poultry::Housing
      de = kg N/Jahr
      fr = kg N/an	
   ++description
-    Annual N flux out of the housing including N remained in biotrickling filter.
+    Annual N flux out of the housing excluding N remained in biotrickling filter.
   ++formula
-    if(Val(air_scrubber, Housing::AirScrubber) eq 'acid'){
+    if(Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling'){
        Out(n_into_housing) - Out(nh3_nhousing) - Out(n_housing_filter)
     }else{
        Out(n_into_housing) - Out(nh3_nhousing)
@@ -126,9 +126,9 @@ taxonomy = Livestock::Poultry::Housing
      de = kg N/Jahr
      fr = kg N/an	
   ++description
-    Annual N flux out of the housing including N remained in biotrickling filter.
+    Annual N flux out of the housing excluding N remained in biotrickling filter.
   ++formula
-    if(Val(air_scrubber, Housing::AirScrubber) eq 'acid'){
+    if(Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling'){
        Out(tan_into_housing) - Out(nh3_nhousing) - Out(n_housing_filter)
     }else{
        Out(tan_into_housing) - Out(nh3_nhousing)
