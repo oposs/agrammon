@@ -166,6 +166,60 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++formula
     Val(nh3_ngrazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
 
++n2_ngrazing
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual N excretion into grazing.
+  ++formula
+    Val(n2_ngrazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+
++no_ngrazing
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual N excretion into grazing.
+  ++formula
+    Val(no_ngrazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+
++n2o_ngrazing
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual N excretion into grazing.
+  ++formula
+    Val(n2o_ngrazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+
++n_remain_pasture
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual N excretion into grazing.
+  ++formula
+    Val(n_remain_pasture, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+
++tan_into_grazing
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual N excretion into grazing.
+  ++formula
+    Val(tan_into_grazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
 
 
 +n_excretion
