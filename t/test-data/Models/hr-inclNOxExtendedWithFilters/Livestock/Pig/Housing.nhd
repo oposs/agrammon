@@ -32,11 +32,11 @@ taxonomy = Livestock::Pig::Housing
 
 +Excretion
 +Grazing
-+Housing::KArea
-+Housing::Type
 +Housing::AirScrubber
-+Housing::MitigationOptions
 +Housing::CFreeFactor
++Housing::KArea
++Housing::MitigationOptions
++Housing::Type
 
 *** output ***
 
@@ -62,8 +62,68 @@ taxonomy = Livestock::Pig::Housing
   ++formula
     Val(tan_excretion, Excretion) - Val(tan_into_grazing, Grazing);
 
++ef_housing_indoor_before_air_scrubber
+  print = Pig
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for indoor part without air scrubber removal of other pig housing systems.
+  ++formula
+    my $ef = Val(er_housing, Housing::Type) * 
+              Val(c_free_factor_housing, Housing::CFreeFactor) *
+              Val(c_area, Housing::KArea) *
+              (1 - Val(red_housing_floor, Housing::MitigationOptions)) * 
+              (1 - Val(red_housing_air, Housing::MitigationOptions));
+    #FIXME: Add message if $ef > 1?
+    $ef = 1 unless $ef < 1;
+    return $ef;
+
++ef_housing_indoor
+  print = Pig
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for indoor part of other pig housing systems.
+  ++formula
+    Out(ef_housing_indoor_before_air_scrubber) *
+    (1 - Val(red_air_scrubber, Housing::AirScrubber));
+
++ef_housing_outdoor
+  print = Pig
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for outdoor part of other pig housing systems.
+  ++formula
+    my $ef = Val(er_housing, Housing::Type) * 
+              Val(c_free_factor_housing, Housing::CFreeFactor) *
+              Val(c_area, Housing::KArea);
+    #FIXME: Add message if $ef > 1?
+    $ef = 1 unless $ef < 1;
+    return $ef;
+
++ef_nh3_nhousing
+  print = Pig,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for other pig housing systems.
+  ++formula
+    # indoor part
+    Val(share_indoor, Housing::Type) * Out(ef_housing_indoor) +
+    # outdoor part
+    (1 - Val(share_indoor, Housing::Type)) * Out(ef_housing_outdoor);
+
 +nh3_nhousing
-  print = 5b
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -71,23 +131,11 @@ taxonomy = Livestock::Pig::Housing
   ++description
     Annual NH3 emission from pig housing systems.
   ++formula
-    # change effect of mitigation strategies for indoor/outdoor? -> check with Thomas
-    Out(tan_into_housing) * 
-    Val(er_housing, Housing::Type) * 
-    Val(c_free_factor_housing, Housing::CFreeFactor) *
-    Val(c_area, Housing::KArea) *
-    (
-      # indoor part + mitigation
-      Val(share_indoor, Housing::Type) * 
-      (1 - Val(red_air_scrubber, Housing::AirScrubber)) * 
-      (1 - Val(red_housing_floor, Housing::MitigationOptions)) * 
-      (1 - Val(red_housing_air, Housing::MitigationOptions)) +
-      # outdoor part + mitigation
-      (1 - Val(share_indoor, Housing::Type))
-    );
+    # change effect of certain mitigation strategies on indoor/outdoor emissions? -> check with Thomas
+    Out(tan_into_housing) * Out(ef_nh3_nhousing);
 
 +n_air_scrubber
-  print = 5b
+  print = Pig
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -95,17 +143,10 @@ taxonomy = Livestock::Pig::Housing
   ++description
     Annual N of NH3 emission remaining in air scrubber from pig housing systems.
   ++formula
-    # change effect of mitigation strategies for indoor/outdoor? -> check with Thomas
     # reduction efficiency of air scrubber
     Val(red_air_scrubber, Housing::AirScrubber) *
-    # multiplied with indoor loss without air scrubber mitigation
-    Val(tan_excretion,Excretion) * 
-    Val(er_housing, Housing::Type) * 
-    Val(c_area, Housing::KArea) *
-    Val(c_free_factor_housing, Housing::CFreeFactor) *
-    Val(share_indoor, Housing::Type) *  
-    (1 - Val(red_housing_floor, Housing::MitigationOptions)) *
-    (1 - Val(red_housing_air, Housing::MitigationOptions));  
+    # multiplied with indoor loss before air scrubber removal
+    Val(tan_excretion,Excretion) * Out(ef_housing_indoor_before_air_scrubber);  
 
 +n_outhousing
   print = Pig
