@@ -37,7 +37,7 @@ taxonomy = Livestock::Equides::Housing::KGrazing
 
 *** external ***
 
-+..::Grazing
++..::GrazingInput
 
     
 *** output ***
@@ -51,6 +51,6 @@ taxonomy = Livestock::Equides::Housing::KGrazing
     depending on the number of grazing hours per day and the grazing days per year.
   ++formula
     # calculate correction factor per 'grazing event' i.e. per day
-    my $k_grazing = Tech(k_grazing_a) * exp(Tech(k_grazing_b) * Val(grazing_hours, ..::Grazing));
+    my $k_grazing = Tech(k_grazing_a) * exp(Tech(k_grazing_b) * Val(grazing_hours, ..::GrazingInput));
     # scale with ratio grazing_days per year
-    ($k_grazing - 1) * Val(grazing_days, ..::Grazing) / 365 + 1;
+    ($k_grazing - 1) * Val(grazing_days, ..::GrazingInput) / 365 + 1;

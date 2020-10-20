@@ -39,6 +39,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 ###+NIntoGrazing (old)
 
 +Excretion
++GrazingInput
 
 *** technical ***
 
@@ -73,74 +74,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 
 *** input ***
 
-+grazing_days
-  type  = integer
-  validator = between(0,365);
-  ++labels 
-    en = Grazing days per year
-    de = Jährliche Weidetage
-    fr = Jours de pâturage par an
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average grazing days per year.
-  ++help
-     +++en
-        <p>Standard value for Switzerland: 220 days per year </p>
-     +++de
-        <p>Vorschlag für Standardwerte: 220 Tage pro Jahr (Durchschnitt Tal-, Hügel- und Bergregion)</p>
-     +++fr
-        <p>Proposition de valeurs standard: 220 jours pour an (moyenne des régions de plaine, collines et montagne) </p>
-
-
-+grazing_hours
-  type  = float
-  validator = between(0,24);
-  ++labels 
-    en = Grazing hours per day
-    de = Tägliche Weidestunden
-    fr = Heures de pâturage par jour
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average grazing hours per day.
- ++help
-     +++en
-        <p>Standard value for Switzerland: 8 hours per day</p>
-     +++de
-        <p>Vorschlag für Standardwerte: 8 Stunden pro Tag (Durchschnitt Tal-, Hügel- und Bergregion)</p>
-     +++fr
-        <p>Proposition de valeurs standard: 8 heures par jour (moyenne des régions de plaine, collines et montagne)</p>
-
-
 *** output ***
-
-
-+grazing_hours
-  print = Equides
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Grazing hours per day.
-  ++formula
-    In(grazing_hours);
- 
-+grazing_days
-  print = Equides
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Grazing days per year.
-  ++formula
-    In(grazing_days);
 
 
 +n_into_grazing
@@ -153,8 +87,8 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual N excretion during grazing for equides.
   ++formula
     Val(n_excretion, Excretion) * 
-    In(grazing_days)  / 365 *
-    In(grazing_hours) /  24;
+    Val(grazing_days, GrazingInput)  / 365 *
+    Val(grazing_hours, GrazingInput) /  24;
 
 +tan_into_grazing
   print = Equides
@@ -166,8 +100,8 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual solable N (TAN) excretion during grazing for equides.
   ++formula
     Val(tan_excretion,Excretion) * 
-    In(grazing_days)  / 365 * 
-    In(grazing_hours) /  24;
+    Val(grazing_days, GrazingInput)  / 365 * 
+    Val(grazing_hours, GrazingInput) /  24;
 
 +ef_nh3_ngrazing
   print = Equides,ef_nh3
