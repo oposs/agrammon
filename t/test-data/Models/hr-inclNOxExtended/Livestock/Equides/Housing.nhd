@@ -137,8 +137,7 @@ taxonomy = Livestock::Equides::Housing
       return 0;
     }
 
-
-+share_into_yard
++fix_into_yard
   print = Equides
   ++units
      en = -
@@ -147,18 +146,26 @@ taxonomy = Livestock::Equides::Housing
   ++description
     Share of annual N excretion into yard.
   ++formula
-    # access to yard only - days with yard only
-    (Val(yard_days, Yard) - Out(days_with_grazing_and_yard)) / 365 * 
-    Val(yard_hours, Yard) / 24 +
-    # access to yard only - days with yard and grazing
-    Out(days_with_grazing_and_yard) / 365 *
-    (Val(yard_hours, Yard) - Out(hours_with_grazing_and_yard)) / 24 +
-    # access to yard and grazing (shared 50/50)
-    0.5 *
-    Out(days_with_grazing_and_yard) / 365 * 
-    Out(hours_with_grazing_and_yard) / 24;
+    if (Val(yard_days, Yard) > 0 and Val(yard_hours, Yard) > 0) {
+      (
+        # access to yard only - days with yard only
+        (Val(yard_days, Yard) - Out(days_with_grazing_and_yard)) / 365 * 
+        Val(yard_hours, Yard) / 24 +
+        # access to yard only - days with yard and grazing
+        Out(days_with_grazing_and_yard) / 365 *
+        (Val(yard_hours, Yard) - Out(hours_with_grazing_and_yard)) / 24 +
+        # access to yard and grazing (shared 50/50)
+        0.5 *
+        Out(days_with_grazing_and_yard) / 365 * 
+        Out(hours_with_grazing_and_yard) / 24
+      ) /
+      Val(yard_days, Yard) * 365 /
+      Val(yard_hours, Yard) * 24;
+    } else {
+      0
+    }
 
-+share_into_grazing
++fix_into_grazing
   print = Equides
   ++units
      en = -
@@ -167,16 +174,24 @@ taxonomy = Livestock::Equides::Housing
   ++description
     Share of annual N excretion into grazing.
   ++formula
-    # access to grazing only - days with grazing only
-    (Val(grazing_days, Grazing) - Out(days_with_grazing_and_yard)) / 365 * 
-    Val(grazing_hours, Grazing) / 24 +
-    # access to grazing only - days with yard and grazing
-    Out(days_with_grazing_and_yard) / 365 *
-    (Val(grazing_hours, Grazing) - Out(hours_with_grazing_and_yard)) / 24 +
-    # access to yard and grazing (shared 50/50)
-    0.5 *
-    Out(days_with_grazing_and_yard) / 365 * 
-    Out(hours_with_grazing_and_yard) / 24;
+    if (Val(grazing_days, Grazing) > 0 and Val(grazing_hours, Grazing) > 0) {
+      (
+        # access to grazing only - days with grazing only
+        (Val(grazing_days, Grazing) - Out(days_with_grazing_and_yard)) / 365 * 
+        Val(grazing_hours, Grazing) / 24 +
+        # access to grazing only - days with yard and grazing
+        Out(days_with_grazing_and_yard) / 365 *
+        (Val(grazing_hours, Grazing) - Out(hours_with_grazing_and_yard)) / 24 +
+        # access to yard and grazing (shared 50/50)
+        0.5 *
+        Out(days_with_grazing_and_yard) / 365 * 
+        Out(hours_with_grazing_and_yard) / 24
+      ) /
+      Val(grazing_days, Grazing) * 365 /
+      Val(grazing_hours, Grazing) * 24;
+    } else {
+      0
+    }
 
 # Val(n_into_yard, Yard)
 +n_into_yard
@@ -188,7 +203,7 @@ taxonomy = Livestock::Equides::Housing
   ++description
     Annual N excretion into yard.
   ++formula
-    Val(n_into_yard, Yard) * Out(share_into_yard);
+    Val(n_into_yard, Yard) * Out(fix_into_yard);
 
 # Val(n_into_grazing, Grazing)
 +n_into_grazing
@@ -200,7 +215,7 @@ taxonomy = Livestock::Equides::Housing
   ++description
     Annual N excretion into grazing.
   ++formula
-    Val(n_into_grazing, Grazing) * Out(share_into_grazing);
+    Val(n_into_grazing, Grazing) * Out(fix_into_grazing);
 
 # Val(tan_into_grazing, Grazing)
 +tan_into_grazing
@@ -212,7 +227,7 @@ taxonomy = Livestock::Equides::Housing
   ++description
     Annual TAN excretion into grazing.
   ++formula
-    Val(tan_into_grazing, Grazing) * Out(share_into_grazing);
+    Val(tan_into_grazing, Grazing) * Out(fix_into_grazing);
 
 # Val(tan_into_yard, Yard)
 +tan_into_yard
@@ -224,7 +239,7 @@ taxonomy = Livestock::Equides::Housing
   ++description
     Annual TAN excretion into yard.
   ++formula
-    Val(tan_into_yard, Yard) * Out(share_into_yard);
+    Val(tan_into_yard, Yard) * Out(fix_into_yard);
 
 +c_free_factor_housing
   print = 10

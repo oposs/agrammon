@@ -67,7 +67,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into yard.
   ++formula
-    Val(n_into_yard, Equides::Yard) * Val(share_into_yard, Equides::Housing);
+    Val(n_into_yard, Equides::Yard) * Val(fix_into_yard, Equides::Housing);
 
 # Val(n_outyard, Equides::Yard)
 +n_outyard
@@ -79,7 +79,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into yard.
   ++formula
-    Val(n_outyard, Equides::Yard) * Val(share_into_yard, Equides::Housing);
+    Val(n_outyard, Equides::Yard) * Val(fix_into_yard, Equides::Housing);
 
 # Val(tan_outyard, Equides::Yard)
 +tan_outyard
@@ -91,7 +91,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into yard.
   ++formula
-    Val(tan_outyard, Equides::Yard) * Val(share_into_yard, Equides::Housing);
+    Val(tan_outyard, Equides::Yard) * Val(fix_into_yard, Equides::Housing);
 
 # Val(n_outyard_liquid, Equides::Yard)
 +n_outyard_liquid
@@ -103,7 +103,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into yard.
   ++formula
-    Val(n_outyard_liquid, Equides::Yard) * Val(share_into_yard, Equides::Housing);
+    Val(n_outyard_liquid, Equides::Yard) * Val(fix_into_yard, Equides::Housing);
 
 # Val(tan_outyard_liquid, Equides::Yard)
 +tan_outyard_liquid
@@ -115,7 +115,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into yard.
   ++formula
-    Val(tan_outyard_liquid, Equides::Yard) * Val(share_into_yard, Equides::Housing);
+    Val(tan_outyard_liquid, Equides::Yard) * Val(fix_into_yard, Equides::Housing);
 
 
 # Val(n_outyard_solid, Equides::Yard)
@@ -128,7 +128,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into yard.
   ++formula
-    Val(n_outyard_solid, Equides::Yard) * Val(share_into_yard, Equides::Housing);
+    Val(n_outyard_solid, Equides::Yard) * Val(fix_into_yard, Equides::Housing);
 
 # Val(tan_outyard_solid, Equides::Yard)
 +tan_outyard_solid
@@ -140,7 +140,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into yard.
   ++formula
-    Val(tan_outyard_solid, Equides::Yard) * Val(share_into_yard, Equides::Housing);
+    Val(tan_outyard_solid, Equides::Yard) * Val(fix_into_yard, Equides::Housing);
 
 # Val(nh3_nyard, Equides::Yard)
 +nh3_nyard
@@ -152,7 +152,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into yard.
   ++formula
-    Val(nh3_nyard, Equides::Yard) * Val(share_into_yard, Equides::Housing);
+    Val(nh3_nyard, Equides::Yard) * Val(fix_into_yard, Equides::Housing);
 
 # Val(nh3_ngrazing, Equides::Grazing)
 +nh3_ngrazing
@@ -164,7 +164,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into grazing.
   ++formula
-    Val(nh3_ngrazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+    Val(nh3_ngrazing, Equides::Grazing) * Val(fix_into_grazing, Equides::Housing);
 
 +n2_ngrazing
   print = Equides
@@ -175,7 +175,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into grazing.
   ++formula
-    Val(n2_ngrazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+    Val(n2_ngrazing, Equides::Grazing) * Val(fix_into_grazing, Equides::Housing);
 
 +no_ngrazing
   print = Equides
@@ -186,7 +186,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into grazing.
   ++formula
-    Val(no_ngrazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+    Val(no_ngrazing, Equides::Grazing) * Val(fix_into_grazing, Equides::Housing);
 
 +n2o_ngrazing
   print = Equides
@@ -197,7 +197,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into grazing.
   ++formula
-    Val(n2o_ngrazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+    Val(n2o_ngrazing, Equides::Grazing) * Val(fix_into_grazing, Equides::Housing);
 
 +n_remain_pasture
   print = Equides
@@ -208,7 +208,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into grazing.
   ++formula
-    Val(n_remain_pasture, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+    Val(n_remain_pasture, Equides::Grazing) * Val(fix_into_grazing, Equides::Housing);
 
 +tan_into_grazing
   print = Equides
@@ -219,7 +219,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
   ++description
     Annual N excretion into grazing.
   ++formula
-    Val(tan_into_grazing, Equides::Grazing) * Val(share_into_grazing, Equides::Housing);
+    Val(tan_into_grazing, Equides::Grazing) * Val(fix_into_grazing, Equides::Housing);
 
 
 +n_excretion
