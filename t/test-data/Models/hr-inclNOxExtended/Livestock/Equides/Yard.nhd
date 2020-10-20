@@ -252,6 +252,28 @@ livestock. Atmospheric Environment 35:5331-5338.
 
 *** output ***
 
++yard_days
+  print = debug
+  ++units  
+    en = days/year
+    de = 
+    fr = 
+  ++description
+    Used in housing module
+  ++formula
+    In(yard_days);
+
++yard_hours
+  print = debug
+  ++units  
+    en = hours/year
+    de = Stunden/Jahr
+    fr = heurs/an
+  ++description
+    Used in housing module
+  ++formula
+    In(yard_hours);
+
 +yard_hours_per_year
   print = debug
   ++units  
