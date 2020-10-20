@@ -45,14 +45,14 @@ taxonomy = Livestock::SmallRuminants::Housing
 
 +Excretion
 +Grazing
-+Housing::KGrazing
 +Housing::CFreeFactor
++Housing::KGrazing
 
 *** output ***
 
 
 +n_into_housing
-  print = 7e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -60,13 +60,11 @@ taxonomy = Livestock::SmallRuminants::Housing
   ++description
     Annual N flux into the house.
   ++formula
-    if( Val(n_excretion, Excretion) > Val(n_into_grazing, Grazing)  ) {
-      Val(n_excretion, Excretion) 
-          - Val(n_into_grazing, Grazing);
-    } else { return 0; }
+    Val(n_excretion, Excretion) - 
+    Val(n_into_grazing, Grazing);
 
 +tan_into_housing
-  print = 7e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -74,13 +72,27 @@ taxonomy = Livestock::SmallRuminants::Housing
   ++description
     Annual N flux as TAN into the house.
   ++formula
-    if( Val(tan_excretion, Excretion) > Val(tan_into_grazing, Grazing) ) {
-    	Val(tan_excretion, Excretion)
-           - Val(tan_into_grazing, Grazing);
-    } else { return 0; }
+  	Val(tan_excretion, Excretion) - 
+    Val(tan_into_grazing, Grazing);
+
++ef_nh3_nhousing
+  print = SmallRuminants,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for small ruminants housing systems.
+  ++formula
+    my $ef_nh3 = Tech(er_housing) * 
+                 Val(c_grazing, Housing::KGrazing) * 
+                 Val(c_free_factor_housing, Housing::CFreeFactor);
+    #FIXME: Check: Is it in any way even possible that $ef_nh3 > 1???
+    $ef_nh3 = 1 unless $ef_nh3 < 1;
+    return $ef_nh3;
 
 +nh3_nhousing
-  print = 5e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -89,13 +101,10 @@ taxonomy = Livestock::SmallRuminants::Housing
     Annual NH3 emission from small ruminants housing systems 
     per animal place.
   ++formula
-   Out(tan_into_housing) 
-    * Val(c_grazing, Housing::KGrazing) 
-    * Tech(er_housing) 
-    * Val(c_free_factor_housing, Housing::CFreeFactor) ;
+   Out(tan_into_housing) * Out(ef_nh3_nhousing);
 
 +n_outhousing
-  print = 7e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -103,12 +112,10 @@ taxonomy = Livestock::SmallRuminants::Housing
   ++description
     Annual N flux out of the housing.
   ++formula
-    if( (Out(n_into_housing) - Out(nh3_nhousing)) > 0) {
-    	Out(n_into_housing) - Out(nh3_nhousing);
-    } else { return 0; }
+    Out(n_into_housing) - Out(nh3_nhousing);
 
 +tan_outhousing
-  print = 9e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -116,12 +123,10 @@ taxonomy = Livestock::SmallRuminants::Housing
   ++description
     Annual N flux as TAN out of the housing.
   ++formula
-    if( (Out(tan_into_housing) - Out(nh3_nhousing)) > 0) {
-    	Out(tan_into_housing) - Out(nh3_nhousing);
-    } else { return 0; }
+    Out(tan_into_housing) - Out(nh3_nhousing);
 
 +n_outhousing_liquid
-  print = 7e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -132,7 +137,7 @@ taxonomy = Livestock::SmallRuminants::Housing
     0
 
 +tan_outhousing_liquid
-  print = 7e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -143,7 +148,7 @@ taxonomy = Livestock::SmallRuminants::Housing
     0
 
 +n_outhousing_solid
-  print = 7e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -154,7 +159,7 @@ taxonomy = Livestock::SmallRuminants::Housing
     Out(n_outhousing); 
 
 +tan_outhousing_solid
-  print = 7e
+  print = SmallRuminants
   ++units
      en = kg N/year
      de = kg N/Jahr

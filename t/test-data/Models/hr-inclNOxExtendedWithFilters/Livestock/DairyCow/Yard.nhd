@@ -512,8 +512,10 @@ taxonomy = Livestock::DairyCow::Yard
   ++formula
     Val(n_excretion, Excretion) * 
     (
+      # yard only (100%)
       Out(share_excretion) * 
       (In(yard_days) - Out(days_with_grazing_and_yard)) / 365 +
+      # yard and grazing (share yard)
       Out(share_excretion_with_grazing) * 
       Out(days_with_grazing_and_yard) / 365
     );
@@ -529,8 +531,10 @@ taxonomy = Livestock::DairyCow::Yard
   ++formula
     Val(tan_excretion,Excretion) *
     (
+      # yard only (100%)
       Out(share_excretion) * 
       (In(yard_days) - Out(days_with_grazing_and_yard)) / 365 +
+      # yard and grazing (share yard)
       Out(share_excretion_with_grazing) * 
       Out(days_with_grazing_and_yard) / 365
     );
