@@ -302,6 +302,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++formula
     Out(n_excretion_animal) * Out(animals);
 
+
 +tan_excretion
   print = Poultry
   ++units
@@ -311,4 +312,37 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual soluble N excreted by an animalgroup of selected poultry category.
   ++formula
-     $TE->{'share_Nsol_'.Out(animalcategory)} * Out(n_excretion);
+    $TE->{'share_Nsol_'.Out(animalcategory)} * Out(n_excretion);
+
++n_excretion_layers_growers_other_poultry
+  print = Poultry
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by poultry.
+  ++formula
+    if ( Out(animalcategory) eq 'layers' || 
+         Out(animalcategory) eq 'growers' || 
+         Out(animalcategory) eq 'other_poultry' ) {
+      Out(n_excretion);
+    } else {
+      0;
+    }
+
++n_excretion_turkeys_broilers
+  print = Poultry
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by poultry.
+  ++formula
+    if ( Out(animalcategory) eq 'turkeys' || 
+         Out(animalcategory) eq 'broilers' ) {
+      Out(n_excretion);
+    } else {
+      0;
+    }

@@ -347,7 +347,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Animal categories belonging to mastercategory *poultry_LGO* (layers, growers and other poultry). 
     Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
-    sign( Sum(n_excretion_layers_growers_other_poultry,Livestock::Poultry) );
+    sign( Sum(n_excretion_layers_growers_other_poultry,Livestock::Poultry::Excretion) );
 
 +has_poultry_TB
   print = mastercategory,livestock
@@ -360,7 +360,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Hash entry of 1, if N flux into livestock > 0. Hash entry of 0, if N flux into livestock = 0.
   ++formula
     sign( 
-      Sum(n_excretion_turkeys_broilers,Livestock::Poultry)
+      Sum(n_excretion_turkeys_broilers,Livestock::Poultry::Excretion)
     );
 
 +has_no_poultry
@@ -491,7 +491,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     storage from pigs (scaled by total flux).
   ++formula
     ( 
-      scalar(Sum(n_liquid_from_pig,Livestock::Pig)) +
+      scalar(Sum(n_outhousing_liquid,Livestock::Pig::Housing)) +
       scalar(Sum(n_outhousing_liquid, Livestock::FatteningPigs::Housing))
     ) / 
     scalar(Out(n_out_livestock_liquid));
@@ -729,35 +729,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(no_npoultry,Livestock::Poultry) P+
     Sum(n2o_npoultry,Livestock::Poultry);
 
-+nxox_nsolid_layers_growers_other_poultry
-  print = 4a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NxOx flux (solid share) as TAN from housing and yard into
-    the storage from poultry if layer , growers or other poultry.
-  ++formula
-    Sum(n2_npoultry_layers_growers_other_poultry,Livestock::Poultry) P+
-    Sum(no_npoultry_layers_growers_other_poultry,Livestock::Poultry) P+
-    Sum(n2o_npoultry_layers_growers_other_poultry,Livestock::Poultry);
-
-
-+nxox_nsolid_turkeys_broilers
-  print = 4a
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NxOx flux (solid share) as TAN from housing and yard into
-    the storage from poultry if turkeys or broilers.
-  ++formula
-    Sum(n2_npoultry_turkeys_broilers,Livestock::Poultry) P+
-    Sum(no_npoultry_turkeys_broilers,Livestock::Poultry) P+
-    Sum(n2o_npoultry_turkeys_broilers,Livestock::Poultry);
-
 
 +nxox_nsolid_pigs
   print = 4a
@@ -770,11 +741,11 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     the storage from all pigs.
   ++formula
     Sum(n2_nsolid,Livestock::Pig) P+
-    Sum(no_nsolid_pig,Livestock::Pig) P+
+    Sum(no_nsolid,Livestock::Pig) P+
     Sum(n2o_nsolid,Livestock::Pig) P+
 
     Sum(n2_nsolid,Livestock::FatteningPigs) P+
-    Sum(no_nsolid_fattening_pig,Livestock::FatteningPigs) P+
+    Sum(no_nsolid,Livestock::FatteningPigs) P+
     Sum(n2o_nsolid,Livestock::FatteningPigs);
 
 
@@ -815,11 +786,11 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n2o_nliquid,Livestock::DairyCow) P+
 
     Sum(n2_nliquid,Livestock::Pig) P+
-    Sum(no_nliquid_pig,Livestock::Pig) P+
+    Sum(no_nliquid,Livestock::Pig) P+
     Sum(n2o_nliquid,Livestock::Pig) P+
 
     Sum(n2_nliquid,Livestock::FatteningPigs) P+
-    Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) P+
+    Sum(no_nliquid,Livestock::FatteningPigs) P+
     Sum(n2o_nliquid,Livestock::FatteningPigs);
 
 ####################################################
@@ -888,10 +859,10 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
         Sum(no_nliquid,Livestock::DairyCow) P+
         Sum(no_nsolid,Livestock::SmallRuminants) P+
         Sum(no_nsolid,Livestock::RoughageConsuming) P+
-        Sum(no_nsolid_pig,Livestock::Pig) P+
-        Sum(no_nliquid_pig,Livestock::Pig) P+
-        Sum(no_nsolid_fattening_pig,Livestock::FatteningPigs) P+
-        Sum(no_nliquid_fattening_pig,Livestock::FatteningPigs) P+
+        Sum(no_nsolid,Livestock::Pig) P+
+        Sum(no_nliquid,Livestock::Pig) P+
+        Sum(no_nsolid,Livestock::FatteningPigs) P+
+        Sum(no_nliquid,Livestock::FatteningPigs) P+
         Sum(no_nsolid,Livestock::Equides) P+
         Sum(no_npoultry,Livestock::Poultry);
 
