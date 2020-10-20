@@ -306,7 +306,8 @@ class Agrammon::Model {
     method dump {
         my Str $output;
         for @!evaluation-order.reverse {
-            $output ~= $_.taxonomy ~ "\n";
+            my $level = ($_.taxonomy ~~ m:global/ '::' /).elems;
+            $output ~= $_.taxonomy.indent(4 * $level) ~ "\n";
         }
         return $output;
     }
