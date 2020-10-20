@@ -39,11 +39,11 @@ taxonomy = Livestock::Poultry::Housing
 *** external ***
 
 +Excretion
++Housing::AirScrubber
++Housing::CFreeFactor
 +Housing::KArea
 +Housing::Type
-+Housing::AirScrubber
 +Outdoor
-+Housing::CFreeFactor
 
 
 *** output ***
@@ -57,8 +57,7 @@ taxonomy = Livestock::Poultry::Housing
   ++description
     Annual N flux into the housing.
   ++formula
-    Val(n_excretion, Excretion)
-    - Val(n_into_outdoor, Outdoor);
+    Val(n_excretion, Excretion) - Val(n_into_outdoor, Outdoor);
 
 +tan_into_housing
   print = 7d
@@ -69,8 +68,37 @@ taxonomy = Livestock::Poultry::Housing
   ++description
     Annual N flux into the housing.
   ++formula
-    Val(tan_excretion, Excretion)
-    - Val(tan_into_outdoor, Outdoor);
+    Val(tan_excretion, Excretion) - Val(tan_into_outdoor, Outdoor);
+
++ef_housing_before_air_scrubber
+  print = Poultry
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor part without air scrubber removal of poultry housing systems.
+  ++formula
+    my $ef = Val(er_housing, Housing::Type) * 
+              Val(c_area, Housing::KArea) * 
+              Val(c_manure_removal_interval, Housing::Type) * 
+              Val(c_drinking_system, Housing::Type) * 
+              Val(c_free_factor_housing, Housing::CFreeFactor);
+    #FIXME: Add message if $ef > 1?
+    $ef = 1 unless $ef < 1;
+    return $ef;
+
++ef_housing
+  print = Poultry,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for poultry housing systems.
+  ++formula
+    Out(ef_housing_before_air_scrubber) *
+    (1 - Val(red_air_scrubber, Housing::AirScrubber));
 
 +nh3_nhousing
   print = 5d
@@ -82,13 +110,7 @@ taxonomy = Livestock::Poultry::Housing
     Annual NH3 emission from poultry housing systems 
     per animal place.
   ++formula
-    (Val(n_excretion, Excretion) 
-       * Val(er_housing, Housing::Type)
-       * Val(c_area, Housing::KArea)
-       * Val(c_manure_removal_interval, Housing::Type)
-       * Val(c_drinking_system, Housing::Type)
-       * (1 - Val(c_air_scrubber, Housing::AirScrubber)))
-       * Val(c_free_factor_housing, Housing::CFreeFactor); 
+    Val(n_excretion, Excretion) * Out(ef_housing); 
 
 +n_housing_filter
   print = 5b
@@ -103,8 +125,7 @@ taxonomy = Livestock::Poultry::Housing
     * Val(er_housing, Housing::Type)
     * Val(c_manure_removal_interval, Housing::Type)
     * Val(c_drinking_system, Housing::Type)
-    * Val(c_air_scrubber, Housing::AirScrubber); 
-
+    * Val(red_air_scrubber, Housing::AirScrubber); 
 
 +n_outhousing_solid
   print = 7d
