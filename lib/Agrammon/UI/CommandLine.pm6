@@ -78,9 +78,7 @@ sub latex (IO::Path $path, $tech-file, $variants) is export {
     $path.dirname ~~ / .* '/' (.+) /;
     my $model-name = ~$0;
     my $model = timed "Load $module of $module-path from cache", {
-        my %preprocessor-options = set($variants.split(","));
-        dd %preprocessor-options;
-        load-model-using-cache( $*HOME.add('.agrammon'), $module-path, $module, %preprocessor-options)
+        load-model-using-cache( $*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     };
 
     say create-latex-source(
@@ -113,8 +111,7 @@ sub dump-model (IO::Path $path, $variants) is export {
     my $module      = $path.extension('').basename;
 
     my $model = timed "load $module", {
-        my %preprocessor-options = set($variants.split(","));
-       load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, %preprocessor-options)
+        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     };
     return $model.dump;
 }
@@ -136,8 +133,7 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $variants, $language,
     }
 
     my $model = timed "Load $module", {
-        my %preprocessor-options = set($variants.split(","));
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, %preprocessor-options);
+        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     };
 
     my $filename = $input-path;
@@ -206,8 +202,7 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
     }
 
     my $model = timed "Load model from $module-path/$module.nhd", {
-        my %preprocessor-options = set($variants.split(","));
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, %preprocessor-options)
+        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     }
 
     my $db = DB::Pg.new(conninfo => $cfg.db-conninfo);
@@ -231,4 +226,8 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
     $http.start;
     say "Listening at http://$host:$port";
     return $http;
+}
+
+sub preprocessor-options(Str $variants) {
+    set($variants.split(","));
 }
