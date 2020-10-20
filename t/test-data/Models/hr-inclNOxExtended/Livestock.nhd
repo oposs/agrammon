@@ -799,7 +799,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(nh3_ngrazing,Livestock::DairyCow::Grazing) +
      Sum(nh3_ngrazing,Livestock::Pig::Grazing) +
      Sum(nh3_ngrazing,Livestock::FatteningPigs::Grazing) +
-     Sum(nh3_ngrazing,Livestock::Equides::Grazing) +
+     Sum(nh3_ngrazing,Livestock::Equides) +
      Sum(nh3_ngrazing,Livestock::SmallRuminants::Grazing) +
      Sum(nh3_ngrazing,Livestock::RoughageConsuming::Grazing) +
      Sum(nh3_free_range,Livestock::Poultry::Outdoor);
@@ -823,7 +823,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(n2_ngrazing,Livestock::DairyCow::Grazing) +
      Sum(n2_ngrazing,Livestock::Pig::Grazing) +
      Sum(n2_ngrazing,Livestock::FatteningPigs::Grazing) +
-     Sum(n2_ngrazing,Livestock::Equides::Grazing) +
+     Sum(n2_ngrazing,Livestock::Equides) +
      Sum(n2_ngrazing,Livestock::SmallRuminants::Grazing) +
      Sum(n2_ngrazing,Livestock::RoughageConsuming::Grazing) +
      Sum(n2_free_range,Livestock::Poultry::Outdoor);
@@ -847,7 +847,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(no_ngrazing,Livestock::DairyCow::Grazing) +
      Sum(no_ngrazing,Livestock::Pig::Grazing) +
      Sum(no_ngrazing,Livestock::FatteningPigs::Grazing) +
-     Sum(no_ngrazing,Livestock::Equides::Grazing) +
+     Sum(no_ngrazing,Livestock::Equides) +
      Sum(no_ngrazing,Livestock::SmallRuminants::Grazing) +
      Sum(no_ngrazing,Livestock::RoughageConsuming::Grazing) +
      Sum(no_free_range,Livestock::Poultry::Outdoor);
@@ -872,7 +872,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(n2o_ngrazing,Livestock::DairyCow::Grazing) +
      Sum(n2o_ngrazing,Livestock::Pig::Grazing) +
      Sum(n2o_ngrazing,Livestock::FatteningPigs::Grazing) +
-     Sum(n2o_ngrazing,Livestock::Equides::Grazing) +
+     Sum(n2o_ngrazing,Livestock::Equides) +
      Sum(n2o_ngrazing,Livestock::SmallRuminants::Grazing) +
      Sum(n2o_ngrazing,Livestock::RoughageConsuming::Grazing) +
      Sum(n2o_free_range,Livestock::Poultry::Outdoor);
@@ -901,6 +901,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
    Sum(nh3_nhousing,Livestock::Equides::Housing) +
    Sum(nh3_nhousing,Livestock::Poultry::Housing);
 
+
 +nh3_nhousing_and_yard
   format= %.0f
   print = LivestockSummary
@@ -925,7 +926,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
    Sum(nh3_nhousing,Livestock::Equides::Housing) +
    Sum(nh3_nhousing,Livestock::Poultry::Housing) +
    Sum(nh3_nyard,Livestock::OtherCattle::Yard) +
-   Sum(nh3_nyard,Livestock::Equides::Yard) +
+   Sum(nh3_nyard,Livestock::Equides) +
    Sum(nh3_nyard,Livestock::DairyCow::Yard);
 
 +nh3_nyard
@@ -938,7 +939,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Annual NH3 emission from all yards.
   ++formula
     Sum(nh3_nyard,Livestock::OtherCattle::Yard) +
-    Sum(nh3_nyard,Livestock::Equides::Yard) +
+    Sum(nh3_nyard,Livestock::Equides) +
     Sum(nh3_nyard,Livestock::DairyCow::Yard);
 
 +n_remain_pasture
@@ -960,7 +961,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(n_remain_pasture,Livestock::DairyCow::Grazing) +
      Sum(n_remain_pasture,Livestock::Pig::Grazing) +
      Sum(n_remain_pasture,Livestock::FatteningPigs::Grazing) +
-     Sum(n_remain_pasture,Livestock::Equides::Grazing) +
+     Sum(n_remain_pasture,Livestock::Equides) +
      Sum(n_remain_pasture,Livestock::SmallRuminants::Grazing) +
      Sum(n_remain_pasture,Livestock::RoughageConsuming::Grazing) +
      Sum(n_remain_free_range,Livestock::Poultry::Outdoor);
@@ -985,7 +986,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(tan_into_grazing,Livestock::DairyCow::Grazing) +
      Sum(tan_into_grazing,Livestock::Pig::Grazing) +
      Sum(tan_into_grazing,Livestock::FatteningPigs::Grazing) +
-     Sum(tan_into_grazing,Livestock::Equides::Grazing) +
+     Sum(tan_into_grazing,Livestock::Equides) +
      Sum(tan_into_grazing,Livestock::SmallRuminants::Grazing) +
      Sum(tan_into_grazing,Livestock::RoughageConsuming::Grazing) +
      Sum(tan_free_range,Livestock::Poultry::Outdoor);

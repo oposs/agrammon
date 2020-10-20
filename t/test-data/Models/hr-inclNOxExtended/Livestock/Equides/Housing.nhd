@@ -106,6 +106,141 @@ taxonomy = Livestock::Equides::Housing
 +Yard
 *** output ***
 
+
++days_with_grazing_and_yard
+  print = Equides
+  ++units  
+    en = days
+    de = Tage
+    fr = jours
+  ++description
+    Number of Days whith access to yard and pasture
+  ++formula
+    if( (Val(grazing_days, Grazing) + Val(yard_days, Yard)) > 365 ){
+      return Val(grazing_days, Grazing) + Val(yard_days, Yard) - 365;
+    } else {
+      return 0;
+    }
+
++hours_with_grazing_and_yard
+  print = Equides
+  ++units  
+    en = hours
+    de = Stunden
+    fr = heures
+  ++description
+    Number of Hours per Day whith access to yard and pasture
+  ++formula
+    if( (Val(grazing_hours, Grazing) + Val(yard_hours, Yard)) > 24 ){
+      return Val(grazing_hours, Grazing) + Val(yard_hours, Yard) - 24;
+    } else {
+      return 0;
+    }
+
++fix_into_yard
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Share of annual N excretion into yard.
+  ++formula
+    if (Val(yard_days, Yard) > 0 and Val(yard_hours, Yard) > 0) {
+      (
+        # access to yard only - days with yard only
+        (Val(yard_days, Yard) - Out(days_with_grazing_and_yard)) / 365 * 
+        Val(yard_hours, Yard) / 24 +
+        # access to yard only - days with yard and grazing
+        Out(days_with_grazing_and_yard) / 365 *
+        (Val(yard_hours, Yard) - Out(hours_with_grazing_and_yard)) / 24 +
+        # access to yard and grazing (shared 50/50)
+        0.5 *
+        Out(days_with_grazing_and_yard) / 365 * 
+        Out(hours_with_grazing_and_yard) / 24
+      ) /
+      Val(yard_days, Yard) * 365 /
+      Val(yard_hours, Yard) * 24;
+    } else {
+      0
+    }
+
++fix_into_grazing
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Share of annual N excretion into grazing.
+  ++formula
+    if (Val(grazing_days, Grazing) > 0 and Val(grazing_hours, Grazing) > 0) {
+      (
+        # access to grazing only - days with grazing only
+        (Val(grazing_days, Grazing) - Out(days_with_grazing_and_yard)) / 365 * 
+        Val(grazing_hours, Grazing) / 24 +
+        # access to grazing only - days with yard and grazing
+        Out(days_with_grazing_and_yard) / 365 *
+        (Val(grazing_hours, Grazing) - Out(hours_with_grazing_and_yard)) / 24 +
+        # access to yard and grazing (shared 50/50)
+        0.5 *
+        Out(days_with_grazing_and_yard) / 365 * 
+        Out(hours_with_grazing_and_yard) / 24
+      ) /
+      Val(grazing_days, Grazing) * 365 /
+      Val(grazing_hours, Grazing) * 24;
+    } else {
+      0
+    }
+
+# Val(n_into_yard, Yard)
++n_into_yard
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual N excretion into yard.
+  ++formula
+    Val(n_into_yard, Yard) * Out(fix_into_yard);
+
+# Val(n_into_grazing, Grazing)
++n_into_grazing
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual N excretion into grazing.
+  ++formula
+    Val(n_into_grazing, Grazing) * Out(fix_into_grazing);
+
+# Val(tan_into_grazing, Grazing)
++tan_into_grazing
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual TAN excretion into grazing.
+  ++formula
+    Val(tan_into_grazing, Grazing) * Out(fix_into_grazing);
+
+# Val(tan_into_yard, Yard)
++tan_into_yard
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual TAN excretion into yard.
+  ++formula
+    Val(tan_into_yard, Yard) * Out(fix_into_yard);
+
 +c_free_factor_housing
   print = 10
   ++units 
@@ -141,10 +276,10 @@ taxonomy = Livestock::Equides::Housing
   ++description
     Annual N flux into the house.
   ++formula
-    if( Val(n_excretion, Excretion) > (Val(n_into_grazing, Grazing) + Val(n_into_yard, Yard)) ) {
+    if( Val(n_excretion, Excretion) > (Out(n_into_grazing) + Out(n_into_yard)) ) {
       Val(n_excretion, Excretion) 
-          - Val(n_into_grazing, Grazing)
-	  - Val(n_into_yard, Yard); 
+          - Out(n_into_grazing)
+	  - Out(n_into_yard); 
     } else { return 0; }
 
 +tan_into_housing
@@ -156,10 +291,10 @@ taxonomy = Livestock::Equides::Housing
   ++description
     Annual N flux as TAN into the house.
   ++formula
-    if( Val(tan_excretion, Excretion) > (Val(tan_into_grazing, Grazing) + Val(tan_into_yard, Yard)) ) {
+    if( Val(tan_excretion, Excretion) > (Out(tan_into_grazing) + Out(tan_into_yard)) ) {
     	Val(tan_excretion, Excretion)
-           - Val(tan_into_grazing, Grazing)
-           - Val(tan_into_yard, Yard); 
+           - Out(tan_into_grazing)
+           - Out(tan_into_yard); 
     } else { return 0; }
 
 +nh3_nhousing

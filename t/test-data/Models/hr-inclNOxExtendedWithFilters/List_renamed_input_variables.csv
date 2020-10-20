@@ -13,3 +13,5 @@ Livestock::DairyCow[]::Housing::Floor::UNECE_category_1_mitigation_options_for_h
 Livestock::DairyCow[]::Housing::Floor::mitigation_options_for_housing_systems_for_dairy_cows_floor,Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor_LU
 Livestock::OtherCattle[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle,Livestock::OtherCattle[]::Housing::Floor::mitigation_housing_floor
 Livestock::OtherCattle[]::Housing::Floor::mitigation_options_for_housing_systems_for_other_cattle_floor,Livestock::OtherCattle[]::Housing::Floor::mitigation_housing_floor_LU
+Livestock::Equides[]::Grazing;grazing_days,Livestock::Equides[HorsesLw3yr]::GrazingInput;grazing_days
+Livestock::Equides[]::Grazing;grazing_hours,Livestock::Equides[HorsesLw3yr]::GrazingInput;grazing_hours

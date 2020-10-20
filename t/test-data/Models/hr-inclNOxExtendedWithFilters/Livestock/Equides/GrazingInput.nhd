@@ -1,0 +1,81 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2020-10-20
+taxonomy = Livestock::Equides::GrazingInput
+
++short
+
+ Input parameters for Grazing
+
++description
+
+ Input parameters for Grazing, also used in module Yard.
+
+*** input ***
+
++grazing_days
+  type  = integer
+  validator = between(0,365);
+  ++labels 
+    en = Grazing days per year
+    de = Jährliche Weidetage
+    fr = Jours de pâturage par an
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average grazing days per year.
+  ++help
+     +++en
+        <p>Standard value for Switzerland: 220 days per year </p>
+     +++de
+        <p>Vorschlag für Standardwerte: 220 Tage pro Jahr (Durchschnitt Tal-, Hügel- und Bergregion)</p>
+     +++fr
+        <p>Proposition de valeurs standard: 220 jours pour an (moyenne des régions de plaine, collines et montagne) </p>
+
++grazing_hours
+  type  = float
+  validator = between(0,24);
+  ++labels 
+    en = Grazing hours per day
+    de = Tägliche Weidestunden
+    fr = Heures de pâturage par jour
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average grazing hours per day.
+ ++help
+     +++en
+        <p>Standard value for Switzerland: 8 hours per day</p>
+     +++de
+        <p>Vorschlag für Standardwerte: 8 Stunden pro Tag (Durchschnitt Tal-, Hügel- und Bergregion)</p>
+     +++fr
+        <p>Proposition de valeurs standard: 8 heures par jour (moyenne des régions de plaine, collines et montagne)</p>
+
+*** output ***
+
++grazing_hours
+  print = Equides
+  ++units
+     en = hours/day
+     de = Stunden/Tag
+     fr = heure/jour
+  ++description
+    Grazing hours per day.
+  ++formula
+    In(grazing_hours);
+
++grazing_days
+  print = Equides
+  ++units
+     en = days/year
+     de = Tage/Jahr
+     fr = jour/an
+  ++description
+    Grazing days per year.
+  ++formula
+    In(grazing_days);
