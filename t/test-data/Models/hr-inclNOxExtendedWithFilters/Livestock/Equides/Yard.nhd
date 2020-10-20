@@ -362,6 +362,26 @@ livestock. Atmospheric Environment 35:5331-5338.
       }
     }
 
++share_into_yard
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Share of annual N excretion into yard.
+  ++formula
+    # access to yard only - days with yard only
+    (In(yard_days) - Out(days_with_grazing_and_yard)) / 365 * 
+    In(yard_hours) / 24 +
+    # access to yard only - days with yard and grazing
+    Out(days_with_grazing_and_yard) / 365 *
+    (In(yard_hours) - Out(hours_with_grazing_and_yard)) / 24 +
+    # access to yard and grazing (shared 50/50)
+    0.5 *
+    Out(days_with_grazing_and_yard) / 365 * 
+    Out(hours_with_grazing_and_yard) / 24;
+
 +n_into_yard
   print = Equides
   ++units
@@ -372,18 +392,7 @@ livestock. Atmospheric Environment 35:5331-5338.
     Annual N excretion on yard for a defined animal category.
   ++formula
     Val(n_excretion, Excretion) * 
-    (
-      # access to yard only - days with yard only
-      (In(yard_days) - Out(days_with_grazing_and_yard)) / 365 * 
-      In(yard_hours) / 24 +
-      # access to yard only - days with yard and grazing
-      Out(days_with_grazing_and_yard) / 365 *
-      (In(yard_hours) - Out(hours_with_grazing_and_yard)) / 24 +
-      # access to yard and grazing (shared 50/50)
-      0.5 *
-      Out(days_with_grazing_and_yard) / 365 * 
-      Out(hours_with_grazing_and_yard) / 24
-    );
+    Out(share_into_yard);
 
 +tan_into_yard
   print = Equides
@@ -395,8 +404,7 @@ livestock. Atmospheric Environment 35:5331-5338.
     Annual soluble N excretion on yard for a defined animal category.
   ++formula
     Val(tan_excretion, Excretion) * 
-    In(yard_days)  / 365 * 
-    In(yard_hours) / 24;
+    Out(share_into_yard);
 
 +ef_nh3_nyard
   print = Equides,ef_nh3
