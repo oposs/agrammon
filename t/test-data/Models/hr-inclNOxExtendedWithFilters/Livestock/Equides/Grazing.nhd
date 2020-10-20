@@ -40,6 +40,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 
 +Excretion
 +GrazingInput
++Yard
 
 *** technical ***
 
@@ -76,6 +77,25 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 
 *** output ***
 
++share_into_grazing
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Share of annual N excretion into grazing.
+  ++formula
+    # access to grazing only - days with grazing only
+    (Val(grazing_days, GrazingInput) - Val(days_with_grazing_and_yard, Yard)) / 365 * 
+    Val(grazing_hours, GrazingInput) / 24 +
+    # access to grazing only - days with yard and grazing
+    Val(days_with_grazing_and_yard, Yard) / 365 *
+    (Val(grazing_hours, GrazingInput) - Val(hours_with_grazing_and_yard, Yard)) / 24 +
+    # access to yard and grazing (shared 50/50)
+    0.5 *
+    Val(days_with_grazing_and_yard, Yard) / 365 * 
+    Val(hours_with_grazing_and_yard, Yard) / 24;
 
 +n_into_grazing
   print = Equides
@@ -87,8 +107,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual N excretion during grazing for equides.
   ++formula
     Val(n_excretion, Excretion) * 
-    Val(grazing_days, GrazingInput)  / 365 *
-    Val(grazing_hours, GrazingInput) /  24;
+    Out(share_into_grazing);
 
 +tan_into_grazing
   print = Equides
@@ -100,8 +119,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual solable N (TAN) excretion during grazing for equides.
   ++formula
     Val(tan_excretion,Excretion) * 
-    Val(grazing_days, GrazingInput)  / 365 * 
-    Val(grazing_hours, GrazingInput) /  24;
+    Out(share_into_grazing);
 
 +ef_nh3_ngrazing
   print = Equides,ef_nh3
