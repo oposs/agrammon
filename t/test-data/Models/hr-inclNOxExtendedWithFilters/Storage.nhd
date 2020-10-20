@@ -85,8 +85,8 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 
 ####################################################
 ##### mineralization liquid 
-
-+mineralization_liquid_cattle 
+  
++mineralization 
   print = 7
   ++units  
     en = kg N/year
@@ -100,39 +100,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       Val(tan_out_livestock_liquid, ::Livestock)
     ) P*
     scale(
-      Val(has_cattle, ::Livestock),
+      Val(has_pigs, ::Livestock) P+ Val(has_cattle, ::Livestock),
       Tech(mineralizationrate_liquid)
     );
-    
-+mineralization_liquid_pigs 
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN mineralized from not TAN fraction in liquid storage.
-  ++formula
-    (
-      Val(n_out_livestock_liquid, ::Livestock) P-  
-      Val(tan_out_livestock_liquid, ::Livestock)
-    ) P*
-    scale(
-      Val(has_pigs, ::Livestock),
-      Tech(mineralizationrate_liquid)
-    );
-    
-+mineralization_liquid 
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual TAN mineralized from not TAN fraction in liquid storage.
-  ++formula
-    Out(mineralization_liquid_cattle) P+ 
-    Out(mineralization_liquid_pigs);
 
 ####################################################
 
@@ -259,7 +229,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       multiplyPairwise(
         Val(has_pigs, ::Livestock),
         Val(tan_out_livestock_liquid, ::Livestock) P+ 
-        Out(mineralization_liquid) P-
+        Out(mineralization) P-
         Val(nxox_nliquid_housing_and_storage, ::Livestock)
       )
     );
@@ -304,7 +274,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     multiplyPairwise(
       Val(has_cattle, ::Livestock),
       Val(tan_out_livestock_liquid, ::Livestock) P+ 
-      Out(mineralization_liquid) P-
+      Out(mineralization) P-
       Val(nxox_nliquid_housing_and_storage, ::Livestock)
     );
 
@@ -452,7 +422,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Val(tan_out_livestock_liquid, ::Livestock) P-
     Out(nh3_nstorage_liquid) P-
     Val(nxox_nliquid_housing_and_storage, ::Livestock) P+
-    Out(mineralization_liquid);
+    Out(mineralization);
 
 
 ####################################################
