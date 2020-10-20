@@ -121,7 +121,9 @@ taxonomy = Livestock::Poultry::Housing
   ++description
     Annual N of NH3 emission remaining in air scrubber from poultry housing systems.
   ++formula
-   Val(n_excretion, Excretion) * Out(ef_housing_before_air_scrubber); 
+   Val(n_excretion, Excretion) * 
+   Out(ef_housing_before_air_scrubber) *
+   Val(red_air_scrubber, Housing::AirScrubber); 
 
 +n_outhousing_solid
   print = 7d
