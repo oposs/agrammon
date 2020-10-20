@@ -194,7 +194,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
 *** output ***
 
 +free_range_days
-  print = 20
+  print = Poultry
   ++units  
     en = days/year
     de = Tage/Jahr
@@ -202,16 +202,14 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Average free range days per year.
   ++formula
-    if( lc In(free_range) eq 'yes' ){
-#       my $key = "free_range_days_" . Val(animalcategory, Excretion);
-#       return Tech($key);
-        return $TE->{'free_range_days_'.Val(animalcategory,Excretion)};
-    }else{
-        return 0;
+    if ( lc In(free_range) eq 'yes' ) {
+      return $TE->{'free_range_days_'.Val(animalcategory, Excretion)};
+    } else {
+      return 0;
     }
 
 +free_range_hours
-  print = 20
+  print = Poultry
   ++units  
     en = hours/day
     de = Stunden/Tag
@@ -219,85 +217,96 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Average free range hours per day.
   ++formula
-    if( lc In(free_range) eq 'yes' ){
-#       my $key = "free_range_hours_" .  Val(animalcategory, Excretion);
-#       return Tech($key);
-        return $TE->{'free_range_hours_'.Val(animalcategory,Excretion)};
-    }else{
-        return 0;
+    if ( lc In(free_range) eq 'yes' ) {
+      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion)};
+    } else {
+      return 0;
     }
 
 +n_into_outdoor
-  print = 7d
+  print = Poultry
   ++units
      en = kg N/year
      de = kg N/Jahr
      fr = kg N/an
   ++description
-    Annual N excretion free_range (grazing).
+    Annual N excretion free_range (outdoor).
   ++formula
-    Val(n_excretion, Excretion)   *
-        ( (Out(free_range_days)/365) * (Out(free_range_hours)/24) );
+    Val(n_excretion, Excretion) *
+    Out(free_range_days) / 365 * 
+    Out(free_range_hours) / 24;
 
 +tan_into_outdoor
-  print = 7d
+  print = Poultry
   ++units
      en = kg N/year
      de = kg N/Jahr
      fr = kg N/an
   ++description
-    Annual N excretion free_range (grazing).
+    Annual N excretion free_range (outdoor).
   ++formula
     Val(tan_excretion, Excretion) *  
-        ( (Out(free_range_days)/365) * (Out(free_range_hours)/24)) ;
+    Out(free_range_days) / 365 * 
+    Out(free_range_hours) / 24;
 
-+nh3_free_range
-  print = 5d
++ef_nh3_noutdoor
+  print = Poultry,ef_nh3
   ++units
-     en = kg N/year
-     de = kg N/Jahr
-     fr = kg N/an
+     en = -
+     de = -
+     fr = -
   ++description
-    Annual free_range NH3 emission from poultry (grazing). 
+    Free_range NH3 emission factor from poultry (outdoor). 
   ++formula
-    Out(tan_into_outdoor) * Tech(er_free_range);
+    Tech(er_free_range);
 
-+n2_free_range
-  print = 5d
++nh3_noutdoor
+  print = Poultry
   ++units
      en = kg N/year
      de = kg N/Jahr
      fr = kg N/an
   ++description
-    Annual free_range N2 emission from poultry (grazing). 
+    Annual free_range NH3 emission from poultry (outdoor). 
+  ++formula
+    Out(tan_into_outdoor) * Out(ef_nh3_noutdoor);
+
++n2_noutdoor
+  print = Poultry
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual free_range N2 emission from poultry (outdoor). 
   ++formula
     Out(n_into_outdoor) * Tech(er_n2_free_range);
 
-+no_free_range
-  print = 5d
++no_noutdoor
+  print = Poultry
   ++units
      en = kg N/year
      de = kg N/Jahr
      fr = kg N/an
   ++description
-    Annual free_range NO emission from poultry (grazing). 
+    Annual free_range NO emission from poultry (outdoor). 
   ++formula
     Out(n_into_outdoor) * Tech(er_no_free_range);
 
-+n2o_free_range
-  print = 5d
++n2o_noutdoor
+  print = Poultry
   ++units
      en = kg N/year
      de = kg N/Jahr
      fr = kg N/an
   ++description
-    Annual free_range N2O emission from poultry (grazing). 
+    Annual free_range N2O emission from poultry (outdoor). 
   ++formula
     Out(n_into_outdoor) * Tech(er_n2o_free_range);
 
 
 +n_remain_outdoor
-  print = 7d
+  print = Poultry
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -306,12 +315,13 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Annual N remaining free_range (on pasture, etc.).
   ++formula
     Out(n_into_outdoor) - 
-    Out(nh3_free_range) - 
-    Out(no_free_range) - 
-    Out(n2o_free_range);
+    Out(nh3_noutdoor) - 
+    Out(n2_noutdoor) - 
+    Out(no_noutdoor) - 
+    Out(n2o_noutdoor);
 
 +tan_remain_outdoor
-  print = 7d
+  print = Poultry
   ++units
      en = kg N/year
      de = kg N/Jahr
@@ -320,8 +330,9 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Annual N remaining free_range (on pasture, etc.).
   ++formula
     Out(tan_into_outdoor) - 
-    Out(nh3_free_range) - 
-    Out(no_free_range) - 
-    Out(n2o_free_range);
+    Out(nh3_noutdoor) - 
+    Out(n2_noutdoor) - 
+    Out(no_noutdoor) - 
+    Out(n2o_noutdoor);
 
  

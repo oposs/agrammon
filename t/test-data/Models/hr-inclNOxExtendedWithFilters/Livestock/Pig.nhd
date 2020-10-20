@@ -110,109 +110,20 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
 
 *** external ***
 
++Pig::Excretion
 +Pig::Grazing
 +Pig::Housing::Type
 +Pig::Housing
-+Pig::Excretion
 
 *** output ***
-
-+n_excretion
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N excreted by pigs.
-  ++formula
-    Val(n_excretion, Pig::Excretion);
-
-+n_from_pig
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux from pigs housing.
-  ++formula
-    Val(n_outhousing, Pig::Housing); 
-
-+tan
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN from pigs housing.
-  ++formula
-    Val(tan_outhousing, Pig::Housing); 
-
-+n_liquid_from_pig
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux from pigs housing, liquid fraction.
-  ++formula 
-    Val(n_outhousing_liquid, Pig::Housing); 
-
-+tan_liquid
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN from pigs housing, liquid fraction.
-  ++formula
-    Val(tan_outhousing_liquid, Pig::Housing);
-        
-+n_solid_from_pig
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux from pigs housing, solid fraction.
-  ++formula
-    Val(n_outhousing_solid, Pig::Housing);
-
-+tan_solid
-  print = 7
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N flux as TAN from pigs housing, liquid fraction.
-  ++formula
-    Val(tan_outhousing_solid, Pig::Housing);
-
-+nh3_npig
-  print = 5
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from pigs housing and grazing (production).
-  ++formula
-     Val(nh3_nhousing, Pig::Housing) +
-     Val(nh3_ngrazing, Pig::Grazing);
-         
+       
 ########### Other Voltaile N Flux
 
 
 +er_n2_nsolid
-  print=all
+  print = Pig
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from pigs housing, yard and grazing (production).
   ++formula
@@ -225,9 +136,9 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
       };
 
 +er_no_nsolid
-  print=all
+  print = Pig
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from pigs housing, yard and grazing (production).
   ++formula
@@ -240,9 +151,9 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
       };
 
 +er_n2o_nsolid
-  print=all
+  print = Pig
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from pigs housing, yard and grazing (production).
   ++formula
@@ -255,9 +166,9 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
       };
 
 +er_n2_nliquid
-  print=all
+  print = Pig
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from pigs housing, yard and grazing (production).
   ++formula
@@ -270,9 +181,9 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
       };
 
 +er_no_nliquid
-  print=all
+  print = Pig
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from pigs housing, yard and grazing (production).
   ++formula
@@ -285,9 +196,9 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
       };
 
 +er_n2o_nliquid
-  print=all
+  print = Pig
   ++units
-      en = -
+    en = -
   ++description
     Annual N2 emissions from pigs housing, yard and grazing (production).
   ++formula
@@ -302,7 +213,7 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
 
 
 +n2_nsolid
-  print = 7
+  print = Pig
   ++labels
      en = Grazing, housing, yard storage pig N2-emissions
         de = Weide, Stall und Laufhof Zuchtschweine N2-Emission
@@ -318,8 +229,8 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
      ) * Out(er_n2_nsolid);
 
 
-+no_nsolid_pig
-  print = 7
++no_nsolid
+  print = Pig
   ++labels
     en = Grazing, housing and yard pig NO-emissions
         de = Weide, Stall und Laufhof Zuchtschweine NO-Emission
@@ -335,7 +246,7 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
      ) * Out(er_no_nsolid);
 
 +n2o_nsolid
-  print = 7
+  print = Pig
   ++labels
     en = housing, yard and storage pig N2O-emissions
     de = Stall, Laufhof und LagerZuchtschweine N2O-Emission
@@ -352,7 +263,7 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
 
    
 +n2_nliquid
-  print = 7
+  print = Pig
   ++labels
      en = housing, yard and storage pig N2-emissions
         de = Weide, Stall und Laufhof Zuchtschweine N2-Emission
@@ -368,8 +279,8 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
      ) * Out(er_n2_nliquid);
 
 
-+no_nliquid_pig
-  print = 7
++no_nliquid
+  print = Pig
   ++labels
     en = housing, yard and storage pig NO-emissions
         de = Weide, Stall und Laufhof Zuchtschweine NO-Emission
@@ -385,7 +296,7 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
      ) * Out(er_no_nliquid); 
 
 +n2o_nliquid
-  print = 7
+  print = Pig
   ++labels
     en = Grazing, housing and yard pig N2O-emissions
     de = Weide, Stall und Laufhof Zuchtschweine N2O-Emission

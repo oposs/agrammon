@@ -13,17 +13,8 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
 +description 
   This process summarizes the annual emission of NH3 for cattle (apart from dairy cows) 
   from housing, yard and grazing. Further it summarizes the annual N flux from housing and yard to the storage for cattle.
+
 *** input ***
-
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
-
 
 *** technical ***
 
@@ -171,25 +162,29 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
 *** output ***
 
 +dimensioning_check
-  print=all
+  print = OtherCattle
   ++units 
     en = -
   ++description
    Check if number of animals <= number of animal places.
   ++formula
     if (  Val(dimensioning_barn, OtherCattle::Housing::KArea) < Val(animals, OtherCattle::Excretion) ) {
-        writeLog({en=>"The number of available animal places must be equal or higher than the number of animals.",
-                  de=>"Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
-                  fr=>"Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
-                 }); 
+      writeLog({
+        en => "The number of available animal places must be equal or higher than the number of animals.",
+        de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+        fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+      });
+      return "not ok";
+    } 
+    else {
+      return "ok";
     }
-    return;
 
 ########### Other Voltaile N Flux
 
 
 +er_n2_nsolid
-  print=all
+  print = OtherCattle
   ++units
       en = -
   ++description
@@ -205,7 +200,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
       };
 
 +er_no_nsolid
-  print=all
+  print = OtherCattle
   ++units
       en = -
   ++description
@@ -221,7 +216,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
       };
 
 +er_n2o_nsolid
-  print=all
+  print = OtherCattle
   ++units
       en = -
   ++description
@@ -237,7 +232,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
       };
 
 +er_n2_nliquid
-  print=all
+  print = OtherCattle
   ++units
       en = -
   ++description
@@ -253,7 +248,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
       };
 
 +er_no_nliquid
-  print=all
+  print = OtherCattle
   ++units
       en = -
   ++description
@@ -269,7 +264,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
       };
 
 +er_n2o_nliquid
-  print=all
+  print = OtherCattle
   ++units
       en = -
   ++description
@@ -286,7 +281,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
 
 
 +n2_nsolid
-  print = 5
+  print = OtherCattle
   ++labels
      en = housing, yard and storage cattle N2-emissions
         de = Weide, Stall und Laufhof Übriges Rindvieh N2-Emission
@@ -302,7 +297,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
      ) * Out(er_n2_nsolid);
 
 +no_nsolid
-  print = 5
+  print = OtherCattle
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -314,7 +309,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
      ) * Out(er_no_nsolid);
 
 +n2o_nsolid
-  print = 5  print = 7
+  print = OtherCattle  print = OtherCattle
   ++labels
     en = housing, yard and storage cattle N2O-emissions
     de = Stall, Laufhof und Lager andere Rinder N2O-Emission
@@ -330,7 +325,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
      ) * Out(er_n2o_nsolid);
 
 +n2_nliquid
-  print = 5
+  print = OtherCattle
   ++labels
      en = housing, yard and storage cattle N2-emissions
         de = Weide, Stall und Laufhof Übriges Rindvieh N2-Emission
@@ -347,7 +342,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
      ) * Out(er_n2_nliquid);
 
 +no_nliquid
-  print = 5
+  print = OtherCattle
   ++labels
     en = housing, yard and storage cattle NO-emissions
         de = Weide, Stall und Laufhof Rinder NO-Emission
@@ -364,7 +359,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
      ) * Out(er_no_nliquid); 
 
 +n2o_nliquid
-  print = 5
+  print = OtherCattle
   ++labels
     en = housing, yard and storage cattle N2O-emissions
     de = Weide, Stall und Laufhof Rinder N2O-Emission

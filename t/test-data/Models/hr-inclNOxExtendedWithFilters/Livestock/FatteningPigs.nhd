@@ -121,7 +121,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
 
 
 +er_n2_nsolid
-  print=all
+  print = FatteningPigs
   ++units
       en = -
   ++description
@@ -136,7 +136,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
     };
 
 +er_no_nsolid
-  print=all
+  print = FatteningPigs
   ++units
       en = -
   ++description
@@ -151,7 +151,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
     };
 
 +er_n2o_nsolid
-  print=all
+  print = FatteningPigs
   ++units
       en = -
   ++description
@@ -166,7 +166,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
     };
 
 +er_n2_nliquid
-  print=all
+  print = FatteningPigs
   ++units
       en = -
   ++description
@@ -181,7 +181,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
     };
 
 +er_no_nliquid
-  print=all
+  print = FatteningPigs
   ++units
       en = -
   ++description
@@ -196,7 +196,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
     };
 
 +er_n2o_nliquid
-  print=all
+  print = FatteningPigs
   ++units
       en = -
   ++description
@@ -213,7 +213,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
 
 
 +n2_nsolid
-  print = 7
+  print = FatteningPigs
   ++labels
      en = Grazing, housing, yard storage fattening pig N2-emissions
         de = Weide, Stall und Laufhof Mastschweine N2-Emission
@@ -231,8 +231,8 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
      ) * Out(er_n2_nsolid);
 
 
-+no_nsolid_fattening_pig
-  print = 7
++no_nsolid
+  print = FatteningPigs
   ++labels
     en = Grazing, housing and yard fattening pig NO-emissions
         de = Weide, Stall und Laufhof Mastschweine NO-Emission
@@ -250,7 +250,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
      ) * Out(er_no_nsolid);
 
 +n2o_nsolid
-  print = 7
+  print = FatteningPigs
   ++labels
     en = housing, yard and storage fattening pig N2O-emissions
     de = Stall, Laufhof und LagerMastschweine N2O-Emission
@@ -269,7 +269,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
 
    
 +n2_nliquid
-  print = 7
+  print = FatteningPigs
   ++labels
      en = housing, yard and storage fattening pig N2-emissions
         de = Weide, Stall und Laufhof Mastschweine N2-Emission
@@ -285,8 +285,8 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
      ) * Out(er_n2_nliquid);
 
 
-+no_nliquid_fattening_pig
-  print = 7
++no_nliquid
+  print = FatteningPigs
   ++labels
     en = housing, yard and storage fattening pig NO-emissions
         de = Weide, Stall und Laufhof Mastschweine NO-Emission
@@ -302,7 +302,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
      ) * Out(er_no_nliquid); 
 
 +n2o_nliquid
-  print = 7
+  print = FatteningPigs
   ++labels
     en = Grazing, housing and yard fattening pig N2O-emissions
     de = Weide, Stall und Laufhof Mastschweine N2O-Emission
