@@ -945,7 +945,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(nh3_ngrazing,Livestock::Equides::Grazing) P+
      Sum(nh3_ngrazing,Livestock::SmallRuminants::Grazing) P+
      Sum(nh3_ngrazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(nh3_free_range,Livestock::Poultry::Outdoor);
+     Sum(nh3_noutdoor,Livestock::Poultry::Outdoor);
 
 +n2_ngrazing
   format= %.0f
@@ -969,7 +969,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(n2_ngrazing,Livestock::Equides::Grazing) P+
      Sum(n2_ngrazing,Livestock::SmallRuminants::Grazing) P+
      Sum(n2_ngrazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(n2_free_range,Livestock::Poultry::Outdoor);
+     Sum(n2_noutdoor,Livestock::Poultry::Outdoor);
 
 +no_ngrazing
   format= %.0f
@@ -993,7 +993,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(no_ngrazing,Livestock::Equides::Grazing) P+
      Sum(no_ngrazing,Livestock::SmallRuminants::Grazing) P+
      Sum(no_ngrazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(no_free_range,Livestock::Poultry::Outdoor);
+     Sum(no_noutdoor,Livestock::Poultry::Outdoor);
 
 
 +n2o_ngrazing
@@ -1018,7 +1018,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(n2o_ngrazing,Livestock::Equides::Grazing) P+
      Sum(n2o_ngrazing,Livestock::SmallRuminants::Grazing) P+
      Sum(n2o_ngrazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(n2o_free_range,Livestock::Poultry::Outdoor);
+     Sum(n2o_noutdoor,Livestock::Poultry::Outdoor);
 
 
 +nh3_nhousing
