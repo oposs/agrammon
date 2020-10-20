@@ -39,11 +39,13 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 
 #| Run the model
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?,
-               SupportedLanguage :$language = 'de', Str :$prints = 'All',
+               SupportedLanguage :$language = 'de', Str :$prints = 'All', Str :$variants = 'SHL',
                Bool :$csv, Bool :$include-filters, Int :$batch=1, Int :$degree=4, Int :$max-runs
               ) is export {
-    my %results = run $filename.IO, $input.IO, $tech-file, $language, $prints, $csv, $include-filters,
+    my %results = run $filename.IO, $input.IO, $tech-file, $variants, $language, $prints, $csv, $include-filters,
             $batch, $degree, $max-runs;
+    say "##  Model: $filename";
+    say "##  Variants: $variants";
     for %results.keys -> $simulation {
         say "### Simulation $simulation";
         say "##  Print filter: $prints";
@@ -55,16 +57,16 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-fil
 }
 
 #| Dump model
-multi sub MAIN('dump', ExistingFile $filename) is export {
-    say chomp dump-model $filename.IO;
+multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'SHL') is export {
+    say chomp dump-model $filename.IO, $variants;
 }
 
-multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?) is export {
-    latex $filename.IO, $tech-file;
+multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?, Str :$variants = 'SHL') is export {
+    latex $filename.IO, $tech-file, $variants;
 }
 
 #| Create LaTeX docu
-sub latex (IO::Path $path, $tech-file) is export {
+sub latex (IO::Path $path, $tech-file, $variants) is export {
     die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -76,7 +78,7 @@ sub latex (IO::Path $path, $tech-file) is export {
     $path.dirname ~~ / .* '/' (.+) /;
     my $model-name = ~$0;
     my $model = timed "Load $module of $module-path from cache", {
-        load-model-using-cache( $*HOME.add('.agrammon'), $module-path, $module)
+        load-model-using-cache( $*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     };
 
     say create-latex-source(
@@ -101,18 +103,20 @@ sub USAGE() is export {
 }
 
 
-sub dump-model (IO::Path $path) is export {
+sub dump-model (IO::Path $path, $variants) is export {
     die "ERROR: dump expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
     my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
-    my $model = timed "load $module", { load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module) };
+    my $model = timed "load $module", {
+        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
+    };
     return $model.dump;
 }
 
-sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, Bool $csv, Bool $include-filters,
+sub run (IO::Path $path, IO::Path $input-path, $tech-file, $variants, $language, $prints, Bool $csv, Bool $include-filters,
         $batch, $degree, $max-runs) is export {
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
@@ -129,8 +133,8 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $language, $prints, B
     }
 
     my $model = timed "Load $module", {
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
-    }
+        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
+    };
 
     my $filename = $input-path;
     my $fh = open $filename, :r
@@ -180,14 +184,15 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
     my $cfg = Agrammon::Config.new;
     note "Loading config from $cfg-filename";
     $cfg.load($cfg-filename);
+    my $variants = $cfg.model-variants;
 
     my $model-path = $model-filename.IO;
     die "ERROR: web expects a .nhd file" unless $model-path.extension eq 'nhd';
 
+    note "Running model variant $variants from $model-path";
     my $module-path = $model-path.parent;
     my $module-file = $model-path.basename;
     my $module = $model-path.IO.extension('').basename;
-
     my $tech-input = $tech-file // $module-path.add('technical.cfg');
     my %technical-parameters = timed "Load parameters from $tech-input", {
         my $params = parse-technical($tech-input.IO.slurp);
@@ -197,7 +202,7 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
     }
 
     my $model = timed "Load model from $module-path/$module.nhd", {
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module)
+        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     }
 
     my $db = DB::Pg.new(conninfo => $cfg.db-conninfo);
@@ -221,4 +226,8 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
     $http.start;
     say "Listening at http://$host:$port";
     return $http;
+}
+
+sub preprocessor-options(Str $variants) {
+    set($variants.split(","));
 }
