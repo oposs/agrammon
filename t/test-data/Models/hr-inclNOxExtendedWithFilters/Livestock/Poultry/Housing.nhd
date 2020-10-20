@@ -77,7 +77,7 @@ taxonomy = Livestock::Poultry::Housing
      de = -
      fr = - 
   ++description
-    NH3 emission factor part without air scrubber removal of poultry housing systems.
+    NH3 emission factor before air scrubber removal of poultry housing systems.
   ++formula
     my $ef = Val(er_housing, Housing::Type) * 
               Val(c_area, Housing::KArea) * 

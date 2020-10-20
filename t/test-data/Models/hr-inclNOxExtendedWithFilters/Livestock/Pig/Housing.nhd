@@ -69,7 +69,7 @@ taxonomy = Livestock::Pig::Housing
      de = -
      fr = - 
   ++description
-    NH3 emission factor for indoor part without air scrubber removal of other pig housing systems.
+    NH3 emission factor for indoor part before air scrubber removal of other pig housing systems.
   ++formula
     my $ef = Val(er_housing, Housing::Type) * 
               Val(c_free_factor_housing, Housing::CFreeFactor) *
