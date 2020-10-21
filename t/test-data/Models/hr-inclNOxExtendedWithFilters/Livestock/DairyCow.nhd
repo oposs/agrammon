@@ -27,6 +27,24 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 
 *** output ***
 
++animals
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, DairyCow::Excretion);
+
++animalcategory
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, DairyCow::Excretion);
+
 +dimensioning_check
   print = DairyCow
   ++units
@@ -40,8 +58,188 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
         de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
         fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
       });
-      return "not ok";
+      return "barn dimensioning too small";
     } 
     else {
-      return "ok";
+      return "barn dimensioning ok";
     }
+
+
+########################
+# excretion
+
++n_excretion
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N excreted by the specified number of animals.
+  ++formula
+    Val(n_excretion, DairyCow::Excretion);
+
++tan_excretion
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total TAN excreted by the specified number of animals.
+  ++formula
+    Val(tan_excretion, DairyCow::Excretion);
+
+########################
+
+
+########################
+# summary housing (should be zero budget)
+
++n_into_housing
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into housing.
+  ++formula
+    Val(n_into_housing, DairyCow::Housing);
+
++tan_into_housing
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into housing.
+  ++formula
+    Val(tan_into_housing, DairyCow::Housing);
+
++nh3_loss_housing
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from housing.
+  ++formula
+    Val(nh3_nhousing, DairyCow::Housing);
+
++n_out_housing_liquid
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, liquid manure.
+  ++formula
+    Val(n_outhousing_liquid, DairyCow::Housing);
+
++n_out_housing_solid
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, solid manure.
+  ++formula
+    Val(n_outhousing_solid, DairyCow::Housing);
+
++tan_out_housing_liquid
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, liquid manure.
+  ++formula
+    Val(tan_outhousing_liquid, DairyCow::Housing);
+
++tan_out_housing_solid
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, solid manure.
+  ++formula
+    Val(tan_outhousing_solid, DairyCow::Housing);
+
+########################
+
+
+########################
+# summary yard (should be zero budget)
+
+# +n_into_yard
+#   print = DairyCow
+#   ++units
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual N flux into yard.
+#   ++formula
+#     Val(n_into_yard, DairyCow::Yard);
+
+# +tan_into_yard
+#   print = DairyCow
+#   ++units
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual TAN flux into yard.
+#   ++formula
+#     Val(tan_into_yard, DairyCow::Yard);
+
+# +nh3_loss_yard
+#   print = DairyCow
+#   ++units
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual NH3 loss from yard.
+#   ++formula
+#     Val(nh3_nyard, DairyCow::Yard);
+
+# +n_out_yard
+#   print = DairyCow
+#   ++units
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual N flux out of yard.
+#   ++formula
+#     Val(n_outyard, DairyCow::Yard);
+
+# +tan_out_yard
+#   print = DairyCow
+#   ++units
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Annual TAN flux out of yard.
+#   ++formula
+#     Val(tan_outyard, DairyCow::Yard);
+
+########################
+
+
+########################
+# summary grazing (should be zero budget)
+
+
+
+########################
