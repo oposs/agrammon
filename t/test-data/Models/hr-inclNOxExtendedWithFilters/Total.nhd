@@ -23,10 +23,10 @@ taxonomy = Total
 #+DetailsByAnimalCategory
 +PlantProduction
 
-+PlantProduction
-+Application
-+Storage
-+Livestock
+#+PlantProduction
+#+Application
+#+Storage
+#+Livestock
 
 *** output ***
 
