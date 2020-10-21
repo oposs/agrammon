@@ -18,67 +18,12 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 
 *** technical ***
 
-+er_n2
-  value = 0.025
-  ++units
-    en = -
-  ++description
-   Emission rate poultry for N2 poultry manure based on Ntot
-
-+er_no
-  value = 0.001
-  ++units
-    en = -
-  ++description
-   Emission rate poultry for N2 poultry manure based on Ntot
-
-+er_n2o
-  value = 0.001
-  ++units
-    en = -
-  ++description
-   Emission rate poultry for N2 poultry manure based on Ntot
-
 *** external ***
 
 +Poultry::Excretion
 +Poultry::Housing
++Poultry::NxOxLoss
 +Poultry::Outdoor
 
 
 *** output ***
-
-+n2_npoultry
-  print = Poultry
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from poultry production (housing and outdoor).
-  ++formula
-    Val(n_into_housing, Poultry::Housing) * Tech(er_n2)
-
-+no_npoultry
-  print = Poultry
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from poultry production housing.
-    (outdoor not included)
-  ++formula
-    Val(n_into_housing, Poultry::Housing) * Tech(er_no)
-
-+n2o_npoultry
-  print = Poultry
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2O emission from poultry production housing.
-    (outdorr not included)
-  ++formula
-    Val(n_into_housing, Poultry::Housing) * Tech(er_n2o)

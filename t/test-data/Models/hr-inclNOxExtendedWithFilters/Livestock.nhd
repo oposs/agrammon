@@ -77,6 +77,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   aggregate=SUM
 +Livestock::Poultry::Outdoor
   aggregate=SUM
++Livestock::Poultry::NxOxLoss
+  aggregate=SUM
 
 +Livestock::Equides
   aggregate=SUM
@@ -791,7 +793,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n2_nsolid, Livestock::Pig::NxOxLoss) P+
     Sum(n2_nsolid, Livestock::FatteningPigs::NxOxLoss) P+
     Sum(n2_nsolid, Livestock::Equides::NxOxLoss) P+
-    Sum(n2_npoultry, Livestock::Poultry);
+    Sum(n2_npoultry, Livestock::Poultry::NxOxLoss);
 
 +n2_nliquid_housing_and_storage
   print = NOxFlux
@@ -833,7 +835,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(no_nsolid, Livestock::Pig::NxOxLoss) P+
     Sum(no_nsolid, Livestock::FatteningPigs::NxOxLoss) P+
     Sum(no_nsolid, Livestock::Equides::NxOxLoss) P+
-    Sum(no_npoultry, Livestock::Poultry);
+    Sum(no_npoultry, Livestock::Poultry::NxOxLoss);
 
 +no_nliquid_housing_and_storage
   print = NOxFlux
@@ -875,7 +877,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n2o_nsolid, Livestock::Pig::NxOxLoss) P+
     Sum(n2o_nsolid, Livestock::FatteningPigs::NxOxLoss) P+
     Sum(n2o_nsolid, Livestock::Equides::NxOxLoss) P+
-    Sum(n2o_npoultry, Livestock::Poultry);
+    Sum(n2o_npoultry, Livestock::Poultry::NxOxLoss);
 
 +n2o_nliquid_housing_and_storage
   print = NOxFlux
