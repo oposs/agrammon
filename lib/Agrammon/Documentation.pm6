@@ -1,9 +1,10 @@
 use Agrammon::Model;
 
 #| Get model data for LaTeX document generation
-sub get-model-data( Agrammon::Model $model, :%technical! ) {
+sub get-model-data( Agrammon::Model $model, $sort, :%technical! ) {
     my @sections;
-    for $model.load-order -> $module {
+    my \order = $sort eq 'calculation' ?? $model.evaluation-order.reverse !! $model.load-order;
+    for order -> $module {
         @sections.push( %(
             :module($module.taxonomy),
             :description($module.description),
@@ -16,8 +17,8 @@ sub get-model-data( Agrammon::Model $model, :%technical! ) {
 }
 
 #| Create a LaTeX source of the model
-sub create-latex-source( Str $model-name, Agrammon::Model $model, :%technical! ) is export {
-    my @sections = get-model-data( $model, :%technical );
+sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, :%technical! ) is export {
+    my @sections = get-model-data( $model, $sort, :%technical );
 
     my @latex;
 

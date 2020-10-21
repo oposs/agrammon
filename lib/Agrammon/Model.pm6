@@ -153,7 +153,7 @@ class Agrammon::Model {
     has %!output-labels-cache;
     has %!output-order-cache;
     has $!distribution-map-cache;
-  
+
     method file2module($file) {
         my $module = $file;
         $module ~~ s:g|'/'|::|;
@@ -305,9 +305,10 @@ class Agrammon::Model {
         $!entry-point.run(:$input, :%technical)
     }
 
-    method dump {
+    method dump(Str $sort) {
         my Str $output;
-        for @!load-order {
+        my \order = $sort eq 'calculation' ?? @!evaluation-order.reverse !! @!load-order;
+        for order {
             my $level = .taxonomy.comb('::').elems;
             $output  ~= .taxonomy.indent(4 * $level) ~ "\n";
         }

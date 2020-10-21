@@ -23,7 +23,8 @@ my %*SUB-MAIN-OPTS =
 ;
 
 subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
-subset SupportedLanguage of Str where { $_ ~~ /de|en|fr/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
+subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
+subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, Str $tech-file?) is export {
@@ -57,16 +58,16 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-fil
 }
 
 #| Dump model
-multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'SHL') is export {
-    say chomp dump-model $filename.IO, $variants;
+multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'SHL', SortOrder :$sort = 'model') is export {
+    say chomp dump-model $filename.IO, $variants, $sort;
 }
 
-multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?, Str :$variants = 'SHL') is export {
-    latex $filename.IO, $tech-file, $variants;
+multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?, Str :$variants = 'SHL', SortOrder :$sort = 'model') is export {
+    latex $filename.IO, $tech-file, $variants, $sort;
 }
 
 #| Create LaTeX docu
-sub latex (IO::Path $path, $tech-file, $variants) is export {
+sub latex (IO::Path $path, $tech-file, $variants, $sort) is export {
     die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -84,6 +85,7 @@ sub latex (IO::Path $path, $tech-file, $variants) is export {
     say create-latex-source(
         $model-name,
         $model,
+        $sort,
         technical => %($params.technical.map(-> %module {
             %module.keys[0] => %(%module.values[0].map({ .name => .value }))
         }))
@@ -103,7 +105,7 @@ sub USAGE() is export {
 }
 
 
-sub dump-model (IO::Path $path, $variants) is export {
+sub dump-model (IO::Path $path, $variants, $sort) is export {
     die "ERROR: dump expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -113,7 +115,7 @@ sub dump-model (IO::Path $path, $variants) is export {
     my $model = timed "load $module", {
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     };
-    return $model.dump;
+    return $model.dump($sort);
 }
 
 sub run (IO::Path $path, IO::Path $input-path, $tech-file, $variants, $language, $prints, Bool $csv, Bool $include-filters,
