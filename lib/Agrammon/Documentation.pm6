@@ -3,7 +3,7 @@ use Agrammon::Model;
 #| Get model data for LaTeX document generation
 sub get-model-data( Agrammon::Model $model, :%technical! ) {
     my @sections;
-    for $model.evaluation-order.reverse -> $module {
+    for $model.load-order -> $module {
         @sections.push( %(
             :module($module.taxonomy),
             :description($module.description),

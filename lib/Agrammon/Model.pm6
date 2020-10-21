@@ -145,6 +145,7 @@ class Agrammon::Model {
     has IO::Path $.path;
     has %.preprocessor-options;
     has Agrammon::Model::Module @.evaluation-order;
+    has Agrammon::Model::Module @.load-order;
     has ModuleRunner $!entry-point;
     has %!output-unit-cache;
     has %!output-print-cache;
@@ -203,6 +204,7 @@ class Agrammon::Model {
         given $module.taxonomy -> $tax {
             die "Wrong taxonomy '$tax' in $module-name" unless $tax eq $module-name;
         }
+        @!load-order.push($module);
         my $instance-root = $root;
         $instance-root //= $module.taxonomy if $module.is-multi;
         my $gui-root-module = $root-module;
@@ -305,7 +307,7 @@ class Agrammon::Model {
 
     method dump {
         my Str $output;
-        for @!evaluation-order.reverse {
+        for @!load-order {
             my $level = .taxonomy.comb('::').elems;
             $output  ~= .taxonomy.indent(4 * $level) ~ "\n";
         }

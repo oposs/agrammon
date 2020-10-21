@@ -264,11 +264,11 @@ subtest 'dump()' => {
     my $path = $*PROGRAM.parent.add('test-data/Models/test_simple/');
     my $output-expected = q:to/OUTPUT/;
         Simple
-            Simple::Sub2
-            Simple::Sub2b
-            Simple::Sub2a
             Simple::Sub1
             Simple::Sub1a
+            Simple::Sub2
+            Simple::Sub2a
+            Simple::Sub2b
         OUTPUT
     given 'Simple' -> $module {
         ok my $model = Agrammon::Model.new(:$path);
