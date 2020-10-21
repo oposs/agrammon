@@ -8,6 +8,10 @@ UPDATE data_new SET data_var='Livestock::Equides[]::Housing::CFreeFactor::free_c
 UPDATE data_new SET data_var='Livestock::RoughageConsuming[]::Housing::CFreeFactor::free_correction_factor' WHERE data_var='Livestock::RoughageConsuming[]::Housing::free_correction_factor';
 UPDATE data_new SET data_var='Livestock::SmallRuminants[]::Housing::CFreeFactor::free_correction_factor' WHERE data_var='Livestock::SmallRuminants[]::Housing::free_correction_factor';
 UPDATE data_new SET data_var='Livestock::OtherCattle[]::Housing::KArea::dimensioning_barn' WHERE data_var='Livestock::OtherCattle[]::Housing::Type::dimensioning_barn';
-
--- doesn't work (duplicates)
---UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::KArea::dimensioning_barn' WHERE data_var='Livestock::DairyCow[]::Housing::Type::dimensioning_barn';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::KArea::dimensioning_barn' WHERE data_var='Livestock::DairyCow[]::Housing::Type::dimensioning_barn';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::DairyCow[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor_LU' WHERE data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_options_for_housing_systems_for_dairy_cows_floor';
+UPDATE data_new SET data_var='Livestock::OtherCattle[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::OtherCattle[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle';
+UPDATE data_new SET data_var='Livestock::OtherCattle[]::Housing::Floor::mitigation_housing_floor_LU' WHERE data_var='Livestock::OtherCattle[]::Housing::Floor::mitigation_options_for_housing_systems_for_other_cattle_floor';
+UPDATE data_new SET data_var='Livestock::Equides[HorsesLw3yr]::GrazingInput;grazing_days' WHERE data_var='Livestock::Equides[]::Grazing;grazing_days';
+UPDATE data_new SET data_var='Livestock::Equides[HorsesLw3yr]::GrazingInput;grazing_hours' WHERE data_var='Livestock::Equides[]::Grazing;grazing_hours';
