@@ -102,6 +102,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   aggregate=SUM
 +Livestock::SmallRuminants::Grazing
   aggregate=SUM
++Livestock::SmallRuminants::NxOxLoss
+  aggregate=SUM
 
 +Livestock::RoughageConsuming
 #  alias=LSR
@@ -790,7 +792,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(n2_nsolid, Livestock::OtherCattle::NxOxLoss) P+
     Sum(n2_nsolid, Livestock::DairyCow::NxOxLoss) P+
-    Sum(n2_nsolid, Livestock::SmallRuminants) P+
+    Sum(n2_nsolid, Livestock::SmallRuminants::NxOxLoss) P+
     Sum(n2_nsolid, Livestock::RoughageConsuming::NxOxLoss) P+
     Sum(n2_nsolid, Livestock::Pig::NxOxLoss) P+
     Sum(n2_nsolid, Livestock::FatteningPigs::NxOxLoss) P+
@@ -832,7 +834,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(no_nsolid, Livestock::OtherCattle::NxOxLoss) P+
     Sum(no_nsolid, Livestock::DairyCow::NxOxLoss) P+
-    Sum(no_nsolid, Livestock::SmallRuminants) P+
+    Sum(no_nsolid, Livestock::SmallRuminants::NxOxLoss) P+
     Sum(no_nsolid, Livestock::RoughageConsuming::NxOxLoss) P+
     Sum(no_nsolid, Livestock::Pig::NxOxLoss) P+
     Sum(no_nsolid, Livestock::FatteningPigs::NxOxLoss) P+
@@ -874,7 +876,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Sum(n2o_nsolid, Livestock::OtherCattle::NxOxLoss) P+
     Sum(n2o_nsolid, Livestock::DairyCow::NxOxLoss) P+
-    Sum(n2o_nsolid, Livestock::SmallRuminants) P+
+    Sum(n2o_nsolid, Livestock::SmallRuminants::NxOxLoss) P+
     Sum(n2o_nsolid, Livestock::RoughageConsuming::NxOxLoss) P+
     Sum(n2o_nsolid, Livestock::Pig::NxOxLoss) P+
     Sum(n2o_nsolid, Livestock::FatteningPigs::NxOxLoss) P+
