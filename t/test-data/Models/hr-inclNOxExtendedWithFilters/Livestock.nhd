@@ -83,6 +83,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   aggregate=SUM
 +Livestock::Equides::Grazing
   aggregate=SUM
++Livestock::Equides::NxOxLoss
+  aggregate=SUM
 
 +Livestock::SmallRuminants
 #  alias=LSR
@@ -783,7 +785,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n2_nsolid, Livestock::RoughageConsuming) P+
     Sum(n2_nsolid, Livestock::Pig) P+
     Sum(n2_nsolid, Livestock::FatteningPigs) P+
-    Sum(n2_nsolid, Livestock::Equides) P+
+    Sum(n2_nsolid, Livestock::Equides::NxOxLoss) P+
     Sum(n2_npoultry, Livestock::Poultry);
 
 +n2_nliquid_housing_and_storage
@@ -825,7 +827,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(no_nsolid, Livestock::RoughageConsuming) P+
     Sum(no_nsolid, Livestock::Pig) P+
     Sum(no_nsolid, Livestock::FatteningPigs) P+
-    Sum(no_nsolid, Livestock::Equides) P+
+    Sum(no_nsolid, Livestock::Equides::NxOxLoss) P+
     Sum(no_npoultry, Livestock::Poultry);
 
 +no_nliquid_housing_and_storage
@@ -867,7 +869,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n2o_nsolid, Livestock::RoughageConsuming) P+
     Sum(n2o_nsolid, Livestock::Pig) P+
     Sum(n2o_nsolid, Livestock::FatteningPigs) P+
-    Sum(n2o_nsolid, Livestock::Equides) P+
+    Sum(n2o_nsolid, Livestock::Equides::NxOxLoss) P+
     Sum(n2o_npoultry, Livestock::Poultry);
 
 +n2o_nliquid_housing_and_storage
