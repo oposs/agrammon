@@ -31,6 +31,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   aggregate=SUM
 +Livestock::DairyCow::Housing
   aggregate=SUM
++Livestock::DairyCow::NxOx
+  aggregate=SUM
 
 +Livestock::OtherCattle
   aggregate=SUM
@@ -42,7 +44,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   aggregate=SUM
 +Livestock::OtherCattle::Housing
   aggregate=SUM
-
++Livestock::OtherCattle::NxOx
+  aggregate=SUM
 
 +Livestock::Pig
   aggregate=SUM
@@ -51,6 +54,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +Livestock::Pig::Housing
   aggregate=SUM
 +Livestock::Pig::Grazing
+  aggregate=SUM
++Livestock::Pig::NxOx
   aggregate=SUM
 
 +Livestock::FatteningPigs
@@ -61,6 +66,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   aggregate=SUM
 +Livestock::FatteningPigs::Grazing
   aggregate=SUM
++Livestock::FatteningPigs::NxOx
+  aggregate=SUM
 
 +Livestock::Poultry
   aggregate=SUM
@@ -69,6 +76,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +Livestock::Poultry::Housing
   aggregate=SUM
 +Livestock::Poultry::Outdoor
+  aggregate=SUM
++Livestock::Poultry::NxOx
   aggregate=SUM
 
 +Livestock::Equides
@@ -81,6 +90,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   aggregate=SUM
 +Livestock::Equides::Grazing
   aggregate=SUM
++Livestock::Equides::NxOx
+  aggregate=SUM
 
 +Livestock::SmallRuminants
 #  alias=LSR
@@ -91,6 +102,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   aggregate=SUM
 +Livestock::SmallRuminants::Grazing
   aggregate=SUM
++Livestock::SmallRuminants::NxOx
+  aggregate=SUM
 
 +Livestock::RoughageConsuming
 #  alias=LSR
@@ -100,6 +113,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +Livestock::RoughageConsuming::Housing
   aggregate=SUM
 +Livestock::RoughageConsuming::Grazing
+  aggregate=SUM
++Livestock::RoughageConsuming::NxOx
   aggregate=SUM
 
 
@@ -775,14 +790,14 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual N2 emission from livestock from all animals.
   ++formula
-    Sum(n2_nsolid, Livestock::OtherCattle) P+
-    Sum(n2_nsolid, Livestock::DairyCow) P+
-    Sum(n2_nsolid, Livestock::SmallRuminants) P+
-    Sum(n2_nsolid, Livestock::RoughageConsuming) P+
-    Sum(n2_nsolid, Livestock::Pig) P+
-    Sum(n2_nsolid, Livestock::FatteningPigs) P+
-    Sum(n2_nsolid, Livestock::Equides) P+
-    Sum(n2_npoultry, Livestock::Poultry);
+    Sum(n2_nsolid, Livestock::OtherCattle::NxOx) P+
+    Sum(n2_nsolid, Livestock::DairyCow::NxOx) P+
+    Sum(n2_nsolid, Livestock::SmallRuminants::NxOx) P+
+    Sum(n2_nsolid, Livestock::RoughageConsuming::NxOx) P+
+    Sum(n2_nsolid, Livestock::Pig::NxOx) P+
+    Sum(n2_nsolid, Livestock::FatteningPigs::NxOx) P+
+    Sum(n2_nsolid, Livestock::Equides::NxOx) P+
+    Sum(n2_npoultry, Livestock::Poultry::NxOx);
 
 +n2_nliquid_housing_and_storage
   print = NOxFlux
@@ -798,10 +813,10 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual N2 emission from livestock from all animals.
   ++formula
-    Sum(n2_nliquid, Livestock::OtherCattle) P+
-    Sum(n2_nliquid, Livestock::DairyCow) P+
-    Sum(n2_nliquid, Livestock::Pig) P+
-    Sum(n2_nliquid, Livestock::FatteningPigs);
+    Sum(n2_nliquid, Livestock::OtherCattle::NxOx) P+
+    Sum(n2_nliquid, Livestock::DairyCow::NxOx) P+
+    Sum(n2_nliquid, Livestock::Pig::NxOx) P+
+    Sum(n2_nliquid, Livestock::FatteningPigs::NxOx);
 
 +no_nsolid_housing_and_storage
   print = NOxFlux
@@ -817,14 +832,14 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual NO emission from livestock from all animals.
   ++formula
-    Sum(no_nsolid, Livestock::OtherCattle) P+
-    Sum(no_nsolid, Livestock::DairyCow) P+
-    Sum(no_nsolid, Livestock::SmallRuminants) P+
-    Sum(no_nsolid, Livestock::RoughageConsuming) P+
-    Sum(no_nsolid, Livestock::Pig) P+
-    Sum(no_nsolid, Livestock::FatteningPigs) P+
-    Sum(no_nsolid, Livestock::Equides) P+
-    Sum(no_npoultry, Livestock::Poultry);
+    Sum(no_nsolid, Livestock::OtherCattle::NxOx) P+
+    Sum(no_nsolid, Livestock::DairyCow::NxOx) P+
+    Sum(no_nsolid, Livestock::SmallRuminants::NxOx) P+
+    Sum(no_nsolid, Livestock::RoughageConsuming::NxOx) P+
+    Sum(no_nsolid, Livestock::Pig::NxOx) P+
+    Sum(no_nsolid, Livestock::FatteningPigs::NxOx) P+
+    Sum(no_nsolid, Livestock::Equides::NxOx) P+
+    Sum(no_npoultry, Livestock::Poultry::NxOx);
 
 +no_nliquid_housing_and_storage
   print = NOxFlux
@@ -840,10 +855,10 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual NO emission from livestock from all animals.
   ++formula
-    Sum(no_nliquid, Livestock::OtherCattle) P+
-    Sum(no_nliquid, Livestock::DairyCow) P+
-    Sum(no_nliquid, Livestock::Pig) P+
-    Sum(no_nliquid, Livestock::FatteningPigs);
+    Sum(no_nliquid, Livestock::OtherCattle::NxOx) P+
+    Sum(no_nliquid, Livestock::DairyCow::NxOx) P+
+    Sum(no_nliquid, Livestock::Pig::NxOx) P+
+    Sum(no_nliquid, Livestock::FatteningPigs::NxOx);
 
 +n2o_nsolid_housing_and_storage
   print = NOxFlux
@@ -859,14 +874,14 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual N2O emission from livestock from all animals.
   ++formula
-    Sum(n2o_nsolid, Livestock::OtherCattle) P+
-    Sum(n2o_nsolid, Livestock::DairyCow) P+
-    Sum(n2o_nsolid, Livestock::SmallRuminants) P+
-    Sum(n2o_nsolid, Livestock::RoughageConsuming) P+
-    Sum(n2o_nsolid, Livestock::Pig) P+
-    Sum(n2o_nsolid, Livestock::FatteningPigs) P+
-    Sum(n2o_nsolid, Livestock::Equides) P+
-    Sum(n2o_npoultry, Livestock::Poultry);
+    Sum(n2o_nsolid, Livestock::OtherCattle::NxOx) P+
+    Sum(n2o_nsolid, Livestock::DairyCow::NxOx) P+
+    Sum(n2o_nsolid, Livestock::SmallRuminants::NxOx) P+
+    Sum(n2o_nsolid, Livestock::RoughageConsuming::NxOx) P+
+    Sum(n2o_nsolid, Livestock::Pig::NxOx) P+
+    Sum(n2o_nsolid, Livestock::FatteningPigs::NxOx) P+
+    Sum(n2o_nsolid, Livestock::Equides::NxOx) P+
+    Sum(n2o_npoultry, Livestock::Poultry::NxOx);
 
 +n2o_nliquid_housing_and_storage
   print = NOxFlux
@@ -882,10 +897,10 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual N2O emission from livestock from all animals.
   ++formula
-    Sum(n2o_nliquid, Livestock::OtherCattle) P+
-    Sum(n2o_nliquid, Livestock::DairyCow) P+
-    Sum(n2o_nliquid, Livestock::Pig) P+
-    Sum(n2o_nliquid, Livestock::FatteningPigs);
+    Sum(n2o_nliquid, Livestock::OtherCattle::NxOx) P+
+    Sum(n2o_nliquid, Livestock::DairyCow::NxOx) P+
+    Sum(n2o_nliquid, Livestock::Pig::NxOx) P+
+    Sum(n2o_nliquid, Livestock::FatteningPigs::NxOx);
 
 
 +nxox_nsolid_housing_and_storage

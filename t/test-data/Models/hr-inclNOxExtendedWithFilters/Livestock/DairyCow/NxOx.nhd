@@ -1,0 +1,356 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2020-10-21
+taxonomy = Livestock::DairyCow::NxOx
+
++short
+
+Computes the annual loss of N2, NO, N2O from dairy cow housing and storage.
+
++description
+
+TODO!
+
+*** input ***
+
+*** technical ***
+
++er_n2_solid_Slurry
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_solid_Slurry_Plus_Solid_Manure
+  value = 0.025
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_solid_Solid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_liquid_Slurry
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_liquid_Slurry_Plus_Solid_Manure
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_n2_liquid_Solid
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
+
+
++er_no_solid_Slurry
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for NO based on Ntot
+
++er_no_solid_Slurry_Plus_Solid_Manure
+  value = 0.025
+  ++units
+    en = -
+  ++description
+     Emission rate for N2 based on Ntot
+
++er_no_solid_Solid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for NO based on Ntot
+
++er_no_liquid_Slurry
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for NO based on Ntot
+
++er_no_liquid_Slurry_Plus_Solid_Manure
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for NO based on Ntot
+
++er_no_liquid_Solid
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for NO based on Ntot
+
+
+
+
++er_n2o_solid_Slurry
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2O based on Ntot
+
++er_n2o_solid_Slurry_Plus_Solid_Manure
+  value = 0.025
+  ++units
+    en = -
+  ++description
+     Emission rate for N2O based on Ntot
+
++er_n2o_solid_Solid
+  value = 0.05
+  ++units
+    en = -
+  ++description
+     Emission rate for N2O based on Ntot
+
++er_n2o_liquid_Slurry
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for N2O based on Ntot
+
++er_n2o_liquid_Slurry_Plus_Solid_Manure
+  value = 0.002
+  ++units
+    en = -
+  ++description
+     Emission rate for N2O based on Ntot
+
++er_n2o_liquid_Solid
+  value = 0.0
+  ++units
+    en = -
+  ++description
+     Emission rate for N2O based on Ntot
+
+*** external ***
+
++Housing
++Housing::Type
++Yard
+
+*** output ***
+
++er_n2_nsolid
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Annual N2 emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+    given ( Val(housing_type, Housing::Type) ) {
+      return Tech(er_n2_solid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2_solid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_n2_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
+
++er_no_nsolid
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Annual N2 emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+    given ( Val(housing_type, Housing::Type) ) {
+      return Tech(er_no_solid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_no_solid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_no_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_no_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
+
++er_n2o_nsolid
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Annual N2 emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+    given ( Val(housing_type, Housing::Type) ) {
+      return Tech(er_n2o_solid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2o_solid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_n2o_solid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2o_solid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
+
++er_n2_nliquid
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Annual N2 emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+    given ( Val(housing_type, Housing::Type) ) {
+      return Tech(er_n2_liquid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_n2_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
+
++er_no_nliquid
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Annual N2 emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+    given ( Val(housing_type, Housing::Type) ) {
+      return Tech(er_no_liquid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_no_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_no_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_no_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
+
++er_n2o_nliquid
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Annual N2 emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+    given ( Val(housing_type, Housing::Type) ) {
+      return Tech(er_n2o_liquid_Slurry)                    when 'Tied_Housing_Slurry';
+      return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Tied_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2o_liquid_Slurry)                    when 'Loose_Housing_Slurry';
+      return Tech(er_n2o_liquid_Slurry_Plus_Solid_Manure)  when 'Loose_Housing_Slurry_Plus_Solid_Manure';
+      return Tech(er_n2o_liquid_Solid)                     when 'Loose_Housing_Deep_Litter';
+      default { return 0; }
+    };
+
+
+
++n2_nsolid
+  print = DairyCow
+  ++labels
+    en = N2-emissions from solid manure in housing, yard and storage from dairy cows 
+    de = FIX: N2-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2 stockage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    FIX: Annual N2 emissions from dairy cows housing, yard and storage.
+  ++formula
+     ( Val(n_into_housing, Housing) * (1 - Val(share_liquid, Housing::Type) ) 
+     ) * Out(er_n2_nsolid);
+
+
++no_nsolid
+  print = DairyCow
+  ++labels
+    en = NO-emissions from solid manure in housing, yard and storage from dairy cows 
+    de = FIX: NO-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de NO stockage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    FIX: Annual NO emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Housing) * (1 - Val(share_liquid, Housing::Type) ) 
+     ) * Out(er_no_nsolid);
+
++n2o_nsolid
+  print = DairyCow
+  ++labels
+    en = N2O-emissions from solid manure in housing, yard and storage from dairy cows 
+    de = FIX: N2O-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2O stockage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    FIX: Annual N2O emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Housing) * (1 - Val(share_liquid, Housing::Type) ) 
+     ) * Out(er_n2o_nsolid);
+
+   
++n2_nliquid
+  print = DairyCow
+  ++labels
+    en = FIX: N2-emissions from liquid manure in housing, yard and storage dairy cow 
+    de = FIX: N2-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2 stockage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    FIX: Annual N2 emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Housing) * Val(share_liquid, Housing::Type)  +
+       Val(n_into_yard, Yard)
+     ) * Out(er_n2_nliquid);
+
+
++no_nliquid
+  print = DairyCow
+  ++labels
+    en = FIX: N2-emissions from liquid manure in housing, yard and storage dairy cow 
+    de = FIX: N2-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2 stockage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    FIX: Annual NO emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Housing) * Val(share_liquid, Housing::Type)  +
+       Val(n_into_yard, Yard)
+     ) * Out(er_no_nliquid); 
+
++n2o_nliquid
+  print = DairyCow
+  ++labels
+    en = FIX: N2-emissions from liquid manure in housing, yard and storage dairy cow 
+    de = FIX: N2-Emission aus Stall, Laufhof und Lagerung Milchkühe
+    fr = FIX: Vâches laitières Emissions de N2 stockage, l'étable et parcours extérieur
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    FIX: Annual N2O emissions from dairy cows housing, yard and grazing (production).
+  ++formula
+     ( Val(n_into_housing, Housing) * Val(share_liquid, Housing::Type)  +
+       Val(n_into_yard, Yard)
+     ) *  Out(er_n2o_nliquid);

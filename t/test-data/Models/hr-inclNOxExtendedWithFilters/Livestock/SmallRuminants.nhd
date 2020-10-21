@@ -22,64 +22,12 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
 
 *** technical ***
 
-+er_n2_nsolid
-  value = 0.05
-  ++units
-    en = -
-  ++description
-     Emission rate for N2 based on Ntot
-
-+er_no_nsolid
-  value = 0.01
-  ++units
-    en = -
-  ++description
-     Emission rate for N2 based on Ntot
-
-+er_n2o_nsolid
-  value = 0.01
-  ++units
-    en = -
-  ++description
-     Emission rate for N2 based on Ntot
-
 *** external ***
 
 +SmallRuminants::Excretion
 +SmallRuminants::Grazing
 +SmallRuminants::Housing
++SmallRuminants::NxOx
 
 *** output ***
    
-+n2_nsolid
-  print = SmallRuminants
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2 emission from other animals housing and storage.
-  ++formula
-    Val(n_into_housing, SmallRuminants::Housing) * Tech(er_n2_nsolid);
-         
-+no_nsolid
-  print = SmallRuminants
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NO emission from other animals housing and storage.
-  ++formula
-       Val(n_into_housing, SmallRuminants::Housing) * Tech(er_no_nsolid);
-         
-+n2o_nsolid
-  print = SmallRuminants
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual N2O emission from other animals housing and storage.
-  ++formula
-       Val(n_into_housing, SmallRuminants::Housing) * Tech(er_n2o_nsolid);
