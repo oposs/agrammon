@@ -22,7 +22,7 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 +DairyCow::Grazing
 +DairyCow::Housing
 +DairyCow::Housing::KArea
-+DairyCow::NxOxLoss
++DairyCow::NxOx
 +DairyCow::Yard
 
 *** output ***

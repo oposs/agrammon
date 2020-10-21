@@ -27,7 +27,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
 +SmallRuminants::Excretion
 +SmallRuminants::Grazing
 +SmallRuminants::Housing
-+SmallRuminants::NxOxLoss
++SmallRuminants::NxOx
 
 *** output ***
    

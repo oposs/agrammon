@@ -22,7 +22,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 
 +Poultry::Excretion
 +Poultry::Housing
-+Poultry::NxOxLoss
++Poultry::NxOx
 +Poultry::Outdoor
 
 

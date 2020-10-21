@@ -23,7 +23,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
 +Equides::Excretion
 +Equides::Grazing
 +Equides::Housing
-+Equides::NxOxLoss
++Equides::NxOx
 +Equides::Yard
 
 *** output ***

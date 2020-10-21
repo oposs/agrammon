@@ -2,7 +2,7 @@
 
 author   = Agrammon Group
 date     = 2020-10-21
-taxonomy = Livestock::RoughageConsuming::NxOxLoss
+taxonomy = Livestock::SmallRuminants::NxOx
 
 +short
 
@@ -36,7 +36,6 @@ TODO!
   ++description
      Emission rate for N2 based on Ntot
 
-
 *** external ***
 
 +Housing
@@ -44,34 +43,34 @@ TODO!
 *** output ***
  
 +n2_nsolid
-  print = 5
+  print = SmallRuminants
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2 emission from other animals housing and grazing.
+    Annual N2 emission from other animals housing and storage.
   ++formula
-     Val(n_into_housing, Housing) * Tech(er_n2_nsolid);
+    Val(n_into_housing, Housing) * Tech(er_n2_nsolid);
          
 +no_nsolid
-  print = 5
+  print = SmallRuminants
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NO emission from other animals housing and grazing.
+    Annual NO emission from other animals housing and storage.
   ++formula
-     Val(n_into_housing, Housing) * Tech(er_no_nsolid);
+       Val(n_into_housing, Housing) * Tech(er_no_nsolid);
          
 +n2o_nsolid
-  print = 5
+  print = SmallRuminants
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2O emission from other animals housing and grazing.
+    Annual N2O emission from other animals housing and storage.
   ++formula
-     Val(n_into_housing, Housing) * Tech(er_n2o_nsolid);
+       Val(n_into_housing, Housing) * Tech(er_n2o_nsolid);

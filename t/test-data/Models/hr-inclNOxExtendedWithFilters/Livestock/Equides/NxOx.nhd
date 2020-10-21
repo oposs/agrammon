@@ -2,7 +2,7 @@
 
 author   = Agrammon Group
 date     = 2020-10-21
-taxonomy = Livestock::SmallRuminants::NxOxLoss
+taxonomy = Livestock::Equides::NxOx
 
 +short
 
@@ -12,6 +12,7 @@ Computes the annual loss of N2, NO, N2O from dairy cow housing and storage.
 
 TODO!
 
+*** input ***
 
 *** technical ***
 
@@ -39,38 +40,43 @@ TODO!
 *** external ***
 
 +Housing
++Yard
 
 *** output ***
- 
+
 +n2_nsolid
-  print = SmallRuminants
+  print = Equides
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2 emission from other animals housing and storage.
+    Annual N2 emission from equides housing and yard (production).
   ++formula
-    Val(n_into_housing, Housing) * Tech(er_n2_nsolid);
+    (Val(n_into_housing, Housing) + Val(n_into_yard, Yard)) *  
+    Tech(er_n2_nsolid);
          
 +no_nsolid
-  print = SmallRuminants
+  print = Equides
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NO emission from other animals housing and storage.
+    Annual NO emission from equides housing and yard (production).
   ++formula
-       Val(n_into_housing, Housing) * Tech(er_no_nsolid);
-         
+    (Val(n_into_housing, Housing) + Val(n_into_yard, Yard)) *  
+    Tech(er_no_nsolid);
+ 
 +n2o_nsolid
-  print = SmallRuminants
+  print = Equides
   ++units  
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2O emission from other animals housing and storage.
+    Annual N2O emission from equides housing and yard (production).
   ++formula
-       Val(n_into_housing, Housing) * Tech(er_n2o_nsolid);
+    (Val(n_into_housing, Housing) + Val(n_into_yard, Yard)) *  
+    Tech(er_n2o_nsolid);
+ 

@@ -24,7 +24,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
 +FatteningPigs::Excretion
 +FatteningPigs::Grazing
 +FatteningPigs::Housing
-+FatteningPigs::NxOxLoss
++FatteningPigs::NxOx
 
 *** output ***
 

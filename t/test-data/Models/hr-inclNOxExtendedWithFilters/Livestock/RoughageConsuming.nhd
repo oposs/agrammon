@@ -24,7 +24,7 @@ gui       = Livestock::RoughageConsuming,Tierhaltung::Andere Raufutterverzehrer,
 +RoughageConsuming::Excretion
 +RoughageConsuming::Grazing
 +RoughageConsuming::Housing
-+RoughageConsuming::NxOxLoss
++RoughageConsuming::NxOx
 
 *** output ***
  
