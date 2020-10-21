@@ -273,7 +273,7 @@ subtest 'dump()' => {
     given 'Simple' -> $module {
         ok my $model = Agrammon::Model.new(:$path);
         $model.load($module);
-        is $model.dump, $output-expected, 'Output as expected';
+        is $model.dump('model'), $output-expected, 'Output as expected';
     }
 }
 
