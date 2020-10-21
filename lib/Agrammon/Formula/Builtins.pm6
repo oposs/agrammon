@@ -33,6 +33,12 @@ sub get-builtins is export {
                     unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
             $filter-group.add(+$additor)
         },        
+        # 
+        filterPairwise => -> $a, $b {
+            my $ag = as-filter-group($a);
+            my $bg = as-filter-group($b);
+            $ag.filter-by-pairwise($bg, 0)
+        },
         # P+ compiles into this
         addPairwise => -> $a, $b {
             my $ag = as-filter-group($a);

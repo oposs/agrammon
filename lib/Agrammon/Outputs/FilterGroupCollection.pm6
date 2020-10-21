@@ -112,6 +112,22 @@ class Agrammon::Outputs::FilterGroupCollection {
         Agrammon::Outputs::FilterGroupCollection.new(instances => @result-instances)
     }
 
+    method filter-by-pairwise(Agrammon::Outputs::FilterGroupCollection $other, Numeric $thresh) {
+        # Process those groups existing on both sides or only the other side.
+        my @result-instances;
+        for $other!internal-values-by-filter -> $their-elem {
+            my $their-key = $their-elem.key;
+            if $their-elem.value > $thresh {
+                with %!values-by-filter{$their-key} -> $our-value {
+                    # Exists on both sides.
+                    @result-instances.push: $their-key => $our-value;
+                }
+            }
+        }
+
+        Agrammon::Outputs::FilterGroupCollection.new(instances => @result-instances)
+    }
+
     #| Private accessor to get internal representation of another collection.
     method !internal-values-by-filter() {
         %!values-by-filter
