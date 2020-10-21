@@ -179,60 +179,82 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 ########################
 # summary yard (should be zero budget)
 
-# +n_into_yard
-#   print = DairyCow
-#   ++units
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     Annual N flux into yard.
-#   ++formula
-#     Val(n_into_yard, DairyCow::Yard);
++n_into_yard
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into yard.
+  ++formula
+    Val(n_into_yard, DairyCow::Yard);
 
-# +tan_into_yard
-#   print = DairyCow
-#   ++units
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     Annual TAN flux into yard.
-#   ++formula
-#     Val(tan_into_yard, DairyCow::Yard);
++tan_into_yard
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into yard.
+  ++formula
+    Val(tan_into_yard, DairyCow::Yard);
 
-# +nh3_loss_yard
-#   print = DairyCow
-#   ++units
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     Annual NH3 loss from yard.
-#   ++formula
-#     Val(nh3_nyard, DairyCow::Yard);
++nh3_loss_yard
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from yard.
+  ++formula
+    Val(nh3_nyard, DairyCow::Yard);
 
-# +n_out_yard
-#   print = DairyCow
-#   ++units
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     Annual N flux out of yard.
-#   ++formula
-#     Val(n_outyard, DairyCow::Yard);
++n_out_yard_liquid
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, liquid manure.
+  ++formula
+    Val(n_outyard_liquid, DairyCow::Yard);
 
-# +tan_out_yard
-#   print = DairyCow
-#   ++units
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     Annual TAN flux out of yard.
-#   ++formula
-#     Val(tan_outyard, DairyCow::Yard);
++n_out_yard_solid
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, solid manure.
+  ++formula
+    Val(n_outyard_solid, DairyCow::Yard);
+
++tan_out_yard_liquid
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, liquid manure.
+  ++formula
+    Val(tan_outyard_liquid, DairyCow::Yard);
+
++tan_out_yard_solid
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, solid manure.
+  ++formula
+    Val(tan_outyard_solid, DairyCow::Yard);
 
 ########################
 
