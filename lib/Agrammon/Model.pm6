@@ -307,8 +307,8 @@ class Agrammon::Model {
 
     method dump(Str $sort) {
         my Str $output;
-        my @order = $sort eq 'calculation' ?? @!evaluation-order.reverse !! @!load-order;
-        for @order {
+        my \order = $sort eq 'calculation' ?? @!evaluation-order.reverse !! @!load-order;
+        for order {
             my $level = .taxonomy.comb('::').elems;
             $output  ~= .taxonomy.indent(4 * $level) ~ "\n";
         }

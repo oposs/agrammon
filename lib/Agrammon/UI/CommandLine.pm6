@@ -23,7 +23,8 @@ my %*SUB-MAIN-OPTS =
 ;
 
 subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
-subset SupportedLanguage of Str where { $_ ~~ /de|en|fr/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
+subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
+subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, Str $tech-file?) is export {
@@ -57,11 +58,11 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-fil
 }
 
 #| Dump model
-multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'SHL', Str :$sort = 'model') is export {
+multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'SHL', SortOrder :$sort = 'model') is export {
     say chomp dump-model $filename.IO, $variants, $sort;
 }
 
-multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?, Str :$variants = 'SHL', Str :$sort = 'model') is export {
+multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?, Str :$variants = 'SHL', SortOrder :$sort = 'model') is export {
     latex $filename.IO, $tech-file, $variants, $sort;
 }
 

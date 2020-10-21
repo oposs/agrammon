@@ -3,8 +3,8 @@ use Agrammon::Model;
 #| Get model data for LaTeX document generation
 sub get-model-data( Agrammon::Model $model, $sort, :%technical! ) {
     my @sections;
-    my @order = $sort eq 'calculation' ?? $model.evaluation-order.reverse !! $model.load-order;
-    for @order -> $module {
+    my \order = $sort eq 'calculation' ?? $model.evaluation-order.reverse !! $model.load-order;
+    for order -> $module {
         @sections.push( %(
             :module($module.taxonomy),
             :description($module.description),
