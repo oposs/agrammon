@@ -23,6 +23,7 @@ my $latex;
 lives-ok { $latex = create-latex-source(
         'Model name',
         $model,
+        'model', # sort order
         technical => %($params.technical.map(-> %module {
             %module.keys[0] => %(%module.values[0].map({ .name => .value }))
         }))
