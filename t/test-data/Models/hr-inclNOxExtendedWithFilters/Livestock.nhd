@@ -44,7 +44,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   aggregate=SUM
 +Livestock::OtherCattle::Housing
   aggregate=SUM
-
++Livestock::OtherCattle::NxOxLoss
+  aggregate=SUM
 
 +Livestock::Pig
   aggregate=SUM
@@ -781,7 +782,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual N2 emission from livestock from all animals.
   ++formula
-    Sum(n2_nsolid, Livestock::OtherCattle) P+
+    Sum(n2_nsolid, Livestock::OtherCattle::NxOxLoss) P+
     Sum(n2_nsolid, Livestock::DairyCow::NxOxLoss) P+
     Sum(n2_nsolid, Livestock::SmallRuminants) P+
     Sum(n2_nsolid, Livestock::RoughageConsuming) P+
@@ -804,7 +805,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual N2 emission from livestock from all animals.
   ++formula
-    Sum(n2_nliquid, Livestock::OtherCattle) P+
+    Sum(n2_nliquid, Livestock::OtherCattle::NxOxLoss) P+
     Sum(n2_nliquid, Livestock::DairyCow::NxOxLoss) P+
     Sum(n2_nliquid, Livestock::Pig) P+
     Sum(n2_nliquid, Livestock::FatteningPigs::NxOxLoss);
@@ -823,7 +824,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual NO emission from livestock from all animals.
   ++formula
-    Sum(no_nsolid, Livestock::OtherCattle) P+
+    Sum(no_nsolid, Livestock::OtherCattle::NxOxLoss) P+
     Sum(no_nsolid, Livestock::DairyCow::NxOxLoss) P+
     Sum(no_nsolid, Livestock::SmallRuminants) P+
     Sum(no_nsolid, Livestock::RoughageConsuming) P+
@@ -846,7 +847,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual NO emission from livestock from all animals.
   ++formula
-    Sum(no_nliquid, Livestock::OtherCattle) P+
+    Sum(no_nliquid, Livestock::OtherCattle::NxOxLoss) P+
     Sum(no_nliquid, Livestock::DairyCow::NxOxLoss) P+
     Sum(no_nliquid, Livestock::Pig) P+
     Sum(no_nliquid, Livestock::FatteningPigs::NxOxLoss);
@@ -865,7 +866,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual N2O emission from livestock from all animals.
   ++formula
-    Sum(n2o_nsolid, Livestock::OtherCattle) P+
+    Sum(n2o_nsolid, Livestock::OtherCattle::NxOxLoss) P+
     Sum(n2o_nsolid, Livestock::DairyCow::NxOxLoss) P+
     Sum(n2o_nsolid, Livestock::SmallRuminants) P+
     Sum(n2o_nsolid, Livestock::RoughageConsuming) P+
@@ -888,7 +889,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual N2O emission from livestock from all animals.
   ++formula
-    Sum(n2o_nliquid, Livestock::OtherCattle) P+
+    Sum(n2o_nliquid, Livestock::OtherCattle::NxOxLoss) P+
     Sum(n2o_nliquid, Livestock::DairyCow::NxOxLoss) P+
     Sum(n2o_nliquid, Livestock::Pig) P+
     Sum(n2o_nliquid, Livestock::FatteningPigs::NxOxLoss);
