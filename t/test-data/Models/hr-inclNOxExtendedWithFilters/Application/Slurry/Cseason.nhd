@@ -96,26 +96,26 @@ is applied.
   ++units 
     en = -
   ++description
-  Correction factor for the application of slurry in summer (June to
-  August): Model calculation according to the model of Katz (Menzi et
-  al. 1997b) with meteorological data from Liebefeld 1993-2002:
-  average from March to November 12°C, 70% relative air humidity, 1.15
-  kg/m3 TAN, 30 m3/ha resulting in a loss of 50.6% TAN; summer 17.8°C
-  resulting in a loss of 56.7% TAN (+12%). Value chosen for
-  cal-culation: +15%
-    
+    Correction factor for the application of slurry in summer (June to
+    August): Model calculation according to the model of Katz (Menzi et
+    al. 1997b) with meteorological data from Liebefeld 1993-2002:
+    average from March to November 12°C, 70% relative air humidity, 1.15
+    kg/m3 TAN, 30 m3/ha resulting in a loss of 50.6% TAN; summer 17.8°C
+    resulting in a loss of 56.7% TAN (+12%). Value chosen for
+    cal-culation: +15%
+      
  
 +c_autumn_winter_spring
   value = -0.05
   ++units 
     en = -
   ++description
-  Correction factor for the application of slurry in autumn, winter and spring (Sept to May): Model calculation according to the model of Katz (Menzi et
-  al. 1997b) with meteorological data from Liebefeld 1993-2002: average
-  from March to November 12°C, 70% relative air humidity, 1.15 kg/m3
-  TAN, 30 m3/ha resulting in a loss of 50.6% TAN; spring/autumn/winter 9°C
-  resulting in a loss of 48.1% TAN (-4.8%). Value chosen for
-  calculation: -5%
+    Correction factor for the application of slurry in autumn, winter and spring (Sept to May): Model calculation according to the model of Katz (Menzi et
+    al. 1997b) with meteorological data from Liebefeld 1993-2002: average
+    from March to November 12°C, 70% relative air humidity, 1.15 kg/m3
+    TAN, 30 m3/ha resulting in a loss of 50.6% TAN; spring/autumn/winter 9°C
+    resulting in a loss of 48.1% TAN (-4.8%). Value chosen for
+    calculation: -5%
 
 
 *** external ***
@@ -130,7 +130,7 @@ is applied.
   ++description
     .
   ++formula
-      return (In(appl_summer)/100);
+    In(appl_summer) / 100;
 
 +appl_autumn_winter_spring
   print = 22
@@ -139,7 +139,7 @@ is applied.
   ++description
     .
   ++formula
-      return (In(appl_autumn_winter_spring)/100);
+    In(appl_autumn_winter_spring) / 100;
 
 +c_season
   print = 15

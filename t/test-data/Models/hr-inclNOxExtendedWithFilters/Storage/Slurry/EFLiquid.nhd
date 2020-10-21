@@ -259,17 +259,16 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
     en =  kg N/m2/year
     de =  kg N/m2/Jahr
     fr =  kg N/m2/an
-  ++description
-         
-The Emission factor for uncovered storage is based on experiments of
-de Bode (1990) and Sommer et al. (1993) measuring emissions of 2.5 to
-6.9 g N m-2 day-1 for cattle slurry, for the emission of the none
-coverd a mean of the higher values is assumed. Assumption: 8.0 gN m-2
-day-1 resp. 2.92 kgN m-2 /yr according to the report "Abklärungen zur
-Klasierung von Stallsystemen und Hofdüngerlagern bezüglich der
-Ammoniak-Emissionen" and the decision of the session of 10 April 208
-(participants: C. Bonjour, C. Leuenbergern, M. Raaflaub, H. Menzi,
-T. Kupper).
+  ++description      
+    The Emission factor for uncovered storage is based on experiments of
+    de Bode (1990) and Sommer et al. (1993) measuring emissions of 2.5 to
+    6.9 g N m-2 day-1 for cattle slurry, for the emission of the none
+    coverd a mean of the higher values is assumed. Assumption: 8.0 gN m-2
+    day-1 resp. 2.92 kgN m-2 /yr according to the report "Abklärungen zur
+    Klasierung von Stallsystemen und Hofdüngerlagern bezüglich der
+    Ammoniak-Emissionen" and the decision of the session of 10 April 208
+    (participants: C. Bonjour, C. Leuenbergern, M. Raaflaub, H. Menzi,
+    T. Kupper).
 
 +ef_pig_solid_cover
   value = 0.292

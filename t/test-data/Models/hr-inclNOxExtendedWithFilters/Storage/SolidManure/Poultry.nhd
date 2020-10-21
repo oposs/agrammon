@@ -237,7 +237,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
       ),
       Out(c_covered_basin) * 
       Out(c_free_factor_storage_poultrymanure)      
-  );
+    );
 
 
 +immobilization_rate_poultry

@@ -225,46 +225,46 @@ taxonomy = Application::Slurry::Ctech
   print = 22
   ++units 
     en = -
- ++description
-   Share
- ++formula
-      return (In(share_deep_injection)/100);
+  ++description
+    Share
+  ++formula
+    In(share_deep_injection) / 100;
 
 +share_shallow_injection
   print = 22
   ++units 
     en = -
- ++description
-   Share
- ++formula
-      return (In(share_shallow_injection)/100);
+  ++description
+    Share
+  ++formula
+    In(share_shallow_injection) / 100;
 
 +share_trailing_shoe
  print = 22
   ++units 
     en = -
- ++description
-   Share
- ++formula
-      return (In(share_trailing_shoe)/100);
+  ++description
+    Share
+  ++formula
+    In(share_trailing_shoe) / 100;
 
 +share_trailing_hose
  print = 22
   ++units 
     en = -
- ++description
-   Share
- ++formula
-       return (In(share_trailing_hose)/100);
+  ++description
+    Share
+  ++formula
+    In(share_trailing_hose) / 100;
 
 +share_splash_plate
  print = 22
   ++units 
     en = -
- ++description
-   Share
- ++formula
-      return (In(share_splash_plate)/100);
+  ++description
+    Share
+  ++formula
+    In(share_splash_plate) / 100;
 
 +c_tech
   print = 15
