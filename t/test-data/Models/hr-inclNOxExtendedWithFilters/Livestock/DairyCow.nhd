@@ -262,6 +262,59 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 ########################
 # summary grazing (should be zero budget)
 
++n_into_grazing
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into grazing.
+  ++formula
+    Val(n_into_grazing, DairyCow::Grazing);
 
++tan_into_grazing
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into grazing.
+  ++formula
+    Val(tan_into_grazing, DairyCow::Grazing);
+
++nh3_loss_grazing
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from grazing.
+  ++formula
+    Val(nh3_ngrazing, DairyCow::Grazing);
+
++n_remain_grazing
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, liquid manure.
+  ++formula
+    Val(n_remain_grazing, DairyCow::Grazing);
+
++tan_remain_grazing
+  print = DairyCow
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, liquid manure.
+  ++formula
+    Val(tan_remain_grazing, DairyCow::Grazing);
 
 ########################
