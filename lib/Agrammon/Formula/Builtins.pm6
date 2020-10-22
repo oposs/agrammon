@@ -36,7 +36,7 @@ sub get-builtins is export {
         # Select only values in filter group 'a' 
         # where values in filter group 'crit' are greater than 0
         selectStrict => -> $filter-group-a, $filter-group-crit {
-            die "add operator expects a filter group as its first argument"
+            die "selectStrict expects a filter group as its first argument"
                     unless  $filter-group-a ~~ Agrammon::Outputs::FilterGroupCollection &&
                             $filter-group-crit ~~ Agrammon::Outputs::FilterGroupCollection;
             $filter-group-a.select-by-threshold($filter-group-crit, 0, False)
@@ -44,7 +44,7 @@ sub get-builtins is export {
         # As 'selectStrict' but, additionally, returning 0 for filter groups 
         # where values in filter group 'crit' are 0 or less
         selectAll => -> $filter-group-a, $filter-group-crit {
-            die "add operator expects a filter group as its first argument"
+            die "selectAll expects a filter group as its first argument"
                     unless  $filter-group-a ~~ Agrammon::Outputs::FilterGroupCollection &&
                             $filter-group-crit ~~ Agrammon::Outputs::FilterGroupCollection;
             $filter-group-a.select-by-threshold($filter-group-crit, 0, True)
