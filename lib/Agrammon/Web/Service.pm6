@@ -8,7 +8,7 @@ use Agrammon::DB::Tags;
 use Agrammon::Model;
 use Agrammon::OutputsCache;
 use Agrammon::OutputFormatter::Excel;
-use Agrammon::OutputFormatter::GUI;
+use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
 use Agrammon::Web::SessionUser;

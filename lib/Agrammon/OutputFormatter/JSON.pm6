@@ -1,6 +1,17 @@
 use Agrammon::Model;
 use Agrammon::Outputs;
 
+sub output-as-json(Agrammon::Model $model,
+                   Agrammon::Outputs $outputs,
+		   $language, $prints,
+                   Bool $include-filters
+                   ) is export {
+    my %output = %(
+        data => get-data($model, $outputs, $include-filters),
+    );
+    return %output;
+}
+
 sub output-for-gui(Agrammon::Model $model,
                    Agrammon::Outputs $outputs,
                    Bool $include-filters
