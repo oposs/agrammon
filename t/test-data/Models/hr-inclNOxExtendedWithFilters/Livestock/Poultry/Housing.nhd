@@ -57,7 +57,7 @@ taxonomy = Livestock::Poultry::Housing
   ++description
     Annual N flux into the housing.
   ++formula
-    Val(n_excretion, Excretion) - Val(n_into_outdoor, Outdoor);
+    Val(n_excretion, Excretion) - Val(n_into_grazing, Outdoor);
 
 +tan_into_housing
   print = 7d
@@ -68,7 +68,7 @@ taxonomy = Livestock::Poultry::Housing
   ++description
     Annual N flux into the housing.
   ++formula
-    Val(tan_excretion, Excretion) - Val(tan_into_outdoor, Outdoor);
+    Val(tan_excretion, Excretion) - Val(tan_into_grazing, Outdoor);
 
 +ef_housing_before_air_scrubber
   print = Poultry

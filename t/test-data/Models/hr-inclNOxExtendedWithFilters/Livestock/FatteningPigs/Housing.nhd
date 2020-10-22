@@ -92,14 +92,14 @@ taxonomy = Livestock::FatteningPigs::Housing
     Out(ef_housing_indoor_before_air_scrubber) *
     (1 - Val(red_air_scrubber, Housing::AirScrubber));
 
-+ef_housing_outdoor
++ef_housing_grazing
   print = FatteningPigs
   ++units
      en = -
      de = -
      fr = - 
   ++description
-    NH3 emission factor for outdoor part of fattening pig housing systems.
+    NH3 emission factor for grazing part of fattening pig housing systems.
   ++formula
     my $ef = Val(er_housing, Housing::Type) * 
               Val(c_free_factor_housing, Housing::CFreeFactor) *
@@ -119,8 +119,8 @@ taxonomy = Livestock::FatteningPigs::Housing
   ++formula
     # indoor part
     Val(share_indoor, Housing::Type) * Out(ef_housing_indoor) +
-    # outdoor part
-    (1 - Val(share_indoor, Housing::Type)) * Out(ef_housing_outdoor);
+    # grazing part
+    (1 - Val(share_indoor, Housing::Type)) * Out(ef_housing_grazing);
 
 +nh3_nhousing
   print = FatteningPigs
@@ -131,7 +131,7 @@ taxonomy = Livestock::FatteningPigs::Housing
   ++description
     Annual NH3 emission from fattening pig housing systems.
   ++formula
-    # change effect of certain mitigation strategies on indoor/outdoor emissions? -> check with Thomas
+    # change effect of certain mitigation strategies on indoor/grazing emissions? -> check with Thomas
     Out(tan_into_housing) * Out(ef_nh3_nhousing);
 
 +n_air_scrubber

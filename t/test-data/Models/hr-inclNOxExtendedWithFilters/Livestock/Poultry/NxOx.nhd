@@ -50,7 +50,7 @@ TODO!
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N2 emission from poultry production (housing and outdoor).
+    Annual N2 emission from poultry production (housing and grazing).
   ++formula
     Val(n_into_housing, Housing) * Tech(er_n2)
 
@@ -62,7 +62,7 @@ TODO!
     fr = kg N/an
   ++description
     Annual N2 emission from poultry production housing.
-    (outdoor not included)
+    (grazing not included)
   ++formula
     Val(n_into_housing, Housing) * Tech(er_no)
 

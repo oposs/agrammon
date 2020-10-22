@@ -231,7 +231,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_into_grazing, Livestock::Equides::Grazing) P+
     Sum(n_into_grazing, Livestock::SmallRuminants::Grazing) P+
     Sum(n_into_grazing, Livestock::RoughageConsuming::Grazing) P+
-    Sum(n_into_outdoor, Livestock::Poultry::Outdoor);
+    Sum(n_into_grazing, Livestock::Poultry::Outdoor);
 
 
 ####################################################
@@ -320,7 +320,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(tan_into_grazing, Livestock::Equides::Grazing) P+
     Sum(tan_into_grazing, Livestock::SmallRuminants::Grazing) P+
     Sum(tan_into_grazing, Livestock::RoughageConsuming::Grazing) P+
-    Sum(tan_into_outdoor, Livestock::Poultry::Outdoor);
+    Sum(tan_into_grazing, Livestock::Poultry::Outdoor);
 
 ####################################################
 
@@ -951,7 +951,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from all grazing areas and Poultry outdoor activities.
+    Annual NH3 emission from all grazing areas and Poultry grazing activities.
   ++formula
      Sum(nh3_ngrazing,Livestock::OtherCattle::Grazing) P+
      Sum(nh3_ngrazing,Livestock::DairyCow::Grazing) P+
@@ -960,7 +960,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(nh3_ngrazing,Livestock::Equides::Grazing) P+
      Sum(nh3_ngrazing,Livestock::SmallRuminants::Grazing) P+
      Sum(nh3_ngrazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(nh3_noutdoor,Livestock::Poultry::Outdoor);
+     Sum(nh3_ngrazing,Livestock::Poultry::Outdoor);
 
 +n2_ngrazing
   format= %.0f
@@ -975,7 +975,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from all grazing areas and Poultry outdoor activities.
+    Annual NH3 emission from all grazing areas and Poultry grazing activities.
   ++formula
      Sum(n2_ngrazing,Livestock::OtherCattle::Grazing) P+
      Sum(n2_ngrazing,Livestock::DairyCow::Grazing) P+
@@ -984,7 +984,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(n2_ngrazing,Livestock::Equides::Grazing) P+
      Sum(n2_ngrazing,Livestock::SmallRuminants::Grazing) P+
      Sum(n2_ngrazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(n2_noutdoor,Livestock::Poultry::Outdoor);
+     Sum(n2_ngrazing,Livestock::Poultry::Outdoor);
 
 +no_ngrazing
   format= %.0f
@@ -999,7 +999,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from all grazing areas and Poultry outdoor activities.
+    Annual NH3 emission from all grazing areas and Poultry grazing activities.
   ++formula
      Sum(no_ngrazing,Livestock::OtherCattle::Grazing) P+
      Sum(no_ngrazing,Livestock::DairyCow::Grazing) P+
@@ -1008,7 +1008,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(no_ngrazing,Livestock::Equides::Grazing) P+
      Sum(no_ngrazing,Livestock::SmallRuminants::Grazing) P+
      Sum(no_ngrazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(no_noutdoor,Livestock::Poultry::Outdoor);
+     Sum(no_ngrazing,Livestock::Poultry::Outdoor);
 
 
 +n2o_ngrazing
@@ -1024,7 +1024,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 emission from all grazing areas and Poultry outdoor activities.
+    Annual NH3 emission from all grazing areas and Poultry grazing activities.
   ++formula
      Sum(n2o_ngrazing,Livestock::OtherCattle::Grazing) P+
      Sum(n2o_ngrazing,Livestock::DairyCow::Grazing) P+
@@ -1033,7 +1033,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(n2o_ngrazing,Livestock::Equides::Grazing) P+
      Sum(n2o_ngrazing,Livestock::SmallRuminants::Grazing) P+
      Sum(n2o_ngrazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(n2o_noutdoor,Livestock::Poultry::Outdoor);
+     Sum(n2o_ngrazing,Livestock::Poultry::Outdoor);
 
 +n_remain_grazing
   format= %.0f
@@ -1057,7 +1057,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(n_remain_grazing, Livestock::Equides::Grazing) P+
      Sum(n_remain_grazing, Livestock::SmallRuminants::Grazing) P+
      Sum(n_remain_grazing, Livestock::RoughageConsuming::Grazing) P+
-     Sum(n_remain_outdoor, Livestock::Poultry::Outdoor);
+     Sum(n_remain_grazing, Livestock::Poultry::Outdoor);
 
 +tan_remain_grazing
   format= %.0f
@@ -1081,7 +1081,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(tan_remain_grazing, Livestock::Equides::Grazing) P+
      Sum(tan_remain_grazing, Livestock::SmallRuminants::Grazing) P+
      Sum(tan_remain_grazing, Livestock::RoughageConsuming::Grazing) P+
-     Sum(tan_remain_outdoor, Livestock::Poultry::Outdoor);
+     Sum(tan_remain_grazing, Livestock::Poultry::Outdoor);
 
 ####################################################
 
