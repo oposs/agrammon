@@ -48,10 +48,10 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                 'Successfully executed model';
         my %output-hash = $output.get-outputs-hash;
 
-        is %output-hash<Total><nh3_ntotal>.round(.001), $nh3-ntotal.round(.001),
-                "Correct nh3_ntotal result: { %output-hash<Total><nh3_ntotal>.round(.001) }";
-        is %output-hash<Total><nh3_nanimalproduction>.round(.001), $nh3-nanimalproduction.round(.001),
-                "Correct nh3_nanimalproduction result: { %output-hash<Total><nh3_nanimalproduction>.round(.001) }";
+        is (+%output-hash<Total><nh3_ntotal>).round(.001), $nh3-ntotal.round(.001),
+                "Correct nh3_ntotal result: { (+%output-hash<Total><nh3_ntotal>).round(.001) }";
+        is (+%output-hash<Total><nh3_nanimalproduction>).round(.001), $nh3-nanimalproduction.round(.001),
+                "Correct nh3_nanimalproduction result: { (+%output-hash<Total><nh3_nanimalproduction>).round(.001) }";
         is (+%output-hash<Application><nh3_napplication>).round(.001), $nh3-napplication.round(.001),
                 "Correct nh3_napplication result: { (+%output-hash<Application><nh3_napplication>).round(.001) }";
         is (+%output-hash<Storage><n_into_application>).round(.001), $n-into-application.round(.001),
