@@ -122,11 +122,17 @@ class Agrammon::Outputs::FilterGroupCollection {
         for $other!internal-values-by-filter -> $their-elem {
             my $their-key = $their-elem.key;
             if $their-elem.value > $thresh {
-                with %!values-by-filter{$their-key} -> $our-value {
+                my $our-value = %!values-by-filter{$their-key};
+                if $our-value.defined {
                     # Push our value if our value > threshold
                     @result-instances.push: $their-key => $our-value;
                 }
-            } elsif $push-all {
+                else {
+                    # Push 0 if key is not existing
+                    @result-instances.push: $their-key => 0;                    
+                } 
+            } 
+            elsif $push-all {
                 # Push threshold if our value <= threshold
                 @result-instances.push: $their-key => $thresh;                
             }

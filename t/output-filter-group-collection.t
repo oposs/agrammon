@@ -170,7 +170,7 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
         is +$group-b, 14, 'Second original group unchanged';
         is +$_, 31, 'Total numeric value after "all" selection > 0 is correct';
         is-deeply norm(.results-by-filter-group),
-                norm([{ac => 'blue cow'} => 0, {ac => 'green cow'} => 31, {ac => 'pink cow'} => 0]),
+                norm([{ac => 'green cow'} => 31, {ac => 'pink cow'} => 0]),
                 'Correct results by filter group after "all" selection > 0';
     }
 }
@@ -184,7 +184,7 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
         isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
                 'Selecting all with threshold > 0 produces a new filter group collection';
         is +$group-a, 35, 'First original group unchanged';
-        is +$group-b, 14, 'Second original group unchanged';
+        is +$group-b, 5, 'Second original group unchanged';
         is +$_, 31, 'Total numeric value after "all" selection > 0 is correct';
         is-deeply norm(.results-by-filter-group),
                 norm([{ac => 'blue cow'} => 0, {ac => 'green cow'} => 31, {ac => 'pink cow'} => 0]),
