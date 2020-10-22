@@ -27,3 +27,214 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 
 
 *** output ***
+
++animals
+  print = Poultry
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, Poultry::Excretion);
+
++animalcategory
+  print = Poultry
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, Poultry::Excretion);
+
++dimensioning_check
+  print = Poultry
+  ++units
+    en = -
+  ++description
+   Check if number of animals <= number of animal places.
+  ++formula
+    if ( Val(dimensioning_barn, Poultry::Housing::KArea) < Val(animals, Poultry::Excretion) ) {
+      writeLog({
+        en => "The number of available animal places must be equal or higher than the number of animals.",
+        de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+        fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+      });
+      return "barn dimensioning too small";
+    } 
+    else {
+      return "barn dimensioning ok";
+    }
+
+
+########################
+# excretion
+
++n_excretion
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N excreted by the specified number of animals.
+  ++formula
+    Val(n_excretion, Poultry::Excretion);
+
++tan_excretion
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total TAN excreted by the specified number of animals.
+  ++formula
+    Val(tan_excretion, Poultry::Excretion);
+
+########################
+
+
+########################
+# summary housing (should be zero budget)
+
++n_into_housing
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into housing.
+  ++formula
+    Val(n_into_housing, Poultry::Housing);
+
++tan_into_housing
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into housing.
+  ++formula
+    Val(tan_into_housing, Poultry::Housing);
+
++nh3_loss_housing
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from housing.
+  ++formula
+    Val(nh3_nhousing, Poultry::Housing);
+
++n_out_housing_liquid
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, liquid manure.
+  ++formula
+    0;
+
++n_out_housing_solid
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, solid manure.
+  ++formula
+    Val(n_outhousing_solid, Poultry::Housing);
+
++tan_out_housing_liquid
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, liquid manure.
+  ++formula
+    0;
+
++tan_out_housing_solid
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, solid manure.
+  ++formula
+    Val(tan_outhousing_solid, Poultry::Housing);
+
+########################
+
+
+
+########################
+# summary outdoor (should be zero budget)
+
++n_into_outdoor
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into outdoor.
+  ++formula
+    Val(n_into_outdoor, Poultry::Outdoor);
+
++tan_into_outdoor
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into outdoor.
+  ++formula
+    Val(tan_into_outdoor, Poultry::Outdoor);
+
++nh3_loss_outdoor
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from outdoor.
+  ++formula
+    Val(nh3_noutdoor, Poultry::Outdoor);
+
++n_remain_outdoor
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, liquid manure.
+  ++formula
+    Val(n_remain_outdoor, Poultry::Outdoor);
+
++tan_remain_outdoor
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, liquid manure.
+  ++formula
+    Val(tan_remain_outdoor, Poultry::Outdoor);
+
+########################
+

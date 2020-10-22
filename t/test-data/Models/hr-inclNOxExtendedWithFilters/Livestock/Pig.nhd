@@ -27,3 +27,214 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
 +Pig::NxOx
 
 *** output ***
+
++animals
+  print = Pig
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, Pig::Excretion);
+
++animalcategory
+  print = Pig
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, Pig::Excretion);
+
++dimensioning_check
+  print = Pig
+  ++units
+    en = -
+  ++description
+   Check if number of animals <= number of animal places.
+  ++formula
+    if ( Val(dimensioning_barn, Pig::Housing::KArea) < Val(animals, Pig::Excretion) ) {
+      writeLog({
+        en => "The number of available animal places must be equal or higher than the number of animals.",
+        de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+        fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+      });
+      return "barn dimensioning too small";
+    } 
+    else {
+      return "barn dimensioning ok";
+    }
+
+
+########################
+# excretion
+
++n_excretion
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N excreted by the specified number of animals.
+  ++formula
+    Val(n_excretion, Pig::Excretion);
+
++tan_excretion
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total TAN excreted by the specified number of animals.
+  ++formula
+    Val(tan_excretion, Pig::Excretion);
+
+########################
+
+
+########################
+# summary housing (should be zero budget)
+
++n_into_housing
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into housing.
+  ++formula
+    Val(n_into_housing, Pig::Housing);
+
++tan_into_housing
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into housing.
+  ++formula
+    Val(tan_into_housing, Pig::Housing);
+
++nh3_loss_housing
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from housing.
+  ++formula
+    Val(nh3_nhousing, Pig::Housing);
+
++n_out_housing_liquid
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, liquid manure.
+  ++formula
+    Val(n_outhousing_liquid, Pig::Housing);
+
++n_out_housing_solid
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, solid manure.
+  ++formula
+    Val(n_outhousing_solid, Pig::Housing);
+
++tan_out_housing_liquid
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, liquid manure.
+  ++formula
+    Val(tan_outhousing_liquid, Pig::Housing);
+
++tan_out_housing_solid
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, solid manure.
+  ++formula
+    Val(tan_outhousing_solid, Pig::Housing);
+
+########################
+
+
+
+########################
+# summary grazing (should be zero budget)
+
++n_into_grazing
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into grazing.
+  ++formula
+    Val(n_into_grazing, Pig::Grazing);
+
++tan_into_grazing
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into grazing.
+  ++formula
+    Val(tan_into_grazing, Pig::Grazing);
+
++nh3_loss_grazing
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from grazing.
+  ++formula
+    Val(nh3_ngrazing, Pig::Grazing);
+
++n_remain_grazing
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, liquid manure.
+  ++formula
+    Val(n_remain_grazing, Pig::Grazing);
+
++tan_remain_grazing
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, liquid manure.
+  ++formula
+    Val(tan_remain_grazing, Pig::Grazing);
+
+########################
+

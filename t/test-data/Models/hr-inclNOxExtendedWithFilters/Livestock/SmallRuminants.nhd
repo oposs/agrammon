@@ -30,4 +30,194 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
 +SmallRuminants::NxOx
 
 *** output ***
-   
+
++animals
+  print = SmallRuminants
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, SmallRuminants::Excretion);
+
++animalcategory
+  print = SmallRuminants
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, SmallRuminants::Excretion);
+
+
+########################
+# excretion
+
++n_excretion
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N excreted by the specified number of animals.
+  ++formula
+    Val(n_excretion, SmallRuminants::Excretion);
+
++tan_excretion
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total TAN excreted by the specified number of animals.
+  ++formula
+    Val(tan_excretion, SmallRuminants::Excretion);
+
+########################
+
+
+########################
+# summary housing (should be zero budget)
+
++n_into_housing
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into housing.
+  ++formula
+    Val(n_into_housing, SmallRuminants::Housing);
+
++tan_into_housing
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into housing.
+  ++formula
+    Val(tan_into_housing, SmallRuminants::Housing);
+
++nh3_loss_housing
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from housing.
+  ++formula
+    Val(nh3_nhousing, SmallRuminants::Housing);
+
++n_out_housing_liquid
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, liquid manure.
+  ++formula
+    Val(n_outhousing_liquid, SmallRuminants::Housing);
+
++n_out_housing_solid
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, solid manure.
+  ++formula
+    Val(n_outhousing_solid, SmallRuminants::Housing);
+
++tan_out_housing_liquid
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, liquid manure.
+  ++formula
+    Val(tan_outhousing_liquid, SmallRuminants::Housing);
+
++tan_out_housing_solid
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, solid manure.
+  ++formula
+    Val(tan_outhousing_solid, SmallRuminants::Housing);
+
+########################
+
+
+
+########################
+# summary grazing (should be zero budget)
+
++n_into_grazing
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into grazing.
+  ++formula
+    Val(n_into_grazing, SmallRuminants::Grazing);
+
++tan_into_grazing
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into grazing.
+  ++formula
+    Val(tan_into_grazing, SmallRuminants::Grazing);
+
++nh3_loss_grazing
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from grazing.
+  ++formula
+    Val(nh3_ngrazing, SmallRuminants::Grazing);
+
++n_remain_grazing
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, liquid manure.
+  ++formula
+    Val(n_remain_grazing, SmallRuminants::Grazing);
+
++tan_remain_grazing
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, liquid manure.
+  ++formula
+    Val(tan_remain_grazing, SmallRuminants::Grazing);
+
+########################

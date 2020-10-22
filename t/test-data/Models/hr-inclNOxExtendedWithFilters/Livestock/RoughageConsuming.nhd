@@ -27,4 +27,195 @@ gui       = Livestock::RoughageConsuming,Tierhaltung::Andere Raufutterverzehrer,
 +RoughageConsuming::NxOx
 
 *** output ***
- 
+
++animals
+  print = RoughageConsuming
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, RoughageConsuming::Excretion);
+
++animalcategory
+  print = RoughageConsuming
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, RoughageConsuming::Excretion);
+
+
+########################
+# excretion
+
++n_excretion
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N excreted by the specified number of animals.
+  ++formula
+    Val(n_excretion, RoughageConsuming::Excretion);
+
++tan_excretion
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total TAN excreted by the specified number of animals.
+  ++formula
+    Val(tan_excretion, RoughageConsuming::Excretion);
+
+########################
+
+
+########################
+# summary housing (should be zero budget)
+
++n_into_housing
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into housing.
+  ++formula
+    Val(n_into_housing, RoughageConsuming::Housing);
+
++tan_into_housing
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into housing.
+  ++formula
+    Val(tan_into_housing, RoughageConsuming::Housing);
+
++nh3_loss_housing
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from housing.
+  ++formula
+    Val(nh3_nhousing, RoughageConsuming::Housing);
+
++n_out_housing_liquid
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, liquid manure.
+  ++formula
+    Val(n_outhousing_liquid, RoughageConsuming::Housing);
+
++n_out_housing_solid
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, solid manure.
+  ++formula
+    Val(n_outhousing_solid, RoughageConsuming::Housing);
+
++tan_out_housing_liquid
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, liquid manure.
+  ++formula
+    Val(tan_outhousing_liquid, RoughageConsuming::Housing);
+
++tan_out_housing_solid
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, solid manure.
+  ++formula
+    Val(tan_outhousing_solid, RoughageConsuming::Housing);
+
+########################
+
+
+
+########################
+# summary grazing (should be zero budget)
+
++n_into_grazing
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into grazing.
+  ++formula
+    Val(n_into_grazing, RoughageConsuming::Grazing);
+
++tan_into_grazing
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into grazing.
+  ++formula
+    Val(tan_into_grazing, RoughageConsuming::Grazing);
+
++nh3_loss_grazing
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from grazing.
+  ++formula
+    Val(nh3_ngrazing, RoughageConsuming::Grazing);
+
++n_remain_grazing
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, liquid manure.
+  ++formula
+    Val(n_remain_grazing, RoughageConsuming::Grazing);
+
++tan_remain_grazing
+  print = RoughageConsuming
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, liquid manure.
+  ++formula
+    Val(tan_remain_grazing, RoughageConsuming::Grazing);
+
+########################
+
