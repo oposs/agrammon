@@ -171,7 +171,7 @@ Vanderweerden and Jarvis (1997)
 
 +nh3_nrecyclingfertiliser
   format= %.0f
-  print = PlantProductionSummary
+  print = SummaryPlantProduction
   ++labels 
     sort = 950
     en = Recycling fertiliser NH3-Emissions

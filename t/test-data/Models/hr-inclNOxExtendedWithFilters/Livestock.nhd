@@ -753,7 +753,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 # is this variable really necessary?
 +nh3_nhousing_and_yard
   format= %.0f
-  print = LivestockSummary
+  print = SummaryLivestock
   ++labels
     sort = 802
     en = Housing and Yard NH3-Emissions
@@ -940,7 +940,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +nh3_ngrazing
   format= %.0f
-  print = LivestockSummary
+  print = SummaryLivestock
   ++labels
     sort = 801
     en = Grazing NH3-Emissions

@@ -308,9 +308,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 
 +nh3_nstorage_liquid
   format= %.0f
-  print = LivestockSummaryPlus
+  print = SummaryLivestock
   ++labels 
-    sort = 803
+    sort = 812
     en = _Storage liquid NH3-Emissions
     de = _Hofdüngerlagerung flüssig NH3-Emission
     fr = _Emission de NH3 Stockage des engrais de ferme liquides 
@@ -326,9 +326,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
  
 +nh3_nstorage_solid
   format= %.0f
-  print = LivestockSummaryPlus
+  print = SummaryLivestock
   ++labels 
-    sort = 804
+    sort = 813
     en = _Storage solid NH3-Emissions
     de = _Hofdüngerlagerung fest NH3-Emission
     fr = _Emission de NH3 Stockage des engrais de ferme solides 
@@ -347,9 +347,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 
 +nh3_nstorage
   format= %.0f
-  print = LivestockSummary
+  print = SummaryLivestock
   ++labels 
-    sort = 802
+    sort = 811
     en = Storage NH3-Emissions
     de = Hofdüngerlagerung NH3-Emission
     fr = Emission de NH3 Stockage des engrais de ferme 

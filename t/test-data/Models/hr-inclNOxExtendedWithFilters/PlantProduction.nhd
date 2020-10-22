@@ -27,9 +27,9 @@ gui      = PlantProduction,Pflanzenbau,Production végétale,Plant production
 
 +nh3_nplantproduction
   format= %.0f
-  print = PlantProductionTotal
+  print = SummaryPlantProduction
   ++labels 
-    sort = 999
+    sort = 990
     en = Total Plantproduction NH3-Emissions
     de = Total Pflanzenproduktion NH3-Emission
     fr = Emission de NH3 Total Production végétale
