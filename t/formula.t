@@ -1,5 +1,6 @@
 use v6;
 use Agrammon::Environment;
+use Agrammon::Outputs::FilterGroupCollection;
 use Agrammon::Formula;
 use Agrammon::Formula::Compiler;
 use Agrammon::Formula::Parser;
@@ -1064,5 +1065,37 @@ subtest {
     ));
     is $result-default, "lots", 'Correct result from second when';
 }, 'when/default blocks have correct behavior in leaving given';
+
+subtest {
+    my $f = parse-formula('In(fgc) P+ In(sv)', 'SomeTestModule');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('fgc', 'sv'), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
+            input => {
+                fgc => Agrammon::Outputs::FilterGroupCollection.from-scalar(37),
+                sv => 5
+            }
+            ));
+    isa-ok $result, Agrammon::Outputs::FilterGroupCollection;
+    is $result.Numeric, 42, 'Correct result';
+}, 'P+ upgrades scalar value on right side';
+
+subtest {
+    my $f = parse-formula('In(sv) P+ In(fgc)', 'SomeTestModule');
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, ('sv', 'fgc'), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
+        input => {
+            fgc => Agrammon::Outputs::FilterGroupCollection.from-scalar(37),
+            sv => 5
+        }
+    ));
+    isa-ok $result, Agrammon::Outputs::FilterGroupCollection;
+    is $result.Numeric, 42, 'Correct result';
+}, 'P+ upgrades scalar value on left side';
 
 done-testing;
