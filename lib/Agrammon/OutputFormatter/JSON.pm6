@@ -6,10 +6,7 @@ sub output-as-json(Agrammon::Model $model,
 		   $language, $prints,
                    Bool $include-filters
                    ) is export {
-    my %output = %(
-        data => get-data($model, $outputs, $include-filters),
-    );
-    return %output;
+    return get-data($model, $outputs, $include-filters, $language, $prints);
 }
 
 sub output-for-gui(Agrammon::Model $model,
@@ -31,13 +28,13 @@ sub output-for-gui(Agrammon::Model $model,
 #    return ();
 #}
 
-sub get-data($model, $outputs, $include-filters) {
+sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
     my @records;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         when Hash {
             for sorted-kv($_) -> $output, $raw-value {
                 my $var = $module ~ '::' ~ $output;
-                push @records, make-record($module, $output, $model, $raw-value, $var);
+                push @records, make-record($module, $output, $model, $raw-value, $var, Any, $language, $prints);
                 if $include-filters {
                     my $value = flat-value($raw-value);
                     if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
@@ -52,7 +49,7 @@ sub get-data($model, $outputs, $include-filters) {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
                     for sorted-kv(%values) -> $output, $raw-value {
                         my $var = $q-name ~ '::' ~ $output;
-                        push @records, make-record($fq-name, $output, $model, $raw-value, $var);
+                        push @records, make-record($fq-name, $output, $model, $raw-value, $var, Any, $language, $prints);
                         if $include-filters {
                             my $value = flat-value($raw-value);
                             if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
@@ -67,22 +64,37 @@ sub get-data($model, $outputs, $include-filters) {
     return @records;
 }
 
-sub make-record($fq-name, $output, $model, $raw-value, $var, $filters?) {
+sub make-record($fq-name, $output, $model, $raw-value, $var, $filters?, $language?, $prints?) {
     my $format = $model.output-format($fq-name, $output);
     my $full-value = flat-value($raw-value);
     my $value = ($format  && $full-value.defined) ?? sprintf($format, $full-value)
                                                   !! $full-value;
-    return %(
+
+    # skip if prints filter is set and doesn't match this record
+    my $print = $model.output-print($fq-name, $output);
+    next if not $prints ~~ 'All' and not $print ~~ $prints;
+
+    my %record = %(
         :$format,
-        :print($model.output-print($fq-name, $output)),
+        :$print,
         :order($model.output-order($fq-name, $output)),
-        :labels($model.output-labels($fq-name, $output)),
-        :units($model.output-units($fq-name, $output)),
         :fullValue($full-value),
         :$value,
         :$var,
         :$filters,
     );
+
+    # add language specific strings if language specified
+    if $language and $language ne 'All' {
+	%record<unit>  = $model.output-units($fq-name, $output){$language};
+	%record<label> = $model.output-labels($fq-name, $output){$language};
+    }
+    # and language keyed hashes otherwise
+    else {
+	%record<units>  = $model.output-units($fq-name, $output);
+	%record<labels> = $model.output-labels($fq-name, $output);
+    }
+    return %record;
 }
 
 sub push-filters(@records, $fq-name, $output, $model,
