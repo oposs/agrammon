@@ -3,6 +3,7 @@ use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
 use Cro::HTTP::Session::InMemory;
 use DB::Pg;
+use JSON::Fast;
 
 use Agrammon::Config;
 use Agrammon::DataSource::CSV;
@@ -25,6 +26,7 @@ my %*SUB-MAIN-OPTS =
 subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
+subset OutputOrder of Str where { $_ ~~ /^ json|txt $/ or note("ERROR: --sort=[json|txt]") && exit 1 };
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, Str $tech-file?) is export {
@@ -41,20 +43,30 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 #| Run the model
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?,
                SupportedLanguage :$language = 'de', Str :$prints = 'All', Str :$variants = 'SHL',
-               Bool :$csv, Bool :$include-filters, Int :$batch=1, Int :$degree=4, Int :$max-runs
+               Bool :$csv, Bool :$include-filters, Int :$batch=1, Int :$degree=4, Int :$max-runs,
+               OutputFormat :$format
               ) is export {
     my %results = run $filename.IO, $input.IO, $tech-file, $variants, $language, $prints, $csv, $include-filters,
             $batch, $degree, $max-runs;
-    say "##  Model: $filename";
-    say "##  Variants: $variants";
-    for %results.keys -> $simulation {
-        say "### Simulation $simulation";
-        say "##  Print filter: $prints";
-        for %results{$simulation}.keys.sort -> $dataset {
-            say "#   Dataset $dataset";
-            say %results{$simulation}{$dataset};
-        }
+    my $output;
+    if $format eq 'json' {
+        $output = to-json %results;
     }
+    else {
+        my @output;
+        @output.push("##  Model: $filename");
+        @output.push("##  Variants: $variants");
+        for %results.keys -> $simulation {
+            @output.push("### Simulation $simulation");
+            @output.push("##  Print filter: $prints");
+            for %results{$simulation}.keys.sort -> $dataset {
+                @output.push("#   Dataset $dataset");
+                @output.push(%results{$simulation}{$dataset});
+            }
+        }
+        $output = @output.join("\n");
+    }
+    say $output;
 }
 
 #| Dump model
