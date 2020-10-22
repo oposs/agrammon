@@ -26,7 +26,7 @@ my %*SUB-MAIN-OPTS =
 subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
-subset OutputOrder of Str where { $_ ~~ /^ json|txt $/ or note("ERROR: --sort=[json|txt]") && exit 1 };
+subset OutputFormat of Str where { $_ ~~ /^ json|txt $/ or note("ERROR: --sort=[json|txt]") && exit 1 };
 
 #| Start the web interface
 multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, Str $tech-file?) is export {
