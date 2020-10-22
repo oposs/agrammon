@@ -112,16 +112,23 @@ class Agrammon::Outputs::FilterGroupCollection {
         Agrammon::Outputs::FilterGroupCollection.new(instances => @result-instances)
     }
 
-    method filter-by-pairwise(Agrammon::Outputs::FilterGroupCollection $other, Numeric $thresh) {
-        # Process those groups existing on both sides or only the other side.
+    #| Check in the other filter group collection for values that are greater than a threshold
+    #| and return a new group collection as the result. When $push-all is False, then the method
+    #| returns only filter groups where $thresh is exceeded. Otherwise, if $push-all is True,
+    #| filter groups where $thresh is not exceeded are also returned with a value of $thresh.
+    method select-by-threshold(Agrammon::Outputs::FilterGroupCollection $other, Numeric $thresh, Bool $push-all) {
+        # Only process those groups existing on the other side.
         my @result-instances;
         for $other!internal-values-by-filter -> $their-elem {
             my $their-key = $their-elem.key;
             if $their-elem.value > $thresh {
                 with %!values-by-filter{$their-key} -> $our-value {
-                    # Exists on both sides.
+                    # Push our value if our value > threshold
                     @result-instances.push: $their-key => $our-value;
                 }
+            } elsif $push-all {
+                # Push threshold if our value <= threshold
+                @result-instances.push: $their-key => $thresh;                
             }
         }
 
