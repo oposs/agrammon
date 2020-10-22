@@ -37,25 +37,25 @@ sub get-builtins is export {
         addPairwise => -> $a, $b {
             my $ag = as-filter-group($a);
             my $bg = as-filter-group($b);
-            $ag.apply-pairwise($b, &[+], 0)
+            $ag.apply-pairwise($bg, &[+], 0)
         },
         # P- compiles into this
         subtractPairwise => -> $a, $b {
             my $ag = as-filter-group($a);
             my $bg = as-filter-group($b);
-            $ag.apply-pairwise($b, &[-], 0)
+            $ag.apply-pairwise($bg, &[-], 0)
         },
         # P/ compiles into this
         dividePairwise => -> $a, $b {
             my $ag = as-filter-group($a);
             my $bg = as-filter-group($b);
-            $ag.apply-pairwise($b, &[/], 1)
+            $ag.apply-pairwise($bg, &[/], 1)
         },
         # P* compiles into this
         multiplyPairwise => -> $a, $b {
             my $ag = as-filter-group($a);
             my $bg = as-filter-group($b);
-            $ag.apply-pairwise($b, &[*], 0)
+            $ag.apply-pairwise($bg, &[*], 0)
         },
     )
 }
