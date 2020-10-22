@@ -44,7 +44,7 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?,
                SupportedLanguage :$language = 'de', Str :$prints = 'All', Str :$variants = 'SHL',
                Bool :$csv, Bool :$include-filters, Int :$batch=1, Int :$degree=4, Int :$max-runs,
-               OutputFormat :$format
+               OutputFormat :$format = 'txt'
               ) is export {
     my %results = run $filename.IO, $input.IO, $tech-file, $variants, $language, $prints, $csv, $include-filters,
             $batch, $degree, $max-runs;
