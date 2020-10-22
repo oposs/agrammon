@@ -124,16 +124,18 @@ class Agrammon::Outputs::FilterGroupCollection {
             if $their-elem.value > $thresh {
                 my $our-value = %!values-by-filter{$their-key};
                 if $our-value.defined {
-                    # Push our value if our value > threshold
+                    # Push our value if their value > threshold
                     @result-instances.push: $their-key => $our-value;
                 }
                 else {
-                    # Push 0 if key is not existing
+                    # Push 0 if their value > threshold, but key is not existing
+                    # 0 because of missing flow (zero flow)
                     @result-instances.push: $their-key => 0;                    
                 } 
             } 
             elsif $push-all {
-                # Push threshold if our value <= threshold
+                # Push threshold if their value <= threshold. Could also be 0,
+                # but it might become handy for limiting ratio to 1, i.e. threshold = 1?
                 @result-instances.push: $their-key => $thresh;                
             }
         }
