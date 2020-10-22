@@ -151,9 +151,9 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
                 'Selecting all with threshold > 5 produces a new filter group collection';
         is +$group-a, 73, 'First original group unchanged';
         is +$group-b, 14, 'Second original group unchanged';
-        is +$_, 7, 'Total numeric value after "all" selection > 5 is correct';
+        is +$_, 17, 'Total numeric value after "all" selection > 5 is correct';
         is-deeply norm(.results-by-filter-group),
-                norm([{ac => 'blue cow'} => 0, {ac => 'green cow'} => 0, {ac => 'pink cow'} => 7]),
+                norm([{ac => 'blue cow'} => 5, {ac => 'green cow'} => 5, {ac => 'pink cow'} => 7]),
                 'Correct results by filter group after "all" selection > 5';
     }
 }
