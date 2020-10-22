@@ -23,7 +23,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 +Poultry::Excretion
 +Poultry::Housing
 +Poultry::NxOx
-+Poultry::Outdoor
++Poultry::Grazing
 
 
 *** output ***
@@ -190,7 +190,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual N flux into grazing.
   ++formula
-    Val(n_into_grazing, Poultry::Outdoor);
+    Val(n_into_grazing, Poultry::Grazing);
 
 +tan_into_grazing
   print = Poultry
@@ -201,7 +201,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual TAN flux into grazing.
   ++formula
-    Val(tan_into_grazing, Poultry::Outdoor);
+    Val(tan_into_grazing, Poultry::Grazing);
 
 +nh3_loss_grazing
   print = Poultry
@@ -212,7 +212,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual NH3 loss from grazing.
   ++formula
-    Val(nh3_ngrazing, Poultry::Outdoor);
+    Val(nh3_ngrazing, Poultry::Grazing);
 
 +n_remain_grazing
   print = Poultry
@@ -223,7 +223,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual N flux out of yard, liquid manure.
   ++formula
-    Val(n_remain_grazing, Poultry::Outdoor);
+    Val(n_remain_grazing, Poultry::Grazing);
 
 +tan_remain_grazing
   print = Poultry
@@ -234,7 +234,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual TAN flux out of yard, liquid manure.
   ++formula
-    Val(tan_remain_grazing, Poultry::Outdoor);
+    Val(tan_remain_grazing, Poultry::Grazing);
 
 ########################
 
