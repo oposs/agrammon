@@ -171,9 +171,9 @@ Vanderweerden and Jarvis (1997)
 
 +nh3_nrecyclingfertiliser
   format= %.0f
-  print = SummaryPlantProduction
+  print = SummaryPlantProduction,PlantNH3
   ++labels 
-    sort = 950
+    sort = 120
     en = Recycling fertiliser NH3-Emissions
     de = Recyclingdünger NH3-Emission
     fr = Emission de NH3 Engrais de recyclage

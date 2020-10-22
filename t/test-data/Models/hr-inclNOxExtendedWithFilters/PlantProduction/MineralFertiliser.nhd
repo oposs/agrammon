@@ -1248,9 +1248,9 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +nh3_nmineralfertiliser
   format = %.0f
-   print = SummaryPlantProduction
+   print = SummaryPlantProduction,PlantNH3
   ++labels
-    sort = 940
+    sort = 110
       en = Mineral fertiliser NH3-Emissions
       de = Mineralischer Stickstoffdünger NH3-Emission
       fr = Emission de NH3 engrais azotés minéraux 
@@ -1261,17 +1261,16 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
   ++description
     NH3 emission from mineral fertiliser application.
   ++formula
-    return
-        Out(nh3_n_mineral_fertiliser_ammoniumNitrate) +
-        Out(nh3_n_mineral_fertiliser_calciumAmmoniumNitrate) +
-        Out(nh3_n_mineral_fertiliser_ammoniumSulphate) +
-        Out(nh3_n_mineral_fertiliser_urea) +
-        Out(nh3_n_mineral_fertiliser_sulfamid) +
-        Out(nh3_n_mineral_fertiliser_calciumNitrate) +
-        Out(nh3_n_mineral_fertiliser_calciumCyanamid) +
-        Out(nh3_n_mineral_fertiliser_entec) +
-        Out(nh3_n_mineral_fertiliser_np) +
-        Out(nh3_n_mineral_fertiliser_nk) +
-        Out(nh3_n_mineral_fertiliser_npk) +
-        Out(nh3_n_mineral_fertiliser_entec2) +
-        Out(nh3_n_mineral_fertiliser_other);
+    Out(nh3_n_mineral_fertiliser_ammoniumNitrate) +
+    Out(nh3_n_mineral_fertiliser_calciumAmmoniumNitrate) +
+    Out(nh3_n_mineral_fertiliser_ammoniumSulphate) +
+    Out(nh3_n_mineral_fertiliser_urea) +
+    Out(nh3_n_mineral_fertiliser_sulfamid) +
+    Out(nh3_n_mineral_fertiliser_calciumNitrate) +
+    Out(nh3_n_mineral_fertiliser_calciumCyanamid) +
+    Out(nh3_n_mineral_fertiliser_entec) +
+    Out(nh3_n_mineral_fertiliser_np) +
+    Out(nh3_n_mineral_fertiliser_nk) +
+    Out(nh3_n_mineral_fertiliser_npk) +
+    Out(nh3_n_mineral_fertiliser_entec2) +
+    Out(nh3_n_mineral_fertiliser_other);

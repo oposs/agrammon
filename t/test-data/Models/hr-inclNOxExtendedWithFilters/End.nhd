@@ -42,7 +42,7 @@ Dummy Module marking the startpoint for the Model Parser
    ++selector
      en = Berechnung Baugesuch Kanton Luzern - Ammonia emissions (in kg N per year)
      de = Berechnung Baugesuch Kanton Luzern - Ammoniak-Emissionen (in kg N pro Jahr)
-     fr = Baugesuch Kanton Luzern 0 Emissions d'ammoniaque (en kg de N par année)
+     fr = Baugesuch Kanton Luzern - Emissions d'ammoniaque (en kg de N par année)
    ++data
      +++SummaryLivestock
        en = Livestock
@@ -60,22 +60,26 @@ Dummy Module marking the startpoint for the Model Parser
 +DetailReport
   type = report
   ++selector
-    en = TODO
-    de = TODO
-    fr = TODO
+    en = TODO: Detail Report
+    de = TODO: Detail Report
+    fr = TODO: Detail Report
   ++data
-     +++ZLivestockSummary_LivestockTotal
-       en = Livestock
-       de = Tierproduktion
-       fr = Production animale
-     +++PlantProductionSummary
-       en = Plant production
-       de = Pflanzenbau
-       fr = Production végétale
-     +++FullTotal
-       en = Total
-       de = Total
-       fr = Total
+     +++LivestockNH3
+       en = Livestock NH3-Emissions
+       de = NH3 Emissionen Tierproduktion
+       fr = TODO: ?
+     +++PlantNH3
+       en = Plant production NH3-Emissions
+       de = TODO: ?
+       fr = TODO: ?
+
+#Total Animalproduction
+#Mineral fertiliser
+#Recycling fertiliser
+#Total Plantproduction
+#Total
+
+
 
 +SummaryBarGraph
    type = bar
