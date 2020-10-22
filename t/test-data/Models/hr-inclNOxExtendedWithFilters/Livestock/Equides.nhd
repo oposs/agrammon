@@ -27,3 +27,277 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
 +Equides::Yard
 
 *** output ***
+
++animals
+  print = Equides
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, Equides::Excretion);
+
++animalcategory
+  print = Equides
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, Equides::Excretion);
+
+
+########################
+# excretion
+
++n_excretion
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N excreted by the specified number of animals.
+  ++formula
+    Val(n_excretion, Equides::Excretion);
+
++tan_excretion
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total TAN excreted by the specified number of animals.
+  ++formula
+    Val(tan_excretion, Equides::Excretion);
+
+########################
+
+
+########################
+# summary housing (should be zero budget)
+
++n_into_housing
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into housing.
+  ++formula
+    Val(n_into_housing, Equides::Housing);
+
++tan_into_housing
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into housing.
+  ++formula
+    Val(tan_into_housing, Equides::Housing);
+
++nh3_loss_housing
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from housing.
+  ++formula
+    Val(nh3_nhousing, Equides::Housing);
+
++n_out_housing_liquid
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, liquid manure.
+  ++formula
+    Val(n_outhousing_liquid, Equides::Housing);
+
++n_out_housing_solid
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of housing, solid manure.
+  ++formula
+    Val(n_outhousing_solid, Equides::Housing);
+
++tan_out_housing_liquid
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, liquid manure.
+  ++formula
+    Val(tan_outhousing_liquid, Equides::Housing);
+
++tan_out_housing_solid
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of housing, solid manure.
+  ++formula
+    Val(tan_outhousing_solid, Equides::Housing);
+
+########################
+
+
+########################
+# summary yard (should be zero budget)
+
++n_into_yard
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into yard.
+  ++formula
+    Val(n_into_yard, Equides::Yard);
+
++tan_into_yard
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into yard.
+  ++formula
+    Val(tan_into_yard, Equides::Yard);
+
++nh3_loss_yard
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from yard.
+  ++formula
+    Val(nh3_nyard, Equides::Yard);
+
++n_out_yard_liquid
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, liquid manure.
+  ++formula
+    Val(n_outyard_liquid, Equides::Yard);
+
++n_out_yard_solid
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, solid manure.
+  ++formula
+    Val(n_outyard_solid, Equides::Yard);
+
++tan_out_yard_liquid
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, liquid manure.
+  ++formula
+    Val(tan_outyard_liquid, Equides::Yard);
+
++tan_out_yard_solid
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, solid manure.
+  ++formula
+    Val(tan_outyard_solid, Equides::Yard);
+
+########################
+
+
+########################
+# summary grazing (should be zero budget)
+
++n_into_grazing
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into grazing.
+  ++formula
+    Val(n_into_grazing, Equides::Grazing);
+
++tan_into_grazing
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux into grazing.
+  ++formula
+    Val(tan_into_grazing, Equides::Grazing);
+
++nh3_loss_grazing
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 loss from grazing.
+  ++formula
+    Val(nh3_ngrazing, Equides::Grazing);
+
++n_remain_grazing
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux out of yard, liquid manure.
+  ++formula
+    Val(n_remain_grazing, Equides::Grazing);
+
++tan_remain_grazing
+  print = Equides
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux out of yard, liquid manure.
+  ++formula
+    Val(tan_remain_grazing, Equides::Grazing);
+
+########################
+
