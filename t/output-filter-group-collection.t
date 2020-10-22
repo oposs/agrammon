@@ -90,6 +90,108 @@ given Agrammon::Outputs::FilterGroupCollection.from-scalar(0) {
     }
 }
 
+{
+    my $group-a = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 4, {ac => 'pink cow'} => 7, {ac => 'brown cow'} => 31, {ac => 'green cow'} => 31];
+    my $group-b = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 0, {ac => 'green cow'} => 5, {ac => 'pink cow'} => 9];
+    given $group-a.select-by-threshold($group-b, 0, False) {
+        isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
+                'Selecting strict with threshold > 0 produces a new filter group collection';
+        is +$group-a, 73, 'First original group unchanged';
+        is +$group-b, 14, 'Second original group unchanged';
+        is +$_, 38, 'Total numeric value after strict selection > 0 is correct';
+        is-deeply norm(.results-by-filter-group),
+                norm([{ac => 'green cow'} => 31, {ac => 'pink cow'} => 7]),
+                'Correct results by filter group after strict selection > 0';
+    }
+}
+
+{
+    my $group-a = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 4, {ac => 'pink cow'} => 7, {ac => 'brown cow'} => 31, {ac => 'green cow'} => 31];
+    my $group-b = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 0, {ac => 'green cow'} => 5, {ac => 'pink cow'} => 9];
+    given $group-a.select-by-threshold($group-b, 5, False) {
+        isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
+                'Selecting strict with threshold > 5 produces a new filter group collection';
+        is +$group-a, 73, 'First original group unchanged';
+        is +$group-b, 14, 'Second original group unchanged';
+        is +$_, 7, 'Total numeric value after strict selection > 5 is correct';
+        is-deeply norm(.results-by-filter-group),
+                norm([{ac => 'pink cow'} => 7]),
+                'Correct results by filter group after strict selection > 5';
+    }
+}
+
+{
+    my $group-a = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 4, {ac => 'pink cow'} => 7, {ac => 'brown cow'} => 31, {ac => 'green cow'} => 31];
+    my $group-b = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 0, {ac => 'green cow'} => 5, {ac => 'pink cow'} => 9];
+    given $group-a.select-by-threshold($group-b, 0, True) {
+        isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
+                'Selecting all with threshold > 0 produces a new filter group collection';
+        is +$group-a, 73, 'First original group unchanged';
+        is +$group-b, 14, 'Second original group unchanged';
+        is +$_, 38, 'Total numeric value after "all" selection > 0 is correct';
+        is-deeply norm(.results-by-filter-group),
+                norm([{ac => 'blue cow'} => 0, {ac => 'green cow'} => 31, {ac => 'pink cow'} => 7]),
+                'Correct results by filter group after "all" selection > 0';
+    }
+}
+
+{
+    my $group-a = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 4, {ac => 'pink cow'} => 7, {ac => 'brown cow'} => 31, {ac => 'green cow'} => 31];
+    my $group-b = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 0, {ac => 'green cow'} => 5, {ac => 'pink cow'} => 9];
+    given $group-a.select-by-threshold($group-b, 5, True) {
+        isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
+                'Selecting all with threshold > 5 produces a new filter group collection';
+        is +$group-a, 73, 'First original group unchanged';
+        is +$group-b, 14, 'Second original group unchanged';
+        is +$_, 17, 'Total numeric value after "all" selection > 5 is correct';
+        is-deeply norm(.results-by-filter-group),
+                norm([{ac => 'blue cow'} => 5, {ac => 'green cow'} => 5, {ac => 'pink cow'} => 7]),
+                'Correct results by filter group after "all" selection > 5';
+    }
+}
+
+{
+    my $group-a = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 4, {ac => 'green cow'} => 31];
+    my $group-b = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 0, {ac => 'green cow'} => 5, {ac => 'pink cow'} => 9];
+    given $group-a.select-by-threshold($group-b, 0, False) {
+        isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
+                'Selecting all with threshold > 0 produces a new filter group collection';
+        is +$group-a, 35, 'First original group unchanged';
+        is +$group-b, 14, 'Second original group unchanged';
+        is +$_, 31, 'Total numeric value after "all" selection > 0 is correct';
+        is-deeply norm(.results-by-filter-group),
+                norm([{ac => 'green cow'} => 31, {ac => 'pink cow'} => 0]),
+                'Correct results by filter group after "all" selection > 0';
+    }
+}
+
+{
+    my $group-a = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 4, {ac => 'green cow'} => 31];
+    my $group-b = Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
+            [{ac => 'blue cow'} => 0, {ac => 'green cow'} => 5, {ac => 'pink cow'} => 0];
+    given $group-a.select-by-threshold($group-b, 0, True) {
+        isa-ok $_, Agrammon::Outputs::FilterGroupCollection,
+                'Selecting all with threshold > 0 produces a new filter group collection';
+        is +$group-a, 35, 'First original group unchanged';
+        is +$group-b, 5, 'Second original group unchanged';
+        is +$_, 31, 'Total numeric value after "all" selection > 0 is correct';
+        is-deeply norm(.results-by-filter-group),
+                norm([{ac => 'blue cow'} => 0, {ac => 'green cow'} => 31, {ac => 'pink cow'} => 0]),
+                'Correct results by filter group after "all" selection > 0';
+    }
+}
+
 #| Put filter pairs in a normal order, so we needn't worry about ordering when writing tests.
 sub norm(@pairs) {
     [@pairs.sort(*.key.values.sort.join)]

@@ -112,6 +112,37 @@ class Agrammon::Outputs::FilterGroupCollection {
         Agrammon::Outputs::FilterGroupCollection.new(instances => @result-instances)
     }
 
+    #| Check in the other filter group collection for values that are greater than a threshold
+    #| and return a new group collection as the result. When $push-all is False, then the method
+    #| returns only filter groups where $thresh is exceeded. Otherwise, if $push-all is True,
+    #| filter groups where $thresh is not exceeded are also returned with a value of $thresh.
+    method select-by-threshold(Agrammon::Outputs::FilterGroupCollection $other, Numeric $thresh, Bool $push-all) {
+        # Only process those groups existing on the other side.
+        my @result-instances;
+        for $other!internal-values-by-filter -> $their-elem {
+            my $their-key = $their-elem.key;
+            if $their-elem.value > $thresh {
+                my $our-value = %!values-by-filter{$their-key};
+                if $our-value.defined {
+                    # Push our value if their value > threshold
+                    @result-instances.push: $their-key => $our-value;
+                }
+                else {
+                    # Push 0 if their value > threshold, but key is not existing
+                    # 0 because of missing flow (zero flow)
+                    @result-instances.push: $their-key => 0;                    
+                } 
+            } 
+            elsif $push-all {
+                # Push threshold if their value <= threshold. Could also be 0,
+                # but it might become handy for limiting ratio to 1, i.e. threshold = 1?
+                @result-instances.push: $their-key => $thresh;                
+            }
+        }
+
+        Agrammon::Outputs::FilterGroupCollection.new(instances => @result-instances)
+    }
+
     #| Private accessor to get internal representation of another collection.
     method !internal-values-by-filter() {
         %!values-by-filter

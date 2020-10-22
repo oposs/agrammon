@@ -33,6 +33,22 @@ sub get-builtins is export {
                     unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
             $filter-group.add(+$additor)
         },        
+        # Select only values in filter group 'a' 
+        # where values in filter group 'crit' are greater than 0
+        selectStrict => -> $filter-group-a, $filter-group-crit {
+            die "selectStrict expects two filter groups as arguments"
+                    unless  $filter-group-a ~~ Agrammon::Outputs::FilterGroupCollection &&
+                            $filter-group-crit ~~ Agrammon::Outputs::FilterGroupCollection;
+            $filter-group-a.select-by-threshold($filter-group-crit, 0, False)
+        },
+        # As 'selectStrict' but, additionally, returning 0 for filter groups 
+        # where values in filter group 'crit' are 0 or less
+        selectAll => -> $filter-group-a, $filter-group-crit {
+            die "selectAll expects two filter groups as arguments"
+                    unless  $filter-group-a ~~ Agrammon::Outputs::FilterGroupCollection &&
+                            $filter-group-crit ~~ Agrammon::Outputs::FilterGroupCollection;
+            $filter-group-a.select-by-threshold($filter-group-crit, 0, True)
+        },
         # P+ compiles into this
         addPairwise => -> $a, $b {
             my $ag = as-filter-group($a);
