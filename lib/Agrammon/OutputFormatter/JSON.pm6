@@ -3,7 +3,7 @@ use Agrammon::Outputs;
 
 sub output-as-json(Agrammon::Model $model,
                    Agrammon::Outputs $outputs,
-		   $language, $prints,
+                   $language, $prints,
                    Bool $include-filters
                    ) is export {
     return get-data($model, $outputs, $include-filters, $language, $prints);
@@ -16,17 +16,9 @@ sub output-for-gui(Agrammon::Model $model,
     my %output = %(
         data => get-data($model, $outputs, $include-filters),
         log  => %(),
-        pid  => 333,
-### TODO: is this still needed with the new implementation?
-#        raw  => _get_raw($model, $outputs)
     );
     return %output;
 }
-
-### TODO: see above
-#sub _get_raw($model, $outputs) {
-#    return ();
-#}
 
 sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
     my @records;
@@ -34,7 +26,7 @@ sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
         when Hash {
             for sorted-kv($_) -> $output, $raw-value {
                 my $var = $module ~ '::' ~ $output;
-                push @records, make-record($module, $output, $model, $raw-value, $var, Any, $language, $prints);
+                push @records, make-record($module, $output, $model, $raw-value, $var, :$language, :$prints);
                 if $include-filters {
                     my $value = flat-value($raw-value);
                     if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
@@ -49,7 +41,7 @@ sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
                     for sorted-kv(%values) -> $output, $raw-value {
                         my $var = $q-name ~ '::' ~ $output;
-                        push @records, make-record($fq-name, $output, $model, $raw-value, $var, Any, $language, $prints);
+                        push @records, make-record($fq-name, $output, $model, $raw-value, $var, :$language, :$prints);
                         if $include-filters {
                             my $value = flat-value($raw-value);
                             if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
@@ -64,7 +56,7 @@ sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
     return @records;
 }
 
-sub make-record($fq-name, $output, $model, $raw-value, $var, $filters?, $language?, $prints?) {
+sub make-record($fq-name, $output, $model, $raw-value, $var, :$language, :$prints, :%filters) {
     my $format = $model.output-format($fq-name, $output);
     my $full-value = flat-value($raw-value);
     my $value = ($format  && $full-value.defined) ?? sprintf($format, $full-value)
@@ -72,7 +64,7 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, $filters?, $languag
 
     # skip if prints filter is set and doesn't match this record
     my $print = $model.output-print($fq-name, $output);
-    next if not $prints ~~ 'All' and not $print ~~ $prints;
+    next if $prints and not $print ~~ $prints;
 
     my %record = %(
         :$format,
@@ -81,18 +73,18 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, $filters?, $languag
         :fullValue($full-value),
         :$value,
         :$var,
-        :$filters,
+        :%filters,
     );
 
     # add language specific strings if language specified
-    if $language and $language ne 'All' {
-	%record<unit>  = $model.output-units($fq-name, $output){$language};
-	%record<label> = $model.output-labels($fq-name, $output){$language};
+    if $language {
+        %record<unit>  = $model.output-units($fq-name, $output){$language};
+        %record<label> = $model.output-labels($fq-name, $output){$language};
     }
     # and language keyed hashes otherwise
     else {
-	%record<units>  = $model.output-units($fq-name, $output);
-	%record<labels> = $model.output-labels($fq-name, $output);
+        %record<units>  = $model.output-units($fq-name, $output);
+        %record<labels> = $model.output-labels($fq-name, $output);
     }
     return %record;
 }
@@ -102,8 +94,8 @@ sub push-filters(@records, $fq-name, $output, $model,
                  $var) {
     for $collection.results-by-filter-group {
         my %filters := .key;
-        my $value := .value;
-        push @records, make-record($fq-name, $output, $model, $value, $var, %filters);
+        my $value   := .value;
+        push @records, make-record($fq-name, $output, $model, $value, $var, :%filters);
     }
 }
 

@@ -126,8 +126,8 @@ class Agrammon::Web::Service {
         my $outputs = self!get-outputs($user, $dataset-name);
 
         # TODO: get with-filters from frontend
-        my %gui-output = output-for-gui($!model, $outputs, True);
-        warn '**** get-output-variables() not yet completely implemented';
+        my %gui-output = output-for-gui($!model, $outputs, :filters, :!language );
+        warn '**** with-filters for get-output-variables() not yet completely implemented';
         return %gui-output;
     }
 
