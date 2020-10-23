@@ -11,10 +11,11 @@ sub output-as-json(Agrammon::Model $model,
 
 sub output-for-gui(Agrammon::Model $model,
                    Agrammon::Outputs $outputs,
-                   Bool $include-filters
+                   :$include-filters,
+                   :$language
                    ) is export {
     my %output = %(
-        data => get-data($model, $outputs, $include-filters),
+        data => get-data($model, $outputs, $include-filters, $language),
         log  => %(),
     );
     return %output;

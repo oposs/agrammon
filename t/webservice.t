@@ -341,7 +341,7 @@ subtest "Get model data" => {
 
     subtest "get-output-variables" => {
         ok my $output-hash = $ws.get-output-variables($user, $dataset-name), "Get outputs";
-        is-deeply $output-hash.keys.sort, qw|data log pid| , "Output hash has expected keys";
+        is-deeply $output-hash.keys.sort, qw|data log| , "Output hash has expected keys";
         is-deeply $output-hash<data>.[0].keys.sort, qw|filters format fullValue labels order print units value var| , "Output data value hash has expected keys";
         is-deeply $output-hash<data>.[0]<labels>.keys.sort, qw|de en fr sort| , "Output data value labels hash has expected keys";
     }

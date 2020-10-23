@@ -66,7 +66,7 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
        # say "\nnewStorage (Details)=\n", output-as-text($model, $output, 'de', 'newStorage', True);
        # say "\nnewStorage (Details)=\n", output-as-text($model, $output, 'de', 'check', True);
 
-#        ddt "GUI: $print with filters=", output-for-gui($model, $output, True)<data>;
+#        ddt "GUI: $print with filters=", output-for-gui($model, $output, :include-filters)<data>;
     }
 }
 done-testing;
