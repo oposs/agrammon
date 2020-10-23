@@ -181,7 +181,7 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
 		when 'json' {
                     $result = output-as-json($model, $outputs, $language, $prints, $include-filters);
                 }
-		when 'txt' {
+		when 'text' {
                     $result = output-as-text($model, $outputs, $language, $prints, $include-filters);
                 }
             }
