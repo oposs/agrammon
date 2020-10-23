@@ -27,18 +27,15 @@ $fh.close;
 for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
     subtest "Model $model-version" => {
         my $path = $*PROGRAM.parent.add("test-data/Models/$model-version/");
-        my $model;
+        my ($model, $params, $output);
+
         lives-ok { $model = load-model-using-cache($temp-dir, $path, 'End') },
                 "Load module End.nhd from $path";
-
-        my $params;
         lives-ok
                 { $params = parse-technical($*PROGRAM.parent.add("test-data/Models/$model-version/technical.cfg")
                 .slurp) },
                 'Parsed technical file';
         isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
-
-        my $output;
         lives-ok
                 {
                     $output = $model.run(
