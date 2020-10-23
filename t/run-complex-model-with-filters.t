@@ -5,7 +5,7 @@ use Agrammon::Model;
 use Agrammon::ModelCache;
 use Agrammon::Model::Parameters;
 use Agrammon::OutputFormatter::CSV;
-use Agrammon::OutputFormatter::GUI;
+use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::TechnicalParser;
 
@@ -27,18 +27,15 @@ $fh.close;
 for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
     subtest "Model $model-version" => {
         my $path = $*PROGRAM.parent.add("test-data/Models/$model-version/");
-        my $model;
+        my ($model, $params, $output);
+
         lives-ok { $model = load-model-using-cache($temp-dir, $path, 'End') },
                 "Load module End.nhd from $path";
-
-        my $params;
         lives-ok
                 { $params = parse-technical($*PROGRAM.parent.add("test-data/Models/$model-version/technical.cfg")
                 .slurp) },
                 'Parsed technical file';
         isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
-
-        my $output;
         lives-ok
                 {
                     $output = $model.run(
@@ -69,7 +66,7 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
        # say "\nnewStorage (Details)=\n", output-as-text($model, $output, 'de', 'newStorage', True);
        # say "\nnewStorage (Details)=\n", output-as-text($model, $output, 'de', 'check', True);
 
-#        ddt "GUI: $print with filters=", output-for-gui($model, $output, True)<data>;
+#        ddt "GUI: $print with filters=", output-for-gui($model, $output, :include-filters)<data>;
     }
 }
 done-testing;

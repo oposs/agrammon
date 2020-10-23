@@ -1,5 +1,5 @@
 use Agrammon::Model;
-use Agrammon::OutputFormatter::GUI;
+use Agrammon::OutputFormatter::JSON;
 use Test;
 
 my $test-simulation-name = '2010v2.1_20120425';

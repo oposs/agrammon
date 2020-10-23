@@ -3,12 +3,14 @@ use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
 use Cro::HTTP::Session::InMemory;
 use DB::Pg;
+use JSON::Fast;
 
 use Agrammon::Config;
 use Agrammon::DataSource::CSV;
 use Agrammon::Documentation;
 use Agrammon::ModelCache;
 use Agrammon::OutputFormatter::CSV;
+use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
 use Agrammon::ResultCollector;
@@ -25,10 +27,11 @@ my %*SUB-MAIN-OPTS =
 subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
+subset OutputFormat of Str where { $_ ~~ /^ csv|json|text $/ or note("ERROR: --format=[csv|json|text]") && exit 1 };
 
 #| Start the web interface
-multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, Str $tech-file?) is export {
-    my $http = web($cfg-filename, $model-filename, $tech-file);
+multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, Str $technical-file?) is export {
+    my $http = web($cfg-filename, $model-filename, $technical-file);
     react {
         whenever signal(SIGINT) {
             say "Shutting down...";
@@ -39,22 +42,32 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 }
 
 #| Run the model
-multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $tech-file?,
-               SupportedLanguage :$language = 'de', Str :$prints = 'All', Str :$variants = 'SHL',
-               Bool :$csv, Bool :$include-filters, Int :$batch=1, Int :$degree=4, Int :$max-runs
+multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technical-file?,
+               SupportedLanguage :$language = 'de', Str :$prints, Str :$variants = 'SHL',
+               Bool :$include-filters, Int :$batch=1, Int :$degree=4, Int :$max-runs,
+               OutputFormat :$format = 'text'
               ) is export {
-    my %results = run $filename.IO, $input.IO, $tech-file, $variants, $language, $prints, $csv, $include-filters,
+    my %results = run $filename.IO, $input.IO, $technical-file, $variants, $format, $language, $prints, $include-filters,
             $batch, $degree, $max-runs;
-    say "##  Model: $filename";
-    say "##  Variants: $variants";
-    for %results.keys -> $simulation {
-        say "### Simulation $simulation";
-        say "##  Print filter: $prints";
-        for %results{$simulation}.keys.sort -> $dataset {
-            say "#   Dataset $dataset";
-            say %results{$simulation}{$dataset};
-        }
+    my $output;
+    if $format eq 'json' {
+        $output = to-json %results;
     }
+    else {
+        my @output;
+        @output.push("##  Model: $filename");
+        @output.push("##  Variants: $variants");
+        for %results.keys -> $simulation, %sim-results {
+            @output.push("### Simulation $simulation");
+            @output.push("##  Print filter: $prints");
+            for %sim-results.keys.sort -> $dataset {
+                @output.push("#   Dataset $dataset");
+                @output.push(%sim-results{$dataset});
+            }
+        }
+        $output = @output.join("\n");
+    }
+    say $output;
 }
 
 #| Dump model
@@ -62,19 +75,19 @@ multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'SHL', SortOrder
     say chomp dump-model $filename.IO, $variants, $sort;
 }
 
-multi sub MAIN('latex', ExistingFile $filename, Str $tech-file?, Str :$variants = 'SHL', SortOrder :$sort = 'model') is export {
-    latex $filename.IO, $tech-file, $variants, $sort;
+multi sub MAIN('latex', ExistingFile $filename, Str $technical-file?, Str :$variants = 'SHL', SortOrder :$sort = 'model') is export {
+    latex $filename.IO, $technical-file, $variants, $sort;
 }
 
 #| Create LaTeX docu
-sub latex (IO::Path $path, $tech-file, $variants, $sort) is export {
+sub latex (IO::Path $path, $technical-file, $variants, $sort) is export {
     die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
     my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
-    my $tech-input = $tech-file // $module-path.add('technical.cfg');
+    my $tech-input = $technical-file // $module-path.add('technical.cfg');
     my $params = parse-technical( $tech-input.IO.slurp );
     $path.dirname ~~ / .* '/' (.+) /;
     my $model-name = ~$0;
@@ -118,7 +131,7 @@ sub dump-model (IO::Path $path, $variants, $sort) is export {
     return $model.dump($sort);
 }
 
-sub run (IO::Path $path, IO::Path $input-path, $tech-file, $variants, $language, $prints, Bool $csv, Bool $include-filters,
+sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $format, $language, $prints, Bool $include-filters,
         $batch, $degree, $max-runs) is export {
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
@@ -126,7 +139,7 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $variants, $language,
     my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
-    my $tech-input = $tech-file // $module-path.add('technical.cfg');
+    my $tech-input = $technical-file // $module-path.add('technical.cfg');
     my %technical-parameters = timed "Load parameters from $tech-input", {
         my $params = parse-technical( $tech-input.IO.slurp );
         %($params.technical.map(-> %module {
@@ -160,12 +173,17 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $variants, $language,
 
         timed "Create output", {
             my $result;
-            if ($csv) {
-                die "CSV output including filters is not yet supported" if $include-filters;
-                $result = output-as-csv($dataset.simulation-name, $dataset.dataset-id, $model, $outputs, $language);
-            }
-            else {
-                $result = output-as-text($model, $outputs, $language, $prints, $include-filters);
+	    given $format {
+	        when 'csv' {
+                    die "CSV output including filters is not yet supported" if $include-filters;
+                    $result = output-as-csv($dataset.simulation-name, $dataset.dataset-id, $model, $outputs, $language);
+                }
+		when 'json' {
+                    $result = output-as-json($model, $outputs, $language, $prints, $include-filters);
+                }
+		when 'text' {
+                    $result = output-as-text($model, $outputs, $language, $prints, $include-filters);
+                }
             }
             $rc.add-result($dataset.simulation-name, $dataset.dataset-id, $result);
         }
@@ -180,7 +198,7 @@ sub run (IO::Path $path, IO::Path $input-path, $tech-file, $variants, $language,
     }
 }
 
-sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
+sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export {
 
     # initialization
     my $cfg = Agrammon::Config.new;
@@ -195,7 +213,7 @@ sub web(Str $cfg-filename, Str $model-filename, Str $tech-file?) is export {
     my $module-path = $model-path.parent;
     my $module-file = $model-path.basename;
     my $module = $model-path.IO.extension('').basename;
-    my $tech-input = $tech-file // $module-path.add('technical.cfg');
+    my $tech-input = $technical-file // $module-path.add('technical.cfg');
     my %technical-parameters = timed "Load parameters from $tech-input", {
         my $params = parse-technical($tech-input.IO.slurp);
         %($params.technical.map(-> %module {
