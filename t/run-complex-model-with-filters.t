@@ -5,7 +5,7 @@ use Agrammon::Model;
 use Agrammon::ModelCache;
 use Agrammon::Model::Parameters;
 use Agrammon::OutputFormatter::CSV;
-use Agrammon::OutputFormatter::GUI;
+use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::TechnicalParser;
 
