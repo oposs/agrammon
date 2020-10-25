@@ -93,10 +93,25 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, :$language, :$print
 sub push-filters(@records, $fq-name, $output, $model,
                  Agrammon::Outputs::FilterGroupCollection $collection,
                  $var) {
+    # model filter groups
+    my %fgs = $model.filter-groups;
+
+    # add existing filter groups
     for $collection.results-by-filter-group {
         my %filters := .key;
         my $value   := .value;
         push @records, make-record($fq-name, $output, $model, $value, $var, :%filters);
+        for %filters.kv -> $key, $value {
+            # remove from model filter group
+            %fgs{$key}{$value}:delete;
+        }
+    }
+
+    # add remaining model filter groups
+    for %fgs.kv -> $fg, %values {
+        for %values.kv -> $key, $value {
+            push @records, make-record($fq-name, $output, $model, Nil, $var, :filters( %( $fg => $key) ) );
+        }
     }
 }
 

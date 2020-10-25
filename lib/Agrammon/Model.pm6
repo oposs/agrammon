@@ -147,6 +147,8 @@ class Agrammon::Model {
     has Agrammon::Model::Module @.evaluation-order;
     has Agrammon::Model::Module @.load-order;
     has ModuleRunner $!entry-point;
+    has %.filter-groups;
+    has %.module-hash;
     has %!output-unit-cache;
     has %!output-print-cache;
     has %!output-format-cache;
@@ -228,6 +230,14 @@ class Agrammon::Model {
 
         my $evaluator = ModuleRunner.new(:$module, :@dependencies);
         %loaded{$module-name} = $evaluator;
+        %!module-hash{$module-name} = $module;
+        for $module.input -> $input {
+            my @keys;
+            next unless $input.is-filter;
+            for $input.as-hash<enum>.keys -> $key {
+                %!filter-groups{ $module-name ~ '::' ~ $input.name  }{$key} = True;
+            }
+        }
         return $evaluator;
     }
 
