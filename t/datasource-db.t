@@ -1,4 +1,5 @@
 use v6;
+use Agrammon::Config;
 use Agrammon::DataSource::DB;
 use DB::Pg;
 use Test;
@@ -10,46 +11,8 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
     exit;
 }
 
-my $db-host     = 'localhost';
-my $db-port     = '5432';
-my $db-user     = 'postgres';
-my $db-database = 'agrammon_test';
-my $db-password = 'postgres';
 my $ag-user     = 'test@agrammon.ch';
 my $ag-dataset  = 'Agrammon6Testing';
-
-# overwrite defaults $db-* and $ag-* variables above
-# Format auf agrammon.pg:
-# dbhost=HOST;dbport=PORT;dbuser=USER;dbpassword=PASSWORD;dbdatabase=DATABASE;aguser=AGUSER;agdataset=DATASET;
-# All in one line, each key=value pair terminated with ;
-# Fields missing are either set to '' (port, password) or stay as above
-my $pg-file = $*PROGRAM.parent.add('test-data/.secret/agrammon.pg');
-if $pg-file.IO.e {
-    my $pg-data = chomp slurp($pg-file);
-
-    if $pg-data ~~ /dbhost '=' (.+?) ';'/ {
-        $db-host = $/[0];
-    }
-    $db-port = $pg-data ~~ /dbport '=' (.+?) ';'/ ?? $/[0] !! '';
-
-    if $pg-data ~~ /dbuser '=' (.+?) ';'/ {
-        $db-user = $/[0];
-    }
-    $db-password = $pg-data ~~ /dbpassword '=' (.+?) ';'/ ?? $/[0] !! '';
-    if $pg-data ~~ /dbdatabase '=' (.+?) ';'/ {
-        $db-database = $/[0];
-    }
-
-    if $pg-data ~~ /aguser '=' (.+?) ';'/ {
-        $ag-user = $/[0];
-    }
-    if $pg-data ~~ /agdataset '=' (.+?) ';'/ {
-        $ag-dataset = ~$0; # force to string
-    }
-#    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=$db-password, dbdatabase=$db-database";
-    diag "dbhost=$db-host, dbport=$db-port, dbuser=$db-user, dbpassword=****, dbdatabase=$db-database";
-    diag "ag-user=$ag-user, ag-dataset=$ag-dataset";
-}
 
 my $conninfo;
 if %*ENV<DRONE_REPO> {
@@ -57,19 +20,21 @@ if %*ENV<DRONE_REPO> {
     my $db-password = 'postgres';
     my $db-database = 'agrammon_test';
     my $db-host     = 'dbhost';
-
     $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password";
 }
-elsif %*ENV<GITHUB_ACTIONS> {
-    my $db-user     = 'postgres';
-    my $db-password = 'postgres';
-    my $db-database = 'agrammon_test';
-    my $db-host     = 'localhost';
-
-    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
-}
+#elsif %*ENV<GITHUB_ACTIONS> {
+#    my $db-user     = 'postgres';
+#    my $db-password = 'postgres';
+#    my $db-database = 'agrammon_test';
+#    my $db-host     = 'localhost';
+#    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
+#}
 else {
-     $conninfo = "host=$db-host user=$db-user password=$db-password dbname=$db-database";
+    my $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
+    my $cfg = Agrammon::Config.new;
+    $cfg.load($cfg-file), "Load config from file $cfg-file";
+    $conninfo = $cfg.db-conninfo;
+    dd $conninfo;
 }
 ok my $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 
