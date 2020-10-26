@@ -5,6 +5,7 @@ use Agrammon::Model;
 use Agrammon::ModelCache;
 use Agrammon::Model::Parameters;
 use Agrammon::OutputFormatter::CSV;
+use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::TechnicalParser;
 
@@ -12,8 +13,7 @@ my $temp-dir = $*TMPDIR.add('agrammon_testing');
 
 #| Model version and variants
 my $model-version = 'hr-inclNOxExtendedWithFilters';
-my $model-variants = <'Single-default' 'Kantonal-LU'>;
-# my $model-variants = <Single>;
+my $model-variants = ('Single-default', 'Kantonal-LU');
 
 #| Expected results
 my $nh3-ntotal = 3157.775;
