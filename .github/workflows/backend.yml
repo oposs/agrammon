@@ -37,6 +37,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
+      - name: Checksum model dir
+        run: |
+          find  t/test-data/Models/hr-inclNOx -type f -print0 | sort -z | xargs -0 md5 > ./MODEL_MD5
+          cat ./MODEL_MD5
+
       - name: Setup raku
         uses: Raku/setup-raku@v1
         with:
@@ -54,7 +59,7 @@ jobs:
         id: modelCache
         with:
           path: $HOME/.agrammon
-          key: AgrammonModels
+          key: AgrammonModels-${{ hashFiles('./MODEL_MD5') }}
 
       - name: Load test database
         env:
