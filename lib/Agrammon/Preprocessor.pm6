@@ -59,6 +59,12 @@ sub preprocess(Str $source, %options --> Str) is export {
         if $content.starts-with('?') {
             @result-lines.push('');
             given $content {
+                when /^ '?ifnot' \h+ <option=.ident> \h* $/ {
+                    my $enabled = not so %options{~$<option>};
+                    my $matched = $enabled;
+                    my $start-line = $number + 1;
+                    @open.push(OpenDirective.new(:$start-line, :$enabled, :$matched, :accept-elsif));
+                }
                 when /^ '?if' \h+ <option=.ident> \h* $/ {
                     my $enabled = so %options{~$<option>};
                     my $matched = $enabled;
