@@ -84,3 +84,5 @@ jobs:
       - name: Run backend tests
         run: |
           RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
+          ls -l $HOME/.agrammon
+          du -sh $HOME/.agrammon
