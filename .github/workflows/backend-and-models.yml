@@ -56,9 +56,10 @@ jobs:
           zef --install-to=inst#$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
 
       - name: Checksum model dir
-          run: |
-            find  t/test-data/Models/hr-inclNOx* -type f -print0 | sort -z | xargs -0 shasum > ./MODEL_MD5
-            cat ./MODEL_MD5
+        run: |
+          find  t/test-data/Models/hr-inclNOx* -type f -print0 | sort -z | xargs -0 shasum > ./MODEL_MD5
+          cat ./MODEL_MD5
+          mkdir -p $HOME/.agrammon
 
       - name: Setup model cache
         uses: actions/cache@v2
@@ -84,3 +85,5 @@ jobs:
       - name: Run backend tests
         run: |
           RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
+          ls -l $HOME/.agrammon
+          du -sh $HOME/.agrammon

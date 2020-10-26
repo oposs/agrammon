@@ -22,9 +22,8 @@ Please see the [Agrammon website](https://www.agrammon.ch) for more details.
 
 ## Port to Raku
 
-This is a port of the existing Agrammon web application to Raku.  It is
-complete enough to run models from the command line, however the web UI
-related parts, user management, and so forth are still to be ported.
+This is a port of the existing Agrammon web application to Raku.  It will
+be finished by Christmas.
 
 ## Running tests
 
