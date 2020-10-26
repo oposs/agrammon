@@ -11,7 +11,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 
 +description
  
- This process summarizes the annual emission of NH3, the annual N excretion, and the annual N flux for different poultry categories from housing and outdoor.
+ This process summarizes the annual emission of NH3, the annual N excretion, and the annual N flux for different poultry categories from housing and grazing.
 
 
 *** input ***
@@ -23,7 +23,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 +Poultry::Excretion
 +Poultry::Housing
 +Poultry::NxOx
-+Poultry::Outdoor
++Poultry::Grazing
 
 
 *** output ***
@@ -179,42 +179,42 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 
 
 ########################
-# summary outdoor (should be zero budget)
+# summary grazing (should be zero budget)
 
-+n_into_outdoor
++n_into_grazing
   print = Poultry
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N flux into outdoor.
+    Annual N flux into grazing.
   ++formula
-    Val(n_into_outdoor, Poultry::Outdoor);
+    Val(n_into_grazing, Poultry::Grazing);
 
-+tan_into_outdoor
++tan_into_grazing
   print = Poultry
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual TAN flux into outdoor.
+    Annual TAN flux into grazing.
   ++formula
-    Val(tan_into_outdoor, Poultry::Outdoor);
+    Val(tan_into_grazing, Poultry::Grazing);
 
-+nh3_loss_outdoor
++nh3_loss_grazing
   print = Poultry
   ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual NH3 loss from outdoor.
+    Annual NH3 loss from grazing.
   ++formula
-    Val(nh3_noutdoor, Poultry::Outdoor);
+    Val(nh3_ngrazing, Poultry::Grazing);
 
-+n_remain_outdoor
++n_remain_grazing
   print = Poultry
   ++units
     en = kg N/year
@@ -223,9 +223,9 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual N flux out of yard, liquid manure.
   ++formula
-    Val(n_remain_outdoor, Poultry::Outdoor);
+    Val(n_remain_grazing, Poultry::Grazing);
 
-+tan_remain_outdoor
++tan_remain_grazing
   print = Poultry
   ++units
     en = kg N/year
@@ -234,7 +234,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
   ++description
     Annual TAN flux out of yard, liquid manure.
   ++formula
-    Val(tan_remain_outdoor, Poultry::Outdoor);
+    Val(tan_remain_grazing, Poultry::Grazing);
 
 ########################
 

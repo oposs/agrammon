@@ -13,5 +13,6 @@ UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor_LU' WHERE data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_options_for_housing_systems_for_dairy_cows_floor';
 UPDATE data_new SET data_var='Livestock::OtherCattle[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::OtherCattle[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle';
 UPDATE data_new SET data_var='Livestock::OtherCattle[]::Housing::Floor::mitigation_housing_floor_LU' WHERE data_var='Livestock::OtherCattle[]::Housing::Floor::mitigation_options_for_housing_systems_for_other_cattle_floor';
-UPDATE data_new SET data_var='Livestock::Equides[HorsesLw3yr]::GrazingInput;grazing_days' WHERE data_var='Livestock::Equides[]::Grazing;grazing_days';
-UPDATE data_new SET data_var='Livestock::Equides[HorsesLw3yr]::GrazingInput;grazing_hours' WHERE data_var='Livestock::Equides[]::Grazing;grazing_hours';
+UPDATE data_new SET data_var='Livestock::Equides[]::GrazingInput;grazing_days' WHERE data_var='Livestock::Equides[]::Grazing;grazing_days';
+UPDATE data_new SET data_var='Livestock::Equides[]::GrazingInput;grazing_hours' WHERE data_var='Livestock::Equides[]::Grazing;grazing_hours';
+UPDATE data_new SET data_var='Livestock::Poultry[]::Grazing;free_range' WHERE data_var='Livestock::Poultry[]::Outdoor;free_range';

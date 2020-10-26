@@ -6,12 +6,12 @@ taxonomy = Livestock::FatteningPigs::Housing::Type::Outdoor
 
 +short
 
- Describes emission rates for outdoor fattening pigs.
+ Describes emission rates for grazing fattening pigs.
  Outdoor fattening pics do not have any housing emissions.
 
 +description
  
- This process describes the correction factors for outdoor fattening pigs such as the housing specific emission rate, the liquid share and solid share.
+ This process describes the correction factors for grazing fattening pigs such as the housing specific emission rate, the liquid share and solid share.
  Outdoor fattening pigs do not have any housing emissions, as everything is excreted on pasture.
 
   \begin{todo}{Note}{SHL}
@@ -27,14 +27,14 @@ taxonomy = Livestock::FatteningPigs::Housing::Type::Outdoor
   ++units  
     en = -
   ++description
-    Emission rate for outdoor fattening pigs (equal to zero because all emissions are listed under grazing).
+    Emission rate for grazing fattening pigs (equal to zero because all emissions are listed under grazing).
 
 +share_liquid
   value = 0
   ++units  
     en = -
   ++description
-    For the outdoor fattening pigs 0% of the manure 
+    For the grazing fattening pigs 0% of the manure 
     goes into the liquid fraction for storage/application.
 
 *** external ***

@@ -1248,7 +1248,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +nh3_nmineralfertiliser
   format = %.0f
-   print = PlantProductionSummary
+   print = SummaryPlantProduction
   ++labels
     sort = 940
       en = Mineral fertiliser NH3-Emissions

@@ -432,6 +432,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Housing::Type;manure_removal_interval;no_manure_belt
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Outdoor;free_range;yes
+2010v2.1_20120425;2648;Livestock::Poultry[Broilers]::Grazing;free_range;yes
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Excretion;animalcategory;growers
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Excretion;animals;30
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::AirScrubber;air_scrubber;none
@@ -440,6 +441,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::Type;manure_removal_interval;twice_a_month
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Outdoor;free_range;yes
+2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Grazing;free_range;yes
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Excretion;animalcategory;layers
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Excretion;animals;20
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Housing::AirScrubber;air_scrubber;none
@@ -448,6 +450,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Housing::Type;manure_removal_interval;more_than_4_times_a_month
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Outdoor;free_range;yes
+2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Grazing;free_range;yes
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Excretion;animalcategory;other_poultry
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Excretion;animals;20
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Housing::AirScrubber;air_scrubber;biotrickling
@@ -456,6 +459,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Housing::Type;manure_removal_interval;no_manure_belt
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Outdoor;free_range;no
+2010v2.1_20120425;2648;Livestock::Poultry[OtherPoultry]::Grazing;free_range;no
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Excretion;animalcategory;turkeys
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Excretion;animals;25
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Housing::AirScrubber;air_scrubber;acid
@@ -465,6 +469,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Housing::CFreeFactor;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Outdoor;free_range;no
+2010v2.1_20120425;2648;Livestock::Poultry[Turkeys]::Grazing;free_range;no
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Goats]::Excretion;animalcategory;goats
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Goats]::Excretion;animals;10
 2010v2.1_20120425;2648;Livestock::SmallRuminants[Goats]::Grazing;grazing_days;165

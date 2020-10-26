@@ -6,12 +6,12 @@ taxonomy = Livestock::Pig::Housing::Type::Outdoor
 
 +short
 
- Describes emission rates for outdoor pigs.
+ Describes emission rates for grazing pigs.
  Outdoor pigs do not have any housing emissions.
 
 +description
  
- This process describes the correction factors for outdoor pigs such as the housing specific emission rate, the liquid share and solid share.
+ This process describes the correction factors for grazing pigs such as the housing specific emission rate, the liquid share and solid share.
  Outdoor pigs do not have any housing emissions, as everything is excreted on pasture.
 
   \begin{todo}{Note}{SHL}
@@ -27,14 +27,14 @@ taxonomy = Livestock::Pig::Housing::Type::Outdoor
   ++units  
     en = -
   ++description
-    Emission rate for outdoor pigs (equal to zero because all emissions are listed under grazing).
+    Emission rate for grazing pigs (equal to zero because all emissions are listed under grazing).
 
 +share_liquid
   value = 0
   ++units  
     en = -
   ++description
-    For the outdoor pigs 0% of the manure 
+    For the grazing pigs 0% of the manure 
     goes into the liquid fraction for storage/application.
 
 *** external ***
