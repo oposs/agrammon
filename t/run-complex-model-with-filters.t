@@ -9,7 +9,7 @@ use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::TechnicalParser;
 
-my $temp-dir = $*TMPDIR.add('agrammon_testing');
+my $temp-dir = $*HOME.add('.agrammon');
 
 #| Expected results
 my $nh3-ntotal = 3157.775;
