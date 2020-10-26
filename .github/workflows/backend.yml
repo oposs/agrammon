@@ -42,12 +42,19 @@ jobs:
         with:
           raku-version: ${{ matrix.raku-version }}
 
-      - name: Setup cache
+      - name: Setup Raku cache
         uses: actions/cache@v2
-        id: cache
+        id: rakuCache
         with:
           path: .raku
           key: ${{ runner.os }}-${{ matrix.raku-version }}-${{ hashFiles('./dev/META6.json') }}
+
+      - name: Setup model cache
+        uses: actions/cache@v2
+        id: modelCache
+        with:
+          path: .agrammon
+          key: AgrammonModels
 
       - name: Load test database
         env:
