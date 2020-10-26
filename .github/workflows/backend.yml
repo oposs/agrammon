@@ -71,7 +71,7 @@ jobs:
           psql -U postgres -h localhost --file=$AGRAMMON_DUMP $POSTGRES_DB                  > /dev/null
 
       - name: Install modules
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.rakuCache.outputs.cache-hit != 'true'
         run: |
           mkdir -p $GITHUB_WORKSPACE/.raku
           ls -al $GITHUB_WORKSPACE/.raku
