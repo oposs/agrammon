@@ -39,7 +39,7 @@ jobs:
 
       - name: Checksum model dir
         run: |
-          find  t/test-data/Models/hr-inclNOx -type f -print0 | sort -z | xargs -0 md5 > ./MODEL_MD5
+          find  t/test-data/Models/hr-inclNOx -type f -print0 | sort -z | xargs -0 shasum > ./MODEL_MD5
           cat ./MODEL_MD5
 
       - name: Setup raku
