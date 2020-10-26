@@ -11,9 +11,18 @@ use Agrammon::TechnicalParser;
 
 my $temp-dir = $*TMPDIR.add('agrammon_testing');
 
-#| Model version and variants
+#| Model version and variants (dash doesn't work in Variant names)
 my $model-version = 'hr-inclNOxExtendedWithFilters';
-my $model-variants = ('Single-default', 'Kantonal-LU');
+my $model-variants = (
+    # default model version for web (detailed reports, reduced variable output)
+    'Single_default',
+    # model version for web (Baugesuch Kanton Luzern)
+    'Kantonal_LU',
+    # model version for command line (no reports, extended variable output)
+    'Single_extendedOutput',
+    # model version for command line (checking N/TAN flows)
+    'Single_checkBalance'
+    );
 
 #| Expected results
 my $nh3-ntotal = 3157.775;

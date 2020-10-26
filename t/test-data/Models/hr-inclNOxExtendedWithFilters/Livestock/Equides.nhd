@@ -28,6 +28,8 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
 
 *** output ***
 
+?if Single_extendedOutput
+
 +animals
   print = Equides
   ++units
@@ -301,3 +303,4 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
 
 ########################
 
+?endif

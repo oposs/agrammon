@@ -31,6 +31,8 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
 
 *** output ***
 
+?if Single_extendedOutput
+
 +animals
   print = SmallRuminants
   ++units
@@ -221,3 +223,6 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
     Val(tan_remain_grazing, SmallRuminants::Grazing);
 
 ########################
+
+
+?endif

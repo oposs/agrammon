@@ -28,24 +28,6 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
 
 *** output ***
 
-+animals
-  print = FatteningPigs
-  ++units
-    en = -
-  ++description
-    Number of dairy cows in barn.
-  ++formula
-    Val(animals, FatteningPigs::Excretion);
-
-+animalcategory
-  print = FatteningPigs
-  ++units
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, FatteningPigs::Excretion);
-
 +dimensioning_check
   print = FatteningPigs
   ++units
@@ -64,6 +46,26 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
     else {
       return "barn dimensioning ok";
     }
+
+?if Single_extendedOutput
+
++animals
+  print = FatteningPigs
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, FatteningPigs::Excretion);
+
++animalcategory
+  print = FatteningPigs
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, FatteningPigs::Excretion);
 
 
 ########################
@@ -237,3 +239,5 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
     Val(tan_remain_grazing, FatteningPigs::Grazing);
 
 ########################
+
+?endif

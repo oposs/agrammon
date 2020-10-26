@@ -28,24 +28,6 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
 
 *** output ***
 
-+animals
-  print = Pig
-  ++units
-    en = -
-  ++description
-    Number of dairy cows in barn.
-  ++formula
-    Val(animals, Pig::Excretion);
-
-+animalcategory
-  print = Pig
-  ++units
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, Pig::Excretion);
-
 +dimensioning_check
   print = Pig
   ++units
@@ -65,6 +47,26 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
       return "barn dimensioning ok";
     }
 
+
+?if Single_extendedOutput
+
++animals
+  print = Pig
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, Pig::Excretion);
+
++animalcategory
+  print = Pig
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, Pig::Excretion);
 
 ########################
 # excretion
@@ -238,3 +240,4 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
 
 ########################
 
+?endif

@@ -27,24 +27,6 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 
 *** output ***
 
-+animals
-  print = DairyCow
-  ++units
-    en = -
-  ++description
-    Number of dairy cows in barn.
-  ++formula
-    Val(animals, DairyCow::Excretion);
-
-+animalcategory
-  print = DairyCow
-  ++units
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, DairyCow::Excretion);
-
 +dimensioning_check
   print = DairyCow
   ++units
@@ -64,6 +46,26 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
       return "barn dimensioning ok";
     }
 
+
+?if Single_extendedOutput
+
++animals
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, DairyCow::Excretion);
+
++animalcategory
+  print = DairyCow
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, DairyCow::Excretion);
 
 ########################
 # excretion
@@ -318,3 +320,5 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
     Val(tan_remain_grazing, DairyCow::Grazing);
 
 ########################
+
+?endif
