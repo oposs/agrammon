@@ -49,7 +49,7 @@ jobs:
           path: .raku
           key: ${{ runner.os }}-${{ matrix.raku-version }}-${{ hashFiles('./dev/META6.json') }}
 
-      - name: Install modules
+      - name: Install Raku modules
         if: steps.rakuCache.outputs.cache-hit != 'true'
         run: |
           mkdir -p $GITHUB_WORKSPACE/.raku
