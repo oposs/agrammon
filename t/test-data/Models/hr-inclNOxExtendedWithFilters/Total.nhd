@@ -31,9 +31,9 @@ taxonomy = Total
 
 +nh3_nanimalproduction
   format= %.0f
-  print = SummaryLivestock
+  print = SummaryLivestock,LivestockNH3
   ++labels
-    sort = 899
+    sort = 099
     en = Total Animalproduction NH3-Emissions
     de = Total Tierproduktion NH3-Emission
     fr = Emission de NH3 Total Production animale
@@ -44,9 +44,9 @@ taxonomy = Total
   ++description
     Annual NH3 emission from farm.
   ++formula
-    Val(nh3_napplication, Application) +
-    Val(nh3_nstorage, Storage) +
-    Val(nh3_nlivestock, Livestock) 
+    Val(nh3_napplication, Application) P+
+    Val(nh3_nstorage, Storage) P+
+    Val(nh3_nlivestock, Livestock); 
 
 +nh3_ntotal
   format= %.0f
@@ -63,8 +63,6 @@ taxonomy = Total
   ++description
     Annual NH3 emission from farm.
   ++formula
-    Val(nh3_napplication, Application) +
-    Val(nh3_nstorage, Storage) +
-    Val(nh3_nlivestock, Livestock) +
+    Out(nh3_nanimalproduction) +
     Val(nh3_nplantproduction, PlantProduction) 
 

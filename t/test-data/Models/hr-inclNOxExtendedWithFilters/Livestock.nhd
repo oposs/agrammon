@@ -714,13 +714,38 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 ####################################################
 #### nh3 loss
 
++nh3_ngrazing
+  format= %.0f
+  print = SummaryLivestock,LivestockNH3
+  ++labels
+    sort = 010
+    en = Grazing NH3-Emissions
+    de = Weide NH3-Emission
+    fr = Emission de NH3 issu du pâturage
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from all grazing areas and Poultry grazing activities.
+  ++formula
+    Sum(nh3_ngrazing,Livestock::OtherCattle::Grazing) P+
+    Sum(nh3_ngrazing,Livestock::DairyCow::Grazing) P+
+    Sum(nh3_ngrazing,Livestock::Pig::Grazing) P+
+    Sum(nh3_ngrazing,Livestock::FatteningPigs::Grazing) P+
+    Sum(nh3_ngrazing,Livestock::Equides::Grazing) P+
+    Sum(nh3_ngrazing,Livestock::SmallRuminants::Grazing) P+
+    Sum(nh3_ngrazing,Livestock::RoughageConsuming::Grazing) P+
+    Sum(nh3_ngrazing,Livestock::Poultry::Grazing);
+
 +nh3_nhousing
   format= %.0f
-  print = 2
+  print = LivestockNH3
   ++labels
-    en = Housing NH3-Emissions
-    de = Stall NH3-Emission
-    fr = Emission de NH3 issu de la stabulation
+    sort = 030
+    en = __Housing NH3-Emissions
+    de = __Stall NH3-Emission
+    fr = __Emission de NH3 issu de la stabulation
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -728,18 +753,20 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++description
     Annual NH3 emission from all housings.
   ++formula
-   Sum(nh3_nhousing,Livestock::OtherCattle::Housing) P+
-   Sum(nh3_nhousing,Livestock::DairyCow::Housing) P+
-   Sum(nh3_nhousing,Livestock::SmallRuminants::Housing) P+
-   Sum(nh3_nhousing,Livestock::RoughageConsuming::Housing) P+
-   Sum(nh3_nhousing,Livestock::Pig::Housing) P+
-   Sum(nh3_nhousing,Livestock::FatteningPigs::Housing) P+
-   Sum(nh3_nhousing,Livestock::Equides::Housing) P+
-   Sum(nh3_nhousing,Livestock::Poultry::Housing);
+    Sum(nh3_nhousing,Livestock::OtherCattle::Housing) P+
+    Sum(nh3_nhousing,Livestock::DairyCow::Housing) P+
+    Sum(nh3_nhousing,Livestock::SmallRuminants::Housing) P+
+    Sum(nh3_nhousing,Livestock::RoughageConsuming::Housing) P+
+    Sum(nh3_nhousing,Livestock::Pig::Housing) P+
+    Sum(nh3_nhousing,Livestock::FatteningPigs::Housing) P+
+    Sum(nh3_nhousing,Livestock::Equides::Housing) P+
+    Sum(nh3_nhousing,Livestock::Poultry::Housing);
 
 +nh3_nyard
-  print = 2
+  format= %.0f
+  print = LivestockNH3
   ++units
+    sort = 040
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -753,9 +780,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 # is this variable really necessary?
 +nh3_nhousing_and_yard
   format= %.0f
-  print = SummaryLivestock
+  print = SummaryLivestock,LivestockNH3
   ++labels
-    sort = 802
+    sort = 020
     en = Housing and Yard NH3-Emissions
     de = Stall und Laufhof NH3-Emission
     fr = Emission de NH3 issu de la stabulation et du parcours extérieur
@@ -768,6 +795,23 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++formula
     Out(nh3_nhousing) P+
     Out(nh3_nyard);
+
++nh3_nlivestock
+  print = 55
+  ++labels
+    en = NH3-Emissions from Housing, Yard and Grazing
+    de = NH3-Emission aus Stall, Laufhof und Weide
+    fr = TODO: Emission de NH3 
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from livestock from all animals.
+  ++formula
+    Out(nh3_nhousing_and_yard) P+
+    Out(nh3_ngrazing);
+
 
 ####################################################
 
@@ -938,30 +982,6 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 ####################################################
 #### grazing
 
-+nh3_ngrazing
-  format= %.0f
-  print = SummaryLivestock
-  ++labels
-    sort = 801
-    en = Grazing NH3-Emissions
-    de = Weide NH3-Emission
-    fr = Emission de NH3 issu du pâturage
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from all grazing areas and Poultry grazing activities.
-  ++formula
-     Sum(nh3_ngrazing,Livestock::OtherCattle::Grazing) P+
-     Sum(nh3_ngrazing,Livestock::DairyCow::Grazing) P+
-     Sum(nh3_ngrazing,Livestock::Pig::Grazing) P+
-     Sum(nh3_ngrazing,Livestock::FatteningPigs::Grazing) P+
-     Sum(nh3_ngrazing,Livestock::Equides::Grazing) P+
-     Sum(nh3_ngrazing,Livestock::SmallRuminants::Grazing) P+
-     Sum(nh3_ngrazing,Livestock::RoughageConsuming::Grazing) P+
-     Sum(nh3_ngrazing,Livestock::Poultry::Grazing);
-
 +n2_ngrazing
   format= %.0f
   print = NOxFlux
@@ -1084,20 +1104,3 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(tan_remain_grazing, Livestock::Poultry::Grazing);
 
 ####################################################
-
-+nh3_nlivestock
-  print = 55
-  ++labels
-    en = Total Livestock NH3-Emissions
-    de = Total Tierproduktion NH3-Emission
-    fr = Emission de NH3 totale issue de la production animale
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual NH3 emission from livestock from all animals.
-  ++formula
-    Out(nh3_nhousing_and_yard) P+
-    Out(nh3_ngrazing);
-

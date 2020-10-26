@@ -140,12 +140,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +nh3_napplication_solid
   format = %.0f
-  print = SummaryLivestock,nh3,application,solid
+  print = SummaryLivestock,LivestockNH3
   ++labels 
-    sort = 823
-    en = _NH3-Emissions from solid manure application
-    de = _Hofdüngerausbringung fest NH3-Emission
-    fr = _Emission de NH3 Epandage des engrais de ferme solides
+    sort = 085
+    en = __NH3-Emissions from solid manure application
+    de = __Hofdüngerausbringung fest NH3-Emission
+    fr = __Emission de NH3 Epandage des engrais de ferme solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -161,12 +161,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +nh3_napplication_liquid
   format = %.0f
-  print = SummaryLivestock,nh3,application,liquid
+  print = SummaryLivestock,LivestockNH3
   ++labels 
-    sort = 822
-    en = _NH3-Emissions from liquid manure application
-    de = _Hofdüngerausbringung flüssig NH3-Emission
-    fr = _Emission de NH3 Epandage des engrais de ferme liquides
+    sort = 075
+    en = __NH3-Emissions from liquid manure application
+    de = __Hofdüngerausbringung flüssig NH3-Emission
+    fr = __Emission de NH3 Epandage des engrais de ferme liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -178,9 +178,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +nh3_napplication
   format = %.0f
-  print = SummaryLivestock,nh3,application,total
+  print = SummaryLivestock,LivestockNH3
   ++labels 
-    sort = 821
+    sort = 070
     en = NH3-Emissions from manure application
     de = Hofdüngerausbringung NH3-Emission
     fr = Emission de NH3 Epandage des engrais de ferme
