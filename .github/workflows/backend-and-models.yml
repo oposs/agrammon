@@ -1,4 +1,4 @@
-name: backend
+name: Backend and models
 
 on:
   push:
@@ -42,12 +42,30 @@ jobs:
         with:
           raku-version: ${{ matrix.raku-version }}
 
-      - name: Setup cache
+      - name: Setup Raku cache
         uses: actions/cache@v2
-        id: cache
+        id: rakuCache
         with:
           path: .raku
           key: ${{ runner.os }}-${{ matrix.raku-version }}-${{ hashFiles('./dev/META6.json') }}
+
+      - name: Install Raku modules
+        if: steps.rakuCache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/.raku
+          zef --install-to=inst#$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
+
+      - name: Checksum model dir
+          run: |
+            find  t/test-data/Models/hr-inclNOx* -type f -print0 | sort -z | xargs -0 shasum > ./MODEL_MD5
+            cat ./MODEL_MD5
+
+      - name: Setup model cache
+        uses: actions/cache@v2
+        id: modelCache
+        with:
+          path: $HOME/.agrammon
+          key: AgrammonModels-${{ hashFiles('./MODEL_MD5') }}
 
       - name: Load test database
         env:
@@ -63,14 +81,6 @@ jobs:
           psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" agrammon_test        > /dev/null
           psql -U postgres -h localhost --file=$AGRAMMON_DUMP $POSTGRES_DB                  > /dev/null
 
-      - name: Install modules
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/.raku
-          ls -al $GITHUB_WORKSPACE/.raku
-          zef --install-to=inst#$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
-
       - name: Run backend tests
         run: |
-          ls -al $GITHUB_WORKSPACE/.raku
           RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
