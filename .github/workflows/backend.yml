@@ -81,3 +81,5 @@ jobs:
         run: |
           ls -al $GITHUB_WORKSPACE/.raku
           RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
+          ls -al $GITHUB_WORKSPACE
+          ls -al $HOME
