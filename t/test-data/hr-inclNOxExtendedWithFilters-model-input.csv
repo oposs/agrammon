@@ -42,6 +42,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::KArea;dimensioning_barn;12
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;floor_properties_exercise_yard_SHL;solid_floor
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;floor_properties_exercise_yard;solid_floor
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;yard_days;270
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion;animalcategory;dairy_cow
@@ -65,6 +66,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Housing::Type;housing_type;Loose_Housing_Slurry
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;floor_properties_exercise_yard_SHL;solid_floor
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;floor_properties_exercise_yard;solid_floor
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;yard_days;270
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;exercise_yard;not_available
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion;animalcategory;dairy_cow
@@ -89,6 +91,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::Type;housing_type;Loose_Housing_Deep_Litter
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Housing::CFreeFactor;free_correction_factor;5
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;floor_properties_exercise_yard_SHL;paddock_or_pasture_used_as_exercise_yard
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;floor_properties_exercise_yard;paddock_or_pasture_used_as_exercise_yard
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;yard_days;270
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;exercise_yard;available_roughage_is_exclusively_supplied_in_the_exercise_yard
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Yard;free_correction_factor;5
