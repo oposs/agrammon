@@ -330,6 +330,12 @@ throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::UnclosedDir
     line 2
     IN
 
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::UnclosedDirective, line => 2;
+    line 1
+    ?ifnot opt
+    line 2
+    IN
+
 throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::UnexpectedCloser, line => 2, unexpected => '?endif';
     line 1
     ?endif
@@ -350,6 +356,16 @@ throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::UnexpectedC
 
 throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::ElsifAfterElse, line => 5;
     ?if A
+    line 1
+    ?else
+    line 2
+    ?elsif B
+    line 3
+    ?endif
+    IN
+
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::ElsifAfterElse, line => 5;
+    ?ifnot A
     line 1
     ?else
     line 2
