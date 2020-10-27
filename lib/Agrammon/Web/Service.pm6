@@ -59,14 +59,14 @@ class Agrammon::Web::Service {
 
 
     method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
-        my $model = self.cfg.model-variant; # model 'SingleSHL';
+        my $model = self.cfg.app-variant; # model 'SingleSHL';
         return Agrammon::DB::Dataset.new(:$user, :$name, :$model).create.name;
     }
 
     method clone-dataset(Agrammon::Web::SessionUser $user,
                          Str $new-username,
                          Str $old-dataset, Str $new-dataset --> Nil) {
-        my $model = self.cfg.model-variant; # model 'SingleSHL';
+        my $model = self.cfg.app-variant; # model 'SingleSHL';
         Agrammon::DB::Dataset.new(:$user, :$model).clone(:$new-username, :$old-dataset, :$new-dataset);
     }
 
