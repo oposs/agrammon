@@ -2,3 +2,9 @@
 t/test-data/.secret
 static/resource
 frontend/cache
+Makefile.in
+/frontend/compiled/
+/configure
+frontend/node_modules/
+autom4te.cache/
+aclocal.m4
