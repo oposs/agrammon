@@ -1,0 +1,27 @@
+General:
+    debugLevel: 0
+    log_file:   /tmp/agrammon.log
+    log_level:  warn
+    mojo_secret: MyCookieSecret
+
+Database:
+    name:     agrammon_test
+    host:     erika
+    user:     agrammon
+    password: agrammonATwork
+
+GUI:
+    variant: Single
+    title:
+        de: AGRAMMON 6.0 Einzelbetriebsmodell
+        en: AGRAMMON 6.0 Single Farm Model
+        fr: AGRAMMON 6.0 modèle Exploitation individuelle
+
+Model:
+    debugLevel: 0
+    home:      /home/zaucker/Agrammon
+    path:      Models/branches/hr-inclNOxExtendedWithFilters
+    root:      End.nhd
+    technical: technical.cfg
+    variant:   SHL
+    version:   "6.0 - #REV#"

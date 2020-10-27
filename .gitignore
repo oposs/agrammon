@@ -2,3 +2,16 @@
 t/test-data/.secret
 static/resource
 frontend/cache
+Makefile
+Makefile.in
+/frontend/compiled/
+/configure
+/config.*
+frontend/node_modules/
+autom4te.cache/
+aclocal.m4
+etc/*.cfg
+etc/*.yaml
+etc/*.secret
+public/
+conftools/

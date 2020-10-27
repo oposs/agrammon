@@ -40,36 +40,30 @@ sub routes(Agrammon::Web::Service $ws) is export {
 sub static-content($root) {
     route {
         get -> {
-            static $root ~ 'static/index.html'
+            static $root ~ 'public/index.html'
         }
 
         get -> 'index.html' {
-            static $root ~ 'static/index.html'
+            static $root ~ 'public/index.html'
         }
 
-        get -> 'agrammon.html' {
-            static $root ~ 'static/agrammon.html'
+        get -> 'agrammon', *@path {
+            static $root ~ 'public/agrammon', @path
         }
 
-        get -> 'script', *@path {
-            static $root ~ 'static/script', @path
+        get -> 'resource', *@path {
+            static $root ~ 'public/resource', @path
         }
 
         get -> 'source', *@path {
             static $root ~ 'static/source', @path
         }
 
-        get -> 'QxJqPlot/source/resource', *@path {
-            static $root ~ 'static/resource', @path
-        }
+# TODO: needs later fixing
+#        get -> 'QxJqPlot/source/resource', *@path {
+#            static $root ~ 'static/resource', @path
+#        }
 
-        get -> 'resource', *@path {
-            static $root ~ 'static/resource', @path
-        }
-
-        get -> 'qooxdoo', *@path {
-            static $root ~ 'static/qooxdoo', @path
-        }
     }
 }
 

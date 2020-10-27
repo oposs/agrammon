@@ -1,34 +1,28 @@
 {
-  "info" : 
-  {
-    "name" : "agrammon",
-
-    "summary" : "NH3 Simulations",
-    "description" : "Simulation of NH3 emissions from farms.",
-    
-    "homepage" : "http://agrammon.ch",
-
-    "license" : "SomeLicense",
-    "authors" : 
-    [
+  "$schema": "https://raw.githubusercontent.com/qooxdoo/qooxdoo-compiler/master/source/resource/qx/tool/schema/Manifest-1-0-0.json",
+  "info": {
+    "name": "Agrammon",
+    "summary": "Agrammon web app for NH3 Simulations",
+    "description": "Simulation of NH3 emissions from farms",
+    "homepage": "https://agrammon.ch",
+    "license": "SomeLicense",
+    "authors": [
       {
-        "name" : "Fritz Zaucker (zaucker)",
-        "email" : "fritz.zaucker@oetiker.ch"
+        "name": "Fritz Zaucker",
+        "email": "fritz.zaucker@oetiker.ch"
       }
     ],
-
-    "version" : "branches/qx",
-    "qooxdoo-versions": ["1.0svn"]
+    "version": "6.0.0-beta"
   },
-  
-  "provides" : 
-  {
-    "namespace"   : "agrammon",
-    "encoding"    : "utf-8",
-    "class"       : "source/class",
-    "resource"    : "source/resource",
-    "translation" : "source/translation",
-    "type"        : "application"
+  "provides": {
+    "namespace": "agrammon",
+    "encoding": "utf-8",
+    "class": "source/class",
+    "resource": "source/resource",
+    "translation": "source/translation"
+  },
+  "requires": {
+    "@qooxdoo/framework": "^6.0.0-beta",
+    "@qooxdoo/compiler": "^1.0.0-beta"
   }
 }
-
