@@ -57,7 +57,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
 
             var superHandler = function(ret, exc, id) {
                 if (exc && exc.code == 6) {
-                    var login = agrammon.ui.Login.getInstance();
+                    var login = agrammon.module.user.Login.getInstance();
                     login.addListenerOnce('login', function(e) {
                         origArguments.callee.base.apply(origThis, origArguments);
                     });

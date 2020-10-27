@@ -495,7 +495,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                             var keys = Object.keys(filters);
                             if (keys.length > 0) {
                                 var filterArray = [];
-                                for (k=0; k<keys.length; k++) {
+                                for (var k=0; k<keys.length; k++) {
                                     var f = keys[k];
                                     var v = filters[f];
                                     f = f.replace(/.+::/,'');
