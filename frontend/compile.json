@@ -29,7 +29,7 @@
       "name": "agrammon",
       "title": "Agrammon",
       "class": "agrammon.Application",
-      "theme": "agrammon.theme.Theme",
+       "theme": "qx.theme.Indigo",
       "bootPath": "source/boot"
     }
   ]
