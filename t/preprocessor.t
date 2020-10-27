@@ -115,11 +115,51 @@ is preprocess(Q:to/IN/, {:A, :B}), Q:to/OUT/, 'Nested ?if works (both true)';
     line 4
     OUT
 
+is preprocess(Q:to/IN/, {:!A, :!B}), Q:to/OUT/, 'Nested ?ifnot works (both true)';
+    line 1
+    ?ifnot A
+    line 2
+    ?ifnot B
+    line 3
+    ?endif
+    ?endif
+    line 4
+    IN
+    line 1
+
+    line 2
+
+    line 3
+
+
+    line 4
+    OUT
+
 is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'Nested ?if works (outer true)';
     line 1
     ?if A
     line 2
     ?if B
+    line 3
+    ?endif
+    ?endif
+    line 4
+    IN
+    line 1
+
+    line 2
+
+
+
+
+    line 4
+    OUT
+    
+is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'Nested ?ifnot works (outer true)';
+    line 1
+    ?ifnot A
+    line 2
+    ?ifnot B
     line 3
     ?endif
     ?endif
@@ -140,6 +180,26 @@ is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'Nested ?if works (inner true)';
     ?if A
     line 2
     ?if B
+    line 3
+    ?endif
+    ?endif
+    line 4
+    IN
+    line 1
+
+
+
+
+
+
+    line 4
+    OUT
+
+is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'Nested ?ifnot works (inner true)';
+    line 1
+    ?ifnot A
+    line 2
+    ?ifnot B
     line 3
     ?endif
     ?endif
