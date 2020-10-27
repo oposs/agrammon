@@ -1,12 +1,12 @@
 #  Copyright (C) 2020 Fritz Zaucker
 
-AC_INIT([camas],m4_esyscmd([tr -d '\n' < VERSION]),[fritz.zaucker@oetiker.ch])
+AC_INIT([agrammon],m4_bregexp(m4_quote(m4_include([META6.json])), [[0-9]+\.[0-9]+\.[0-9]-beta], [\&]),[fritz.zaucker@oetiker.ch])
 AC_PREREQ([2.59])
 AC_CONFIG_AUX_DIR(conftools)
 
-MJ_CLASS=Camas
-MJ_SCRIPT=camas
-QX_CLASS=camas
+MJ_CLASS=Agrammon
+MJ_SCRIPT=agrammon
+QX_CLASS=agrammon
 
 AC_SUBST(MJ_CLASS)
 AC_SUBST(MJ_SCRIPT)
@@ -145,25 +145,15 @@ else
     AC_MSG_RESULT([install Prefix is fine])
 fi
 
-AC_ARG_VAR(CALLBACKERY_QX, [Alternate CallBackery/qooxdoo folder location])
-if test "$CALLBACKERY_QX" = ""; then
-    script_path=`dirname "$0"`
-    script_path=`cd $script_path;pwd`
-    # Absolute path this script is in, thus /home/user/bin
-    CALLBACKERY_QX="$script_path"/thirdparty/lib/perl5/CallBackery/qooxdoo
-fi
-AC_SUBST(CALLBACKERY_QX)
+AC_ARG_VAR(RAKULIB,   [Colon separated list of raku library directories])
+AC_SUBST(RAKULIB)
 
-AC_ARG_VAR(PERL5LIB,   [Colon separated list of perl library directories])
-AC_SUBST(PERL5LIB)
-
+#    lib/Makefile
+#    bin/Makefile
 AC_CONFIG_FILES([
     Makefile
     etc/Makefile
-    lib/Makefile
-    bin/Makefile
-frontend/Makefile
-    thirdparty/Makefile
+    frontend/Makefile
 ])
 
 AC_SUBST(VERSION)
@@ -192,12 +182,12 @@ if test "$mod_ok" = "0"; then
 ** SOME PERL MODULES ARE MISSING ******************************
 
 If you know where perl can find the missing modules, set
-the PERL5LIB environment variable accordingly. Otherwise
+the RAKULIB environment variable accordingly. Otherwise
 just proceed and the missing modules will be installed
 automatically.
 
-To force the system to download missing perl modules, you can
-do a `touch PERL_MODULES` before running `$GMAKE`
+To force the system to download missing raku modules, you can
+do a `zef --debug --/test --deps-only --test-depends --force-install install .` before running `$GMAKE`
 NOTES
 
 fi
@@ -208,7 +198,7 @@ cat <<NOTES
 
 Settings:
 
-  PERL5LIB = ${PERL5LIB:-"not set"}
+  RAKULIB = ${RAKULIB:-"not set"}
   PERL = $PERL
 
 The Makefiles use GNU make functionality.

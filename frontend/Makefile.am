@@ -1,11 +1,9 @@
 
 AUTOMAKE_OPTIONS=foreign
 
-EXTRA_DIST = compile.js  compile.json Manifest.json package.json package-lock.json $(shell find source -not -name ".*" -a -not -name "*~" -a -not -name "*.tmp" -a -not -name "Makefile*" -a -type f -print )
+EXTRA_DIST = compile.json Manifest.json package.json package-lock.json $(shell find source -not -name ".*" -a -not -name "*~" -a -not -name "*.tmp" -a -not -name "Makefile*" -a -type f -print )
 
 if BUILD_QOOXDOO_APP
-
-CBFILES=$(shell find $(CALLBACKERY_QX) -name '*.js')
 
 all-local: build
 
@@ -17,7 +15,7 @@ source: node_modules compiled/source/.built
 
 
 source-watch: node_modules
-	CALLBACKERY_QX=$(CALLBACKERY_QX) $(NPX) qx compile --watch --feedback=false --erase --update-po-files
+	$(NPX) qx compile --watch --feedback=false --erase --update-po-files
 
 build: ../public/.built
 
@@ -29,7 +27,7 @@ clean: node_modules
 
 ../public/.built: $(EXTRA_DIST) Makefile.in $(CBFILES)
 	$(MAKE) node_modules
-	CALLBACKERY_QX=$(CALLBACKERY_QX) $(NPX) qx compile --target=build --feedback=false --erase --update-po-files
+	$(NPX) qx compile --target=build --feedback=false --erase --update-po-files
 	mkdir -p ../public/$(QX_CLASS)
 	cp -p compiled/build/$(QX_CLASS)/*.js ../public/$(QX_CLASS)
 	cp -p compiled/build/index.html ../public
@@ -37,7 +35,7 @@ clean: node_modules
 	touch $@
 
 compiled/source/.built: $(EXTRA_DIST) Makefile.in $(CBFILES)
-	CALLBACKERY_QX=$(CALLBACKERY_QX) $(NPX) qx compile --feedback=false --update-po-files
+	$(NPX) qx compile --feedback=false --update-po-files
 	touch $@
 
 node_modules/.installed package-lock.json: package.json
