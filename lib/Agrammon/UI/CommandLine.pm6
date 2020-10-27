@@ -204,7 +204,7 @@ sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export 
     my $cfg = Agrammon::Config.new;
     note "Loading config from $cfg-filename";
     $cfg.load($cfg-filename);
-    my $variants = $cfg.model-variants;
+    my $variants = $cfg.model-variant;
 
     my $model-path = $model-filename.IO;
     die "ERROR: web expects a .nhd file" unless $model-path.extension eq 'nhd';
