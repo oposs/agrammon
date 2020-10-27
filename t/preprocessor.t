@@ -53,7 +53,7 @@ is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?if on present but false option is o
     line 3
     OUT
 
-is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?ifnot on present but false option is included';
+is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?ifnot on present but false option is omitted';
     line 1
     ?ifnot A
     line 2
@@ -62,7 +62,7 @@ is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?ifnot on present but false option i
     IN
     line 1
 
-    line 2
+
 
     line 3
     OUT
@@ -81,7 +81,7 @@ is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?if on present and true option includ
     line 3
     OUT
 
-is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?ifnot on present and true option omitted';
+is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?ifnot on present and true option included';
     line 1
     ?ifnot A
     line 2
@@ -90,7 +90,7 @@ is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?ifnot on present and true option omi
     IN
     line 1
 
-
+    line 2
 
     line 3
     OUT
