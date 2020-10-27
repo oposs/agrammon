@@ -25,6 +25,20 @@ is preprocess(Q:to/IN/, {}), Q:to/OUT/, '?if on non-present option is omitted';
     line 3
     OUT
 
+is preprocess(Q:to/IN/, {}), Q:to/OUT/, '?ifnot on non-present option is included';
+    line 1
+    ?ifnot A
+    line 2
+    ?endif
+    line 3
+    IN
+    line 1
+
+    line 2
+
+    line 3
+    OUT
+
 is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?if on present but false option is omitted';
     line 1
     ?if A
@@ -39,6 +53,20 @@ is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?if on present but false option is o
     line 3
     OUT
 
+is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?ifnot on present but false option is included';
+    line 1
+    ?ifnot A
+    line 2
+    ?endif
+    line 3
+    IN
+    line 1
+
+    line 2
+
+    line 3
+    OUT
+
 is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?if on present and true option included';
     line 1
     ?if A
@@ -49,6 +77,20 @@ is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?if on present and true option includ
     line 1
 
     line 2
+
+    line 3
+    OUT
+
+is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?ifnot on present and true option omitted';
+    line 1
+    ?ifnot A
+    line 2
+    ?endif
+    line 3
+    IN
+    line 1
+
+
 
     line 3
     OUT
