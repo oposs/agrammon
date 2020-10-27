@@ -13,3 +13,5 @@ aclocal.m4
 etc/*.cfg
 etc/*.yaml
 etc/*.secret
+public/
+conftools/
