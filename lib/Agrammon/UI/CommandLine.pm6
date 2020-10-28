@@ -173,15 +173,15 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
 
         timed "Create output", {
             my $result;
-	    given $format {
-	        when 'csv' {
+            given $format {
+                when 'csv' {
                     die "CSV output including filters is not yet supported" if $include-filters;
                     $result = output-as-csv($dataset.simulation-name, $dataset.dataset-id, $model, $outputs, $language);
                 }
-		when 'json' {
+                when 'json' {
                     $result = output-as-json($model, $outputs, $language, $prints, $include-filters);
                 }
-		when 'text' {
+                when 'text' {
                     $result = output-as-text($model, $outputs, $language, $prints, $include-filters);
                 }
             }
