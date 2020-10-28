@@ -1,6 +1,6 @@
-#  Copyright (C) 2020 Fritz Zaucker
+#  Copyright (C) 2020 Oetiker+Partner AG
 
-AC_INIT([agrammon],m4_bregexp(m4_quote(m4_include([META6.json])), [[0-9]+\.[0-9]+\.[0-9]-beta], [\&]),[fritz.zaucker@oetiker.ch])
+AC_INIT([agrammon],m4_esyscmd([jq '.version' < META6.json | tr -d '""' ]),[fritz.zaucker@oetiker.ch])
 AC_PREREQ([2.59])
 AC_CONFIG_AUX_DIR(conftools)
 
