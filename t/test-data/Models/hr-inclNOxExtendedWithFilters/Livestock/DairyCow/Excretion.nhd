@@ -86,7 +86,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     +++fr
        <p>Nombre effectif d'animaux dans la stabulation.</p>
 
-?ifnot Kantonal_LU
+?if !Kantonal_LU
   +inp_n_excretion
     type = text
     default_calc = Standard

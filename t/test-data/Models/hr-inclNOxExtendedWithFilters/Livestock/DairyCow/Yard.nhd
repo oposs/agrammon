@@ -97,7 +97,7 @@ taxonomy = Livestock::DairyCow::Yard
        de = Boden_perforiert
        fr = sol_perforé
        it = perforated_floor
-?ifnot Kantonal_LU
+?if !Kantonal_LU
      +++unpaved_floor
        en = unpaved_floor
        de = Boden_unbefestigt
@@ -146,7 +146,7 @@ taxonomy = Livestock::DairyCow::Yard
        <p>Les parcours extérieurs avec des sols sans revêtement dur ne doivent pas être accessibles de manière permanente (max. 2 heures par jour). </p>
        <p>Proposition de valeur standard: sol en dur</p>
 
-?ifnot Kantonal_LU
+?if !Kantonal_LU
   +free_correction_factor
     type = float
     default_calc = 0

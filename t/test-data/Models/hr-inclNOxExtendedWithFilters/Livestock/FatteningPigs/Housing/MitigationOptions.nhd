@@ -57,7 +57,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        de = mit_Güllekanal_geneigten_Seitenwänden_Metallspaltenboden
        fr = avec_canal_à_lisier_parois_latérales_inclinées_caillebotis_en_métal
        it = with_channel_slanted_walls_metal_slats
-?ifnot Kantonal_LU
+?if !Kantonal_LU
     +++with_flush_channels_areation
        en = with_flush_channels_areation
        de = mit_Spülkanälen_Belüftung
