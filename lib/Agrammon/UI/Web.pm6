@@ -40,10 +40,10 @@ class Agrammon::UI::Web {
             for $module.results -> $result {
                 my $type = $result.type;
                 my %report = %(
-                    name      => $result.name,
-                    type     => $type,
+                    name     => $result.name,
                     _order   => $result._order,
                     selector => $result.selector,
+                    :$type,
                 );
 
                 my %data = $result.data;
@@ -73,8 +73,8 @@ class Agrammon::UI::Web {
         }
 
         return %(
-            reports => @reports,
-            graphs  => @graphs,
+            :@reports,
+            :@graphs,
         );
     }
 
