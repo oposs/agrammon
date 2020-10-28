@@ -59,18 +59,18 @@ sub preprocess(Str $source, %options --> Str) is export {
         if $content.starts-with('?') {
             @result-lines.push('');
             given $content {
-                when /^ '?if' \h+ <option=.ident> \h* $/ {
-                    my $enabled = so %options{~$<option>};
+                when /^ '?if' \h+ [$<negate>='!']? <option=.ident> \h* $/ {
+                    my $enabled = $<negate> ?? .not !! .so given %options{~$<option>};
                     my $matched = $enabled;
                     my $start-line = $number + 1;
                     @open.push(OpenDirective.new(:$start-line, :$enabled, :$matched, :accept-elsif));
                 }
-                when /^ '?elsif' \h+ <option=.ident> \h* $/ {
+                when /^ '?elsif' \h+ [$<negate>='!']? <option=.ident> \h* $/ {
                     if @open.pop -> $prev-part {
                         unless $prev-part.accept-elsif {
                             die X::Agrammon::Preprocessor::ElsifAfterElse.new: :line($number + 1);
                         }
-                        my $enabled = so !$prev-part.matched && %options{~$<option>};
+                        my $enabled = so !$prev-part.matched && ($<negate> ?? .not !! .so given %options{~$<option>});
                         my $matched = $prev-part.matched || $enabled;
                         my $start-line = $number + 1;
                         @open.push(OpenDirective.new(:$start-line, :$enabled, :$matched, :accept-elsif));
