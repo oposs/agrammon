@@ -4,6 +4,7 @@ use Agrammon::TechnicalBuilder;
 
 grammar Agrammon::TechnicalParser does Agrammon::CommonParser {
     token TOP {
+        :my $*CUR-SECTION = '';
         <.blank-line>*
         <.section-heading('technical_parameters')>
         [

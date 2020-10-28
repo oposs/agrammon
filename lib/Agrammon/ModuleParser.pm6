@@ -4,6 +4,7 @@ use Agrammon::CommonParser;
 grammar Agrammon::ModuleParser does Agrammon::CommonParser {
     token TOP {
         :my $*TAXONOMY = '';
+        :my $*CUR-SECTION = '';
         <.blank-line>*
         <section>+
         [
