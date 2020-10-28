@@ -273,6 +273,28 @@ is preprocess(Q:to/IN/, {:!A, :!B}), Q:to/OUT/, 'if/elsif/else emits else if no 
     line 5
     OUT
 
+is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'if/elsif not (!)/else emits else if no conditions true';
+    line 1
+    ?if A
+    line 2
+    ?elsif !B
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+
+
+
+
+    line 4
+
+    line 5
+    OUT
+
 is preprocess(Q:to/IN/, {:A, :B}), Q:to/OUT/, 'if/elsif/else emits first true part (when if)';
     line 1
     ?if A
@@ -295,11 +317,55 @@ is preprocess(Q:to/IN/, {:A, :B}), Q:to/OUT/, 'if/elsif/else emits first true pa
     line 5
     OUT
 
+is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'if/elsif not (!)/else emits first true part (when if)';
+    line 1
+    ?if A
+    line 2
+    ?elsif !B
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+    line 2
+
+
+
+
+
+    line 5
+    OUT
+
 is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'if/elsif/else emits first true part (when elsif)';
     line 1
     ?if A
     line 2
     ?elsif B
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+
+
+    line 3
+
+
+
+    line 5
+    OUT
+
+is preprocess(Q:to/IN/, {:!A, :!B}), Q:to/OUT/, 'if/elsif not (!)/else emits first true part (when elsif)';
+    line 1
+    ?if A
+    line 2
+    ?elsif !B
     line 3
     ?else
     line 4
@@ -369,7 +435,7 @@ throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::ElsifAfterE
     line 1
     ?else
     line 2
-    ?elsif B
+    ?elsif !B
     line 3
     ?endif
     IN
