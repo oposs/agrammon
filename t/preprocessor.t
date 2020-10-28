@@ -25,9 +25,9 @@ is preprocess(Q:to/IN/, {}), Q:to/OUT/, '?if on non-present option is omitted';
     line 3
     OUT
 
-is preprocess(Q:to/IN/, {}), Q:to/OUT/, '?ifnot on non-present option is included';
+is preprocess(Q:to/IN/, {}), Q:to/OUT/, '?if not (!) on non-present option is included';
     line 1
-    ?ifnot A
+    ?if !A
     line 2
     ?endif
     line 3
@@ -53,9 +53,9 @@ is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?if on present but false option is o
     line 3
     OUT
 
-is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?ifnot on present but false option is omitted';
+is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?if not (!) on present but false option is omitted';
     line 1
-    ?ifnot A
+    ?if !A
     line 2
     ?endif
     line 3
@@ -81,9 +81,9 @@ is preprocess(Q:to/IN/, {:A}), Q:to/OUT/, '?if on present and true option includ
     line 3
     OUT
 
-is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?ifnot on present and true option included';
+is preprocess(Q:to/IN/, {:!A}), Q:to/OUT/, '?if not (!) on present and true option included';
     line 1
-    ?ifnot A
+    ?if !A
     line 2
     ?endif
     line 3
@@ -115,11 +115,11 @@ is preprocess(Q:to/IN/, {:A, :B}), Q:to/OUT/, 'Nested ?if works (both true)';
     line 4
     OUT
 
-is preprocess(Q:to/IN/, {:!A, :!B}), Q:to/OUT/, 'Nested ?ifnot works (both true)';
+is preprocess(Q:to/IN/, {:!A, :!B}), Q:to/OUT/, 'Nested ?if not (!) works (both true)';
     line 1
-    ?ifnot A
+    ?if !A
     line 2
-    ?ifnot B
+    ?if !B
     line 3
     ?endif
     ?endif
@@ -155,11 +155,11 @@ is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'Nested ?if works (outer true)';
     line 4
     OUT
     
-is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'Nested ?ifnot works (outer true)';
+is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'Nested ?if not (!) works (outer true)';
     line 1
-    ?ifnot A
+    ?if !A
     line 2
-    ?ifnot B
+    ?if !B
     line 3
     ?endif
     ?endif
@@ -195,11 +195,11 @@ is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'Nested ?if works (inner true)';
     line 4
     OUT
 
-is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'Nested ?ifnot works (inner true)';
+is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'Nested ?if not (!) works (inner true)';
     line 1
-    ?ifnot A
+    ?if !A
     line 2
-    ?ifnot B
+    ?if !B
     line 3
     ?endif
     ?endif
@@ -332,7 +332,7 @@ throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::UnclosedDir
 
 throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::UnclosedDirective, line => 2;
     line 1
-    ?ifnot opt
+    ?if !opt
     line 2
     IN
 
@@ -365,7 +365,7 @@ throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::ElsifAfterE
     IN
 
 throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::ElsifAfterElse, line => 5;
-    ?ifnot A
+    ?if !A
     line 1
     ?else
     line 2
