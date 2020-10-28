@@ -30,3 +30,30 @@ be finished by Christmas.
 To only run unit tests, set `AGRAMMON_UNIT_TEST=1` in the environment.  The
 integration tests currently have quite some setup dependencies; this should
 be addressed in the future.
+
+## Database setup (PostgreSQL):
+
+Install or use existing PostgreSQL database server:
+
+CREATE GROUP agrammon_user;
+CREATE USER agrammon;
+ALTER GROUP agrammon_user ADD USER agrammon;
+CREATE DATABASE agrammon OWNER agrammon;
+
+Load a database dump (auto creation not yet implemented)
+
+## Installation Web App
+
+Install npm and jq from your distro and then run
+
+mkdir -p public # first time only
+./bootstrap
+./configure
+./make
+
+Point your config file to the Agrammon database.
+Adapt runWeb.sh to point to your config file and model.
+
+./runWeb.sh
+
+and point your browser to the shown URL (defaults to localhost:20000)
