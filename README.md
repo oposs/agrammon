@@ -33,6 +33,8 @@ be addressed in the future.
 
 ## Database setup (PostgreSQL):
 
+Install or use existing PostgreSQL database server:
+
 CREATE GROUP agrammon_user;
 CREATE USER agrammon;
 ALTER GROUP agrammon_user ADD USER agrammon;
@@ -42,7 +44,7 @@ Load a database dump (auto creation not yet implemented)
 
 ## Installation Web App
 
-Install npm from your distro and then run
+Install npm and jq from your distro and then run
 
 mkdir -p public # first time only
 ./bootstrap
