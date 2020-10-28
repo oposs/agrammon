@@ -6,5 +6,4 @@ class Agrammon::Model::Result {
     has  %.selector{Str};
     has %.data;
     has Str $._order;
-
 }

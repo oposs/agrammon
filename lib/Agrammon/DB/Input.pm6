@@ -15,10 +15,7 @@ class Agrammon::DB::Input does Agrammon::DB {
              WHERE data_dataset=dataset_name2id($2,$3) AND data_var=$4
                                                        AND $instance_test
             INPUT
-            
-            $!id = $results.value;
         }
         return self;
     }
-
 }

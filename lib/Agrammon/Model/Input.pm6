@@ -89,21 +89,21 @@ class Agrammon::Model::Input {
         }
 
         return %(
-            defaults    => %(
+            :defaults( %(
                 calc => $.default-calc,
                 gui  => $.default-gui,
-            ),
-            enum        => %!enum-lookup,
-            help        => %!help,
-            labels      => %!labels,
-            models      => @!models || @("all"),
-            options     => @options,
-            optionsLang => @options-lang,
-            order       => $!order // 500000,
-            type        => $!type,
-            units       => %units,
-            variable    => $!name,
-            validator   => %validator,
+            )),
+            :enum(%!enum-lookup),
+            :%!help,
+            :%!labels,
+            :models(@!models || @("all")),
+            :@options,
+            :optionsLang(@options-lang),
+            :order($!order // 500000),
+            :$!type,
+            :%units,
+            :variable($!name),
+            :%validator,
         )
     }
 
