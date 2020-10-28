@@ -30,24 +30,6 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
 
 *** output ***
 
-+animals
-  print = OtherCattle
-  ++units
-    en = -
-  ++description
-    Number of dairy cows in barn.
-  ++formula
-    Val(animals, OtherCattle::Excretion);
-
-+animalcategory
-  print = OtherCattle
-  ++units
-    en = -
-  ++description
-    Animal category
-  ++formula
-    Val(animalcategory, OtherCattle::Excretion);
-
 +dimensioning_check
   print = OtherCattle
   ++units 
@@ -66,6 +48,26 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
     else {
       return "barn dimensioning ok";
     }
+
+?if Single_extendedOutput
+
++animals
+  print = OtherCattle
+  ++units
+    en = -
+  ++description
+    Number of dairy cows in barn.
+  ++formula
+    Val(animals, OtherCattle::Excretion);
+
++animalcategory
+  print = OtherCattle
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    Val(animalcategory, OtherCattle::Excretion);
 
 
 ########################
@@ -322,3 +324,4 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
 
 ########################
 
+?endif

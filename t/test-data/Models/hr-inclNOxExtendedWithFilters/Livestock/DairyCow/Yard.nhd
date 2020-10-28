@@ -83,8 +83,7 @@ taxonomy = Livestock::DairyCow::Yard
        <p>La distribution de fourrage dans le parcours extérieur n'est recommandée qu'en cas de parcours avec un sol en dur ou un sol perforé. La variante ‚Fourrage à disposition exclusivement dans le parcours extérieur' n'est possible que lorsque le parcours est intégré dans la stabulation libre. </p>
        <p>Proposition de valeur standard: sans fourrage à disposition  dans le parcours </p>
 
-+floor_properties_exercise_yard_SHL
-  models = SHL
++floor_properties_exercise_yard
   type  = enum
   default_calc = solid_floor
   ++enum
@@ -93,21 +92,23 @@ taxonomy = Livestock::DairyCow::Yard
        de = Boden_planbefestigt
        fr = sol_en_dur
        it = solid_floor
-     +++unpaved_floor
-       en = unpaved_floor
-       de = Boden_unbefestigt
-       fr = sol_sans_revêtement_dur
-       it = unpaved_floor
      +++perforated_floor
        en = perforated_floor
        de = Boden_perforiert
        fr = sol_perforé
        it = perforated_floor
+?if !Kantonal_LU
+     +++unpaved_floor
+       en = unpaved_floor
+       de = Boden_unbefestigt
+       fr = sol_sans_revêtement_dur
+       it = unpaved_floor
      +++paddock_or_pasture_used_as_exercise_yard
        en = paddock_or_pasture_used_as_exercise_yard
        de = kein_Laufhof:_Auslauf_auf_Weide
        fr = pas_de_parcours:_accès_au_pâturage
        it = paddock_or_pasture_used_as_exercise_yard
+?endif
   ++labels 
     en = Type of exercise yard
     de = Laufhoftyp
@@ -145,133 +146,61 @@ taxonomy = Livestock::DairyCow::Yard
        <p>Les parcours extérieurs avec des sols sans revêtement dur ne doivent pas être accessibles de manière permanente (max. 2 heures par jour). </p>
        <p>Proposition de valeur standard: sol en dur</p>
 
+?if !Kantonal_LU
+  +free_correction_factor
+    type = float
+    default_calc = 0
+    default_gui = 0
+    validator = between(-100,100);
+    ++labels 
+      en = Additional emission mitigation measure for the exercise yard
+      de = Zusätzliche emissionsmindernde Massnahme Laufhof (siehe Spalte Hilfe)
+      fr = Mesure supplémentaire limitant les émissions sur le parcours extérieur (cf. aide)
+    ++units 
+      en = %
+    ++description
+      Factor to define free ?
+    ++help
+      +++en
+         <p>The emission reduction of a new technique can be entered
+         (e.g. a new type of floor). The number entered corresponds to
+         the emission reduction in percent (e.g. 30%; the emission from
+         the exercise yard decreases by 30%). It is recommended to
+         mention the selected measure in the column comment and to
+         justify the number selected for emission reduction. </p>
 
-+floor_properties_exercise_yard_LU
-  models = LU
-  type  = enum
-  default_calc = solid_floor
-  ++enum
-     +++solid_floor
-       en = solid_floor
-       de = Boden_planbefestigt
-       fr = sol_en_dur
-       it = solid_floor
-     +++perforated_floor
-       en = perforated_floor
-       de = Boden_perforiert
-       fr = sol_perforé
-       it = perforated_floor
-     +++sloped_concrete_floor_with_central_drain_and_stationary_scraper
-       en = sloped_concrete_floor_with_central_drain_and_stationary_scraper
-       de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber
-       fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire
-       it = sloped_concrete_floor_with_central_drain_and_stationary_scraper
-     +++sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
-       en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
-       de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung
-       fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage
-       it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
-     +++sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
-       en = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
-       de = Geneigter_planbefestiger_Boden_mit_mittiger_Harnsabflussrinne_und_stationärem_Schieber_plus_Windschutz_und_Beschattung_plus_Dusche
-       fr = Sol_en_dur_incliné_avec_une_rigole_d_'_évacuation_centrale_et_un_racleur_stationnaire_avec_brise_-_vent_et_ombrage_et_douche
-       it = sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
-  ++labels 
-    en = Type of exercise yard
-    de = Laufhoftyp
-    fr = Type de parcours extérieur
-  ++units 
-    en = -
-  ++description
-    Type of exercise yard.
-  ++help
-    +++en
-       <p>Standard value for Switzerland: "solid floor" </p>
-    +++de
-       <dl>  
-       <dt>Boden planbefestigt:</dt>
-       <dd>Laufhöfe mit Betonboden oder Asphalt (wasserundurchlässig). Mit Verbundsteinen und Pflastersteinen ausgelegte Flächen (wasserdurchlässig) werden den planbefestigten Böden gleichgestellt.</dd>
-       <dt>Boden perforiert:</dt>
-       <dd> Spalten oder Lochböden; mindestens ¾ der Laufhoffläche muss einen perforierten Boden aufweisen. Falls weniger als ¾ der Laufhoffläche einen perforierten Boden aufweist: Eingabe von Boden planbefestigt.</dd>
-       <dt>Geneigter planbefestigter Boden mit mittiger Harnabflussrinn und stationärem Schieber:</dt>
-       <dd>Reinigung alle zwei Stunden</dd>
-       <dt>Geneigter planbefestigter Boden mit mittiger Harnabflussrinn und stationärem Schieber plus Windschutz und Beschattung:</dt>
-       <dd>Reinigung alle zwei Stunden.</dd>
-       <dt>Geneigter planbefestigter Boden mit mittiger Harnabflussrinn und stationärem Schieber plus Windschutz und Beschattung plus Dusche:</dt>
-       <dd>Reinigung alle zwei Stunden</dd>
-       </dl> 
-       <p>Laufhöfe mit unbefestigter Oberfläche dürfen nicht permanent zugänglich sein (max. 2 Stunden pro Tag).</p>
-       <p>Vorschlag für Standardwert: Boden planbefestigt</p>
-    +++fr
-       <dl>  
-       <dt>Sol en dur:</dt>
-       <dd>Avec un sol bétonné ou asphalté (imperméable à l'eau). Les surfaces pavées (perméables à l'eau) sont considérées également comme des sols en dur.</dd>
-       <dt>Sol perforé:</dt>
-       <dd>Caillebotis ou sols à trous; au moins ¾ de la surface du parcours doit être un sol perforé. Si moins de ¾ de la surface est perforée, alors introduire ‚Sol en dur'. </dd>
-       <dt>Sol en dur incliné avec une rigole d'évacuation centrale et un racleur stationnaire:</dt>
-       <dd>Nettoyage toutes les 2 heures</dd>
-       <dt>Sol en dur incliné avec une rigole d ' évacuation centrale et un racleur stationnaire avec brise - vent et ombrage:</dt>
-       <dd>Nettoyage toutes les 2 heures</dd>
-       <dt>Sol en dur incliné avec une rigole d ' évacuation centrale et un racleur stationnaire avec brise - vent et ombrage et douche:</dt>
-       <dd>Nettoyage toutes les 2 heures</dd>
-       </dl> 
-       <p></p>
-       <p>Proposition valeur standard: sol en dur</p>
-
-+free_correction_factor
-  models = SHL
-  type = float
-  default_calc = 0
-  default_gui = 0
-  validator = between(-100,100);
-  ++labels 
-    en = Additional emission mitigation measure for the exercise yard
-    de = Zusätzliche emissionsmindernde Massnahme Laufhof (siehe Spalte Hilfe)
-    fr = Mesure supplémentaire limitant les émissions sur le parcours extérieur (cf. aide)
-  ++units 
-    en = %
-  ++description
-    Factor to define free ?
-  ++help
-    +++en
-       <p>The emission reduction of a new technique can be entered
-       (e.g. a new type of floor). The number entered corresponds to
-       the emission reduction in percent (e.g. 30%; the emission from
-       the exercise yard decreases by 30%). It is recommended to
-       mention the selected measure in the column comment and to
-       justify the number selected for emission reduction. </p>
-
-       <p>This option mainly targets users who predict emissions and
-       are obliged to consider the effects of new and actually unknown
-       techniques.>/p>
-    +++de
-       <p>
-           Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt
-           werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene Zahl entspricht
-           der Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Laufhof 
-           nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar 
-           aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
-       </p>
-       <p>
-           Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
-           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
-           zur Emissionsminderung berücksichtigen müssen. 
-       </p>
-       <p>Vorschlag für Standardwert: 0 %.</p>
-    +++fr
-      <p>
-          Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les émissions
-          (p.ex. un nouveau type de sol limitant les émissions). Le chiffre introduit correspond
-          à la réduction d'émission en pourcent (p.ex. 30%: l'émission provenant du parcors 
-          extérieur diminue de 30%). Il est recommandé de mentionner la mesure choisie dans la 
-          colonne ‘Commentaire' et de justifier le taux de réduction choisi.
-      </p>
-      <p>
-          Cette fonction s'adresse principalement aux utilisateurs/trices qui font des pronostiques 
-          d'émissions et qui doivent prendre en compte l'effet de nouvelles technologies destinées 
-          à limiter les émissions et encore méconnues actuellement.
-       </p>
-       <p>Proposition valeur standard: 0 %.</p>
+         <p>This option mainly targets users who predict emissions and
+         are obliged to consider the effects of new and actually unknown
+         techniques.>/p>
+      +++de
+         <p>
+             Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt
+             werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene Zahl entspricht
+             der Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Laufhof 
+             nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar 
+             aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
+         </p>
+         <p>
+             Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+             prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+             zur Emissionsminderung berücksichtigen müssen. 
+         </p>
+         <p>Vorschlag für Standardwert: 0 %.</p>
+      +++fr
+        <p>
+            Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les émissions
+            (p.ex. un nouveau type de sol limitant les émissions). Le chiffre introduit correspond
+            à la réduction d'émission en pourcent (p.ex. 30%: l'émission provenant du parcors 
+            extérieur diminue de 30%). Il est recommandé de mentionner la mesure choisie dans la 
+            colonne ‘Commentaire' et de justifier le taux de réduction choisi.
+        </p>
+        <p>
+            Cette fonction s'adresse principalement aux utilisateurs/trices qui font des pronostiques 
+            d'émissions et qui doivent prendre en compte l'effet de nouvelles technologies destinées 
+            à limiter les émissions et encore méconnues actuellement.
+         </p>
+         <p>Proposition valeur standard: 0 %.</p>
+?endif
 
 *** technical ***
 
@@ -399,7 +328,7 @@ taxonomy = Livestock::DairyCow::Yard
       return 1;
     } 
 
-+c_floor_properties_exercise_yard_SHL
++c_floor_properties_exercise_yard
   print = DairyCow
   ++units
     en = -
@@ -407,7 +336,7 @@ taxonomy = Livestock::DairyCow::Yard
     Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula
     # check yard exists?! -> default
-    given ( In(floor_properties_exercise_yard_SHL) ) {
+    given ( In(floor_properties_exercise_yard) ) {
       when 'solid_floor' { 
         1 - Tech(red_floor_properties_solid_floor); 
       }
@@ -421,35 +350,6 @@ taxonomy = Livestock::DairyCow::Yard
         1 - Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
       }
       default {
-        1; 
-      }
-    }
-
-+c_floor_properties_exercise_yard_LU
-  print = DairyCow
-  ++units
-    en = -
-  ++description
-    Correction factor for the emission due to the use of the floor properties in housing systems.
-  ++formula
-    return 1 unless defined In(floor_properties_exercise_yard_LU);
-    given ( In(floor_properties_exercise_yard_LU) ) {
-      when 'solid_floor' { 
-        1 - Tech(red_floor_properties_solid_floor); 
-      }
-      when 'perforated_floor' { 
-        1 - Tech(red_floor_properties_perforated_floor); 
-      }
-      when 'sloped_concrete_floor_with_central_drain_and_stationary_scraper' { 
-        1 - Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper);
-      }
-      when 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading' { 
-        1 - Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading);
-      }
-      when 'sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower' { 
-        1 - Tech(red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower);
-      }      
-      default { 
         1; 
       }
     }
@@ -549,8 +449,7 @@ taxonomy = Livestock::DairyCow::Yard
     NH3 emission factor for dairy cow yard.
   ++formula
     Tech(er_yard) * 
-    Out(c_floor_properties_exercise_yard_SHL) * 
-    Out(c_floor_properties_exercise_yard_LU) * 
+    Out(c_floor_properties_exercise_yard) * 
     Out(c_free_factor_yard);
 
 +nh3_nyard
