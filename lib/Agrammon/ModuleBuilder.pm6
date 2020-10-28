@@ -8,6 +8,10 @@ use Agrammon::Model::Test;
 use Agrammon::Model::Technical;
 
 class Agrammon::ModuleBuilder {
+    my constant ORDERED = {
+        input => { :enum }
+    }
+
     method TOP($/) {
         make Agrammon::Model::Module.new(|flat($<section>.map(*.ast)).Map);
     }
@@ -80,7 +84,10 @@ class Agrammon::ModuleBuilder {
     }
 
     method subsection-map($/) {
-        make ~$<key> => %( $<value>.map(*.ast) );
+        my $key = ~$<key>;
+        make $key => ORDERED{$*CUR-SECTION}{$key}
+                ?? @( $<value>.map(*.ast) )
+                !! %( $<value>.map(*.ast) );
     }
 
     method single-line-option($/) {

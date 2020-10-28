@@ -19,12 +19,13 @@ class Agrammon::Model::Input {
     #    has Str @.optionsLang; # XXX set correct type: array of hashes
     has @.options;     # XXX set correct type: array of arrays
     has @.options-lang; # XXX set correct type: array of hashes
-    has  %.enum;
+    has @!enum-order;
+    has %!enum-lookup;
     has Int $.order;
     has Bool $!branch = False;
     has Bool $!filter = False;
 
-    submethod TWEAK(:$default_calc, :$default_gui, :$branch, :$filter) {
+    submethod TWEAK(:$default_calc, :$default_gui, :$branch, :$filter, :@enum --> Nil) {
         with $default_calc {
             $!default-calc = val($_);
         }
@@ -36,12 +37,18 @@ class Agrammon::Model::Input {
                 $!branch = True;
             }
         }
+        if @enum {
+            @!enum-order = @enum;
+            %!enum-lookup = @enum;
+        }
         with $filter {
             if .lc eq 'true' {
                 $!filter = True;
             }
         }
     }
+
+    method enum(--> Hash) { %!enum-lookup }
 
     method is-branch(--> Bool) { $!branch }
 
@@ -63,9 +70,10 @@ class Agrammon::Model::Input {
 
         my @options;
         my @options-lang;
-        my %enums = %!enum;
 
-        for %enums.kv -> $name, $optLang {
+        for @!enum-order {
+            my $name = .key;
+            my $optLang = .value;
             my $label   = $name;
             $label      ~~ s:g/_/ /;
             my @opt     = [ $label, '', $name];
@@ -85,7 +93,7 @@ class Agrammon::Model::Input {
                 calc => $.default-calc,
                 gui  => $.default-gui,
             ),
-            enum        => %!enum,
+            enum        => %!enum-lookup,
             help        => %!help,
             labels      => %!labels,
             models      => @!models || @("all"),

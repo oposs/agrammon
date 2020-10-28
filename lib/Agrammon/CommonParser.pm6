@@ -5,6 +5,7 @@ role Agrammon::CommonParser {
 
     token section-heading($title) {
         \h* '***' \h* $title \h* '***' \h* \n
+        { $*CUR-SECTION = $title }
     }
 
     token option-section {
