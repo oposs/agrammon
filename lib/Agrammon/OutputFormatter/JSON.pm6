@@ -42,7 +42,7 @@ sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
                     for sorted-kv(%values) -> $output, $raw-value {
                         my $var = $q-name ~ '::' ~ $output;
-                        push @records, make-record($fq-name, $output, $model, $raw-value, $var, :$language, :$prints);
+                        push @records, make-record($fq-name, $output, $model, $raw-value, $var, $instance-id, :$language, :$prints);
                         if $include-filters {
                             my $value = flat-value($raw-value);
                             if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
@@ -57,7 +57,7 @@ sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
     return @records;
 }
 
-sub make-record($fq-name, $output, $model, $raw-value, $var, :$language, :$prints, :%filters) {
+sub make-record($fq-name, $output, $model, $raw-value, $var, $instance-id?, :$language, :$prints, :%filters) {
     my $format = $model.output-format($fq-name, $output);
     my $full-value = flat-value($raw-value);
     my $value = ($format  && $full-value.defined) ?? sprintf($format, $full-value)
@@ -76,6 +76,9 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, :$language, :$print
         :$var,
         :%filters,
     );
+
+    # add instance name for multi module outputs
+    %record<instance> = $instance-id if $instance-id;
 
     # add language specific strings if language specified
     if $language {
