@@ -70,7 +70,6 @@ taxonomy = Storage::SolidManure::Solid
        <p>Proposition de valeur standard: 0% </p>
  
 +free_correction_factor_cattle_manure
-  models = SHL
   type = float
   default_calc = 0
   default_gui = 0
@@ -169,7 +168,6 @@ taxonomy = Storage::SolidManure::Solid
        <p>Proposition de valeur standard: 0% </p>
 
 +free_correction_factor_pig_manure
-  models = SHL
   type = float
   default_calc = 0
   default_gui = 0
