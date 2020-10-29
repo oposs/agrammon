@@ -596,7 +596,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 }
 
                 // deal with GUI defaults
-                if (rec.defaults.gui) {
+                if (rec.defaults.gui !== null && rec.defaults.gui !== undefined) {
                     defaultValue = rec.defaults.gui;
                 }
                 else {
