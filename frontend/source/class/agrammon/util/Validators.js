@@ -230,7 +230,6 @@ qx.Class.define("agrammon.util.Validators",
                 break;
             case "percent":
                 regex = /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/;
-                // alert('validators='+validators);
                 if (validators == undefined || validators == null) {
                     validators = [{name: 'between', args: [0, 100]}];
                 }

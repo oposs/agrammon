@@ -79,18 +79,23 @@ qx.Class.define('agrammon.module.input.PropTable', {
         var propertyCellEditorFactoryFunc = function (cellInfo) {
             var metaData        = cellInfo.table.getTableModel().getRowData(cellInfo.row)[7];
             var cellEditor      = new agrammon.ui.table.celleditor.FancyTextField;
-            var i, len, map;
+            var i, len, map, options;
+//            console.log('metaData=', metaData);
+            let validators;
             for ( var cmd in metaData ) {
                 switch ( cmd ) {
                 case "options":
-                    len = metaData.options.length;
+                    options = metaData.options;
+                    len = options.length;
                     map = [];
                     for (i=0; i<len; i++) {
                         var locale = qx.locale.Manager.getInstance().getLocale();
                         locale = locale.replace(/_.+/,'');
-                        map.push([ metaData.optionsLang[i][locale],
-                                   metaData.options[i][1],
-                                   metaData.options[i][2] ]);
+                        map.push([
+                            metaData.optionsLang[i][locale],
+                            options[i][1],
+                            options[i][2]
+                        ]);
                     }
                     cellEditor = new qx.ui.table.celleditor.SelectBox();
                     cellEditor.setListData( map );
@@ -108,6 +113,9 @@ qx.Class.define('agrammon.module.input.PropTable', {
                     cellEditor.setEditable( metaData.editable == true );
                     break;
                 case "validator":   // handled in validation generator below
+                    if ( Object.keys(metaData.validator).length > 0) {
+                        validators = [metaData.validator];
+                    }
                     break;
                 case "branch":
                 case "branches":
@@ -116,9 +124,10 @@ qx.Class.define('agrammon.module.input.PropTable', {
                     alert("This should not happen: unknown metaData value: "+cmd);
                     break;
                 }
-                cellEditor.setValidationFunction((agrammon.util.Validators.getFunction(metaData.validator,
-                                                                                      metaData.type)));
             }
+            cellEditor.setValidationFunction(
+                (agrammon.util.Validators.getFunction(validators, metaData.type))
+            );
             return cellEditor;
         };
 
