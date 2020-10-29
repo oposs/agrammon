@@ -491,27 +491,29 @@ taxonomy = Livestock::OtherCattle::Yard
          return (0);
      };
 
-+c_free_factor_yard
-  print = OtherCattle
-  ++units 
-    en = -
-  ++description
-    Free correction factor of the Emission rate for the Yard.
-  ++formula
-  if ( In(free_correction_factor) // 0 != 0 ) {           
-      writeLog({en=>"You have entered an additional emission mitigation measure for an exercise yard of the category other cattle of " 
-                    . In(free_correction_factor) 
-                    . "\%!\n", 
-                de=>"Sie haben eine zusätzliche emissionsmindernde  Massnahme für einen Laufhof der Kategorie übriges Rindvieh " 
-                    . In(free_correction_factor) 
-                    . "\% eingegeben!\n", 
-                fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un parcours extérieur "
-                    . "pour autres bovins de ". In(free_correction_factor) . "\%.\n" 
-               });
-           return 1 - In(free_correction_factor)/100;    
-  } else {
-    return 1;
-  } 
+?if !Kantonal_LU
+  +c_free_factor_yard
+    print = OtherCattle
+    ++units 
+      en = -
+    ++description
+      Free correction factor of the Emission rate for the Yard.
+    ++formula
+    if ( In(free_correction_factor) // 0 != 0 ) {           
+        writeLog({en=>"You have entered an additional emission mitigation measure for an exercise yard of the category other cattle of " 
+                      . In(free_correction_factor) 
+                      . "\%!\n", 
+                  de=>"Sie haben eine zusätzliche emissionsmindernde  Massnahme für einen Laufhof der Kategorie übriges Rindvieh " 
+                      . In(free_correction_factor) 
+                      . "\% eingegeben!\n", 
+                  fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un parcours extérieur "
+                      . "pour autres bovins de ". In(free_correction_factor) . "\%.\n" 
+                 });
+             return 1 - In(free_correction_factor)/100;    
+    } else {
+      return 1;
+    } 
+?endif
 
 +c_floor_properties_exercise_yard
   print = OtherCattle
@@ -631,10 +633,16 @@ taxonomy = Livestock::OtherCattle::Yard
      fr = -
   ++description
     Annual NH3 emission from yard.
+?if Kantonal_LU
+  ++formula
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard);
+?else
   ++formula
     Tech(er_yard) * 
     Out(c_floor_properties_exercise_yard) * 
     Out(c_free_factor_yard);
+?endif
 
 +nh3_nyard
   print = OtherCattle
