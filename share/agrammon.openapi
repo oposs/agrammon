@@ -673,6 +673,7 @@ components:
                     oneOf:
                         - type: integer
                         - type: string
+                    nullable: true
                 row:
                     description: Row
                     type: integer
