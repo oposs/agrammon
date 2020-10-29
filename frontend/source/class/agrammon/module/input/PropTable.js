@@ -77,18 +77,17 @@ qx.Class.define('agrammon.module.input.PropTable', {
         // cell editor factory function
         // returns a cellEditorFactory instance based on data in the row itself
         var propertyCellEditorFactoryFunc = function (cellInfo) {
-            var metaData        = cellInfo.table.getTableModel().getRowData(cellInfo.row)[7];
-            var cellEditor      = new agrammon.ui.table.celleditor.FancyTextField;
-            var i, len, map, options;
+            let metaData   = cellInfo.table.getTableModel().getRowData(cellInfo.row)[7];
+            let cellEditor = new agrammon.ui.table.celleditor.FancyTextField;
 //            console.log('metaData=', metaData);
             let validators;
-            for ( var cmd in metaData ) {
+            for ( let cmd in metaData ) {
                 switch ( cmd ) {
                 case "options":
-                    options = metaData.options;
-                    len = options.length;
-                    map = [];
-                    for (i=0; i<len; i++) {
+                    let options = metaData.options;
+                    let len = options.length;
+                    let map = [];
+                    for (let i=0; i<len; i++) {
                         var locale = qx.locale.Manager.getInstance().getLocale();
                         locale = locale.replace(/_.+/,'');
                         map.push([

@@ -182,11 +182,11 @@ msgstr ""
 msgid "Rename dataset"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "New name"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Comment"
 msgstr ""
 
@@ -298,15 +298,15 @@ msgstr ""
 msgid "Duplicate instance "
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Variable"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/input/regional/ConfigEditor.js
 msgid "Input Parameter"
 msgstr ""
 
@@ -322,11 +322,11 @@ msgstr ""
 msgid "Click to edit"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Unit"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/user/Login.js
 msgid "Help"
 msgstr ""
 
@@ -346,7 +346,7 @@ msgstr ""
 msgid "Unit French"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Order"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/user/Account.js
 msgid "Cancel"
 msgstr ""
 
