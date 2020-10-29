@@ -12,7 +12,6 @@ taxonomy = Livestock::OtherCattle::Housing::CFreeFactor
 *** input ***
 
 +free_correction_factor
-  models = SHL
   type = float
   default_calc = 0
   default_gui = 0

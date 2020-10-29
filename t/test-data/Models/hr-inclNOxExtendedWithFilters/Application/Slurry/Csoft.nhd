@@ -27,7 +27,6 @@ taxonomy = Application::Slurry::Csoft
 *** input ***
  
 +appl_evening 
-  models = SHL 
   type  = percent
   default_calc = 0 
   ++labels 
@@ -47,7 +46,6 @@ taxonomy = Application::Slurry::Csoft
        <p>Proposition de valeur standard: 20%</p>
  
 +appl_hotdays
-  models = SHL
   type  = enum
   default_calc = sometimes
   ++enum

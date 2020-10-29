@@ -47,7 +47,6 @@ taxonomy = Application::SolidManure::CincorpTime
        <p>Proposition de valeur standard: 0%</p>
 
 +incorp_lw4h
-  models =  SHL  
   type  = percent
   default_calc = 0  
   ++labels
@@ -72,7 +71,6 @@ taxonomy = Application::SolidManure::CincorpTime
        <p>Proposition de valeur standard: 0%</p>
 
 +incorp_lw8h
-  models =  SHL  
   type  = percent
   default_calc = 0    
   ++labels
@@ -143,7 +141,6 @@ taxonomy = Application::SolidManure::CincorpTime
        <p>Proposition de valeur standard: 20%</p>
 
 +incorp_gt3d
-  models =  SHL  
   type  = percent
   default_calc = 0  
   ++labels

@@ -34,7 +34,6 @@ taxonomy = Application::Slurry::Applrate
 *** input ***
 
 +dilution_parts_water
-  models = SHL
   type  = float
   default_calc = 1
   validator = between(0,3);
@@ -56,7 +55,6 @@ taxonomy = Application::Slurry::Applrate
        <p>Proposition de valeur standard: 1:1</p>
 
 +appl_rate
-  models = SHL 
   type  = float
   default_calc = 30
   validator = between(10,120); 

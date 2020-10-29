@@ -26,7 +26,6 @@ taxonomy = Application::SolidManure::Cseason
 *** input ***
  
 +appl_summer
-  models = SHL
   type  = percent
   default_calc = 30
   ++labels
@@ -51,7 +50,6 @@ taxonomy = Application::SolidManure::Cseason
 
  
 +appl_autumn_winter_spring
-  models = SHL
   type  = percent
   default_calc = 70
   ++labels
