@@ -16,7 +16,6 @@ Selects the free correction factor for housing emission for roughage consuming.
 *** input ***
 
 +free_correction_factor
-  models = SHL
   type = float
   default_calc = 0
   default_gui = 0

@@ -27,7 +27,6 @@ is applied.
 *** input ***
  
 +appl_summer
-  models = SHL
   type  = percent
   default_calc = 25
   ++labels 
@@ -51,7 +50,6 @@ is applied.
  
  
 +appl_autumn_winter_spring
-  models = SHL
   type  = percent
   default_calc = 75
   validator = between(0,100);

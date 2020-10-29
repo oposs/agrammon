@@ -102,7 +102,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        <p> </p>
 
 +inp_n_excretion
-  models = SHL
   type = text
   default_calc = Standard
   default_gui  = Standard

@@ -73,7 +73,6 @@ livestock. Atmospheric Environment 35:5331-5338.
 
 
 +floor_properties_exercise_yard_SHL
-  models = SHL
   type  = enum
   default_calc = solid_floor
   ++enum
@@ -165,7 +164,6 @@ livestock. Atmospheric Environment 35:5331-5338.
         <p>Proposition de valeur standard: sol sans revêtement dur</p>
 
 +free_correction_factor
-  models = SHL
   type = float
   default_calc = 0
   default_gui = 0

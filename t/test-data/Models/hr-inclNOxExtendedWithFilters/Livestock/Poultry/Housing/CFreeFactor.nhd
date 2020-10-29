@@ -18,7 +18,6 @@ Selects other correction factors for the specific housing types for poultry.
 *** input ***
 
 +free_correction_factor
-  models = SHL
   type = float
   default_calc = 0
   default_gui = 0
