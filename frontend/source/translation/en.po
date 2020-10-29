@@ -58,7 +58,7 @@ msgstr ""
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/user/Account.js
 msgid "Cancel"
 msgstr ""
 

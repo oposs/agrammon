@@ -59,7 +59,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -827,7 +827,7 @@ msgstr "Passwort geändert."
 msgid "Password change failed, please try again."
 msgstr "Die Passwort nicht geändert. Bitte nochmals probieren."
 
-#: agrammon/ui/table/cellrenderer/input/Replace.js
+#: agrammon/ui/table/cellrenderer/input/Number.js
 msgid "Flattened"
 msgstr ""
 
