@@ -92,58 +92,59 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     +++fr
        <p> </p>
 
-+inp_n_excretion
-  type = text
-  default_calc = Standard
-  default_gui  = Standard
-  ++labels
-    en = N_excretion
-    de = N_Ausscheidung
-    fr = Excrétions_azotées
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual standard N excretion for animal category
-  ++help
-    +++en
-       <p>If "Standard" is selected the standard value for the
-          nitrogen excretion according to PRIF 2017 is applied (Richner
-          et al., 2017) is applied (PRIF: Principles of Agricultural Crop
-          Fertilisation in Switzerland). If a number is entered, a value
-          for the nitrogen excretion can be selected by the user.</p>
-       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
-          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
-          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
-          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
-          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>
-    +++de
-       <p>Bei Auswahl «Standard» wird der Richtwert für die
-          Stickstoffausscheidung gemäss GRUD 2017 (Richner et al., 2017)
-          verwendet. Bei Eingabe einer Zahl kann der Wert für die
-          Stickstoffausscheidung selbst gewählt werden.</p>
-       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
-          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
-          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
-          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
-          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>
-    +++fr
-       <p>Si "Standard" est introduisé, la valeur de référence pour
-          les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
-          est utilisée (PRIF: « Principes de la fertilisation des
-          cultures agricoles en Suisse » ). Si un nombre est introduisé
-          une valeur pour les excrétions azotées peut être déterminée par
-          l'utilisateur/-trice.</p>
-       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
-          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
-          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
-          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
-          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>
-
+?if !Kantonal_LU
+  +inp_n_excretion
+    type = text
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = N_excretion
+      de = N_Ausscheidung
+      fr = Excrétions_azotées
+    ++units
+      en = kg N/year
+      de = kg N/Jahr
+      fr = kg N/an
+    ++description
+      Annual standard N excretion for animal category
+    ++help
+      +++en
+         <p>If "Standard" is selected the standard value for the
+            nitrogen excretion according to PRIF 2017 is applied (Richner
+            et al., 2017) is applied (PRIF: Principles of Agricultural Crop
+            Fertilisation in Switzerland). If a number is entered, a value
+            for the nitrogen excretion can be selected by the user.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+      +++de
+         <p>Bei Auswahl «Standard» wird der Richtwert für die
+            Stickstoffausscheidung gemäss GRUD 2017 (Richner et al., 2017)
+            verwendet. Bei Eingabe einer Zahl kann der Wert für die
+            Stickstoffausscheidung selbst gewählt werden.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur de référence pour
+            les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
+            est utilisée (PRIF: « Principes de la fertilisation des
+            cultures agricoles en Suisse » ). Si un nombre est introduisé
+            une valeur pour les excrétions azotées peut être déterminée par
+            l'utilisateur/-trice.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+?endif
 
 *** technical ***
 
@@ -256,6 +257,10 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual standard N excretion for specified other animal category according to
     Flisch et al. (2009).
+?if Kantonal_LU
+  ++formula
+    return $TE->{'standard_N_excretion_' . In(animalcategory)};
+?else
   ++formula
     my $cat = In(animalcategory);
     my $key = 'standard_N_excretion_' . $cat;
@@ -269,6 +274,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
         });
     }
     return $exc;
+?endif
 
 +n_excretion
   print = Equides
