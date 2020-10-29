@@ -26,9 +26,7 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
  *** input ***
 
 +amount_summer
-  models = SHL
   type = float
-  default_calc = 1
   validator = between(0,6);
   ++labels 
     en = Amount of concentrates per animal and per day in summer
@@ -49,9 +47,7 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
       <p>Proposition de valeur standard: 1.5 kg par vache et par jour</p>
 
 +amount_winter
-  models = SHL
   type = float
-  default_calc = 2
   validator = between(0,6);
   ++labels 
     en = Amount of concentrates per animal and per day in winter

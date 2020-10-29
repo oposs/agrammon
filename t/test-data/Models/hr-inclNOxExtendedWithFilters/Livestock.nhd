@@ -744,7 +744,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++labels
     sort = 030
     en = __Housing NH3-Emissions
-    de = __Stall NH3-Emission
+    de = __NH3-Emission aus Stall
     fr = __Emission de NH3 issu de la stabulation
   ++units
     en = kg N/year
@@ -765,8 +765,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +nh3_nyard
   format= %.0f
   print = LivestockNH3
-  ++units
+  ++labels
     sort = 040
+    en = __Yard NH3-Emissions
+    de = __NH3-Emission aus Laufhof
+    fr = __Emission de NH3 issu du parcours extérieur
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an

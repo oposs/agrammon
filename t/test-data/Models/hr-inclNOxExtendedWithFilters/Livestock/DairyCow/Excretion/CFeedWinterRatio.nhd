@@ -36,9 +36,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
  *** input ***
 
 +share_maize_silage_winter
-  models = SHL
   type = percent
-  default_calc = 0
   ++labels
     en = Proportion of animals receiving maize silage in winter
     de = Anteil der Tiere, die im Winter Maissilage erhalten
@@ -57,9 +55,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
  
 
 +share_grass_silage_winter
-  models = SHL
   type = percent
-  default_calc = 0
   ++labels 
     en = Proportion of animals receiving grass silage in winter
     de = Anteil der Tiere, die im Winter Grassilage erhalten
@@ -78,9 +74,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
  
 
 +share_maize_pellets_winter
-  models = SHL
   type = percent
-  default_calc = 0
   ++labels 
     en = Proportion of animals receiving maize pellets in winter
     de = Anteil der Tiere, die im Winter Maiswürfel erhalten
@@ -99,9 +93,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
  
 
 +share_potatoes_winter
-  models = SHL
   type = percent
-  default_calc = 0
   ++labels 
     en = Proportion of animals receiving potatoes in winter
     de = Anteil der Tiere, die im Winter Kartoffeln erhalten
@@ -120,9 +112,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
  
 
 +share_beets_winter
-  models = SHL
   type = percent
-  default_calc = 0
   ++labels 
     en = Proportion of animals receiving beets in winter
     de = Anteil der Tiere, die im Winter Futterrüben erhalten

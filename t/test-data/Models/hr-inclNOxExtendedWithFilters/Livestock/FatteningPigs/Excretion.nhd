@@ -82,56 +82,58 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
      +++fr
         <p>Porcs à l'engrais: animaux pesant de 25 kg jusqu'à l'abattage </p>
 
-+inp_n_excretion
-  type = text
-  default_calc = Standard
-  default_gui  = Standard
-  ++labels
-    en = N excretion
-    de = N Ausscheidung
-    fr = Excrétions azotées
-  ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Annual standard N excretion for a fattening pig
-  ++help
-    +++en
-       <p>If "Standard" is selected the standard value for the
-          nitrogen excretion according to PRIF 2017 is applied (Richner
-          et al., 2017) is applied (PRIF: Principles of Agricultural Crop
-          Fertilisation in Switzerland). If a number is entered, a value
-          for the nitrogen excretion can be selected by the user.</p>
-       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
-          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
-          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
-          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
-          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>
-    +++de
-       <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD
-          2017 (Richner et al., 2017) verwendet. Bei Eingabe einer Zahl kann der Wert für die
-          Stickstoffausscheidung selbst gewählt werden.</p>
-       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
-          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
-          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
-          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
-          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>
-    +++fr
-       <p>Si "Standard" est introduisé, la valeur de référence pour
-          les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
-          est utilisée (PRIF: « Principes de la fertilisation des
-          cultures agricoles en Suisse » ). Si un nombre est introduisé
-          une valeur pour les excrétions azotées peut être déterminée par
-          l'utilisateur/-trice.</p>
-       <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
-          M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
-          Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
-          die Düngung landwirtschaftlicher Kulturen in der Schweiz /
-          GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-          pp. 4/1-4/23.</p>
+?if !Kantonal_LU
+  +inp_n_excretion
+    type = text
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = N excretion
+      de = N Ausscheidung
+      fr = Excrétions azotées
+    ++units
+      en = kg N/year
+      de = kg N/Jahr
+      fr = kg N/an
+    ++description
+      Annual standard N excretion for a fattening pig
+    ++help
+      +++en
+         <p>If "Standard" is selected the standard value for the
+            nitrogen excretion according to PRIF 2017 is applied (Richner
+            et al., 2017) is applied (PRIF: Principles of Agricultural Crop
+            Fertilisation in Switzerland). If a number is entered, a value
+            for the nitrogen excretion can be selected by the user.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+      +++de
+         <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD
+            2017 (Richner et al., 2017) verwendet. Bei Eingabe einer Zahl kann der Wert für die
+            Stickstoffausscheidung selbst gewählt werden.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur de référence pour
+            les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
+            est utilisée (PRIF: « Principes de la fertilisation des
+            cultures agricoles en Suisse » ). Si un nombre est introduisé
+            une valeur pour les excrétions azotées peut être déterminée par
+            l'utilisateur/-trice.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+?endif
 
 +feeding_phase_1_crude_protein
   type = float
@@ -584,6 +586,29 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Annual standard N excretion for fattening pigs according to
     Walther et al. (2001).
+?if Kantonal_LU
+  ++formula
+    my $exc = Tech(standard_N_excretion_fattening_pigs) * 
+              (1 - (
+                Tech(standard_crude_protein_fattening_pigs) - 
+                (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / In(energy_content))
+              ) * 
+              Tech(cfeed_fattening_pigs));
+    if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
+      writeLog({
+        en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
+              . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
+        de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
+              . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
+        fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
+              ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
+              ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
+      });
+      return Tech(minimal_N_excretion_fattening_pigs);
+    } else {
+      return $exc;
+    }
+?else
   ++formula
     if ( lc In(inp_n_excretion) eq 'standard' ) {
       my $exc = Tech(standard_N_excretion_fattening_pigs) * 
@@ -630,6 +655,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       }
 
     }
+?endif
 
 +n_excretion
   print = FatteningPigs

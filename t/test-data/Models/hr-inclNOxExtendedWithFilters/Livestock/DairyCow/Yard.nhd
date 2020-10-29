@@ -260,28 +260,6 @@ taxonomy = Livestock::DairyCow::Yard
   ++description
     Reduction efficiency according to Reidy and Menzi.
 
-+red_sloped_concrete_floor_with_central_drain_and_stationary_scraper
-  value = 0.2
-  ++units
-    en = -
-  ++description
-    Reduction efficiency according to Reidy and Menzi.
-
-+red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading
-  value = 0.3
-  ++units
-    en = -
-  ++description
-    Reduction efficiency according to Reidy and Menzi.
-
-+red_sloped_concrete_floor_with_central_drain_and_stationary_scraper_plus_windbreak_and_shading_plus_shower
-  value = 0.5
-  ++units
-    en = -
-  ++description
-    Reduction efficiency according to Reidy and Menzi.
-
-
 *** output ***
 
 +days_with_grazing_and_yard
@@ -307,26 +285,28 @@ taxonomy = Livestock::DairyCow::Yard
       return 0;
     }
 
-+c_free_factor_yard
-  print = DairyCow
-  ++units 
-    en = -
-  ++description
-    Free reduction of the Emission rate for the Yard.
-  ++formula
-    if ( In(free_correction_factor) // 0 != 0 ) {
-      writeLog({
-        en => "You have entered an additional emission mitigation measure for a dairy cows exercise yard of " 
-              . In(free_correction_factor) . "\%!\n", 
-        de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Laufhof der Milchkühe von " 
-              . In(free_correction_factor) . "\% eingegeben!\n", 
-        fr => "Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un parcours "
-              . "extérieur pour vâches laitières de " . In(free_correction_factor) . "\% !\n"
-      });
-      return 1 - In(free_correction_factor) / 100;     
-    } else {
-      return 1;
-    } 
+?if !Kantonal_LU
+  +c_free_factor_yard
+    print = DairyCow
+    ++units 
+      en = -
+    ++description
+      Free reduction of the Emission rate for the Yard.
+    ++formula
+      if ( In(free_correction_factor) // 0 != 0 ) {
+        writeLog({
+          en => "You have entered an additional emission mitigation measure for a dairy cows exercise yard of " 
+                . In(free_correction_factor) . "\%!\n", 
+          de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Laufhof der Milchkühe von " 
+                . In(free_correction_factor) . "\% eingegeben!\n", 
+          fr => "Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un parcours "
+                . "extérieur pour vâches laitières de " . In(free_correction_factor) . "\% !\n"
+        });
+        return 1 - In(free_correction_factor) / 100;     
+      } else {
+        return 1;
+      } 
+?endif
 
 +c_floor_properties_exercise_yard
   print = DairyCow
@@ -447,10 +427,16 @@ taxonomy = Livestock::DairyCow::Yard
      fr = -
   ++description
     NH3 emission factor for dairy cow yard.
+?if Kantonal_LU
+  ++formula
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard);
+?else
   ++formula
     Tech(er_yard) * 
     Out(c_floor_properties_exercise_yard) * 
     Out(c_free_factor_yard);
+?endif
 
 +nh3_nyard
   print = DairyCow

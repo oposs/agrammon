@@ -169,8 +169,10 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** external ***
 
-+Excretion::CMilk
-+Excretion::CFeed
+?if !Kantonal_LU
+  +Excretion::CMilk
+  +Excretion::CFeed
+?endif
 
 *** output ***
 
@@ -200,8 +202,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++description
     Annual mean total N excreted per animal.
+?if Kantonal_LU
   ++formula
-    if ( (not defined In(inp_n_excretion)) or lc In(inp_n_excretion) eq 'standard' ) {
+    Tech(standard_N_excretion);
+?else
+  ++formula
+    if ( lc In(inp_n_excretion) eq 'standard' ) {
       Tech(standard_N_excretion) *
       Val(cmilk_yield, Excretion::CMilk) *
       Val(c_feed_ration, Excretion::CFeed);
@@ -216,6 +222,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       }
       In(inp_n_excretion);
     };
+?endif
 
 +n_excretion
   print = DairyCow
@@ -237,14 +244,16 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++description
     Annual soluble N excreted by the specified number of animals.
+?if Kantonal_LU
   ++formula
-    my $exc = Tech(standard_N_excretion);
-    $exc = Out(n_excretion_animal) / 
-           Val(cmilk_yield, Excretion::CMilk) /
-           Val(c_feed_ration, Excretion::CFeed) unless lc In(inp_n_excretion) eq 'standard';
+    Out(n_excretion) * Tech(share_Nsol);
+?else
+  ++formula
+    # TODO: 55% falls In(inp_n_excretion) direkt vorgegeben (wie Kantonal_LU)
     # n related to milk yield
-    my $exc_milkyield = $exc * Out(animals) * Val(cmilk_yield, Excretion::CMilk);
+    my $exc_milkyield = Out(n_excretion) / Val(c_feed_ration, Excretion::CFeed);
     # tan related to milk yield
     $exc_milkyield * Tech(share_Nsol) +
     # tan related to feeding
     (Out(n_excretion) - $exc_milkyield) * Tech(feed_influence_on_Nsol);
+?endif
