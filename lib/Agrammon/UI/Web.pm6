@@ -6,7 +6,7 @@ class Agrammon::UI::Web {
 
     method !get-inputs {
         my @inputs;
-        for $!model.evaluation-order -> $module {
+        for $!model.load-order -> $module {
             my @module-inputs;
             for $module.input -> $input {
 
