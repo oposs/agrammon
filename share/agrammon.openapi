@@ -686,7 +686,9 @@ components:
                     description: Options
                     type: array
                     items:
-                        type: string
+                        schema:
+                            type: array
+                                items: string
         SetRemoveTag:
             type: object
             required:
