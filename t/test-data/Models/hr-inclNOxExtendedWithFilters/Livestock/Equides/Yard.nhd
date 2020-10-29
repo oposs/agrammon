@@ -72,7 +72,7 @@ livestock. Atmospheric Environment 35:5331-5338.
         <p>Proposition de valeurs standard: 10 heures pour les chevaux et 12 heures pour les autres équidés </p>
 
 
-+floor_properties_exercise_yard_SHL
++floor_properties_exercise_yard
   type  = enum
   default_calc = solid_floor
   ++enum
@@ -118,105 +118,63 @@ livestock. Atmospheric Environment 35:5331-5338.
     	<dd> Parcours avec des sols perméables à l'eau, p.ex. recouverts de gravier, de sable, de marne, de copeaux de bois, de dalles gazon etc.</dd>
      </dl>
         <p>Proposition de valeur standard: sol sans revêtement dur</p>
- 
 
-+floor_properties_exercise_yard_LU
-  models = LU
-  type  = enum
-  default_calc = solid_floor
-  ++enum
-    +++solid_floor
-       en = solid_floor
-       de = Boden_planbefestigt
-       fr = sol_en_dur
-       it = solid_floor
-    +++unpaved_floor
-       en = unpaved_floor
-       de = Boden_unbefestigt
-       fr = sol_sans_revêtement_dur
-       it = unpaved_floor
-  ++labels 
-    en = Type of exercise yard
-    de = Laufhoftyp
-    fr = Type de parcours extérieur
-  ++units  
-    en = -
-  ++description
-    Floor properties (solid_floor, unpaved_floor).
-  ++help
-     +++en
-        <p>Recommended standard value: unpaved floor</p>
-     +++de
-     <dl>
-        <dt>Boden planbefestigt:</dt>
-        <dd> Laufhöfe mit Betonboden oder Asphalt (wasserundurchlässig). Mit Verbundsteinen und Pflastersteinen ausgelegte Flächen (wasserdurchlässig) werden den planbefestigten Böden gleichgestellt.</dd>
-	<dt>Boden unbefestigt:</dt>
-    <dd> Laufhöfe mit unbefestigtem oder wasserdurchlässigem Boden wie Kies, Sand, Mergel, Holzschnitzel, Rasengittersteine etc.</dd>
-    </dl>
-        <p>Vorschlag für Standardwert: Boden unbefestigt</p>
-     +++fr
-	 <dl>
-      	   <dt>Sol en dur:</dt>
-    	   <dd> Parcours avec sol bétonné ou asphalté (imperméable à l'eau). Les sols pavés (perméables à l'eau) sont considérés comme des sols en dur.</dd>
-	   <dt>Sol sans revêtement dur:</dt>
- 	   <dd> Parcours avec des sols perméables à l'eau, p.ex. recouverts de gravier, de sable, de marne, de copeaux de bois, de dalles gazon etc.</dd>
-   	 </dl>
-        <p>Proposition de valeur standard: sol sans revêtement dur</p>
-
-+free_correction_factor
-  type = float
-  default_calc = 0
-  default_gui = 0
-  validator = between(-100,100);
-  ++labels 
-    en = Additional emission mitigation measure for the exercice yard (see column Help)
-    de = Zusätzliche emissionsmindernde Massnahme Laufhof (siehe Spalte Hilfe)
-    fr = Mesure supplémentaire limitant les émissions sur le parcours extérieur (cf. aide)
-  ++units 
-    en = %
-  ++description
-    Factor to define free ?
-  ++help
-    +++en
-        <p>The emission reduction of a new technique can be entered
-           (e.g. a new type of floor). The number entered corresponds
-           to the emission reduction in percent (e.g. 30%; the
-           emission from the housing decreases by 30%). It is
-           recommended to mention the selected measure in the column
-           comment and to justify the number selected for emission
-           reduction.</p>
-        <p>This option mainly targets users who predict emissions and
-        are obliged to consider the effects of new and actually
-        unknown techniques.</p>
-    +++de
-	<p>
-           Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt
-           werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene Zahl entspricht
-           der Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Laufhof 
-           nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar 
-           aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
-	</p>
-        <p>
-	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
-           prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
-           zur Emissionsminderung berücksichtigen müssen. 
-	</p>
-        <p>Vorschlag für Standardwert: 0 %.</p>
-    +++fr
-	<p>
-	   Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les 
-	   émissions (p.ex. un nouveau type de sol limitant les émissions). Le chiffre 
-	   introduit correspond à la réduction d'émission en pourcent (p.ex. 30%: l'émission 
-	   provenant du parcours extérieur diminue de 30%). Il est recommandé de mentionner 
-	   la mesure choisie dans la colonne ‘Commentaire' et de justifier le taux de réduction 
-	   choisi.
-	</p>
-	<p>
-	   Cette fonction s'adresse principalement aux utilisateurs/trices qui font des pronostiques 
-	   d'émissions et qui doivent prendre en compte l'effet de nouvelles technologies destinées à
-	   limiter les émissions et encore méconnues actuellement.
-	</p>
-	<p>Proposition valeur standard: 0 %.</p>
+?if !Kantonal_LU
+  +free_correction_factor
+    type = float
+    default_calc = 0
+    default_gui = 0
+    validator = between(-100,100);
+    ++labels 
+      en = Additional emission mitigation measure for the exercice yard (see column Help)
+      de = Zusätzliche emissionsmindernde Massnahme Laufhof (siehe Spalte Hilfe)
+      fr = Mesure supplémentaire limitant les émissions sur le parcours extérieur (cf. aide)
+    ++units 
+      en = %
+    ++description
+      Factor to define free ?
+    ++help
+      +++en
+          <p>The emission reduction of a new technique can be entered
+             (e.g. a new type of floor). The number entered corresponds
+             to the emission reduction in percent (e.g. 30%; the
+             emission from the housing decreases by 30%). It is
+             recommended to mention the selected measure in the column
+             comment and to justify the number selected for emission
+             reduction.</p>
+          <p>This option mainly targets users who predict emissions and
+          are obliged to consider the effects of new and actually
+          unknown techniques.</p>
+      +++de
+  	<p>
+             Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt
+             werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene Zahl entspricht
+             der Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Laufhof 
+             nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar 
+             aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
+  	</p>
+          <p>
+  	   Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+             prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+             zur Emissionsminderung berücksichtigen müssen. 
+  	</p>
+          <p>Vorschlag für Standardwert: 0 %.</p>
+      +++fr
+  	<p>
+  	   Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les 
+  	   émissions (p.ex. un nouveau type de sol limitant les émissions). Le chiffre 
+  	   introduit correspond à la réduction d'émission en pourcent (p.ex. 30%: l'émission 
+  	   provenant du parcours extérieur diminue de 30%). Il est recommandé de mentionner 
+  	   la mesure choisie dans la colonne ‘Commentaire' et de justifier le taux de réduction 
+  	   choisi.
+  	</p>
+  	<p>
+  	   Cette fonction s'adresse principalement aux utilisateurs/trices qui font des pronostiques 
+  	   d'émissions et qui doivent prendre en compte l'effet de nouvelles technologies destinées à
+  	   limiter les émissions et encore méconnues actuellement.
+  	</p>
+  	<p>Proposition valeur standard: 0 %.</p>
+?endif
 
 *** technical ***
 
@@ -295,6 +253,7 @@ livestock. Atmospheric Environment 35:5331-5338.
       return 0;
     }
 
+?if !Kantonal_LU
 +c_free_factor_yard
   print = Equides
   ++units 
@@ -302,30 +261,31 @@ livestock. Atmospheric Environment 35:5331-5338.
   ++description
     Free correction factor of the Emission rate for the Yard.
   ++formula
-  if ( In(free_correction_factor) // 0 != 0 ) {
-      writeLog({en=>"You have entered an additional emission mitigation measure for the exercise yard of " 
-                    . "the category horses and other equids of " . In(free_correction_factor) 
-                    . "\%!\n",
-                de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Laufhof der Kategorie "
-                    . "Pferde und andere Equiden von " 
-                    . In(free_correction_factor) 
-                    . "\% eingegeben!\n", 
-                fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un "
-        . "parcours extérieur pour chevaux et autres équidés de " . In(free_correction_factor) 
-                    . "\%.\n" });
-      return 1 - In(free_correction_factor) / 100;  
-  } else {
-    return 1;
-  } 
+    if ( In(free_correction_factor) // 0 != 0 ) {
+        writeLog({en=>"You have entered an additional emission mitigation measure for the exercise yard of " 
+                      . "the category horses and other equids of " . In(free_correction_factor) 
+                      . "\%!\n",
+                  de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Laufhof der Kategorie "
+                      . "Pferde und andere Equiden von " 
+                      . In(free_correction_factor) 
+                      . "\% eingegeben!\n", 
+                  fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un "
+          . "parcours extérieur pour chevaux et autres équidés de " . In(free_correction_factor) 
+                      . "\%.\n" });
+        return 1 - In(free_correction_factor) / 100;  
+    } else {
+      return 1;
+    } 
+?endif
 
-+c_floor_properties_exercise_yard_SHL 
++c_floor_properties_exercise_yard 
   print = Equides
   ++units  
     en = -
   ++description
     Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula 
-    given ( In(floor_properties_exercise_yard_SHL) ) { 
+    given ( In(floor_properties_exercise_yard) ) { 
       when 'unpaved_floor' {
         1 - Tech(red_floor_properties_unpaved_floor);
       } 
@@ -334,26 +294,6 @@ livestock. Atmospheric Environment 35:5331-5338.
       } 
       when 'paddock_or_pasture_used_as_exercise_yard' {
         1 - Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
-      } 
-      default { 
-        1;
-      }
-    }
-
-+c_floor_properties_exercise_yard_LU
-  print = Equides
-  ++units  
-    en = -
-  ++description
-    Correction factor for the emission due to the use of the floor properties in housing systems.
-  ++formula 
-    return 1 unless defined In(floor_properties_exercise_yard_LU);
-    given ( In(floor_properties_exercise_yard_LU) ) { 
-      when 'unpaved_floor' {
-        1 - Tech(red_floor_properties_unpaved_floor);
-      } 
-      when 'solid_floor' {
-        1 - Tech(red_floor_properties_solid_floor);
       } 
       default { 
         1;
@@ -412,11 +352,16 @@ livestock. Atmospheric Environment 35:5331-5338.
      fr = -
   ++description
     NH3 emission factor for dairy cow yard.
+?if Kantonal_LU
   ++formula
     Tech(er_yard) * 
-    Out(c_floor_properties_exercise_yard_SHL) * 
-    Out(c_floor_properties_exercise_yard_LU) * 
+    Out(c_floor_properties_exercise_yard);
+?else
+  ++formula
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard) * 
     Out(c_free_factor_yard);
+?endif
 
 +nh3_nyard
   print = Equides
