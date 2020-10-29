@@ -42,6 +42,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 *** external ***
 
 +::Livestock
++Storage::SolidManure
 +Storage::SolidManure::Solid
 +Storage::SolidManure::Poultry
 +Storage::Slurry
