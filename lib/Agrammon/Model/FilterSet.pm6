@@ -13,9 +13,10 @@ class Agrammon::Model::FilterSet {
     }
 
     has Filter @!filters;
+    has Agrammon::Model::Module $.module;
 
-    submethod BUILD(Agrammon::Model::Module :$module!, :@dependencies! --> Nil) {
-        self!add-from-module($module);
+    submethod BUILD(Agrammon::Model::Module :$!module!, :@dependencies! --> Nil) {
+        self!add-from-module($!module);
         self!add-from-module($_) for @dependencies;
     }
 
