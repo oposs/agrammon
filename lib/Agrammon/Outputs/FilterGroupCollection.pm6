@@ -21,8 +21,9 @@ class Agrammon::Outputs::FilterGroupCollection {
     }
 
     has Numeric %!values-by-filter{FilterKey};
+    has Set $.provenance;
 
-    submethod BUILD(:@instances!) {
+    submethod BUILD(:$!provenance = ∅, :@instances!) {
         for @instances {
             %!values-by-filter{.key} += .value;
         }
@@ -35,8 +36,10 @@ class Agrammon::Outputs::FilterGroupCollection {
 
     #| Create from a list of pairs where the key is a hash of filter values for an instance
     #| and the value is the instance's value.
-    method from-filter-to-value-pairs(@instances) {
-        self.bless: instances => @instances.map({ FilterKey.new(filters => .key) => +.value })
+    method from-filter-to-value-pairs(@instances, Set :$provenance = ∅) {
+        self.bless:
+                :instances(@instances.map({ FilterKey.new(filters => .key) => +.value })),
+                :$provenance
     }
 
     #| Check if the collection has any filters.
@@ -54,9 +57,30 @@ class Agrammon::Outputs::FilterGroupCollection {
         self.Numeric.Real
     }
 
-    #| Get a list of pairs mapping filter groups into the total value for that group.
-    method results-by-filter-group() {
-        [%!values-by-filter.map({ .key.filters => .value })]
+    #| Get a list of pairs mapping filter groups into the total value for that
+    #| group. If :all is passed, then all filters that could possibly have been
+    #| selected will be included, even if no instance used them, and they will
+    #| have a zero value.
+    method results-by-filter-group(Bool :$all = False) {
+        if $all {
+            if %!values-by-filter && !$!provenance {
+                die "Can only got all values when provenance of the filter group was provided";
+            }
+            my @results;
+            for $!provenance.keys -> $filter-set {
+                for $filter-set.all-possible-filter-keys -> %filters {
+                    my $key = FilterKey.new(:%filters);
+                    @results.push(%filters => %!values-by-filter{$key} // 0);
+                }
+            }
+            with %!values-by-filter{FilterKey.empty} {
+                @results.push({} => $_);
+            }
+            @results
+        }
+        else {
+            [%!values-by-filter.map({ .key.filters => .value })]
+        }
     }
 
     #| Produce a new filter group collection which has the values of this one scaled by
@@ -64,7 +88,9 @@ class Agrammon::Outputs::FilterGroupCollection {
     #| (these two just commute), and `group / scalar` (by passing in `1 / scalar` as the
     #| factor).
     method scale(Numeric $factor --> Agrammon::Outputs::FilterGroupCollection) {
-        self.bless: instances => %!values-by-filter.map({ .key => $factor * .value })
+        self.bless:
+                :instances(%!values-by-filter.map({ .key => $factor * .value })),
+                :$!provenance
     }
 
     #| Produce a new filter group collection which has the values of this one added to
@@ -72,12 +98,16 @@ class Agrammon::Outputs::FilterGroupCollection {
     #| (these two just commute), and `group - scalar` (by passing in `- scalar` as the
     #| additor).
     method add(Numeric $factor --> Agrammon::Outputs::FilterGroupCollection) {
-        self.bless: instances => %!values-by-filter.map({ .key => $factor + .value })
+        self.bless:
+                :instances(%!values-by-filter.map({ .key => $factor + .value })),
+                :$!provenance
     }
 
     #| Produce a new filter group collection which has the sign of this one.
     method sign() {
-        self.bless: instances => %!values-by-filter.map({ .key => sign( .value ) })
+        self.bless:
+                :instances(%!values-by-filter.map({ .key => sign( .value ) })),
+                :$!provenance
     }
 
     #| Apply an operation pairwise between this group collection and another one, returning a
@@ -109,7 +139,9 @@ class Agrammon::Outputs::FilterGroupCollection {
             }
         }
 
-        Agrammon::Outputs::FilterGroupCollection.new(instances => @result-instances)
+        Agrammon::Outputs::FilterGroupCollection.new:
+                instances => @result-instances,
+                provenance => $!provenance ∪ $other.provenance
     }
 
     #| Check in the other filter group collection for values that are greater than a threshold
@@ -140,7 +172,8 @@ class Agrammon::Outputs::FilterGroupCollection {
             }
         }
 
-        Agrammon::Outputs::FilterGroupCollection.new(instances => @result-instances)
+        Agrammon::Outputs::FilterGroupCollection.new:
+                :instances(@result-instances), :$!provenance
     }
 
     #| Private accessor to get internal representation of another collection.

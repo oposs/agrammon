@@ -9,6 +9,7 @@ class Agrammon::Model::FilterSet {
         has Str $.taxonomy is required;
         has Str $.input-name is required;
         has Str $.filter-key = $!taxonomy ~ '::' ~ $!input-name;
+        has @.options is required;
     }
 
     has Filter @!filters;
@@ -21,7 +22,14 @@ class Agrammon::Model::FilterSet {
     method !add-from-module(Agrammon::Model::Module $module --> Nil) {
         for $module.input -> Agrammon::Model::Input $input {
             if $input.is-filter {
-                @!filters.push: Filter.new: taxonomy => $module.taxonomy, input-name => $input.name;
+                my @enums := $input.enum-ordered;
+                unless @enums {
+                    die "Filter input '$input.name()' in module '$module.taxonomy()' is not an enum type";
+                }
+                @!filters.push: Filter.new:
+                        taxonomy => $module.taxonomy,
+                        input-name => $input.name,
+                        options => @enums;
             }
         }
     }
@@ -37,5 +45,13 @@ class Agrammon::Model::FilterSet {
                 Empty
             }
         }
+    }
+
+    #| Get all possible filter key sets.
+    method all-possible-filter-keys(--> Sequence) {
+        my @combos = @!filters.map: -> Filter $filter {
+            [ $filter.filter-key <<=>>> $filter.options.map(*.key) ]
+        }
+        (@!filters == 1 ?? @combos[0] !! cross(@combos)).map(*.hash)
     }
 }

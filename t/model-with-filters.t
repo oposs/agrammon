@@ -90,6 +90,17 @@ subtest 'Running the model produces output instances with filters' => {
             is .elems, 1, 'Found filter group value for boars';
             is .[0].value, <238158/10625>, 'Correct value calculated for boars';
         }
+        my @all-results-by-group = $livestock-tan.results-by-filter-group(:all);
+        given @all-results-by-group[0] {
+            ok .key eqv {"Livestock::Pig::Excretion::animalcategory" => 'nursing_sows'},
+                    'First key is first enum element';
+            is-deeply .value, <347116/5625>, 'Correct value';
+        }
+        given @all-results-by-group[2] {
+            ok .key eqv {"Livestock::Pig::Excretion::animalcategory" => 'gilts'},
+                'Have a key included without a value';
+            is-deeply .value, 0, 'Zero value';
+        }
     }
 
     subtest 'filterGroup builtin' => {
@@ -97,7 +108,6 @@ subtest 'Running the model produces output instances with filters' => {
             isa-ok $factor, Agrammon::Outputs::FilterGroupCollection,
                     'filterGroup builtin will produce a filter group collection';
             my @results-by-group = $factor.results-by-filter-group;
-            dd @results-by-group;
             given @results-by-group.grep(*.key eqv { "Livestock::Pig::Excretion::animalcategory" => "boars" }) {
                 is .elems, 1, 'Found filter group value for boars';
                 is .[0].value, 0.75, 'Correct value for boars';

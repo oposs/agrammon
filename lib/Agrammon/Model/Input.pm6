@@ -46,6 +46,8 @@ class Agrammon::Model::Input {
 
     method enum(--> Hash) { %!enum-lookup }
 
+    method enum-ordered(--> Array) { @!enum-order }
+
     method is-branch(--> Bool) { $!branch }
 
     method is-filter(--> Bool) { $!filter }
