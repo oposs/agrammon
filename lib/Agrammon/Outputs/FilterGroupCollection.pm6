@@ -64,10 +64,10 @@ class Agrammon::Outputs::FilterGroupCollection {
     method results-by-filter-group(Bool :$all = False) {
         if $all {
             if %!values-by-filter && !$!provenance {
-                die "Can only got all values when provenance of the filter group was provided";
+                die "Can only get all values when provenance of the filter group was provided";
             }
             my @results;
-            for $!provenance.keys -> $filter-set {
+            for $!provenance.keys.sort.reverse -> $filter-set {
                 for $filter-set.all-possible-filter-keys -> %filters {
                     my $key = FilterKey.new(:%filters);
                     @results.push(%filters => %!values-by-filter{$key} // 0);
@@ -162,13 +162,13 @@ class Agrammon::Outputs::FilterGroupCollection {
                 else {
                     # Push 0 if their value > threshold, but key is not existing
                     # 0 because of missing flow (zero flow)
-                    @result-instances.push: $their-key => 0;                    
-                } 
-            } 
+                    @result-instances.push: $their-key => 0;
+                }
+            }
             elsif $push-all {
                 # Push threshold if their value <= threshold. Could also be 0,
                 # but it might become handy for limiting ratio to 1, i.e. threshold = 1?
-                @result-instances.push: $their-key => $thresh;                
+                @result-instances.push: $their-key => $thresh;
             }
         }
 
