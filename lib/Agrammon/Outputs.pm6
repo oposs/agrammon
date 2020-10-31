@@ -16,6 +16,13 @@ class X::Agrammon::Outputs::DuplicateInstance is Exception {
     }
 }
 
+class X::Agrammon::Ouputs::FiltersWithoutFilterSet is Exception {
+    has Str $.taxonomy-prefix is required;
+    method message() {
+        "Cannot create instance with filters without also providing filter set"
+    }
+}
+
 class X::Agrammon::Outputs::IsMultiInstance is Exception {
     has $.module is required;
     has $.name is required;
@@ -53,6 +60,7 @@ class Agrammon::Outputs::Instance does Agrammon::Outputs::SingleOutputStorage {
     has Str $.taxonomy-prefix is required;
     has Str $.instance-name is required;
     has %.filters;
+    has $.filter-set;
     has Agrammon::Outputs $.parent is required;
 
     method get-output(Str $module, Str $name) {
@@ -85,14 +93,18 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
         %!instances{$taxonomy-prefix} //= {};
     }
 
-    method new-instance(Str $taxonomy-prefix, Str $instance-name, :%filters --> Agrammon::Outputs::Instance) {
+    method new-instance(Str $taxonomy-prefix, Str $instance-name, :%filters,
+                        :$filter-set --> Agrammon::Outputs::Instance) {
         without %!instances{$taxonomy-prefix} {
             die X::Agrammon::Outputs::NotDeclaredMultiInstance.new(module => $taxonomy-prefix);
         }
         with %!instances{$taxonomy-prefix}{$instance-name} {
             die X::Agrammon::Outputs::DuplicateInstance.new(:$taxonomy-prefix, :$instance-name);
         }
-        given Agrammon::Outputs::Instance.new(:$taxonomy-prefix, :$instance-name, :parent(self), :%filters) -> $instance {
+        if %filters && !$filter-set {
+            die X::Agrammon::Ouputs::FiltersWithoutFilterSet.new(:$taxonomy-prefix);
+        }
+        given Agrammon::Outputs::Instance.new(:$taxonomy-prefix, :$instance-name, :parent(self), :%filters, :$filter-set) -> $instance {
             %!instances{$taxonomy-prefix}{$instance-name} = $instance;
             return $instance;
         }
@@ -117,7 +129,8 @@ class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
     method get-sum(Str $module, Str $name) {
         with self.find-instances($module) {
             Agrammon::Outputs::FilterGroupCollection.from-filter-to-value-pairs:
-                .values.map({ .filters => .get-output($module, $name) })
+                .values.map({ .filters => .get-output($module, $name) }),
+                :provenance(set(.values.map(*.filter-set)))
         }
         else {
             # Make sure it's not a bogus use of single-instance symbol,

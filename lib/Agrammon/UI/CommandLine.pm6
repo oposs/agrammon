@@ -44,11 +44,12 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 #| Run the model
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technical-file?,
                SupportedLanguage :$language = 'de', Str :$prints, Str :$variants = 'SHL',
-               Bool :$include-filters, Int :$batch=1, Int :$degree=4, Int :$max-runs,
+               Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
                OutputFormat :$format = 'text'
               ) is export {
-    my %results = run $filename.IO, $input.IO, $technical-file, $variants, $format, $language, $prints, $include-filters,
-            $batch, $degree, $max-runs;
+    my %results = run $filename.IO, $input.IO, $technical-file, $variants, $format, $language, $prints,
+            ($include-filters or $include-all-filters),
+            $batch, $degree, $max-runs, :all-filters($include-all-filters);
     my $output;
     if $format eq 'json' {
         $output = to-json %results;
@@ -57,9 +58,9 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technica
         my @output;
         @output.push("##  Model: $filename");
         @output.push("##  Variants: $variants");
-        for %results.keys -> $simulation, %sim-results {
+        for %results.kv -> $simulation, %sim-results {
             @output.push("### Simulation $simulation");
-            @output.push("##  Print filter: $prints");
+            @output.push("##  Print filter: $prints") if $prints;
             for %sim-results.keys.sort -> $dataset {
                 @output.push("#   Dataset $dataset");
                 @output.push(%sim-results{$dataset});
@@ -131,8 +132,8 @@ sub dump-model (IO::Path $path, $variants, $sort) is export {
     return $model.dump($sort);
 }
 
-sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $format, $language, $prints, Bool $include-filters,
-        $batch, $degree, $max-runs) is export {
+sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $format, $language, $prints,
+         Bool $include-filters, $batch, $degree, $max-runs, :$all-filters) is export {
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -176,13 +177,20 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
             given $format {
                 when 'csv' {
                     die "CSV output including filters is not yet supported" if $include-filters;
-                    $result = output-as-csv($dataset.simulation-name, $dataset.dataset-id, $model, $outputs, $language);
+                    $result = output-as-csv(
+                        $dataset.simulation-name, $dataset.dataset-id, $model,
+                        $outputs, $language, :$all-filters
+                    );
                 }
                 when 'json' {
-                    $result = output-as-json($model, $outputs, $language, $prints, $include-filters);
+                    $result = output-as-json(
+                        $model, $outputs, $language, $prints, $include-filters, :$all-filters
+                    );
                 }
                 when 'text' {
-                    $result = output-as-text($model, $outputs, $language, $prints, $include-filters);
+                    $result = output-as-text(
+                        $model, $outputs, $language, $prints, $include-filters, :$all-filters
+                    );
                 }
             }
             $rc.add-result($dataset.simulation-name, $dataset.dataset-id, $result);

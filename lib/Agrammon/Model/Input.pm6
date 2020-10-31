@@ -15,10 +15,6 @@ class Agrammon::Model::Input {
     has %.units;
     has %.help;
     has Str @.models;
-    #    has Str @.options;     # XXX set correct type: array of arrays
-    #    has Str @.optionsLang; # XXX set correct type: array of hashes
-    has @.options;     # XXX set correct type: array of arrays
-    has @.options-lang; # XXX set correct type: array of hashes
     has @!enum-order;
     has %!enum-lookup;
     has Int $.order;
@@ -38,8 +34,8 @@ class Agrammon::Model::Input {
             }
         }
         if @enum {
-            @!enum-order = @enum;
-            %!enum-lookup = @enum;
+            @!enum-order = @enum.map({ .key => self!parse-enum-lang-values(.value) });
+            %!enum-lookup = @!enum-order;
         }
         with $filter {
             if .lc eq 'true' {
@@ -49,6 +45,8 @@ class Agrammon::Model::Input {
     }
 
     method enum(--> Hash) { %!enum-lookup }
+
+    method enum-ordered(--> Array) { @!enum-order }
 
     method is-branch(--> Bool) { $!branch }
 
@@ -73,19 +71,9 @@ class Agrammon::Model::Input {
 
         for @!enum-order {
             my $name = .key;
-            my $optLang = .value;
-            my $label   = $name;
-            $label      ~~ s:g/_/ /;
-            my @opt     = [ $label, '', $name];
-            my @opt-lang = split("\n", $optLang);
-            my %opt-lang;
-            for @opt-lang -> $ol {
-                my ($l, $o) = split(/ \s* '=' \s* /, $ol);
-                $o ~~ s:g/_/ /;
-                %opt-lang{$l} = $o;
-            }
-            push @options,     @opt;
-            push @options-lang, %opt-lang;
+            my $label = $name.subst('_', ' ', :g);
+            push @options, [$label, '', $name];
+            push @options-lang, .value;
         }
 
         return %(
@@ -107,4 +95,13 @@ class Agrammon::Model::Input {
         )
     }
 
+    method !parse-enum-lang-values(Str $value --> Hash) {
+        my %opt-lang;
+        for (split("\n", $value)) -> $ol {
+            my ($l, $o) = split(/ \s* '=' \s* /, $ol);
+            $o ~~ s:g/_/ /;
+            %opt-lang{$l} = $o;
+        }
+        %opt-lang
+    }
 }

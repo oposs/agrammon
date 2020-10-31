@@ -95,7 +95,7 @@ class Agrammon::Model {
                 $outputs.declare-multi-instance($tax);
                 for $input.inputs-list-for($tax) -> $multi-input {
                     my %filters := $!filter-set.filters-for($multi-input);
-                    my $multi-output = $outputs.new-instance($tax, $multi-input.instance-id, :%filters);
+                    my $multi-output = $outputs.new-instance($tax, $multi-input.instance-id, :%filters, :$!filter-set);
                     self!run-as-single($multi-input, %technical, $multi-output, %run-already.clone);
                 }
                 self!mark-multi-run(%run-already);
