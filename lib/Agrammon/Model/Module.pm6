@@ -27,6 +27,7 @@ class Agrammon::Model::Module {
     has %.technical-hash;
     has $.instance-root;
     has Agrammon::Model::Module $.gui-root-module;
+    has Int $.load-order;
 
     submethod TWEAK {
         my $tax = $!taxonomy;

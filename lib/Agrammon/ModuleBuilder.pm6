@@ -12,8 +12,10 @@ class Agrammon::ModuleBuilder {
         input => { :enum }
     }
 
+    my Int $module-load-order = 0;
+
     method TOP($/) {
-        make Agrammon::Model::Module.new(|flat($<section>.map(*.ast)).Map);
+        make Agrammon::Model::Module.new(|flat($<section>.map(*.ast)).Map, :load-order($module-load-order++));
     }
 
     method section:sym<general>($/) {

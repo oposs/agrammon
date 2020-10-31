@@ -67,7 +67,7 @@ class Agrammon::Outputs::FilterGroupCollection {
                 die "Can only get all values when provenance of the filter group was provided";
             }
             my @results;
-            for $!provenance.keys.sort(*.module.taxonomy).reverse -> $filter-set {
+            for $!provenance.keys.sort(*.module.load-order) -> $filter-set {
                 for $filter-set.all-possible-filter-keys -> %filters {
                     my $key = FilterKey.new(:%filters);
                     @results.push(%filters => %!values-by-filter{$key} // 0);
