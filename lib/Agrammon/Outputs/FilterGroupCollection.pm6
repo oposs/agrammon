@@ -79,7 +79,18 @@ class Agrammon::Outputs::FilterGroupCollection {
             @results
         }
         else {
-            [%!values-by-filter.map({ .key.filters => .value })]
+#            @results = [%!values-by-filter.map({ .key.filters => .value })]
+            my @results;
+            for $!provenance.keys.sort(*.module.load-order) -> $filter-set {
+                for $filter-set.all-possible-filter-keys -> %filters {
+                    my $key = FilterKey.new(:%filters);
+                    @results.push(%filters => %!values-by-filter{$key} // 0) if %!values-by-filter{$key}:exists;
+                }
+            }
+            with %!values-by-filter{FilterKey.empty} {
+                @results.push({} => $_);
+            }
+            @results
         }
     }
 
