@@ -72,7 +72,8 @@ class Agrammon::Model {
         has Agrammon::Model::Module $.module;
         has ModuleRunner @.dependencies;
         has Agrammon::Model::FilterSet $!filter-set;
-
+        has Agrammon::ModuleBuilder $!module-builder = Agrammon::ModuleBuilder.new;
+        
         submethod TWEAK(--> Nil) {
             if $!module.is-multi {
                 $!filter-set .= new(:$!module, :dependencies(@!dependencies.map(*.module)));
@@ -176,7 +177,7 @@ class Agrammon::Model {
         {
             return Agrammon::ModuleParser.parse(
                 preprocess($file.slurp, %!preprocessor-options),
-                actions => Agrammon::ModuleBuilder
+                actions => $!module-builder
             ).ast;
             CATCH {
                 die "Failed to parse module $file:\n$_";

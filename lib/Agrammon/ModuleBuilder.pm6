@@ -8,14 +8,14 @@ use Agrammon::Model::Test;
 use Agrammon::Model::Technical;
 
 class Agrammon::ModuleBuilder {
+    has $!module-load-order = 0;
+    
     my constant ORDERED = {
         input => { :enum }
     }
 
-    my Int $module-load-order = 0;
-
     method TOP($/) {
-        make Agrammon::Model::Module.new(|flat($<section>.map(*.ast)).Map, :load-order($module-load-order++));
+        make Agrammon::Model::Module.new(|flat($<section>.map(*.ast)).Map, :load-order($!module-load-order++));
     }
 
     method section:sym<general>($/) {
