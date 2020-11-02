@@ -48,7 +48,7 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
     }
 
 
-?if Single_extendedOutput
+#?if Single_extendedOutput
 
 +animals
   print = Poultry
@@ -240,4 +240,4 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 
 ########################
 
-?endif
+#?endif

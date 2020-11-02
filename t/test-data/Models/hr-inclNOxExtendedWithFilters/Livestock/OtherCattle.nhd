@@ -49,7 +49,7 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
       return "barn dimensioning ok";
     }
 
-?if Single_extendedOutput
+#?if Single_extendedOutput
 
 +animals
   print = OtherCattle
@@ -324,4 +324,4 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
 
 ########################
 
-?endif
+#?endif

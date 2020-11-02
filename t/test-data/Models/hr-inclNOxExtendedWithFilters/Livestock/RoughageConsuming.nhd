@@ -28,7 +28,7 @@ gui       = Livestock::RoughageConsuming,Tierhaltung::Andere Raufutterverzehrer,
 
 *** output ***
 
-?if Single_extendedOutput
+#?if Single_extendedOutput
 
 +animals
   print = RoughageConsuming
@@ -221,4 +221,4 @@ gui       = Livestock::RoughageConsuming,Tierhaltung::Andere Raufutterverzehrer,
 
 ########################
 
-?endif
+#?endif

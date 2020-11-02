@@ -48,7 +48,7 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
     }
 
 
-?if Single_extendedOutput
+#?if Single_extendedOutput
 
 +animals
   print = Pig
@@ -240,4 +240,4 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
 
 ########################
 
-?endif
+#?endif

@@ -47,7 +47,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
       return "barn dimensioning ok";
     }
 
-?if Single_extendedOutput
+#?if Single_extendedOutput
 
 +animals
   print = FatteningPigs
@@ -240,4 +240,4 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
 
 ########################
 
-?endif
+#?endif

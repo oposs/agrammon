@@ -31,7 +31,7 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
 
 *** output ***
 
-?if Single_extendedOutput
+#?if Single_extendedOutput
 
 +animals
   print = SmallRuminants
@@ -225,4 +225,4 @@ Summarizes the annual N flux from housing to the storage for goats, fattening sh
 ########################
 
 
-?endif
+#?endif

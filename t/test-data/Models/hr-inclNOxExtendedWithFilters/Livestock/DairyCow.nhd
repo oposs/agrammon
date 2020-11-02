@@ -47,7 +47,7 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
     }
 
 
-?if Single_extendedOutput
+#?if Single_extendedOutput
 
 +animals
   print = DairyCow
@@ -321,4 +321,4 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 
 ########################
 
-?endif
+#?endif

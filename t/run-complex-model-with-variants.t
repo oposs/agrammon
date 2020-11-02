@@ -16,8 +16,8 @@ my $model-version = 'hr-inclNOxExtendedWithFilters';
 my $model-variants = (
     # # model version for web (Baugesuch Kanton Luzern)
     # 'Kantonal_LU',
-    # # model version for command line (no reports, extended variable output)
-    # 'Single_extendedOutput',
+    # model version for command line (no reports, extended variable output)
+    'Single_extendedOutput',
     # # model version for command line (checking N/TAN flows)
     # 'Single_checkBalance',
     # # default model version for web (detailed reports, reduced variable output)
