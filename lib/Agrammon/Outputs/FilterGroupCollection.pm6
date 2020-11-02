@@ -67,8 +67,12 @@ class Agrammon::Outputs::FilterGroupCollection {
             for $!provenance.keys.sort(*.module.load-order) -> $filter-set {
                 for $filter-set.all-possible-filter-keys -> %filters {
                     my $key = FilterKey.new(:%filters);
-                    $all ?? @results.push(%filters => %!values-by-filter{$key} // 0)
-                         !! @results.push(%filters => $_) with %!values-by-filter{$key};
+                    if $all {
+                        @results.push(%filters => %!values-by-filter{$key} // 0);
+                    }
+                    else {
+                        @results.push(%filters => $_) with %!values-by-filter{$key};
+                    }
                 }
             }
             with %!values-by-filter{FilterKey.empty} {
