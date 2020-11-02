@@ -9,7 +9,7 @@ for "$test-root/CMilk.nhd", "$test-root/CMilk-crazy-ws.nhd" -> $module-file {
     subtest "Loading $module-file" => {
         my $parsed = Agrammon::ModuleParser.parsefile(
             $module-file,
-            actions => Agrammon::ModuleBuilder
+            actions => Agrammon::ModuleBuilder.new
         );
         ok $parsed, "Successfully parsed $module-file";
 
@@ -99,7 +99,7 @@ my $module-file = "$test-root/CMilkWithTests.nhd";
 subtest "Loading $module-file" => {
     my $parsed = Agrammon::ModuleParser.parsefile(
         $module-file,
-        actions => Agrammon::ModuleBuilder
+        actions => Agrammon::ModuleBuilder.new
     );
     ok $parsed, "Successfully parsed $module-file";
 
@@ -122,7 +122,7 @@ $module-file = "$test-root/PlantProduction.nhd";
 subtest "Loading $module-file" => {
     my $parsed = Agrammon::ModuleParser.parsefile(
         $module-file,
-        actions => Agrammon::ModuleBuilder
+        actions => Agrammon::ModuleBuilder.new
     );
     ok $parsed, "Successfully parsed $module-file";
 
@@ -147,7 +147,7 @@ $module-file = "$test-root/DairyCow.nhd";
 subtest "Loading $module-file" => {
     my $parsed = Agrammon::ModuleParser.parsefile(
         $module-file,
-        actions => Agrammon::ModuleBuilder
+        actions => Agrammon::ModuleBuilder.new
     );
     ok $parsed, "Successfully parsed $module-file";
 
@@ -161,7 +161,7 @@ $module-file = "$test-root/Models/hr-limit-2010/Livestock/Poultry/Excretion.nhd"
 subtest "Loading $module-file" => {
     my $parsed = Agrammon::ModuleParser.parsefile(
         $module-file,
-        actions => Agrammon::ModuleBuilder
+        actions => Agrammon::ModuleBuilder.new
     );
     ok $parsed, "Successfully parsed $module-file";
     my $model = $parsed.ast;
