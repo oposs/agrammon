@@ -20,6 +20,8 @@ my $model-variants = (
     # 'Single_extendedOutput',
     # # model version for command line (checking N/TAN flows)
     # 'Single_checkBalance',
+    # # model version for command line (correct version of application emission -> default in the future)
+    # 'Single_correct',
     # # default model version for web (detailed reports, reduced variable output)
     # 'Single_default'
     );

@@ -25,66 +25,67 @@ taxonomy = Application::Slurry::Csoft
 
 
 *** input ***
- 
-+appl_evening 
-  type  = percent
-  default_calc = 0 
-  ++labels 
-    en = Share of slurry applied in the evening after 18:00
-    de = Anteil Gülleausbringung am Abend nach 18:00 Uhr
-    fr = Part de lisier épandu le soir après 18:00h
-  ++units  
-    en = %
-  ++description
-    Share of slurry applied in the evening after 18:00.
-  ++help
-    +++en
-       <p>Standard value for Switzerland: 20%</p>
-    +++de
-       <p>Vorschlag für Standardwert: 20%</p>
-    +++fr
-       <p>Proposition de valeur standard: 20%</p>
- 
-+appl_hotdays
-  type  = enum
-  default_calc = sometimes
-  ++enum
-    +++frequently
-       en = frequently
-       de = häufig
-       fr = fréquemment
-       it = frequently
-    +++sometimes
-       en = sometimes
-       de = manchmal
-       fr = parfois
-       it = sometimes
-    +++rarely
-       en = rarely
-       de = selten
-       fr = rarement
-       it = rarely
-    +++never
-       en = never
-       de = nie
-       fr = jamais
-       it = never
-  ++labels 
-    en = Frequency of slurry applied on hot days
-    de = Bringen Sie Gülle an für die Jahreszeit besonders warmen Tagen aus?
-    fr = Epandez-vous du lisier les jours particulièrement chauds pour la saison?
-  ++units 
-    en = -
-  ++description
-    Proportion of slurry applied on hot days.
-  ++help
-    +++en
-       <p>Standard value for Switzerland: sometimes</p>
-    +++de
-       <p>Vorschlag für Standardwert: manchmal</p>
-    +++fr
-       <p>Proposition de valeur standard: Parfois</p>
-       
+
+?if !Kantonal_LU 
+  +appl_evening 
+    type  = percent
+    default_calc = 0 
+    ++labels 
+      en = Share of slurry applied in the evening after 18:00
+      de = Anteil Gülleausbringung am Abend nach 18:00 Uhr
+      fr = Part de lisier épandu le soir après 18:00h
+    ++units  
+      en = %
+    ++description
+      Share of slurry applied in the evening after 18:00.
+    ++help
+      +++en
+         <p>Standard value for Switzerland: 20%</p>
+      +++de
+         <p>Vorschlag für Standardwert: 20%</p>
+      +++fr
+         <p>Proposition de valeur standard: 20%</p>
+   
+  +appl_hotdays
+    type  = enum
+    default_calc = sometimes
+    ++enum
+      +++frequently
+         en = frequently
+         de = häufig
+         fr = fréquemment
+         it = frequently
+      +++sometimes
+         en = sometimes
+         de = manchmal
+         fr = parfois
+         it = sometimes
+      +++rarely
+         en = rarely
+         de = selten
+         fr = rarement
+         it = rarely
+      +++never
+         en = never
+         de = nie
+         fr = jamais
+         it = never
+    ++labels 
+      en = Frequency of slurry applied on hot days
+      de = Bringen Sie Gülle an für die Jahreszeit besonders warmen Tagen aus?
+      fr = Epandez-vous du lisier les jours particulièrement chauds pour la saison?
+    ++units 
+      en = -
+    ++description
+      Proportion of slurry applied on hot days.
+    ++help
+      +++en
+         <p>Standard value for Switzerland: sometimes</p>
+      +++de
+         <p>Vorschlag für Standardwert: manchmal</p>
+      +++fr
+         <p>Proposition de valeur standard: Parfois</p>
+?endif         
 
 *** technical ***
 
@@ -145,8 +146,13 @@ The correction is omitted for solid manure since infiltration into soil does not
   ++description
   Correction factor of the emission rate if slurry is applied by
   considering  different kinds of "soft measures". 
+?if Kantonal_LU
+  ++formula
+    1 + 
+    Tech(c_hotdays_sometimes);
+?else
   ++formula
     1 + 
     In(appl_evening) / 100 * Tech(c_evening) + 
     $TE->{'c_hotdays_'.In(appl_hotdays)};
-
+?endif

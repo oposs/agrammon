@@ -33,47 +33,48 @@ taxonomy = Application::Slurry::Applrate
  
 *** input ***
 
-+dilution_parts_water
-  type  = float
-  default_calc = 1
-  validator = between(0,3);
-  ++labels 
-    en = Dilution of slurry (liters of water added to one liter of fresh excreta)
-    de = Gülleverdünnung (Liter Wasser pro Liter unverdünnter Gülle)
-    fr = Dilution du lisier (litres d'eau par litre de lisier non dilué)
-  ++units
-    en = 1:x
-  ++description
-   Specific slurry dilution. TAN contents have been calculated based on a
-   standard dilution of 1:1 with a TAN content of 1.15 kg N /m3.  
-  ++help
-    +++en
-       <p>Standard value for Switzerland: 1 part undiluted slurry to 1 part water</p>
-    +++de
-       <p>Vorschlag für Standardwert: 1:1</p>
-    +++fr
-       <p>Proposition de valeur standard: 1:1</p>
+?if !Kantonal_Lu
+  +dilution_parts_water
+    type  = float
+    default_calc = 1
+    validator = between(0,3);
+    ++labels 
+      en = Dilution of slurry (liters of water added to one liter of fresh excreta)
+      de = Gülleverdünnung (Liter Wasser pro Liter unverdünnter Gülle)
+      fr = Dilution du lisier (litres d'eau par litre de lisier non dilué)
+    ++units
+      en = 1:x
+    ++description
+     Specific slurry dilution. TAN contents have been calculated based on a
+     standard dilution of 1:1 with a TAN content of 1.15 kg N /m3.  
+    ++help
+      +++en
+         <p>Standard value for Switzerland: 1 part undiluted slurry to 1 part water</p>
+      +++de
+         <p>Vorschlag für Standardwert: 1:1</p>
+      +++fr
+         <p>Proposition de valeur standard: 1:1</p>
 
-+appl_rate
-  type  = float
-  default_calc = 30
-  validator = between(10,120); 
-  ++labels 
-    en = Mean dose per application
-    de = Mittlere Ausbringungsmenge pro Gabe
-    fr = Quantité moyenne apandue par application
-  ++units
-    en = m3/ha
-  ++description
-    Application rate, mean volume of slurry applied on a ha per deployment.
-  ++help
-    +++en
-       <p>Standard value for Switzerland: 30 m<sup>3</sup></p>
-    +++de
-       <p>Vorschlag für Standardwert: 30 m<sup>3</sup></p>
-    +++fr
-       <p>Proposition de valeur standard: 30 m<sup>3</sup></p>
-
+  +appl_rate
+    type  = float
+    default_calc = 30
+    validator = between(10,120); 
+    ++labels 
+      en = Mean dose per application
+      de = Mittlere Ausbringungsmenge pro Gabe
+      fr = Quantité moyenne apandue par application
+    ++units
+      en = m3/ha
+    ++description
+      Application rate, mean volume of slurry applied on a ha per deployment.
+    ++help
+      +++en
+         <p>Standard value for Switzerland: 30 m<sup>3</sup></p>
+      +++de
+         <p>Vorschlag für Standardwert: 30 m<sup>3</sup></p>
+      +++fr
+         <p>Proposition de valeur standard: 30 m<sup>3</sup></p>
+?endif
  
 *** technical ***
 
@@ -101,9 +102,16 @@ taxonomy = Application::Slurry::Applrate
   ++description
     TAN content of the slurry compared to the emission rate occuring with a
     standard application rate of 30 m3 and a TAN content of 1.15 kg N / m3.
+?if Kantonal_Lu
   ++formula
+    # dilution_parts_water = 1:
+    1.15;
+?else
+  ++formula
+    # TODO: check for TAN < 0.5 -> 0.5? -> ask Thomas
     2.3*(1/(In(dilution_parts_water)+1));
- 
+?endif
+
 +c_app
   print = 15
   format= %.5f
@@ -112,11 +120,22 @@ taxonomy = Application::Slurry::Applrate
   ++description
     Correction factor taking into account the slurry application rate per 
     ha and the TAN content of the slurry.
+?if Kantonal_Lu
   ++formula
-    if( (In(appl_rate) * Out(TAN_content)) > 0 ){
-       ( ( ( 19.41 * Out(TAN_content) + 4.2 * 1.102 - 9.51) * 
-       (In(appl_rate) * 0.0214 + 0.36)) /
-       (In(appl_rate) * Out(TAN_content)) - Tech(norm_er));
-    }else{ return 1; }
-    
+    my $appl_rate = 25;
+    (19.41 * Out(TAN_content) + 4.2 * 1.102 - 9.51) * 
+    ($appl_rate * 0.0214 + 0.36) /
+    ($appl_rate * Out(TAN_content)) - 
+    Tech(norm_er);
+?else
+  ++formula
+    if ( (In(appl_rate) * Out(TAN_content)) > 0 ) {
+       (19.41 * Out(TAN_content) + 4.2 * 1.102 - 9.51) * 
+       (In(appl_rate) * 0.0214 + 0.36) /
+       (In(appl_rate) * Out(TAN_content)) - 
+       Tech(norm_er);
+    } else { 
+      return 1; 
+    }
+?endif    
  
