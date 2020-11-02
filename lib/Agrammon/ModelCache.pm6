@@ -13,7 +13,7 @@ sub load-model-using-cache(IO() $cache-dir, IO() $path, $module, %preprocessor-o
             unit module {$hash};
             use Agrammon::Model;
             our $model = BEGIN Agrammon::Model
-                    .new(path => {$path.absolute.perl}.IO)
+                    .new(path => {$path.absolute.perl}.IO, preprocessor-options => {%preprocessor-options.raku})
                     .load({$module.perl}, :!compile-formulas);
             my @modules := $model.evaluation-order;
             {set-formulas-code($m)}
