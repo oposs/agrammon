@@ -72,7 +72,6 @@ class Agrammon::Model {
         has Agrammon::Model::Module $.module;
         has ModuleRunner @.dependencies;
         has Agrammon::Model::FilterSet $!filter-set;
-        has Agrammon::ModuleBuilder $!module-builder = Agrammon::ModuleBuilder.new;
         
         submethod TWEAK(--> Nil) {
             if $!module.is-multi {
@@ -147,6 +146,7 @@ class Agrammon::Model {
     has %.preprocessor-options;
     has Agrammon::Model::Module @.evaluation-order;
     has Agrammon::Model::Module @.load-order;
+    has Agrammon::ModuleBuilder $!module-builder = Agrammon::ModuleBuilder.new;
     has ModuleRunner $!entry-point;
     has %!output-unit-cache;
     has %!output-print-cache;
