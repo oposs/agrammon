@@ -28,7 +28,7 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
 
 *** output ***
 
-#?if Single_extendedOutput
+?if Single_extendedOutput
 
 +animals
   print = Equides
@@ -38,6 +38,8 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
     Number of dairy cows in barn.
   ++formula
     Val(animals, Equides::Excretion);
+
+?endif
 
 +animalcategory
   print = Equides
@@ -303,4 +305,4 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
 
 ########################
 
- #?endif
+#?endif
