@@ -62,15 +62,13 @@ class Agrammon::Outputs::FilterGroupCollection {
     #| selected will be included, even if no instance used them, and they will
     #| have a zero value.
     method results-by-filter-group(Bool :$all = False) {
-        if $all {
-            if %!values-by-filter && !$!provenance {
-                die "Can only get all values when provenance of the filter group was provided";
-            }
+        if $!provenance {
             my @results;
             for $!provenance.keys.sort(*.module.load-order) -> $filter-set {
                 for $filter-set.all-possible-filter-keys -> %filters {
                     my $key = FilterKey.new(:%filters);
-                    @results.push(%filters => %!values-by-filter{$key} // 0);
+                    $all ?? @results.push(%filters => %!values-by-filter{$key} // 0)
+                         !! @results.push(%filters => $_) with %!values-by-filter{$key};
                 }
             }
             with %!values-by-filter{FilterKey.empty} {
@@ -79,18 +77,7 @@ class Agrammon::Outputs::FilterGroupCollection {
             @results
         }
         else {
-#            @results = [%!values-by-filter.map({ .key.filters => .value })]
-            my @results;
-            for $!provenance.keys.sort(*.module.load-order) -> $filter-set {
-                for $filter-set.all-possible-filter-keys -> %filters {
-                    my $key = FilterKey.new(:%filters);
-                    @results.push(%filters => %!values-by-filter{$key} // 0) if %!values-by-filter{$key}:exists;
-                }
-            }
-            with %!values-by-filter{FilterKey.empty} {
-                @results.push({} => $_);
-            }
-            @results
+            [%!values-by-filter.map({ .key.filters => .value })]
         }
     }
 
