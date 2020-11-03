@@ -24,56 +24,55 @@ taxonomy = Application::SolidManure::Cseason
 
 
 *** input ***
- 
-+appl_summer
-  type  = percent
-  default_calc = 30
-  ++labels
-    en = Share of solid manure applied June to August (in %)
-    de = Ausbringung von Mist im Sommer (Juni, Juli, August): Anteil in Prozent
-    fr = Part de fumier épandu en été (de juin à août) (en %)
-  ++units
-    en = %
-  ++description
-    Share of solid manure applied June to August (in %).
-  ++help
-    +++en
-       <p>The categories “share of solid manure applied June to August” and “share of solid manure applied September to May” must add up to 100 %.</p>
-       <p>Standard value for Switzerland: 30 %.</p>
-    +++de
-       <p>Die Summe der Kategorien Ausbringung von Mist im Sommer (Juni, Juli, August) und Ausbringung von Mist von September bis und mit Mai muss 100% geben. </p>
-       <p>Vorschlag für Standardwerte: Talregion: 34 %; Hügelregion: 28 %; Bergregion: 22 %. Durchschnitt aller Regionen: 30 %.</p>
-    +++fr
-       <p>La somme des catégories «Part de fumier épandu en été (de juin à août)» et «Part de fumier épandu de septembre à mai y c.» doit donner 100%. </p>
-       <p>Proposition de valeur standard: région de plaine: 34%; région de collines: 28%; région de montagne: 22%. Moyenne de toutes les régions: 30%.</p>
 
+?if !Kantonal_LU 
+  +appl_summer
+    type  = percent
+    default_calc = 30
+    ++labels
+      en = Share of solid manure applied June to August (in %)
+      de = Ausbringung von Mist im Sommer (Juni, Juli, August): Anteil in Prozent
+      fr = Part de fumier épandu en été (de juin à août) (en %)
+    ++units
+      en = %
+    ++description
+      Share of solid manure applied June to August (in %).
+    ++help
+      +++en
+         <p>The categories “share of solid manure applied June to August” and “share of solid manure applied September to May” must add up to 100 %.</p>
+         <p>Standard value for Switzerland: 30 %.</p>
+      +++de
+         <p>Die Summe der Kategorien Ausbringung von Mist im Sommer (Juni, Juli, August) und Ausbringung von Mist von September bis und mit Mai muss 100% geben. </p>
+         <p>Vorschlag für Standardwerte: Talregion: 34 %; Hügelregion: 28 %; Bergregion: 22 %. Durchschnitt aller Regionen: 30 %.</p>
+      +++fr
+         <p>La somme des catégories «Part de fumier épandu en été (de juin à août)» et «Part de fumier épandu de septembre à mai y c.» doit donner 100%. </p>
+         <p>Proposition de valeur standard: région de plaine: 34%; région de collines: 28%; région de montagne: 22%. Moyenne de toutes les régions: 30%.</p>
 
- 
-+appl_autumn_winter_spring
-  type  = percent
-  default_calc = 70
-  ++labels
-    en  = Share of solid manure applied September to May (in %)
-    de = Ausbringung von Mist von September bis und mit Mai: Anteil in Prozent
-    fr = Part de fumier épandu de septembre à mai y.c. (en %)
-  ++units
-    en = %
-  ++description
-    Share of solid manure applied September to May (in %).
-  ++help
-    +++en
-       <p>
-       <p>The categories “share of solid manure applied June to August” and “share of solid manure applied September to May” must add up to 100 %.</p>
-       <p>Standard value for Switzerland: 70% (mean value Switzerland)</p>
-    +++de
-       <p>Die Summe der Kategorien Ausbringung von Mist im Sommer (Juni, Juli, August) und Ausbringung von Mist von September bis und mit Mai muss 100% geben. </p>
-       <p>Vorschlag für Standardwerte: Talregion: 66 %; Hügelregion: 72 %; Bergregion: 78 %. Durchschnitt aller Regionen: 70 %.</p>
-       <p>Gemäss Anhang 2.6 Ziffer 3.2.1 der Chemikalien-Risikoreduktions-Verordnung (ChemRRV), Abs. 1 dürfen stickstoffhaltige Dünger nur zu Zeiten ausgebracht werden, in denen die Pflanzen den Stickstoff aufnehmen können.</p>
-    +++fr
-       <p>La somme des catégories «Part de fumier épandu en été (de juin à août)» et «Part de fumier épandu de septembre à mai y c.» doit donner 100%. </p>
-       <p>Proposition de valeur standard: région de plaine: 66%; région de collines: 72%; région de montagne: 78%. Moyenne de toutes les régions: 70%.</p>
-       <p>Selon l'annexe 2.6, chiffre 3.2.1 de l'Ord. sur la réduction des risques liés aux produits chimiques (ORRChim), paragraphe 1, l'épandage d'engrais contenant de l'azote n'est autorisé que pendant les périodes où les plantes peuvent absorber l'azote.</p>
-
+  +appl_autumn_winter_spring
+    type  = percent
+    default_calc = 70
+    ++labels
+      en  = Share of solid manure applied September to May (in %)
+      de = Ausbringung von Mist von September bis und mit Mai: Anteil in Prozent
+      fr = Part de fumier épandu de septembre à mai y.c. (en %)
+    ++units
+      en = %
+    ++description
+      Share of solid manure applied September to May (in %).
+    ++help
+      +++en
+         <p>
+         <p>The categories “share of solid manure applied June to August” and “share of solid manure applied September to May” must add up to 100 %.</p>
+         <p>Standard value for Switzerland: 70% (mean value Switzerland)</p>
+      +++de
+         <p>Die Summe der Kategorien Ausbringung von Mist im Sommer (Juni, Juli, August) und Ausbringung von Mist von September bis und mit Mai muss 100% geben. </p>
+         <p>Vorschlag für Standardwerte: Talregion: 66 %; Hügelregion: 72 %; Bergregion: 78 %. Durchschnitt aller Regionen: 70 %.</p>
+         <p>Gemäss Anhang 2.6 Ziffer 3.2.1 der Chemikalien-Risikoreduktions-Verordnung (ChemRRV), Abs. 1 dürfen stickstoffhaltige Dünger nur zu Zeiten ausgebracht werden, in denen die Pflanzen den Stickstoff aufnehmen können.</p>
+      +++fr
+         <p>La somme des catégories «Part de fumier épandu en été (de juin à août)» et «Part de fumier épandu de septembre à mai y c.» doit donner 100%. </p>
+         <p>Proposition de valeur standard: région de plaine: 66%; région de collines: 72%; région de montagne: 78%. Moyenne de toutes les régions: 70%.</p>
+         <p>Selon l'annexe 2.6, chiffre 3.2.1 de l'Ord. sur la réduction des risques liés aux produits chimiques (ORRChim), paragraphe 1, l'épandage d'engrais contenant de l'azote n'est autorisé que pendant les périodes où les plantes peuvent absorber l'azote.</p>
+?endif
  
 *** technical ***
 
@@ -106,8 +105,13 @@ Model calculation according to the model of Katz (Menzi et al. 1997b) with meteo
     en = -
   ++description
     .
+?if Kantonal_LU
   ++formula
-      return (In(appl_summer)/100);
+    0.5;
+?else
+  ++formula
+    In(appl_summer) / 100;
+?endif
 
 +appl_autumn_winter_spring
   print = 22
@@ -115,8 +119,13 @@ Model calculation according to the model of Katz (Menzi et al. 1997b) with meteo
     en = -
   ++description
     .
+?if Kantonal_LU
   ++formula
-      return (In(appl_autumn_winter_spring)/100);
+    0.5;
+?else
+  ++formula
+    In(appl_autumn_winter_spring) / 100;
+?endif
 
 +c_season
   print = 15
@@ -126,7 +135,7 @@ Model calculation according to the model of Katz (Menzi et al. 1997b) with meteo
     Correction factor of the standard emission rate depending on season of 
     application.
   ++formula
-    if( abs(In(appl_summer)+In(appl_autumn_winter_spring)-100) < 0.000001 ){
+    if( abs(Out(appl_summer)+Out(appl_autumn_winter_spring) - 1) < 0.000001 ){
         (1 + ( Out(appl_summer) * Tech(c_summer) +
     	Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
     }

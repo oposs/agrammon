@@ -81,12 +81,12 @@ livestock. Atmospheric Environment 35:5331-5338.
        de = Boden_planbefestigt
        fr = sol_en_dur
        it = solid_floor
-?if !Kantonal_LU
     +++unpaved_floor
        en = unpaved_floor
        de = Boden_unbefestigt
        fr = sol_sans_revêtement_dur
        it = unpaved_floor
+?if !Kantonal_LU
     +++paddock_or_pasture_used_as_exercise_yard
        en = paddock_or_pasture_used_as_exercise_yard
        de = kein_Laufhof:_Auslauf_auf_Weide

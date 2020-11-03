@@ -105,7 +105,9 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 +Slurry::Csoft
 +Slurry::Cseason
 +Slurry::Cfermented
-+Slurry::CfreeFactor
+?if !Kantonal_LU
+  +Slurry::CfreeFactor
+?endif
 
 *** output ***
 
@@ -113,33 +115,34 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 ####################################################
 #### liquid application old (incorrect) way
 
-+pigs_share_n_out_livestock_liquid
-  print = share      
-  ++units 
-    en = -
-  ++description
-    Pigs share of N flux out of livestock liquid manure
-  ++formula
-    scalar(
-      multiplyPairwise(
-        Val(has_pigs, ::Livestock),
-        Val(n_out_livestock_liquid, ::Livestock)
-      )
-    ) / scalar(Val(n_out_livestock_liquid, ::Livestock));
+?if !Single_correct
+  +pigs_share_n_out_livestock_liquid
+    print = old      
+    ++units 
+      en = -
+    ++description
+      Pigs share of N flux out of livestock liquid manure
+    ++formula
+      scalar(
+        multiplyPairwise(
+          Val(has_pigs, ::Livestock),
+          Val(n_out_livestock_liquid, ::Livestock)
+        )
+      ) / scalar(Val(n_out_livestock_liquid, ::Livestock));
 
-+er_App_liquid
-  print = er_nh3,application,liquid,all       
-  ++units 
-    en = -
-  ++description
-    Emission rate for slurry application based on TAN of the slurry. The 
-    average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al (1998), Menzi et al. (1997a) and Sogaard et al. (2002)
-  ++formula
-    Out(pigs_share_n_out_livestock_liquid) * 
-    Tech(er_App_pigs_liquid) + 
-    (1 - Out(pigs_share_n_out_livestock_liquid)) * 
-    Tech(er_App_cattle_liquid);
-
+  +er_App_liquid
+    print = old      
+    ++units 
+      en = -
+    ++description
+      Emission rate for slurry application based on TAN of the slurry. The 
+      average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al (1998), Menzi et al. (1997a) and Sogaard et al. (2002)
+    ++formula
+      Out(pigs_share_n_out_livestock_liquid) * 
+      Tech(er_App_pigs_liquid) + 
+      (1 - Out(pigs_share_n_out_livestock_liquid)) * 
+      Tech(er_App_cattle_liquid);
+?endif
 
 +nh3_napplication_liquid
   print = nh3,application,liquid,all
@@ -150,12 +153,13 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NH3 emission from slurry application.
   ++formula
-    scale( 
+?if !Single_correct
+    #### liquid application old incorrect way
+    my $nh3_loss = scale( 
       Val(tan_into_application_liquid, ::Storage),
       Val(c_tech, Slurry::Ctech) *
       Val(c_soft, Slurry::Csoft) *
       Val(c_season, Slurry::Cseason) *
-      Val(c_free_factor_application, Slurry::CfreeFactor) *
       (
         (1 - Val(share_fermented_slurry, Slurry::Cfermented)) *
         Out(er_App_liquid) +
@@ -164,77 +168,9 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
         Val(c_app, Slurry::Applrate)
       )
     );
-
-####################################################
-
-
-####################################################
-#### liquid application correct way (implement and clean up as soon as permitted)
-
-## better (but still incorrect) way
-+pigs_share_tan_out_livestock_liquid
-  print = share      
-  ++units 
-    en = -
-  ++description
-    Pigs share of TAN flux out of livestock liquid manure
-  ++formula
-    scalar(
-      multiplyPairwise(
-        Val(has_pigs, ::Livestock),
-        Val(tan_out_livestock_liquid, ::Livestock)
-      )
-    ) / scalar(Val(tan_out_livestock_liquid, ::Livestock));
-
-+er_App_liquid_better
-  print = er_nh3_better,application,liquid,all        
-  ++units 
-    en = -
-  ++description
-    Emission rate for slurry application based on TAN of the slurry. The 
-    average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al (1998), Menzi et al. (1997a) and Sogaard et al. (2002)
-  ++formula
-    Out(pigs_share_tan_out_livestock_liquid) * 
-    Tech(er_App_pigs_liquid) + 
-    (1 - Out(pigs_share_tan_out_livestock_liquid)) * 
-    Tech(er_App_cattle_liquid);
-
-+nh3_napplication_liquid_better
-  print = nh3_better,application,liquid,all
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Total annual NH3 emission from slurry application.
-  ++formula
-    scale( 
-      Val(tan_into_application_liquid, ::Storage),
-      Val(c_tech, Slurry::Ctech) *
-      Val(c_soft, Slurry::Csoft) *
-      Val(c_season, Slurry::Cseason) *
-      Val(c_free_factor_application, Slurry::CfreeFactor) *
-      (
-        (1 - Val(share_fermented_slurry, Slurry::Cfermented)) *
-        Out(er_App_liquid_better) +
-        Val(share_fermented_slurry, Slurry::Cfermented) *
-        Tech(er_App_fermented_slurry) + 
-        Val(c_app, Slurry::Applrate)
-      )
-    );
-
-
-## correct total flow & detail report based on actual flow into application
-+nh3_napplication_liquid_correct
-  print = nh3_correct,application,liquid,all
-  ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
-  ++description
-    Total annual NH3 emission from slurry application.
-  ++formula
-    scale(
+?else
+    #### liquid application correct way (implement and clean up as soon as permitted)
+    my $nh3_loss = scale(
       # only pigs
       scale(
         multiplyPairwise(
@@ -263,18 +199,31 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       # other factors affecting emission
       Val(c_tech, Slurry::Ctech) *
       Val(c_soft, Slurry::Csoft) *
-      Val(c_season, Slurry::Cseason) *
-      Val(c_free_factor_application, Slurry::CfreeFactor)
+      Val(c_season, Slurry::Cseason)
     );
+?endif
+?if Kantonal_LU
+    $nh3_loss;
+?else
+    $nh3_loss *
+    Val(c_free_factor_application, Slurry::CfreeFactor);
+?endif
 
-+er_nh3_application_liquid_correct
-  print = er_nh3_correct,application,liquid,all
+####################################################
+
+
+####################################################
+
++ef_nh3_application_liquid_correct
+  print = ef_nh3,application,liquid
   ++units  
-    en = 
+    en = -
+    de = -
+    fr = -
   ++description
-    Emission rate
+    NH3 Emission factor slurry application.
   ++formula
-    Out(nh3_napplication_liquid_correct) P/
+    Out(nh3_napplication_liquid) P/
       (
         Val(tan_into_application_liquid, ::Storage) P+
         add(

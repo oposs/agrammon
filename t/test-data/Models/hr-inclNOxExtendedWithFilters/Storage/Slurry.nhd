@@ -65,56 +65,56 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     +++fr
        <p>Proposition de valeur standard: 2.5 m</p>
 
-+mixing_frequency
-  type = enum
-#  default_calc = 7_to_12_times_per_year
-  ++enum
-    +++at_most_2_times_per_year
-       en = at_most_2_times_per_year
-       de = maximal_2_mal_jährlich
-       fr = au_maximum_2_fois_par_an
-       it = at_most_2_times_per_year
-    +++3_to_6_times_per_year
-       en = 3_to_6_times_per_year
-       de = 3_bis_6_mal_pro_Jahr
-       fr = 3_à_6_fois_par_an
-       it = 3_to_6_times_per_year
-    +++7_to_12_times_per_year
-       en = 7_to_12_times_per_year
-       de = 7_bis_12_mal_pro_Jahr
-       fr = 7_à_12_fois_par_an
-       it = 7_to_12_times_per_year
-    +++13_to_20_times_per_year
-       en = 13_to_20_times_per_year
-       de = 13_bis_20_mal_pro_Jahr
-       fr = 13_à_20_fois_par_an
-       it = 13_to_20_times_per_year
-    +++21_to_30_times_per_year
-       en = 21_to_30_times_per_year
-       de = 21_bis_30_mal_pro_Jahr
-       fr = 21_à_30_fois_par_an
-       it = 21_to_30_times_per_year
-    +++more_than_30_times_per_year
-       en = more_than_30_times_per_year
-       de = mehr_als_30_mal_pro_Jahr
-       fr = plus_que_30_fois_par_an
-       it = more_than_30_times_per_year
-  ++labels
-    en = Frequency of slurry mixing
-    de = Häufigkeit Aufrühren des Güllelagers
-    fr = Fréquence de brassage du stock de lisier par an
-  ++units
-    en = -
-  ++description
-    Frequency of mixing of slurry store.
-  ++help
-    +++en
-       <p>Standard value for Switzerland: 7 to 12 times per year</p>
-    +++de
-       <p>Vorschlag für Standardwert: 7 bis 12 mal pro Jahr</p>
-    +++fr
-       <p>Proposition de valeur standard: 7-12 fois par an</p>
-
+?if !Kantonal_LU
+  +mixing_frequency
+    type = enum
+    ++enum
+      +++at_most_2_times_per_year
+         en = at_most_2_times_per_year
+         de = maximal_2_mal_jährlich
+         fr = au_maximum_2_fois_par_an
+         it = at_most_2_times_per_year
+      +++3_to_6_times_per_year
+         en = 3_to_6_times_per_year
+         de = 3_bis_6_mal_pro_Jahr
+         fr = 3_à_6_fois_par_an
+         it = 3_to_6_times_per_year
+      +++7_to_12_times_per_year
+         en = 7_to_12_times_per_year
+         de = 7_bis_12_mal_pro_Jahr
+         fr = 7_à_12_fois_par_an
+         it = 7_to_12_times_per_year
+      +++13_to_20_times_per_year
+         en = 13_to_20_times_per_year
+         de = 13_bis_20_mal_pro_Jahr
+         fr = 13_à_20_fois_par_an
+         it = 13_to_20_times_per_year
+      +++21_to_30_times_per_year
+         en = 21_to_30_times_per_year
+         de = 21_bis_30_mal_pro_Jahr
+         fr = 21_à_30_fois_par_an
+         it = 21_to_30_times_per_year
+      +++more_than_30_times_per_year
+         en = more_than_30_times_per_year
+         de = mehr_als_30_mal_pro_Jahr
+         fr = plus_que_30_fois_par_an
+         it = more_than_30_times_per_year
+    ++labels
+      en = Frequency of slurry mixing
+      de = Häufigkeit Aufrühren des Güllelagers
+      fr = Fréquence de brassage du stock de lisier par an
+    ++units
+      en = -
+    ++description
+      Frequency of mixing of slurry store.
+    ++help
+      +++en
+         <p>Standard value for Switzerland: 7 to 12 times per year</p>
+      +++de
+         <p>Vorschlag für Standardwert: 7 bis 12 mal pro Jahr</p>
+      +++fr
+         <p>Proposition de valeur standard: 7-12 fois par an</p>
+?endif
 
 
 *** technical ***
@@ -190,10 +190,15 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
   ++description
     Correction factor for number of mixing frequency in storage, accoording to
     selected levels.
+?if Kantonal_LU
+  ++formula
+    return Tech(c_mixing_7_to_12_times_per_year);
+?else
   ++formula
     # needs warning here
     my $mixing = In(mixing_frequency) // '7_to_12_times_per_year';
     return $TE->{'c_mixing_' . $mixing};
+?endif
 
 +depth
   ++units
@@ -234,11 +239,18 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     fr = kg N/an
   ++description
     Annual NH3 emission from slurry storage.
+?if Kantonal_LU
+  ++formula
+    Val(er_nh3_storage_liquid_pigs, Slurry::EFLiquid) * 
+    Out(surface_area) * 
+    Out(c_mixing);
+?else
   ++formula
     Val(er_nh3_storage_liquid_pigs, Slurry::EFLiquid) * 
     Out(surface_area) * 
     Out(c_mixing) * 
     Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;
+?endif
 
 +nh3_ntank_liquid_cattle
   print = newStorage
@@ -248,8 +260,15 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     fr = kg N/an
   ++description
     Annual NH3 emission from slurry storage.
+?if Kantonal_LU
+  ++formula
+    Val(er_nh3_storage_liquid_cattle, Slurry::EFLiquid) * 
+    Out(surface_area) * 
+    Out(c_mixing);
+?else
   ++formula
     Val(er_nh3_storage_liquid_cattle, Slurry::EFLiquid) * 
     Out(surface_area) * 
     Out(c_mixing) * 
     Val(c_free_factor_storage_slurry, Slurry::EFLiquid) ;
+?endif
