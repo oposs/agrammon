@@ -94,7 +94,9 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 +::Livestock
 +Solid::CincorpTime
 +Cseason
-+CfreeFactor
+?if !Kantonal_LU
+  +CfreeFactor
+?endif
 
 *** output ***
 
@@ -108,6 +110,29 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
     fr = 
   ++description
     NH3 emission rates for solid manure application from all animal categories except poultry.
+?if Kantonal_LU
+  ++formula
+    scale(
+      # er cattle
+      scale(
+        Val(has_cattle, ::Livestock),
+        Tech(er_App_manure_dairycows_cattle)
+      ) P+
+      # er pigs
+      scale(
+        Val(has_pigs, ::Livestock),
+        Tech(er_App_manure_pigs)
+      ) P+
+      # er others
+      scale(
+        Val(has_others, ::Livestock),
+        Tech(er_App_manure_horses_otherequides_smallruminants)
+      ),
+      # other factors
+      Val(c_incorp_time, Solid::CincorpTime) *
+      Val(c_season, Cseason)
+    );
+?else
   ++formula
     scale(
       # er cattle
@@ -130,6 +155,7 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
       Val(c_season, Cseason) *
       Val(c_free_factor_application_solidmanure, CfreeFactor)
     );
+?endif
 
 ##### er n2
 +er_n2_napplication_solid_no_poultry
