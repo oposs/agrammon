@@ -3,9 +3,9 @@
 ************************************************************************ */
 
 /**
- * @asset(Agrammon/info.png)
- * @asset(Agrammon/nh3.png)
- * @asset(Agrammon/nh3-rotate.gif)
+ * @asset(agrammon/info.png)
+ * @asset(agrammon/nh3.png)
+ * @asset(agrammon/nh3-rotate.gif)
  * @asset(qx/icon/${qx.icontheme}/16/actions/document-send.png)
  * @asset(qx/icon/${qx.icontheme}/16/apps/utilities-statistics.png)
  * @asset(qx/icon/${qx.icontheme}/16/apps/office-spreadsheet.png)

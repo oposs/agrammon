@@ -9,7 +9,7 @@
  * @asset(qx/icon/${qx.icontheme}/16/actions/window-close.png)
  * @asset(qx/icon/${qx.icontheme}/16/apps/office-calendar.png)
  * @asset(qx/icon/${qx.icontheme}/16/apps/office-database.png)
- * @asset(Agrammon/read-only_ts.png)
+ * @asset(agrammon/read-only_ts.png)
  */
 
 qx.Class.define('agrammon.module.dataset.DatasetTable', {
@@ -511,7 +511,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                                                                              this.tr("Dataset name")));
             tcm.setHeaderCellRenderer(1, new qx.ui.table.headerrenderer.Icon("icon/16/apps/office-calendar.png",
                                                                              this.tr("Last change")));
-            tcm.setHeaderCellRenderer(3, new qx.ui.table.headerrenderer.Icon("Agrammon/read-only_ts.png",
+            tcm.setHeaderCellRenderer(3, new qx.ui.table.headerrenderer.Icon("agrammon/read-only_ts.png",
                                                                              this.tr("Read-only")));
 
             tcm.setDataCellRenderer(this.__commentColumn, new agrammon.ui.table.cellrenderer.Comment());

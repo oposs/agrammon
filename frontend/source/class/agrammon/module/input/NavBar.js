@@ -3,7 +3,7 @@
 ************************************************************************ */
 
 /**
-  * @asset(Agrammon/*)
+  * @asset(agrammon/*)
   */
 
 qx.Class.define('agrammon.module.input.NavBar', {
@@ -47,7 +47,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
         this.__rootFolder = new Object; // set in _getInputVariables()
         this.__propEditor = propEditor;
         this.__navHash    = new Object;
-        this.__navTree    = new qx.ui.tree.Tree('Agrammon','Agrammon/nh3.png');
+        this.__navTree    = new qx.ui.tree.Tree('Agrammon','agrammon/nh3.png');
         this.__navTree.set({backgroundColor:'white',
                           padding:0,
                           width:200,
@@ -223,7 +223,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                                                     'root',   // name
                                                     null      // instanceOrder
                                                    );
-        _rootFolder.setIcon('Agrammon/nh3.png');
+        _rootFolder.setIcon('agrammon/nh3.png');
         this.__rootFolder = _rootFolder;
         this.__navTree.setRoot(_rootFolder);
 
@@ -698,7 +698,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             }
 
             this.buildTree();
-            this.__rootFolder.setIcon('Agrammon/nh3.png');
+            this.__rootFolder.setIcon('agrammon/nh3.png');
             this.__rootFolder.isComplete(0); // set icons
             return;
         }, // __getInputVariables()
@@ -728,7 +728,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             }
             this.debug('__getInput(): dataset.name='+dataset.name);
             // next line must be here
-            this.__rootFolder.setIcon('Agrammon/nh3-rotate.gif');
+            this.__rootFolder.setIcon('agrammon/nh3-rotate.gif');
             // FIX ME: where should this really be
             qx.event.message.Bus.dispatchByName('agrammon.PropTable.clear');
             this.__rpc.callAsyncSmart( this.getInputVariablesHandler,

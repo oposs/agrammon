@@ -4,7 +4,7 @@
 
 /**
  * @asset(qx/icon/${qx.icontheme}/16/apps/office-database.png)
- * @asset(Agrammon/*)
+ * @asset(agrammon/*)
  */
 
 qx.Class.define('agrammon.module.dataset.DatasetTableSimple', {
@@ -168,7 +168,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTableSimple', {
                                                                              this.tr("Dataset name")));
             tcm.setHeaderCellRenderer(1, new qx.ui.table.headerrenderer.Icon("icon/16/apps/office-calendar.png",
                                                                              this.tr("Last change")));
-            tcm.setHeaderCellRenderer(3, new qx.ui.table.headerrenderer.Icon("Agrammon/read-only_ts.png",
+            tcm.setHeaderCellRenderer(3, new qx.ui.table.headerrenderer.Icon("agrammon/read-only_ts.png",
                                                                              this.tr("Read-only")));
 
             // setup Smart filtering

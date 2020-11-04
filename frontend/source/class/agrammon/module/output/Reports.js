@@ -3,9 +3,9 @@
 ************************************************************************ */
 
 /**
- * @asset(Agrammon/info.png)
- * @asset(Agrammon/nh3.png)
- * @asset(Agrammon/nh3-rotate.gif)
+ * @asset(agrammon/info.png)
+ * @asset(agrammon/nh3.png)
+ * @asset(agrammon/nh3-rotate.gif)
  * @asset(qx/icon/${qx.icontheme}/16/actions/document-send.png)
  * @asset(qx/icon/${qx.icontheme}/16/apps/utilities-statistics.png)
  * @asset(qx/icon/${qx.icontheme}/16/apps/office-spreadsheet.png)
@@ -45,7 +45,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                                        this.__setModelVariant, this);
 
 
-        this.busyIcon = new qx.ui.basic.Atom('','Agrammon/nh3.png');
+        this.busyIcon = new qx.ui.basic.Atom('','agrammon/nh3.png');
 
         // Output selection
         this.selectLabel = new qx.ui.basic.Label(this.tr("Choose table: "));
@@ -132,7 +132,7 @@ qx.Class.define('agrammon.module.output.Reports', {
         tableModel.setColumnSortable(7,false);
         this.add(outputTable, { flex : 1 });
 
-        var logBox = new qx.ui.groupbox.GroupBox(this.tr("Simulation log"), 'Agrammon/info.png');
+        var logBox = new qx.ui.groupbox.GroupBox(this.tr("Simulation log"), 'agrammon/info.png');
         logBox.setLayout(new qx.ui.layout.VBox(5));
         var scrollBox = new qx.ui.container.Stack();
         scrollBox.setMaxHeight(250);
@@ -565,7 +565,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             qx.event.message.Bus.dispatchByName('agrammon.PropTable.stop');
             if ( ! this.referenceData.isValid() ) {
                 this.__logAreaReference.setLabel(null);
-                this.busyIcon.setIcon('Agrammon/nh3-rotate.gif');
+                this.busyIcon.setIcon('agrammon/nh3-rotate.gif');
                 this.__outputPending++;
                 this.debug('Getting reference data');
                 this.debug('Output pending: ' + this.__outputPending);
@@ -573,7 +573,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             }
             if (! this.outputData.isValid()) {
                 this.__logAreaOutput.setLabel(null);
-                this.busyIcon.setIcon('Agrammon/nh3-rotate.gif');
+                this.busyIcon.setIcon('agrammon/nh3-rotate.gif');
                 this.__outputPending++;
                 this.debug('Getting output data');
                 this.debug('Output pending: ' + this.__outputPending);
@@ -587,7 +587,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             this.debug('Received: ' + dataset);
             this.debug('Output pending: ' + this.__outputPending);
             if (this.__outputPending == 0) {
-                this.busyIcon.setIcon('Agrammon/nh3.png');
+                this.busyIcon.setIcon('agrammon/nh3.png');
                 this.selectMenu.setEnabled(true);
                 this.selectLabel.setEnabled(true);
             }
