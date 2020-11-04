@@ -3,7 +3,7 @@
 ************************************************************************ */
 
 /**
- * @asset(Agrammon/help-about.png)
+ * @asset(agrammon/help-about.png)
  * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
  * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
  */
@@ -79,7 +79,7 @@ qx.Class.define('agrammon.module.user.Login', {
 
         var btnHelp =
             new qx.ui.form.Button(this.tr("Help"),
-                                  "Agrammon/help-about.png");
+                                  "agrammon/help-about.png");
         var btnCancel =
             new qx.ui.form.Button(this.tr("Cancel"),
                                   "icon/16/actions/dialog-cancel.png");

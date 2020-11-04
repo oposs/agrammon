@@ -10,7 +10,7 @@
 ************************************************************************ */
 
 /**
- * @asset(Agrammon/info_s.png)
+ * @asset(agrammon/info_s.png)
  */
 
 qx.Class.define('agrammon.module.input.Variable', {
@@ -44,7 +44,7 @@ qx.Class.define('agrammon.module.input.Variable', {
         units:        { init: null, nullable: true},
         order:        { init: null, nullable: true},
         desc:         { init: null, nullable: true},
-        helpIcon:     { init: 'Agrammon/info_s.png', nullable: true},
+        helpIcon:     { init: 'agrammon/info_s.png', nullable: true},
         helpFunction: { init: null, nullable: true}
     },
 

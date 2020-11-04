@@ -9,7 +9,7 @@
  @asset(qx/icon/${qx.icontheme}/16/actions/go-next.png)
  @asset(qx/icon/${qx.icontheme}/16/actions/go-previous.png)
  @asset(qx/icon/${qx.icontheme}/16/apps/office-database.png)
- @asset(Agrammon/tags_ts.png)
+ @asset(agrammon/tags_ts.png)
  */
 
 qx.Class.define('agrammon.module.dataset.DatasetTool', {
@@ -741,7 +741,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
             }, this);
 
             this.__btnAdvanced = new qx.ui.toolbar.CheckBox();
-            this.__btnAdvanced.setIcon('Agrammon/tags_ts.png');
+            this.__btnAdvanced.setIcon('agrammon/tags_ts.png');
             if (this.__advancedMode) {
                  this.__btnAdvanced.setLabel(this.tr("Hide tags"));
             }

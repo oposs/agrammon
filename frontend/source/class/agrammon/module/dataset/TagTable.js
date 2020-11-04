@@ -3,7 +3,7 @@
 ************************************************************************ */
 
 /**
- * @asset(Agrammon/tags_ts.png)
+ * @asset(agrammon/tags_ts.png)
  */
 
 qx.Class.define('agrammon.module.dataset.TagTable', {
@@ -199,7 +199,7 @@ qx.Class.define('agrammon.module.dataset.TagTable', {
             table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
 
             table.getTableColumnModel().setHeaderCellRenderer(0,
-                                                              new qx.ui.table.headerrenderer.Icon("Agrammon/tags_ts.png",
+                                                              new qx.ui.table.headerrenderer.Icon("agrammon/tags_ts.png",
                                                               title));
             table.getDataRowRenderer().setHighlightFocusRow(false);
             if (indexed) {

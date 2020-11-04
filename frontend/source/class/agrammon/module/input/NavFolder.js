@@ -3,7 +3,7 @@
 ************************************************************************ */
 
 /**
- * @asset(Agrammon/*)
+ * @asset(agrammon/*)
  */
 
 
@@ -250,24 +250,24 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             // no direct data
             if (this.isPlain()) {
                 if (complete == undefined) {
-                    this.setIcon('Agrammon/grey-dot.png');
+                    this.setIcon('agrammon/grey-dot.png');
                 }
                 else if (complete) {
-                    this.setIcon('Agrammon/green-dot.png');
+                    this.setIcon('agrammon/green-dot.png');
                 }
                 else {
-                    this.setIcon('Agrammon/red-dot.png');
+                    this.setIcon('agrammon/red-dot.png');
                 }
             }
             if (this.canInstance()) {
                 if (complete == undefined) {
-                    this.setIcon('Agrammon/empty-circle.png');
+                    this.setIcon('agrammon/empty-circle.png');
                 }
                 else if (complete) {
-                    this.setIcon('Agrammon/green-circle.png');
+                    this.setIcon('agrammon/green-circle.png');
                 }
                 else {
-                    this.setIcon('Agrammon/red-circle.png');
+                    this.setIcon('agrammon/red-circle.png');
                 }
             }
             if (this.isRoot()) {
@@ -291,7 +291,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         isComplete: function(nset) {
 
             if (this.canInstance()) { // no data here
-                this.setIcon('Agrammon/empty-circle.png');
+                this.setIcon('grammon/empty-circle.png');
             }
 
             if (! this.isInstance() && ! this.isSingleton()) {
@@ -307,7 +307,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             var len = this.__propData.length;
             // no variables
             if (len == 0) {
-                this.setIcon('Agrammon/grey-dot.png');
+                this.setIcon('agrammon/grey-dot.png');
                 return false;
             }
 //           this.debug('isComplete(): checking folderName=' + this.getName());
@@ -354,10 +354,10 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             }
 
             if (complete) {
-                this.setIcon('Agrammon/green-dot.png');
+                this.setIcon('grammon/green-dot.png');
             }
             else {
-                this.setIcon('Agrammon/red-dot.png');
+                this.setIcon('agrammon/red-dot.png');
             }
             return complete;
         }, // isComplete

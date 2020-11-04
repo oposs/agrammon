@@ -3,9 +3,9 @@
 ************************************************************************ */
 
 /**
- * @asset(Agrammon/info.png)
- * @asset(Agrammon/nh3.png)
- * @asset(Agrammon/nh3-rotate.gif)
+ * @asset(agrammon/info.png)
+ * @asset(agrammon/nh3.png)
+ * @asset(agrammon/nh3-rotate.gif)
  */
 
 
@@ -34,7 +34,7 @@ qx.Class.define('agrammon.module.output.Graphs', {
                                         this.__enabled, this);
         this.addListener("appear", this.__appear, this);
 
-        this.__busyIcon = new qx.ui.basic.Atom('','Agrammon/nh3.png');
+        this.__busyIcon = new qx.ui.basic.Atom('','agrammon/nh3.png');
 
         // Output selection
         var selectLabel = new qx.ui.basic.Label(this.tr("Choose table: "));
@@ -60,7 +60,7 @@ qx.Class.define('agrammon.module.output.Graphs', {
         graphBox.setMinHeight(300);
         this.__graphBox = graphBox;
         this.add(graphBox, {flex:1});
-        var logBox = new qx.ui.groupbox.GroupBox(this.tr("Simulation log"), 'Agrammon/info.png');
+        var logBox = new qx.ui.groupbox.GroupBox(this.tr("Simulation log"), 'agrammon/info.png');
         var scroll = new qx.ui.container.Scroll().set({
             maxHeight: 200,
             height: null,
@@ -453,18 +453,18 @@ qx.Class.define('agrammon.module.output.Graphs', {
             }
             qx.event.message.Bus.dispatchByName('agrammon.PropTable.stop');
             if ( ! this.referenceData.isValid() ) {
-                this.__busyIcon.setIcon('Agrammon/nh3-rotate.gif');
+                this.__busyIcon.setIcon('agrammon/nh3-rotate.gif');
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getReference');
             }
             if (! this.outputData.isValid()) {
-                this.__busyIcon.setIcon('Agrammon/nh3-rotate.gif');
+                this.__busyIcon.setIcon('agrammon/nh3-rotate.gif');
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
             }
         },
 
         __dataReady: function(msg) {
 //            var dataset = msg.getData();
-            this.__busyIcon.setIcon('Agrammon/nh3.png');
+            this.__busyIcon.setIcon('agrammon/nh3.png');
             this.selectMenu.setEnabled(true);
             this.selectLabel.setEnabled(true);
             var logText, log;

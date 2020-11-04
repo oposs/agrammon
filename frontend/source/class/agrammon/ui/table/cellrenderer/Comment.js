@@ -17,7 +17,7 @@
 ************************************************************************ */
 
 /**
- * @asset(Agrammon/*)
+ * @asset(agrammon/*)
  * @asset(qx/icon/${qx.icontheme}/16/actions/list-add.png)
  * @asset(qx/icon/${qx.icontheme}/16/apps/utilities-text-editor.png)
  */
@@ -84,7 +84,7 @@ qx.Class.define('agrammon.ui.table.cellrenderer.Comment', {
         imageHints.url = this.__am.resolve('icon/16/actions/list-add.png');
       } else {
         imageHints.url = this.__am.resolve('icon/16/apps/utilities-text-editor.png');
-//        imageHints.url = this.__am.resolve('Agrammon/comment.png');
+//        imageHints.url = this.__am.resolve('agrammon/comment.png');
       }
 
       imageHints.tooltip = cellInfo.tooltip;
