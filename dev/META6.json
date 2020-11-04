@@ -1,6 +1,6 @@
 {
   "name": "Agrammon",
-  "description": "Simulation model for calculating ammonia emissions from agriculture.",
+  "description": "Simulation model for calculating ammonia and NOx emissions from agriculture.",
   "version": "6.0.0-beta",
   "perl": "6.*",
   "authors": [
