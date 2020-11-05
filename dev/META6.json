@@ -18,7 +18,7 @@
     "OO::Monitors",
     "Shell::Command",
     "LibXML:ver<0.5.10>",
-    "Spreadsheet::XLSX",
+    "Spreadsheet::XLSX:ver<0.2+>",
     "Text::CSV",
     "YAMLish"
   ],
