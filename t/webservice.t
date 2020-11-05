@@ -371,7 +371,10 @@ subtest "get-excel-export" => {
     );
     ok my $workbook = $ws.get-excel-export($user, %params);
 
-    is $workbook.worksheets[0;0].name,  'Ergebnisse', "Excel workbook has correct name";
+    is $workbook.worksheets[0;0].name,  'Ergebnisse',                   "Excel workbook has correct name";
+    is $workbook.worksheets[1;0].name,  'Ergebnisse formatiert',        "Excel workbook has correct name";
+    is $workbook.worksheets[2;0].name,  'Eingabe-Parameter',            "Excel workbook has correct name";
+    is $workbook.worksheets[3;0].name,  'Eingabe-Parameter formatiert', "Excel workbook has correct name";
 
     # TODO: add real tests once implementation is complete
     my $cells = $workbook.worksheets[0].cells;
