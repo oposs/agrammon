@@ -135,13 +135,16 @@ class Agrammon::Web::Service {
         my $dataset-name = %params<datasetName>;
         my $language     = %params<language>;
         my $with-filters = %params<withFilters>;
+        my $prints = %params<reports>;
 
-        my %inputs; # TODO: handle inputs
+        # TODO: handle inputs
+        # my %inputs;
+
         my $outputs = self!get-outputs($user, $dataset-name);
         output-as-excel(
             $dataset-name,
-            $!model, $outputs, $language,
-            $with-filters
+            $!model, $outputs, $language, $prints,
+            $with-filters, :all-filters(False)
         );
     }
 
