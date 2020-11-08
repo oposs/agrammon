@@ -122,7 +122,7 @@ subtest 'Get excel export' => {
                 body => {
                     :datasetName('TestSingle'),
                     :language('de'),
-                    :withFilters(False)
+                    :!withFilters
                 }),
                 status => 200;
         };
