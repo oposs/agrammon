@@ -8,7 +8,7 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 12;
+plan 13;
 
 # routing tests related to application logic
 
