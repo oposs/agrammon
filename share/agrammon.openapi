@@ -432,7 +432,7 @@ components:
             additionalProperties: true
             properties:
                 datasetName:
-                    description: Name of ther dataset
+                    description: Name of the dataset
                     type: string
                 language:
                     description: Language for output translation

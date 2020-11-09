@@ -77,9 +77,7 @@ sub output-as-excel(
                 }
             }
         }
-        NEXT { # empty line between sections
-            $row++ if $n;
-        }
+        NEXT $row++ if $n; # empty line between sections
     }
 
     return $workbook;
@@ -90,11 +88,9 @@ sub sorted-kv($_) {
 }
 
 multi sub flat-value($value) {
-    return $value ~~ Real ?? $value.Real !! $value;
+    $value
 }
 
 multi sub flat-value(Agrammon::Outputs::FilterGroupCollection $collection) {
-    my $value = +$collection;
-    $value = $value.Real if $value ~~ Real;
-    return $value;
+    +$collection
 }
