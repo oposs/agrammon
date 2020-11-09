@@ -123,7 +123,7 @@ subtest 'Get excel export' => {
                 body => {
                     :datasetName('TestSingle'),
                     :language('de'),
-                    :!withFilters
+                    :withFilters
                 }),
                 status => 200;
         };
