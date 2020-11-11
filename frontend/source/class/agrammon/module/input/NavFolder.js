@@ -354,7 +354,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             }
 
             if (complete) {
-                this.setIcon('grammon/green-dot.png');
+                this.setIcon('agrammon/green-dot.png');
             }
             else {
                 this.setIcon('agrammon/red-dot.png');
