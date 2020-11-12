@@ -33,7 +33,7 @@ taxonomy = Application::Slurry::Applrate
  
 *** input ***
 
-?if !Kantonal_Lu
+?if !Kantonal_LU
   +dilution_parts_water
     type  = float
     default_calc = 1
@@ -102,7 +102,7 @@ taxonomy = Application::Slurry::Applrate
   ++description
     TAN content of the slurry compared to the emission rate occuring with a
     standard application rate of 30 m3 and a TAN content of 1.15 kg N / m3.
-?if Kantonal_Lu
+?if Kantonal_LU
   ++formula
     # dilution_parts_water = 1:
     1.15;
@@ -120,7 +120,7 @@ taxonomy = Application::Slurry::Applrate
   ++description
     Correction factor taking into account the slurry application rate per 
     ha and the TAN content of the slurry.
-?if Kantonal_Lu
+?if Kantonal_LU
   ++formula
     my $appl_rate = 25;
     (19.41 * Out(TAN_content) + 4.2 * 1.102 - 9.51) * 
