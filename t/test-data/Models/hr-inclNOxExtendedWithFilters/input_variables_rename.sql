@@ -2,8 +2,13 @@
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::KArea::dimensioning_barn' WHERE data_var='Livestock::DairyCow[]::Housing::Type::dimensioning_barn';
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::DairyCow[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows';
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_options_for_housing_systems_for_dairy_cows_floor';
-UPDATE data_new SET data_var='Livestock::DairyCow[]::Yard::floor_properties_exercise_yard' WHERE data_var='Livestock::DairyCow[]::Yard::floor_properties_exercise_yard_SHL';
-UPDATE data_new SET data_var='Livestock::DairyCow[]::Yard::floor_properties_exercise_yard' WHERE data_var='Livestock::DairyCow[]::Yard::floor_properties_exercise_yard_LU';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Outdoor::floor_properties_exercise_yard' WHERE data_var='Livestock::DairyCow[]::Yard::floor_properties_exercise_yard_SHL';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Outdoor::floor_properties_exercise_yard' WHERE data_var='Livestock::DairyCow[]::Yard::floor_properties_exercise_yard_LU';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Outdoor::grazing_days' WHERE data_var='Livestock::DairyCow[]::GrazingInput::grazing_days';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Outdoor::grazing_hours' WHERE data_var='Livestock::DairyCow[]::GrazingInput::grazing_hours';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Outdoor::yard_days' WHERE data_var='Livestock::DairyCow[]::Yard::yard_days';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Outdoor::exercise_yard' WHERE data_var='Livestock::DairyCow[]::Yard::exercise_yard';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Outdoor::free_correction_factor' WHERE data_var='Livestock::DairyCow[]::Yard::free_correction_factor';
 # OtherCattle
 UPDATE data_new SET data_var='Livestock::OtherCattle[]::Housing::KArea::dimensioning_barn' WHERE data_var='Livestock::OtherCattle[]::Housing::Type::dimensioning_barn';
 UPDATE data_new SET data_var='Livestock::OtherCattle[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::OtherCattle[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_other_cattle';

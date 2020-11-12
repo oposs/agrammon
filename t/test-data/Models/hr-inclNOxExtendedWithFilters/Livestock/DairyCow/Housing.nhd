@@ -35,13 +35,13 @@ taxonomy = Livestock::DairyCow::Housing
 *** external ***
 
 +Excretion
-+Grazing
-+Housing::CFreeFactor
-+Housing::Floor
-+Housing::KArea
-+Housing::KGrazing
 +Housing::Type
++Housing::KArea
++Housing::Floor
++Housing::CFreeFactor
++Housing::KGrazing
 +Yard
++Grazing
 
 *** output ***
 

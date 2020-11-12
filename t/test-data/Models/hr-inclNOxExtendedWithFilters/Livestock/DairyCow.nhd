@@ -19,11 +19,11 @@ gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches la
 *** external ***
 
 +DairyCow::Excretion
-+DairyCow::Grazing
 +DairyCow::Housing
 +DairyCow::Housing::KArea
-+DairyCow::NxOx
 +DairyCow::Yard
++DairyCow::Grazing
++DairyCow::NxOx
 
 *** output ***
 
