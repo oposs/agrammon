@@ -86,7 +86,7 @@ taxonomy = Livestock::DairyCow::Yard
     Correction factor for the emission due to the use of the floor properties in housing systems.
   ++formula
     # check yard exists?! -> default
-    given ( Out(floor_properties_exercise_yard, Outdoor) ) {
+    given ( Val(floor_properties_exercise_yard, Outdoor) ) {
       when 'solid_floor' { 
         1 - Tech(red_floor_properties_solid_floor); 
       }
@@ -113,7 +113,7 @@ taxonomy = Livestock::DairyCow::Yard
     If the basic feeding is on the yard the share_basicfeeding is assumed. 
     Otherwise the share is selected according to the access.
   ++formula 
-    given ( Out(exercise_yard, Outdoor) ) {
+    given ( Val(exercise_yard, Outdoor) ) {
       when 'available_roughage_is_not_supplied_in_the_exercise_yard' {
         Tech(share_available_roughage_is_not_supplied_in_the_exercise_yard);
       } 
