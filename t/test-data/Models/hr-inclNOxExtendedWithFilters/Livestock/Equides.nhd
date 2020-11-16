@@ -21,10 +21,10 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
 *** external ***
 
 +Equides::Excretion
-+Equides::Grazing
 +Equides::Housing
-+Equides::NxOx
++Equides::Grazing
 +Equides::Yard
++Equides::NxOx
 
 *** output ***
 

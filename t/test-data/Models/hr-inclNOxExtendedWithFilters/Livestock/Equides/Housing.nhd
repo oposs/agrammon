@@ -44,9 +44,9 @@ taxonomy = Livestock::Equides::Housing
 *** external ***
 
 +Excretion
++Housing::CFreeFactor
 +Grazing
 +Housing::KGrazing
-+Housing::CFreeFactor
 +Yard
 
 *** output ***

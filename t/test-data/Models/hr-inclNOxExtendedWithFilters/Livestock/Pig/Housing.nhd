@@ -31,12 +31,12 @@ taxonomy = Livestock::Pig::Housing
 *** external ***
 
 +Excretion
-+Grazing
-+Housing::AirScrubber
-+Housing::CFreeFactor
-+Housing::KArea
-+Housing::MitigationOptions
 +Housing::Type
++Housing::KArea
++Housing::AirScrubber
++Housing::MitigationOptions
++Housing::CFreeFactor
++Grazing
 
 *** output ***
 

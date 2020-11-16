@@ -22,8 +22,8 @@ gui       = Livestock::Pig,Tierhaltung::Zuchtschweine,Production animale::Porcs,
 *** external ***
 
 +Pig::Excretion
-+Pig::Grazing
 +Pig::Housing
++Pig::Grazing
 +Pig::NxOx
 
 *** output ***

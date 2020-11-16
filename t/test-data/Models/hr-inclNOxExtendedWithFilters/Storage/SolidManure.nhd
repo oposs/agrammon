@@ -21,7 +21,7 @@ gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage:
 
 *** external ***
 
-+SolidManure::Solid
 +SolidManure::Poultry
++SolidManure::Solid
 
 *** output ***

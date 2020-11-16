@@ -44,9 +44,9 @@ taxonomy = Livestock::RoughageConsuming::Housing
 *** external ***
 
 +Excretion
-+Grazing
-+Housing::KGrazing
 +Housing::CFreeFactor
++Housing::KGrazing
++Grazing
 
 *** output ***
 

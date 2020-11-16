@@ -86,20 +86,20 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   branch = true
   validator = ge(0);
   ++labels
-    en = Number of animal places
-    de = Anzahl Tierplätze
-    fr = Nombre de places d'animaux
+    en = Number of animals
+    de = Anzahl Tiere
+    fr = Nombre d'animaux
   ++units
     en = -
   ++description
-    Number of places for pigs for the selected type in barn.
+    Number of animals for the selected type in barn.
   ++help
     +++en
-       <p> </p>
+       <p>Actual number of animals in the barn.</p>
     +++de
-       <p> </p>
+       <p>Tatsächliche Anzahl Tiere im Stall.</p>
     +++fr
-       <p> </p>
+       <p>Nombre effectif d'animaux dans la stabulation.</p>
 
 ?if !Kantonal_LU
   +inp_n_excretion

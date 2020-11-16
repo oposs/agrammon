@@ -44,9 +44,9 @@ taxonomy = Livestock::SmallRuminants::Housing
 *** external ***
 
 +Excretion
-+Grazing
 +Housing::CFreeFactor
 +Housing::KGrazing
++Grazing
 
 *** output ***
 

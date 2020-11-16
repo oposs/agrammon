@@ -39,11 +39,11 @@ taxonomy = Livestock::Poultry::Housing
 *** external ***
 
 +Excretion
++Grazing
++Housing::Type
++Housing::KArea
 +Housing::AirScrubber
 +Housing::CFreeFactor
-+Housing::KArea
-+Housing::Type
-+Grazing
 
 
 *** output ***
