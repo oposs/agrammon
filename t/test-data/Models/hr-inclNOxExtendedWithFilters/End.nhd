@@ -19,10 +19,17 @@ Dummy Module marking the startpoint for the Model Parser
 
 +Summary
   type = report
+?if Kantonal_LU
+   ++selector
+     en = Berechnung Baugesuch Kanton Luzern - Ammonia emissions (in kg N per year)
+     de = Berechnung Baugesuch Kanton Luzern - Ammoniak-Emissionen (in kg N pro Jahr)
+     fr = Baugesuch Kanton Luzern - Emissions d'ammoniaque (en kg de N par année)
+?else
   ++selector
     en = Ammonia emissions (in kg N per year) - summary
     de = Ammoniak-Emissionen (in kg N pro Jahr) - Zusammenfassung
     fr = Emissions d'ammoniaque (en kg de N par année) - résumé
+?endif
   ++data
     +++SummaryLivestock
       en = Livestock
@@ -37,42 +44,23 @@ Dummy Module marking the startpoint for the Model Parser
       de = Total
       fr = Total
 
-+KtLU
-   type = report
-   ++selector
-     en = Berechnung Baugesuch Kanton Luzern - Ammonia emissions (in kg N per year)
-     de = Berechnung Baugesuch Kanton Luzern - Ammoniak-Emissionen (in kg N pro Jahr)
-     fr = Baugesuch Kanton Luzern - Emissions d'ammoniaque (en kg de N par année)
-   ++data
-     +++SummaryLivestock
-       en = Livestock
-       de = Tierproduktion
-       fr = Production animale
-     +++SummaryPlantProduction
-       en = Plant production
-       de = Pflanzenbau
-       fr = Production végétale
-     +++SummaryTotal
-       en = Total
-       de = Total
-       fr = Total
-
-+DetailReport
-  type = report
-  ++selector
-    en = TODO: Detail Report
-    de = TODO: Detail Report
-    fr = TODO: Detail Report
-  ++data
-     +++LivestockNH3
-       en = Livestock NH3-Emissions
-       de = NH3 Emissionen Tierproduktion
-       fr = TODO: ?
-     +++PlantNH3
-       en = Plant production NH3-Emissions
-       de = TODO: ?
-       fr = TODO: ?
-
+?if !KantonalLU
+  +DetailReport
+    type = report
+    ++selector
+      en = TODO: Detail Report
+      de = TODO: Detail Report
+      fr = TODO: Detail Report
+    ++data
+       +++LivestockNH3
+         en = Livestock NH3-Emissions
+         de = NH3 Emissionen Tierproduktion
+         fr = TODO: ?
+       +++PlantNH3
+         en = Plant production NH3-Emissions
+         de = TODO: ?
+         fr = TODO: ?
+?endif
 #Total Animalproduction
 #Mineral fertiliser
 #Recycling fertiliser
