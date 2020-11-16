@@ -52,7 +52,7 @@ taxonomy = Total
   format= %.0f
   print = SummaryTotal
   ++labels
-    sort = 999
+    sort = 299
     en = Total NH3-Emissions
     de = Total NH3-Emission
     fr = Emission de NH3 Total

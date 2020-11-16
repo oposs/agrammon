@@ -58,8 +58,12 @@ Dummy Module marking the startpoint for the Model Parser
          fr = TODO: ?
        +++PlantNH3
          en = Plant production NH3-Emissions
-         de = TODO: ?
+         de = NH3 Emissionen Pflanzenbau
          fr = TODO: ?
+      +++SummaryTotal
+        en = Total NH3-Emissions
+        de = NH3 Emissionen Total
+        fr = TODO: ?
 ?endif
 #Total Animalproduction
 #Mineral fertiliser
