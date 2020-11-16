@@ -21,9 +21,9 @@ gui       = Livestock::Poultry,Tierhaltung::Geflügel,Production animale::Volail
 *** external ***
 
 +Poultry::Excretion
++Poultry::Grazing
 +Poultry::Housing
 +Poultry::NxOx
-+Poultry::Grazing
 
 
 *** output ***
