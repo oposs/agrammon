@@ -120,11 +120,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Number of animals for the selected type in barn.
   ++help
     +++en
-       <p></p>
+       <p>Actual number of animals in the barn.</p>
     +++de
-       <p></p>
+       <p>Tatsächliche Anzahl Tiere im Stall.</p>
     +++fr
-       <p></p>
+       <p>Nombre effectif d'animaux dans la stabulation.</p>
 
 ?if !Kantonal_LU
   +inp_n_excretion
