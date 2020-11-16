@@ -22,8 +22,8 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
 *** external ***
 
 +FatteningPigs::Excretion
-+FatteningPigs::Grazing
 +FatteningPigs::Housing
++FatteningPigs::Grazing
 +FatteningPigs::NxOx
 
 *** output ***
@@ -54,7 +54,7 @@ gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animal
   ++units
     en = -
   ++description
-    Number of dairy cows in barn.
+    Number of fattening pigs in barn.
   ++formula
     Val(animals, FatteningPigs::Excretion);
 
