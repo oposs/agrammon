@@ -1,0 +1,873 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2020-11-16
+taxonomy = Livestock::OtherCattle::Outdoor
+
++short
+
+ Input parameters for exercise yard and grazing
+
++description
+
+ Input parameters for exercise yard and grazing.
+
+*** input ***
+
+#### Yard
+
++yard_days
+  type  = integer
+  validator = between(0,365);
+ ++labels
+   en = Duration of access to exercise yard over the year
+   de = Jährliche Zutrittsdauer zum Laufhof
+   fr = Nombre de jours avec accès au parcours extérieur (par an)
+ ++units
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Access to exercise yards days per year.
+  ++help
+    +++en
+       <p>Standard values for Switzerland</p>
+       <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+         <tr>
+           <td>&#160;</td>
+           <td align="center" >
+             Loose housings
+           </td> 
+           <td align="center" >
+             Tied housings
+           </td> 
+         </tr>
+         <tr>
+           <td>&#160;</td>
+           <td align="center" colspan="2" >
+             Days per year
+           </td> 
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+             Suckling cows
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > 145 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+             Heifers 1st year
+          </td>
+          <td align="center" > 245 </td>
+          <td align="center" > 100 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Heifers 2nd year
+          </td>
+          <td align="center" > 240 </td>
+          <td align="center" > 105 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Heifers 3rd year
+          </td>
+          <td align="center" > 260 </td>
+          <td align="center" > 110 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Fattening calves
+          </td>
+          <td align="center" > 60 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Calves of suckling cows
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Beef cattle
+          </td>
+          <td align="center" > 160 </td>
+          <td align="center" > 80 </td>
+         </tr>
+      </table>
+    +++de
+       <p>Rinder, die angebunden gehalten werden, müssen regelmässig, mindestens jedoch an 60 Tagen während der Vegetationsperiode und an 30 Tagen während der Winterfütterungsperiode, Auslauf erhalten (Tierschutzverordnung vom 23. April 2008, Stand am 1. Januar 2009).</p>
+       <p>Vorschlag für Standardwerte</p>
+       <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+         <tr>
+           <td>&#160;</td>
+           <td align="center" >
+             Laufställe
+           </td> 
+           <td align="center" >
+             Anbindeställe
+           </td> 
+         </tr>
+         <tr>
+           <td>&#160;</td>
+           <td align="center" colspan="2" >
+             Tage pro Jahr
+           </td> 
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+             Mutterkühe
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > 145 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+             Aufzuchtrinder unter 1-jährig
+          </td>
+          <td align="center" > 245 </td>
+          <td align="center" > 100 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder 1- bis 2-jährig
+          </td>
+          <td align="center" > 240 </td>
+          <td align="center" > 105 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder über 2-jährig
+          </td>
+          <td align="center" > 260 </td>
+          <td align="center" > 110 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Mastkälber
+          </td>
+          <td align="center" > 60 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Mutterkuhkälber
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Masttiere Rindviehmast
+          </td>
+          <td align="center" > 160 </td>
+          <td align="center" > 80 </td>
+         </tr>
+      </table>
+    +++fr
+       <p>Les bovins gardés à l'attache doivent avoir accès régulièrement à un parcours extérieur, au moins pendant 60 jours durant la période de végétation et pendant 30 jours durant la période d'affouragement d'hiver (Ord. sur la protection des animaux du 23 avril 2008, état au 1er janvier 2009). </p>
+       <p>Proposition de valeurs standard</p>
+       <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+         <tr>
+           <td>&#160;</td>
+           <td align="center" >
+             Stabulation libre
+           </td> 
+           <td align="center" >
+             Stabulation entravée 
+           </td> 
+         </tr>
+         <tr>
+           <td>&#160;</td>
+           <td align="center" colspan="2" >
+             Jours par an 
+           </td> 
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+             Vâches allaitantes
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > 145 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+             Remontes de moins d'un an
+          </td>
+          <td align="center" > 245 </td>
+          <td align="center" > 100 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Remontes âgées entre 1 et 2 ans
+          </td>
+          <td align="center" > 240 </td>
+          <td align="center" > 105 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Remontes âgées de plus de 2 ans
+          </td>
+          <td align="center" > 260 </td>
+          <td align="center" > 110 </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Veaux à l'engrais
+          </td>
+          <td align="center" > 60 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Veaux de vâches allaitantes
+          </td>
+          <td align="center" > 200 </td>
+          <td align="center" > - </td>
+         </tr>
+         <tr>
+          <td align="left" valign="top" cellspacing="0">
+            Bovins à l'engrais
+          </td>
+          <td align="center" > 160 </td>
+          <td align="center" > 80 </td>
+         </tr>
+      </table>
+
+
++exercise_yard
+  type  = enum
+  ++enum
+    +++not_available
+       en = not_available
+       de = nicht_vorhanden
+       fr = non_disponible
+       it = not_available
+    +++available_roughage_is_not_supplied_in_the_exercise_yard
+       en = available_roughage_is_not_supplied_in_the_exercise_yard
+       de = vorhanden:_keine_Verabreichung_von_Grundfutter_im_Laufhof
+       fr =  disponible:_sans_fourrage_à_disposition_dans_le_parcours
+       it = available_roughage_is_not_supplied_in_the_exercise_yard
+    +++available_roughage_is_partly_supplied_in_the_exercise_yard
+       en = available_roughage_is_partly_supplied_in_the_exercise_yard
+       de = vorhanden:_Verabreichung_von_Grundfutter_teilweise_im_Laufhof
+       fr = disponible:_fourrage_en_partie_à_disposition_dans_le_parcours
+       it = available_roughage_is_partly_supplied_in_the_exercise_yard
+    +++available_roughage_is_exclusively_supplied_in_the_exercise_yard
+       en = available_roughage_is_exclusively_supplied_in_the_exercise_yard
+       de = vorhanden:_Verabreichung_von_Grundfutter_ausschliesslich_im_Laufhof
+       fr = disponible:_fourrage_à_disposition_exclusivement_dans_le_parcours
+       it = available_roughage_is_exclusively_supplied_in_the_exercise_yard
+  ++labels 
+    en = Exercise yard
+    de = Laufhof
+    fr = Parcours extérieur
+  ++units  
+    en = -
+  ++description
+    Exercise yard: not available, available: roughage is not supplied in the exercise yard, available: roughage is partly supplied in the exercise yard, available: roughage is exclusively supplied in the exercise yard.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: “available roughage is not supplied in the exercise yard”</p>
+    +++de
+       <p>Die Verabreichung von Grundfutter im Laufhof wird nur für Laufhöfe mit einem befestigten oder einem perforierten Boden empfohlen. Ausschliessliche Fütterung von Grundfutter im Laufhof kommt nur vor, wenn der Laufhof in den Laufstall integriert ist.</p>
+       <p>Vorschlag für Standardwert: vorhanden: keine Verabreichung von Grundfutter im Laufhof</p>
+    +++fr
+       <p>La distribution de fourrage dans le parcours extérieur n'est recommandée que si le parcours a un sol en dur ou un sol perforé. La variante ‚Fourrage à disposition exclusivement dans le parcours extérieur' n'est possible que lorsque le parcours est intégré dans la stabulation libre. </p>
+       <p>Proposition de valeur standard: sans fourrage à disposition  dans le parcours </p>
+
++floor_properties_exercise_yard
+  type  = enum
+  default_calc = solid_floor
+  ++enum
+     +++solid_floor
+       en = solid_floor
+       de = Boden_planbefestigt
+       fr = sol_en_dur
+       it = solid_floor
+     +++perforated_floor
+       en = perforated_floor
+       de = Boden_perforiert
+       fr = sol_perforé
+       it = perforated_floor
+?if !Kantonal_LU
+     +++unpaved_floor
+       en = unpaved_floor
+       de = Boden_unbefestigt
+       fr = sol_sans_revêtement_dur
+       it = unpaved_floor
+     +++paddock_or_pasture_used_as_exercise_yard
+       en = paddock_or_pasture_used_as_exercise_yard
+       de = kein_Laufhof:_Auslauf_auf_Weide
+       fr = pas_de_parcours:_accès_au_pâturage
+       it = paddock_or_pasture_used_as_exercise_yard
+?endif
+  ++labels 
+    en = Type of exercise yard
+    de = Laufhoftyp
+    fr = Type de parcours extérieur
+  ++units  
+    en = -
+  ++description
+    Floor properties(solid floor, unpaved floor, perforated floor, paddock or pasture used as exercise yard).
+  ++help
+    +++en
+       <p>Standard value for Switzerland: “solid floor”</p>
+       <p>Perforated floor: three quarts of the yard surface or more must exhibit a perforated or a slatted floor. If less than three quarts are perforated solid floor must be entered.</p>
+    +++de
+       <dl>  
+       <dt>Boden planbefestigt:</dt>
+       <dd>Laufhöfe mit Betonboden oder Asphalt (wasserundurchlässig). Mit Verbundsteinen und Pflastersteinen ausgelegte Flächen (wasserdurchlässig) werden den planbefestigten Böden gleichgestellt.</dd>
+
+       <dt>Boden unbefestigt:</dt>
+       <dd> Laufhöfe mit unbefestigtem oder wasserdurchlässigem Boden wie Kies, Sand, Mergel, Holzschnitzel, Rasengittersteine etc.</dd>
+       <dt>Boden perforiert:</dt>
+       <dd> 
+            Spalten oder Lochböden; mindestens ¾ der Laufhoffläche muss einen perforierten Boden aufweisen. 
+            Wenn weniger als ¾ der Laufhoffläche einen perforierten Boden aufweist: Eingabe von Boden 
+            planbefestigt. Nur anwendbar bei regelmässiger Reinigung des Bodens, durchlässigen Spalten/Löchern 
+            des Bodens sowie Lagerung eines wesentlichen Teils der Gülle des Betriebs in der Grube unterhalb 
+            des perforierten Bodens.
+       </dd>
+       </dl>
+       <p>Laufhöfe mit unbefestigter Oberfläche dürfen nicht permanent zugänglich sein (max. 2 Stunden pro Tag).</p>
+       <p>Vorschlag für Standardwert: Boden planbefestigt</p>
+    +++fr
+       <dl>  
+       <dt>Sol en dur: </dt>
+       <dd>Parcours avec un sol bétonné ou asphalté (imperméable à l'eau). Les surfaces pavées (perméables à l'eau) sont considérées également comme des sols en dur. </dd>
+
+       <dt>Sol sans revêtement dur:</dt>
+       <dd> Parcours avec des sols non durs ou perméables à l'eau comme les sols recouverts de gravier, de sable, de marne, de copeaux de bois ou de dalles gazon, etc. </dd>
+       <dt>Sol perforé:</dt>
+       <dd> Caillebotis ou sols à trous; au moins ¾ de la surface du parcours doit être un sol perforé. Si moins de ¾ de la surface est perforée, alors introduire ‚Sol en dur'. </dd>
+  </dl>
+       <p>Les parcours extérieurs avec des sols sans revêtement dur ne doivent pas être accessibles de manière permanente (max. 2 heures par jour). </p>
+       <p>Proposition de valeur standard: sol en dur</p>
+
+?if !Kantonal_LU
+  +free_correction_factor
+    type = float
+    default_calc = 0
+    default_gui = 0
+    validator = between(-100,100);
+    ++labels 
+      en = Additional emission mitigation measure for the exercise yard (see column Help)
+      de = Zusätzliche emissionsmindernde Massnahme Laufhof (siehe Spalte Hilfe)
+      fr = Mesure supplémentaire limitant les émissions sur le parcours extérieur (cf. aide)
+    ++units 
+      en = %
+    ++description
+      Factor to define free ?
+    ++help
+      +++en
+          <p>The emission reduction of a new technique can be entered
+             (e.g. a new type of floor). The number entered corresponds
+             to the emission reduction in percent (e.g. 30%; the
+             emission from the housing decreases by 30%). It is
+             recommended to mention the selected measure in the column
+             comment and to justify the number selected for emission
+             reduction.</p>
+          <p>This option mainly targets users who predict emissions and
+          are obliged to consider the effects of new and actually
+          unknown techniques.</p>
+      +++de
+          <p>
+             Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt
+             werden (z.B. ein neuer emissionsmindernder Bodentyp). Die eingegebene Zahl entspricht
+             der Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Laufhof 
+             nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar 
+             aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
+          </p>
+          <p>
+             Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen 
+             prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien 
+             zur Emissionsminderung berücksichtigen müssen. 
+          </p>
+          <p>Vorschlag für Standardwert: 0 %.</p>
+      +++fr
+          <p>
+            Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les 
+            émissions (p.ex. un nouveau type de sol limitant les émissions). Le chiffre 
+            introduit correspond à la réduction d'émission en pourcent (p.ex. 30%: l'émission 
+            provenant du parcors extérieur diminue de 30%). Il est recommandé de mentionner
+            la mesure choisie dans la colonne ‘Commentaire' et de justifier le taux de 
+            réduction choisi.
+          </p>
+          <p>
+            Cette fonction s'adresse principalement aux utilisateurs/trices qui font des 
+            pronostiques d'émissions et qui doivent prendre en compte l'effet de nouvelles 
+            technologies destinées à limiter les émissions et encore méconnues actuellement.
+          </p>
+          <p>Proposition valeur standard: 0 %.</p>
+?endif
+
+#### Grazing
+
++grazing_days
+  type  = integer
+  validator = between(0,270);
+  ++labels 
+    en = Grazing days per year
+    de = Jährliche Weidetage
+    fr = Jours de pâturage par an
+  ++units
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average grazing days per year.
+  ++help
+    +++en
+       <p>Standard values for Switzerland</p>
+     <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+   <tr>
+           <td>&#160;</td>
+     <td align="center" >
+             Grazing days per year<br/> 
+           </td> 
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+       Suckling cows
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+             Heifers 1st year
+          </td>
+          <td align="center" > 140 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Heifers 2nd year
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Heifers 3rd year
+          </td>
+          <td align="center" > 160 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Fattening calves
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Calves of suckling cows
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Beef cattle *
+          </td>
+          <td align="center" > 170* </td>
+   </tr>
+      </table>
+      <p> * Only applicable for farms with pasture fattening. About 50 % of the animals do not have access to pastures.
+      </p>
+    
+    +++de
+       <p>Diese Zahl bezieht sich auf die Anzahl Weidetage auf dem Heimbetrieb. Darin ist die Weide der Alpung im Sömmerungsgebiet nicht eingeschlossen.</p>
+       <p>Vorschlag für Standardwerte:</p>
+     <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+   <tr>
+           <td>&#160;</td>
+     <td align="center" >
+             Jährliche Weidetage <br/> (Durchschnitt Tal-, Hügel- <br/> und Bergregion)
+           </td> 
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+       Mutterkühe
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+             Aufzuchtrinder unter 1-jährig
+          </td>
+          <td align="center" > 140 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder 1- bis 2-jährig
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder über 2-jährig
+          </td>
+          <td align="center" > 160 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Mastkälber
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Mutterkuhkälber
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Masttiere Rindviehmast *
+          </td>
+          <td align="center" > 170* </td>
+   </tr>
+      </table>
+      <p> * Nur für Betriebe anwendbar, die Weidemast betreiben. Rund 50 % der Masttiere werden nicht geweidet.
+      </p>
+    +++fr
+       <p>Ces chiffres se rapportent au nombre de jours de pâturage sur l'exploitation de base. Ils ne comprennent pas le pâturage dans les alpages des exploitations d'estivage.</p>
+       <p>Propositions de valeurs standard:</p>
+     <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+   <tr>
+           <td>&#160;</td>
+     <td align="center" >
+             Nombre de jours de pâturage par an  <br/>(Moyenne régions de plaine, collines et montagne) 
+           </td> 
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+       Vâches allaitantes
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+             Remontes de moins d'un an
+          </td>
+          <td align="center" > 140 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Remontes âgées entre 1 et 2 ans
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Remontes âgées de plus de 2 ans
+          </td>
+          <td align="center" > 160 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Veaux à l'engrais
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Veaux de vâches allaitantes
+          </td>
+          <td align="center" > 170 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Bovins à l'engrais *
+          </td>
+          <td align="center" > 170* </td>
+   </tr>
+      </table>
+       <p>* Seul. valable pour les exploitations qui pratiquent l'engraissement au pâturage. Env. 50% des animaux à l'engrais ne vont pas au pâturage. </p>
+
+
++grazing_hours
+  type  = float
+  validator = between(0,24);
+  ++labels 
+    en = Grazing hours per day
+    de = Tägliche Weidestunden
+    fr = Heures de pâturage par jour
+  ++units
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average grazing hours per day.
+  ++help
+    +++en
+       <p>Standard values for Switzerland</p>
+      <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+   <tr>
+           <td>&#160;</td>
+     <td align="center" >
+             Grazing hours per day
+           </td> 
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+       Suckling cows
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+             Heifers 1st year
+          </td>
+          <td align="center" > 12 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Heifers 2nd year
+          </td>
+          <td align="center" > 17 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Heifers 3rd year
+          </td>
+          <td align="center" > 15 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Fattening calves
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Calves of suckling cows
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Beef cattle *
+          </td>
+          <td align="center" > 16* </td>
+   </tr>
+      </table>
+      <p> * Only applicable for farms with pasture fattening. About 50 % of the animals do not have access to pastures. 
+      </p>
+    +++de 
+       <p>Diese Zahl bezieht sich auf die Anzahl Weidestunden auf
+       dem Heimbetrieb. Darin ist die Weide der Alpung im
+       Sömmerungsgebiet nicht eingeschlossen.</p>
+
+       <p>Vorschlag für Standardwerte</p>
+      <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+   <tr>
+           <td>&#160;</td>
+     <td align="center" >
+             Anzahl Weidestunden
+           </td> 
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+       Mutterkühe
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+             Aufzuchtrinder unter 1-jährig
+          </td>
+          <td align="center" > 12 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder 1- bis 2-jährig
+          </td>
+          <td align="center" > 17 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Aufzuchtrinder über 2-jährig
+          </td>
+          <td align="center" > 15 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Mastkälber
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Mutterkuhkälber
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Masttiere Rindviehmast *
+          </td>
+          <td align="center" > 16* </td>
+   </tr>
+      </table>
+      <p> * Nur für Betriebe anwendbar, die Weidemast betreiben. Rund 50 % der Masttiere werden nicht geweidet.
+      </p>
+    +++fr
+       <p>Ces chiffres se rapportent au nombre d'heures de pâturage sur l'exploitation de base. Ils ne comprennent pas le pâturage dans les alpages des exploitations d'estivage. </p>
+
+       <p>Propositions de valeurs standard</p>
+      <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
+   <tr>
+           <td>&#160;</td>
+     <td align="center" >
+             Heures de pâturage par jour
+           </td> 
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+       Vâches allaitantes
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+             Remontes de moins d'un an
+          </td>
+          <td align="center" > 12 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Remontes âgées entre 1 et 2 ans
+          </td>
+          <td align="center" > 17 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Remontes âgées de plus de 2 ans
+          </td>
+          <td align="center" > 15 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Veaux à l'engrais
+          </td>
+          <td align="center" > 0 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Veaux de vâches allaitantes
+          </td>
+          <td align="center" > 16 </td>
+         </tr>
+         <tr>
+    <td align="left" valign="top" cellspacing="0">
+            Bovins à l'engrais *
+          </td>
+          <td align="center" > 16* </td>
+   </tr>
+      </table>
+      <p> * Seul. valable pour les exploitations qui pratiquent l'engraissement au pâturage. Env. 50% des animaux à l'engrais ne vont pas au pâturage. </p>
+
+
+*** output ***
+
++yard_days
+  print = OtherCattle
+  ++units
+     en = days/year
+     de = Tage/Jahr
+     fr = jour/an
+  ++description
+    Yard days per year.
+  ++formula
+    In(yard_days);
+
++exercise_yard
+  print = OtherCattle
+  ++units
+     en = -
+  ++description
+    Exercise yard type.
+  ++formula
+    In(exercise_yard);
+
++floor_properties_exercise_yard
+  print = OtherCattle
+  ++units
+     en = -
+  ++description
+    Exercise yard floor properties.
+  ++formula
+    In(floor_properties_exercise_yard);
+
+?if !Kantonal_LU
+  +c_free_factor_yard
+    print = OtherCattle
+    ++units 
+      en = -
+    ++description
+      Free reduction of the Emission rate for the Yard.
+    ++formula
+      if ( In(free_correction_factor) // 0 != 0 ) {
+        writeLog({
+          en => "You have entered an additional emission mitigation measure for a dairy cows exercise yard of " 
+                . In(free_correction_factor) . "\%!\n", 
+          de => "Sie haben eine zusätzliche emissionsmindernde Massnahme für einen Laufhof der Milchkühe von " 
+                . In(free_correction_factor) . "\% eingegeben!\n", 
+          fr => "Vous avez introduit une mesure supplémentaire limitant les émissions provenant d'un parcours "
+                . "extérieur pour vâches laitières de " . In(free_correction_factor) . "\% !\n"
+        });
+        return 1 - In(free_correction_factor) / 100;     
+      } else {
+        return 1;
+      } 
+?endif
+
+##########
+
++grazing_hours
+  print = OtherCattle
+  ++units
+     en = hours/day
+     de = Stunden/Tag
+     fr = heure/jour
+  ++description
+    Grazing hours per day.
+  ++formula
+    In(grazing_hours);
+
++grazing_days
+  print = OtherCattle
+  ++units
+     en = days/year
+     de = Tage/Jahr
+     fr = jour/an
+  ++description
+    Grazing days per year.
+  ++formula
+    In(grazing_days);
+
+##########
+
++days_with_grazing_and_yard
+  print = OtherCattle
+  ++units  
+    en = days
+    de = Tage
+    fr = jours
+  ++description
+    Number of Days whith access to yard and pasture
+  ++formula
+    # check yard exists?! -> 0
+    if( (Out(grazing_days) + Out(yard_days)) > 365 ){
+      writeLog({
+        en => "The sum of days with access to the exercise yard and of grazing days per year for other cattle is $yardDays+$grazingDays and higher than 365!\n",
+        de => "Die Summe der Weide- und Laufhoftage für übriges Rindvieh ist grösser als 365!\n",
+        fr => "La somme des jours de pâturage et des jours avec accès au parcours extérieur pour "
+                  . "la catégorie autres bovons est supérieure à 365 !\n",
+        }); 
+      return Out(grazing_days) + Out(yard_days) - 365;
+    } else {
+      return 0;
+    }
