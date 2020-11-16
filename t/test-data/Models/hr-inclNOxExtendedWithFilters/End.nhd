@@ -64,6 +64,18 @@ Dummy Module marking the startpoint for the Model Parser
         en = Total NH3-Emissions
         de = NH3 Emissionen Total
         fr = TODO: ?
+      +++LivestockN2O
+        en = Livestock N2O-Emissions
+        de = N2O Emissionen Tierproduktion
+        fr = TODO: ?
+      +++LivestockNO
+        en = Livestock NO-Emissions
+        de = NO Emissionen Tierproduktion
+        fr = TODO: ?
+      +++LivestockN2
+        en = Livestock N2-Emissions
+        de = N2 Emissionen Tierproduktion
+        fr = TODO: ?
 ?endif
 #Total Animalproduction
 #Mineral fertiliser

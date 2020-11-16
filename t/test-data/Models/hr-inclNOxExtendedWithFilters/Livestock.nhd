@@ -988,9 +988,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +n2_ngrazing
   format= %.0f
-  print = NOxFlux
+  print = LivestockN2
   ++labels
-    sort = 110
+    sort = 510
     en = Grazing N2-Emissions
     de = Weide N2-Emission
     fr = Emission de N2 issu du pâturage
@@ -1012,9 +1012,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +no_ngrazing
   format= %.0f
-  print = NOxFlux
+  print = LivestockNO
   ++labels
-    sort = 120
+    sort = 410
     en = Grazing NO-Emissions
     de = Weide NO-Emission
     fr = Emission de NO issu du pâturage
@@ -1037,9 +1037,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +n2o_ngrazing
   format= %.0f
-  print = NOxFlux
+  print = LivestockN2O
   ++labels
-    sort = 131
+    sort = 310
     en = Grazing N2O-Emissions
     de = Weide N2O-Emission
     fr = Emission de N2O issu du pâturage
