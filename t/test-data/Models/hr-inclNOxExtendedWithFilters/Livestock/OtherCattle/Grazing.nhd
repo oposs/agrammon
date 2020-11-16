@@ -37,7 +37,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 *** external ***
 
 +Excretion
-+GrazingInput
++Outdoor
 +Yard
 
 *** technical ***
@@ -85,14 +85,14 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual N excretion during grazing for a defined cattle category.
   ++formula
     Val(n_excretion, Excretion) *
-    Val(grazing_hours, GrazingInput) / 24 *
+    Val(grazing_hours, Outdoor) / 24 *
     (
       # grazing only (100%)
-      (Val(grazing_days, GrazingInput) - Val(days_with_grazing_and_yard, Yard)) / 365 +
+      (Val(grazing_days, Outdoor) - Val(days_with_grazing_and_yard, Outdoor)) / 365 +
       # shared grazing(+housing) and yard (100% - share yard)
       # this part is split between grazing and housing by the parts grazing_hours & residual
       (1 - Val(share_excretion_with_grazing, Yard)) *
-      Val(days_with_grazing_and_yard, Yard) / 365
+      Val(days_with_grazing_and_yard, Outdoor) / 365
     );
 
 +tan_into_grazing
@@ -105,14 +105,14 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Annual soluble N (TAN) excretion during grazing for a defined cattle category.
   ++formula
     Val(tan_excretion, Excretion) *
-    Val(grazing_hours, GrazingInput) / 24 *
+    Val(grazing_hours, Outdoor) / 24 *
     (
       # grazing only (100%)
-      (Val(grazing_days, GrazingInput) - Val(days_with_grazing_and_yard, Yard)) / 365 +
+      (Val(grazing_days, Outdoor) - Val(days_with_grazing_and_yard, Outdoor)) / 365 +
       # shared grazing(+housing) and yard (100% - share yard)
       # this part is split between grazing and housing by the parts grazing_hours & residual
       (1 - Val(share_excretion_with_grazing, Yard)) *
-      Val(days_with_grazing_and_yard, Yard) / 365
+      Val(days_with_grazing_and_yard, Outdoor) / 365
     );
 
 +ef_nh3_ngrazing

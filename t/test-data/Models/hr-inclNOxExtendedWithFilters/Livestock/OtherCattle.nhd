@@ -21,11 +21,11 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
 *** external ***
 
 +OtherCattle::Excretion
-+OtherCattle::Grazing
-+OtherCattle::Housing::KArea
 +OtherCattle::Housing
-+OtherCattle::NxOx
++OtherCattle::Housing::KArea
 +OtherCattle::Yard
++OtherCattle::Grazing
++OtherCattle::NxOx
 
 
 *** output ***
