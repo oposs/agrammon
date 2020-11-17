@@ -1098,12 +1098,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +n_remain_grazing
   format= %.0f
-  print = FluxSummaryLivestock
+  print = LivestockNtot
   ++labels
-    sort = 104
-    en = Total N remaining on pasture
-    de = Total N auf der Weide
-    fr = N total au pâturage
+    sort = 694
+    en = Into soil rom grazing
+    de = ?
+    fr = ?
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -1122,12 +1122,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +tan_remain_grazing
   format= %.0f
-  print = FluxSummaryLivestock
+  print = LivestockTAN
   ++labels
-    sort = 104
-    en = Total N remaining on pasture
-    de = Total N auf der Weide
-    fr = N total au pâturage
+    sort = 894
+    en = Into soil rom grazing
+    de = ?
+    fr = ?
   ++units
     en = kg N/year
     de = kg N/Jahr

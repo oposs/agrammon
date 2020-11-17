@@ -19,13 +19,7 @@ taxonomy = Total
 +Livestock
 +Storage
 +Application
-#+SummaryByAnimalCategory
 +PlantProduction
-
-#+PlantProduction
-#+Application
-#+Storage
-#+Livestock
 
 *** output ***
 
@@ -65,4 +59,42 @@ taxonomy = Total
   ++formula
     Out(nh3_nanimalproduction) +
     Val(nh3_nplantproduction, PlantProduction) 
+
+
++n_remain_animalproduction
+  format= %.0f
+  print = LivestockNtot
+  ++labels
+    sort = 695
+    en = Into soil total
+    de = ?
+    fr = ?
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N remaining in soil.
+  ++formula
+    Val(n_remain_application, Application) P+
+    Val(n_remain_grazing, Livestock); 
+
++tan_remain_animalproduction
+  format= %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 895
+    en = Into soil total
+    de = ?
+    fr = ?
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total TAN remaining in soil.
+  ++formula
+    Val(tan_remain_application, Application) P+
+    Val(tan_remain_grazing, Livestock); 
+
 

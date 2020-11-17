@@ -43,7 +43,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 #### n into application (solid/liquid/total)
 
 +n_into_application_liquid
-  print = n,into,application,liquid
+  format = %.0f
+  print = LivestockNtot
+  ++labels
+    sort = 675
+    en = __liquid
+    de = ?
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -54,7 +60,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Val(n_into_application_liquid, Storage);
 
 +n_into_application_solid
-  print = n,into,application,solid
+  format = %.0f
+  print = LivestockNtot
+  ++labels
+    sort = 685
+    en = __solid
+    de = ?
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -65,7 +77,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Val(n_into_application_solid, Storage);
 
 +n_into_application
-  print = n,into,application,total
+  format = %.0f
+  print = LivestockNtot
+  ++labels
+    sort = 670
+    en = Into application
+    de = ?
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -83,12 +101,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 #### tan into application (solid/liquid/total)
 
 +tan_into_application_liquid
-  print = tan,into,application,liquid
-  ++labels 
-    sort = 321
-    en = Total TAN into liquid manure application
-    de = Total Nlös in die Hofdüngerausbringung flüssig
-    fr = TAN total dans l'Epandage des engrais de ferme liquides
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 875
+    en = __liquid
+    de = ?
+    fr = ?
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -99,12 +118,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Val(tan_into_application_liquid, Storage);
 
 +tan_into_application_solid
-  print = tan,into,application,solid
-  ++labels 
-    sort = 322
-    en = Total TAN into solid manure application
-    de = Total Nlös in die Hofdüngerausbringung fest
-    fr = TAN total dans l'Epandage des engrais de ferme solides
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 885
+    en = __solid
+    de = ?
+    fr = ?
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -115,12 +135,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Val(tan_into_application_solid, Storage);
 
 +tan_into_application
-  print = tan,into,application,total
-  ++labels 
-    sort = 320
-    en = Total TAN into manure application
-    de = Total Nlös in die Hofdüngerausbringung
-    fr = TAN total dans l'Epandage des engrais de ferme
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 870
+    en = Into application
+    de = ?
+    fr = ?
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -349,12 +370,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 #### n out of application (solid/liquid/total)
 
 +n_remain_application_liquid
-  print = n,remain,application,liquid
+  format = %.0f
+  print = LivestockNtot
   ++labels
-    sort = 111
-    en = Total N out of liquid manure application
-    de = Total N aus der Hofdüngerausbringung flüssig
-    fr = N total provenant de l'Epandage des engrais de ferme liquides
+    sort = 691
+    en = __liquid
+    de = ?
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -369,12 +391,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Out(n2o_napplication_liquid);
 
 +n_remain_application_solid
-  print = n,remain,application,solid
+  format = %.0f
+  print = LivestockNtot
   ++labels
-    sort = 112
-    en = Total N out of solid manure application
-    de = Total N aus der Hofdüngerausbringung fest
-    fr = N total provenant de l'Epandage des engrais de ferme solides
+    sort = 692
+    en = __solid
+    de = ?
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -390,12 +413,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +n_remain_application
   format = %.0f
-  print = FluxSummaryLivestock,n,remain,application,total
+  print = LivestockNtot
   ++labels
-    sort = 110
-    en = Total N out of manure application
-    de = Total N aus der Hofdüngerausbringung
-    fr = N total provenant de l'Epandage des engrais de ferme
+    sort = 690
+    en = Into soil from application
+    de = ?
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -414,12 +437,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 #### tan out of application (solid/liquid/total)
 
 +tan_remain_application_liquid
-  print = tan,remain,application,liquid
-  ++labels 
-    sort = 221
-    en = Total TAN out of liquid manure application
-    de = Total Nlös aus der Hofdüngerausbringung flüssig
-    fr = TAN total provenant de l'Epandage des engrais de ferme liquides
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 891
+    en = __liquid
+    de = ?
+    fr = ?
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -434,12 +458,13 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Out(n2o_napplication_liquid);
 
 +tan_remain_application_solid
-  print = tan,remain,application,solid
-  ++labels 
-    sort = 222
-    en = Total TAN out of solid manure application
-    de = Total Nlös aus der Hofdüngerausbringung fest
-    fr = TAN total provenant de l'Epandage des engrais de ferme solides
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 892
+    en = __solid
+    de = ?
+    fr = ?
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -455,12 +480,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +tan_remain_application
   format = %.0f
-  print = TANFlux,tan,remain,application,total
-  ++labels 
-    sort = 220
-    en = Total TAN out of manure application
-    de = Total Nlös aus der Hofdüngerausbringung
-    fr = TAN total provenant de l'Epandage des engrais de ferme
+  print = LivestockTAN
+  ++labels
+    sort = 890
+    en = Into soil from application
+    de = ?
+    fr = ?
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
