@@ -231,7 +231,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
         Val(has_pigs, ::Livestock),
         Val(tan_out_livestock_liquid, ::Livestock) P+ 
         Out(mineralization) P-
-        Val(nxox_nliquid_housing_and_storage, ::Livestock)
+        Val(n2o_nliquid_housing_and_storage, ::Livestock) P-
+        Val(no_nliquid_housing_and_storage, ::Livestock) P-
+        Val(n2_nliquid_housing_and_storage, ::Livestock)
       )
     );
 
@@ -276,7 +278,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       Val(has_cattle, ::Livestock),
       Val(tan_out_livestock_liquid, ::Livestock) P+ 
       Out(mineralization) P-
-      Val(nxox_nliquid_housing_and_storage, ::Livestock)
+      Val(n2o_nliquid_housing_and_storage, ::Livestock) P-
+      Val(no_nliquid_housing_and_storage, ::Livestock) P-
+      Val(n2_nliquid_housing_and_storage, ::Livestock)
     );
 
 # eventually change to scaling by tan!
@@ -409,7 +413,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++formula
     Val(n_out_livestock_liquid, ::Livestock) P-
     Out(nh3_nstorage_liquid) P-
-    Val(nxox_nliquid_housing_and_storage, ::Livestock);
+    Val(n2o_nliquid_housing_and_storage, ::Livestock) P-
+    Val(no_nliquid_housing_and_storage, ::Livestock) P-
+    Val(n2_nliquid_housing_and_storage, ::Livestock);
 
 +tan_into_application_liquid
   print = newStorage
@@ -422,7 +428,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++formula
     Val(tan_out_livestock_liquid, ::Livestock) P-
     Out(nh3_nstorage_liquid) P-
-    Val(nxox_nliquid_housing_and_storage, ::Livestock) P+
+    Val(n2o_nliquid_housing_and_storage, ::Livestock) P-
+    Val(no_nliquid_housing_and_storage, ::Livestock) P-
+    Val(n2_nliquid_housing_and_storage, ::Livestock) P+
     Out(mineralization);
 
 
@@ -442,7 +450,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Annual N flux out of storage for manure application.
   ++formula
     Val(n_out_livestock_solid, ::Livestock) P- 
-    Val(nxox_nsolid_housing_and_storage, ::Livestock) P-
+    Val(n2_nsolid_housing_and_storage, ::Livestock) P-
+    Val(no_nsolid_housing_and_storage, ::Livestock) P-
+    Val(n2o_nsolid_housing_and_storage, ::Livestock) P-
     Out(nh3_nstorage_solid);
  
 
@@ -456,7 +466,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Annual TAN flux out of storage for manure application.
   ++formula
     Val(tan_out_livestock_solid, ::Livestock) P-
-    Val(nxox_nsolid_housing_and_storage, ::Livestock) P-
+    Val(n2_nsolid_housing_and_storage, ::Livestock) P-
+    Val(no_nsolid_housing_and_storage, ::Livestock) P-
+    Val(n2o_nsolid_housing_and_storage, ::Livestock) P-
     Out(nh3_nstorage_solid) P-
     Out(immobilization);
 
