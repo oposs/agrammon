@@ -203,13 +203,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 ## 2a) N2 losses
 +n2_napplication_liquid
-  format = %.0f
-  print = NOxFlux,n2,application,liquid
-  ++labels 
-    sort = 811
-    en = N2-Emissions from liquid manure application
-    de = Hofdüngerausbringung flüssig N2-Emission
-    fr = Emission de N2 Epandage des engrais de ferme liquides
+  print = application
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -221,13 +215,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Val(er_n2_napplication_liquid, Application::Slurry);
 
 +n2_napplication_solid
-  format = %.0f
-  print = NOxFlux,n2,application,solid
-  ++labels 
-    sort = 812
-    en = N2-Emissions from solid manure application
-    de = Hofdüngerausbringung fest N2-Emission
-    fr = Emission de N2 Epandage des engrais de ferme solides
+  print = application
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -243,9 +231,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +n2_napplication
   format = %.0f
-  print = NOxFlux,n2,application,total
+  print = LivestockN2
   ++labels 
-    sort = 810
+    sort = 570
     en = N2-Emissions from manure application
     de = Hofdüngerausbringung N2-Emission
     fr = Emission de N2 Epandage des engrais de ferme
@@ -262,13 +250,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     
 ## 2b) NO losses
 +no_napplication_liquid
-  format = %.0f
-  print = NOxFlux,no,application,liquid
-  ++labels 
-    sort = 821
-    en = NO-Emissions from liquid manure application
-    de = Hofdüngerausbringung flüssig NO-Emission
-    fr = Emission de NO Epandage des engrais de ferme liquides
+  print = application
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -280,13 +262,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Val(er_no_napplication_liquid, Application::Slurry);
 
 +no_napplication_solid
-  format = %.0f
-  print = NOxFlux,no,application,solid
-  ++labels 
-    sort = 822
-    en = NO-Emissions from solid manure application
-    de = Hofdüngerausbringung fest NO-Emission
-    fr = Emission de NO Epandage des engrais de ferme solides
+  print = application
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -302,9 +278,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     
 +no_napplication
   format = %.0f
-  print = NOxFlux,no,application,total
+  print = LivestockNO
   ++labels 
-    sort = 820
+    sort = 470
     en = NO-Emissions from manure application
     de = Hofdüngerausbringung NO-Emission
     fr = Emission de NO Epandage des engrais de ferme
@@ -320,13 +296,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 ## 2c) N2O losses
 +n2o_napplication_liquid
-  format = %.0f
-  print = NOxFlux,n2o,application,liquid
-  ++labels 
-    sort = 831
-    en = N2O-Emissions from liquid manure application
-    de = Hofdüngerausbringung flüssig N2O-Emission
-    fr = Emission de N2O Epandage des engrais de ferme liquides
+  print = application
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -338,13 +308,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
     Val(er_n2o_napplication_liquid, Application::Slurry);
 
 +n2o_napplication_solid
-  format = %.0f
-  print = NOxFlux,n2o,application,solid
-  ++labels 
-    sort = 832
-    en = N2O-Emissions from solid manure application
-    de = Hofdüngerausbringung fest N2O-Emission
-    fr = Emission de N2O Epandage des engrais de ferme solides
+  print = application
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -360,9 +324,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +n2o_napplication
   format = %.0f
-  print = NOxFlux,n2o,application,total
+  print = LivestockN2O
   ++labels 
-    sort = 830
+    sort = 370
     en = N2O-Emissions from manure application
     de = Hofdüngerausbringung N2O-Emission
     fr = Emission de N2O Epandage des engrais de ferme
