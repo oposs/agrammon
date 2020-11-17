@@ -126,12 +126,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +n_excretion
   format= %.0f
-  print = FluxSummaryLivestock
+  print = LivestockNtot
   ++labels
-    sort = 101
-    en = Total N excretion
-    de = Total N Ausscheidung
-    fr = Excrétion de N totale
+    sort = 600
+    en = Excretion
+    de = Ausscheidung
+    fr = Excrétion
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -150,12 +150,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +n_into_housing
   format= %.0f
-  print = FluxSummaryLivestock
+  print = LivestockNtot
   ++labels
-    sort = 101
-    en = Total N excretion
-    de = Total N Ausscheidung
-    fr = Excrétion de N totale
+    sort = 630
+    en = __Housing
+    de = __Stall
+    fr = __?
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -174,12 +174,12 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +n_into_yard
   format= %.0f
-  print = FluxSummaryLivestock
+  print = LivestockNtot
   ++labels
-    sort = 101
-    en = Total N excretion
-    de = Total N Ausscheidung
-    fr = Excrétion de N totale
+    sort = 640
+    en = __Yard
+    de = __Laufhof
+    fr = __?
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -191,30 +191,30 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(n_into_yard, Livestock::DairyCow::Yard) P+
     Sum(n_into_yard, Livestock::Equides::Yard);
 
-# +n_into_housing_and_yard
-#   format= %.0f
-#   print = FluxSummaryLivestock
-#   ++labels
-#     sort = 101
-#     en = Total N excretion
-#     de = Total N Ausscheidung
-#     fr = Excrétion de N totale
-#   ++units
-#     en = kg N/year
-#     de = kg N/Jahr
-#     fr = kg N/an
-#   ++description
-#     Total annual N excreted by all animals.
-#   ++formula
-#     Out(n_into_housing) P+
-#     Out(n_into_yard);
++n_into_housing_and_yard
+  format= %.0f
+  print = LivestockNtot
+  ++labels
+    sort = 620
+    en = Into housing and exercise yard
+    de = Total N Ausscheidung
+    fr = Excrétion de N totale
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all animals.
+  ++formula
+    Out(n_into_housing) P+
+    Out(n_into_yard);
 
 +n_into_grazing
   format= %.0f
-  print = FluxSummaryLivestock
+  print = LivestockNtot
   ++labels
-    sort = 101
-    en = Total N excretion
+    sort = 610
+    en = Into grazing
     de = Total N Ausscheidung
     fr = Excrétion de N totale
   ++units
@@ -237,11 +237,35 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 ####################################################
 ##### tan input -> Clean up labels etc!!!
 
++tan_excretion
+  format= %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 800
+    en = Excretion
+    de = Ausscheidung
+    fr = Excrétion
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total annual N excreted by all animals.
+  ++formula
+    Sum(tan_excretion, Livestock::OtherCattle::Excretion) P+
+    Sum(tan_excretion, Livestock::DairyCow::Excretion) P+
+    Sum(tan_excretion, Livestock::Pig::Excretion) P+
+    Sum(tan_excretion, Livestock::FatteningPigs::Excretion) P+
+    Sum(tan_excretion, Livestock::Equides::Excretion) P+
+    Sum(tan_excretion, Livestock::SmallRuminants::Excretion) P+
+    Sum(tan_excretion, Livestock::RoughageConsuming::Excretion) P+
+    Sum(tan_excretion, Livestock::Poultry::Excretion);
+
 +tan_into_housing
   format= %.0f
-  print = FluxSummaryLivestock
+  print = LivestockTAN
   ++labels
-    sort = 101
+    sort = 830
     en = Total N excretion
     de = Total N Ausscheidung
     fr = Excrétion de N totale
@@ -263,9 +287,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +tan_into_yard
   format= %.0f
-  print = FluxSummaryLivestock
+  print = LivestockTAN
   ++labels
-    sort = 101
+    sort = 840
     en = Total N excretion
     de = Total N Ausscheidung
     fr = Excrétion de N totale
@@ -280,30 +304,30 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Sum(tan_into_yard, Livestock::DairyCow::Yard) P+
     Sum(tan_into_yard, Livestock::Equides::Yard);
 
-# +tan_into_housing_and_yard
-#   format= %.0f
-#   print = TANFlux
-#   ++labels
-#     sort = 101
-#     en = Total soluble N excretion
-#     de = Total Nlös Ausscheidung
-#     fr = Excrétion de TAN totale
-#   ++units
-#     en = kg TAN/year
-#     de = kg TAN/Jahr
-#     fr = kg TAN/an
-#   ++description
-#     Total annual TAN excreted by all animals.
-#   ++formula
-#     Out(tan_into_housing) P+
-#     Out(tan_into_yard);
++tan_into_housing_and_yard
+  format= %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 820
+    en = Total soluble N excretion
+    de = Total Nlös Ausscheidung
+    fr = Excrétion de TAN totale
+  ++units
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
+  ++description
+    Total annual TAN excreted by all animals.
+  ++formula
+    Out(tan_into_housing) P+
+    Out(tan_into_yard);
 
 +tan_into_grazing
   format= %.0f
-  print = FluxSummaryLivestock
+  print = LivestockTAN
   ++labels
-    sort = 101
-    en = Total N excretion
+    sort = 810
+    en = Into grazing
     de = Total N Ausscheidung
     fr = Excrétion de N totale
   ++units

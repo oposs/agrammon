@@ -76,13 +76,15 @@ Dummy Module marking the startpoint for the Model Parser
         en = Livestock N2-Emissions
         de = N2 Emissionen Tierproduktion
         fr = TODO: ?
+      +++LivestockNtot
+        en = Flux total nitrogen livestock
+        de = Ntot Fluss Tierproduktion
+        fr = TODO: ?
+      +++LivestockTAN
+        en = Flux TAN livestock
+        de = TAN Fluss Tierproduktion
+        fr = TODO: ?
 ?endif
-#Total Animalproduction
-#Mineral fertiliser
-#Recycling fertiliser
-#Total Plantproduction
-#Total
-
 
 
 +SummaryBarGraph
