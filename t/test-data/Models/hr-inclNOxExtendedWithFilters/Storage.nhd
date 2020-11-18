@@ -88,7 +88,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 ##### mineralization liquid 
   
 +mineralization 
-  print = 7
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 867
+    en = Mineralization (liquid)
+    de = Mineralisierung (flüssig)
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -426,7 +432,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 ## dafür NH3 basierend auf (TANin + TANout) / 2 * EF
 
 +immobilization
-  print = 7
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 868
+    en = Immobilization (solid)
+    de = Immobilisierung (fest)
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
