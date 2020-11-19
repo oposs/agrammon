@@ -134,7 +134,7 @@ taxonomy = Livestock::FatteningPigs::Housing
     # change effect of certain mitigation strategies on indoor/grazing emissions? -> check with Thomas
     Out(tan_into_housing) * Out(ef_nh3_nhousing);
 
-+n_air_scrubber
++tan_air_scrubber
   print = FatteningPigs
   ++units
      en = kg N/year
@@ -143,10 +143,17 @@ taxonomy = Livestock::FatteningPigs::Housing
   ++description
     Annual N of NH3 emission remaining in air scrubber from pig housing systems.
   ++formula
-    # reduction efficiency of air scrubber
-    Val(red_air_scrubber, Housing::AirScrubber) *
-    # multiplied with indoor loss before air scrubber removal
-    Val(tan_excretion,Excretion) * Out(ef_housing_indoor_before_air_scrubber);  
+    # change n/tan into storage/application from air scrubber types? -> check with Thomas
+    if ( Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling' ) {
+      # 100% of n in biotrickling filter vanishes
+      # reduction efficiency of air scrubber
+      Val(red_air_scrubber, Housing::AirScrubber) *
+      # multiplied with indoor loss before air scrubber removal
+      Val(tan_excretion,Excretion) * Out(ef_housing_indoor_before_air_scrubber);  
+    } else {
+      # n in acid scrubber adds 100% to flux into storage
+      0;
+    }
 
 +n_outhousing
   print = FatteningPigs
@@ -158,14 +165,7 @@ taxonomy = Livestock::FatteningPigs::Housing
     Annual N flux out of the housing excluding N remained in biotrickling filter,
     (without remains in acid filter).
   ++formula
-    # change n/tan into storage/application from air scrubber types? -> check with Thomas
-    if ( Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling' ) {
-      # n in biotrickling vanishes
-      Out(n_into_housing) - Out(nh3_nhousing) - Out(n_air_scrubber);
-    } else {
-      # n in acid scrubber adds 100% to flux into storage
-      Out(n_into_housing) - Out(nh3_nhousing);
-    }
+    Out(n_into_housing) - Out(nh3_nhousing) - Out(tan_air_scrubber);
 
 +tan_outhousing
   print = FatteningPigs
@@ -176,14 +176,8 @@ taxonomy = Livestock::FatteningPigs::Housing
   ++description
     Annual N flux as TAN out of the housing excluding N remained in biotrickling filter.
   ++formula
-    # change n/tan into storage/application from air scrubber types? -> check with Thomas
-    if ( Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling' ) {
-      # n in biotrickling vanishes
-      Out(tan_into_housing) - Out(nh3_nhousing) - Out(n_air_scrubber);
-    } else {
-      # n in acid scrubber adds 100% to flux into storage
-      Out(tan_into_housing) - Out(nh3_nhousing);
-    }
+    Out(tan_into_housing) - Out(nh3_nhousing) - Out(tan_air_scrubber);
+
 
 +n_outhousing_liquid
   print = FatteningPigs

@@ -59,6 +59,43 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
         is (+%output-hash<Storage><tan_into_application>).round(.001), $tan-into-application.round(.001),
                 "Correct tan_into_application result: { (+%output-hash<Storage><tan_into_application>).round(.001) }";
 
+        # check balance for each "Stufe" (livestock, storage, application)
+        # input = output + loss + remaining  
+        if ($model-version eq "hr-inclNOxExtendedWithFilters") { 
+            ### check livestock ntot balance
+            my $balance-livestock-ntot =
+                # get n into housing + yard + grazing 
+                %output-hash<Livestock><n_excretion>.apply-pairwise(
+                    # subtract nh3 loss from housing + yard + grazing
+                    %output-hash<Livestock><nh3_nlivestock>, &infix:<->, 0
+                ).apply-pairwise(
+                    # subtract n2 loss from grazing (housing + yard -> storage)
+                    %output-hash<Livestock><n2_ngrazing>, &infix:<->, 0
+                ).apply-pairwise(
+                    # subtract no loss from grazing (housing + yard -> storage)
+                    %output-hash<Livestock><no_ngrazing>, &infix:<->, 0
+                ).apply-pairwise(
+                    # subtract n2o loss from grazing (housing + yard -> storage)
+                    %output-hash<Livestock><n2o_ngrazing>, &infix:<->, 0
+                ).apply-pairwise(
+                    # subtract ntot remaining in soil from grazing
+                    %output-hash<Livestock><n_remain_grazing>, &infix:<->, 0
+                ).apply-pairwise(
+                    # subtract ntot remaining (vanishing) in air scrubber
+                    %output-hash<Livestock><tan_remain_scrubber>, &infix:<->, 0
+                ).apply-pairwise(
+                    # subtract ntot out of housing + yard + grazing
+                    %output-hash<Livestock><n_out_livestock>, &infix:<->, 0
+                );
+            for $balance-livestock-ntot.results-by-filter-group -> $res {
+                # silent unless test fails:
+                if ($res.value.round(.001) ne 0.0) {
+                    is $res.value.round(.001), 0.0,
+                        "Correct '{ $res.key.values }' balance: 0.0";
+                }
+            }
+
+        }
 
        # say "\nFluxSummaryLivestock=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', False);
        # say "\nFluxSummaryLivestock (Details)=\n", output-as-text($model, $output, 'de', 'FluxSummaryLivestock,TANFlux', True);
