@@ -60,11 +60,11 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                 "Correct tan_into_application result: { (+%output-hash<Storage><tan_into_application>).round(.001) }";
 
         # check balance for each "Stufe" (livestock, storage, application)
-        # input = output + loss + remaining  
+        # input = output = outflow + loss + remaining  
         if ($model-version eq "hr-inclNOxExtendedWithFilters") { 
             ### check livestock ntot balance
             my $balance-livestock-ntot = %output-hash<Livestock><n_excretion>;
-            my @subtract =
+            my @outputs =
                 'nh3_nlivestock',       # nh3 loss from housing + yard + grazing
                 'n2_ngrazing',          # n2 loss from grazing (housing + yard -> storage)
                 'no_ngrazing',          # no loss from grazing (housing + yard -> storage)
@@ -72,8 +72,8 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                 'n_remain_grazing',     # ntot remaining in soil from grazing
                 'tan_remain_scrubber',  # ntot remaining (vanishing) in air scrubber
                 'n_out_livestock';      # ntot out of housing + yard + grazing
-            for @subtract -> $subtr {
-                $balance-livestock-ntot .= apply-pairwise(%output-hash<Livestock>{$subtr}, &infix:<->, 0);
+            for @outputs -> $output {
+                $balance-livestock-ntot .= apply-pairwise(%output-hash<Livestock>{$output}, &infix:<->, 0);
             }
             for $balance-livestock-ntot.results-by-filter-group():all -> $res {
                 # check if 0 for each animal category:
