@@ -1121,3 +1121,30 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
      Sum(tan_remain_grazing, Livestock::Poultry::Grazing);
 
 ####################################################
+
+
+
+####################################################
+#### tan remain air scrubber (for balance check)
+
++tan_remain_scrubber
+  format= %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 845
+    en = TAN remain air scrubber
+    de = ?
+    fr = ?
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N remaining on pasture from all grazing areas.
+  ++formula
+     Sum(tan_air_scrubber, Livestock::Pig::Housing) P+
+     Sum(tan_air_scrubber, Livestock::FatteningPigs::Housing) P+
+     Sum(tan_air_scrubber, Livestock::Poultry::Housing);
+
+
+####################################################
