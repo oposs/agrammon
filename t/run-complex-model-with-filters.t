@@ -63,36 +63,22 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
         # input = output + loss + remaining  
         if ($model-version eq "hr-inclNOxExtendedWithFilters") { 
             ### check livestock ntot balance
-            my $balance-livestock-ntot =
-                # get n into housing + yard + grazing 
-                %output-hash<Livestock><n_excretion>.apply-pairwise(
-                    # subtract nh3 loss from housing + yard + grazing
-                    %output-hash<Livestock><nh3_nlivestock>, &infix:<->, 0
-                ).apply-pairwise(
-                    # subtract n2 loss from grazing (housing + yard -> storage)
-                    %output-hash<Livestock><n2_ngrazing>, &infix:<->, 0
-                ).apply-pairwise(
-                    # subtract no loss from grazing (housing + yard -> storage)
-                    %output-hash<Livestock><no_ngrazing>, &infix:<->, 0
-                ).apply-pairwise(
-                    # subtract n2o loss from grazing (housing + yard -> storage)
-                    %output-hash<Livestock><n2o_ngrazing>, &infix:<->, 0
-                ).apply-pairwise(
-                    # subtract ntot remaining in soil from grazing
-                    %output-hash<Livestock><n_remain_grazing>, &infix:<->, 0
-                ).apply-pairwise(
-                    # subtract ntot remaining (vanishing) in air scrubber
-                    %output-hash<Livestock><tan_remain_scrubber>, &infix:<->, 0
-                ).apply-pairwise(
-                    # subtract ntot out of housing + yard + grazing
-                    %output-hash<Livestock><n_out_livestock>, &infix:<->, 0
-                );
-            for $balance-livestock-ntot.results-by-filter-group -> $res {
-                # silent unless test fails:
-                if ($res.value.round(.001) ne 0.0) {
-                    is $res.value.round(.001), 0.0,
-                        "Correct '{ $res.key.values }' balance: 0.0";
-                }
+            my $balance-livestock-ntot = %output-hash<Livestock><n_excretion>;
+            my @subtract =
+                'nh3_nlivestock',       # nh3 loss from housing + yard + grazing
+                'n2_ngrazing',          # n2 loss from grazing (housing + yard -> storage)
+                'no_ngrazing',          # no loss from grazing (housing + yard -> storage)
+                'n2o_ngrazing',         # n2o loss from grazing (housing + yard -> storage)
+                'n_remain_grazing',     # ntot remaining in soil from grazing
+                'tan_remain_scrubber',  # ntot remaining (vanishing) in air scrubber
+                'n_out_livestock';      # ntot out of housing + yard + grazing
+            for @subtract -> $subtr {
+                $balance-livestock-ntot .= apply-pairwise(%output-hash<Livestock>{$subtr}, &infix:<->, 0);
+            }
+            for $balance-livestock-ntot.results-by-filter-group():all -> $res {
+                # check if 0 for each animal category:
+                is $res.value.round(.001), 0.0,
+                    "Correct '{ $res.key.values }' balance: 0.0";
             }
 
         }
