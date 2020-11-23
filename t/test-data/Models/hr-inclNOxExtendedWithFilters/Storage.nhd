@@ -88,7 +88,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 ##### mineralization liquid 
   
 +mineralization 
-  print = 7
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 867
+    en = Mineralization (liquid)
+    de = Mineralisierung (flüssig)
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -113,7 +119,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 ##### n into storage
 
 +n_into_storage_liquid
-  print = newStorage
+  format = %.0f
+  print = LivestockNtot
+  ++labels
+    sort = 655
+    en = __liquid
+    de = __?
+    fr = __?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -124,7 +136,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Val(n_out_livestock_liquid, ::Livestock);
 
 +n_into_storage_solid
-  print = newStorage
+  format = %.0f
+  print = LivestockNtot
+  ++labels
+    sort = 665
+    en = __solid
+    de = __?
+    fr = __?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -139,7 +157,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     );
 
 +n_into_storage
-  print = newStorage
+  format = %.0f
+  print = LivestockNtot
+  ++labels
+    sort = 650
+    en = Into storage
+    de = ?
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -158,7 +182,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 ##### tan into storage
 
 +tan_into_storage_liquid
-  print = newStorage
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 855
+    en = __liquid
+    de = ?
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -169,7 +199,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Val(tan_out_livestock_liquid, ::Livestock);
 
 +tan_into_storage_solid
-  print = newStorage
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 865
+    en = __solid
+    de = ?
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -182,6 +218,24 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       Val(share_into_storage_solid_no_poultry, Storage::SolidManure::Solid) P+
       Val(share_into_storage_solid_poultry, Storage::SolidManure::Poultry)
     );
+
++tan_into_storage
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 850
+    en = Into storage
+    de = ?
+    fr = ?
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux into liquid storage.
+  ++formula
+    Out(tan_into_storage_liquid) P+
+    Out(tan_into_storage_solid);
 
 +tan_into_storage_liquid_pigs
   print = newStorage
@@ -378,7 +432,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 ## dafür NH3 basierend auf (TANin + TANout) / 2 * EF
 
 +immobilization
-  print = 7
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 868
+    en = Immobilization (solid)
+    de = Immobilisierung (fest)
+    fr = ?
   ++units  
     en = kg N/year
     de = kg N/Jahr
