@@ -59,24 +59,91 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
         is (+%output-hash<Storage><tan_into_application>).round(.001), $tan-into-application.round(.001),
                 "Correct tan_into_application result: { (+%output-hash<Storage><tan_into_application>).round(.001) }";
 
-        # check balance for each "Stufe" (livestock, storage, application)
-        # input = output = outflow + loss + remaining  
+        # check balance in N and TAN flows
+        # input = losses + remaining  
         if ($model-version eq "hr-inclNOxExtendedWithFilters") { 
-            ### check livestock ntot balance
-            my $balance-livestock-ntot = %output-hash<Livestock><n_excretion>;
-            my @outputs =
-                'nh3_nlivestock',       # nh3 loss from housing + yard + grazing
-                'n2_ngrazing',          # n2 loss from grazing (housing + yard -> storage)
-                'no_ngrazing',          # no loss from grazing (housing + yard -> storage)
-                'n2o_ngrazing',         # n2o loss from grazing (housing + yard -> storage)
-                'n_remain_grazing',     # ntot remaining in soil from grazing
-                'tan_remain_scrubber',  # ntot remaining (vanishing) in air scrubber
-                'n_out_livestock';      # ntot out of housing + yard + grazing
-            for @outputs -> $output {
-                $balance-livestock-ntot .= apply-pairwise(%output-hash<Livestock>{$output}, &infix:<->, 0);
+
+            ### losses for both, TAN and N
+            
+            ## livestock
+            my $losses-livestock-both = %output-hash<Livestock><n_excretion>.scale(0.0);
+                my @outputs-livestock-both =
+                    'nh3_nlivestock',       # nh3 loss from housing + yard + grazing
+                    'n2_ngrazing',          # n2 loss from grazing (housing + yard -> storage)
+                    'no_ngrazing',          # no loss from grazing (housing + yard -> storage)
+                    'n2o_ngrazing',         # n2o loss from grazing (housing + yard -> storage)
+                    'tan_remain_scrubber';  # nh3/tan remaining (vanishing) in air scrubber
+                for @outputs-livestock-both -> $output {
+                    $losses-livestock-both .= apply-pairwise(%output-hash<Livestock>{$output}, &infix:<+>, 0);
+                }
+            
+            ## storage
+            my $losses-storage-both = %output-hash<Livestock><n_excretion>.scale(0.0);
+                # nxox losses from housing, yard and storage
+                my @outputs-storage-both =
+                    'n2_nhousing_and_storage',  # n2 loss from housing, yard and storage
+                    'no_nhousing_and_storage',  # no loss from housing, yard and storage
+                    'n2o_nhousing_and_storage'; # n2o loss from housing, yard and storage
+                for @outputs-storage-both -> $output {
+                    $losses-storage-both .= apply-pairwise(%output-hash<Livestock>{$output}, &infix:<+>, 0);
+                }
+                # nh3 loss from storage
+                $losses-storage-both .= apply-pairwise(%output-hash<Storage><nh3_nstorage>, &infix:<+>, 0);
+            
+            ## application
+            my $losses-application-both = %output-hash<Livestock><n_excretion>.scale(0.0);
+                my @outputs-application-both =
+                    'nh3_napplication',       # nh3 loss from housing + yard + grazing
+                    'n2_napplication',          # n2 loss from application
+                    'no_napplication',          # no loss from application
+                    'n2o_napplication';         # n2o loss from application
+                for @outputs-application-both -> $output {
+                    $losses-application-both .= apply-pairwise(%output-hash<Application>{$output}, &infix:<+>, 0);
+                }
+
+            ### check ntot balance
+            # N input
+            my $balance-ntot = %output-hash<Livestock><n_excretion>;
+            # N output livestock (N losses + N remaining)
+                # both
+                $balance-ntot .= apply-pairwise($losses-livestock-both, &infix:<->, 0);
+                # N only
+                $balance-ntot .= apply-pairwise(%output-hash<Livestock><n_remain_grazing>, &infix:<->, 0);
+            # N output storage (N losses)
+                # both
+                $balance-ntot .= apply-pairwise($losses-storage-both, &infix:<->, 0);
+            # N output application (N losses + N remaining)
+                # both
+                $balance-ntot .= apply-pairwise($losses-application-both, &infix:<->, 0);
+                # N only
+                $balance-ntot .= apply-pairwise(%output-hash<Application><n_remain_application>, &infix:<->, 0);
+            # check balance for each animal category:
+            for $balance-ntot.results-by-filter-group():all -> $res {
+                is $res.value.round(.001), 0.0,
+                    "Correct '{ $res.key.values }' balance: 0.0";
             }
-            for $balance-livestock-ntot.results-by-filter-group():all -> $res {
-                # check if 0 for each animal category:
+
+            ### check tan balance
+            # TAN input
+            my $balance-tan = %output-hash<Livestock><tan_excretion>;
+            # TAN output livestock (TAN losses + TAN remaining)
+                # both
+                $balance-tan .= apply-pairwise($losses-livestock-both, &infix:<->, 0);
+                # TAN only
+                $balance-tan .= apply-pairwise(%output-hash<Livestock><tan_remain_grazing>, &infix:<->, 0);
+            # TAN output storage (TAN losses)
+                # both
+                $balance-tan .= apply-pairwise($losses-storage-both, &infix:<->, 0);
+                # TAN only
+                $balance-tan .= apply-pairwise(%output-hash<Storage><mineralization>, &infix:<+>, 0);
+                $balance-tan .= apply-pairwise(%output-hash<Storage><immobilization>, &infix:<->, 0);
+            # TAN output application (TAN losses + TAN remaining)
+                # both
+                $balance-tan .= apply-pairwise($losses-application-both, &infix:<->, 0);
+                # TAN only
+                $balance-tan .= apply-pairwise(%output-hash<Application><tan_remain_application>, &infix:<->, 0);
+            # check balance for each animal category:
+            for $balance-tan.results-by-filter-group():all -> $res {
                 is $res.value.round(.001), 0.0,
                     "Correct '{ $res.key.values }' balance: 0.0";
             }
