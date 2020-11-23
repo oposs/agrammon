@@ -148,13 +148,31 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N flux into liquid storage.
+    Annual N flux into solid storage.
   ++formula
     Val(n_out_livestock_solid, ::Livestock) P*
     (
       Val(share_into_storage_solid_no_poultry, Storage::SolidManure::Solid) P+
       Val(share_into_storage_solid_poultry, Storage::SolidManure::Poultry)
     );
+
++n_directly_applied_solid
+  format = %.0f
+  print = LivestockNtot
+  ++labels
+    sort = 667
+    en = Directly applied solid manure
+    de = __?
+    fr = __?
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N flux directly applied.
+  ++formula
+    Val(n_out_livestock_solid, ::Livestock) P-
+    Out(n_into_storage_solid);
 
 +n_into_storage
   format = %.0f
@@ -211,13 +229,31 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     de = kg N/Jahr
     fr = kg N/an
   ++description
-    Annual N flux into liquid storage.
+    Annual N flux into solid storage.
   ++formula
     Val(tan_out_livestock_solid, ::Livestock) P*
     (
       Val(share_into_storage_solid_no_poultry, Storage::SolidManure::Solid) P+
       Val(share_into_storage_solid_poultry, Storage::SolidManure::Poultry)
     );
+
++tan_directly_applied_solid
+  format = %.0f
+  print = LivestockTAN
+  ++labels
+    sort = 867
+    en = Directly applied solid manure
+    de = __?
+    fr = __?
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual TAN flux directly applied.
+  ++formula
+    Val(tan_out_livestock_solid, ::Livestock) P-
+    Out(tan_into_storage_solid);
 
 +tan_into_storage
   format = %.0f
