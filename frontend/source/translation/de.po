@@ -59,7 +59,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -171,7 +171,7 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Error"
 msgstr "Fehler"
 
@@ -299,7 +299,7 @@ msgstr "Umbenennen Kategorie "
 msgid "Duplicate instance "
 msgstr "Duplizieren Kategorie "
 
-#: agrammon/ui/menu/NavMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
@@ -363,11 +363,11 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/input/regional/BranchEditor.js
 msgid "Clear"
 msgstr "Löschen"
 
@@ -415,11 +415,11 @@ msgstr "Ok"
 msgid "Graphical Results"
 msgstr "Resultate als Grafik"
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Choose table: "
 msgstr "Tabelle auswählen"
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Simulation log"
 msgstr "Mitteilungen zu den Resultaten"
 
@@ -463,7 +463,7 @@ msgstr "Mit Excel öffnen"
 msgid "Create PDF"
 msgstr "PDF Report"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/output/Reports.js
 msgid "Submission"
 msgstr "Einreichung"
 
@@ -827,7 +827,7 @@ msgstr "Passwort geändert."
 msgid "Password change failed, please try again."
 msgstr "Die Passwort nicht geändert. Bitte nochmals probieren."
 
-#: agrammon/ui/table/cellrenderer/input/Number.js
+#: agrammon/ui/table/cellrenderer/input/Replace.js
 msgid "Flattened"
 msgstr ""
 

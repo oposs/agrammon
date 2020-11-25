@@ -65,9 +65,9 @@ class Agrammon::UI::Web {
                 %report<data> = @data;
 
                 given $type {
-                    when 'report'      { push @reports, %report }
-                    when 'bar' | 'pie' { push @graphs,  %report }
-                    default            { die "Unknown report type $type" }
+                    when 'report' | 'reportDetailed' { push @reports, %report }
+                    when 'bar' | 'pie'               { push @graphs,  %report }
+                    default                          { die "Unknown report type $type" }
                 }
             }
         }

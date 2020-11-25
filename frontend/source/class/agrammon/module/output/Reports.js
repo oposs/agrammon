@@ -380,6 +380,7 @@ qx.Class.define('agrammon.module.output.Reports', {
 
             rdlen = this.resultData.length;
             var found = false;
+            var showFilterGroups;
             for (ri=0; ri<rdlen; ri++) {
                 if (this.resultData[ri]['name'] ==  reportName) {
                     found = true;
@@ -387,12 +388,13 @@ qx.Class.define('agrammon.module.output.Reports', {
                     break;
                 }
             }
-
             if (! found) {
                 this.debug('selectMenu: no matching report for '
                            +reportName);
                 return;
             }
+
+            showFilterGroups = this.resultData[ri].type == 'reportDetailed' ? true : false;
             var reports = this.resultData[ri]['data'];
             var subReports;
             var r, sr, srlen;
@@ -490,7 +492,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                             refValue = '-';
                             refDiff  = '-';
                         }
-                        if (rec.filters) {
+                        if (rec.filters && showFilterGroups) {
                             var filters = rec.filters;
                             var keys = Object.keys(filters);
                             if (keys.length > 0) {
