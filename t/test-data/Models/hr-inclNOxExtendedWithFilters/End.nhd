@@ -45,7 +45,7 @@ Dummy Module marking the startpoint for the Model Parser
 
 ?if !KantonalLU
   +DetailReport
-    type = report
+    type = reportDetailed
     ++selector
       en = TODO: Detail Report
       de = TODO: Detail Report
@@ -157,7 +157,7 @@ Dummy Module marking the startpoint for the Model Parser
 #        en = Plant production
 #        de = Pflanzenbau
 #        fr = Production végétale
-# 
+#
 # +AnimalEmissionsTotalPieGraph
 #    type = pie
 #    ++selector
@@ -213,7 +213,7 @@ Dummy Module marking the startpoint for the Model Parser
 #        en = Plant production
 #        de = Pflanzenbau
 #        fr = Production végétale
-# 
+#
 # +DistributionPieGraph
 #    type = bar
 #    ++selector
