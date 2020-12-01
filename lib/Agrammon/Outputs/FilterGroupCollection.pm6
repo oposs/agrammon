@@ -183,3 +183,17 @@ class Agrammon::Outputs::FilterGroupCollection {
         %!values-by-filter
     }
 }
+
+sub translate-filter-keys($model, %filter) is export {
+    Hash[Hash, Hash].new: %filter.kv.map: -> $key, $value {
+        my @parts = $key.split('::');
+        my $input-name = @parts.pop;
+        my $taxonomy = @parts.join('::');
+        with $model.get-input($taxonomy, $input-name) -> $input {
+            $input.labels => $input.enum{$value}
+        }
+        else {
+            $key => $value
+        }
+    }
+}

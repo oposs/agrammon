@@ -29,7 +29,6 @@ sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
                 my $var = $module ~ '::' ~ $output;
                 push @records, make-record($module, $output, $model, $raw-value, $var, :$language, :$prints);
                 if $include-filters {
-                    my $value = flat-value($raw-value);
                     if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
                         push-filters(@records, $module, $output, $model, $raw-value, $var);
                     }
@@ -44,7 +43,6 @@ sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
                         my $var = $q-name ~ '::' ~ $output;
                         push @records, make-record($fq-name, $output, $model, $raw-value, $var, $instance-id, :$language, :$prints);
                         if $include-filters {
-                            my $value = flat-value($raw-value);
                             if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
                                 push-filters(@records, $fq-name, $output, $model, $raw-value, $var);
                             }

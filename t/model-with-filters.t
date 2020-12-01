@@ -1,6 +1,7 @@
 use Agrammon::DataSource::CSV;
 use Agrammon::Model;
 use Agrammon::Model::Parameters;
+use Agrammon::Outputs::FilterGroupCollection;
 use Agrammon::TechnicalParser;
 
 use Test;
@@ -89,6 +90,15 @@ subtest 'Running the model produces output instances with filters' => {
         given @results-by-group.grep(*.key eqv {"Livestock::Pig::Excretion::animalcategory" => "boars"}) {
             is .elems, 1, 'Found filter group value for boars';
             is .[0].value, <238158/10625>, 'Correct value calculated for boars';
+            given translate-filter-keys($model, .[0].key) -> %translated {
+                is %translated.elems, 1, 'Translated filter key hash has one element';
+                is-deeply %translated.keys[0],
+                    {:de("Tierkategorie"), :en("Animal category"), :fr("Catégorie d'animaux")},
+                    'Correct translation of key';
+                is-deeply %translated.values[0],
+                    {:de("Eber"), :en("boars"), :fr("Verrats"), :it("boars")},
+                    'Correct translation of value';
+            }
         }
         my @all-results-by-group = $livestock-tan.results-by-filter-group(:all);
         given @all-results-by-group[0] {

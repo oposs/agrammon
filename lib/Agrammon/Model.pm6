@@ -154,6 +154,7 @@ class Agrammon::Model {
     has %!output-labels-cache;
     has %!output-order-cache;
     has $!distribution-map-cache;
+    has $!index;
 
     method file2module($file) {
         my $module = $file;
@@ -314,6 +315,31 @@ class Agrammon::Model {
             $output  ~= .taxonomy.indent(4 * $level) ~ "\n";
         }
         return $output;
+    }
+
+    method get-module(Str $taxonomy --> Agrammon::Model::Module) {
+        self!index{$taxonomy} // fail "No such module '$taxonomy'"
+    }
+
+    method get-input(Str $taxonomy, Str $input --> Agrammon::Model::Input) {
+        with self.get-module($taxonomy) -> Agrammon::Model::Module $module {
+            with $module.input.first(*.name eq $input) {
+                $_
+            }
+            else {
+                fail "No such input '$input' on module '$taxonomy'";
+            }
+        }
+        else {
+            $_ # The module lookup failure
+        }
+    }
+
+    method !index() {
+        without $!index {
+            $!index = hash @!load-order.map: { .taxonomy => $_ };
+        }
+        $!index
     }
 
     method output-unit(Str $module, Str $output, Str $lang --> Str) {
