@@ -450,6 +450,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                 this.titleSelected += title;
                 repDataset = new Array;
                 repRefDataset = new Array;
+                var lastFTitle = '';
                 for (i=0; i<len; i++) { // variables
                     rec = data[i];
                     if (refData != null) {
@@ -497,13 +498,18 @@ qx.Class.define('agrammon.module.output.Reports', {
                             var keys = Object.keys(filters);
                             if (keys.length > 0) {
                                 var filterArray = [];
+                                var fTitle =  keys[0].replace(/.+::/,'');
+                                if (lastFTitle != fTitle) {
+//                                    repDataset.push([ '', fTitle, ,'', '', '', rec.print, rec.labels.sort]);
+                                    lastFTitle = fTitle;
+                                }
                                 for (var k=0; k<keys.length; k++) {
                                     var f = keys[k];
                                     var v = filters[f];
-                                    f = f.replace(/.+::/,'');
-                                    filterArray.push(f + '=' + v);
+//                                    f = f.replace(/.+::/,'');
+                                    filterArray.push(v);
                                 }
-                                varName = '- ' + filterArray.join(', ');
+                                varName = '. . . . . . ' + filterArray.join(', ');
                             }
                         }
                         repDataset.push([ '', // moduleName,
