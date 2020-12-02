@@ -494,24 +494,16 @@ qx.Class.define('agrammon.module.output.Reports', {
                             refValue = '-';
                             refDiff  = '-';
                         }
-                        if (rec.filters && showFilterGroups) {
+                        if (rec.filters && rec.filters.length>0 && showFilterGroups) {
                             var filters = rec.filters;
-                            var keys = Object.keys(filters);
-                            if (keys.length > 0) {
-                                var filterArray = [];
-                                var fTitle =  keys[0].replace(/.+::/,'');
-                                if (lastFTitle != fTitle) {
-//                                    repDataset.push([ '', fTitle, ,'', '', '', rec.print, rec.labels.sort]);
-                                    lastFTitle = fTitle;
-                                }
-                                for (var k=0; k<keys.length; k++) {
-                                    var f = keys[k];
-                                    var v = filters[f];
-//                                    f = f.replace(/.+::/,'');
-                                    filterArray.push(v);
-                                }
-                                varName = '. . . . . . ' + filterArray.join(', ');
+//                            console.log('filters=', filters);
+                            let filterTitles = [];
+                            let filterKeys   = [];
+                            for (let filter of filters) {
+                                filterTitles.push(filter.label[locale]);
+                                filterKeys.push(filter.enum[locale]);
                             }
+                            varName = '. . . . . . ' + filterKeys.join(', ');
                         }
                         else {
                             // TODO: remove hack
@@ -519,7 +511,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                             seen[rec.var] = true;
                         }
                         console.log(rec.var + ' - ' + varName+ ': ' + value);
-                        repDataset.push([ '', // moduleName,
+                        repDataset.push([ '', // moduleName
                             varName,
                             refValue, // reference
                             value,

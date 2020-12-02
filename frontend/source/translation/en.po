@@ -170,7 +170,7 @@ msgstr ""
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Error"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Cancel"
 msgstr ""
 
@@ -826,7 +826,7 @@ msgstr ""
 msgid "Password change failed, please try again."
 msgstr ""
 
-#: agrammon/ui/table/cellrenderer/input/Replace.js
+#: agrammon/ui/table/cellrenderer/input/Number.js
 msgid "Flattened"
 msgstr ""
 

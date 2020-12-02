@@ -303,7 +303,7 @@ msgstr "Duplizieren Kategorie "
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Variable"
 msgstr "Variable"
 
@@ -323,7 +323,7 @@ msgstr ""
 msgid "Click to edit"
 msgstr "Zum Editieren anklicken"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Unit"
 msgstr "Einheit"
 
@@ -347,7 +347,7 @@ msgstr "Einheit Deutsch"
 msgid "Unit French"
 msgstr "Einheit Französisch"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Order"
 msgstr "Sortierung"
 
@@ -415,11 +415,11 @@ msgstr "Ok"
 msgid "Graphical Results"
 msgstr "Resultate als Grafik"
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Choose table: "
 msgstr "Tabelle auswählen"
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Simulation log"
 msgstr "Mitteilungen zu den Resultaten"
 
@@ -431,23 +431,23 @@ msgstr "*** Auswählen ***"
 msgid "Tabular Results"
 msgstr "Resultate als Tabelle"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Module"
 msgstr "Modul"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Reference"
 msgstr "Referenz"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Value"
 msgstr "Wert"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Change"
 msgstr "Änderung"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Print"
 msgstr "Druck"
 
@@ -827,7 +827,7 @@ msgstr "Passwort geändert."
 msgid "Password change failed, please try again."
 msgstr "Die Passwort nicht geändert. Bitte nochmals probieren."
 
-#: agrammon/ui/table/cellrenderer/input/Number.js
+#: agrammon/ui/table/cellrenderer/input/Replace.js
 msgid "Flattened"
 msgstr ""
 
