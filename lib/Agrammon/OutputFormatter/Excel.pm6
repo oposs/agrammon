@@ -32,7 +32,7 @@ sub output-as-excel(
     }
 
     my $row = 2;
-    my $lastModule = '';
+    my $last-module = '';
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         my $col = 0;
         my $n = 0;
@@ -43,16 +43,16 @@ sub output-as-excel(
                 if not $prints or $var-print.split(',') ∩ @print-set {
                     $n++;
                     my $unit = $model.output-unit($module, $output, $language);
-                    my $outputLabel = $language ?? $model.output-labels($module, $output){$language} !! $output;
-                    my $unitLabel   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
+                    my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
+                    my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
 
-                    if $module ne $lastModule {
+                    if $module ne $last-module {
                         $output-sheet.set($row, $col + 0, $module);
-                        $lastModule = $module;
+                        $last-module = $module;
                     }
-                    $output-sheet.set($row, $col+2, $outputLabel);
+                    $output-sheet.set($row, $col+2, $output-label);
                     $output-sheet.set($row, $col+3, $value, :number-format('#,###'));
-                    $output-sheet.set($row, $col+4, $unitLabel);
+                    $output-sheet.set($row, $col+4, $unit-label);
                     $row++;
                     if $include-filters {
                         if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
@@ -72,17 +72,17 @@ sub output-as-excel(
                         if not $prints or $var-print.split(',') ∩ @print-set {
                             $n++;
                             my $unit = $model.output-unit($module, $output, $language);
-                            my $outputLabel = $language ?? $model.output-labels($module, $output){$language} !! $output;
-                            my $unitLabel   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
+                            my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
+                            my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
 
-                            if $module ne $lastModule {
+                            if $module ne $last-module {
                                 $output-sheet.set($row, $col + 0, $module);
-                                $lastModule = $module;
+                                $last-module = $module;
                             }
                             $output-sheet.set($row, $col+1, $q-name);
-                            $output-sheet.set($row, $col+2, $outputLabel);
+                            $output-sheet.set($row, $col+2, $output-label // 'Output: ???');
                             $output-sheet.set($row, $col+3, $value, :number-format('#,###'));
-                            $output-sheet.set($row, $col+4, $unitLabel);
+                            $output-sheet.set($row, $col+4, $unit-label // 'Unit: ???');
                             $row++;
                             if $include-filters {
                                 if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
@@ -105,10 +105,12 @@ sub render-filters($sheet, $row is rw, $col, $model, Agrammon::Outputs::FilterGr
     my @results = $collection.results-by-filter-group(:all($all-filters));
     for @results {
         my %keyFilters := .key;
-        my @filters = translate-filter-keys($model, %keyFilters).map: -> $trans { %( label => $trans.key, enum => $trans.value ) };
+        my %filters := translate-filter-keys($model, %keyFilters);
         my $value := .value;
-        for @filters -> $filter {
-            $sheet.set($row, $col+2, $filter<enum>{$language}, :horizontal-align(RightAlign));
+#        we might need the %label for multiple filter groups later
+#        for %filters.kv -> %label, %enum {
+        for %filters.values -> %enum {
+            $sheet.set($row, $col+2, %enum{$language}, :horizontal-align(RightAlign));
             $sheet.set($row, $col+3, $value, :number-format('#,###'));
             $sheet.set($row, $col+4, $unit);
             $row++;
