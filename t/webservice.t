@@ -43,7 +43,7 @@ subtest "Setup" => {
         %($params.technical.map(-> %module {
             %module.keys[0] => %(%module.values[0].map({ .name => .value }))
         }));
-    }
+    };
     ok $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters), "Create Web::Service object";
 }
 
@@ -367,14 +367,14 @@ subtest "get-excel-export" => {
     my %params = %(
         :datasetName($dataset-name),
         :language('de'),
-        :withFilters(False)
+        :!withFilters
     );
-    ok my $workbook = $ws.get-excel-export($user, %params);
+    ok my $workbook = $ws.get-excel-export($user, %params), "Create workbook";
 
-    is $workbook.worksheets[0;0].name,  'Ergebnisse',                   "Excel workbook has correct name";
-    is $workbook.worksheets[1;0].name,  'Ergebnisse formatiert',        "Excel workbook has correct name";
-    is $workbook.worksheets[2;0].name,  'Eingabe-Parameter',            "Excel workbook has correct name";
-    is $workbook.worksheets[3;0].name,  'Eingabe-Parameter formatiert', "Excel workbook has correct name";
+    is $workbook.worksheets[0;0].name,  'Ergebnisse',            "Excel workbook has correct name";
+    is $workbook.worksheets[1;0].name,  'Ergebnisse formatiert', "Excel workbook has correct name";
+    is $workbook.worksheets[2;0].name,  'Eingaben',              "Excel workbook has correct name";
+    is $workbook.worksheets[3;0].name,  'Eingaben formatiert',   "Excel workbook has correct name";
 
     # TODO: add real tests once implementation is complete
     my $cells = $workbook.worksheets[0].cells;
