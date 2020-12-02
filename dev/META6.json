@@ -9,7 +9,7 @@
   ],
   "auth": "Oetiker+Partner",
   "depends": [
-    "Cro::HTTP:ver<0.8.3>",
+    "Cro::HTTP",
     "Cro::HTTP::Session::Pg",
     "Cro::OpenAPI::RoutesFromDefinition",
     "Cro::WebApp::Template",
