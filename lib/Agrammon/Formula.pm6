@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Environment;
 use Agrammon::Formula::ControlFlow;
 use Agrammon::OutputReference;

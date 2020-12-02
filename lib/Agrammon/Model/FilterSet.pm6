@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Model::Module;
 
 #| Filters are inputs in a multi module (or one of its dependencies), which can in turn be

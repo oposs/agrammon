@@ -1,3 +1,4 @@
+use v6;
 #| When we have a multi-instance module, the instances may have filters applied.
 #| Traditionally when dealing with instances in aggregate, we just obtained the
 #| sum and used that. However, with instance filters, we want to track the numbers

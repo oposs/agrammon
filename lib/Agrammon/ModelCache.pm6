@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Formula::Compiler;
 use Agrammon::Model;
 use Digest::SHA1::Native;

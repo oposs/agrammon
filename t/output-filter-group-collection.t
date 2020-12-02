@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Outputs::FilterGroupCollection;
 use Test;
 

@@ -1,3 +1,4 @@
+use v6;
 use Test;
 use Data::Dump::Tree;
 use Agrammon::DataSource::CSV;
@@ -27,32 +28,32 @@ my $model-variants = (
 #| Expected results
 my %expected-results =
     'Kantonal_LU' => {
-        'nh3_ntotal' => 3358.751,    
-        'nh3_nanimalproduction' => 3336.551,    
-        'nh3_napplication' => 1550.348,    
-        'n_into_application' => 7692.974,    
-        'tan_into_application' => 3336.359    
+        'nh3_ntotal' => 3358.751,
+        'nh3_nanimalproduction' => 3336.551,
+        'nh3_napplication' => 1550.348,
+        'n_into_application' => 7692.974,
+        'tan_into_application' => 3336.359
     },
     'Single_correct' => {
-        'nh3_ntotal' => 3153.837,    
-        'nh3_nanimalproduction' => 3131.637,    
-        'nh3_napplication' => 1347.095,    
-        'n_into_application' => 7480.652,    
-        'tan_into_application' => 3202.854   
+        'nh3_ntotal' => 3153.837,
+        'nh3_nanimalproduction' => 3131.637,
+        'nh3_napplication' => 1347.095,
+        'n_into_application' => 7480.652,
+        'tan_into_application' => 3202.854
     },
     'Single_extendedOutput' => {
-        'nh3_ntotal' => 3157.775,    
-        'nh3_nanimalproduction' => 3135.575,    
-        'nh3_napplication' => 1351.033,    
-        'n_into_application' => 7480.652,    
-        'tan_into_application' => 3202.854  
+        'nh3_ntotal' => 3157.775,
+        'nh3_nanimalproduction' => 3135.575,
+        'nh3_napplication' => 1351.033,
+        'n_into_application' => 7480.652,
+        'tan_into_application' => 3202.854
     },
     'Single_default' => {
-        'nh3_ntotal' => 3157.775,    
-        'nh3_nanimalproduction' => 3135.575,    
-        'nh3_napplication' => 1351.033,    
-        'n_into_application' => 7480.652,    
-        'tan_into_application' => 3202.854    
+        'nh3_ntotal' => 3157.775,
+        'nh3_nanimalproduction' => 3135.575,
+        'nh3_napplication' => 1351.033,
+        'n_into_application' => 7480.652,
+        'tan_into_application' => 3202.854
     };
 
 my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';

@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Model;
 
 #| Get model data for LaTeX document generation

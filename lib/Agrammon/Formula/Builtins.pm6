@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Formula::ControlFlow;
 use Agrammon::Outputs;
 
@@ -32,8 +33,8 @@ sub get-builtins is export {
             die "add operator expects a filter group as its first argument"
                     unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
             $filter-group.add(+$additor)
-        },        
-        # Select only values in filter group 'a' 
+        },
+        # Select only values in filter group 'a'
         # where values in filter group 'crit' are greater than 0
         selectStrict => -> $filter-group-a, $filter-group-crit {
             die "selectStrict expects two filter groups as arguments"
@@ -41,7 +42,7 @@ sub get-builtins is export {
                             $filter-group-crit ~~ Agrammon::Outputs::FilterGroupCollection;
             $filter-group-a.select-by-threshold($filter-group-crit, 0, False)
         },
-        # As 'selectStrict' but, additionally, returning 0 for filter groups 
+        # As 'selectStrict' but, additionally, returning 0 for filter groups
         # where values in filter group 'crit' are 0 or less
         selectAll => -> $filter-group-a, $filter-group-crit {
             die "selectAll expects two filter groups as arguments"

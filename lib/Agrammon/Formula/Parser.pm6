@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Formula;
 use Agrammon::Formula::Builder;
 

@@ -1,3 +1,5 @@
+use v6;
+
 class X::Agrammon::Inputs::AlreadySingle is Exception {
     has Str $.taxonomy;
     method message() {

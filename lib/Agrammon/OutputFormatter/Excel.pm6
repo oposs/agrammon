@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Model;
 use Agrammon::Outputs;
 use Spreadsheet::XLSX;

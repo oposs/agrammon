@@ -1,3 +1,5 @@
+use v6;
+
 #| Fixes any tabs in the input string to four spaces, and warns about each
 #| one.
 sub fix-tabs(Str $in) is export {
