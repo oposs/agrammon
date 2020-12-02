@@ -139,7 +139,9 @@ class Agrammon::Web::Service {
 
         # TODO: handle inputs
         # my %inputs;
-$with-filters = True;
+        # TODO: get $with-filters from GUI
+        $with-filters = True;
+
         my $outputs = self!get-outputs($user, $dataset-name);
         output-as-excel(
             $dataset-name,
