@@ -374,7 +374,6 @@ qx.Class.define('agrammon.module.output.Reports', {
             }
 
             var reportName = this.selectMenu.getSelection()[0].getModel();
-//            this.debug('Report selected: ' + reportName);
             var ri, rdlen;
             var dataSet = new Array;
 
@@ -450,6 +449,9 @@ qx.Class.define('agrammon.module.output.Reports', {
                 this.titleSelected += title;
                 repDataset = new Array;
                 repRefDataset = new Array;
+                var lastFTitle = '';
+
+                var seen = {};
                 for (i=0; i<len; i++) { // variables
                     rec = data[i];
                     if (refData != null) {
@@ -463,7 +465,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                     tags = new Array;
                     tags = printTag.split(',');
                     tlen = tags.length;
-                    TAGS: for (t=0; t<tlen; t++) {
+              TAGS: for (t=0; t<tlen; t++) {
                         for (sr=0; sr<srlen; sr++) {
                             if (tags[t] == subReports[sr]) {
                                 printMe = true;
@@ -492,21 +494,24 @@ qx.Class.define('agrammon.module.output.Reports', {
                             refValue = '-';
                             refDiff  = '-';
                         }
-                        if (rec.filters && showFilterGroups) {
+                        if (rec.filters && rec.filters.length>0 && showFilterGroups) {
                             var filters = rec.filters;
-                            var keys = Object.keys(filters);
-                            if (keys.length > 0) {
-                                var filterArray = [];
-                                for (var k=0; k<keys.length; k++) {
-                                    var f = keys[k];
-                                    var v = filters[f];
-                                    f = f.replace(/.+::/,'');
-                                    filterArray.push(f + '=' + v);
-                                }
-                                varName = '- ' + filterArray.join(', ');
+//                            console.log('filters=', filters);
+                            let filterTitles = [];
+                            let filterKeys   = [];
+                            for (let filter of filters) {
+                                filterTitles.push(filter.label[locale]);
+                                filterKeys.push(filter.enum[locale]);
                             }
+                            varName = '. . . . . . ' + filterKeys.join(', ');
                         }
-                        repDataset.push([ '', // moduleName,
+                        else {
+                            // TODO: remove hack
+                            if (seen[rec.var]) continue;
+                            seen[rec.var] = true;
+                        }
+//                        console.log(rec.var + ' - ' + varName+ ': ' + value);
+                        repDataset.push([ '', // moduleName
                             varName,
                             refValue, // reference
                             value,

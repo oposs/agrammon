@@ -170,7 +170,7 @@ msgstr ""
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Error"
 msgstr ""
 
@@ -362,11 +362,11 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Cancel"
 msgstr ""
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/input/regional/BranchEditor.js
 msgid "Clear"
 msgstr ""
 
@@ -414,11 +414,11 @@ msgstr ""
 msgid "Graphical Results"
 msgstr ""
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Choose table: "
 msgstr ""
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Simulation log"
 msgstr "Notes on the results"
 
@@ -462,7 +462,7 @@ msgstr ""
 msgid "Create PDF"
 msgstr ""
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/output/Reports.js
 msgid "Submission"
 msgstr ""
 
@@ -826,7 +826,7 @@ msgstr ""
 msgid "Password change failed, please try again."
 msgstr ""
 
-#: agrammon/ui/table/cellrenderer/input/Replace.js
+#: agrammon/ui/table/cellrenderer/input/Number.js
 msgid "Flattened"
 msgstr ""
 

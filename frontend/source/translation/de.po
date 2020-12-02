@@ -171,7 +171,7 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Error"
 msgstr "Fehler"
 
@@ -299,7 +299,7 @@ msgstr "Umbenennen Kategorie "
 msgid "Duplicate instance "
 msgstr "Duplizieren Kategorie "
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
@@ -363,11 +363,11 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/ui/dialog/Comment.js
 msgid "Clear"
 msgstr "Löschen"
 
@@ -463,7 +463,7 @@ msgstr "Mit Excel öffnen"
 msgid "Create PDF"
 msgstr "PDF Report"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Submission"
 msgstr "Einreichung"
 

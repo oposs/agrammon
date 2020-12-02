@@ -1,5 +1,6 @@
 use Agrammon::Model;
 use Agrammon::Outputs;
+use Agrammon::Outputs::FilterGroupCollection;
 
 sub output-as-json(Agrammon::Model $model,
                    Agrammon::Outputs $outputs,
@@ -55,7 +56,7 @@ sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
     return @records;
 }
 
-sub make-record($fq-name, $output, $model, $raw-value, $var, $instance-id?, :$language, :$prints, :%filters) {
+sub make-record($fq-name, $output, $model, $raw-value, $var, $instance-id?, :$language, :$prints, :@filters) {
     my $format = $model.output-format($fq-name, $output);
     my $full-value = flat-value($raw-value);
     my $value = ($format  && $full-value.defined) ?? sprintf($format, $full-value)
@@ -72,7 +73,7 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, $instance-id?, :$la
         :fullValue($full-value),
         :$value,
         :$var,
-        :%filters,
+        :@filters,
     );
 
     # add instance name for multi module outputs
@@ -95,9 +96,10 @@ sub push-filters(@records, $fq-name, $output, $model,
                  Agrammon::Outputs::FilterGroupCollection $collection,
                  $var) {
     for $collection.results-by-filter-group {
-        my %filters := .key;
+        my %keyFilters := .key;
+        my @filters = translate-filter-keys($model, %keyFilters).map: -> $trans { %( label => $trans.key, enum => $trans.value ) };
         my $value   := .value;
-        push @records, make-record($fq-name, $output, $model, $value, $var, :%filters);
+        push @records, make-record($fq-name, $output, $model, $value, $var, :@filters);
     }
 }
 
