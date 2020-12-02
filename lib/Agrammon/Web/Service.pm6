@@ -134,7 +134,7 @@ class Agrammon::Web::Service {
     method get-excel-export(Agrammon::Web::SessionUser $user, %params) {
         my $dataset-name = %params<datasetName>;
         my $language     = %params<language>;
-        my $with-filters = %params<withFilters>;
+        my $with-filters = %params<type> eq 'reportDetailed';
         my $prints = %params<reports>;
 
         # TODO: handle inputs

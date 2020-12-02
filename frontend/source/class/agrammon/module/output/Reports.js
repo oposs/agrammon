@@ -90,7 +90,7 @@ qx.Class.define('agrammon.module.output.Reports', {
         var outputTable = new qx.ui.table.Table(tableModel, custom);
         outputTable.set({ padding: 0,
                   keepFirstVisibleRowComplete: true,
-                  columnVisibilityButtonVisible: false,
+//                  columnVisibilityButtonVisible: false,
                   statusBarVisible: false
                 });
         outputTable.setMetaColumnCounts([1, -1]);
@@ -355,6 +355,12 @@ qx.Class.define('agrammon.module.output.Reports', {
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         },
 
+        __sortBySort: function (a,b) {
+            var x = a.labels.sort;
+            var y = b.labels.sort;
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        },
+
     /**
       * @ignore(TAGS)
       */
@@ -404,12 +410,15 @@ qx.Class.define('agrammon.module.output.Reports', {
             var data    = new Array;
             var refData = new Array;
             data        = this.outputData.getDataset();
+            data.sort(this.__sortBySort);
+
             refData     = this.referenceData.getDataset();
             if (refData == null) {
                 this.__showReference(false);
             }
             else {
                 this.__showReference(true);
+                refData.sort(this.__sortBySort);
             }
 
             var len = data.length;
@@ -423,6 +432,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             locale = locale.replace(/_.+/,'');
             this.reportSelected = '';
             this.titleSelected = '';
+
             for (r=0; r<rlen; r++) { // reports selected
 
                 subReports = reports[r]['subReports'];
