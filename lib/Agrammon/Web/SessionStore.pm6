@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Web::SessionUser;
 use Cro::HTTP::Session::Pg;
 use JSON::Fast;

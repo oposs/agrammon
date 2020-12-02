@@ -1,3 +1,4 @@
+use v6;
 #| Base of all Agrammon preprocessor exceptions.
 role X::Agrammon::Preprocessor is Exception {
     has Int $.line is required;

@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::DataSource::CSV;
 use Agrammon::Model;
 use Agrammon::Model::Parameters;

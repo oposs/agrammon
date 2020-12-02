@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Preprocessor;
 use Test;
 
@@ -154,7 +155,7 @@ is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'Nested ?if works (outer true)';
 
     line 4
     OUT
-    
+
 is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'Nested ?if not (!) works (outer true)';
     line 1
     ?if !A

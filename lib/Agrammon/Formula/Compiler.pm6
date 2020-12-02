@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Formula;
 
 unit module Agrammon::Fomula::Compiler;

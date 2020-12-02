@@ -1,3 +1,4 @@
+use v6;
 use Test;
 use Data::Dump::Tree;
 use Agrammon::DataSource::CSV;
@@ -60,17 +61,17 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                 "Correct tan_into_application result: { (+%output-hash<Storage><tan_into_application>).round(.001) }";
 
         # check balance in N and TAN flows
-        # input = losses + remaining  
-        if ($model-version eq "hr-inclNOxExtendedWithFilters") { 
+        # input = losses + remaining
+        if ($model-version eq "hr-inclNOxExtendedWithFilters") {
 
-            ### losses for both, TAN and N            
+            ### losses for both, TAN and N
             my @outputs-both =
                 ## livestock:
                 Livestock => 'nh3_nlivestock',              # nh3 loss from housing + yard + grazing
                 Livestock => 'n2_ngrazing',                 # n2 loss from grazing (housing + yard -> storage)
                 Livestock => 'no_ngrazing',                 # no loss from grazing (housing + yard -> storage)
                 Livestock => 'n2o_ngrazing',                # n2o loss from grazing (housing + yard -> storage)
-                Livestock => 'tan_remain_scrubber',         # nh3/tan remaining (vanishing) in air scrubber            
+                Livestock => 'tan_remain_scrubber',         # nh3/tan remaining (vanishing) in air scrubber
                 ## storage:
                 Livestock => 'n2_nhousing_and_storage',     # n2 loss from housing, yard and storage
                 Livestock => 'no_nhousing_and_storage',     # no loss from housing, yard and storage
@@ -81,13 +82,13 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                 Application => 'n2_napplication',           # n2 loss from application
                 Application => 'no_napplication',           # no loss from application
                 Application => 'n2o_napplication';          # n2o loss from application
-            my $losses-both = cumul-apply(%output-hash<Livestock><n_excretion>.scale(0.0), 
+            my $losses-both = cumul-apply(%output-hash<Livestock><n_excretion>.scale(0.0),
                 @outputs-both, %output-hash, &infix:<+>);
 
             ### check ntot balance
             # N remaining in soil
-            my @outputs-n-only = 
-                Livestock => 'n_remain_grazing', 
+            my @outputs-n-only =
+                Livestock => 'n_remain_grazing',
                 Application => 'n_remain_application';
             my $balance-ntot = cumul-apply(%output-hash<Livestock><n_excretion>,
                 @outputs-n-only, %output-hash, &infix:<->);
@@ -101,8 +102,8 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
 
             # ### check tan balance
             # TAN remaining in soil + immob.
-            my @outputs-tan-only = 
-                Livestock => 'tan_remain_grazing', 
+            my @outputs-tan-only =
+                Livestock => 'tan_remain_grazing',
                 Storage => 'immobilization',
                 Application => 'tan_remain_application';
             my $balance-tan = cumul-apply(%output-hash<Livestock><tan_excretion>,

@@ -1,3 +1,4 @@
+use v6;
 use Test;
 use Data::Dump::Tree;
 use Agrammon::DataSource::CSV;

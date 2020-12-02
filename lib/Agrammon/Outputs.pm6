@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Outputs::FilterGroupCollection;
 
 class X::Agrammon::Outputs::Unset is Exception {

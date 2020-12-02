@@ -1,3 +1,5 @@
+use v6;
+
 class Agrammon::Formula::LogCollector {
     has @.messages;
 

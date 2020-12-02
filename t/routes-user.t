@@ -1,3 +1,4 @@
+use v6;
 use Agrammon::Web::Routes;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
