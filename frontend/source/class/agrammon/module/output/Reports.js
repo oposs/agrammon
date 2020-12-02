@@ -510,7 +510,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                             if (seen[rec.var]) continue;
                             seen[rec.var] = true;
                         }
-                        console.log(rec.var + ' - ' + varName+ ': ' + value);
+//                        console.log(rec.var + ' - ' + varName+ ': ' + value);
                         repDataset.push([ '', // moduleName
                             varName,
                             refValue, // reference
