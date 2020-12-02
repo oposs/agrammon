@@ -72,7 +72,7 @@ class Agrammon::Model {
         has Agrammon::Model::Module $.module;
         has ModuleRunner @.dependencies;
         has Agrammon::Model::FilterSet $!filter-set;
-        
+
         submethod TWEAK(--> Nil) {
             if $!module.is-multi {
                 $!filter-set .= new(:$!module, :dependencies(@!dependencies.map(*.module)));
@@ -353,7 +353,7 @@ class Agrammon::Model {
         %!output-unit-cache ||= @!evaluation-order.map({
             .taxonomy => %(.output.map({ .name => .units }))
         });
-        return %!output-unit-cache{$module}{$output}
+        return %!output-unit-cache{$module}{$output} // %()
     }
 
     method output-print(Str $module, Str $output) {
@@ -381,7 +381,7 @@ class Agrammon::Model {
         %!output-labels-cache ||= @!evaluation-order.map({
             .taxonomy => %(.output.map({ .name => .labels }))
         });
-        return %!output-labels-cache{$module}{$output} // ''
+        return %!output-labels-cache{$module}{$output} // %()
     }
 
     method distribution-map() {
