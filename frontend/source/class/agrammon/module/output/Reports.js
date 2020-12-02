@@ -374,7 +374,6 @@ qx.Class.define('agrammon.module.output.Reports', {
             }
 
             var reportName = this.selectMenu.getSelection()[0].getModel();
-//            this.debug('Report selected: ' + reportName);
             var ri, rdlen;
             var dataSet = new Array;
 
@@ -451,6 +450,8 @@ qx.Class.define('agrammon.module.output.Reports', {
                 repDataset = new Array;
                 repRefDataset = new Array;
                 var lastFTitle = '';
+
+                var seen = {};
                 for (i=0; i<len; i++) { // variables
                     rec = data[i];
                     if (refData != null) {
@@ -464,7 +465,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                     tags = new Array;
                     tags = printTag.split(',');
                     tlen = tags.length;
-                    TAGS: for (t=0; t<tlen; t++) {
+              TAGS: for (t=0; t<tlen; t++) {
                         for (sr=0; sr<srlen; sr++) {
                             if (tags[t] == subReports[sr]) {
                                 printMe = true;
@@ -512,6 +513,12 @@ qx.Class.define('agrammon.module.output.Reports', {
                                 varName = '. . . . . . ' + filterArray.join(', ');
                             }
                         }
+                        else {
+                            // TODO: remove hack
+                            if (seen[rec.var]) continue;
+                            seen[rec.var] = true;
+                        }
+                        console.log(rec.var + ' - ' + varName+ ': ' + value);
                         repDataset.push([ '', // moduleName,
                             varName,
                             refValue, // reference
