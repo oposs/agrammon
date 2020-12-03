@@ -9,9 +9,10 @@ use Agrammon::Model::Technical;
 
 class Agrammon::ModuleBuilder {
     has $!module-load-order = 0;
-    
+
     my constant ORDERED = {
-        input => { :enum }
+        input   => { :enum },
+        results => { :data }
     }
 
     method TOP($/) {

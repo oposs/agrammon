@@ -143,9 +143,10 @@ class Agrammon::Web::Service {
 
         my $inputs  = self!get-inputs($user, $dataset-name);
         my $outputs = self!get-outputs($user, $dataset-name);
+        my $reports = self.get-input-variables<reports>;
         input-output-as-excel(
             $dataset-name,
-            $!model, $outputs, $inputs,
+            $!model, $outputs, $inputs, $reports,
             $language, $prints,
             $with-filters, $all-filters
         );

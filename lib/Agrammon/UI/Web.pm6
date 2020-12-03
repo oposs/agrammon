@@ -7,7 +7,6 @@ class Agrammon::UI::Web {
     method !get-inputs {
         my @inputs;
         for $!model.load-order -> $module {
-            my @module-inputs;
             for $module.input -> $input {
 
                 my %input-hash = $input.as-hash;
@@ -36,52 +35,41 @@ class Agrammon::UI::Web {
         my (@reports, @graphs);
 
         for $!model.evaluation-order -> $module {
-            my @module-inputs;
             for $module.results -> $result {
+                my %result-hash = $result.as-hash;
+
                 my $type = $result.type;
                 my %report = %(
                     name     => $result.name,
                     _order   => $result._order,
                     selector => $result.selector,
                     :$type,
+                    submit   => $result.is-submit,
                 );
 
-                my %data = $result.data;
                 my @data;
-                for %data.kv -> $key, $langLabels {
-                    my %opts = %(
-                        label      => $key,
-                        subReports => split('_', $key),
-                    );
-
-                    my @langLabel  = split("\n", $langLabels);
-                    for @langLabel -> $ll {
-                        my ($lang, $label) = split(/ \s* '=' \s* /, $ll);
-                        %opts{$lang} = $label;
+                my @report-data = %result-hash<data>;
+                for @report-data -> @sub-reports {
+                    for @sub-reports -> $sub-report {
+                        for $sub-report.kv -> $print, %langLabels {
+                            my %opts = %( :%langLabels, :$print, );
+                            push @data, %opts;
+                        }
                     }
-                    push @data, %opts;
-                }
-
-                %report<data> = @data;
-
-                given $type {
-                    when 'report' | 'reportDetailed' { push @reports, %report }
-                    when 'bar' | 'pie'               { push @graphs,  %report }
-                    default                          { die "Unknown report type $type" }
+                    %report<data> = @data;
+                    given $type {
+                        when 'report' | 'reportDetailed' { push @reports, %report }
+                        when 'bar'    | 'pie'            { push @graphs, %report }
+                        default { die "Unknown report type $type" }
+                    }
                 }
             }
         }
-
-        return %(
-            :@reports,
-            :@graphs,
-        );
+        return %( :@reports, :@graphs, );
     }
 
     method get-input-variables {
-        my %results = self!get-results;
-
-        return %( %results, inputs => self!get-inputs );
+        return %( self!get-results, inputs => self!get-inputs );
     }
 
 }

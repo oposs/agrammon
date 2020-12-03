@@ -415,11 +415,11 @@ msgstr "Ok"
 msgid "Graphical Results"
 msgstr "Resultate als Grafik"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Choose table: "
 msgstr "Tabelle auswählen"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Simulation log"
 msgstr "Mitteilungen zu den Resultaten"
 
