@@ -25,16 +25,19 @@ sub output-for-gui(Agrammon::Model $model,
 
 sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
     my @records;
+    my $last-order = -1;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         when Hash {
             for sorted-kv($_) -> $output, $raw-value {
                 my $var = $module ~ '::' ~ $output;
-                push @records, make-record($module, $output, $model, $raw-value, $var, :$language, :$prints);
+                my $order = $model.output-labels($module, $output)<sort> || $last-order;
+                push @records, make-record($module, $output, $model, $raw-value, $var, $order, :$language, :$prints);
                 if $include-filters {
                     if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
-                        push-filters(@records, $module, $output, $model, $raw-value, $var);
+                        push-filters(@records, $module, $output, $model, $raw-value, $var, $order);
                     }
                 }
+                $last-order = $order;
             }
         }
         when Array {
@@ -42,22 +45,24 @@ sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
                     for sorted-kv(%values) -> $output, $raw-value {
+                        my $order = $model.output-labels($fq-name, $output)<sort> || $last-order;
                         my $var = $q-name ~ '::' ~ $output;
-                        push @records, make-record($fq-name, $output, $model, $raw-value, $var, $instance-id, :$language, :$prints);
+                        push @records, make-record($fq-name, $output, $model, $raw-value, $var, $order, $instance-id, :$language, :$prints);
                         if $include-filters {
                             if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
-                                push-filters(@records, $fq-name, $output, $model, $raw-value, $var);
+                                push-filters(@records, $fq-name, $output, $model, $raw-value, $var, $order);
                             }
                         }
+                        $last-order = $order;
                     }
                 }
             }
         }
     }
-    return @records;
+    return @records.sort(+*.<order>);
 }
 
-sub make-record($fq-name, $output, $model, $raw-value, $var, $instance-id?, :$language, :$prints, :@filters) {
+sub make-record($fq-name, $output, $model, $raw-value, $var, $order, $instance-id?, :$language, :$prints, :@filters) {
     my $format = $model.output-format($fq-name, $output);
     my $full-value = flat-value($raw-value);
     my $value = ($format  && $full-value.defined) ?? sprintf($format, $full-value)
@@ -70,7 +75,7 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, $instance-id?, :$la
     my %record = %(
         :$format,
         :$print,
-        :order($model.output-order($fq-name, $output)),
+        :$order,
         :fullValue($full-value),
         :$value,
         :$var,
@@ -95,12 +100,12 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, $instance-id?, :$la
 
 sub push-filters(@records, $fq-name, $output, $model,
                  Agrammon::Outputs::FilterGroupCollection $collection,
-                 $var) {
+                 $var, $order) {
     for $collection.results-by-filter-group {
         my %keyFilters := .key;
         my @filters = translate-filter-keys($model, %keyFilters).map: -> $trans { %( label => $trans.key, enum => $trans.value ) };
         my $value   := .value;
-        push @records, make-record($fq-name, $output, $model, $value, $var, :@filters);
+        push @records, make-record($fq-name, $output, $model, $value, $var, $order, :@filters);
     }
 }
 
