@@ -47,9 +47,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = LivestockNtot
   ++labels
     sort = 675
-    en = __liquid
-    de = ?
-    fr = ?
+    en = __Liquid
+    de = __Flüssig
+    fr = __Liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -64,9 +64,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = LivestockNtot
   ++labels
     sort = 685
-    en = __solid
-    de = ?
-    fr = ?
+    en = __Solid
+    de = __Fest
+    fr = __Solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -82,8 +82,8 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++labels
     sort = 670
     en = Into application
-    de = ?
-    fr = ?
+    de = In Ausbringung
+    fr = Dans l'épandage
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -105,9 +105,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = LivestockTAN
   ++labels
     sort = 875
-    en = __liquid
-    de = ?
-    fr = ?
+    en = __Liquid
+    de = __Flüssig
+    fr = __Liquides
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -122,9 +122,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = LivestockTAN
   ++labels
     sort = 885
-    en = __solid
-    de = ?
-    fr = ?
+    en = __Solid
+    de = __Fest
+    fr = __Solides
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -140,8 +140,8 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++labels
     sort = 870
     en = Into application
-    de = ?
-    fr = ?
+    de = In Ausbringung
+    fr = Dans l'épandage
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -164,9 +164,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = SummaryLivestock,LivestockNH3
   ++labels 
     sort = 085
-    en = __NH3-Emissions from solid manure application
-    de = __Hofdüngerausbringung fest NH3-Emission
-    fr = __Emission de NH3 Epandage des engrais de ferme solides
+    en = __Solid
+    de = __Fest
+    fr = __Solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -185,9 +185,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = SummaryLivestock,LivestockNH3
   ++labels 
     sort = 075
-    en = __NH3-Emissions from liquid manure application
-    de = __Hofdüngerausbringung flüssig NH3-Emission
-    fr = __Emission de NH3 Epandage des engrais de ferme liquides
+    en = __Liquid
+    de = __Flüssig
+    fr = __Liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -202,9 +202,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = SummaryLivestock,LivestockNH3
   ++labels 
     sort = 070
-    en = NH3-Emissions from manure application
-    de = Hofdüngerausbringung NH3-Emission
-    fr = Emission de NH3 Epandage des engrais de ferme
+    en = Application
+    de = Hofdüngerausbringung
+    fr = Epandage
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -348,9 +348,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = LivestockN2O
   ++labels 
     sort = 370
-    en = N2O-Emissions from manure application
-    de = Hofdüngerausbringung N2O-Emission
-    fr = Emission de N2O Epandage des engrais de ferme
+    en = Application
+    de = Hofdüngerausbringung
+    fr = Epandage
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -374,9 +374,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = LivestockNtot
   ++labels
     sort = 691
-    en = __liquid
-    de = ?
-    fr = ?
+    en = __Liquid
+    de = __Flüssig
+    fr = __Liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -395,9 +395,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = LivestockNtot
   ++labels
     sort = 692
-    en = __solid
-    de = ?
-    fr = ?
+    en = __Solid
+    de = __Fest
+    fr = __Solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -417,8 +417,8 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++labels
     sort = 690
     en = Into soil from application
-    de = ?
-    fr = ?
+    de = In Boden von Ausbringung
+    fr = Dans le sol suite à l'épandage
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -441,9 +441,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = LivestockTAN
   ++labels
     sort = 891
-    en = __liquid
-    de = ?
-    fr = ?
+    en = __Liquid
+    de = __Flüssig
+    fr = __Liquides
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -462,9 +462,9 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   print = LivestockTAN
   ++labels
     sort = 892
-    en = __solid
-    de = ?
-    fr = ?
+    en = __Solid
+    de = __Fest
+    fr = __Solides
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -484,8 +484,8 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++labels
     sort = 890
     en = Into soil from application
-    de = ?
-    fr = ?
+    de = In Boden von Ausbringung
+    fr = Dans le sol suite à l'épandage
   ++units  
     en = kg TAN/year
     de = kg TAN/Jahr

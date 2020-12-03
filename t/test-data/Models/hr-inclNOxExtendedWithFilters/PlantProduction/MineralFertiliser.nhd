@@ -1251,9 +1251,9 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
    print = SummaryPlantProduction,PlantNH3
   ++labels
     sort = 110
-      en = Mineral fertiliser NH3-Emissions
-      de = Mineralischer Stickstoffdünger NH3-Emission
-      fr = Emission de NH3 engrais azotés minéraux 
+      en = Mineral fertiliser
+      de = Mineralischer Dünger
+      fr = Engrais minéral 
   ++units  
       en = kg N/year
       de = kg N/Jahr

@@ -94,7 +94,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     sort = 867
     en = Mineralization (liquid)
     de = Mineralisierung (flüssig)
-    fr = ?
+    fr = Minéralisation (liquide)
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -123,9 +123,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   print = LivestockNtot
   ++labels
     sort = 655
-    en = __liquid
-    de = __?
-    fr = __?
+    en = __Liquid
+    de = __Flüssig
+    fr = __Liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -140,9 +140,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   print = LivestockNtot
   ++labels
     sort = 665
-    en = __solid
-    de = __?
-    fr = __?
+    en = __Solid
+    de = __Fest
+    fr = __Solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -160,10 +160,10 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   format = %.0f
   print = LivestockNtot
   ++labels
-    sort = 667
-    en = Directly applied solid manure
-    de = __?
-    fr = __?
+    sort = 649
+    en = Without storage (directly applied)
+    de = Ohne Lagerung (direkt ausgebracht)
+    fr = Sans stockage (épandage directe)
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -180,8 +180,8 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++labels
     sort = 650
     en = Into storage
-    de = ?
-    fr = ?
+    de = In Hofdüngerlager
+    fr = Dans le stockage
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -204,9 +204,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   print = LivestockTAN
   ++labels
     sort = 855
-    en = __liquid
-    de = ?
-    fr = ?
+    en = __Liquid
+    de = __Flüssig
+    fr = __Liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -221,9 +221,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   print = LivestockTAN
   ++labels
     sort = 865
-    en = __solid
-    de = ?
-    fr = ?
+    en = __Solid
+    de = __Fest
+    fr = __Solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -242,9 +242,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   print = LivestockTAN
   ++labels
     sort = 867
-    en = Directly applied solid manure
-    de = __?
-    fr = __?
+    en = Without storage (directly applied)
+    de = Ohne Lagerung (direkt ausgebracht)
+    fr = Sans stockage (épandage directe)
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -261,8 +261,8 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++labels
     sort = 850
     en = Into storage
-    de = ?
-    fr = ?
+    de = In Hofdüngerlager
+    fr = Dans le stockage
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -406,9 +406,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   print = SummaryLivestock,LivestockNH3
   ++labels 
     sort = 055
-    en = __Storage liquid NH3-Emissions
-    de = __Hofdüngerlagerung flüssig NH3-Emission
-    fr = __Emission de NH3 Stockage des engrais de ferme liquides 
+    en = __Liquid
+    de = __Flüssig
+    fr = __Liquides 
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -424,9 +424,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   print = SummaryLivestock,LivestockNH3
   ++labels 
     sort = 065
-    en = __Storage solid NH3-Emissions
-    de = __Hofdüngerlagerung fest NH3-Emission
-    fr = __Emission de NH3 Stockage des engrais de ferme solides 
+    en = __Solid
+    de = __Fest
+    fr = __Solides 
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -445,9 +445,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   print = SummaryLivestock,LivestockNH3
   ++labels 
     sort = 050
-    en = Storage NH3-Emissions
-    de = Hofdüngerlagerung NH3-Emission
-    fr = Emission de NH3 Stockage des engrais de ferme 
+    en = Storage
+    de = Hofdüngerlagerung
+    fr = Stockage
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -474,7 +474,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     sort = 868
     en = Immobilization (solid)
     de = Immobilisierung (fest)
-    fr = ?
+    fr = Immobilisation (solide)
   ++units  
     en = kg N/year
     de = kg N/Jahr
