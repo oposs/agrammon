@@ -40,6 +40,7 @@ sub input-output-as-excel(
     my @print-set = $prints.split(',') if $prints;
     my $row = 2;
     my @records;
+    my $last-order = -1;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         my $col = 0;
         when Hash {
@@ -47,7 +48,7 @@ sub input-output-as-excel(
                 my $value = flat-value($raw-value // 'UNDEFINED');
                 my $var-print = $model.output-print($module, $output) ~ ',All';
                 if not $prints or $var-print.split(',') ∩ @print-set {
-                    my $order        = $model.output-labels($module, $output)<sort> || 'no order';
+                    my $order        = $model.output-labels($module, $output)<sort> || $last-order;
                     my $unit         = $model.output-unit($module, $output, $language);
                     my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
                     my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
@@ -57,6 +58,7 @@ sub input-output-as-excel(
                             push-filters(@records, $module, $model, $raw-value, $unit, $language, $order, :$all-filters);
                         }
                     }
+                    $last-order = $order;
                 }
             }
         }
@@ -68,7 +70,7 @@ sub input-output-as-excel(
                         my $value = flat-value($raw-value // 'UNDEFINED');
                         my $var-print = $model.output-print($module, $output) ~ ',All';
                         if not $prints or $var-print.split(',') ∩ @print-set {
-                            my $order        = $model.output-labels($module, $output)<sort> || 'no order';
+                            my $order        = $model.output-labels($module, $output)<sort> || $last-order;
                             my $unit         = $model.output-unit($module, $output, $language);
                             my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
                             my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
@@ -77,6 +79,7 @@ sub input-output-as-excel(
                                 if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
                                     push-filters(@records, $q-name, $model, $raw-value, $unit-label, $language, $order, :$all-filters);
                                 }
+                                $last-order = $order;
                             }
                         }
                     }
@@ -87,6 +90,7 @@ sub input-output-as-excel(
 
     my $col = 0;
     my $last-module = '';
+    my $last-order = -1;
     for @records.sort(+*.<order>) -> %rec {
         %rec<module> ~~ / (.+?) '::' /;
         my $module = $0 // %rec<module>;
@@ -101,6 +105,7 @@ sub input-output-as-excel(
         $output-sheet.set($row, $col+4, %rec<unit-label> // 'Unit: ???');
         $output-sheet.set($row, $col+5, %rec<order>);
         $row++;
+        $last-order = %rec<order>;
     }
     return $workbook;
 }
