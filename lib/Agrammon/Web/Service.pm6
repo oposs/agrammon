@@ -110,13 +110,15 @@ class Agrammon::Web::Service {
         return $!ui-web.get-input-variables;
     }
 
+    method !get-inputs($user, $dataset-name) {
+        Agrammon::DataSource::DB.new.read($user.username, $dataset-name, $!model.distribution-map);
+    }
+
     method !get-outputs(Agrammon::Web::SessionUser $user, Str $dataset-name) {
         return $!outputs-cache.get-or-calculate: $user.username, $dataset-name, -> {
-            my $input = Agrammon::DataSource::DB.new.read($user.username, $dataset-name,
-                    $!model.distribution-map);
             timed "$dataset-name", {
                 $!model.run:
-                        :$input,
+                        :input(self!get-inputs($user, $dataset-name)),
                         technical => %!technical-parameters;
             }
         }
@@ -134,17 +136,18 @@ class Agrammon::Web::Service {
     method get-excel-export(Agrammon::Web::SessionUser $user, %params) {
         my $dataset-name = %params<datasetName>;
         my $language     = %params<language>;
-        my $with-filters = %params<type> eq 'reportDetailed';
-        my $prints = %params<reports>;
+        my $prints       = %params<reports>;
+        my $type         = %params<type> // '';
+        my $with-filters = $type eq 'reportDetailed';
+        my $all-filters  = $type eq 'reportDetailed';
 
-        # TODO: handle inputs
-        # my %inputs;
-
+        my $inputs  = self!get-inputs($user, $dataset-name);
         my $outputs = self!get-outputs($user, $dataset-name);
-        output-as-excel(
+        input-output-as-excel(
             $dataset-name,
-            $!model, $outputs, $language, $prints,
-            $with-filters, :all-filters(False)
+            $!model, $outputs, $inputs,
+            $language, $prints,
+            $with-filters, $all-filters
         );
     }
 

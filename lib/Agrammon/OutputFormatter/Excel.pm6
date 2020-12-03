@@ -6,23 +6,19 @@ use Spreadsheet::XLSX;
 use Spreadsheet::XLSX::Styles;
 
 # TODO: make output match current Agrammon Excel export
-sub output-as-excel(
+sub input-output-as-excel(
     Str $dataset-name, Agrammon::Model $model,
-    Agrammon::Outputs $outputs, Str $language,
-    $prints, $include-filters, Bool :$all-filters = False
+    Agrammon::Outputs $outputs, Agrammon::Inputs $inputs,
+    Str $language, $prints,
+    Bool $include-filters, Bool $all-filters
 ) is export {
-    warn '**** output-as-excel() not yet completely implemented';
-
-    my @print-set = $prints.split(',') if $prints;
+    warn '**** input-output-as-excel() not yet completely implemented';
 
     my $workbook = Spreadsheet::XLSX.new;
+
+    # prepare sheets
     my $output-sheet = $workbook.create-worksheet('Ergebnisse');
     my $output-sheet-formatted = $workbook.create-worksheet('Ergebnisse formatiert');
-
-    # TODO: add input data
-    my $input-sheet = $workbook.create-worksheet('Eingaben');
-    my $input-sheet-formatted = $workbook.create-worksheet('Eingaben formatiert');
-
     for ($output-sheet, $output-sheet-formatted) -> $sheet {
         $sheet.set(0, 0, $dataset-name, :bold);
         $sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
@@ -31,34 +27,40 @@ sub output-as-excel(
                 :custom-width, :width(32);
     }
 
+    my $input-sheet = $workbook.create-worksheet('Eingaben');
+    my $input-sheet-formatted = $workbook.create-worksheet('Eingaben formatiert');
+    for ($input-sheet, $input-sheet-formatted) -> $sheet {
+        $sheet.set(0, 0, $dataset-name, :bold);
+    }
+
+    # TODO: add inputs
+
+
+    # add outputs
+    my @print-set = $prints.split(',') if $prints;
     my $row = 2;
-    my $last-module = '';
+    my @records;
+    my $last-order = -1;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         my $col = 0;
-        my $n = 0;
         when Hash {
             for sorted-kv($_) -> $output, $raw-value {
                 my $value = flat-value($raw-value // 'UNDEFINED');
                 my $var-print = $model.output-print($module, $output) ~ ',All';
                 if not $prints or $var-print.split(',') ∩ @print-set {
-                    $n++;
-                    my $unit = $model.output-unit($module, $output, $language);
+                    my $print = ($var-print.split(',') ∩ @print-set).keys[0];
+                    my $order = $model.output-labels($module, $output)<sort> || $last-order;
+                    my $unit  = $model.output-unit($module, $output, $language);
                     my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
                     my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
-
-                    if $module ne $last-module {
-                        $output-sheet.set($row, $col + 0, $module);
-                        $last-module = $module;
-                    }
-                    $output-sheet.set($row, $col+2, $output-label);
-                    $output-sheet.set($row, $col+3, $value, :number-format('#,###'));
-                    $output-sheet.set($row, $col+4, $unit-label);
-                    $row++;
+                    @records.push(%( :module(''), :$output-label, :$value, :$unit-label, :$order, :$print));
                     if $include-filters {
                         if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
-                            render-filters($output-sheet, $row, $col, $model, $raw-value, $unit,  $language, :$all-filters);
+                            push-filters(@records, $module, $model, $raw-value, $unit, $language, $order,
+                            :$all-filters);
                         }
                     }
+                    $last-order = $order;
                 }
             }
         }
@@ -70,38 +72,48 @@ sub output-as-excel(
                         my $value = flat-value($raw-value // 'UNDEFINED');
                         my $var-print = $model.output-print($module, $output) ~ ',All';
                         if not $prints or $var-print.split(',') ∩ @print-set {
-                            $n++;
-                            my $unit = $model.output-unit($module, $output, $language);
+                            my $print = ($var-print.split(',') ∩ @print-set).keys[0];
+                            my $order = $model.output-labels($module, $output)<sort> || $last-order;
+                            my $unit  = $model.output-unit($module, $output, $language);
                             my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
                             my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
-
-                            if $module ne $last-module {
-                                $output-sheet.set($row, $col + 0, $module);
-                                $last-module = $module;
-                            }
-                            $output-sheet.set($row, $col+1, $q-name);
-                            $output-sheet.set($row, $col+2, $output-label // 'Output: ???');
-                            $output-sheet.set($row, $col+3, $value, :number-format('#,###'));
-                            $output-sheet.set($row, $col+4, $unit-label // 'Unit: ???');
-                            $row++;
+                            @records.push(%( :module(''), :$output-label, :$value, :$unit-label, :$order, :$print));
                             if $include-filters {
-                                if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
-                                    render-filters($output-sheet, $row, $col, $model, $raw-value, $unit, $language, :$all-filters);
+                                if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value
+                                .has-filters {
+                                    push-filters(@records, $q-name, $model, $raw-value, $unit-label, $language,
+                                    $order, :$all-filters);
                                 }
                             }
+                            $last-order = $order;
                         }
                     }
                 }
             }
         }
-        NEXT $row++ if $n; # empty line between sections
     }
 
+    my $col = 0;
+    my $last-print = '';
+    for @records.sort(+*.<order>) -> %rec {
+        my $print = %rec<print>;
+        if $print ne $last-print {
+            $output-sheet.set($row, $col+0, $print, :bold);
+            $last-print = $print;
+            $row++;
+        }
+        $output-sheet.set($row, $col+1, %rec<module>);
+        $output-sheet.set($row, $col+2, %rec<output-label> // 'Output: ???');
+        $output-sheet.set($row, $col+3, %rec<value>, :number-format('#,###'));
+        $output-sheet.set($row, $col+4, %rec<unit-label> // 'Unit: ???');
+        $output-sheet.set($row, $col+5, %rec<order>);
+        $row++;
+    }
     return $workbook;
 }
 
-sub render-filters($sheet, $row is rw, $col, $model, Agrammon::Outputs::FilterGroupCollection $collection,
-                   $unit, $language, Bool :$all-filters) {
+sub push-filters(@records, $module, $model, Agrammon::Outputs::FilterGroupCollection $collection,
+                   $unit, $language, $order, Bool :$all-filters) {
     my @results = $collection.results-by-filter-group(:all($all-filters));
     for @results {
         my %keyFilters := .key;
@@ -110,10 +122,7 @@ sub render-filters($sheet, $row is rw, $col, $model, Agrammon::Outputs::FilterGr
 #        we might need the %label for multiple filter groups later
 #        for %filters.kv -> %label, %enum {
         for %filters.values -> %enum {
-            $sheet.set($row, $col+2, %enum{$language}, :horizontal-align(RightAlign));
-            $sheet.set($row, $col+3, $value, :number-format('#,###'));
-            $sheet.set($row, $col+4, $unit);
-            $row++;
+            @records.push( %( :$module, :output-label(%enum{$language}), :$value, :unit-label($unit), :$order) );
         }
     }
 }
