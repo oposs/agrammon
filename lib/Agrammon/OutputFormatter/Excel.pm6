@@ -84,8 +84,8 @@ sub input-output-as-excel(
                                     push-filters(@records, $q-name, $model, $raw-value, $unit-label, $language,
                                     $order, :$all-filters);
                                 }
-                                $last-order = $order;
                             }
+                            $last-order = $order;
                         }
                     }
                 }
