@@ -412,7 +412,9 @@ qx.Class.define('agrammon.module.output.Reports', {
                 let langLabels = report.langLabels;
 
                 currentTitle='';
-                let title = report.langLabels[locale] ? report.langLabels[locale] : title = report.langLabels.en;
+                let title = report.langLabels[locale] ? report.langLabels[locale]
+                                                      : report.langLabels.en ? report.langLabels.en
+                                                                             : printKey;
                 if (this.titleSelected != '') {
                     this.titleSelected += ',';
                 }

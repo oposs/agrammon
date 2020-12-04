@@ -23,6 +23,7 @@ class Agrammon::Model::Result {
         }
     }
 
+    
     method data(--> Hash) { %!data-lookup }
 
     method data-ordered(--> Array) { @!data-order }

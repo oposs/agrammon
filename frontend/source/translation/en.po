@@ -50,11 +50,11 @@ msgstr ""
 msgid "Comment on dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Incremental filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Filter on dataset name"
 msgstr ""
 
@@ -70,27 +70,27 @@ msgstr ""
 msgid "Sample datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Last change"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Parameters"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Read-only"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Model Version"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Tags"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Dataset name"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Info"
 msgstr ""
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "sent"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Rename"
 msgstr ""
 
@@ -146,15 +146,15 @@ msgstr ""
 msgid "Send selected dataset(s) to other Agrammon user"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "New"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Create new dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Delete"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Delete selected dataset(s)"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Dataset"
 msgstr ""
 
@@ -170,11 +170,11 @@ msgstr ""
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Error"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "already exists"
 msgstr ""
 
@@ -362,11 +362,11 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/user/Login.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Cancel"
 msgstr ""
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/input/regional/BranchEditor.js
 msgid "Clear"
 msgstr ""
 
@@ -414,11 +414,11 @@ msgstr ""
 msgid "Graphical Results"
 msgstr ""
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Choose table: "
 msgstr ""
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Simulation log"
 msgstr "Notes on the results"
 
@@ -462,7 +462,7 @@ msgstr ""
 msgid "Create PDF"
 msgstr ""
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/output/Reports.js
 msgid "Submission"
 msgstr ""
 
@@ -582,7 +582,7 @@ msgstr ""
 msgid "Create Account"
 msgstr ""
 
-#: agrammon/module/user/Login.js
+#: agrammon/module/user/Account.js
 msgid "Reset Password"
 msgstr ""
 
@@ -618,7 +618,7 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: agrammon/module/user/Login.js
+#: agrammon/module/user/Account.js
 msgid "Reset password"
 msgstr ""
 
