@@ -39,13 +39,12 @@ class Agrammon::UI::Web {
                 my %result-hash = $result.as-hash;
 
                 my $type = $result.type;
-                my %report = %(
-                    name     => $result.name,
-                    _order   => $result._order,
-                    selector => $result.selector,
+                my %report =
+                    :name($result.name),
+                    :order($result.order),
+                    :selector($result.selector),
                     :$type,
-                    submit   => $result.is-submit,
-                );
+                    :submit($result.is-submit);
 
                 my @data;
                 my @report-data = %result-hash<data>;
