@@ -350,12 +350,12 @@ subtest "Get model data" => {
         my $graphs = $input-hash<graphs>;
 
         my %graph = $graphs[0];
-        is-deeply %graph.keys.sort, qw|_order data name selector submit type|, "First graph has expected keys";
+        is-deeply %graph.keys.sort, qw|data name order selector submit type|, "First graph has expected keys";
         is %graph<type>, 'bar', "Graph has correct type";
 
         my $reports = $input-hash<reports>;
         my %report = $reports[0];
-        is-deeply %report.keys.sort, qw|_order data name selector submit type|, "First report has expected keys";
+        is-deeply %report.keys.sort, qw|data name order selector submit type|, "First report has expected keys";
         is %report<type>, 'report', "Report has correct type";
 
     }
