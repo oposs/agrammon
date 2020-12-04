@@ -174,9 +174,9 @@ Vanderweerden and Jarvis (1997)
   print = SummaryPlantProduction,PlantNH3
   ++labels 
     sort = 120
-    en = Recycling fertiliser NH3-Emissions
-    de = Recyclingdünger NH3-Emission
-    fr = Emission de NH3 Engrais de recyclage
+    en = Recycling fertiliser
+    de = Recyclingdünger
+    fr = Engrais de recyclés
   ++units  
     en = kg N/year
     de = kg N/Jahr

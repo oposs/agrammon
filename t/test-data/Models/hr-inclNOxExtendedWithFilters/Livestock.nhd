@@ -155,7 +155,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     sort = 630
     en = __Housing
     de = __Stall
-    fr = __?
+    fr = __Stabulation
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -179,7 +179,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     sort = 640
     en = __Yard
     de = __Laufhof
-    fr = __?
+    fr = __Parcours extérieur
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -197,8 +197,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++labels
     sort = 620
     en = Into housing and exercise yard
-    de = Total N Ausscheidung
-    fr = Excrétion de N totale
+    de = In Stall und Laufhof
+    fr = Dans la stabulation et le parcours extérieur
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -215,8 +215,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++labels
     sort = 610
     en = Into grazing
-    de = Total N Ausscheidung
-    fr = Excrétion de N totale
+    de = In Weide
+    fr = Dans le pâturage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -743,9 +743,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = SummaryLivestock,LivestockNH3
   ++labels
     sort = 010
-    en = Grazing NH3-Emissions
-    de = Weide NH3-Emission
-    fr = Emission de NH3 issu du pâturage
+    en = Grazing
+    de = Weide
+    fr = Pâturage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -767,9 +767,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockNH3
   ++labels
     sort = 030
-    en = __Housing NH3-Emissions
-    de = __NH3-Emission aus Stall
-    fr = __Emission de NH3 issu de la stabulation
+    en = __Housing
+    de = __Stall
+    fr = __Stabulation
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -791,9 +791,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockNH3
   ++labels
     sort = 040
-    en = __Yard NH3-Emissions
-    de = __NH3-Emission aus Laufhof
-    fr = __Emission de NH3 issu du parcours extérieur
+    en = __Yard
+    de = __Laufhof
+    fr = __Parcours extérieur
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -811,9 +811,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = SummaryLivestock,LivestockNH3
   ++labels
     sort = 020
-    en = Housing and Yard NH3-Emissions
-    de = Stall und Laufhof NH3-Emission
-    fr = Emission de NH3 issu de la stabulation et du parcours extérieur
+    en = Housing and Yard
+    de = Stall und Laufhof
+    fr = Stabulation et parcours extérieur
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -885,9 +885,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockN2
   ++labels
     sort = 520
-    en = Total N2-Emissions Housing, Yard and Storage
-    de = Total N2-Emission Stall, Laufhof und Lager
-    fr = Emission de N2 totale issue de la production animale
+    en = Housing, yard and storage
+    de = Stall, Laufhof und Lager
+    fr = Stabulation, parcours extérieur et stockage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -944,9 +944,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockNO
   ++labels
     sort = 420
-    en = Total NO-Emissions Housing, Yard and Storage
-    de = Total NO-Emission Stall, Laufhof und Lager
-    fr = Emission de NO totale issue de la production animale
+    en = Housing, yard and storage
+    de = Stall, Laufhof und Lager
+    fr = Stabulation, parcours extérieur et stockage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -1002,9 +1002,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockN2O
   ++labels
     sort = 320
-    en = Total N2O-Emissions Housing, Yard and Storage
-    de = Total N2O-Emission Stall, Laufhof und Lager
-    fr = Emission de N2O totale issue de la production animale
+    en = Housing, yard and storage
+    de = Stall, Laufhof und Lager
+    fr = Stabulation, parcours extérieur et stockage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -1028,9 +1028,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockN2
   ++labels
     sort = 510
-    en = Grazing N2-Emissions
-    de = Weide N2-Emission
-    fr = Emission de N2 issu du pâturage
+    en = Grazing
+    de = Weide
+    fr = Pâturage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -1052,9 +1052,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockNO
   ++labels
     sort = 410
-    en = Grazing NO-Emissions
-    de = Weide NO-Emission
-    fr = Emission de NO issu du pâturage
+    en = Grazing
+    de = Weide
+    fr = Pâturage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -1077,9 +1077,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockN2O
   ++labels
     sort = 310
-    en = Grazing N2O-Emissions
-    de = Weide N2O-Emission
-    fr = Emission de N2O issu du pâturage
+    en = Grazing
+    de = Weide
+    fr = Pâturage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -1101,9 +1101,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockNtot
   ++labels
     sort = 694
-    en = Into soil rom grazing
-    de = ?
-    fr = ?
+    en = Into soil from grazing
+    de = In boden von Weide
+    fr = Dans le sol suite au pâturage
   ++units
     en = kg N/year
     de = kg N/Jahr

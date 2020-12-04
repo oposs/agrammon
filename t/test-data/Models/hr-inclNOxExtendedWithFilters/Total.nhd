@@ -25,12 +25,12 @@ taxonomy = Total
 
 +nh3_nanimalproduction
   format= %.0f
-  print = SummaryTotal,LivestockNH3
+  print = SummaryLivestock,LivestockNH3
   ++labels
-    sort = 1099
-    en = Total Animalproduction NH3-Emissions
-    de = Total Tierproduktion NH3-Emission
-    fr = Emission de NH3 Total Production animale
+    sort = 099
+    en = Total
+    de = Total
+    fr = Total
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -46,10 +46,10 @@ taxonomy = Total
   format= %.0f
   print = SummaryTotal
   ++labels
-    sort = 1299
-    en = Total NH3-Emissions
-    de = Total NH3-Emission
-    fr = Emission de NH3 Total
+    sort = 299
+    en = Total
+    de = Total
+    fr = Total
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -67,8 +67,8 @@ taxonomy = Total
   ++labels
     sort = 695
     en = Into soil total
-    de = ?
-    fr = ?
+    de = In Boden Total
+    fr = Total dans le sol
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -85,8 +85,8 @@ taxonomy = Total
   ++labels
     sort = 895
     en = Into soil total
-    de = ?
-    fr = ?
+    de = In Boden Total
+    fr = Total dans le sol
   ++units  
     en = kg N/year
     de = kg N/Jahr
