@@ -826,7 +826,7 @@ msgstr ""
 msgid "Password change failed, please try again."
 msgstr ""
 
-#: agrammon/ui/table/cellrenderer/input/Number.js
+#: agrammon/ui/table/cellrenderer/input/Replace.js
 msgid "Flattened"
 msgstr ""
 

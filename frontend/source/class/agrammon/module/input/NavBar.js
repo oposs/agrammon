@@ -580,9 +580,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 rec = data[i];
                 rec.show = true;
                 metaData = {};
-                if (rec.variable.match(/dilution_parts_water/) ) {
-                    console.log('rec=', rec);
-                }
 
                 // deal with model variants
                 mlen = rec.models.length;

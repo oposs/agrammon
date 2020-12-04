@@ -121,7 +121,7 @@ qx.Class.define('agrammon.module.output.Reports', {
         tcm.setColumnVisible(2,false); // ref value
         tcm.setColumnVisible(4,false); // change
         tcm.setColumnVisible(6,false); // print
-        tcm.setColumnVisible(7,false); // order
+        tcm.setColumnVisible(7,true); // order
         tableModel.setColumnSortable(0,false);
         tableModel.setColumnSortable(1,false);
         tableModel.setColumnSortable(2,false);
@@ -172,7 +172,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             var params = {
                 language     : locale,
                 username     : userName,
-                reports      : this.reportSelected,
+                reports      : this.reportIndex,
                 format       : 'excel',
                 titles       : this.titleSelected,
                 datasetName  : datasetName,
@@ -288,6 +288,7 @@ qx.Class.define('agrammon.module.output.Reports', {
         selectLabel: null,
         selectMenu: null,
         resultData: null,
+        reportIndex: null,
         reportSelected: null,
         titleSelected: null,
         tableModel: null,
@@ -307,15 +308,15 @@ qx.Class.define('agrammon.module.output.Reports', {
             form.appendChild(input);
         },
 
-    __setModelVariant: function(msg) {
-        var model=msg.getData();
+        __setModelVariant: function(msg) {
+            var model=msg.getData();
             if (model == 'LU') {
-            this.__submitButton.show();
+                this.__submitButton.show();
             }
-        else {
-            this.__submitButton.exclude();
+            else {
+                this.__submitButton.exclude();
             }
-    },
+        },
 
         __submit: function() {
             var logText = agrammon.module.output.Output.formatLog(this.outputData.getLog());
@@ -343,27 +344,12 @@ qx.Class.define('agrammon.module.output.Reports', {
             this.__appear();
         },
 
-        __sortByVarName: function (a,b) {
-            var x = a[7];
-            var y = b[7];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        },
-
         __sortByOrder: function (a,b) {
-            var x = a['_order'];
-            var y = b['_order'];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            var x = a['order'];
+            var y = b['order'];
+            return x - y;
         },
 
-        __sortBySort: function (a,b) {
-            var x = a.labels.sort;
-            var y = b.labels.sort;
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        },
-
-    /**
-      * @ignore(TAGS)
-      */
         __getOutputData:  function(e) {
             if (! e.getData()) {
                 return;
@@ -379,90 +365,69 @@ qx.Class.define('agrammon.module.output.Reports', {
                 return;
             }
 
-            var reportName = this.selectMenu.getSelection()[0].getModel();
-            var ri, rdlen;
-            var dataSet = new Array;
+            let reportName = this.selectMenu.getSelection()[0].getModel();
+            let dataSet = new Array;
 
-            rdlen = this.resultData.length;
-            var found = false;
-            var showFilterGroups;
-            for (ri=0; ri<rdlen; ri++) {
-                if (this.resultData[ri]['name'] ==  reportName) {
+            let rdlen = this.resultData.length;
+            let found = false;
+            let showFilterGroups;
+            for (let ri=0; ri<rdlen; ri++) {
+                if (this.resultData[ri].name == reportName) {
                     found = true;
-                    this.reportSelected = ri;
+                    this.reportIndex = ri;
                     break;
                 }
             }
             if (! found) {
-                this.debug('selectMenu: no matching report for '
-                           +reportName);
+                this.debug('selectMenu: no matching report for ' +reportName);
                 return;
             }
 
-            showFilterGroups = this.resultData[ri].type == 'reportDetailed' ? true : false;
-            var reports = this.resultData[ri]['data'];
-            var subReports;
-            var r, sr, srlen;
-            var rlen = reports.length;
+            showFilterGroups = this.resultData[this.reportIndex].type == 'reportDetailed' ? true : false;
+            let reports = this.resultData[this.reportIndex].data;
 
-            var i, rec, refRec, varName, value, refValue, refDiff,
-                printMe, repLen;
-            var data    = new Array;
-            var refData = new Array;
-            data        = this.outputData.getDataset();
-            data.sort(this.__sortBySort);
-
-            refData     = this.referenceData.getDataset();
+            let data    = this.outputData.getDataset();;
+            let refData = this.referenceData.getDataset();
             if (refData == null) {
                 this.__showReference(false);
             }
             else {
                 this.__showReference(true);
-                refData.sort(this.__sortBySort);
             }
 
-            var len = data.length;
-            var n=0;
-            var title, currentTitle='';
-            var printTag = '';
-            var tags, tlen, t;
-            var repDataset;
-            var repRefDataset;
-            var locale = qx.locale.Manager.getInstance().getLocale();
+            let currentTitle='';
+            let printTag = '';
+            let repDataset, repRefDataset;
+            let locale = qx.locale.Manager.getInstance().getLocale();
             locale = locale.replace(/_.+/,'');
+            this.titleSelected  = '';
             this.reportSelected = '';
-            this.titleSelected = '';
 
-            for (r=0; r<rlen; r++) { // reports selected
+            for (let report of reports) { // reports selected
 
-                subReports = reports[r]['subReports'];
-                srlen = subReports.length;
-                if (this.reportSelected != '') {
-                    this.reportSelected += ',';
-                }
-                this.reportSelected += subReports[0];
-                for (sr=1; sr<srlen; sr++) {
-                    this.reportSelected =
-                        this.reportSelected + '_' + subReports[sr];
-                }
+                let printKey   = report.print;
+                let langLabels = report.langLabels;
 
                 currentTitle='';
-                if (reports[r][locale] != null)  {
-                    title = reports[r][locale];
-                }
-                else {
-                    title = reports[r]['en'];
-                }
+                let title = report.langLabels[locale] ? report.langLabels[locale]
+                                                      : report.langLabels.en ? report.langLabels.en
+                                                                             : printKey;
                 if (this.titleSelected != '') {
                     this.titleSelected += ',';
                 }
                 this.titleSelected += title;
-                repDataset = new Array;
-                repRefDataset = new Array;
-                var lastFTitle = '';
 
-                var seen = {};
-                for (i=0; i<len; i++) { // variables
+                if (this.reportSelected != '') {
+                    this.reportSelected += ',';
+                }
+                this.reportSelected += printKey;
+
+                repDataset    = new Array;
+                repRefDataset = new Array;
+                let seen = {};
+                let len = data.length;
+                for (let i=0; i<len; i++) { // variables
+                    let varName, rec, refRec, value, refValue, refDiff, printMe;
                     rec = data[i];
                     if (refData != null) {
                         refRec = refData[i];
@@ -472,15 +437,11 @@ qx.Class.define('agrammon.module.output.Reports', {
                     }
                     printMe = false;
                     printTag = String(rec.print);
-                    tags = new Array;
-                    tags = printTag.split(',');
-                    tlen = tags.length;
-              TAGS: for (t=0; t<tlen; t++) {
-                        for (sr=0; sr<srlen; sr++) {
-                            if (tags[t] == subReports[sr]) {
-                                printMe = true;
-                                break TAGS;
-                            }
+                    let tags = printTag.split(',');
+                    for (let tag of tags) {
+                        if (tag == printKey) {
+                            printMe = true;
+                            break;
                         }
                     }
                     if ( printMe ) {
@@ -488,14 +449,8 @@ qx.Class.define('agrammon.module.output.Reports', {
                             repDataset.push([ title, '', '', '', '', '', '', '', -1 ]);
                             currentTitle = title;
                         }
-                        varName = 'unknown';
-                        if (rec.labels) {
-                            varName = String(rec.labels[locale]);
-                        }
-                        else {
-                            varName = rec['var'];
-                        }
-                        value = rec.value;
+                        varName = rec.labels ? String(rec.labels[locale]) : rec.var;
+                        value   = rec.value;
                         if (refRec != null) {
                             refValue = refRec.value;
                             refDiff = value - refValue;
@@ -506,7 +461,6 @@ qx.Class.define('agrammon.module.output.Reports', {
                         }
                         if (rec.filters && rec.filters.length>0 && showFilterGroups) {
                             var filters = rec.filters;
-//                            console.log('filters=', filters);
                             let filterTitles = [];
                             let filterKeys   = [];
                             for (let filter of filters) {
@@ -517,10 +471,13 @@ qx.Class.define('agrammon.module.output.Reports', {
                         }
                         else {
                             // TODO: remove hack
-                            if (seen[rec.var]) continue;
-                            seen[rec.var] = true;
+                            if (seen[rec.var]) {
+                                continue;
+                            }
+                            else {
+                                seen[rec.var] = true;
+                            }
                         }
-//                        console.log(rec.var + ' - ' + varName+ ': ' + value);
                         repDataset.push([ '', // moduleName
                             varName,
                             refValue, // reference
@@ -530,27 +487,15 @@ qx.Class.define('agrammon.module.output.Reports', {
                             rec.print,
                             rec.labels.sort
                         ]);
-                        n++;
                     } // printMe
                 } // variables
-                repLen = repDataset.length;
-                if (repLen > 0) {
-                    repDataset.sort(this.__sortByVarName);
-                    for (i=0; i<repLen; i++) {
-                        dataSet.push(repDataset[i]);
-                    }
-                }
+                dataSet = dataSet.concat(repDataset);
             } // reports
 
             this.tableModel.setData(dataSet);
             this.__excelButton.setEnabled(true);
             this.__pdfButton.setEnabled(true);
-            if (reportName == 'KtLU') {
-                this.__submitButton.setEnabled(true);
-            }
-            else {
-                this.__submitButton.setEnabled(false);
-            }
+            this.__submitButton.setEnabled(this.resultData[this.reportIndex].submit);
         },
 
         __clearTable: function() {

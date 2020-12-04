@@ -30,8 +30,6 @@
       "title": "Agrammon",
       "class": "agrammon.Application",
        "theme": "qx.theme.Indigo",
-//       "theme": "qx.theme.TangibleLight",
-//       "theme": "qx.theme.TangibleDark",
       "bootPath": "source/boot"
     }
   ]

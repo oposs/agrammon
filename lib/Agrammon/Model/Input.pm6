@@ -1,5 +1,7 @@
 use v6;
 
+use Agrammon::LanguageParser;
+
 class Agrammon::Model::Input {
     has Str $.name;
     has Str $.description;
@@ -34,7 +36,7 @@ class Agrammon::Model::Input {
             }
         }
         if @enum {
-            @!enum-order = @enum.map({ .key => self!parse-enum-lang-values(.value) });
+            @!enum-order = @enum.map({ .key => parse-lang-values(.value) });
             %!enum-lookup = @!enum-order;
         }
         with $filter {
@@ -92,16 +94,7 @@ class Agrammon::Model::Input {
             :%units,
             :variable($!name),
             :%validator,
-        )
+        );
     }
 
-    method !parse-enum-lang-values(Str $value --> Hash) {
-        my %opt-lang;
-        for (split("\n", $value)) -> $ol {
-            my ($l, $o) = split(/ \s* '=' \s* /, $ol);
-            $o ~~ s:g/_/ /;
-            %opt-lang{$l} = $o;
-        }
-        %opt-lang
-    }
 }

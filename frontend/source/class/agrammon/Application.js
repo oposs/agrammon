@@ -45,7 +45,7 @@ qx.Class.define('agrammon.Application', {
 		if (param[0] == 'lang') {
  	            qx.locale.Manager.getInstance().setLocale(param[1]);
 		}
-            } 
+            }
 
             var that = this;
 
@@ -90,7 +90,7 @@ qx.Class.define('agrammon.Application', {
 
             var getCfgFunc = qx.lang.Function.bind(function(data, exc, id) {
                 if (exc == null) {
-                    console.log('cfg=', data);
+//                    console.log('cfg=', data);
                     this.debug('getCfgFunc(): title='   +data.title.en);
                     this.debug('getCfgFunc(): version=' +data.version);
                     this.debug('getCfgFunc(): variant=' +data.variant);
@@ -204,15 +204,15 @@ qx.Class.define('agrammon.Application', {
 //            alert('Really terminate?');
         },
 
-	__getParams : function() { 
-            var params = "";	
-            var urlParams = window.location.search; 
-            if (urlParams.length > 0) { 
+	__getParams : function() {
+            var params = "";
+            var urlParams = window.location.search;
+            if (urlParams.length > 0) {
                 urlParams = urlParams.substr(1, urlParams.length);
                 if (params != null) {
                     params = urlParams.split("&");
                 }
-            } 
+            }
             return params;
         },
 
@@ -237,7 +237,7 @@ qx.Class.define('agrammon.Application', {
 
 	    /**
 	     * @lint ignoreDeprecated(alert)
-	     */  
+	     */
         __logoutFunc: function(data, exc, id) {
             if (exc == null) {
                 if (data.sudoUser) {

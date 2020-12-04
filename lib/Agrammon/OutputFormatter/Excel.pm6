@@ -8,7 +8,7 @@ use Spreadsheet::XLSX::Styles;
 # TODO: make output match current Agrammon Excel export
 sub input-output-as-excel(
     Str $dataset-name, Agrammon::Model $model,
-    Agrammon::Outputs $outputs, Agrammon::Inputs $inputs,
+    Agrammon::Outputs $outputs, Agrammon::Inputs $inputs, $reports,
     Str $language, $prints,
     Bool $include-filters, Bool $all-filters
 ) is export {
@@ -35,14 +35,21 @@ sub input-output-as-excel(
 
     # TODO: add inputs
 
-
+    my @prints = $reports[+$prints]<data>;
+    my %lang-labels;
     # add outputs
-    my @print-set = $prints.split(',') if $prints;
+    my @print-set;
+    for @prints -> @print {
+        for @print -> $print {
+            @print-set.push($print<print>);
+            %lang-labels{$print<print>} = $print<langLabels>;
+        }
+    }
+
     my $row = 2;
     my @records;
     my $last-order = -1;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
-        my $col = 0;
         when Hash {
             for sorted-kv($_) -> $output, $raw-value {
                 my $value = flat-value($raw-value // 'UNDEFINED');
@@ -98,7 +105,7 @@ sub input-output-as-excel(
     for @records.sort(+*.<order>) -> %rec {
         my $print = %rec<print>;
         if $print ne $last-print {
-            $output-sheet.set($row, $col+0, $print, :bold);
+            $output-sheet.set($row, $col+0, %lang-labels{$print}{$language}, :bold);
             $last-print = $print;
             $row++;
         }

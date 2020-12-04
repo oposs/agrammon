@@ -114,7 +114,7 @@ qx.Class.define('agrammon.module.output.Results', {
 
     members :
     {
-        __title: null, 
+        __title: null,
         __outputPending: 0,
         outputData: null,
         resultData: null,
@@ -143,9 +143,9 @@ qx.Class.define('agrammon.module.output.Results', {
         },
 
         __sortByOrder: function (a,b) {
-            var x = a['_order'];
-            var y = b['_order'];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            var x = a['order'];
+            var y = b['order'];
+            return x - y;
         },
 
 	/**
@@ -155,7 +155,7 @@ qx.Class.define('agrammon.module.output.Results', {
 //            this.debug('Called __getOutputData()');
 
             if ( !(this.outputData.isValid()
-            //        && this.referenceData.isValid 
+            //        && this.referenceData.isValid
             )) {
                 this.debug('outputData not valid');
                 return;

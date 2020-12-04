@@ -268,9 +268,9 @@ qx.Class.define('agrammon.module.output.Graphs', {
         },
 
         __sortByOrder: function (a,b) {
-            var x = a['_order'];
-            var y = b['_order'];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            var x = a['order'];
+            var y = b['order'];
+            return x - y;
         },
 
  	/**
@@ -472,10 +472,10 @@ qx.Class.define('agrammon.module.output.Graphs', {
 //	    this.debug('log='+log);
             if (log != '' && log != null && log != undefined) {
                 logText = agrammon.module.output.Output.formatLog(log, 'html');
-	    }		
+	    }
 	    else {
 	    	 logText = null;
-	    }	    
+	    }
 //	    this.debug('logText='+logText);
 	    this.__logAreaOutput.setLabel(logText);
         },
