@@ -5,7 +5,7 @@ sub parse-lang-values(Str $value --> Hash) is export {
     for (split("\n", $value)) -> $ol {
         my ($l, $o) = split(/ \s* '=' \s* /, $ol);
         if not $o {
-            warn "ol=$ol";
+            warn "Failed to parse language value: ol=$ol";
             next;
         }
         $o ~~ s:g/_/ /;
