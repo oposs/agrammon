@@ -57,6 +57,7 @@ sub preprocess(Str $source, %options --> Str) is export {
     }
     my OpenDirective @open;
     for $source.lines.kv -> $number, $content {
+        next if $content.starts-with('#');
         if $content.starts-with('?') {
             @result-lines.push('');
             given $content {
