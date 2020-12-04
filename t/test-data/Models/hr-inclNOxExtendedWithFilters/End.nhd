@@ -19,6 +19,7 @@ Dummy Module marking the startpoint for the Model Parser
 +Summary
   type = report
 ?if Kantonal_LU
+  submit = true
    ++selector
      en = Berechnung Baugesuch Kanton Luzern - Ammonia emissions (in kg N per year)
      de = Berechnung Baugesuch Kanton Luzern - Ammoniak-Emissionen (in kg N pro Jahr)
