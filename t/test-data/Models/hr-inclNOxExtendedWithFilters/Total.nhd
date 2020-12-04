@@ -25,9 +25,9 @@ taxonomy = Total
 
 +nh3_nanimalproduction
   format= %.0f
-  print = SummaryLivestock,LivestockNH3
+  print = SummaryTotal,LivestockNH3
   ++labels
-    sort = 099
+    sort = 1099
     en = Total Animalproduction NH3-Emissions
     de = Total Tierproduktion NH3-Emission
     fr = Emission de NH3 Total Production animale
@@ -46,7 +46,7 @@ taxonomy = Total
   format= %.0f
   print = SummaryTotal
   ++labels
-    sort = 299
+    sort = 1299
     en = Total NH3-Emissions
     de = Total NH3-Emission
     fr = Emission de NH3 Total
