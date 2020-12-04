@@ -8,7 +8,7 @@ class Agrammon::Model::Result {
     has %.selector{Str};
     has @!data-order;
     has %!data-lookup;
-    has Str $._order;
+    has Str $.order;
     has Bool $!submit = False;
 
     submethod TWEAK( :$submit, :@data --> Nil) {
@@ -23,7 +23,7 @@ class Agrammon::Model::Result {
         }
     }
 
-    
+
     method data(--> Hash) { %!data-lookup }
 
     method data-ordered(--> Array) { @!data-order }
@@ -33,7 +33,7 @@ class Agrammon::Model::Result {
     method as-hash {
         return %(
             :data(@!data-order),
-            :_order($!_order // 500000),
+            :order($!order // 500000),
             :$!name,
             :$!type,
             :%!selector,

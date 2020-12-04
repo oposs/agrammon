@@ -310,12 +310,12 @@ qx.Class.define('agrammon.module.output.Reports', {
 
         __setModelVariant: function(msg) {
             var model=msg.getData();
-                if (model == 'LU') {
+            if (model == 'LU') {
                 this.__submitButton.show();
-                }
+            }
             else {
                 this.__submitButton.exclude();
-                }
+            }
         },
 
         __submit: function() {
@@ -345,14 +345,11 @@ qx.Class.define('agrammon.module.output.Reports', {
         },
 
         __sortByOrder: function (a,b) {
-            var x = a['_order'];
-            var y = b['_order'];
+            var x = a['order'];
+            var y = b['order'];
             return x - y;
         },
 
-    /**
-      * @ignore(TAGS)
-      */
         __getOutputData:  function(e) {
             if (! e.getData()) {
                 return;
