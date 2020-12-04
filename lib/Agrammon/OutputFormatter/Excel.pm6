@@ -103,8 +103,8 @@ sub input-output-as-excel(
     my $col = 0;
     my $last-print = '';
     for @records.sort(+*.<order>) -> %rec {
-        my $print = %rec<print>;
-        if $print ne $last-print {
+        my $print = %rec<print>; # can be undefined or empty
+        if $print and $print ne $last-print {
             $output-sheet.set($row, $col+0, %lang-labels{$print}{$language}, :bold);
             $last-print = $print;
             $row++;
