@@ -395,10 +395,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-    /get_excel_export:
+    /export/excel:
         post:
             summary: Get Excel export
-            operationId: getExcelExport
+            operationId: exportExcel
             requestBody:
                 required: true
                 content:
