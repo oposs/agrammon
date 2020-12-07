@@ -36,7 +36,7 @@ class Agrammon::Model::Input {
             }
         }
         if @enum {
-            @!enum-order = @enum.map({ .key => parse-lang-values(.value) });
+            @!enum-order = @enum.map({ .key => parse-lang-values(.value, "input $!name") });
             %!enum-lookup = @!enum-order;
         }
         with $filter {

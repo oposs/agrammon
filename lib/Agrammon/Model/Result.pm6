@@ -18,7 +18,7 @@ class Agrammon::Model::Result {
             }
         }
         if @data {
-            @!data-order = @data.map({ .key => parse-lang-values(.value) });
+            @!data-order = @data.map({ .key => parse-lang-values(.value, "result $!name") });
             %!data-lookup = @!data-order;
         }
     }
