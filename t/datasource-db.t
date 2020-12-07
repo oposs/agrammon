@@ -25,7 +25,7 @@ if %*ENV<DRONE_REPO> {
 else {
     my $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
     my $cfg = Agrammon::Config.new;
-    $cfg.load($cfg-file), "Load config from file $cfg-file";
+    ok $cfg.load($cfg-file), "Load config from file $cfg-file";
     $conninfo = $cfg.db-conninfo;
     dd $conninfo;
 }
