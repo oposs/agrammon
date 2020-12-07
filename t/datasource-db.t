@@ -11,25 +11,28 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
     exit;
 }
 
+my $*AGRAMMON-DB-CONNECTION;
+
 my $ag-user     = 'test@agrammon.ch';
 my $ag-dataset  = 'Agrammon6Testing';
 
-my $conninfo;
-if %*ENV<DRONE_REPO> {
-    my $db-user     = 'postgres';
-    my $db-password = 'postgres';
-    my $db-database = 'agrammon_test';
-    my $db-host     = 'dbhost';
-    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password";
-}
-else {
-    my $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
+subtest 'Connect to database' => {
+    my $conninfo;
+    my $cfg-file;
+
+    if %*ENV<DRONE_REPO> {
+        $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.drone.cfg.yaml";
+    }
+    else {
+        $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
+    }
+
     my $cfg = Agrammon::Config.new;
-    $cfg.load($cfg-file), "Load config from file $cfg-file";
+    ok $cfg.load($cfg-file), "Load config from file $cfg-file";
     $conninfo = $cfg.db-conninfo;
-    dd $conninfo;
+
+    ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 }
-ok my $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 
 transactionally {
     lives-ok { prepare-test-db-single-data($ag-user, $ag-dataset) }, 'Test database prepared';
