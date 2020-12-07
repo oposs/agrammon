@@ -181,7 +181,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                 version      : version
             };
 
-            var url = '/get_excel_export';
+            var url = 'export/excel';
             if (baseUrl != null) {
                 url = baseUrl + url;
             }
@@ -230,7 +230,7 @@ qx.Class.define('agrammon.module.output.Reports', {
 //	        var variant = agrammon.Info.getInstance().getVariant();
             var version = agrammon.Info.getInstance().getVersion();
             var versionUrl   = 'version=' + version;
-            var url = 'export/latex'
+            var url = 'export/pdf'
                                + '?' + 'mode=public'
                                + '&' + reportUrl
                                + '&' + titleUrl

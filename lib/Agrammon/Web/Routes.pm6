@@ -240,7 +240,7 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
-        operation 'getExcelExport', -> LoggedIn $user {
+        operation 'exportExcel', -> LoggedIn $user {
             request-body -> %params {
                 response.append-header(
                         'Content-disposition',
