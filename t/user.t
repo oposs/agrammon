@@ -5,32 +5,29 @@ use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
-plan 7;
+plan 6;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
     exit;
 }
 
-my $username = 'fritz.zaucker@oetiker.ch';
-my $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
-my $cfg = Agrammon::Config.new;
-ok $cfg.load($cfg-file), "Load config from file $cfg-file";
+my $*AGRAMMON-DB-CONNECTION;
 
-my $conninfo;
-if %*ENV<DRONE_REPO> {
-    my $db-user     = 'postgres';
-    my $db-password = 'postgres';
-    my $db-database = 'agrammon_test';
-    my $db-host     = 'dbhost';
-
-    $conninfo = "host=$db-host user=$db-user dbname=$db-database password=$db-password port=%*ENV<POSTGRES_PORT>";
-}
-else {
+subtest 'Connect to database' => {
+    my $conninfo;
+    my $cfg-file;
+    if %*ENV<DRONE_REPO> {
+        $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.drone.cfg.yaml";
+    }
+    else {
+        $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
+    }
+    my $cfg = Agrammon::Config.new;
+    ok $cfg.load($cfg-file), "Load config from file $cfg-file";
     $conninfo = $cfg.db-conninfo;
+    ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 }
-
-ok my $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 
 subtest 'Create user' => {
     ok my $user = Agrammon::DB::User.new(

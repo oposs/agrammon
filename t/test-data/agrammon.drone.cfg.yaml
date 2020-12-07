@@ -20,7 +20,7 @@ GUI:
 Model:
     debugLevel: 0
     home:      /home/zaucker/Agrammon
-    path:      Models/branches/hr-limit-2010_details
+    path:      Models/branches/hr-inclNOxExtendedWithFilters
     root:      End.nhd
     technical: technical.cfg
     variant:   SHL
