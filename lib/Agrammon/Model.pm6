@@ -68,6 +68,16 @@ class X::Agrammon::Model::InvalidOutputModule does X::Agrammon::Model::BadFormul
 }
 
 class Agrammon::Model {
+    #| An annotated input brings together the static (from the model) and
+    #| dynamic (from the data source) aspects of an input, for situations
+    #| where we want to output a flattened list of inputs.
+    class AnnotatedInput {
+        has Agrammon::Model::Module $.module is required;
+        has Str $.instance-id;
+        has Agrammon::Model::Input $.input is required;
+        has $.value is required;
+    }
+
     my class ModuleRunner {
         has Agrammon::Model::Module $.module;
         has ModuleRunner @.dependencies;
@@ -131,6 +141,45 @@ class Agrammon::Model {
                 CATCH {
                     die "Died when evaluating formula '$name' in $tax: $_.message()";
                 }
+            }
+        }
+
+        #| Perform a "run" of the model, but instead of actually running
+        #| it, just collect all of the inputs.
+        method annotate-inputs($input-data) {
+            my %run-already;
+            my @result;
+            self!annotate-inputs-internal($input-data, %run-already, @result);
+            return @result;
+        }
+
+        method !annotate-inputs-internal($input-data, %run-already, @result, Str $instance-id?) {
+            my $tax = $!module.taxonomy;
+            return if %run-already{$tax};
+            if $!module.is-multi {
+                for $input-data.inputs-list-for($tax) -> $multi-input {
+                    my $instance-id = $multi-input.instance-id;
+                    self!annotate-inputs-as-single($multi-input, %run-already.clone,
+                            @result, $instance-id);
+                }
+                self!mark-multi-run(%run-already);
+            }
+            else {
+                self!annotate-inputs-as-single($input-data, %run-already, @result, $instance-id);
+                %run-already{$tax} = True;
+            }
+        }
+
+        method !annotate-inputs-as-single($input-data, %run-already, @result, Str $instance-id?) {
+            for @!dependencies -> $dep {
+                $dep!annotate-inputs-internal($input-data, %run-already, @result, $instance-id);
+            }
+            my %input-data := $input-data.input-hash-for($!module.taxonomy);
+            my %input-defaults := $!module.input-defaults;
+            for $!module.input -> Agrammon::Model::Input $input {
+                my $key = $input.name;
+                my $value = %input-data{$key} // %input-defaults{$key};
+                @result.push: AnnotatedInput.new: :$!module, :$input, :$instance-id, :$value;
             }
         }
 
@@ -305,6 +354,10 @@ class Agrammon::Model {
 
     method run(Agrammon::Inputs :$input!, :%technical --> Agrammon::Outputs) {
         $!entry-point.run(:$input, :%technical)
+    }
+
+    method annotate-inputs($input-data) {
+        $!entry-point.annotate-inputs($input-data)
     }
 
     method dump(Str $sort) {
