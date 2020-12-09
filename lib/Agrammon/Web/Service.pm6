@@ -9,6 +9,7 @@ use Agrammon::Model;
 use Agrammon::OutputsCache;
 use Agrammon::OutputFormatter::Excel;
 use Agrammon::OutputFormatter::JSON;
+use Agrammon::OutputFormatter::PDF;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
 use Agrammon::Web::SessionUser;
@@ -150,6 +151,27 @@ class Agrammon::Web::Service {
             $language, $prints,
             $with-filters, $all-filters
         );
+    }
+
+    method get-pdf-export(Agrammon::Web::SessionUser $user, %params) {
+        my $dataset-name = %params<datasetName>;
+        my $language     = %params<language>;
+        my $prints       = %params<reports>;
+        my $type         = %params<type> // '';
+        my $with-filters = $type eq 'reportDetailed';
+        my $all-filters  = $type eq 'reportDetailed';
+
+        my $inputs  = self!get-inputs($user, $dataset-name);
+        my $outputs = self!get-outputs($user, $dataset-name);
+        my $reports = self.get-input-variables<reports>;
+        input-output-as-pdf(
+            $!cfg,
+            $user,
+            $dataset-name,
+            $!model, $outputs, $inputs, $reports,
+            $language, $prints,
+            $with-filters, $all-filters
+       );
     }
 
     method create-account(Agrammon::Web::SessionUser $user, $email, $password, $key, $firstname, $lastname, $org, $role?) {
