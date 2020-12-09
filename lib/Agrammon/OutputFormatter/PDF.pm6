@@ -48,7 +48,7 @@ sub create-pdf($temp-dir, $pdf-prog, $username, $dataset-name, %data) is export 
         }
         whenever $proc.stderr {
         }
-         whenever $proc.start {
+        whenever $proc.start {
             $exit-code = .exitcode;
             $signal    = .signal;
             done # gracefully jump from the react block
@@ -76,7 +76,7 @@ sub create-pdf($temp-dir, $pdf-prog, $username, $dataset-name, %data) is export 
     # read content of PDF file created
     my $pdf = $pdf-file.slurp(:bin);
 
-    # cleanup if successful
+    # cleanup if successful, otherwise kept for debugging.
     unlink $source-file, $pdf-file, $aux-file, $log-file;
 
     return $pdf;
