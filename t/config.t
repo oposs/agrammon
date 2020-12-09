@@ -9,7 +9,8 @@ my %config-expected = (
         debugLevel  => 0,
         log_file    => "/tmp/agrammon.log",
         log_level   => "warn",
-        mojo_secret => "MyCookieSecret",
+        tempDir     =>  "agrammon",
+        pdflatex    => "/usr/bin/lualatex"
     },
     Database => {
         name     => 'agrammon_test',
