@@ -77,6 +77,7 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
     if $exit-code {
         note "$pdf-prog failed for $source-file, exit-code=$exit-code";
         note $log-file.slurp;
+        note "STDERR:";
         note $stderr;
 
         die X::Agrammon::OutputFormatter::PDF::Failed.new: :$exit-code;
