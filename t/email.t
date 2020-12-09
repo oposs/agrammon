@@ -3,7 +3,7 @@ use Agrammon::Email;
 use Email::MIME;
 use Test;
 
-# plan 8;
+plan 7;
 
 my $pdf = 't/test-data/test.pdf'.IO.slurp :bin;
 
@@ -26,6 +26,6 @@ for $email.mail.header-pairs -> $header {
     }
 }
 
-#$email.send;
+lives-ok { $email.send }, "Can send eMail" if %*ENV<AGRAMMON_TEST_SEND_MAIL>;
 
 done-testing;

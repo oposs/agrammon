@@ -9,13 +9,9 @@ class Agrammon::Email {
     has $!to;
     has $!from;
     has $!attachment;
-#    has $!filename;
     has $!mail;
 
-    submethod TWEAK( :$attachment, :$msg, :$filename, :$to, :$from, :$subject --> Nil) {
-        $!to = $to;
-        $!from = $from;
-        $!subject = $subject;
+    submethod TWEAK( :$attachment, :$msg, :$filename, :$!to, :$!from, :$!subject --> Nil) {
         if $attachment {
             $!attachment = Email::MIME.create(
                 attributes => {
@@ -23,7 +19,6 @@ class Agrammon::Email {
                     'charset' => 'utf-8',
                     'encoding' => 'base64',
                 },
-                # body-str => MIME::Base64.encode($pdf),
                 body => $attachment,
             );
         }
@@ -62,12 +57,11 @@ class Agrammon::Email {
                 :message(~$!mail),
             );
 
-            .quit;
+            LEAVE .quit;
 
             CATCH {
                 when X::Net::SMTP::Client::Async {
                     note "Unable to send email message: $_";
-                    .quit
                 }
             }
         }
