@@ -53,8 +53,24 @@ class Agrammon::Email {
     }
 
     method send {
+        with await Net::SMTP::Client::Async.connect(:host<mail.oetiker.ch>, :port(25), :!secure) {
+            await .hello;
 
-        dd $!mail;
+            await .send-message(
+                :$!from,
+                :to([ $!to ]),
+                :message(~$!mail),
+            );
+
+            .quit;
+
+            CATCH {
+                when X::Net::SMTP::Client::Async {
+                    note "Unable to send email message: $_";
+                    .quit
+                }
+            }
+        }
     }
 
 }
