@@ -35,8 +35,8 @@ jobs:
 
     steps:
       - name: Install LaTeX
-        run: sudo apt-get install texlive texlive-luatex texlive-latex-recommended texlive-latex-extra texlive-science 
-  
+        run: sudo apt-get install texlive texlive-luatex texlive-latex-recommended texlive-latex-extra texlive-science
+
       - name: Checkout repo
         uses: actions/checkout@v2
 
