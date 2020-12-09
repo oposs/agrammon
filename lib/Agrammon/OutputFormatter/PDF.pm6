@@ -74,6 +74,7 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
         }
     }
 
+    
     if $exit-code {
         note "$pdf-prog failed for $source-file, exit-code=$exit-code";
         note $log-file.slurp;
