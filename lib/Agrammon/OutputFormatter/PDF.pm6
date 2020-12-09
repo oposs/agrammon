@@ -36,7 +36,7 @@ sub create-pdf($temp-dir, $pdf-prog, $username, $dataset-name, %data) is export 
     # create LaTeX source with template
     $source-file.spurt(create-latex('pdfexport', %data));
 
-    # create PDF, ignore STDOUT and STDERR (see .log file if necessary)
+    # create PDF, discard STDOUT and STDERR (see .log file if necessary)
     my $exit-code;
     my $signal;
     my $reason = 'Unknown';
