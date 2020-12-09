@@ -425,6 +425,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /export/pdf:
+        post:
+            summary: Get PDF export
+            operationId: exportPDF
+            requestBody:
+                required: true
+                content:
+                    application/x-www-form-urlencoded:
+                        schema:
+                            $ref: "#/components/schemas/GetReport"
+            responses:
+                '200':
+                    description: Export
+                    content:
+                        'application/pdf':
+                            schema:
+                                type: string
+                                format: binary
+                '400':
+                    description: Getting PDF export failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                '500':
+                    description: Getting PDF export failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 components:
     schemas:
         GetReport:
