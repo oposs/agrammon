@@ -91,5 +91,6 @@ jobs:
           mkdir -p /tmp/agrammon
           ls -ld /tmp/agrammon
           RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/pdf.t
+          ls -l /tmp/agrammon
           ls -l $HOME/.agrammon
           du -sh $HOME/.agrammon

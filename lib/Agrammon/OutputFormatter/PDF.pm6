@@ -94,7 +94,7 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
 #    note $stderr;
 
     # cleanup if successful, otherwise kept for debugging.
-    unlink $source-file, $pdf-file, $aux-file, $log-file;
+#    unlink $source-file, $pdf-file, $aux-file, $log-file;
 
     return $pdf;
 }
