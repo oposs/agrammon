@@ -3,8 +3,6 @@ use Agrammon::Email;
 use Email::MIME;
 use Test;
 
-plan 7;
-
 my $pdf = 't/test-data/test.pdf'.IO.slurp :bin;
 
 ok my $email = Agrammon::Email.new(
@@ -13,7 +11,7 @@ ok my $email = Agrammon::Email.new(
     :subject('Mail from Agrammon'),
     :msg('Hello world'),
     :attachment($pdf),
-    :filename('test.pdf')
+#    :filename('test.pdf')
 ), "Email created";
 ok $email ~~ Agrammon::Email, 'Email is Agrammon::Mail';
 ok $email.mail ~~ Email::MIME, 'Email is Email::MIME';

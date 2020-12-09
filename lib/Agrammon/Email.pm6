@@ -11,13 +11,13 @@ class Agrammon::Email {
     has $!attachment;
     has $!mail;
 
-    submethod TWEAK( :$attachment, :$msg, :$filename, :$!to, :$!from, :$!subject --> Nil) {
+    submethod TWEAK( :$!to!, :$!from!, :$!subject!, :$msg!, :$attachment, :$filename = 'agrammon.pdf' --> Nil) {
         if $attachment {
             $!attachment = Email::MIME.create(
                 attributes => {
                     'content-type' => "application/pdf; name=$filename",
-                    'charset' => 'utf-8',
-                    'encoding' => 'base64',
+                    'charset'      => 'utf-8',
+                    'encoding'     => 'base64',
                 },
                 body => $attachment,
             );
@@ -25,8 +25,8 @@ class Agrammon::Email {
         $!msg = Email::MIME.create(
             attributes => {
                 'content-type' => 'text/plain',
-                'charset' => 'utf-8',
-                'encoding' => 'quoted-printable'
+                'charset'      => 'utf-8',
+                'encoding'     => 'quoted-printable'
             },
             body-str => $msg,
         );
