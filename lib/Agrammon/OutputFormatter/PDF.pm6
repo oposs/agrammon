@@ -26,15 +26,18 @@ sub create-latex($template, %data) is export {
     render-template($template ~ ".crotmp", %data);
 }
 
-sub create-pdf($temp-dir, $pdf-prog, $username, $dataset-name, %data) is export {
+sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is export {
+    # create if necessary
+    my $temp-dir = $*TMPDIR.add($temp-dir-name);
+    $temp-dir.mkdir;
+    note "Created $temp-dir";
+
     my $filename = "agrammon_export_" ~ $username ~ "_$dataset-name";
     my $source-file = "$temp-dir/$filename.tex".IO;
     my $pdf-file    = "$temp-dir/$filename.pdf".IO;
     my $aux-file    = "$temp-dir/$filename.aux".IO;
     my $log-file    = "$temp-dir/$filename.log".IO;
 
-    # create if necessary
-    $temp-dir.IO.mkdir;
 
     # create LaTeX source with template
     $source-file.spurt(create-latex('pdfexport', %data));
