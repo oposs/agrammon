@@ -5,7 +5,7 @@ use Test;
 
 # plan 8;
 
-my $pdf = 't/test-data/agrammon_export.pdf'.IO.slurp :bin;
+my $pdf = 't/test-data/test.pdf'.IO.slurp :bin;
 
 ok my $email = Agrammon::Email.new(
     :to('fritz@zaucker.ch'),
@@ -13,7 +13,7 @@ ok my $email = Agrammon::Email.new(
     :subject('Mail from Agrammon'),
     :msg('Hello world'),
     :attachment($pdf),
-    :filename('agrammon_export.pdf')
+    :filename('test.pdf')
 ), "Email created";
 ok $email ~~ Agrammon::Email, 'Email is Agrammon::Mail';
 ok $email.mail ~~ Email::MIME, 'Email is Email::MIME';
