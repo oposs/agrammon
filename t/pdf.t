@@ -16,6 +16,7 @@ my %chemify-map = %(
 );
 
 my %escape-map = %(
+    '__' => '\hspace{2em}',
     '\\' => '\backslash',
     '_'  => '\_',
     '%'  => '\%',

@@ -85,8 +85,12 @@ sub create-pdf($temp-dir, $pdf-prog, $username, $dataset-name, %data) is export 
 sub latex-escape(Str $in) is export {
     my $out = $in;
     $out ~~ s:g/<[\\]>/\\backslash/;
-    $out ~~ s:g/(<[%_#{}&$|]>)/\\$0/;
+    $out ~~ s:g/(<[%#{}&$|]>)/\\$0/;
     $out ~~ s:g/(<[~^]>)/\\$0\{\}/;
+    # this is a special case for Agrammon as we use __ in
+    # the frontend at the momend for indentation in the table
+    $out ~~ s:g/__/\\hspace\{2em\}/;
+    $out ~~ s:g/_/\\_/;
     return $out;
 }
 
