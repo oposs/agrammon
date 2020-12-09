@@ -81,6 +81,7 @@ my %data = %(
 my $pdf-program  = $cfg.general<pdflatex>;
 my $dataset-name = 'TestDataset';
 my $temp-dir   = $cfg.general<tempDir>;
+note "pdf-program=$pdf-program";
 my constant $source-dir = $*PROGRAM.parent.add('test-data');
 my $pdf-file-expected   = "$source-dir/agrammon_export.pdf".IO;
 my $latex-file-expected = "$source-dir/agrammon_export.tex".IO;

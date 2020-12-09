@@ -46,13 +46,17 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
     my $exit-code;
     my $signal;
     my $reason = 'Unknown';
+    my $stderr = '';
 
-    my $proc = Proc::Async.new: :w, $pdf-prog, "--output-directory=$temp-dir", '--safer', '--no-shell-escape', '--', $source-file, ‘-’;
+    my $proc = Proc::Async.new: :w, $pdf-prog, "--output-directory=$temp-dir",
+#            '--safer',
+            '--no-shell-escape', '--', $source-file, ‘-’;
     react {
         # just ignore them
         whenever $proc.stdout.lines {
         }
         whenever $proc.stderr {
+            $stderr = $stderr ~ $_;
         }
         whenever $proc.start {
             $exit-code = .exitcode;
@@ -72,6 +76,9 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
 
     if $exit-code {
         note "$pdf-prog failed for $source-file, exit-code=$exit-code";
+        note $log-file.slurp;
+        note $stderr;
+
         die X::Agrammon::OutputFormatter::PDF::Failed.new: :$exit-code;
     }
     if $signal {
@@ -81,6 +88,8 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
 
     # read content of PDF file created
     my $pdf = $pdf-file.slurp(:bin);
+    # note $log-file.slurp;
+#    note $stderr;
 
     # cleanup if successful, otherwise kept for debugging.
     unlink $source-file, $pdf-file, $aux-file, $log-file;
