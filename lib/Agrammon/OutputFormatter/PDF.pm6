@@ -33,6 +33,9 @@ sub create-pdf($temp-dir, $pdf-prog, $username, $dataset-name, %data) is export 
     my $aux-file    = "$temp-dir/$filename.aux".IO;
     my $log-file    = "$temp-dir/$filename.log".IO;
 
+    # create if necessary
+    $temp-dir.IO.mkdir;
+
     # create LaTeX source with template
     $source-file.spurt(create-latex('pdfexport', %data));
 
