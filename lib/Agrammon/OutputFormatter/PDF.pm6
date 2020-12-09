@@ -33,8 +33,6 @@ sub create-pdf($temp-dir, $pdf-prog, $username, $dataset-name, %data) is export 
     my $aux-file    = "$temp-dir/$filename.aux".IO;
     my $log-file    = "$temp-dir/$filename.log".IO;
 
-    note ".tex: $source-file";
-    note ".pdf: pdf-file";
     # create LaTeX source with template
     $source-file.spurt(create-latex('pdfexport', %data));
 
@@ -78,9 +76,8 @@ sub create-pdf($temp-dir, $pdf-prog, $username, $dataset-name, %data) is export 
     # read content of PDF file created
     my $pdf = $pdf-file.slurp(:bin);
 
-    note "size($pdf-file)=", $pdf.bytes;
     # cleanup if successful
-    # unlink $source-file, $pdf-file, $aux-file, $log-file;
+    unlink $source-file, $pdf-file, $aux-file, $log-file;
 
     return $pdf;
 }
