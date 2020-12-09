@@ -1,0 +1,74 @@
+\nonstopmode
+%\documentclass[10pt,a4paper,landscape,twocolumn]{article}
+\documentclass[10pt,a4paper]{article}
+\usepackage{a4wide}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage[version=4]{mhchem}
+\usepackage[table,svgnames]{xcolor}
+\usepackage{verbdef}
+%\usepackage{longtable}
+\usepackage{tabularx}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}} % rechtsbuendig mit Breitenangabe
+
+
+\pagestyle{empty}
+%\usepackage[sc]{mathpazo}
+%\usepackage[sc]{arial}
+%\usepackage{amsmath,amsgen,amscd,amsrefs,amsthm,amsopn,amssymb,amsfonts}
+\renewcommand{\rmdefault}{phv} % Arial
+\renewcommand{\sfdefault}{phv} % Arial
+\usepackage[scaled]{helvet}
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
+
+\addtolength{\topmargin}{-2cm}
+\addtolength{\textheight}{2cm}
+\addtolength{\oddsidemargin}{-1cm}
+\addtolength{\evensidemargin}{-1cm}
+\addtolength{\textwidth}{1cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot[C]{}
+\fancyfoot[L]{fritz.zaucker@oetiker.ch --- Test5.0 --- 07.12.2020, 09:49:16 }
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+%\pgfplotsset{every axis legend/.append style={cells={anchor=west} }}
+\begin{document}
+
+\section*{Emissionsberechnung für Ammoniak mit Agrammon}
+\section{Angaben zu Nutzer/-in und Datensatz}
+\begin{tabular}[t]{@{}l@{\hspace{2em}}p{7cm}}
+\textbf{Datensatz:} & TestDataset\\
+\textbf{Benutzername:} & fritz.zaucker@oetiker.ch\\
+\textbf{Version:} & Single\\
+\end{tabular}
+
+\section{Ergebnis der Emissionsberechnung}
+\subsection{Tierproduktion}
+\noindent
+\rowcolors{1}{LightGrey}{White}
+\begin{tabular}[t]{lllrl}
+\toprule
+&  & Weide NH3-Emission & 5 & kg\,N\,/\,Jahr\\
+&  & Stall und Laufhof NH3-Emission & 50 & kg\,N\,/\,Jahr\\
+\bottomrule
+\end{tabular}
+
+\subsubsection*{Mitteilungen zu den Resultaten}
+\begin{small}
+\begin{itemize}
+\item comment 1
+\item comment 2
+\end{itemize}
+\end{small}
+
+\newpage
+\section{Eingaben Datensatz}
+
+Not yet implemented.
+
+\end{document}

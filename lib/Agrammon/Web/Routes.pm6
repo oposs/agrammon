@@ -258,6 +258,24 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'exportPDF', -> LoggedIn $user {
+            request-body -> %params {
+                response.append-header(
+                        'Content-disposition',
+                        # prevent header injection
+                        "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).pdf"
+                        );
+                content 'application/pdf',
+                        $ws.get-pdf-export($user, %params);
+                CATCH {
+                    default {
+                        note "$_";
+                        response.status = 500;
+                        content 'application/json', %( error => .message )
+                    }
+                }
+            }
+        }
         operation 'getOutputVariables', -> LoggedIn $user {
             request-body -> ( :datasetName($dataset-name)! ) {
                 my %output = $ws.get-output-variables($user, $dataset-name);
