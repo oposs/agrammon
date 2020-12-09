@@ -3,19 +3,16 @@ use Agrammon::Model;
 use Agrammon::Outputs;
 use Agrammon::Outputs::FilterGroupCollection;
 
-# TODO: make output match current Agrammon Excel export
 sub collect-data(
     Str $dataset-name, Agrammon::Model $model,
     Agrammon::Outputs $outputs, Agrammon::Inputs $inputs, $reports,
     Str $language, $prints,
     Bool $include-filters, Bool $all-filters
 ) is export {
-    warn '**** collect-data() not yet completely implemented';
 
-    # TODO: add missing inputs
+    # add inputs
     my @inputs;
-    my @annotated-inputs = $model.annotate-inputs($inputs);
-    for @annotated-inputs -> $ai {
+    for $model.annotate-inputs($inputs) -> $ai {
         @inputs.push( %(
             :module($ai.module.taxonomy),
             :instance($ai.instance-id // ''),
