@@ -196,7 +196,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             }
             document.body.appendChild(form);
 
-            // status=1 open's in new tab in Chrome at least
+            // status=1 opens in new tab in Chrome at least
             var options = "menubar=1,scrollbars=1,resizable=1,status=0,titlebar=1,height=600,width=800,toolbar=1"
             var win = window.open('', form.target, options);
             if (win) {
@@ -246,7 +246,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             }
             document.body.appendChild(form);
 
-            // status=1 open's in new tab in Chrome at least
+            // status=1 opens in new tab in Chrome at least
             var options = "menubar=1,scrollbars=1,resizable=1,status=1,titlebar=1,height=600,width=800,toolbar=1"
             var win = window.open('', form.target, options);
             if (win) {
