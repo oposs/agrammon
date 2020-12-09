@@ -34,6 +34,9 @@ jobs:
           --health-retries 5
 
     steps:
+      - name: Install LaTeX
+        run: sudo apt-get install texlive texlive-luatex texlive-latex-recommended texlive-latex-extra texlive-science 
+  
       - name: Checkout repo
         uses: actions/checkout@v2
 
