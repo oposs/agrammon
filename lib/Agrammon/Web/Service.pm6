@@ -130,7 +130,7 @@ class Agrammon::Web::Service {
 
         # TODO: get with-filters from frontend
         my %gui-output = output-for-gui($!model, $outputs, :include-filters);
-        warn '**** with-filters for get-output-variables() not yet completely implemented';
+        note '**** with-filters for get-output-variables() not yet completely implemented';
         return %gui-output;
     }
 

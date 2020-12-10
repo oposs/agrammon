@@ -16,7 +16,7 @@ sub collect-data(
         my $gui = $ai.gui-root{$language} // 'NO GUI ROOT';
         my $value = $ai.value;
         my $value-translated = $value;
-        if $ai.input.enum {
+        if $value and $ai.input.enum {
             $value-translated = $ai.input.enum{$value}{$language} // $value;
         }
         @inputs.push( %(
@@ -30,7 +30,7 @@ sub collect-data(
         ));
     }
 
-    my @prints = $reports[+$prints]<data>;
+    my @prints = $reports[+$prints]<data> if $prints;
     my %lang-labels;
     my @print-set;
     for @prints -> @print {

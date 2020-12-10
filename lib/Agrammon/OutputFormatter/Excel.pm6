@@ -16,7 +16,7 @@ sub input-output-as-excel(
     Str $language, $prints,
     Bool $include-filters, Bool $all-filters
 ) is export {
-    warn '**** input-output-as-excel() not yet completely implemented';
+    note '**** input-output-as-excel() not yet completely implemented';
 
     my $workbook = Spreadsheet::XLSX.new;
 
@@ -116,7 +116,7 @@ sub input-output-as-excel(
     }
 
     # add outputs
-    my @prints = $reports[+$prints]<data>;
+    my @prints = $reports[+$prints]<data> if $prints;
     my %lang-labels;
     my @print-set;
     for @prints -> @print {
@@ -133,7 +133,7 @@ sub input-output-as-excel(
     $last-print = '';
     for @records.sort(+*.<order>) -> %rec {
         my $print = %rec<print>; # can be undefined or empty
-        $output-sheet.set($row, $col+0, %lang-labels{$print}{$language} // '');
+        $output-sheet.set($row, $col+0, %lang-labels{$print}{$language} // '') if $print;
         $output-sheet.set($row, $col+1, %rec<label> // 'Output: ???');
         $output-sheet.set($row, $col+2, %rec<value>, :number-format('#,###'));
         $output-sheet.set($row, $col+3, %rec<unit> // 'Unit: ???');
