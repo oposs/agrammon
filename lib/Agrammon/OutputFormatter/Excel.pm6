@@ -48,10 +48,15 @@ sub input-output-as-excel(
 #    for @records.sort(+*.<order>) -> %rec {
     for @records -> %rec {
 #        $input-sheet.set($row, $col+0, %lang-labels{$print}{$language}, :bold);
+        my $value = %rec<value>;
+        if %rec<enum> {
+            $value = %rec<enum>{$value}{$language} // $value;
+        }
+
         $input-sheet.set($row, $col+1, %rec<module>);
         $input-sheet.set($row, $col+2, %rec<instance>);
         $input-sheet.set($row, $col+3, %rec<input>);
-        $input-sheet.set($row, $col+4, (%rec<value> // '???'), :number-format('#,###'));
+        $input-sheet.set($row, $col+4, ($value // '???'), :number-format('#,###'));
         $input-sheet.set($row, $col+5, %rec<unit>);
         $row++;
     }
