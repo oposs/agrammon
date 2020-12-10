@@ -146,6 +146,8 @@ class Agrammon::Web::Service {
         my $outputs = self!get-outputs($user, $dataset-name);
         my $reports = self.get-input-variables<reports>;
         input-output-as-excel(
+            $!cfg,
+            $user,
             $dataset-name,
             $!model, $outputs, $inputs, $reports,
             $language, $prints,

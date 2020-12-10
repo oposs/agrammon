@@ -6,7 +6,7 @@ class Agrammon::Config {
     has %.database;
     has %.gui;
     has %.model;
-  
+
     method load(Str $path) {
         my $yaml = slurp($path);
         my $config = load-yaml($yaml);
@@ -19,6 +19,10 @@ class Agrammon::Config {
 
     method gui-variant {
         %!gui<variant> ;
+    }
+
+    method gui-title {
+        %!gui<title> ;
     }
 
     method model-variant {

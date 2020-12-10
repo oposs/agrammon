@@ -1,12 +1,16 @@
 use v6;
+use Agrammon::Config;
 use Agrammon::Model;
 use Agrammon::Outputs;
 use Agrammon::OutputFormatter::CollectData;
+use Agrammon::Web::SessionUser;
 use Spreadsheet::XLSX;
 use Spreadsheet::XLSX::Styles;
 
 # TODO: make output match current Agrammon Excel export
 sub input-output-as-excel(
+    Agrammon::Config $cfg,
+    Agrammon::Web::SessionUser $user,
     Str $dataset-name, Agrammon::Model $model,
     Agrammon::Outputs $outputs, Agrammon::Inputs $inputs, $reports,
     Str $language, $prints,
@@ -19,8 +23,22 @@ sub input-output-as-excel(
     # prepare sheets
     my $output-sheet = $workbook.create-worksheet('Ergebnisse');
     my $output-sheet-formatted = $workbook.create-worksheet('Ergebnisse formatiert');
-    for ($output-sheet, $output-sheet-formatted) -> $sheet {
+    my $input-sheet = $workbook.create-worksheet('Eingaben');
+    my $input-sheet-formatted = $workbook.create-worksheet('Eingaben formatiert');
+    my $timestamp = ~DateTime.now( formatter => sub ($_) {
+        sprintf '%02d.%02d.%04d %02d:%02d:%02d',
+                .day, .month, .year, .hour, .minute, .second,
+    });
+    my $model-version = $cfg.gui-title{$language} ~ " - " ~ $cfg.gui-variant;
+    for ($output-sheet, $output-sheet-formatted, $input-sheet, $input-sheet-formatted) -> $sheet {
         $sheet.set(0, 0, $dataset-name, :bold);
+        $sheet.set(1, 0, $user.username);
+        $sheet.set(2, 0, $model-version);
+        $sheet.set(3, 0, $timestamp);
+    }
+
+    # set column width
+    for ($output-sheet, $output-sheet-formatted) -> $sheet {
         $sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
                 :custom-width, :width(20);
         $sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
@@ -33,11 +51,6 @@ sub input-output-as-excel(
                 :custom-width, :width(10);
     }
 
-    my $input-sheet = $workbook.create-worksheet('Eingaben');
-    my $input-sheet-formatted = $workbook.create-worksheet('Eingaben formatiert');
-    for ($input-sheet, $input-sheet-formatted) -> $sheet {
-        $sheet.set(0, 0, $dataset-name, :bold);
-    }
     $input-sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
             :custom-width, :width(30);
     $input-sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
@@ -69,8 +82,8 @@ sub input-output-as-excel(
     # TODO: fix sorting
     my @records := %data<inputs>;
     my $col = 0;
-    my $row = 2;
-    my $row-formatted = 2;
+    my $row = 5;
+    my $row-formatted = $row;
     my $last-print = '';
 #    for @records.sort(+*.<order>) -> %rec {
     my $last-instance = '';
@@ -116,7 +129,7 @@ sub input-output-as-excel(
     }
 
     @records := %data<outputs>;
-    $row = 2;
+    $row = 5;
     $col = 0;
     $last-print = '';
     for @records.sort(+*.<order>) -> %rec {

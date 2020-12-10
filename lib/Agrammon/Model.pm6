@@ -76,8 +76,7 @@ class Agrammon::Model {
         has Str $.instance-id;
         has Agrammon::Model::Input $.input is required;
         has $.value is required;
-        has $.enum is required;
-        has Agrammon::Model::Module $.gui-root is required;
+        has %.gui-root is required;
     }
 
     my class ModuleRunner {
@@ -158,22 +157,28 @@ class Agrammon::Model {
         method !annotate-inputs-internal($input-data, %run-already, @result, Str $instance-id?) {
             my $tax = $!module.taxonomy;
             return if %run-already{$tax};
-            my $gui-root = $!module.gui-root-module;
+            my $gui-root-module = $!module.gui-root-module;
+            my %gui-root;
+            if $gui-root-module {
+                # what a silly inline signaling
+                my @g = $gui-root-module.gui.split(',');
+                %gui-root = %( :de(@g[1]), :fr(@g[2]), :en(@g[3] // @g[0])) ;
+            }
             if $!module.is-multi {
                 for $input-data.inputs-list-for($tax) -> $multi-input {
                     my $instance-id = $multi-input.instance-id;
                     self!annotate-inputs-as-single($multi-input, %run-already.clone,
-                            @result, $gui-root, $instance-id);
+                            @result, %gui-root, $instance-id);
                 }
                 self!mark-multi-run(%run-already);
             }
             else {
-                self!annotate-inputs-as-single($input-data, %run-already, @result, $gui-root, $instance-id);
+                self!annotate-inputs-as-single($input-data, %run-already, @result, %gui-root, $instance-id);
                 %run-already{$tax} = True;
             }
         }
 
-        method !annotate-inputs-as-single($input-data, %run-already, @result, $gui-root, Str $instance-id?) {
+        method !annotate-inputs-as-single($input-data, %run-already, @result, %gui-root, Str $instance-id?) {
             for @!dependencies -> $dep {
                 $dep!annotate-inputs-internal($input-data, %run-already, @result, $instance-id);
             }
@@ -182,8 +187,7 @@ class Agrammon::Model {
             for $!module.input -> Agrammon::Model::Input $input {
                 my $key   = $input.name;
                 my $value = %input-data{$key} // %input-defaults{$key};
-                my $enum  = $input.enum;
-                @result.push: AnnotatedInput.new: :$!module, :$input, :$instance-id, :$value, :$enum, :$gui-root;
+                @result.push: AnnotatedInput.new: :$!module, :$input, :$instance-id, :$value, :%gui-root;
             }
         }
 

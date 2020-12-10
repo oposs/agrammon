@@ -275,11 +275,10 @@ sub input-output-as-pdf(
     %data<dataset>   = $dataset-name;
     %data<username>  = $user.username;
     %data<model>     = $cfg.gui-variant;
-    %data<version>   = 'Agrammon 6.0';
-    %data<timestamp> = ~DateTime.now( formatter => sub ($o) {
+    %data<version>   = $cfg.gui-title{$language};
+    %data<timestamp> = ~DateTime.now( formatter => sub ($_) {
         sprintf '%02d.%02d.%04d %02d:%02d:%02d',
-            $o.day, $o.month, $o.year,
-            $o.hour, $o.minute, $o.second,
+            .day, .month, .year,.hour, .minute, .second,
     });
 
    return create-pdf(
