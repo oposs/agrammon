@@ -162,7 +162,7 @@ class Agrammon::Model {
             if $gui-root-module {
                 # what a silly inline signaling
                 my @g = $gui-root-module.gui.split(',');
-                %gui-root = %( :de(@g[1]), :fr(@g[2]), :en(@g[3] // @g[0])) ;
+                %gui-root = :de(@g[1]), :fr(@g[2]), :en(@g[3] // @g[0]);
             }
             if $!module.is-multi {
                 for $input-data.inputs-list-for($tax) -> $multi-input {
