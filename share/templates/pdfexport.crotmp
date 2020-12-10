@@ -32,35 +32,43 @@
 \pagestyle{fancy}
 \fancyhead{}
 \fancyfoot[C]{}
-\fancyfoot[L]{fritz.zaucker@oetiker.ch --- Test5.0 --- 07.12.2020, 09:49:16 }
+\fancyfoot[L]{<.username> --- <.dataset> \hspace{5em} <.version> --- <.timestamp>}
 \fancyfoot[R]{\thepage}
 \renewcommand{\headrulewidth}{0pt}
 
 %\pgfplotsset{every axis legend/.append style={cells={anchor=west} }}
 \begin{document}
 
-\section*{Emissionsberechnung für Ammoniak mit Agrammon}
-\section{Angaben zu Nutzer/-in und Datensatz}
+\section*{<.titles.report>}
+\section{<.titles.data.section>}
 \begin{tabular}[t]{@{}l@{\hspace{2em}}p{7cm}}
-\textbf{Datensatz:} & <.dataset>\\
-\textbf{Benutzername:} & <.username>\\
+\textbf{<.titles.data.dataset>:} & <.dataset>\\
+\textbf{<.titles.data.user>:} & <.username>\\
 \textbf{Version:} & <.model>\\
 \end{tabular}
 
-\section{Ergebnis der Emissionsberechnung}
-\subsection{Tierproduktion}
+\section{<.titles.outputs>}
+<@outputs>
+<?.section>
+<!.first>
+\bottomrule
+\end{tabular}
+</!>
+\subsection{<.section>}
 \noindent
 \rowcolors{1}{LightGrey}{White}
 \begin{tabular}[t]{lllrl}
 \toprule
-<@outputs>
+</?>
+<!.section>
 &  & <.label> & <.value> & <.unit>\\
+</!>
 </@>
 \bottomrule
 \end{tabular}
 
 <?.log>
-\subsubsection*{Mitteilungen zu den Resultaten}
+\subsection*{<.titles.outputLog>}
 \begin{small}
 \begin{itemize}
 <@log>
@@ -71,8 +79,48 @@
 </?>
 
 \newpage
-\section{Eingaben Datensatz}
+\section{<.titles.inputs>}
+<@inputs>
+<?.module>
+<!.first-module>
+\bottomrule % not first-module
+\end{tabular}
+\end{scriptsize}
+\vspace{2ex}
 
-Not yet implemented.
+</!>
+\subsection{<.module>}
+</?>
+
+<?.instance>
+<!.first-instance>
+\bottomrule % not first-instance
+\end{tabular}
+\end{scriptsize}
+\vspace{2ex}
+
+</!>
+\noindent % first-instance
+\begin{scriptsize}
+\rowcolors{1}{LightGrey}{White}
+\begin{tabular}[t]{lllrl}
+\toprule
+\multicolumn{5}{l}{\textbf{\emph{<.instance>}}}\\
+</?>
+
+<!{ .module || .instance }>
+<?.first-line>
+\noindent % first-line
+\begin{scriptsize}
+\rowcolors{1}{LightGrey}{White}
+\begin{tabular}[t]{lllrl}
+\toprule
+</?>
+ &  & <.label> & <.value> & <.unit>\\
+</!>
+</@>
+\bottomrule % done inputs
+\end{tabular}
+\end{scriptsize}
 
 \end{document}

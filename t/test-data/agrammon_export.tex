@@ -32,23 +32,23 @@
 \pagestyle{fancy}
 \fancyhead{}
 \fancyfoot[C]{}
-\fancyfoot[L]{fritz.zaucker@oetiker.ch --- Test5.0 --- 07.12.2020, 09:49:16 }
+\fancyfoot[L]{fritz.zaucker@oetiker.ch --- TestDataset \hspace{5em} Agrammon 6.0 --- Timestamp}
 \fancyfoot[R]{\thepage}
 \renewcommand{\headrulewidth}{0pt}
 
 %\pgfplotsset{every axis legend/.append style={cells={anchor=west} }}
 \begin{document}
 
-\section*{Emissionsberechnung für Ammoniak mit Agrammon}
-\section{Angaben zu Nutzer/-in und Datensatz}
+\section*{Report}
+\section{Section}
 \begin{tabular}[t]{@{}l@{\hspace{2em}}p{7cm}}
-\textbf{Datensatz:} & TestDataset\\
-\textbf{Benutzername:} & fritz.zaucker@oetiker.ch\\
+\textbf{Dataset:} & TestDataset\\
+\textbf{Username:} & fritz.zaucker@oetiker.ch\\
 \textbf{Version:} & Single\\
 \end{tabular}
 
-\section{Ergebnis der Emissionsberechnung}
-\subsection{Tierproduktion}
+\section{Results}
+\subsection{Module}
 \noindent
 \rowcolors{1}{LightGrey}{White}
 \begin{tabular}[t]{lllrl}
@@ -58,7 +58,7 @@
 \bottomrule
 \end{tabular}
 
-\subsubsection*{Mitteilungen zu den Resultaten}
+\subsection*{Log}
 \begin{small}
 \begin{itemize}
 \item comment 1
@@ -67,8 +67,20 @@
 \end{small}
 
 \newpage
-\section{Eingaben Datensatz}
+\section{Inputs}
+\subsection{Module}
 
-Not yet implemented.
+
+
+
+\noindent % first-line
+\begin{scriptsize}
+\rowcolors{1}{LightGrey}{White}
+\begin{tabular}[t]{lllrl}
+\toprule
+ &  & Input & 42 & Unit\\
+\bottomrule % done inputs
+\end{tabular}
+\end{scriptsize}
 
 \end{document}

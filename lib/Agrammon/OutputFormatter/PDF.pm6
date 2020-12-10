@@ -86,9 +86,8 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
 
     # read content of PDF file created
     my $pdf = $pdf-file.slurp(:bin);
-
     # cleanup if successful, otherwise kept for debugging.
-    unlink $source-file, $pdf-file, $aux-file, $log-file;
+    unlink $source-file, $pdf-file, $aux-file, $log-file unless %*ENV<AGRAMMON_KEEP_FILES>;
 
     return $pdf;
 }
@@ -118,8 +117,20 @@ sub latex-small-spaces(Str $in) is export {
     return $out;
 }
 
-sub format-value($value) {
+multi format-value(Rat $value) {
     sprintf '%.2f', $value;
+}
+
+multi format-value(Numeric $value) {
+    sprintf '%.2f', $value;
+}
+
+multi format-value(IntStr $value) {
+    return $value;
+}
+
+multi format-value(Str $value) {
+    latex-escape($value);
 }
 
 # TODO: make PDF match current Agrammon PDF report
@@ -133,6 +144,7 @@ sub input-output-as-pdf(
 ) is export {
     warn '**** input-output-as-pdf() not yet completely implemented';
 
+    # get data ready for printing
     my %data = collect-data(
         $dataset-name, $model,
         $outputs, $inputs, $reports,
@@ -140,23 +152,140 @@ sub input-output-as-pdf(
         $include-filters, $all-filters,
     );
 
-    for %data<outputs> -> @outputs {
-        for @outputs -> %rec {
-            %rec<unit>  = latex-small-spaces(latex-escape(%rec<unit>));
-            %rec<label> = latex-chemify(latex-escape(%rec<label>));
-            %rec<value> = format-value(%rec<value>);
+    # strings used in template
+    my %titles = %(
+        report =>  %(
+            :de('Emissionsberechnung für Ammoniak mit Agrammon'),
+            :en('Calculation for ammonia emissions with Agrammon'),
+            :fr('Calcul des émissions d’ammoniac avec Agrammon'),
+        ){$language},
+        data => %(
+            section => %(
+                :de('Angaben zu Nutzer/-in und Datensatz'),
+                :en('Information on the user and the dataset'),
+                :fr('Informations sur l’utilisateur/-trice et sur le set de données'),
+            ){$language},
+            user => %(
+                :de('Benutzername'),
+                :en('Username'),
+                :fr('Nom d’utilisateur'),
+            ){$language},
+            dataset => %(
+                :de('Datensatz'),
+                :en('Dataset'),
+                :fr('Set de données'),
+            ){$language},
+        ),
+        outputs => %(
+            :de('Ergebnis der Emissionsberechnung'),
+            :en('Results of the emission calculation'),
+            :fr('Résultats du calcul des émissions')
+        ){$language},
+        outputLog => %(
+            :de('Mitteilungen zu den Resultaten'),
+            :en('Notes on the results'),
+            :fr('Messages concernant les résultats'),
+        ){$language},
+        inputs => %(
+            :de('Eingaben Datensatz'),
+            :en('Input parameters of the dataset'),
+            :fr('Paramétres d’entrée du set de données'),
+        ){$language}
+    );
+
+    my @prints = $reports[+$prints]<data>;
+    my %lang-labels;
+    my @print-set;
+    for @prints -> @print {
+        for @print -> $print {
+            @print-set.push($print<print>);
+            %lang-labels{$print<print>} = $print<langLabels>;
         }
     }
-    %data<dataset>  = $dataset-name;
-    %data<username> = $user.username;
-    %data<model>    = $cfg.gui-variant;
 
-    my $pdf = create-pdf(
+    my @output-formatted;
+    my $last-print = '';
+    my $first = True;
+    for %data<outputs> -> @outputs {
+        for @outputs.sort(+*.<order>) -> %rec {
+            my $print = %rec<print>; # can be undefined or empty
+            if $print and $print ne $last-print {
+                @output-formatted.push(%(
+                    :section(%lang-labels{$print}{$language} // 'NO-TITLE'),
+                    :$first));
+                $first = False if $first;
+                $last-print = $print;
+            }
+            @output-formatted.push(%(
+                :unit(latex-small-spaces(latex-escape(%rec<unit>))),
+                :label(latex-chemify(latex-escape(%rec<label>))),
+                :value(format-value(%rec<value>))));
+        }
+    }
+
+    my @input-formatted;
+    # TODO: fix sorting
+    my @inputs := %data<inputs>;
+# left on purpose
+#    dd @inputs[0];
+    $last-print = '';
+    my $last-instance = '';
+    my $last-module = '';
+    my $first-module = True;
+    my $first-instance = True;
+    for @inputs -> %rec {
+        my $new-module = False;
+        my $new-instance = False;
+
+        my $module = %rec<gui-root> ?? %rec<gui-root>.taxonomy !! %rec<module> ;
+        if $module and $module ne $last-module {
+            @input-formatted.push( %(
+                :module(latex-escape($module)),
+                :$first-module));
+            $last-module = $module;
+            $new-module = True;
+            $first-module = False;
+            $first-instance = True;
+        }
+
+        my $instance = %rec<instance>;
+        if $instance and $instance ne $last-instance {
+            @input-formatted.push( %(
+                :instance(latex-escape($instance)),
+                :$first-instance));
+            $last-instance = $instance;
+            $new-instance = True;
+            $first-instance = False;
+        }
+
+        my $first-line = $new-module && ! $new-instance;
+
+        @input-formatted.push(%(
+            :unit(latex-small-spaces(latex-escape(%rec<unit>))),
+            :label(latex-chemify(latex-escape(%rec<input>))),
+            :value(format-value(%rec<value>)),
+            :$first-line));
+    }
+
+    # setup template data
+    %data<outputs>   = @output-formatted;
+    %data<inputs>    = @input-formatted;
+    %data<titles>    = %titles;
+    %data<dataset>   = $dataset-name;
+    %data<username>  = $user.username;
+    %data<model>     = $cfg.gui-variant;
+    %data<version>   = 'Agrammon 6.0';
+    %data<timestamp> = ~DateTime.now( formatter => sub ($o) {
+        sprintf '%02d.%02d.%04d %02d:%02d:%02d',
+            $o.day, $o.month, $o.year,
+            $o.hour, $o.minute, $o.second,
+    });
+
+   return create-pdf(
         $*TMPDIR.add($cfg.general<tmpDir>),
         $cfg.general<pdflatex>,
         $user.username,
         $dataset-name,
         %data
     );
-    return $pdf;
 }

@@ -19,6 +19,7 @@ sub collect-data(
             :input($ai.input.labels{$language} // $ai.input.labels<en> // $ai.input.name),
             :value($ai.value),
             :unit($ai.input.units{$language} // $ai.input.units<en> // ''),
+            :gui-root($ai.gui-root),
         ));
     }
 
