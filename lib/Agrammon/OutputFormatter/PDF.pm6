@@ -193,15 +193,7 @@ sub input-output-as-pdf(
         ){$language}
     );
 
-    my @prints = $reports[+$prints]<data>;
-    my %lang-labels;
-    my @print-set;
-    for @prints -> @print {
-        for @print -> $print {
-            @print-set.push($print<print>);
-            %lang-labels{$print<print>} = $print<langLabels>;
-        }
-    }
+    my %print-labels = %data<print-labels>;
 
     my @output-formatted;
     my $last-print = '';
@@ -211,7 +203,7 @@ sub input-output-as-pdf(
             my $print = %rec<print>; # can be undefined or empty
             if $print and $print ne $last-print {
                 @output-formatted.push(%(
-                    :section(%lang-labels{$print}{$language} // 'NO-TITLE'),
+                    :section(%print-labels{$print}{$language} // 'NO-TITLE'),
                     :$first));
                 $first = False if $first;
                 $last-print = $print;

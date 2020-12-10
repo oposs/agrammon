@@ -31,12 +31,12 @@ sub collect-data(
     }
 
     my @prints = $reports[+$prints]<data> if $prints;
-    my %lang-labels;
+    my %print-labels;
     my @print-set;
     for @prints -> @print {
         for @print -> $print {
             @print-set.push($print<print>);
-            %lang-labels{$print<print>} = $print<langLabels>;
+            %print-labels{$print<print>} = $print<langLabels>;
         }
     }
 
@@ -98,7 +98,7 @@ sub collect-data(
         }
     }
 
-    return %( :@inputs, :@outputs );
+    return %( :@inputs, :@outputs, :%print-labels );
 }
 
 sub push-filters(@records, $module, $model, Agrammon::Outputs::FilterGroupCollection $collection,
