@@ -42,12 +42,10 @@ sub input-output-as-excel(
         $sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
                 :custom-width, :width(20);
         $sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
-                :custom-width, :width(10);
-        $sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
                 :custom-width, :width(32);
-        $sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
+        $sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
                 :custom-width, :width(20);
-        $sheet.columns[4] = Spreadsheet::XLSX::Worksheet::Column.new:
+        $sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
                 :custom-width, :width(10);
     }
 
@@ -130,21 +128,28 @@ sub input-output-as-excel(
 
     @records := %data<outputs>;
     $row = 5;
+    $row-formatted = $row;
     $col = 0;
     $last-print = '';
     for @records.sort(+*.<order>) -> %rec {
         my $print = %rec<print>; # can be undefined or empty
-        if $print and $print ne $last-print {
-            $output-sheet.set($row, $col+0, %lang-labels{$print}{$language}, :bold);
-            $last-print = $print;
-            $row++;
-        }
-        $output-sheet.set($row, $col+1, %rec<module>);
-        $output-sheet.set($row, $col+2, %rec<label> // 'Output: ???');
-        $output-sheet.set($row, $col+3, %rec<value>, :number-format('#,###'));
-        $output-sheet.set($row, $col+4, %rec<unit> // 'Unit: ???');
-        $output-sheet.set($row, $col+5, %rec<order>);
+        $output-sheet.set($row, $col+0, %lang-labels{$print}{$language});
+        $output-sheet.set($row, $col+1, %rec<label> // 'Output: ???');
+        $output-sheet.set($row, $col+2, %rec<value>, :number-format('#,###'));
+        $output-sheet.set($row, $col+3, %rec<unit> // 'Unit: ???');
+        $output-sheet.set($row, $col+4, %rec<order>);
         $row++;
+
+        if $print and $print ne $last-print {
+            $output-sheet-formatted.set($row-formatted, $col+0, %lang-labels{$print}{$language}, :bold);
+            $last-print = $print;
+            $row-formatted++;
+        }
+        $output-sheet-formatted.set($row-formatted, $col+1, %rec<label> // 'Output: ???');
+        $output-sheet-formatted.set($row-formatted, $col+2, %rec<value>, :number-format('#,###'));
+        $output-sheet-formatted.set($row-formatted, $col+3, %rec<unit> // 'Unit: ???');
+        $output-sheet-formatted.set($row-formatted, $col+4, %rec<order>);
+        $row-formatted++;
     }
     return $workbook;
 }
