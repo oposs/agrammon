@@ -3,7 +3,7 @@ use v6;
 use Agrammon::Config;
 use Agrammon::OutputFormatter::PDF;
 use Test;
-# plan 6;
+plan 6;
 
 my %chemify-map = %(
     'NH3'     => '\\ce{NH3}',
@@ -93,6 +93,9 @@ lives-ok { $pdf-created = create-pdf($temp-dir, $pdf-program, $username, $datase
 
 if not %*ENV<GITHUB_ACTIONS> {
     is $pdf-created.bytes, $pdf-file-expected.s, "PDF file $pdf-file-expected size as expected";
+}
+else {
+    skip "PDF size check not working on GitHub Actions for unknown reason", 1;
 }
 
 %data<log>.push('\invalidLatex');
