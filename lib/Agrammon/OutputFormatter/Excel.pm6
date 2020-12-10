@@ -133,7 +133,7 @@ sub input-output-as-excel(
     $last-print = '';
     for @records.sort(+*.<order>) -> %rec {
         my $print = %rec<print>; # can be undefined or empty
-        $output-sheet.set($row, $col+0, %lang-labels{$print}{$language});
+        $output-sheet.set($row, $col+0, %lang-labels{$print}{$language} // '');
         $output-sheet.set($row, $col+1, %rec<label> // 'Output: ???');
         $output-sheet.set($row, $col+2, %rec<value>, :number-format('#,###'));
         $output-sheet.set($row, $col+3, %rec<unit> // 'Unit: ???');

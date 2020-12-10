@@ -187,7 +187,7 @@ msgstr "Datensatz umbenennen"
 msgid "New name"
 msgstr "Neuer Name"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/PropTable.js
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -327,7 +327,7 @@ msgstr "Zum Editieren anklicken"
 msgid "Unit"
 msgstr "Einheit"
 
-#: agrammon/module/user/Login.js
+#: agrammon/module/input/PropTable.js
 msgid "Help"
 msgstr "Hilfe"
 
@@ -415,11 +415,11 @@ msgstr "Ok"
 msgid "Graphical Results"
 msgstr "Resultate als Grafik"
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Choose table: "
 msgstr "Tabelle auswählen"
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Simulation log"
 msgstr "Mitteilungen zu den Resultaten"
 

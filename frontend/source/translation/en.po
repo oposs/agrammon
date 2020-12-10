@@ -58,7 +58,7 @@ msgstr ""
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "datasets"
 msgstr ""
 
-#: agrammon/ui/menu/OptionMenu.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Info"
 msgstr ""
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "New"
 msgstr ""
 
-#: agrammon/ui/menu/FileMenu.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Create new dataset"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Delete selected dataset(s)"
 msgstr ""
 
-#: agrammon/ui/menu/FileMenu.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Dataset"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr ""
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Error"
 msgstr ""
 
@@ -362,11 +362,11 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/ui/dialog/Comment.js
 msgid "Cancel"
 msgstr ""
 
-#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/ui/dialog/Comment.js
 msgid "Clear"
 msgstr ""
 
@@ -414,11 +414,11 @@ msgstr ""
 msgid "Graphical Results"
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Choose table: "
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Simulation log"
 msgstr "Notes on the results"
 
@@ -462,7 +462,7 @@ msgstr ""
 msgid "Create PDF"
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Submission"
 msgstr ""
 
