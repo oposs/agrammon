@@ -37,16 +37,25 @@ sub input-output-as-excel(
     my $input-sheet-formatted = $workbook.create-worksheet('Eingaben formatiert');
     for ($input-sheet, $input-sheet-formatted) -> $sheet {
         $sheet.set(0, 0, $dataset-name, :bold);
-        $sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
-                :custom-width, :width(40);
-        $sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
-                :custom-width, :width(32);
-        $sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
-                :custom-width, :width(10);
     }
     $input-sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
+            :custom-width, :width(30);
+    $input-sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
             :custom-width, :width(20);
+    $input-sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
+            :custom-width, :width(50);
+    $input-sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
+            :custom-width, :width(50);
+    $input-sheet.columns[4] = Spreadsheet::XLSX::Worksheet::Column.new:
+            :custom-width, :width(10);
+
     $input-sheet-formatted.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
+            :custom-width, :width(10);
+    $input-sheet-formatted.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
+            :custom-width, :width(50);
+    $input-sheet-formatted.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
+            :custom-width, :width(50);
+    $input-sheet-formatted.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
             :custom-width, :width(10);
 
     # prepared data
