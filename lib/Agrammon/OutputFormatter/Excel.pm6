@@ -56,7 +56,7 @@ sub input-output-as-excel(
         $input-sheet.set($row, $col+1, %rec<module>);
         $input-sheet.set($row, $col+2, %rec<instance>);
         $input-sheet.set($row, $col+3, %rec<input>);
-        $input-sheet.set($row, $col+4, ($value // '???'), :number-format('#,###'));
+        $input-sheet.set($row, $col+4, ($value // '???'), :number-format('#,###'), :horizontal-align(RightAlign));
         $input-sheet.set($row, $col+5, %rec<unit>);
         $row++;
     }
