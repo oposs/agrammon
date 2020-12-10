@@ -22,17 +22,34 @@ sub input-output-as-excel(
     for ($output-sheet, $output-sheet-formatted) -> $sheet {
         $sheet.set(0, 0, $dataset-name, :bold);
         $sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
-                :custom-width, :width(50);
+                :custom-width, :width(20);
+        $sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
+                :custom-width, :width(10);
         $sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
                 :custom-width, :width(32);
+        $sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
+                :custom-width, :width(20);
+        $sheet.columns[4] = Spreadsheet::XLSX::Worksheet::Column.new:
+                :custom-width, :width(10);
     }
 
     my $input-sheet = $workbook.create-worksheet('Eingaben');
     my $input-sheet-formatted = $workbook.create-worksheet('Eingaben formatiert');
     for ($input-sheet, $input-sheet-formatted) -> $sheet {
         $sheet.set(0, 0, $dataset-name, :bold);
+        $sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
+                :custom-width, :width(40);
+        $sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
+                :custom-width, :width(32);
+        $sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
+                :custom-width, :width(10);
     }
+    $input-sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
+            :custom-width, :width(20);
+    $input-sheet-formatted.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
+            :custom-width, :width(10);
 
+    # prepared data
     my %data = collect-data(
         $dataset-name, $model,
         $outputs, $inputs, $reports,
@@ -40,25 +57,47 @@ sub input-output-as-excel(
         $include-filters, $all-filters
     );
 
-    # TODO: add inputs and fix sorting
+    # TODO: fix sorting
     my @records := %data<inputs>;
     my $col = 0;
     my $row = 2;
+    my $row-formatted = 2;
     my $last-print = '';
 #    for @records.sort(+*.<order>) -> %rec {
+    my $last-instance = '';
+    my $last-module = '';
     for @records -> %rec {
-#        $input-sheet.set($row, $col+0, %lang-labels{$print}{$language}, :bold);
         my $value = %rec<value>;
+        my $value-translated;
         if %rec<enum> {
-            $value = %rec<enum>{$value}{$language} // $value;
+            $value-translated = %rec<enum>{$value}{$language};
         }
 
-        $input-sheet.set($row, $col+1, %rec<module>);
-        $input-sheet.set($row, $col+2, %rec<instance>);
-        $input-sheet.set($row, $col+3, %rec<input>);
-        $input-sheet.set($row, $col+4, ($value // '???'), :number-format('#,###'), :horizontal-align(RightAlign));
-        $input-sheet.set($row, $col+5, %rec<unit>);
+        # raw data
+        $input-sheet.set($row, $col+0, %rec<gui>);
+        $input-sheet.set($row, $col+1, %rec<instance>);
+        $input-sheet.set($row, $col+2, %rec<input>);
+        $input-sheet.set($row, $col+3, ($value // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
+        $input-sheet.set($row, $col+4, %rec<unit>);
         $row++;
+
+        # formatted data
+        my $instance = %rec<instance>;
+        my $module = %rec<gui>;
+        if $module ne $last-module {
+            $input-sheet-formatted.set($row-formatted, $col+0, $module, :bold);
+            $row-formatted++;
+            $last-module = $module;
+        }
+        if $instance and $instance ne $last-instance {
+            $input-sheet-formatted.set($row-formatted, $col+1, $instance, :bold);
+            $row-formatted++;
+            $last-instance = $instance;
+        }
+        $input-sheet-formatted.set($row-formatted, $col+1, %rec<input>);
+        $input-sheet-formatted.set($row-formatted, $col+2, ($value-translated // $value // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
+        $input-sheet-formatted.set($row-formatted, $col+3, %rec<unit>);
+        $row-formatted++;
     }
 
     # add outputs
