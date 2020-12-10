@@ -76,6 +76,7 @@ class Agrammon::Model {
         has Str $.instance-id;
         has Agrammon::Model::Input $.input is required;
         has $.value is required;
+        has $.enum is required;
         has Agrammon::Model::Module $.gui-root is required;
     }
 
@@ -179,9 +180,10 @@ class Agrammon::Model {
             my %input-data := $input-data.input-hash-for($!module.taxonomy);
             my %input-defaults := $!module.input-defaults;
             for $!module.input -> Agrammon::Model::Input $input {
-                my $key = $input.name;
+                my $key   = $input.name;
                 my $value = %input-data{$key} // %input-defaults{$key};
-                @result.push: AnnotatedInput.new: :$!module, :$input, :$instance-id, :$value, :$gui-root;
+                my $enum  = $input.enum;
+                @result.push: AnnotatedInput.new: :$!module, :$input, :$instance-id, :$value, :$enum, :$gui-root;
             }
         }
 

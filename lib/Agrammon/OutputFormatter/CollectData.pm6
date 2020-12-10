@@ -13,13 +13,23 @@ sub collect-data(
     # add inputs
     my @inputs;
     for $model.annotate-inputs($inputs) -> $ai {
+        my $gui = 'NO GUI';
+        if  $ai.gui-root {
+            my @gui = $ai.gui-root.gui.split(',');
+            given $language {
+                when 'de' { $gui = @gui[1] };
+                when 'fr' { $gui = @gui[2] };
+                when 'en' { $gui = @gui[3] };
+            }
+        }
         @inputs.push( %(
             :module($ai.module.taxonomy),
             :instance($ai.instance-id // ''),
             :input($ai.input.labels{$language} // $ai.input.labels<en> // $ai.input.name),
             :value($ai.value),
+            :enum($ai.enum),
             :unit($ai.input.units{$language} // $ai.input.units<en> // ''),
-            :gui-root($ai.gui-root),
+            :$gui,
         ));
     }
 

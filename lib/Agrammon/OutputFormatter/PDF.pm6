@@ -237,8 +237,8 @@ sub input-output-as-pdf(
         my $new-module = False;
         my $new-instance = False;
 
-        my $module = %rec<gui-root> ?? %rec<gui-root>.taxonomy !! %rec<module> ;
-        if $module and $module ne $last-module {
+        my $module = %rec<gui>;
+        if $module ne $last-module {
             @input-formatted.push( %(
                 :module(latex-escape($module)),
                 :$first-module));
@@ -248,6 +248,7 @@ sub input-output-as-pdf(
             $first-instance = True;
         }
 
+        # instance can be empty for none-multi modules
         my $instance = %rec<instance>;
         if $instance and $instance ne $last-instance {
             @input-formatted.push( %(
@@ -260,10 +261,14 @@ sub input-output-as-pdf(
 
         my $first-line = $new-module && ! $new-instance;
 
+        my $value = %rec<value>;
+        if %rec<enum> {
+            $value = %rec<enum>{$value}{$language} // $value;
+        }
         @input-formatted.push(%(
             :unit(latex-small-spaces(latex-escape(%rec<unit>))),
             :label(latex-chemify(latex-escape(%rec<input>))),
-            :value(format-value(%rec<value>)),
+            :value(format-value($value)),
             :$first-line));
     }
 
