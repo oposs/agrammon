@@ -64,11 +64,26 @@ my $cfg = Agrammon::Config.new;
 ok $cfg.load($cfg-file), "Load config from file $cfg-file";
 
 my %data = %(
+    titles => %(
+        :report('Report'),
+        data => %(
+            :section('Section'),
+            :user('Username'),
+            :dataset('Dataset'),
+        ),
+        :outputs('Results'),
+        :inputs('Inputs'),
+        :outputLog('Log'),
+    ),
+    :version('Agrammon 6.0'),
+    :timestamp('Timestamp'),
     :dataset('TestDataset'), :username('fritz.zaucker@oetiker.ch'), :model('Single'),
     inputs => [
-
+        %( :module('Module'), :first-module ),
+        %( :value(42), :unit('Unit'), :label('Input'), :first-line ),
     ],
     outputs => [
+        %( :section('Module'), :first ),
         %( :label('Weide NH3-Emission'), :value(5), :unit('kg\,N\,/\,Jahr') ),
         %( :label('Stall und Laufhof NH3-Emission'), :value(50), :unit('kg\,N\,/\,Jahr') ),
     ],
@@ -77,11 +92,9 @@ my %data = %(
         'comment 2',
     ],
 );
-
 my $pdf-program  = $cfg.general<pdflatex>;
 my $dataset-name = 'TestDataset';
 my $temp-dir   = $cfg.general<tempDir>;
-note "pdf-program=$pdf-program";
 my constant $source-dir = $*PROGRAM.parent.add('test-data');
 my $pdf-file-expected   = "$source-dir/agrammon_export.pdf".IO;
 my $latex-file-expected = "$source-dir/agrammon_export.tex".IO;

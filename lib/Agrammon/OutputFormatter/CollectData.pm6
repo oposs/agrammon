@@ -13,22 +13,30 @@ sub collect-data(
     # add inputs
     my @inputs;
     for $model.annotate-inputs($inputs) -> $ai {
+        my $gui = $ai.gui-root{$language} // 'NO GUI ROOT';
+        my $value = $ai.value;
+        my $value-translated = $value;
+        if $value and $ai.input.enum {
+            $value-translated = $ai.input.enum{$value}{$language} // $value;
+        }
         @inputs.push( %(
             :module($ai.module.taxonomy),
             :instance($ai.instance-id // ''),
             :input($ai.input.labels{$language} // $ai.input.labels<en> // $ai.input.name),
-            :value($ai.value),
+            :$value,
+            :$value-translated,
             :unit($ai.input.units{$language} // $ai.input.units<en> // ''),
+            :$gui,
         ));
     }
 
-    my @prints = $reports[+$prints]<data>;
-    my %lang-labels;
+    my @prints = $reports[+$prints]<data> if $prints;
+    my %print-labels;
     my @print-set;
     for @prints -> @print {
         for @print -> $print {
             @print-set.push($print<print>);
-            %lang-labels{$print<print>} = $print<langLabels>;
+            %print-labels{$print<print>} = $print<langLabels>;
         }
     }
 
@@ -90,7 +98,7 @@ sub collect-data(
         }
     }
 
-    return %( :@inputs, :@outputs );
+    return %( :@inputs, :@outputs, :%print-labels );
 }
 
 sub push-filters(@records, $module, $model, Agrammon::Outputs::FilterGroupCollection $collection,
