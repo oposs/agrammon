@@ -76,17 +76,12 @@ sub input-output-as-excel(
     my $last-instance = '';
     my $last-module = '';
     for @records -> %rec {
-        my $value = %rec<value>;
-        my $value-translated;
-        if %rec<enum> {
-            $value-translated = %rec<enum>{$value}{$language};
-        }
 
         # raw data
         $input-sheet.set($row, $col+0, %rec<gui>);
         $input-sheet.set($row, $col+1, %rec<instance>);
         $input-sheet.set($row, $col+2, %rec<input>);
-        $input-sheet.set($row, $col+3, ($value // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
+        $input-sheet.set($row, $col+3, (%rec<value> // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
         $input-sheet.set($row, $col+4, %rec<unit>);
         $row++;
 
@@ -104,7 +99,7 @@ sub input-output-as-excel(
             $last-instance = $instance;
         }
         $input-sheet-formatted.set($row-formatted, $col+1, %rec<input>);
-        $input-sheet-formatted.set($row-formatted, $col+2, ($value-translated // $value // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
+        $input-sheet-formatted.set($row-formatted, $col+2, (%rec<value-translated> // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
         $input-sheet-formatted.set($row-formatted, $col+3, %rec<unit>);
         $row-formatted++;
     }

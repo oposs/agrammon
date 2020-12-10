@@ -22,12 +22,17 @@ sub collect-data(
                 when 'en' { $gui = @gui[3] };
             }
         }
+        my $value = $ai.value;
+        my $value-translated = $value;
+        if $ai.enum {
+            $value-translated = $ai.enum{$value}{$language} // $value;
+        }
         @inputs.push( %(
             :module($ai.module.taxonomy),
             :instance($ai.instance-id // ''),
             :input($ai.input.labels{$language} // $ai.input.labels<en> // $ai.input.name),
-            :value($ai.value),
-            :enum($ai.enum),
+            :$value,
+            :$value-translated,
             :unit($ai.input.units{$language} // $ai.input.units<en> // ''),
             :$gui,
         ));

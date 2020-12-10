@@ -261,14 +261,10 @@ sub input-output-as-pdf(
 
         my $first-line = $new-module && ! $new-instance;
 
-        my $value = %rec<value>;
-        if %rec<enum> {
-            $value = %rec<enum>{$value}{$language} // $value;
-        }
         @input-formatted.push(%(
             :unit(latex-small-spaces(latex-escape(%rec<unit>))),
             :label(latex-chemify(latex-escape(%rec<input>))),
-            :value(format-value($value)),
+            :value(format-value(%rec<value-translated>)),
             :$first-line));
     }
 
