@@ -7,7 +7,7 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 13;
+plan 14;
 
 # routing tests related to application logic
 
@@ -40,6 +40,8 @@ my $fake-store = mocked(Agrammon::Web::Service,
         },
         get-output-variables => -> $user, $dataset-name {
             %( :variable('x'), :value(2) )
+        },
+        get-pdf-export => -> $user, %params {
         },
         get-excel-export => -> $user, %params {
             Spreadsheet::XLSX.new;
@@ -118,15 +120,31 @@ subtest 'Get excel export' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/export/excel', {
             test post(
-                content-type => 'application/x-www-form-urlencoded',
-                body => {
-                    :datasetName('TestSingle'),
-                    :language('de'),
-                }),
-                status => 200;
+                    content-type => 'application/x-www-form-urlencoded',
+                    body => {
+                        :datasetName('TestSingle'),
+                        :language('de'),
+                    }),
+                    status => 200;
         };
         check-mock $fake-store,
-            *.called('get-excel-export', times => 1);
+                *.called('get-excel-export', times => 1);
+    }
+}
+
+subtest 'Get PDF report' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/export/pdf', {
+            test post(
+                    content-type => 'application/x-www-form-urlencoded',
+                    body => {
+                        :datasetName('TestSingle'),
+                        :language('de'),
+                    }),
+                    status => 200;
+        };
+        check-mock $fake-store,
+                *.called('get-pdf-export', times => 1);
     }
 }
 
