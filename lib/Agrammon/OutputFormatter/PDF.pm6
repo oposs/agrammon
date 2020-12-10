@@ -27,17 +27,18 @@ sub create-latex($template, %data) is export {
 }
 
 sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is export {
-    # create if necessary
+    # setup temp dir and files
     my $temp-dir = $*TMPDIR.add($temp-dir-name);
-    $temp-dir.mkdir;
-    note "Created $temp-dir";
+    if not  $temp-dir.e {
+        $temp-dir.mkdir;
+        note "Created temp-dir $temp-dir";
+    }
 
     my $filename = "agrammon_export_" ~ $username ~ "_$dataset-name";
     my $source-file = "$temp-dir/$filename.tex".IO;
     my $pdf-file    = "$temp-dir/$filename.pdf".IO;
     my $aux-file    = "$temp-dir/$filename.aux".IO;
     my $log-file    = "$temp-dir/$filename.log".IO;
-
 
     # create LaTeX source with template
     $source-file.spurt(create-latex('pdfexport', %data));
@@ -46,22 +47,21 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
     my $exit-code;
     my $signal;
     my $reason = 'Unknown';
-    my $stderr = '';
 
-    my $proc = Proc::Async.new: :w, $pdf-prog, "--output-directory=$temp-dir",
-#            '--safer',
-            '--no-shell-escape', '--', $source-file, ‘-’;
+    # don't use --safer
+    my $proc = Proc::Async.new: :w, $pdf-prog,
+            "--output-directory=$temp-dir",  '--no-shell-escape', '--', $source-file, ‘-’;
+
     react {
-        # just ignore them
+        # just ignore any output
         whenever $proc.stdout.lines {
         }
         whenever $proc.stderr {
-            $stderr = $stderr ~ $_;
         }
         whenever $proc.start {
             $exit-code = .exitcode;
             $signal    = .signal;
-            done # gracefully jump from the react block
+            done; # gracefully jump from the react block
         }
         whenever Promise.in(5) {
             $reason = 'Timeout';
@@ -77,10 +77,6 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
 
     if $exit-code {
         note "$pdf-prog failed for $source-file, exit-code=$exit-code";
-        note $log-file.slurp;
-        note "STDERR:";
-        note $stderr;
-
         die X::Agrammon::OutputFormatter::PDF::Failed.new: :$exit-code;
     }
     if $signal {
@@ -90,11 +86,9 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
 
     # read content of PDF file created
     my $pdf = $pdf-file.slurp(:bin);
-    # note $log-file.slurp;
-#    note $stderr;
 
     # cleanup if successful, otherwise kept for debugging.
-#    unlink $source-file, $pdf-file, $aux-file, $log-file;
+    unlink $source-file, $pdf-file, $aux-file, $log-file;
 
     return $pdf;
 }
@@ -105,7 +99,7 @@ sub latex-escape(Str $in) is export {
     $out ~~ s:g/(<[%#{}&$|]>)/\\$0/;
     $out ~~ s:g/(<[~^]>)/\\$0\{\}/;
     # this is a special case for Agrammon as we use __ in
-    # the frontend at the momend for indentation in the table
+    # the frontend at the moment for indentation in the table
     $out ~~ s:g/__/\\hspace\{2em\}/;
     $out ~~ s:g/_/\\_/;
     return $out;
