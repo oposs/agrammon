@@ -143,7 +143,7 @@ sub input-output-as-pdf(
     Bool $include-filters, Bool $all-filters,
     :%submission
 ) is export {
-    warn '**** input-output-as-pdf() not yet completely implemented';
+    note '**** input-output-as-pdf() not yet completely implemented';
 
     # get data ready for printing
     my %data = collect-data(

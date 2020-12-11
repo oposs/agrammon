@@ -182,10 +182,10 @@ class Agrammon::Web::Service {
         my %submission;
         if %params<mode> and %params<mode> eq 'submission' {
             my $sender-name = %params<senderName>;
-            # replace URL encoded newlines
-            $sender-name ~~ s:g/'%D'/\\newline\{\}/;
+            # replace URL pseudo-encoded newlines from frontend
+            $sender-name ~~ s:g/XXX/\\newline\{\}/;
             my $comment = %params<comment>;
-            $comment ~~ s:g/'%D'/\\newline\{\}/;
+            $comment ~~ s:g/XXX/\\newline\{\}/;
             %submission =
                 :farm-number(%params<farmNumber>),
                 :farm-situation(%params<farmSituation>),

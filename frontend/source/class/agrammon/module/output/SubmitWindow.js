@@ -256,6 +256,14 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
             var locale  = qx.locale.Manager.getInstance().getLocale();
             var lang    = locale.replace(/_.+/,'');
 
+            // for some reason newlines don't work
+            if (sender != null) {
+                sender = sender.replace(/\n/g, 'XXX');
+            }
+            if (comment != null) {
+                comment = comment.replace(/\n/g, 'XXX');
+            }
+
             return {
                 language       : lang,
                 username       : info.getUserName(),
