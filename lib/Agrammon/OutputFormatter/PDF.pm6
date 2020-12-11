@@ -181,27 +181,27 @@ sub input-output-as-pdf(
             farm => %(
                 :de('Betriebsnummer'),
                 :en('Farm number'),
-                :fr('fr number'),
+                :fr('Numéro d'entreprise'),
             ){$language},
             situation => %(
                 :de('Situation des Betriebs'),
                 :en('Farm situation'),
-                :fr('fr situation'),
+                :fr('Situation de l'entreprise'),
             ){$language},
             sender => %(
                 :de('Absender'),
                 :en('Sender'),
-                :fr('fr Absender'),
+                :fr('Expéditeur'),
             ){$language},
             recipient => %(
                 :de('Eingereicht bei'),
                 :en('Submitted to'),
-                :fr('fr Submitted'),
+                :fr('Soumettre à'),
             ){$language},
             comment => %(
                 :de('Kommentar'),
                 :en('Comment'),
-                :fr('fr Comment'),
+                :fr('Commentaire'),
             ){$language},
         ),
         outputs => %(
