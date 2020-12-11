@@ -80,10 +80,16 @@ class Agrammon::Web::Service {
         my $new-dataset = %params<newDataset>;
         self.clone-dataset($user, $recipient, %params<oldDataset>, $new-dataset);
         my $pdf = self.get-pdf-export($user, %params);
+        my $subject = "Agrammon Datensatz: $new-dataset";
+        if $recipient ne 'fritz.zaucker@oetiker.ch' {
+            warn "Not allowed to send eMail to $recipient";
+            $recipient = 'fritz.zaucker@oetiker.ch';
+            $subject = "SPAM: $subject";
+        }
         Agrammon::Email.new(
             :to($recipient),
             :from('support@agrammon.ch'),
-            :subject("Agrammon Datensatz: $new-dataset"),
+            :$subject,
             :msg("Der Datensatz $new-dataset wurde in Ihrem Agrammon Konto bereitgestellt."),
             :attachment($pdf),
             :filename($new-dataset.subst(/<-[\w_.-]>/, '', :g) ~ '.pdf')
