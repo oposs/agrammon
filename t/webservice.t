@@ -99,9 +99,11 @@ transactionally {
         lives-ok { $ws.rename-dataset($user, 'MyTestDataset', 'MyNewTestDataset') }, "Rename dataset";
     }
 
-    subtest "submit-dataset" => {
-        ok $ws.submit-dataset($user, 'MyTestDataset', 'foo@bar.ch'), "Submit dataset";
-    }
+    skip "submit-dataset not ready yet for testing", 1;
+    #subtest "submit-dataset" => {
+    #    my %params;
+    #    ok $ws.submit-dataset($user, %params), "Submit dataset";
+    #}
 
     my $newUser;
     subtest "create-account" => {
@@ -367,6 +369,7 @@ subtest "get-excel-export" => {
     my %params = %(
         :datasetName($dataset-name),
         :language('de'),
+        :reports(0),
         :!withFilters
     );
     ok my $workbook = $ws.get-excel-export($user, %params), "Create workbook";
