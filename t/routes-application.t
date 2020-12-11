@@ -1,4 +1,5 @@
 use v6;
+
 use Agrammon::Web::Routes;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
@@ -8,7 +9,7 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 12;
+plan 14;
 
 # routing tests related to application logic
 
@@ -115,23 +116,37 @@ subtest 'Get output variables' => {
     }
 }
 
-# TODO: failing on GitHub actions, ok locally.
-#subtest 'Get excel export' => {
-#    test-service routes($fake-store), :$fake-auth, {
-#        test-given '/get_excel_export', {
-#            test post(
-#                content-type => 'application/x-www-form-urlencoded',
-#                body => {
-#                    :datasetName('TestSingle'),
-#                    :language('de'),
-#                    :!withFilters
-#                }),
-#                status => 200;
-#        };
-#        check-mock $fake-store,
-#            *.called('get-excel-export', times => 1);
-#    }
-#}
+subtest 'Get excel export' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/export/excel', {
+            test post(
+                    content-type => 'application/x-www-form-urlencoded',
+                    body => {
+                        :datasetName('TestSingle'),
+                        :language('de'),
+                    }),
+                    status => 200;
+        };
+        check-mock $fake-store,
+                *.called('get-excel-export', times => 1);
+    }
+}
+
+subtest 'Get PDF report' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/export/pdf', {
+            test post(
+                    content-type => 'application/x-www-form-urlencoded',
+                    body => {
+                        :datasetName('TestSingle'),
+                        :language('de'),
+                    }),
+                    status => 200;
+        };
+        check-mock $fake-store,
+                *.called('get-pdf-export', times => 1);
+    }
+}
 
 subtest 'Store data' => {
     test-service routes($fake-store), :$fake-auth, {
