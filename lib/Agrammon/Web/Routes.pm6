@@ -357,16 +357,16 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
 
         # TODO: test send_datasets()
         post -> LoggedIn $user, 'send_datasets' {
-            request-body -> (:@datasets!) {
-                my $data = $ws.send-datasets($user, @datasets);
+            request-body -> (:@datasets!, :$recipient!) {
+                my $data = $ws.send-datasets($user, @datasets, $recipient);
                 content 'application/json', $data;
             }
         }
 
         # TODO: implement/test submit_dataset()
         post -> LoggedIn $user, 'submit_dataset' {
-            request-body -> (:$name!, :$mail) {
-                my $data = $ws.submit-dataset($user, $name, $mail);
+            request-body -> %params {
+                my $data = $ws.submit-dataset($user, %params);
                 content 'application/json', $data;
             }
         }

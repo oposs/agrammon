@@ -75,8 +75,19 @@ class Agrammon::Web::Service {
         Agrammon::DB::Dataset.new(:$user, :name($old)).rename($new);
     }
 
-    method submit-dataset(Agrammon::Web::SessionUser $user, Str $name, Str $mail) {
-        return Agrammon::DB::Dataset.new(:$user, :$name).lookup.submit($mail);
+    method submit-dataset(Agrammon::Web::SessionUser $user, %params) {
+        my $recipient = %params<recipientEmail>;
+        my $new-dataset = %params<newDataset>;
+        self.clone-dataset($user, $recipient, %params<oldDataset>, $new-dataset);
+        my $pdf = self.get-pdf-export($user, %params);
+        Agrammon::Email.new(
+            :to($recipient),
+            :from('support@agrammon.ch'),
+            :subject("Agrammon Datensatz: $new-dataset"),
+            :msg("Der Datensatz $new-dataset wurde in Ihrem Agrammon Konto bereitgestellt."),
+            :attachment($pdf),
+            :filename($new-dataset.subst(/<-[\w_.-]>/, '', :g) ~ '.pdf')
+        ).send;
     }
 
     method store-dataset-comment(Agrammon::Web::SessionUser $user, Str $name, Str $comment) {
@@ -138,13 +149,15 @@ class Agrammon::Web::Service {
         my $dataset-name = %params<datasetName>;
         my $language     = %params<language>;
         my $prints       = %params<reports>;
-        my $type         = %params<type> // '';
-        my $with-filters = $type eq 'reportDetailed';
-        my $all-filters  = $type eq 'reportDetailed';
 
         my $inputs  = self!get-inputs($user, $dataset-name);
         my $outputs = self!get-outputs($user, $dataset-name);
         my $reports = self.get-input-variables<reports>;
+
+        my $type = $reports[$prints]<type> // '';
+        my $with-filters = $type eq 'reportDetailed';
+        my $all-filters  = $type eq 'reportDetailed';
+
         input-output-as-excel(
             $!cfg,
             $user,
@@ -159,12 +172,9 @@ class Agrammon::Web::Service {
         my $dataset-name = %params<datasetName>;
         my $language     = %params<language>;
         my $prints       = %params<reports>;
-        my $type         = %params<type> // '';
-        my $with-filters = $type eq 'reportDetailed';
-        my $all-filters  = $type eq 'reportDetailed';
 
         my %submission;
-        if %params<mode> eq 'submission' {
+        if %params<mode> and %params<mode> eq 'submission' {
             my $sender-name = %params<senderName>;
             # frontend converts newlines to XXX
             $sender-name ~~ s:g/XXX/\\newline\{\}/;
@@ -183,6 +193,11 @@ class Agrammon::Web::Service {
         my $inputs  = self!get-inputs($user, $dataset-name);
         my $outputs = self!get-outputs($user, $dataset-name);
         my $reports = self.get-input-variables<reports>;
+
+        my $type = $reports[$prints]<type> // '';
+        my $with-filters = $type eq 'reportDetailed';
+        my $all-filters  = $type eq 'reportDetailed';
+
         input-output-as-pdf(
             $!cfg,
             $user,

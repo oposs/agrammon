@@ -58,7 +58,7 @@ msgstr ""
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Close"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Info"
 msgstr ""
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "New"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Create new dataset"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Delete selected dataset(s)"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Dataset"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr ""
 
@@ -534,7 +534,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: agrammon/module/output/SubmitWindow.js
+#. NO LONGER USED
 msgid "Report submitted sucessfully."
 msgstr ""
 
@@ -931,4 +931,8 @@ msgstr ""
 
 #: agrammon/module/user/Login.js
 msgid "Remember"
+msgstr ""
+
+#: agrammon/module/output/SubmitWindow.js
+msgid "Report submitted successfully."
 msgstr ""

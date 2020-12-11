@@ -37,41 +37,41 @@ sub input-output-as-excel(
         $sheet.set(3, 0, $timestamp);
     }
 
-    # set column width
-    for ($output-sheet, $output-sheet-formatted) -> $sheet {
-        $sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
-                :custom-width, :width(20);
-        $sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
-                :custom-width, :width(32);
-        $sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
-                :custom-width, :width(20);
-        $sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
-                :custom-width, :width(10);
-    }
-
-    $input-sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
-            :custom-width, :width(30);
-    $input-sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
-            :custom-width, :width(20);
-    $input-sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
-            :custom-width, :width(50);
-    $input-sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
-            :custom-width, :width(50);
-    $input-sheet.columns[4] = Spreadsheet::XLSX::Worksheet::Column.new:
-            :custom-width, :width(10);
-
-    $input-sheet-formatted.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
-            :custom-width, :width(10);
-    $input-sheet-formatted.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
-            :custom-width, :width(50);
-    $input-sheet-formatted.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
-            :custom-width, :width(50);
-    $input-sheet-formatted.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
-            :custom-width, :width(10);
+#    # set column width
+#    for ($output-sheet, $output-sheet-formatted) -> $sheet {
+#        $sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
+#                :custom-width, :width(20);
+#        $sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
+#                :custom-width, :width(32);
+#        $sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
+#                :custom-width, :width(20);
+#        $sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
+#                :custom-width, :width(10);
+#    }
+#
+#    $input-sheet.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
+#            :custom-width, :width(30);
+#    $input-sheet.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
+#            :custom-width, :width(20);
+#    $input-sheet.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
+#            :custom-width, :width(50);
+#    $input-sheet.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
+#            :custom-width, :width(50);
+#    $input-sheet.columns[4] = Spreadsheet::XLSX::Worksheet::Column.new:
+#            :custom-width, :width(10);
+#
+#    $input-sheet-formatted.columns[0] = Spreadsheet::XLSX::Worksheet::Column.new:
+#            :custom-width, :width(10);
+#    $input-sheet-formatted.columns[1] = Spreadsheet::XLSX::Worksheet::Column.new:
+#            :custom-width, :width(50);
+#    $input-sheet-formatted.columns[2] = Spreadsheet::XLSX::Worksheet::Column.new:
+#            :custom-width, :width(50);
+#    $input-sheet-formatted.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
+#            :custom-width, :width(10);
 
     # prepared data
     my %data = collect-data(
-        $dataset-name, $model,
+        $model,
         $outputs, $inputs, $reports,
         $language, $prints,
         $include-filters, $all-filters

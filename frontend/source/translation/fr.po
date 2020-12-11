@@ -625,7 +625,7 @@ msgid "Submit"
 msgstr ""
 
 #: Agrammon/module/output/SubmitWindow.js:328
-msgid "Report submitted sucessfully."
+msgid "Report submitted successfully."
 msgstr ""
 
 #: Agrammon/module/output/SubmitWindow.js:332

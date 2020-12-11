@@ -147,7 +147,7 @@ sub input-output-as-pdf(
 
     # get data ready for printing
     my %data = collect-data(
-        $dataset-name, $model,
+        $model,
         $outputs, $inputs, $reports,
         $language, $prints,
         $include-filters, $all-filters,
@@ -297,7 +297,7 @@ sub input-output-as-pdf(
         sprintf '%02d.%02d.%04d %02d:%02d:%02d',
             .day, .month, .year,.hour, .minute, .second,
     });
-    %data<version>    = $cfg.gui-title{$language} // 'NO  VERSION';
+    %data<version>    = latex-escape($cfg.gui-title{$language} // 'NO  VERSION');
     %data<outputs>    = @output-formatted;
     %data<inputs>     = @input-formatted;
     %data<submission> = %submission;

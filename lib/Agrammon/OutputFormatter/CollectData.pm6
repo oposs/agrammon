@@ -4,7 +4,7 @@ use Agrammon::Outputs;
 use Agrammon::Outputs::FilterGroupCollection;
 
 sub collect-data(
-    Str $dataset-name, Agrammon::Model $model,
+    Agrammon::Model $model,
     Agrammon::Outputs $outputs, Agrammon::Inputs $inputs, $reports,
     Str $language, $prints,
     Bool $include-filters, Bool $all-filters
@@ -58,7 +58,7 @@ sub collect-data(
                     if $include-filters {
                         if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
                             push-filters(
-                                @outputs, $module, $model, $value, $unit, $language, $order,
+                                @outputs, $module, $model, $raw-value, $unit, $language, $order,
                                 :$all-filters
                             );
                         }
@@ -85,7 +85,7 @@ sub collect-data(
                                 if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value
                                 .has-filters {
                                     push-filters(
-                                        @outputs, $q-name, $model, $value, $unit-label, $language, $order,
+                                        @outputs, $q-name, $model, $raw-value, $unit-label, $language, $order,
                                        :$all-filters
                                     );
                                 }
@@ -112,7 +112,7 @@ sub push-filters(@records, $module, $model, Agrammon::Outputs::FilterGroupCollec
 #        for %filters.kv -> %label, %enum {
         for %filters.values -> %enum {
             my $label = %enum{$language};
-            @records.push( %( :$module, :$label, :$value, :$unit, :$order) );
+            @records.push( %( :$module, :label('....' ~ $label), :$value, :$unit, :$order) );
         }
     }
 }
