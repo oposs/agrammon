@@ -181,12 +181,12 @@ sub input-output-as-pdf(
             farm => %(
                 :de('Betriebsnummer'),
                 :en('Farm number'),
-                :fr('Numéro d'entreprise'),
+                :fr("Numéro d'entreprise"),
             ){$language},
             situation => %(
                 :de('Situation des Betriebs'),
                 :en('Farm situation'),
-                :fr('Situation de l'entreprise'),
+                :fr("Situation de l'entreprise"),
             ){$language},
             sender => %(
                 :de('Absender'),

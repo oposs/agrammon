@@ -176,10 +176,10 @@ class Agrammon::Web::Service {
         my %submission;
         if %params<mode> and %params<mode> eq 'submission' {
             my $sender-name = %params<senderName>;
-            # frontend converts newlines to XXX
-            $sender-name ~~ s:g/XXX/\\newline\{\}/;
+#            # frontend converts newlines to XXX
+#            $sender-name ~~ s:g/XXX/\\newline\{\}/;
             my $comment = %params<comment>;
-            $comment ~~ s:g/XXX/\\newline\{\}/;
+#            $comment ~~ s:g/XXX/\\newline\{\}/;
             %submission =
                 :farm-number(%params<farmNumber>),
                 :farm-situation(%params<farmSituation>),

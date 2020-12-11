@@ -252,13 +252,13 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
         __submissionParameters: function() {
             var info    = agrammon.Info.getInstance();
             var sender  = this.__addressInput.getValue();
-            if (sender != undefined) {
-                sender = sender.replace(/\n/g, 'XXX');
-            }
+//            if (sender != undefined) {
+//                sender = sender.replace(/\n/g, 'XXX');
+//            }
             var comment =  this.__commentInput.getValue();
-            if (comment != undefined) {
-                comment = comment.replace(/\n/g, 'XXX');
-            }
+//            if (comment != undefined) {
+//                comment = comment.replace(/\n/g, 'XXX');
+//            }
             var locale       = qx.locale.Manager.getInstance().getLocale();
             var lang         = locale.replace(/_.+/,'');
 
