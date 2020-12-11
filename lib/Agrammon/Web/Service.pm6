@@ -163,6 +163,23 @@ class Agrammon::Web::Service {
         my $with-filters = $type eq 'reportDetailed';
         my $all-filters  = $type eq 'reportDetailed';
 
+        my %submission;
+        if %params<mode> eq 'submission' {
+            my $sender-name = %params<senderName>;
+            # frontend converts newlines to XXX
+            $sender-name ~~ s:g/XXX/\\newline\{\}/;
+            my $comment = %params<comment>;
+            $comment ~~ s:g/XXX/\\newline\{\}/;
+            %submission =
+                :farm-number(%params<farmNumber>),
+                :farm-situation(%params<farmSituation>),
+                :$comment,
+                :$sender-name,
+                :recipient-name(%params<recipientName>),
+                :recipient-email(%params<recipientEmail>)
+                :submission-dataset
+        }
+
         my $inputs  = self!get-inputs($user, $dataset-name);
         my $outputs = self!get-outputs($user, $dataset-name);
         my $reports = self.get-input-variables<reports>;
@@ -172,7 +189,7 @@ class Agrammon::Web::Service {
             $dataset-name,
             $!model, $outputs, $inputs, $reports,
             $language, $prints,
-            $with-filters, $all-filters
+            $with-filters, $all-filters, :%submission
        );
     }
 

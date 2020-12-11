@@ -131,9 +131,8 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
         this.__recipientSelect = new qx.ui.form.SelectBox();
         inputBox.add(this.__recipientLabel,  { row: row,   column: 0});
         inputBox.add(this.__recipientSelect, { row: row++, column: 1});
-//                           {name: 'Oetiker+Partner AG',  email: 'fritz.zaucker@oetiker.ch'},
-//                           {name: 'Bonjour Engineering', email: 'cyrill.bonjour@bjengineering.ch'},
-        var recipients = [ 
+        var recipients = [
+                           {name: 'Oetiker+Partner AG',  email: 'fritz.zaucker@oetiker.ch'},
                            {name: 'Kt. Luzern, lawa',   email: 'agrammon-baugesuche.lawa@lu.ch'}
                          ];
         len = recipients.length;
@@ -225,6 +224,7 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
     {
         __btnSubmit:       null,
         __reportSelected:  null,
+        reportIndex:       null,
         __outputData:      null,
         __version:         null,
         __date:            null,
@@ -250,9 +250,8 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
         },
 
         __preview: function() {
-            var info = agrammon.Info.getInstance();
-            var baseUrl = agrammon.io.remote.Rpc.getInstance().getBaseUrl();
-            var sender = this.__addressInput.getValue();
+            var info    = agrammon.Info.getInstance();
+            var sender  = this.__addressInput.getValue();
             if (sender != undefined) {
                 sender = sender.replace(/\n/g, 'XXX');
             }
@@ -261,42 +260,54 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
                 comment = comment.replace(/\n/g, 'XXX');
             }
             var locale       = qx.locale.Manager.getInstance().getLocale();
-            var lang         = 'lang='    + locale.replace(/_.+/,'');
-            var reportUrl    = 'reports=' + this.__reportSelected;
-            var titleUrl     = 'titles='  + this.__titleSelected;
-            var pidUrl       = 'pid='     + this.__outputData.getPid();
-            var sessionUrl   = 'session=' + this.__outputData.getSession();
-            var userUrl      = 'user='    + info.getUserName();
-            var datasetUrl   = 'dataset=' + info.getDatasetName();
-            var modelVariant = 'modelVariant='+agrammon.Info.getInstance().getModelVariant();
-            var guiVariant   = 'guiVariant='+agrammon.Info.getInstance().getGuiVariant();
-            var url = 'export/latex'
-                               + '?' + 'mode=kantonLU'
-                               + '&' + 'format=pdf'
-                               + '&' + reportUrl
-                               + '&' + titleUrl
-                               + '&' + pidUrl
-                               + '&' + sessionUrl
-                               + '&' + userUrl
-                               + '&' + datasetUrl
-                               + '&' + lang
-                               + '&' + guiVariant
-                               + '&' + modelVariant
-                               + '&' + 'version='   + this.__version
-                               + '&' + 'farm='      + this.__farmNumberInput.getValue()
-                               + '&' + 'sender='    + sender
-                               + '&' + 'comment='   + comment
-                               + '&' + 'recipient=' + this.__recipientSelect.getSelection()[0].getLabel()
-                               + '&' + 'email='     + this.__recipientSelect.getSelection()[0].getModel()
-                               + '&' + 'situation=' + this.__farmSituationSelect.getSelection()[0].getLabel()
-                               + '&' + 'log='       + this.__logMsg;
+            var lang         = locale.replace(/_.+/,'');
+
+            var params = {
+                language     : lang,
+                username     : info.getUserName(),
+                reports      : this.__reportSelected,
+                format       : 'excel',
+                titles       : this.__titleSelected,
+                datasetName  : info.getDatasetName(),
+                modelVariant : agrammon.Info.getInstance().getModelVariant(),
+                guiVariant   : agrammon.Info.getInstance().getGuiVariant(),
+                version      : this.__version,
+                mode         : 'submission',
+
+                farmSituation  : this.__farmSituationSelect.getSelection()[0].getLabel(),
+                farmNumber     : this.__farmNumberInput.getValue(),
+                comment        : comment,
+                senderName     : sender,
+                recipientName  : this.__recipientSelect.getSelection()[0].getLabel(),
+                recipientEmail : this.__recipientSelect.getSelection()[0].getModel()
+           };
+
+            var baseUrl = agrammon.io.remote.Rpc.getInstance().getBaseUrl();
+            var url     = 'export/pdf';
             if (baseUrl != null) {
                 url = baseUrl + url;
             }
-            this.debug('baseUrl='+baseUrl);
             this.debug('url='+url);
-//            document.location=url;
-	       window.open(url);
+
+            var form    = document.createElement("form");
+            form.target = 'AgrammonExcelExport' + Math.random();
+            form.method = "POST";
+            form.action = url;
+
+            for (var key in params) {
+                this.__addTextInput(form, key, params[key]);
+            }
+            document.body.appendChild(form);
+
+            // status=1 opens in new tab in Chrome at least
+            var options = "menubar=1,scrollbars=1,resizable=1,status=1,titlebar=1,height=600,width=800,toolbar=1"
+            var win = window.open('', form.target, options);
+            if (win) {
+                form.submit();
+            }
+            else {
+                alert('You must allow popups for reports to work.');
+            }
 
             this.__btnSubmit.setEnabled(true);
         },
@@ -332,6 +343,14 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
                                                        this.tr("Report submission failed."));
             }
             this.close();
+        },
+
+        __addTextInput: function(form, name, value) {
+            var input = document.createElement("input");
+            input.type  = 'hidden';
+            input.name  = name;
+            input.value = value;
+            form.appendChild(input);
         }
 
     }

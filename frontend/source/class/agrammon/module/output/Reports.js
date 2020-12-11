@@ -223,7 +223,6 @@ qx.Class.define('agrammon.module.output.Reports', {
                 language     : locale,
                 username     : userName,
                 reports      : this.reportIndex,
-                format       : 'excel',
                 titles       : this.titleSelected,
                 datasetName  : datasetName,
                 modelVariant : agrammon.Info.getInstance().getModelVariant(),
@@ -303,7 +302,7 @@ qx.Class.define('agrammon.module.output.Reports', {
 
         __setModelVariant: function(msg) {
             var model=msg.getData();
-            if (model == 'LU') {
+            if (model == 'Kantonal_LU') {
                 this.__submitButton.show();
             }
             else {
@@ -314,7 +313,7 @@ qx.Class.define('agrammon.module.output.Reports', {
         __submit: function() {
             var logText = agrammon.module.output.Output.formatLog(this.outputData.getLog());
             var submitWindow =
-                new agrammon.module.output.SubmitWindow(this.outputData, this.reportSelected,
+                new agrammon.module.output.SubmitWindow(this.outputData, this.reportIndex,
                                                         this.titleSelected, logText);
             submitWindow.open();
         },

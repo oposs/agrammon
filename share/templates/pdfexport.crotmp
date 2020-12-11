@@ -32,8 +32,8 @@
 \pagestyle{fancy}
 \fancyhead{}
 \fancyfoot[C]{}
-\fancyfoot[L]{<.username> --- <.dataset> \hspace{5em} <.version> --- <.timestamp>}
-\fancyfoot[R]{\thepage}
+\fancyfoot[L]{<.username> --- <.dataset>\newline <.version> --- <.timestamp>}
+\fancyfoot[R]{\mbox{}\newline\thepage}
 \renewcommand{\headrulewidth}{0pt}
 
 %\pgfplotsset{every axis legend/.append style={cells={anchor=west} }}
@@ -42,10 +42,30 @@
 \section*{<.titles.report>}
 \section{<.titles.data.section>}
 \begin{tabular}[t]{@{}l@{\hspace{2em}}p{7cm}}
+<?.submission>
+\textbf{<.titles.submission.farm>:} & <.submission.farm-number>\\
+\textbf{<.titles.submission.situation>:} & <.submission.farm-situation>\\
+\textbf{<.titles.submission.sender>:} & <.submission.sender-name>\\
+</?>
 \textbf{<.titles.data.dataset>:} & <.dataset>\\
 \textbf{<.titles.data.user>:} & <.username>\\
 \textbf{Version:} & <.model>\\
+<?.submission>
+\textbf{<.titles.submission.recipient>:} & <.submission.recipient-name>\\
+\textbf{<.titles.submission.comment>:} & <.submission.comment>\\
+</?>
 \end{tabular}
+
+<?.submission>
+\vspace{1ex}
+\begin{small}
+\noindent
+Der Datensatz wird dem Agrammon-Benutzer \texttt{ {<.submission.recipient-name>} }
+zum Lesen als Datensatz\newline
+\texttt{<.submission.farm-number>, <.submission.farm-situation>, <.username>, <.dataset>}\newline
+bereitgestellt.
+\end{small}
+</?>
 
 \section{<.titles.outputs>}
 <@outputs>

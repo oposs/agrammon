@@ -93,7 +93,7 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
 }
 
 sub latex-escape(Str $in) is export {
-    my $out = $in;
+    my $out = $in // '';
     $out ~~ s:g/<[\\]>/\\backslash/;
     $out ~~ s:g/(<[%#{}&$|]>)/\\$0/;
     $out ~~ s:g/(<[~^]>)/\\$0\{\}/;
@@ -105,14 +105,14 @@ sub latex-escape(Str $in) is export {
 }
 
 sub latex-chemify(Str $in) is export {
-    my $out = $in;
+    my $out = $in // '';
     $out~~ s:g/NOx/\\ce\{NO_\{\(x\)\}\}/;
     $out ~~ s:g/(N2O|NH3|N2|NO2)/\\ce\{$0\}/;
     return $out;
 }
 
 sub latex-small-spaces(Str $in) is export {
-    my $out = $in;
+    my $out = $in // '';
     $out ~~ s:g/\s+/\\,/;
     return $out;
 }
@@ -140,7 +140,8 @@ sub input-output-as-pdf(
     Str $dataset-name, Agrammon::Model $model,
     Agrammon::Outputs $outputs, Agrammon::Inputs $inputs, $reports,
     Str $language, $prints,
-    Bool $include-filters, Bool $all-filters
+    Bool $include-filters, Bool $all-filters,
+    :%submission
 ) is export {
     warn '**** input-output-as-pdf() not yet completely implemented';
 
@@ -174,6 +175,33 @@ sub input-output-as-pdf(
                 :de('Datensatz'),
                 :en('Dataset'),
                 :fr('Set de données'),
+            ){$language},
+        ),
+        submission => %(
+            farm => %(
+                :de('Betriebsnummer'),
+                :en('Farm number'),
+                :fr('fr number'),
+            ){$language},
+            situation => %(
+                :de('Situation des Betriebs'),
+                :en('Farm situation'),
+                :fr('fr situation'),
+            ){$language},
+            sender => %(
+                :de('Absender'),
+                :en('Sender'),
+                :fr('fr Absender'),
+            ){$language},
+            recipient => %(
+                :de('Eingereicht bei'),
+                :en('Submitted to'),
+                :fr('fr Submitted'),
+            ){$language},
+            comment => %(
+                :de('Kommentar'),
+                :en('Comment'),
+                :fr('fr Comment'),
             ){$language},
         ),
         outputs => %(
@@ -261,19 +289,19 @@ sub input-output-as-pdf(
     }
 
     # setup template data
-    %data<outputs>   = @output-formatted;
-    %data<inputs>    = @input-formatted;
     %data<titles>    = %titles;
-    %data<dataset>   = $dataset-name;
-    %data<username>  = $user.username;
-    %data<model>     = $cfg.gui-variant;
-    %data<version>   = $cfg.gui-title{$language};
+    %data<dataset>   = $dataset-name // 'NO DATASET';
+    %data<username>  = $user.username // 'NO USER';
+    %data<model>     = $cfg.gui-variant // 'NO MODEL';
     %data<timestamp> = ~DateTime.now( formatter => sub ($_) {
         sprintf '%02d.%02d.%04d %02d:%02d:%02d',
             .day, .month, .year,.hour, .minute, .second,
     });
-
-   return create-pdf(
+    %data<version>    = $cfg.gui-title{$language} // 'NO  VERSION';
+    %data<outputs>    = @output-formatted;
+    %data<inputs>     = @input-formatted;
+    %data<submission> = %submission;
+    return create-pdf(
         $*TMPDIR.add($cfg.general<tmpDir>),
         $cfg.general<pdflatex>,
         $user.username,
