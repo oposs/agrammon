@@ -252,28 +252,20 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
         __submissionParameters: function() {
             var info    = agrammon.Info.getInstance();
             var sender  = this.__addressInput.getValue();
-//            if (sender != undefined) {
-//                sender = sender.replace(/\n/g, 'XXX');
-//            }
             var comment =  this.__commentInput.getValue();
-//            if (comment != undefined) {
-//                comment = comment.replace(/\n/g, 'XXX');
-//            }
-            var locale       = qx.locale.Manager.getInstance().getLocale();
-            var lang         = locale.replace(/_.+/,'');
+            var locale  = qx.locale.Manager.getInstance().getLocale();
+            var lang    = locale.replace(/_.+/,'');
 
             return {
-                language     : lang,
-                username     : info.getUserName(),
-                reports      : this.__reportSelected,
-                format       : 'excel',
-                titles       : this.__titleSelected,
-                datasetName  : info.getDatasetName(),
-                modelVariant : agrammon.Info.getInstance().getModelVariant(),
-                guiVariant   : agrammon.Info.getInstance().getGuiVariant(),
-                version      : this.__version,
-                mode         : 'submission',
-
+                language       : lang,
+                username       : info.getUserName(),
+                reports        : this.__reportSelected,
+                titles         : this.__titleSelected,
+                datasetName    : info.getDatasetName(),
+                modelVariant   : agrammon.Info.getInstance().getModelVariant(),
+                guiVariant     : agrammon.Info.getInstance().getGuiVariant(),
+                version        : this.__version,
+                mode           : 'submission',
                 farmSituation  : this.__farmSituationSelect.getSelection()[0].getLabel(),
                 farmNumber     : this.__farmNumberInput.getValue(),
                 comment        : comment,
