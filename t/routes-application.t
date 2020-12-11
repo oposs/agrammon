@@ -1,3 +1,5 @@
+use v6;
+
 use Agrammon::Web::Routes;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
@@ -40,8 +42,6 @@ my $fake-store = mocked(Agrammon::Web::Service,
         },
         get-output-variables => -> $user, $dataset-name {
             %( :variable('x'), :value(2) )
-        },
-        get-pdf-export => -> $user, %params {
         },
         get-excel-export => -> $user, %params {
             Spreadsheet::XLSX.new;
