@@ -9,7 +9,7 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 14;
+# plan 14;
 
 # routing tests related to application logic
 
@@ -65,9 +65,9 @@ my $fake-store = mocked(Agrammon::Web::Service,
 
 subtest 'Get configuration without login' => {
     test-service routes($fake-store), {
-        test post( '/get_cfg'),
+        test post('/get_cfg'),
             status => 200,
-            json   => { title => 'Agrammon', version => 'SHL' };
+            json => { title => 'Agrammon', version => 'SHL' };
         check-mock $fake-store,
             *.called('get-cfg', times => 1);
     }
@@ -75,9 +75,9 @@ subtest 'Get configuration without login' => {
 
 subtest 'Get configuration with login' => {
     test-service routes($fake-store), :$fake-auth, {
-        test post( '/get_cfg'),
+        test post('/get_cfg'),
             status => 200,
-            json   => { title => 'Agrammon', version => 'SHL' };
+            json => { title => 'Agrammon', version => 'SHL' };
         check-mock $fake-store,
             *.called('get-cfg', times => 2);
     }
@@ -86,18 +86,18 @@ subtest 'Get configuration with login' => {
 subtest 'Get input variables' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/get_input_variables', {
-            test post(json => { :datasetName('DatasetA') } ),
-            status => 200,
-            json   => {
-                datasetName => 'DatasetA',
-                inputs  => [
-                    {
-                        :variable("Livestock::DairyCow[]::Excretion::CMilk::milk_yield")
-                    },
-                ],
-                graphs  => [],
-                reports => [],
-            }
+            test post(json => { :datasetName('DatasetA') }),
+                status => 200,
+                json => {
+                    datasetName => 'DatasetA',
+                    inputs => [
+                        {
+                            :variable("Livestock::DairyCow[]::Excretion::CMilk::milk_yield")
+                        },
+                    ],
+                    graphs => [],
+                    reports => [],
+                }
         };
         check-mock $fake-store,
             *.called('get-input-variables', times => 1);
@@ -107,28 +107,29 @@ subtest 'Get input variables' => {
 subtest 'Get output variables' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/get_output_variables', {
-            test post(json => { :datasetName('DatasetA') } ),
-                    status => 200,
-                    json   => { :variable('x'), :value(2) }
+            test post(json => { :datasetName('DatasetA') }),
+                status => 200,
+                json => { :variable('x'), :value(2) }
         };
         check-mock $fake-store,
-                *.called('get-output-variables', times => 1);
+            *.called('get-output-variables', times => 1);
     }
 }
+
 
 subtest 'Get excel export' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/export/excel', {
             test post(
-                    content-type => 'application/x-www-form-urlencoded',
-                    body => {
-                        :datasetName('TestSingle'),
-                        :language('de'),
-                    }),
-                    status => 200;
+                content-type => 'application/x-www-form-urlencoded',
+                body => {
+                    :datasetName('TestSingle'),
+                    :language('de'),
+                }),
+                status => 200;
         };
         check-mock $fake-store,
-                *.called('get-excel-export', times => 1);
+            *.called('get-excel-export', times => 1);
     }
 }
 
@@ -136,15 +137,22 @@ subtest 'Get PDF report' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/export/pdf', {
             test post(
-                    content-type => 'application/x-www-form-urlencoded',
-                    body => {
-                        :datasetName('TestSingle'),
-                        :language('de'),
-                    }),
-                    status => 200;
+                content-type => 'application/x-www-form-urlencoded',
+                body => {
+                    :datasetName('TestSingle'),
+                    :language('de'),
+                    :type('submission'),
+                    :senderName("Fritz ZauckerXXX4600 Olten"),
+                    :farmNumber(42),
+                    :farmSituation('Before'),
+                    :recipientName('lawa'),
+                    :recipientEmail('fritz@zaucker.ch'),
+                    :comment('No comment'),
+                }),
+                status => 200;
         };
         check-mock $fake-store,
-                *.called('get-pdf-export', times => 1);
+            *.called('get-pdf-export', times => 1);
     }
 }
 
