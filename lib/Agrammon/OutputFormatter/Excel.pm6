@@ -71,7 +71,7 @@ sub input-output-as-excel(
 
     # prepared data
     my %data = collect-data(
-        $dataset-name, $model,
+        $model,
         $outputs, $inputs, $reports,
         $language, $prints,
         $include-filters, $all-filters

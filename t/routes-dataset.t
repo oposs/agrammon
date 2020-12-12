@@ -57,13 +57,13 @@ my $fake-store = mocked(Agrammon::Web::Service,
                             Str $new-username,
                             Str $old-dataset, Str $new-dataset {
         },
-        submit-dataset => -> $user, $name, $mail {
-            %( name => $name)
+        submit-dataset => -> $user, %params {
+            %( name => %params<name> )
         },
         delete-datasets => -> $user, @datasets {
             @datasets.elems;
         },
-        send-datasets => -> $user, @datasets {
+        send-datasets => -> $user, @datasets, $recipient {
             %( sent => @datasets.elems);
         }
     }
@@ -193,9 +193,10 @@ subtest 'Rename dataset' => {
 }
 
 subtest 'Submit dataset' => {
+    my %params = :name('DatasetC'), :mail('foo@bar.ch');
     test-service routes($fake-store), :$fake-auth, {
         test-given '/submit_dataset', {
-            test post(json => { :name('DatasetC'), :mail('foo@bar.ch')}),
+            test post( json => %params ),
                 status => 200,
                 json   => { name => 'DatasetC' },
         };
@@ -242,7 +243,7 @@ subtest 'Get all datasets' => {
 subtest 'Send datasets' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/send_datasets', {
-            test post(json => { datasets => ( 'DatasetC', 'DatasetD' ) }  ),
+            test post(json => { datasets => ( 'DatasetC', 'DatasetD' ), :recipient('fritz@zaucker.ch') },  ),
                 status => 200,
                 json   => { :sent(2) },
         };

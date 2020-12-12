@@ -59,7 +59,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/ui/About.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -187,7 +187,7 @@ msgstr "Datensatz umbenennen"
 msgid "New name"
 msgstr "Neuer Name"
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -327,7 +327,7 @@ msgstr "Zum Editieren anklicken"
 msgid "Unit"
 msgstr "Einheit"
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/user/Login.js
 msgid "Help"
 msgstr "Hilfe"
 
@@ -415,11 +415,11 @@ msgstr "Ok"
 msgid "Graphical Results"
 msgstr "Resultate als Grafik"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Choose table: "
 msgstr "Tabelle auswählen"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Simulation log"
 msgstr "Mitteilungen zu den Resultaten"
 
@@ -536,7 +536,7 @@ msgid "Submit"
 msgstr "Absenden"
 
 #: agrammon/module/output/SubmitWindow.js
-msgid "Report submitted sucessfully."
+msgid "Report submitted successfully."
 msgstr "Report erfolgreich abgeschickt."
 
 #: agrammon/module/output/SubmitWindow.js
