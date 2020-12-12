@@ -21,7 +21,7 @@
     "Net::SMTP::Client::Async",
     "OO::Monitors",
     "Shell::Command",
-    "Spreadsheet::XLSX:ver<0.2+>",
+    "Spreadsheet::XLSX",
     "Text::CSV",
     "YAMLish"
   ],
