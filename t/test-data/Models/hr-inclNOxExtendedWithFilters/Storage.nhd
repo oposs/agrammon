@@ -338,21 +338,27 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Annual NH3 emission from liquid storage of pig slurry.
   ++formula
     my $nh3_loss_pigs = Sum(nh3_ntank_liquid_pigs, Storage::Slurry);
-    if ( scalar($nh3_loss_pigs) <  scalar(Out(maxlimit_of_nh3_nstorage_liquid_pigs)) ) {
-      scale( 
-        Out(tan_into_storage_liquid_pigs), 
-        $nh3_loss_pigs /
-        scalar(Out(tan_into_storage_liquid_pigs))
-      );
-    } else {
-      writeLog(
-          {
-            en => "NH3 loss from pigs is limited to maximum available TAN!\n",
-            de => "TODO\n",
-            fr => "TODO\n"
-          }
-      );  
-      Out(maxlimit_of_nh3_nstorage_liquid_pigs); 
+    given ( scalar($nh3_loss_pigs) ) {
+      when $_ eq 0 {
+        Out(tan_into_storage_liquid_pigs);
+      }
+      when $_ > scalar(Out(maxlimit_of_nh3_nstorage_liquid_pigs)) {
+        writeLog(
+            {
+              en => "NH3 loss from pigs is limited to maximum available TAN!\n",
+              de => "TODO\n",
+              fr => "TODO\n"
+            }
+        );  
+        Out(maxlimit_of_nh3_nstorage_liquid_pigs);         
+      }
+      default {
+        scale( 
+          Out(tan_into_storage_liquid_pigs), 
+          $nh3_loss_pigs /
+          scalar(Out(tan_into_storage_liquid_pigs))
+        );        
+      }
     }
 
 +maxlimit_of_nh3_nstorage_liquid_cattle
@@ -384,21 +390,27 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     Annual NH3 emission from liquid storage of cattle slurry.
   ++formula
     my $nh3_loss_cattle = Sum(nh3_ntank_liquid_cattle, Storage::Slurry);
-    if ( scalar($nh3_loss_cattle) <  scalar(Out(maxlimit_of_nh3_nstorage_liquid_cattle)) ) {
-      scale( 
-        Out(tan_into_storage_liquid_cattle), 
-        $nh3_loss_cattle /
-        scalar(Out(tan_into_storage_liquid_cattle))
-      );
-    } else {
-      writeLog(
-          {
-            en => "NH3 loss from cattle is limited to maximum available TAN!\n",
-            de => "TODO\n",
-            fr => "TODO\n"
-          }
-      );    
-      Out(maxlimit_of_nh3_nstorage_liquid_cattle); 
+    given ( scalar($nh3_loss_cattle) ) {
+      when $_ eq 0 {
+        Out(tan_into_storage_liquid_cattle);
+      }
+      when $_ > scalar(Out(maxlimit_of_nh3_nstorage_liquid_cattle)) {
+        writeLog(
+            {
+              en => "NH3 loss from cattle is limited to maximum available TAN!\n",
+              de => "TODO\n",
+              fr => "TODO\n"
+            }
+        );  
+        Out(maxlimit_of_nh3_nstorage_liquid_cattle);         
+      }
+      default {
+        scale( 
+          Out(tan_into_storage_liquid_cattle), 
+          $nh3_loss_cattle /
+          scalar(Out(tan_into_storage_liquid_cattle))
+        );        
+      }
     }
 
 +nh3_nstorage_liquid

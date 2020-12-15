@@ -123,6 +123,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
     ++description
       Pigs share of N flux out of livestock liquid manure
     ++formula
+      return 0 unless scalar(Val(n_out_livestock_liquid, ::Livestock)) > 0;
       scalar(
         multiplyPairwise(
           Val(has_pigs, ::Livestock),

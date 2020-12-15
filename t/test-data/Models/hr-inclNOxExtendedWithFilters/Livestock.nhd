@@ -553,6 +553,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Scalar. Share of annual liquid N flux from housing and yard into the
     storage from pigs (scaled by total flux).
   ++formula
+    return 0 unless scalar(Out(n_out_livestock_liquid)) > 0;
     ( 
       scalar(Sum(n_outhousing_liquid,Livestock::Pig::Housing)) +
       scalar(Sum(n_outhousing_liquid, Livestock::FatteningPigs::Housing))
@@ -693,6 +694,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     Scalar. Share of annual liquid N flux as TAN from housing and yard into the
     storage from pigs (scaled by total flux).
   ++formula
+    return 0 unless scalar(Out(tan_out_livestock_liquid)) > 0;
     ( 
       scalar(Sum(tan_outhousing_liquid, Livestock::Pig::Housing)) +
       scalar(Sum(tan_outhousing_liquid, Livestock::FatteningPigs::Housing))
