@@ -81,7 +81,8 @@ qx.Class.define('agrammon.io.remote.Rpc', {
             var req = new qx.io.request.Xhr(methodName, "POST");
             if (data != null) {
                 req.setRequestData(data);
-                req.setRequestHeader("Content-Type", "application/json");            }
+                req.setRequestHeader("Content-Type", "application/json");
+            }
             req.addListener("statusError", function(e) {
                 var req = e.getTarget();
                 var response = req.getResponse();
@@ -91,7 +92,15 @@ qx.Class.define('agrammon.io.remote.Rpc', {
             req.addListener("success", function(e) {
                 var req = e.getTarget();
                 var response = req.getResponse();
-//                console.log('callAsync(): response=', response);
+                console.log('callAsync(): success, response=', response);
+                handler(response);
+            }, this);
+            req.addListener("load", function(e) {
+                var req = e.getTarget();
+                var response = req.getResponse();
+                var status = req.getStatus();
+                var statusText = req.getStatusText();
+                console.log('callAsync(): load, response=', response, ', status=', status, ':', statusText);
                 handler(response);
             }, this);
             req.send();
