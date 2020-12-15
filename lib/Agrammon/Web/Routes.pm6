@@ -39,25 +39,63 @@ sub routes(Agrammon::Web::Service $ws) is export {
 
 sub static-content($root) {
     route {
-        get -> {
-            static $root ~ 'public/index.html'
+        my $root = %*ENV<SOURCE_MODE> ?? 'frontend/compiled/source' !! 'public';
+        note "root=$root";
+
+        if %*ENV<SOURCE_MODE> { # Qooxdoo source mode (development)
+            get -> {
+                static "$root/agrammon/index.html"
+            }
+            get -> 'index.html' {
+                static "$root/agrammon/index.html"
+            }
+            get -> 'index.js' {
+                static "$root/agrammon/index.js"
+            }
+            get -> 'favicon.ico' {
+                static "$root/resource/agrammon/favicon.ico"
+            }
+
+            get -> 'transpiled', *@path {
+                static "$root/transpiled", @path
+            }
+
+            get -> 'resource', *@path {
+                static "$root/resource", @path
+            }
+
+            get -> 'media/psf/Home/checkouts/agrammon6/frontend', *@path {
+                static "frontend", @path
+            }
+
+            # catch all
+            get -> *@path {
+                static "$root/agrammon", @path
+            }
+
+        }
+        else { # Qooxdoo build mode (production)
+            get -> {
+                static "$root/index.html"
+            }
+
+            get -> 'index.html' {
+                static "$root/index.html"
+            }
+
+            get -> 'favicon.ico' {
+                static "$root/resource/Agrammon/favicon.ico"
+            }
+
+            get -> 'agrammon', *@path {
+                static "$root/agrammon", @path
+            }
+
+            get -> 'resource', *@path {
+                static "$root/resource", @path
+            }
         }
 
-        get -> 'index.html' {
-            static $root ~ 'public/index.html'
-        }
-
-        get -> 'agrammon', *@path {
-            static $root ~ 'public/agrammon', @path
-        }
-
-        get -> 'resource', *@path {
-            static $root ~ 'public/resource', @path
-        }
-
-        get -> 'source', *@path {
-            static $root ~ 'static/source', @path
-        }
 
 # TODO: needs later fixing
 #        get -> 'QxJqPlot/source/resource', *@path {

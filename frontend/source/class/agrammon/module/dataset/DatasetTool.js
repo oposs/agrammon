@@ -31,22 +31,23 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
         var maxHeight = qx.bom.Document.getHeight() - 20;
 //        this.debug('maxHeight='+maxHeight);
         this.set({
-                   layout: new qx.ui.layout.VBox(10),
-//                   width: this.__WITHTAGS,
-                   maxHeight: maxHeight, //allowShrinkY: true,
-                   modal: true,
-                   showClose: true, showMinimize: false, showMaximize: false,
-                   caption: title,
-                   contentPadding: [0, 0, 10, 0], padding: 0,
-                   icon: 'icon/16/apps/office-database.png'
-                 });
+            layout: new qx.ui.layout.VBox(10),
+//             width: this.__WITHTAGS,
+            maxHeight: maxHeight, //allowShrinkY: true,
+            modal: true,
+            showClose: true, showMinimize: false, showMaximize: false,
+            caption: title,
+            contentPadding: [0, 0, 10, 0], padding: 0,
+            icon: 'icon/16/apps/office-database.png',
+            centerOnAppear : true
+        });
         this.getChildControl("pane").setBackgroundColor("white");
         var that = this;
         this.__datasetCache = agrammon.module.dataset.DatasetCache.getInstance();
 
         // datasetTable
 //        var datasetTable = new agrammon.module.dataset.DatasetTable();
-        var datasetTable = agrammon.module.dataset.DatasetTable.getInstance();
+        var datasetTable = agrammon.module.dataset.DatasetTableSimple.getInstance();
         this.__datasetTable = datasetTable;
 
         // might not work in manage dataset mode because updateView
@@ -532,20 +533,17 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
             that.__datasets = this.__datasetCache.getDatasets();
 		    var len = that.__datasets.length;
             // that.debug('__setDatasets(): len='+len);
-		    if (len<1) {
-                //		        alert('No existing datasets in database yet.');
-			    return;
-		    }
-            datasetTm.setData(null);
+		    if (len<1) return;
+
+            this.__clearDatasets();
             datasetTm.addRows(that.__datasets);
             datasetTable.getSelectionModel().resetSelection();
-            datasetTm.updateView(1);
-            datasetTm.setView(1);
+            datasetTable.updateView();
         }; // this.__setDatasets()
 
         this.__clearDatasets = function() {
 //            that.debug('__clearDatasets()');
-            datasetTm.setData(null);
+            datasetTm.setData([[]]);
         }; // this.__clearDatasets()
 
         this.addListener("resize", this.center, this);
