@@ -339,11 +339,15 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++formula
     my $nh3_loss_pigs = Sum(nh3_ntank_liquid_pigs, Storage::Slurry);
     if ( scalar($nh3_loss_pigs) <  scalar(Out(maxlimit_of_nh3_nstorage_liquid_pigs)) ) {
-      scale( 
-        Out(tan_into_storage_liquid_pigs), 
-        $nh3_loss_pigs /
-        scalar(Out(tan_into_storage_liquid_pigs))
-      );
+      if ( scalar(Out(tan_into_storage_liquid_pigs)) > 0 ) {
+        scale( 
+          Out(tan_into_storage_liquid_pigs), 
+          $nh3_loss_pigs /
+          scalar(Out(tan_into_storage_liquid_pigs))
+        );
+      } else {
+        Out(tan_into_storage_liquid_pigs);          
+      }
     } else {
       writeLog(
           {
@@ -385,11 +389,15 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++formula
     my $nh3_loss_cattle = Sum(nh3_ntank_liquid_cattle, Storage::Slurry);
     if ( scalar($nh3_loss_cattle) <  scalar(Out(maxlimit_of_nh3_nstorage_liquid_cattle)) ) {
-      scale( 
-        Out(tan_into_storage_liquid_cattle), 
-        $nh3_loss_cattle /
-        scalar(Out(tan_into_storage_liquid_cattle))
-      );
+      if ( scalar(Out(tan_into_storage_liquid_cattle)) > 0 ) {
+        scale( 
+          Out(tan_into_storage_liquid_cattle), 
+          $nh3_loss_cattle /
+          scalar(Out(tan_into_storage_liquid_cattle))
+        );
+      } else {
+        Out(tan_into_storage_liquid_cattle);
+      }
     } else {
       writeLog(
           {
