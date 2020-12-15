@@ -119,9 +119,13 @@ qx.Class.define('agrammon.module.input.NavBar', {
         var dragSource;
         this.__navTree.addListener("drag", function(e) {
             // FIX ME: can drag/drop be disabled on folder level instead?
+<<<<<<< HEAD
 
             if (! e.getTarget() || ! e.getTarget().getSelection()
                 || ! e.getTarget().getSelection()[0] || ! e.getTarget().getSelection()[0].isInstance()) {
+=======
+            if (! e.getTarget().getSelection() || ! e.getTarget().getSelection()[0].isInstance()) {
+>>>>>>> 01a94bc (Add/fix some missing/broken routes)
                 return;
             }
 
