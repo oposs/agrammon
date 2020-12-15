@@ -31,6 +31,12 @@ class X::Agrammon::DB::User::UnknownRole is Exception {
     }
 }
 
+class X::Agrammon::DB::User::PasswordResetFailed is Exception {
+    method message() {
+        "Invalid username or password";
+    }
+}
+
 class X::Agrammon::DB::User::InvalidPassword is Exception {
     method message() {
         "Invalid username or password";
@@ -153,16 +159,15 @@ class Agrammon::DB::User does Agrammon::DB {
             die X::Agrammon::DB::User::InvalidPassword.new    unless self.password-is-valid($!username, $old);
             die X::Agrammon::DB::User::PasswordsIdentical.new if $old eq $new;
 
-            my $ret = $db.query(q:to/SQL/, $!username, $new);
+            $db.query(q:to/SQL/, $!username, $new);
                 UPDATE pers
                     SET pers_password = crypt($2, gen_salt('bf'))
-                    WHERE pers_email    = $1
+                    WHERE pers_email  = $1
+                RETURNING pers_email
             SQL
 
             die X::Agrammon::DB::User::InvalidPassword.new unless self.password-is-valid($!username, $new);
-
         }
-        return False;
     }
 
     method password-key-is-valid(Str $password, Str $key) {
@@ -174,20 +179,18 @@ class Agrammon::DB::User does Agrammon::DB {
     method reset-password($username, $password, $key) {
         self.with-db: -> $db {
 
+            my $success;
             if self.password-key-is-valid($username, $key) {
-                my $res = $db.query(q:to/PASSWORD/, $username, $password);
+                my $ret = $db.query(q:to/SQL/, $username, $password);
                     UPDATE pers
                        SET pers_password = crypt($2, gen_salt('bf'))
                      WHERE pers_email    = $1
-                PASSWORD
+                SQL
+                $success = $ret.rows;
+            }
 
-                return $res;
-            }
-            else {
-                warn "Invalid password key";
-            }
+            die X::Agrammon::DB::User::PasswordResetFailed.new unless $success;
         }
-        return;
     }
 
 }

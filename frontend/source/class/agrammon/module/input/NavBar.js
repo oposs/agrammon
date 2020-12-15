@@ -98,16 +98,16 @@ qx.Class.define('agrammon.module.input.NavBar', {
         this.__sibblings = [];
         var orderInstances = function() {
             var dataset  = this.__info.getDatasetName();
-            this.__rpc.callAsync(this.order_instances_func,
-                                 'order_instances',
-                                 {
-                                   instances:      this.__sibblings,
-                                   dataset_name:   dataset
-                                 }
-                                );
+            let params =  {
+                instances:   this.__sibblings,
+                datasetName: dataset
+            };
+            console.log('order_instance, params=', params);
+            this.__rpc.callAsync(this.order_instances_func, 'order_instances', params);
         };
 
         this.order_instances_func = function(data, exc, id) {
+            return; // errors handled in async handler
             if (exc == null) {
             }
             else {
@@ -119,7 +119,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
         var dragSource;
         this.__navTree.addListener("drag", function(e) {
             // FIX ME: can drag/drop be disabled on folder level instead?
-            if (! e.getTarget().getSelection()[0].isInstance()) {
+            if (! e.getTarget().getSelection() || ! e.getTarget().getSelection()[0].isInstance()) {
                 return;
             }
 
@@ -160,7 +160,8 @@ qx.Class.define('agrammon.module.input.NavBar', {
             }
 
             // position and switch indicator on
-            var targetCoords = target.getContainerLocation();
+//            var targetCoords = target.getContainerLocation();
+            var targetCoords = target.getContentLocation();
             if (iTarget>iSource) {
                 indicator.setDomPosition(targetCoords.left, targetCoords.bottom);
             }
@@ -966,18 +967,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             return;
         },
 
-        /**
-          * TODOC
-          *
-          * @return {var} TODOC
-          * @lint ignoreDeprecated(alert)
-          */
-        __renameInstanceFunc: function(data, exc, id) {
-            if (exc != null) {
-                alert(exc + ': ' + data.error);
-            }
-        },
-
         __renameInstanceData: function(msg) {
             var data        = msg.getData();
             var pattern     = data.pattern;
@@ -986,9 +975,17 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var folder      = data.folder;
             var datasetName = this.__info.getDatasetName();
 
+            var that = this;
             // rename instance variables in database
             this.__rpc.callAsync(
-                qx.lang.Function.bind(this.__renameInstanceFunc, folder),
+                function(data, exc, id) {
+                    if (exc != null) {
+                        alert(exc + ': ' + data.error);
+                    }
+                    else {
+                        folder.setLabel(newInstance);
+                    }
+                },
                 'rename_instance', {
                 datasetName     : datasetName,
                 oldName         : oldInstance,

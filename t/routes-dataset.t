@@ -64,7 +64,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
             @datasets.elems;
         },
         send-datasets => -> $user, @datasets, $recipient {
-            %( sent => @datasets.elems);
+            %( sent => @datasets);
         }
     }
 );
@@ -245,7 +245,7 @@ subtest 'Send datasets' => {
         test-given '/send_datasets', {
             test post(json => { datasets => ( 'DatasetC', 'DatasetD' ), :recipient('fritz@zaucker.ch') },  ),
                 status => 200,
-                json   => { :sent(2) },
+                json   => { :sent(['DatasetC', 'DatasetD',]) },
         };
         check-mock $fake-store,
             *.called('send-datasets', times => 1);

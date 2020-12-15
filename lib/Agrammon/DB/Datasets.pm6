@@ -77,6 +77,19 @@ class Agrammon::DB::Datasets does Agrammon::DB {
         return $deleted;
     }
 
+    method send(@datasets, $model, $recipient) {
+        warn "Sending mail about datasets not yet implemented";
+        my $user = $!user.id;
+        my @cloned;
+        for @datasets -> $ds {
+            Agrammon::DB::Dataset.new(:$user, :$model).clone(:$recipient, :old-dataset($ds), :new-dataset($ds));
+            @cloned.push($ds);
+        }
+        # TODO: send mail
+        # expected by GUI
+        return %( :sent(@cloned));
+    }
+
     method list {
         return [@!collection.map: {.name, .mod-date, .records, .read-only, .version, .tags.map(*.name), .comment, .model, 0}];
     }
