@@ -59,7 +59,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -111,7 +111,7 @@ msgstr "Datensatz"
 msgid "datasets"
 msgstr "Datensätze"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/input/NavBar.js
 msgid "Info"
 msgstr "Info"
 
@@ -171,7 +171,7 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/input/NavBar.js
 msgid "Error"
 msgstr "Fehler"
 
@@ -183,11 +183,11 @@ msgstr "existiert bereits."
 msgid "Rename dataset"
 msgstr "Datensatz umbenennen"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/input/NavBar.js
 msgid "New name"
 msgstr "Neuer Name"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/input/PropTable.js
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -279,7 +279,7 @@ msgstr "Filter auf Marker Name"
 msgid "Input"
 msgstr "Eingabe"
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/input/NavBar.js
 msgid "Instance name must not be empty."
 msgstr "Der Kategorie-Name darf nicht leer sein."
 
@@ -299,15 +299,15 @@ msgstr "Umbenennen Kategorie "
 msgid "Duplicate instance "
 msgstr "Duplizieren Kategorie "
 
-#: agrammon/ui/menu/NavMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/input/PropTable.js
 msgid "Variable"
 msgstr "Variable"
 
-#: agrammon/module/input/regional/ConfigEditor.js
+#: agrammon/module/input/PropTable.js
 msgid "Input Parameter"
 msgstr "Eingabe-Parameter"
 
@@ -323,11 +323,11 @@ msgstr ""
 msgid "Click to edit"
 msgstr "Zum Editieren anklicken"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/input/PropTable.js
 msgid "Unit"
 msgstr "Einheit"
 
-#: agrammon/module/user/Login.js
+#: agrammon/module/input/PropTable.js
 msgid "Help"
 msgstr "Hilfe"
 
@@ -347,7 +347,7 @@ msgstr "Einheit Deutsch"
 msgid "Unit French"
 msgstr "Einheit Französisch"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/input/PropTable.js
 msgid "Order"
 msgstr "Sortierung"
 
@@ -431,23 +431,23 @@ msgstr "*** Auswählen ***"
 msgid "Tabular Results"
 msgstr "Resultate als Tabelle"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Module"
 msgstr "Modul"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Reference"
 msgstr "Referenz"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Value"
 msgstr "Wert"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Change"
 msgstr "Änderung"
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Print"
 msgstr "Druck"
 

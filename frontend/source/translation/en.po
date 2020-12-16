@@ -58,7 +58,7 @@ msgstr ""
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/ui/dialog/News.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "datasets"
 msgstr ""
 
-#: agrammon/ui/menu/OptionMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Info"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr ""
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/input/NavBar.js
 msgid "Error"
 msgstr ""
 
@@ -182,11 +182,11 @@ msgstr ""
 msgid "Rename dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/input/NavBar.js
 msgid "New name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/input/PropTable.js
 msgid "Comment"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgstr ""
 msgid "Input"
 msgstr ""
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/input/NavBar.js
 msgid "Instance name must not be empty."
 msgstr ""
 
@@ -298,15 +298,15 @@ msgstr ""
 msgid "Duplicate instance "
 msgstr ""
 
-#: agrammon/ui/menu/NavMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Add instance"
 msgstr ""
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/input/PropTable.js
 msgid "Variable"
 msgstr ""
 
-#: agrammon/module/input/regional/ConfigEditor.js
+#: agrammon/module/input/PropTable.js
 msgid "Input Parameter"
 msgstr ""
 
@@ -322,11 +322,11 @@ msgstr ""
 msgid "Click to edit"
 msgstr ""
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/input/PropTable.js
 msgid "Unit"
 msgstr ""
 
-#: agrammon/ui/menu/MainMenu.js
+#: agrammon/module/input/PropTable.js
 msgid "Help"
 msgstr ""
 
@@ -346,7 +346,7 @@ msgstr ""
 msgid "Unit French"
 msgstr ""
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/input/PropTable.js
 msgid "Order"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/ui/menu/OptionMenu.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr ""
 
@@ -430,23 +430,23 @@ msgstr ""
 msgid "Tabular Results"
 msgstr ""
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Module"
 msgstr ""
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Reference"
 msgstr ""
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Value"
 msgstr ""
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Change"
 msgstr ""
 
-#: agrammon/module/output/Results.js
+#: agrammon/module/output/Reports.js
 msgid "Print"
 msgstr ""
 
