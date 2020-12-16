@@ -266,9 +266,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockTAN
   ++labels
     sort = 830
-    en = Total N excretion
-    de = Total N Ausscheidung
-    fr = Excrétion de N totale
+    en = __Housing
+    de = __Stall
+    fr = __Stabulation
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -290,9 +290,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockTAN
   ++labels
     sort = 840
-    en = Total N excretion
-    de = Total N Ausscheidung
-    fr = Excrétion de N totale
+    en = __Yard
+    de = __Laufhof
+    fr = __Parcours extérieur
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -309,9 +309,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockTAN
   ++labels
     sort = 820
-    en = Total soluble N excretion
-    de = Total Nlös Ausscheidung
-    fr = Excrétion de TAN totale
+    en = Into housing and exercise yard
+    de = In Stall und Laufhof
+    fr = Dans la stabulation et le parcours extérieur
   ++units
     en = kg TAN/year
     de = kg TAN/Jahr
@@ -328,8 +328,8 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++labels
     sort = 810
     en = Into grazing
-    de = Total N Ausscheidung
-    fr = Excrétion de N totale
+    de = In Weide
+    fr = Dans le pâturage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -1127,9 +1127,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockTAN
   ++labels
     sort = 894
-    en = Into soil rom grazing
-    de = ?
-    fr = ?
+    en = Into soil from grazing
+    de = In Boden von Weide
+    fr = Dans le sol suite au pâturage
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -1158,9 +1158,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   print = LivestockTAN
   ++labels
     sort = 845
-    en = TAN remain air scrubber
-    de = ?
-    fr = ?
+    en = Degradation in air scrubber
+    de = Abbau im Luftwäscher
+    fr = Dégradation dans les épuratuers d'air
   ++units
     en = kg N/year
     de = kg N/Jahr
