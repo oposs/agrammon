@@ -148,7 +148,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
         my $ds = self!create-dataset( $new-dataset, $new-username, $!version, $!model);
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset);
+            $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset);
                 INSERT INTO data_new (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
                      SELECT $1, data_var, data_instance, data_val, data_instance_order, data_comment
                        FROM data_new

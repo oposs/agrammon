@@ -171,7 +171,7 @@ class Agrammon::DB::User does Agrammon::DB {
     }
 
     method password-key-is-valid(Str $password, Str $key) {
-        warn "TODO: Password hash check missing";
+        note "***** TODO: Password hash check missing";
         return $key;
     }
 
@@ -179,17 +179,15 @@ class Agrammon::DB::User does Agrammon::DB {
     method reset-password($username, $password, $key) {
         self.with-db: -> $db {
 
-            my $success;
-            if self.password-key-is-valid($username, $key) {
+            if self.password-key-is-valid($password, $key) {
                 my $ret = $db.query(q:to/SQL/, $username, $password);
                     UPDATE pers
                        SET pers_password = crypt($2, gen_salt('bf'))
                      WHERE pers_email    = $1
+                    RETURNING pers_email
                 SQL
-                $success = $ret.rows;
             }
-
-            die X::Agrammon::DB::User::PasswordResetFailed.new unless $success;
+            die X::Agrammon::DB::User::PasswordResetFailed.new unless self.password-is-valid($username, $password);
         }
     }
 

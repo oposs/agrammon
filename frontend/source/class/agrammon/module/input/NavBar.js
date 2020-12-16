@@ -119,7 +119,9 @@ qx.Class.define('agrammon.module.input.NavBar', {
         var dragSource;
         this.__navTree.addListener("drag", function(e) {
             // FIX ME: can drag/drop be disabled on folder level instead?
-            if (! e.getTarget().getSelection() || ! e.getTarget().getSelection()[0].isInstance()) {
+
+            if (! e.getTarget() || ! e.getTarget().getSelection()
+                || ! e.getTarget().getSelection()[0] || ! e.getTarget().getSelection()[0].isInstance()) {
                 return;
             }
 
@@ -160,7 +162,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             }
 
             // position and switch indicator on
-//            var targetCoords = target.getContainerLocation();
             var targetCoords = target.getContentLocation();
             if (iTarget>iSource) {
                 indicator.setDomPosition(targetCoords.left, targetCoords.bottom);

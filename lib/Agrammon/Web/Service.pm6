@@ -5,6 +5,7 @@ use Agrammon::DB::Dataset;
 use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
 use Agrammon::DB::Tags;
+use Agrammon::Email;
 use Agrammon::Model;
 use Agrammon::OutputsCache;
 use Agrammon::OutputFormatter::Excel;
@@ -48,15 +49,16 @@ class Agrammon::Web::Service {
     # return list of datasets as expected by Web GUI
     method send-datasets(Agrammon::Web::SessionUser $user, @datasets, $recipient) {
         my $model = self.cfg.app-variant; # model 'SingleSHL';
-        my @cloned = Agrammon::DB::Datasets.new(:$user).send(@datasets, $model);
+        my $sent = Agrammon::DB::Datasets.new(:$user).send(@datasets, $model, $recipient);
         my $subject = 'Neue Agrammon Datensätze';
+        my $sender = $user.username;
         my $msg;
-        if @cloned.elems == 1 {
-            $msg = "Der Datensatz@cloned[0] von $recipient wurde Ihnen in Ihrem Agrammon Konto bereit gestellt";
+        if $sent == 1 {
+            $msg = "Der Datensatz @datasets[0] von $sender wurde Ihnen in Ihrem Agrammon Konto bereit gestellt";
         }
         else {
-            $msg = "Die Datensätze " ~ @cloned.join(', ')
-                 ~ " von $recipient wurden Ihnen in Ihrem Agrammon Konto bereit gestellt";
+            $msg = "Die Datensätze " ~ @datasets.join(', ')
+                 ~ " von $sender wurden Ihnen in Ihrem Agrammon Konto bereit gestellt";
         }
         Agrammon::Email.new(
                 :to($recipient),
@@ -64,7 +66,7 @@ class Agrammon::Web::Service {
                 :$subject,
                 :$msg,
         ).send;
-        return @cloned;
+        return $sent;
     }
 
     method load-dataset(Agrammon::Web::SessionUser $user, Str $name) {
@@ -284,7 +286,7 @@ class Agrammon::Web::Service {
     }
 
     method order-instances(Agrammon::Web::SessionUser $user, Str $dataset-name, @instances) {
-        return Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).order-instances(@instances);
+        Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).order-instances(@instances);
     }
 
 }

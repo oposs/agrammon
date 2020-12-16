@@ -77,17 +77,20 @@ class Agrammon::DB::Datasets does Agrammon::DB {
         return $deleted;
     }
 
-    method send(@datasets, $model, $recipient) {
-        warn "Sending mail about datasets not yet implemented";
-        my $user = $!user.id;
+    method send(@datasets, $model, $new-username) {
         my @cloned;
-        for @datasets -> $ds {
-            Agrammon::DB::Dataset.new(:$user, :$model).clone(:$recipient, :old-dataset($ds), :new-dataset($ds));
-            @cloned.push($ds);
+        my $timestamp = ~DateTime.now( formatter => sub ($_) {
+            sprintf '%02d.%02d.%04d %02d:%02d:%02d',
+                    .day, .month, .year, .hour, .minute, .second,
+        });
+
+        for @datasets -> $old-dataset {
+            my $new-dataset = "$old-dataset - Kopie von " ~ $!user.username ~  "- $timestamp";
+            Agrammon::DB::Dataset.new(:$!user, :$model).clone(:$new-username, :$old-dataset, :$new-dataset);
+            @cloned.push($old-dataset);
         }
-        # TODO: send mail
         # expected by GUI
-        return %( :sent(@cloned));
+        return %( :sent(@cloned.elems) );
     }
 
     method list {

@@ -59,7 +59,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -303,7 +303,7 @@ msgstr "Duplizieren Kategorie "
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Variable"
 msgstr "Variable"
 
@@ -323,7 +323,7 @@ msgstr ""
 msgid "Click to edit"
 msgstr "Zum Editieren anklicken"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Unit"
 msgstr "Einheit"
 
@@ -347,7 +347,7 @@ msgstr "Einheit Deutsch"
 msgid "Unit French"
 msgstr "Einheit Französisch"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Order"
 msgstr "Sortierung"
 
@@ -431,23 +431,23 @@ msgstr "*** Auswählen ***"
 msgid "Tabular Results"
 msgstr "Resultate als Tabelle"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Module"
 msgstr "Modul"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Reference"
 msgstr "Referenz"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Value"
 msgstr "Wert"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Change"
 msgstr "Änderung"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Print"
 msgstr "Druck"
 

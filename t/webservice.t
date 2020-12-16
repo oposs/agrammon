@@ -32,7 +32,7 @@ subtest "Setup" => {
     ok $user.load, "Load user $username";
 
 
-    my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOxExtended/');
+    my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOxExtendedWithFilters/');
     my $top = 'End';
     ok my $model = Agrammon::Model.new(:$path), "Load model";
     lives-ok { $model.load($top) }, "Load module from $top";
@@ -89,7 +89,7 @@ transactionally {
     }
 
     subtest "clone-dataset" => {
-        my $new-username = 'fritz.zaucker@oetiker.ch';\
+        my $new-username = 'fritz.zaucker@oetiker.ch';
         my $old-dataset  = 'Agrammon6Testing';
         my $new-dataset  = 'Agrammon6Testing Kopie';
         lives-ok { $ws.clone-dataset($user, $new-username, $old-dataset, $new-dataset) }, "Clone dataset";
@@ -135,6 +135,12 @@ transactionally {
             X::Agrammon::DB::User::InvalidPassword, 'Password invalid';
         throws-like {$ws.change-password($user, "test34", "test34") },
             X::Agrammon::DB::User::PasswordsIdentical, 'Passwords identical';
+    }
+
+    subtest "reset-password" => {
+        lives-ok  { $ws.reset-password($user, 'foo@bar.com', "test12", "hash") }, 'Password reset sucessful';
+        throws-like { $ws.reset-password($user, 'foo@bar.com', "test34", "") },
+                X::Agrammon::DB::User::PasswordResetFailed, 'Passwords reset without key fails';
     }
 
     subtest "create-tag" => {
@@ -190,8 +196,7 @@ transactionally {
     }
 
     subtest "order-instances" => {
-        my @instances = 'InstA', 'InstB';
-        ok $ws.order-instances($user, 'Agrammon6Testing', @instances), "Order instances";
+        lives-ok { $ws.order-instances($user, 'Agrammon6Testing', ('Livestock::OtherCattle[Test1]', 'Livestock::OtherCattle[Test]',) ) }, "Order instances";
     };
 
     subtest "store-data" => {
@@ -214,11 +219,6 @@ transactionally {
             'Livestock::DairyCow[]',
             'MK'
         ) }, "Instance deleted";
-    }
-
-    subtest "reset-password" => {
-        ok  $ws.reset-password($user, 'foo@bar.com', "test12", "hash"), 'Password reset sucessful';
-        nok $ws.reset-password($user, 'foo@bar.com', "test34", ""),     'Password reset without key fails';
     }
 
     subtest "load-branch-data" => sub {
