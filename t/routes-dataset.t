@@ -245,7 +245,7 @@ subtest 'Send datasets' => {
         test-given '/send_datasets', {
             test post(json => { datasets => ( 'DatasetC', 'DatasetD' ), :recipient('fritz@zaucker.ch') },  ),
                 status => 200,
-                json   => { :sent(['DatasetC', 'DatasetD',]) },
+                json   => { :sent(2) },
         };
         check-mock $fake-store,
             *.called('send-datasets', times => 1);
