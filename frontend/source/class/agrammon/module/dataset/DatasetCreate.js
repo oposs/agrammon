@@ -17,16 +17,18 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
     construct: function (title, prompt, callBack) {
         this.base(arguments);
         var maxHeight = qx.bom.Document.getHeight() - 20;
-        this.set({layout: new qx.ui.layout.VBox(5),
-                  maxHeight: maxHeight,
-                  allowShrinkY: true,
-                  showClose: true, showMinimize: false, showMaximize: false,
-                  caption: title,
-                  modal: true,
-                  contentPadding: [0, 0, 10, 0], padding: 0,
-                  minWidth: 500,
-                  icon: 'icon/16/apps/utilities-archiver.png'
-                 });
+        this.set({
+            layout: new qx.ui.layout.VBox(5),
+            maxHeight: maxHeight,
+            allowShrinkY: true,
+            showClose: true, showMinimize: false, showMaximize: false,
+            caption: title,
+            modal: true,
+            contentPadding: [0, 0, 10, 0], padding: 0,
+            minWidth: 500,
+            icon: 'icon/16/apps/utilities-archiver.png',
+            centerOnAppear : true
+        });
         this.getChildControl("pane").setBackgroundColor("white");
         var that = this;
 
@@ -36,8 +38,6 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
                                        }, this);
 
 
-        this.setPlaceMethod('mouse');
-        this.setPosition('top-left');
         this.__table = this.__createTable();
         this.__table.setAllowShrinkY(true);
         var datasetFilter =

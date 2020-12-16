@@ -303,7 +303,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTableSimple', {
                                         'info'
                                     ]
                                 );
-                                that.__table.getTableModel().updateView(1);
+                                //                                that.__table.getTableModel().updateView(1);
+                                that.updateView();
 
                                 // change current dataset name if we renamed currently connected dataset
                                 if (that.__info.getDatasetName() == oldName ) {

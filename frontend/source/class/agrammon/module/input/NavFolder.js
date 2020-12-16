@@ -291,7 +291,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         isComplete: function(nset) {
 
             if (this.canInstance()) { // no data here
-                this.setIcon('grammon/empty-circle.png');
+                this.setIcon('agrammon/empty-circle.png');
             }
 
             if (! this.isInstance() && ! this.isSingleton()) {

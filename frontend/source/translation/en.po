@@ -50,15 +50,15 @@ msgstr ""
 msgid "Comment on dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Incremental filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr ""
 
@@ -70,27 +70,27 @@ msgstr ""
 msgid "Sample datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Last change"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Parameters"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Read-only"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Model Version"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Tags"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Dataset name"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "datasets"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Info"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr ""
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Error"
 msgstr ""
 
@@ -182,11 +182,11 @@ msgstr ""
 msgid "Rename dataset"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "New name"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Comment"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgstr ""
 msgid "Input"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Instance name must not be empty."
 msgstr ""
 
@@ -298,15 +298,15 @@ msgstr ""
 msgid "Duplicate instance "
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Variable"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/input/regional/ConfigEditor.js
 msgid "Input Parameter"
 msgstr ""
 
@@ -322,11 +322,11 @@ msgstr ""
 msgid "Click to edit"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Unit"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/user/Login.js
 msgid "Help"
 msgstr ""
 
@@ -346,7 +346,7 @@ msgstr ""
 msgid "Unit French"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Order"
 msgstr ""
 
