@@ -111,7 +111,7 @@ msgstr "Datensatz"
 msgid "datasets"
 msgstr "Datensätze"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Info"
 msgstr "Info"
 
@@ -171,7 +171,7 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Error"
 msgstr "Fehler"
 
@@ -183,11 +183,11 @@ msgstr "existiert bereits."
 msgid "Rename dataset"
 msgstr "Datensatz umbenennen"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "New name"
 msgstr "Neuer Name"
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -279,7 +279,7 @@ msgstr "Filter auf Marker Name"
 msgid "Input"
 msgstr "Eingabe"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Instance name must not be empty."
 msgstr "Der Kategorie-Name darf nicht leer sein."
 
@@ -299,15 +299,15 @@ msgstr "Umbenennen Kategorie "
 msgid "Duplicate instance "
 msgstr "Duplizieren Kategorie "
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Variable"
 msgstr "Variable"
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/input/regional/ConfigEditor.js
 msgid "Input Parameter"
 msgstr "Eingabe-Parameter"
 
@@ -323,11 +323,11 @@ msgstr ""
 msgid "Click to edit"
 msgstr "Zum Editieren anklicken"
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Unit"
 msgstr "Einheit"
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/user/Login.js
 msgid "Help"
 msgstr "Hilfe"
 
@@ -347,7 +347,7 @@ msgstr "Einheit Deutsch"
 msgid "Unit French"
 msgstr "Einheit Französisch"
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Order"
 msgstr "Sortierung"
 
