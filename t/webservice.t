@@ -370,7 +370,6 @@ subtest "get-excel-export" => {
         :datasetName($dataset-name),
         :language('de'),
         :reports(0),
-        :!withFilters
     );
     ok my $workbook = $ws.get-excel-export($user, %params), "Create workbook";
 
@@ -380,7 +379,7 @@ subtest "get-excel-export" => {
     is $workbook.worksheets[3;0].name,  'Eingaben formatiert',   "Excel workbook has correct name";
 
     # TODO: add real tests once implementation is complete
-    my $cells = $workbook.worksheets[0].cells;
+    my $cells = $workbook.worksheets[1].cells;
     is $cells[0;0].value,  $dataset-name, "A1 has correct value";
 }
 
