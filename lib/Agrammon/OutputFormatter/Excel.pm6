@@ -7,7 +7,6 @@ use Agrammon::Web::SessionUser;
 use Spreadsheet::XLSX;
 use Spreadsheet::XLSX::Styles;
 
-# TODO: make output match current Agrammon Excel export
 sub input-output-as-excel(
     Agrammon::Config $cfg,
     Agrammon::Web::SessionUser $user,
@@ -16,8 +15,6 @@ sub input-output-as-excel(
     Str $language, $prints,
     Bool $include-filters, Bool $all-filters
 ) is export {
-    note '**** input-output-as-excel() not yet completely implemented';
-
     my $workbook = Spreadsheet::XLSX.new;
 
     # prepare sheets
