@@ -82,8 +82,8 @@ sub input-output-as-excel(
         $include-filters, $all-filters
     );
 
+    my @records;
     # TODO: fix sorting
-    my @records := %data<inputs>;
     my $col = 0;
     my $row = 5;
     my $row-formatted = $row;
@@ -91,6 +91,7 @@ sub input-output-as-excel(
 #    for @records.sort(+*.<order>) -> %rec {
     my $last-instance = '';
     my $last-module = '';
+    @records := %data<inputs>;
     for @records -> %rec {
 
         # raw data
@@ -102,22 +103,22 @@ sub input-output-as-excel(
         $row++;
 
         # formatted data
-        my $instance = %rec<instance>;
-        my $module = %rec<gui>;
-        if $module ne $last-module {
-            $input-sheet-formatted.set($row-formatted, $col+0, $module, :bold);
-            $row-formatted++;
-            $last-module = $module;
-        }
-        if $instance and $instance ne $last-instance {
-            $input-sheet-formatted.set($row-formatted, $col+1, $instance, :bold);
-            $row-formatted++;
-            $last-instance = $instance;
-        }
-        $input-sheet-formatted.set($row-formatted, $col+1, %rec<input>);
-        $input-sheet-formatted.set($row-formatted, $col+2, (%rec<value-translated> // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
-        $input-sheet-formatted.set($row-formatted, $col+3, %rec<unit>);
-        $row-formatted++;
+#        my $instance = %rec<instance>;
+#        my $module = %rec<gui>;
+#        if $module ne $last-module {
+#            $input-sheet-formatted.set($row-formatted, $col+0, $module, :bold);
+#            $row-formatted++;
+#            $last-module = $module;
+#        }
+#        if $instance and $instance ne $last-instance {
+#            $input-sheet-formatted.set($row-formatted, $col+1, $instance, :bold);
+#            $row-formatted++;
+#            $last-instance = $instance;
+#        }
+#        $input-sheet-formatted.set($row-formatted, $col+1, %rec<input>);
+#        $input-sheet-formatted.set($row-formatted, $col+2, (%rec<value-translated> // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
+#        $input-sheet-formatted.set($row-formatted, $col+3, %rec<unit>);
+#        $row-formatted++;
     }
 
     # add outputs
