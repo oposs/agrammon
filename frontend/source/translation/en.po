@@ -50,15 +50,15 @@ msgstr ""
 msgid "Comment on dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Incremental filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr ""
 
@@ -70,27 +70,27 @@ msgstr ""
 msgid "Sample datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Last change"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Parameters"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Read-only"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Model Version"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Tags"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Dataset name"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr ""
 
