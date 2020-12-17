@@ -178,16 +178,18 @@ class Agrammon::Web::Service {
 
         my $type = $reports[$prints]<type> // '';
         my $with-filters = $type eq 'reportDetailed';
-        my $all-filters  = $type eq 'reportDetailed';
+        my $all-filters = $type eq 'reportDetailed';
 
-        input-output-as-excel(
-            $!cfg,
-            $user,
-            $dataset-name,
-            $!model, $outputs, $inputs, $reports,
-            $language, $prints,
-            $with-filters, $all-filters
-        );
+        timed "Create Excel", {
+            input-output-as-excel(
+                $!cfg,
+                $user,
+                $dataset-name,
+                $!model, $outputs, $inputs, $reports,
+                $language, $prints,
+                $with-filters, $all-filters
+            );
+        }
     }
 
     method get-pdf-export(Agrammon::Web::SessionUser $user, %params) {
