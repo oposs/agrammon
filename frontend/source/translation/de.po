@@ -51,15 +51,15 @@ msgstr "Referenz: "
 msgid "Comment on dataset"
 msgstr "Kommentar zum Datensatz"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Incremental filter on dataset name"
 msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -71,27 +71,27 @@ msgstr "Erstellen"
 msgid "Sample datasets"
 msgstr "Beispiel-Datensätze"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Last change"
 msgstr "Zuletzt geändert am"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Parameters"
 msgstr "Parameter"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Read-only"
 msgstr "schreibgeschützt"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Model Version"
 msgstr "Modell Version"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Tags"
 msgstr "Marker"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Dataset name"
 msgstr "Datensatz"
 
@@ -131,7 +131,7 @@ msgstr "Empfänger der ausgewählten Datensätze"
 msgid "sent"
 msgstr "gesendet"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Rename"
 msgstr "Umbenennen"
 
@@ -147,7 +147,7 @@ msgstr "Senden"
 msgid "Send selected dataset(s) to other Agrammon user"
 msgstr "Ausgewählte Datensätze an anderen Agrammon Benutzer schicken"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "New"
 msgstr "Neu"
 
@@ -155,7 +155,7 @@ msgstr "Neu"
 msgid "Create new dataset"
 msgstr "Neuen (leeren) Datensatz anlegen"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Delete"
 msgstr "Löschen"
 
@@ -171,11 +171,11 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Error"
 msgstr "Fehler"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "already exists"
 msgstr "existiert bereits."
 
@@ -363,7 +363,7 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
