@@ -27,19 +27,6 @@ sub input-output-as-excel(
                 .day, .month, .year, .hour, .minute, .second,
     });
     my $model-version = $cfg.gui-title{$language} ~ " - " ~ $cfg.gui-variant;
-    for ($output-sheet-formatted, $input-sheet-formatted) -> $sheet {
-        $sheet.set(0, 0, $dataset-name, :bold);
-        $sheet.set(1, 0, $user.username);
-        $sheet.set(2, 0, $model-version);
-        $sheet.set(3, 0, $timestamp);
-    }
-
-    for ($output-sheet, $input-sheet) -> $sheet {
-        $sheet.set(0, 2, $dataset-name);
-        $sheet.set(1, 2, $user.username);
-        $sheet.set(2, 2, $model-version);
-        $sheet.set(3, 2, $timestamp);
-    }
 
     # set column width
     for ($output-sheet, $output-sheet-formatted) -> $sheet {
@@ -72,6 +59,20 @@ sub input-output-as-excel(
             :custom-width, :width(50);
     $input-sheet-formatted.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
             :custom-width, :width(10);
+
+    for ($output-sheet-formatted, $input-sheet-formatted) -> $sheet {
+        $sheet.set(0, 0, $dataset-name, :bold);
+        $sheet.set(1, 0, $user.username);
+        $sheet.set(2, 0, $model-version);
+        $sheet.set(3, 0, $timestamp);
+    }
+
+    for ($output-sheet, $input-sheet) -> $sheet {
+        $sheet.set(0, 2, $dataset-name);
+        $sheet.set(1, 2, $user.username);
+        $sheet.set(2, 2, $model-version);
+        $sheet.set(3, 2, $timestamp);
+    }
 
     # prepared data
     my %data = collect-data(
