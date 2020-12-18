@@ -1,5 +1,4 @@
 use v6;
-use DateTime;
 
 sub timestamp is export {
     ~DateTime.now( formatter => sub ($_) {
