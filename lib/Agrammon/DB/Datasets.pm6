@@ -2,6 +2,7 @@ use v6;
 use Agrammon::DB;
 use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
+use Agrammon::Timestamp;
 
 class Agrammon::DB::Datasets does Agrammon::DB {
     has Str $.version;
@@ -78,19 +79,13 @@ class Agrammon::DB::Datasets does Agrammon::DB {
     }
 
     method send(@datasets, $model, $new-username) {
-        my @cloned;
-        my $timestamp = ~DateTime.now( formatter => sub ($_) {
-            sprintf '%02d.%02d.%04d %02d:%02d:%02d',
-                    .day, .month, .year, .hour, .minute, .second,
-        });
 
         for @datasets -> $old-dataset {
-            my $new-dataset = "$old-dataset - Kopie von " ~ $!user.username ~  "- $timestamp";
+            my $new-dataset = "$old-dataset - Kopie von " ~ $!user.username ~  " - " ~ timestamp;
             Agrammon::DB::Dataset.new(:$!user, :$model).clone(:$new-username, :$old-dataset, :$new-dataset);
-            @cloned.push($old-dataset);
         }
         # expected by GUI
-        return %( :sent(@cloned.elems) );
+        return %( :sent(@datasets.elems) );
     }
 
     method list {

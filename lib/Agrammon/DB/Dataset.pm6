@@ -499,28 +499,27 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     method order-instances(@instances) {
         my $username = $!user.username;
 
-        my $rows-ordered = 0;
         self.with-db: -> $db {
             my $i = 0;
-            for (@instances) {
-                my $pattern  = $_;
+            for @instances.kv -> $i, $pattern {
                 $pattern     ~~ / (.+) '[' (.+) ']' /;
                 my $var      = $0;
                 my $instance = $1;
                 $var         = "$var\[\]%";
-                $db.query(q:to/SQL/, $i++, $username, $!name, $var, $instance);
+                $db.query(q:to/SQL/, $i, $username, $!name, $var, $instance);
                 UPDATE data_new SET data_instance_order = $1
                  WHERE data_dataset = dataset_name2id($2,$3)
                    AND data_var     LIKE $4
                    AND data_instance = $5
                 RETURNING data_instance_order
                 SQL
-                $rows-ordered++;
             }
         }
 
         # reordering failed
-        die X::Agrammon::DB::Dataset::InstanceReorderFailed.new(:$!name) unless $rows-ordered == @instances.elems;
+        CATCH {
+            die X::Agrammon::DB::Dataset::InstanceReorderFailed.new(:$!name);
+        }
     }
 
 }
