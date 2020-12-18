@@ -2,6 +2,8 @@ use v6;
 
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
+use Agrammon::Performance;
+
 use Agrammon::DB::User;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
@@ -306,9 +308,14 @@ sub api-routes (Str $schema, $ws) {
                         # prevent header injection
                         "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).xlsx"
                 );
+                my $excel;
+                warn "Creating Excel";
+                timed "Create excel", {
+                    $excel = $ws.get-excel-export($user, %params).to-blob;
+                };
                 content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                        $ws.get-excel-export($user, %params).to-blob;
-                CATCH {
+                    $excel;
+                 CATCH {
                     default {
                         note "$_";
                         response.status = 500;

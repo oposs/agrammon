@@ -171,7 +171,7 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/input/regional/BranchEditor.js
 msgid "Error"
 msgstr "Fehler"
 
@@ -299,7 +299,7 @@ msgstr "Umbenennen Kategorie "
 msgid "Duplicate instance "
 msgstr "Duplizieren Kategorie "
 
-#: agrammon/ui/menu/NavMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
@@ -363,7 +363,7 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/input/regional/BranchEditor.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
