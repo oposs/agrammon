@@ -17,7 +17,7 @@
     "DB::Pg",
     "Digest::SHA1::Native",
     "Email::MIME",
-    "LibXML:ver<0.5.10>",
+    "LibXML:ver<0.5.12+>",
     "Net::SMTP::Client::Async",
     "OO::Monitors",
     "Shell::Command",
