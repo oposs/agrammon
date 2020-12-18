@@ -4,6 +4,7 @@ use Agrammon::Model;
 use Agrammon::Outputs;
 use Agrammon::OutputFormatter::CollectData;
 use Agrammon::Outputs::FilterGroupCollection;
+use Agrammon::Timestamp;
 use Agrammon::Web::SessionUser;
 use Cro::WebApp::Template;
 
@@ -289,18 +290,16 @@ sub input-output-as-pdf(
     }
 
     # setup template data
-    %data<titles>    = %titles;
-    %data<dataset>   = $dataset-name // 'NO DATASET';
-    %data<username>  = $user.username // 'NO USER';
-    %data<model>     = $cfg.gui-variant // 'NO MODEL';
-    %data<timestamp> = ~DateTime.now( formatter => sub ($_) {
-        sprintf '%02d.%02d.%04d %02d:%02d:%02d',
-            .day, .month, .year,.hour, .minute, .second,
-    });
+    %data<titles>     = %titles;
+    %data<dataset>    = $dataset-name // 'NO DATASET';
+    %data<username>   = $user.username // 'NO USER';
+    %data<model>      = $cfg.gui-variant // 'NO MODEL';
+    %data<timestamp>  = timestamp;
     %data<version>    = latex-escape($cfg.gui-title{$language} // 'NO  VERSION');
     %data<outputs>    = @output-formatted;
     %data<inputs>     = @input-formatted;
     %data<submission> = %submission;
+
     return create-pdf(
         $*TMPDIR.add($cfg.general<tmpDir>),
         $cfg.general<pdflatex>,

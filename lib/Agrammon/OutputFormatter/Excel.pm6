@@ -22,10 +22,7 @@ sub input-output-as-excel(
     my $output-sheet-formatted = $workbook.create-worksheet('Ergebnisse formatiert');
     my $input-sheet = $workbook.create-worksheet('Eingaben');
     my $input-sheet-formatted = $workbook.create-worksheet('Eingaben formatiert');
-    my $timestamp = ~DateTime.now( formatter => sub ($_) {
-        sprintf '%02d.%02d.%04d %02d:%02d:%02d',
-                .day, .month, .year, .hour, .minute, .second,
-    });
+    my $timestamp = timestamp;
     my $model-version = $cfg.gui-title{$language} ~ " - " ~ $cfg.gui-variant;
 
     # set column width
@@ -103,6 +100,7 @@ sub input-output-as-excel(
         $row++;
 
         # formatted data
+# commented out for the moment for performance reasons
 #        my $instance = %rec<instance>;
 #        my $module = %rec<gui>;
 #        if $module ne $last-module {
