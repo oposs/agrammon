@@ -222,6 +222,37 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /order_instances:
+        post:
+            summary: Reorder instances
+            operationId: orderInstances
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - datasetName
+                                - instances
+                            properties:
+                                datasetName:
+                                    description: Name of dataset
+                                    type: string
+                                instances:
+                                    description: Array of instances to reorder
+                                    type: array
+                                    items:
+                                        type: string
+            responses:
+                '204':
+                    description: Instances reordered
+                '409':
+                    description: Instance reordering failed
+                    content:
+                        application/json:
+                            schema:
+                               $ref: "#/components/schemas/Error"
     /rename_instance:
         post:
             summary: Rename an instance
@@ -237,6 +268,25 @@ paths:
                     description: Instance renamed
                 '409':
                     description: Instance rename failed
+                    content:
+                        application/json:
+                            schema:
+                               $ref: "#/components/schemas/Error"
+    /reset_password:
+        post:
+            summary: Reset user password
+            operationId: resetPassword
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ResetPassword"
+            responses:
+                '204':
+                    description: Password reset
+                '409':
+                    description: Password reset failed
                     content:
                         application/json:
                             schema:
@@ -505,6 +555,22 @@ components:
                     type: string
                 newName:
                     description: New name
+                    type: string
+        ResetPassword:
+            type: object
+            required:
+                - email
+                - password
+                - key
+            properties:
+                email:
+                    description: Login name
+                    type: string
+                password:
+                    description: New password
+                    type: string
+                key:
+                    description: Secret
                     type: string
         CloneDataset:
             type: object

@@ -5,6 +5,7 @@ use Agrammon::DB::Dataset;
 use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
 use Agrammon::DB::Tags;
+use Agrammon::Email;
 use Agrammon::Model;
 use Agrammon::OutputsCache;
 use Agrammon::OutputFormatter::Excel;
@@ -46,18 +47,33 @@ class Agrammon::Web::Service {
     }
 
     # return list of datasets as expected by Web GUI
-    method send-datasets(Agrammon::Web::SessionUser $user, @datasets) {
-        return @datasets.elems;
-#        return Agrammon::DB::Datasets.new(:$user, :$version).load.list;
+    method send-datasets(Agrammon::Web::SessionUser $user, @datasets, $recipient) {
+        my $model = self.cfg.app-variant; # model 'SingleSHL';
+        my $sent = Agrammon::DB::Datasets.new(:$user).send(@datasets, $model, $recipient);
+        my $subject = 'Neue Agrammon Datensätze';
+        my $sender = $user.username;
+        my $msg;
+        if $sent == 1 {
+            $msg = "Der Datensatz @datasets[0] von $sender wurde Ihnen in Ihrem Agrammon Konto bereit gestellt";
+        }
+        else {
+            $msg = "Die Datensätze " ~ @datasets.join(', ')
+                 ~ " von $sender wurden Ihnen in Ihrem Agrammon Konto bereit gestellt";
+        }
+        Agrammon::Email.new(
+                :to($recipient),
+                :from('support@agrammon.ch'),
+                :$subject,
+                :$msg,
+        ).send;
+        return $sent;
     }
-
 
     method load-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         warn "***** load-dataset($name) not yet completely implemented (branching)";
         my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
         return @data;
     }
-
 
     method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
         my $model = self.cfg.app-variant; # model 'SingleSHL';
@@ -162,7 +178,7 @@ class Agrammon::Web::Service {
 
         my $type = $reports[$prints]<type> // '';
         my $with-filters = $type eq 'reportDetailed';
-        my $all-filters  = $type eq 'reportDetailed';
+        my $all-filters = $type eq 'reportDetailed';
 
         input-output-as-excel(
             $!cfg,
@@ -266,11 +282,11 @@ class Agrammon::Web::Service {
     }
 
     method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $variable-pattern --> Nil) {
-        Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).lookup.rename-instance($old-instance, $new-instance, $variable-pattern);
+        Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).rename-instance($old-instance, $new-instance, $variable-pattern);
     }
 
     method order-instances(Agrammon::Web::SessionUser $user, Str $dataset-name, @instances) {
-        return Agrammon::DB::Dataset.new(:$user, :$dataset-name).lookup.order-instances(@instances);
+        Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).order-instances(@instances);
     }
 
 }

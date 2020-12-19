@@ -153,37 +153,50 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 nDatasets = datasets.length;
                 if (nDatasets > 0) {
                     var recipient = self.nameField.getValue();
-                    this.__rpc.callAsync( send_datasets_func,
-                                         'send_datasets',
-                                         { recipient: recipient,
-                                           datasets:  datasets });
+                    this.__rpc.callAsync(
+                        function(data,exc,id) {
+                            console.log('DatasetTable: data=', data, ', exc=', exc);
+                            if (exc == null) {
+                                var msg;
+                                if (data.sent == 1) {
+                                    msg = that.tr("dataset");
+                                }
+                                else {
+                                    msg = that.tr("datasets");
+                                }
+                                qx.event.message.Bus.dispatchByName(
+                                    'error',
+                                    [
+                                        that.tr("Info"),
+                                        data.sent + ' ' + msg + ' ' + that.tr("sent"),
+                                        'info'
+                                    ]
+                                );
+                                var userName = that.__info.getUserName();
+                                console.log('userName=', userName, ', recipient=', recipient);
+                                if (userName == recipient) {
+                                    qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', userName);
+                                }
+                            }
+                            else {
+                                alert(exc);
+                            }
+                        },
+                        'send_datasets',
+                        { recipient: recipient, datasets:  datasets }
+                    );
                 }
                 self.close();
             }, this);
             dialog =
-                new agrammon.ui.dialog.Dialog(this.tr("Sending datasets"),
-                                              this.tr("Recipient of selected datasets"),
-                                              okFunction, this);
+                new agrammon.ui.dialog.Dialog(
+                    this.tr("Sending datasets"),
+                    this.tr("Recipient of selected datasets"),
+                    okFunction,
+                    this
+                );
            this.resetSelection();
         }, this);
-
-        var send_datasets_func = function(data,exc,id) {
-            if (exc == null) {
-                var msg;
-                if (data == 1) {
-                    msg = that.tr("dataset");
-                }
-                else {
-                    msg = that.tr("datasets");
-                }
-                qx.event.message.Bus.dispatchByName('error',
-                                                    [ that.tr("Info"), data + ' ' + msg + ' ' + that.tr("sent"),
-                                                      'info' ]);
-            }
-            else {
-                alert(exc);
-            }
-        }; // send_datasets_func()
 
     }, // construct
 

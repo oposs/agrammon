@@ -116,7 +116,6 @@ subtest 'Get output variables' => {
     }
 }
 
-
 subtest 'Get excel export' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/export/excel', {
@@ -242,8 +241,7 @@ subtest 'Order instances' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/order_instances', {
             test post(json => { :datasetName('DatasetA'), instances => ('InstC', 'InstD') }),
-                status => 200,
-                json   => { sorted => 1 },
+                status => 204,
         };
         check-mock $fake-store,
             *.called('order-instances', times => 1);

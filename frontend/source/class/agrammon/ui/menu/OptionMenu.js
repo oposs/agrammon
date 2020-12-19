@@ -158,7 +158,7 @@ qx.Class.define('agrammon.ui.menu.OptionMenu', {
         __info: null,
 
         __changePassword: function(data, exc, id) {
-            if (exc == null) {
+            if (exc == null && ! data.error) {
                 qx.event.message.Bus.dispatchByName('error',
                                     [ this.tr("Info"),
                                       this.tr("Password changed successfully."),

@@ -32,6 +32,14 @@ class X::Agrammon::DB::Dataset::RenameFailed is Exception {
     }
 }
 
+#| Error when dataset couldn't be reordered.
+class X::Agrammon::DB::Dataset::InstanceReorderFailed is Exception {
+    has Str $.dataset-name is required;
+    method message {
+        "Dataset 'Instances of $!dataset-name' couldn't be reordered'."
+    }
+}
+
 #| Error when an instance already exists for the user.
 class X::Agrammon::DB::Dataset::InstanceAlreadyExists is Exception {
     has Str $.name is required;
@@ -140,7 +148,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
         my $ds = self!create-dataset( $new-dataset, $new-username, $!version, $!model);
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset);
+            $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset);
                 INSERT INTO data_new (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
                      SELECT $1, data_var, data_instance, data_val, data_instance_order, data_comment
                        FROM data_new
@@ -462,15 +470,17 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     }
 
     method rename-instance($old-name, $new-name, $pattern --> Nil) {
+        my $username = $!user.username;
+
         self.with-db: -> $db {
             # old and new name are identical
             die X::Agrammon::DB::Dataset::InstanceRenameFailed.new(:$old-name, :$new-name) if $old-name eq $new-name;
 
-            my $ret = $db.query(q:to/SQL/, $new-name, $!id, "$pattern\%", $old-name);
+            my $ret = $db.query(q:to/SQL/, $new-name, $username, $!name, "$pattern\%", $old-name);
                 UPDATE data_new set data_instance = $1
-                 WHERE data_dataset = $2
-                   AND data_var LIKE $3
-                   AND data_instance = $4
+                 WHERE data_dataset = dataset_name2id($2,$3)
+                   AND data_var LIKE $4
+                   AND data_instance = $5
                 RETURNING data_val
             SQL
 
@@ -487,28 +497,29 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     }
 
     method order-instances(@instances) {
-        warn "*** order-instance not yet implemented";
+        my $username = $!user.username;
+
         self.with-db: -> $db {
-
-            # my $i = 0;
-            # for (@instances) {
-            #     my $pattern  = $_;
-            #     $pattern     =~ m/(.*)\[(.*)\]/;
-            #     my $var      = $1;
-            #     my $instance = $2;
-            #     $var         = "%$var\[\]%";
-            #     # warn "var=$var, instance=$instance";
-
-            #     my $ret = $db.query(q:to/SQL/, $i, $!id, $var, $instance);
-            #     UPDATE data_new SET data_instance_order = $1
-            #      WHERE data_dataset = $2
-            #       AND data_var      LIKE $3
-            #       AND data_instance LIKE $4
-            #     SQL
-            #     $i++;
-            # }
+            my $i = 0;
+            for @instances.kv -> $i, $pattern {
+                $pattern     ~~ / (.+) '[' (.+) ']' /;
+                my $var      = $0;
+                my $instance = $1;
+                $var         = "$var\[\]%";
+                $db.query(q:to/SQL/, $i, $username, $!name, $var, $instance);
+                UPDATE data_new SET data_instance_order = $1
+                 WHERE data_dataset = dataset_name2id($2,$3)
+                   AND data_var     LIKE $4
+                   AND data_instance = $5
+                RETURNING data_instance_order
+                SQL
+            }
         }
-        return True;
+
+        # reordering failed
+        CATCH {
+            die X::Agrammon::DB::Dataset::InstanceReorderFailed.new(:$!name);
+        }
     }
 
 }

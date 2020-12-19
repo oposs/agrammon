@@ -3,11 +3,11 @@ use Agrammon::Config;
 use Agrammon::Model;
 use Agrammon::Outputs;
 use Agrammon::OutputFormatter::CollectData;
+use Agrammon::Timestamp;
 use Agrammon::Web::SessionUser;
 use Spreadsheet::XLSX;
 use Spreadsheet::XLSX::Styles;
 
-# TODO: make output match current Agrammon Excel export
 sub input-output-as-excel(
     Agrammon::Config $cfg,
     Agrammon::Web::SessionUser $user,
@@ -16,8 +16,6 @@ sub input-output-as-excel(
     Str $language, $prints,
     Bool $include-filters, Bool $all-filters
 ) is export {
-    note '**** input-output-as-excel() not yet completely implemented';
-
     my $workbook = Spreadsheet::XLSX.new;
 
     # prepare sheets
@@ -25,17 +23,8 @@ sub input-output-as-excel(
     my $output-sheet-formatted = $workbook.create-worksheet('Ergebnisse formatiert');
     my $input-sheet = $workbook.create-worksheet('Eingaben');
     my $input-sheet-formatted = $workbook.create-worksheet('Eingaben formatiert');
-    my $timestamp = ~DateTime.now( formatter => sub ($_) {
-        sprintf '%02d.%02d.%04d %02d:%02d:%02d',
-                .day, .month, .year, .hour, .minute, .second,
-    });
+    my $timestamp = timestamp;
     my $model-version = $cfg.gui-title{$language} ~ " - " ~ $cfg.gui-variant;
-    for ($output-sheet, $output-sheet-formatted, $input-sheet, $input-sheet-formatted) -> $sheet {
-        $sheet.set(0, 0, $dataset-name, :bold);
-        $sheet.set(1, 0, $user.username);
-        $sheet.set(2, 0, $model-version);
-        $sheet.set(3, 0, $timestamp);
-    }
 
     # set column width
     for ($output-sheet, $output-sheet-formatted) -> $sheet {
@@ -69,6 +58,20 @@ sub input-output-as-excel(
     $input-sheet-formatted.columns[3] = Spreadsheet::XLSX::Worksheet::Column.new:
             :custom-width, :width(10);
 
+    for ($output-sheet-formatted, $input-sheet-formatted) -> $sheet {
+        $sheet.set(0, 0, $dataset-name, :bold);
+        $sheet.set(1, 0, $user.username);
+        $sheet.set(2, 0, $model-version);
+        $sheet.set(3, 0, $timestamp);
+    }
+
+    for ($output-sheet, $input-sheet) -> $sheet {
+        $sheet.set(0, 2, $dataset-name);
+        $sheet.set(1, 2, $user.username);
+        $sheet.set(2, 2, $model-version);
+        $sheet.set(3, 2, $timestamp);
+    }
+
     # prepared data
     my %data = collect-data(
         $model,
@@ -77,8 +80,8 @@ sub input-output-as-excel(
         $include-filters, $all-filters
     );
 
+    my @records;
     # TODO: fix sorting
-    my @records := %data<inputs>;
     my $col = 0;
     my $row = 5;
     my $row-formatted = $row;
@@ -86,6 +89,7 @@ sub input-output-as-excel(
 #    for @records.sort(+*.<order>) -> %rec {
     my $last-instance = '';
     my $last-module = '';
+    @records := %data<inputs>;
     for @records -> %rec {
 
         # raw data
@@ -97,22 +101,23 @@ sub input-output-as-excel(
         $row++;
 
         # formatted data
-        my $instance = %rec<instance>;
-        my $module = %rec<gui>;
-        if $module ne $last-module {
-            $input-sheet-formatted.set($row-formatted, $col+0, $module, :bold);
-            $row-formatted++;
-            $last-module = $module;
-        }
-        if $instance and $instance ne $last-instance {
-            $input-sheet-formatted.set($row-formatted, $col+1, $instance, :bold);
-            $row-formatted++;
-            $last-instance = $instance;
-        }
-        $input-sheet-formatted.set($row-formatted, $col+1, %rec<input>);
-        $input-sheet-formatted.set($row-formatted, $col+2, (%rec<value-translated> // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
-        $input-sheet-formatted.set($row-formatted, $col+3, %rec<unit>);
-        $row-formatted++;
+# commented out for the moment for performance reasons
+#        my $instance = %rec<instance>;
+#        my $module = %rec<gui>;
+#        if $module ne $last-module {
+#            $input-sheet-formatted.set($row-formatted, $col+0, $module, :bold);
+#            $row-formatted++;
+#            $last-module = $module;
+#        }
+#        if $instance and $instance ne $last-instance {
+#            $input-sheet-formatted.set($row-formatted, $col+1, $instance, :bold);
+#            $row-formatted++;
+#            $last-instance = $instance;
+#        }
+#        $input-sheet-formatted.set($row-formatted, $col+1, %rec<input>);
+#        $input-sheet-formatted.set($row-formatted, $col+2, (%rec<value-translated> // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
+#        $input-sheet-formatted.set($row-formatted, $col+3, %rec<unit>);
+#        $row-formatted++;
     }
 
     # add outputs

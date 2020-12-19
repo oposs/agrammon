@@ -2,6 +2,7 @@ use v6;
 
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
+
 use Agrammon::DB::User;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
@@ -27,7 +28,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
         # }
         include static-content($root);
         include api-routes($schema, $ws);
-        include user-routes($ws);
         include dataset-routes($ws);
         include application-routes($ws);
         after {
@@ -40,7 +40,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
 sub static-content($root) {
     route {
         my $root = %*ENV<SOURCE_MODE> ?? 'frontend/compiled/source' !! 'public';
-        note "root=$root";
 
         if %*ENV<SOURCE_MODE> { # Qooxdoo source mode (development)
             get -> {
@@ -202,6 +201,17 @@ sub api-routes (Str $schema, $ws) {
                 }
             }
         }
+        operation 'orderInstances', -> LoggedIn $user {
+            request-body -> (:datasetName($dataset-name)!, :@instances!) {
+                $ws.order-instances($user, $dataset-name, @instances);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::InstanceReorderFailed {
+                        conflict 'application/json', %( error => .message );
+                    }
+                }
+            }
+        }
         operation 'deleteInstance', -> LoggedIn $user {
             request-body -> ( :datasetName($dataset-name), :$instance, :variablePattern($variable-pattern) ) {
                 $ws.delete-instance($user, $dataset-name, $variable-pattern, $instance);
@@ -226,6 +236,18 @@ sub api-routes (Str $schema, $ws) {
                         content 'application/json', %( error => .message )
                     }
                 }
+            }
+        }
+        # TODO: test from login screen
+        operation 'resetPassword', -> LoggedIn $user {
+            request-body -> (:$email!, :$password!, :$key!) {
+                $ws.reset-password($email, $password, $key);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::User::PasswordResetFailed {
+                        conflict 'application/json', %( error => .message );
+                    }
+                 }
             }
         }
         operation 'storeInputComment', -> LoggedIn $user {
@@ -281,13 +303,13 @@ sub api-routes (Str $schema, $ws) {
         operation 'exportExcel', -> LoggedIn $user {
             request-body -> %params {
                 response.append-header(
-                        'Content-disposition',
-                        # prevent header injection
-                        "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).xlsx"
+                    'Content-disposition',
+                    # prevent header injection
+                    "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).xlsx"
                 );
                 content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                        $ws.get-excel-export($user, %params).to-blob;
-                CATCH {
+                    $ws.get-excel-export($user, %params).to-blob;
+                 CATCH {
                     default {
                         note "$_";
                         response.status = 500;
@@ -299,10 +321,10 @@ sub api-routes (Str $schema, $ws) {
         operation 'exportPDF', -> LoggedIn $user {
             request-body -> %params {
                 response.append-header(
-                        'Content-disposition',
-                        # prevent header injection
-                        "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).pdf"
-                        );
+                    'Content-disposition',
+                    # prevent header injection
+                    "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).pdf"
+                    );
                 content 'application/pdf',
                         $ws.get-pdf-export($user, %params);
                 CATCH {
@@ -411,18 +433,6 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
    }
 }
 
-sub user-routes(Agrammon::Web::Service $ws) {
-    route {
-        # TODO: implement/test reset_password()
-        post -> LoggedIn $user, 'reset_password' {
-            request-body -> (:$email!, :$password!, :$key!) {
-                my $data = $ws.reset-password($email, $password, $key);
-                content 'application/json', $data;
-            }
-        }
-    }
-}
-
 sub application-routes(Agrammon::Web::Service $ws) {
     route {
         # working
@@ -466,12 +476,5 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # TODO: test/implement order_instances()
-        post -> LoggedIn $user, 'order_instances' {
-            request-body -> (:datasetName($dataset-name)!, :@instances) {
-                my $data = $ws.order-instances($user, $dataset-name, @instances);
-                content 'application/json', $data;
-            }
-        }
     }
 }

@@ -21,7 +21,6 @@ qx.Class.define('agrammon.module.output.Reports', {
 
         var variant = agrammon.Info.getInstance().getVariant();
         var version = agrammon.Info.getInstance().getVersion();
-        this.__version = 'Agrammon, ' + variant + ', ' + version;
 
         var baseUrl = agrammon.io.remote.Rpc.getInstance().getBaseUrl();
         this.__info = agrammon.Info.getInstance();
@@ -143,13 +142,11 @@ qx.Class.define('agrammon.module.output.Reports', {
         logBox.setToolTip(tt);
         this.__logAreaOutput = new qx.ui.basic.Atom();
         this.__logAreaOutput.set({rich: true});
-//        logBox.add(this.__logAreaOutput);
         scrollBox.add(this.__logAreaOutput);
         logBox.add(scrollBox, { flex : 1 });
 
         this.__logAreaReference = new qx.ui.basic.Atom();
         this.__logAreaReference.set({rich: true});
-//        logBox.add(this.__logAreaReference);
         scrollBox.add(this.__logAreaReference);
 
         this.__logAreaReference.exclude();
@@ -187,7 +184,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             }
 
             var form    = document.createElement("form");
-            form.target = 'AgrammonExcelExport' + Math.random();
+            form.target = 'AgrammonExcelExport';
             form.method = "POST";
             form.action = url;
 
@@ -197,7 +194,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             document.body.appendChild(form);
 
             // status=1 opens in new tab in Chrome at least
-            var options = "menubar=1,scrollbars=1,resizable=1,status=0,titlebar=1,height=600,width=800,toolbar=1"
+            var options = "menubar=1,scrollbars=1,resizable=1,status=0,titlebar=1,height=100,width=200,toolbar=1";
             var win = window.open('', form.target, options);
             if (win) {
                 form.submit();
@@ -246,7 +243,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             document.body.appendChild(form);
 
             // status=1 opens in new tab in Chrome at least
-            var options = "menubar=1,scrollbars=1,resizable=1,status=1,titlebar=1,height=600,width=800,toolbar=1"
+            var options = "menubar=0,scrollbars=0,,toolbar=0,titlebar=0,resizable=0,status=1,height=600,width=800";
             var win = window.open('', form.target, options);
             if (win) {
                 form.submit();
@@ -257,9 +254,10 @@ qx.Class.define('agrammon.module.output.Reports', {
 
         }, this);
 
-        this.__submitButton =
-            new qx.ui.form.Button(this.tr("Submission"),
-                                  'icon/16/actions/document-send.png');
+        this.__submitButton = new qx.ui.form.Button(
+            this.tr("Submission"),
+            'icon/16/actions/document-send.png'
+        );
         this.__submitButton.set({ maxWidth: 150, enabled: false });
         this.__submitButton.exclude();
         selectRow.add(this.__submitButton);
@@ -272,23 +270,21 @@ qx.Class.define('agrammon.module.output.Reports', {
 
     members :
     {
-        __outputPending: null,
-        __info: null,
-        __version: null,
-        outputData: null,
-        busyIcon: null,
-        selectLabel: null,
-        selectMenu: null,
-        resultData: null,
-        reportIndex: null,
-        reportSelected: null,
-        titleSelected: null,
-        tableModel: null,
-        __excelButton: null,
-        __pdfButton: null,
-        __submitButton: null,
-        tcm: null,
-        __log: null,
+        __outputPending:    null,
+        __info:             null,
+        outputData:         null,
+        busyIcon:           null,
+        selectLabel:        null,
+        selectMenu:         null,
+        resultData:         null,
+        reportIndex:        null,
+        reportSelected:     null,
+        titleSelected:      null,
+        tableModel:         null,
+        __excelButton:      null,
+        __pdfButton:        null,
+        __submitButton:     null,
+        tcm:                null,
         __logAreaOutput:    null,
         __logAreaReference: null,
 
@@ -312,9 +308,10 @@ qx.Class.define('agrammon.module.output.Reports', {
 
         __submit: function() {
             var logText = agrammon.module.output.Output.formatLog(this.outputData.getLog());
-            var submitWindow =
-                new agrammon.module.output.SubmitWindow(this.outputData, this.reportIndex,
-                                                        this.titleSelected, logText);
+            var submitWindow = new agrammon.module.output.SubmitWindow(
+                this.outputData, this.reportIndex,
+                this.titleSelected, logText
+            );
             submitWindow.open();
         },
 
