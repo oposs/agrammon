@@ -40,6 +40,7 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
     my $pdf-file    = "$temp-dir/$filename.pdf".IO;
     my $aux-file    = "$temp-dir/$filename.aux".IO;
     my $log-file    = "$temp-dir/$filename.log".IO;
+    my $timeout     = 30; # seconds for PDF creation
 
     # create LaTeX source with template
     $source-file.spurt(create-latex('pdfexport', %data));
@@ -64,7 +65,7 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
             $signal    = .signal;
             done; # gracefully jump from the react block
         }
-        whenever Promise.in(5) {
+        whenever Promise.in($timeout) {
             $reason = 'Timeout';
             note ‘Timeout. Asking the process to stop’;
             $proc.kill; # sends SIGHUP, change appropriately
