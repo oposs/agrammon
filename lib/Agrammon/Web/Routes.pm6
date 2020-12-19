@@ -2,7 +2,6 @@ use v6;
 
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
-use Agrammon::Performance;
 
 use Agrammon::DB::User;
 use Agrammon::Web::Service;
@@ -304,17 +303,12 @@ sub api-routes (Str $schema, $ws) {
         operation 'exportExcel', -> LoggedIn $user {
             request-body -> %params {
                 response.append-header(
-                        'Content-disposition',
-                        # prevent header injection
-                        "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).xlsx"
+                    'Content-disposition',
+                    # prevent header injection
+                    "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).xlsx"
                 );
-                my $excel;
-                warn "Creating Excel";
-                timed "Create excel", {
-                    $excel = $ws.get-excel-export($user, %params).to-blob;
-                };
                 content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    $excel;
+                    $ws.get-excel-export($user, %params).to-blob;
                  CATCH {
                     default {
                         note "$_";
@@ -327,10 +321,10 @@ sub api-routes (Str $schema, $ws) {
         operation 'exportPDF', -> LoggedIn $user {
             request-body -> %params {
                 response.append-header(
-                        'Content-disposition',
-                        # prevent header injection
-                        "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).pdf"
-                        );
+                    'Content-disposition',
+                    # prevent header injection
+                    "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).pdf"
+                    );
                 content 'application/pdf',
                         $ws.get-pdf-export($user, %params);
                 CATCH {
