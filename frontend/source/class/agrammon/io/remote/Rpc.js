@@ -92,7 +92,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                     handler(response.error, status);
                 }
                 else {
-                    let msg = 'method=' + methodName +', status=', status, ':', statusText;
+                    let msg = 'method=' + methodName + ', status=' + status + ': ' + statusText;
                     alert(msg);
                 }
             }, this);
