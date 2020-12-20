@@ -100,7 +100,7 @@ transactionally {
 
     subtest "auth()" => {
         ok my $session-user = Agrammon::Web::SessionUser.new(:$username), "Create Agrammon::Web::SessionUser with username $username";
-        nok $session-user.auth($username, 'WrongPW').logged-in, "$username was not authenticated with $password";
+        throws-like { $session-user.auth($username, 'WrongPW').logged-in }, X::Agrammon::DB::User::InvalidPassword, "$username was not authenticated with $password";
         ok $session-user.auth($username, $password).logged-in, "$username was authenticated with $password";
     }
 

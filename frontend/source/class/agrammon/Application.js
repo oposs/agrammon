@@ -137,8 +137,6 @@ qx.Class.define('agrammon.Application', {
                     var remember  = this.__remember;
                     var lastLogin = String(data.last_login);
                     that.debug('__authenticate(): user='+user+', role='+role+', password='+password+', remember='+remember);
-//                    if (this.supports_html5_storage() && this.getRemember()) {
-
 
                     qx.event.message.Bus.dispatchByName('agrammon.info.setUser',
                                                         { username: user,
@@ -161,7 +159,6 @@ qx.Class.define('agrammon.Application', {
                     qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', user);
                 }
                 else {
-                    // that.debug("Authentication failed: " + exc);
                     qx.event.message.Bus.dispatchByName('error',
                          [ qx.locale.Manager.tr("Authentication error"),
                            qx.locale.Manager.tr("Invalid username or password"),
@@ -239,7 +236,7 @@ qx.Class.define('agrammon.Application', {
 	     * @lint ignoreDeprecated(alert)
 	     */
         __logoutFunc: function(data, exc, id) {
-            if (exc == null) {
+            if (exc == null || exc == 403) {
                 if (data.sudoUser) {
                     var infoOnly = true;
                     var dialog =

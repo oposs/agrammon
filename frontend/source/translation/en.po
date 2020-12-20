@@ -50,15 +50,15 @@ msgstr ""
 msgid "Comment on dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Incremental filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr ""
 
@@ -70,27 +70,27 @@ msgstr ""
 msgid "Sample datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Last change"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Parameters"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Read-only"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Model Version"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Tags"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTableSimple.js
 msgid "Dataset name"
 msgstr ""
 
@@ -298,7 +298,7 @@ msgstr ""
 msgid "Duplicate instance "
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr ""
 
@@ -414,11 +414,11 @@ msgstr ""
 msgid "Graphical Results"
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Choose table: "
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Simulation log"
 msgstr "Notes on the results"
 
@@ -462,7 +462,7 @@ msgstr ""
 msgid "Create PDF"
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Submission"
 msgstr ""
 
