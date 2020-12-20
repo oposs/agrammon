@@ -77,7 +77,6 @@ qx.Class.define('agrammon.io.remote.Rpc', {
 
 
         callAsync : function(handler, methodName, data) {
-//            console.log(methodName+':', 'data=', data);
             var req = new qx.io.request.Xhr(methodName, "POST");
             if (data != null) {
                 req.setRequestData(data);
@@ -89,20 +88,20 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                 var status = req.getStatus();
                 var statusText = req.getStatusText();
                 console.error('callAsync('+methodName+'): statusError, response=', response, ', status=', status, ':', statusText);
-                let msg = '';
-                if (response) {
-                    msg = 'response=' + response + ': ';
+                if (response && response.error) {
+                    handler(response.error, status);
                 }
-                msg += 'method=' + methodName +', status=', status, ':', statusText;
-                alert(msg);
-                handler(msg, status);
+                else {
+                    let msg = 'method=' + methodName +', status=', status, ':', statusText;
+                    alert(msg);
+                }
             }, this);
-            req.addListener("load", function(e) {
+            req.addListener("success", function(e) {
                 var req = e.getTarget();
                 var response = req.getResponse();
                 var status = req.getStatus();
                 var statusText = req.getStatusText();
-//                console.log('callAsync(): load, response=', response, ', status=', status, ':', statusText);
+                console.log('callAsync(): success, response=', response, ', status=', status, ':', statusText);
                 handler(response);
             }, this);
             req.send();

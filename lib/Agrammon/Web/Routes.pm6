@@ -455,7 +455,11 @@ sub application-routes(Agrammon::Web::Service $ws) {
                         sudoUser   => 0
                     );
                 }
-                else {
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::User::InvalidPassword  {
+                        forbidden 'application/json', %( error => .message );
+                    }
                 }
             }
         }
