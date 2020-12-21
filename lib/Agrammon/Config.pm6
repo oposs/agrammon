@@ -1,4 +1,5 @@
 use v6;
+use POFile;
 use YAMLish;
 
 class Agrammon::Config {
@@ -6,15 +7,17 @@ class Agrammon::Config {
     has %.database;
     has %.gui;
     has %.model;
+    has %.translations;
 
     method load(Str $path) {
         my $yaml = slurp($path);
         my $config = load-yaml($yaml);
 
-        %!general  = $config<General>;
-        %!database = $config<Database>;
-        %!gui      = $config<GUI>;
-        %!model    = $config<Model>;
+        %!general      = $config<General>;
+        %!database     = $config<Database>;
+        %!gui          = $config<GUI>;
+        %!model        = $config<Model>;
+        %!translations = self!get-translations;
     }
 
     method gui-variant {
@@ -38,6 +41,23 @@ class Agrammon::Config {
              ~ 'host='     ~ %!database<host> ~ ' '
              ~ 'user='     ~ %!database<user> ~ ' '
              ~ 'password=' ~ %!database<password>;
+    }
+
+    method !get-translations {
+        my @files = %!general<translationDir>.IO.dir.grep(*.extension eq 'po');
+        my %lx;
+        for @files -> $file {
+            $file ~~ / $<locale> = [.+]\.po $/;
+            my $locale = $file.basename.subst(/'.po'$/, '');
+            my $lang = $locale.subst(/_.+/, '');
+            my $po = POFile.load($file);
+            for @$po -> POFile::Entry $entry {
+                with $entry.msgid -> $id {
+                    %lx{$lang}{$id} = $entry.msgstr;
+                }
+            }
+        }
+        return %lx;
     }
 
 }

@@ -1,0 +1,61 @@
+msgid "dataset sent"
+msgid_plural "datasets sent"
+msgstr[0] "Der Datensatz %s von %s wurde Ihnen in Ihrem Agrammon Konto bereit gestellt"
+msgstr[1] "Die Datensätze %s von %s wurden Ihnen in Ihrem Agrammon Konto bereit gestellt"
+
+msgid "new dataset"
+msgid_plural "new datasets"
+msgstr[0] "Neuer Agrammon Datensatz"
+msgstr[1] "Neue Agrammon Datensätze"
+
+msgid "dataset"
+msgstr "Agrammon Datensatz";
+
+msgid "results"
+msgstr "Ergebnisse"
+
+msgid "results formatted"
+msgstr "Ergebnisse formatiert"
+
+msgid "inputs"
+msgstr "Eingaben"
+
+msgid "inputs formatted"
+msgstr "Eingaben formatiert"
+
+msgid "title report"
+msgstr "Emissionsberechnung für Ammoniak mit Agrammon"
+
+msgid "data section"
+msgstr "Angaben zu Nutzer/-in und Datensatz"
+
+msgid "data user"
+msgstr "Benutzername"
+
+msgid "data dataset"
+msgstr "Datensatz"
+
+msgid "submission farm"
+msgstr "Betriebsnummer"
+
+msgid "submission situation"
+msgstr "Situation des Betriebs"
+
+msgid "submission sender"
+msgstr "Absender"
+
+msgid "submission recipient"
+msgstr "Eingereicht bei"
+
+msgid "submission comment"
+msgstr "Kommentar"
+
+msgid "outputs"
+msgstr "Ergebnis der Emissionsberechnung"
+
+msgid "outputLog"
+msgstr "Mitteilungen zu den Resultaten"
+
+msgid "inputs"
+msgstr "Eingaben Datensatz"
+

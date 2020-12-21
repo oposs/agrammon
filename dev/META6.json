@@ -19,6 +19,7 @@
     "Email::MIME",
     "LibXML:ver<0.5.12+>",
     "Net::SMTP::Client::Async",
+    "POFile",
     "OO::Monitors",
     "Shell::Command",
     "Spreadsheet::XLSX:ver<0.2.2+>",

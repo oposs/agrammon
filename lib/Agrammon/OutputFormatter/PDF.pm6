@@ -156,71 +156,24 @@ sub input-output-as-pdf(
     );
 
     # strings used in template
+    my %lx = $cfg.translations{$language};
     my %titles = %(
-        report =>  %(
-            :de('Emissionsberechnung für Ammoniak mit Agrammon'),
-            :en('Calculation for ammonia emissions with Agrammon'),
-            :fr('Calcul des émissions d’ammoniac avec Agrammon'),
-        ){$language},
+        report => %lx{'title report'},
         data => %(
-            section => %(
-                :de('Angaben zu Nutzer/-in und Datensatz'),
-                :en('Information on the user and the dataset'),
-                :fr('Informations sur l’utilisateur/-trice et sur le set de données'),
-            ){$language},
-            user => %(
-                :de('Benutzername'),
-                :en('Username'),
-                :fr('Nom d’utilisateur'),
-            ){$language},
-            dataset => %(
-                :de('Datensatz'),
-                :en('Dataset'),
-                :fr('Set de données'),
-            ){$language},
+            section => %lx{'data section'},
+            user => %lx{'data user'},
+            dataset => %lx{'data dataset'},
         ),
         submission => %(
-            farm => %(
-                :de('Betriebsnummer'),
-                :en('Farm number'),
-                :fr("Numéro d'entreprise"),
-            ){$language},
-            situation => %(
-                :de('Situation des Betriebs'),
-                :en('Farm situation'),
-                :fr("Situation de l'entreprise"),
-            ){$language},
-            sender => %(
-                :de('Absender'),
-                :en('Sender'),
-                :fr('Expéditeur'),
-            ){$language},
-            recipient => %(
-                :de('Eingereicht bei'),
-                :en('Submitted to'),
-                :fr('Soumettre à'),
-            ){$language},
-            comment => %(
-                :de('Kommentar'),
-                :en('Comment'),
-                :fr('Commentaire'),
-            ){$language},
+            farm => %lx{'submission farm'},
+            situation => %lx{'submission farm'},
+            sender => %lx{'submission sender'},
+            recipient => %lx{'submission recipient'},
+            coment => %lx{'submission comment'},
         ),
-        outputs => %(
-            :de('Ergebnis der Emissionsberechnung'),
-            :en('Results of the emission calculation'),
-            :fr('Résultats du calcul des émissions')
-        ){$language},
-        outputLog => %(
-            :de('Mitteilungen zu den Resultaten'),
-            :en('Notes on the results'),
-            :fr('Messages concernant les résultats'),
-        ){$language},
-        inputs => %(
-            :de('Eingaben Datensatz'),
-            :en('Input parameters of the dataset'),
-            :fr('Paramétres d’entrée du set de données'),
-        ){$language}
+        outputs => %lx{'outputs'},
+        outputLog => %lx{'outputLog'},
+        inputs => %lx{'inputs'},
     );
 
     my %print-labels = %data<print-labels>;

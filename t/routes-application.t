@@ -1,5 +1,6 @@
 use v6;
 
+use Agrammon::OutputsCache;
 use Agrammon::Web::Routes;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
@@ -19,6 +20,14 @@ sub make-fake-auth($role) {
         returning => { :id(42), :logged-in, }
     )
 }
+
+my $fake-cache= mocked(
+        Agrammon::OutputsCache,
+        overriding => {
+            invalidate => -> $user, $dataset-name {
+            },
+        }
+);
 
 my $role = 'user';
 my $fake-auth = make-fake-auth($role);
@@ -199,6 +208,8 @@ subtest 'Delete instance' => {
         };
         check-mock $fake-store,
             *.called('delete-instance', times => 1);
+        check-mock $fake-cache,
+            *.called('invalidate', times => 1);
     }
 }
 
