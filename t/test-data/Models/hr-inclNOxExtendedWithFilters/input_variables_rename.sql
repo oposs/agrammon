@@ -1,5 +1,5 @@
 # DairyCow
-UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::KArea::dimensioning_barn' WHERE data_var='Livestock::DairyCow[]::Housing::Type::dimensioning_barn';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Excretion::dimensioning_barn' WHERE data_var='Livestock::DairyCow[]::Housing::Type::dimensioning_barn';
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::DairyCow[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows';
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_options_for_housing_systems_for_dairy_cows_floor';
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Outdoor::floor_properties_exercise_yard' WHERE data_var='Livestock::DairyCow[]::Yard::floor_properties_exercise_yard_SHL';
