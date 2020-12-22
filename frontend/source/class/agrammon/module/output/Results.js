@@ -66,7 +66,7 @@ qx.Class.define('agrammon.module.output.Results', {
         var outputTable = new qx.ui.table.Table(tableModel, custom);
         outputTable.set({ padding: 0,
                   keepFirstVisibleRowComplete: true,
-                  columnVisibilityButtonVisible: false,
+//                  columnVisibilityButtonVisible: false,
                   statusBarVisible: false
                 });
         outputTable.setMetaColumnCounts([1, -1]);
@@ -151,110 +151,98 @@ qx.Class.define('agrammon.module.output.Results', {
 	/**
 	  * @ignore(TAGS)
 	  */
-        __getOutputData:  function(reportName) {
-//            this.debug('Called __getOutputData()');
+
+        __getOutputData:  function() {
 
             if ( !(this.outputData.isValid()
-            //        && this.referenceData.isValid
-            )) {
-                this.debug('outputData not valid');
+//                   && this.referenceData.isValid())
+                   )) {
                 return;
             }
 
-            var ri, rdlen;
-            var dataSet = new Array;
+            // FIX ME: why is this needed ?
+//            if (! this.selectMenu.getSelection()[0]) {
+//                return;
+//            }
 
-            rdlen = this.resultData.length;
-            var found = false;
-            for (ri=0; ri<rdlen; ri++) {
-                if (this.resultData[ri]['name'] ==  reportName) {
+//            let reportName = this.selectMenu.getSelection()[0].getModel();
+            let dataSet = new Array;
+
+            let rdlen = this.resultData.length;
+            let found = false;
+            let showFilterGroups;
+            for (let ri=0; ri<rdlen; ri++) {
+//                if (this.resultData[ri].name == reportName) {
+                if (this.resultData[ri].resultView) {
                     found = true;
-                    this.reportSelected = ri;
+                    this.reportIndex = ri;
                     break;
                 }
             }
-
-            var data = new Array;
-            var refData = new Array;
-            data = this.outputData.getDataset();
-            // refData = this.referenceData.getDataset();
-            // if (refData == null) {
-            //     this.__showReference(false);
-            // }
-            // else {
-            //     this.__showReference(true);
-            // }
-
-            var len = data.length;
-            // this.debug('data.length='+len);
-
             if (! found) {
-                this.debug('selectMenu: no matching report for '
-                           +reportName);
+                this.debug('selectMenu: no matching report for ' +reportName);
                 return;
             }
-            var reports = this.resultData[ri]['data'];
-            var subReports;
-            var r, sr, srlen;
-            var rlen = reports.length;
 
-            var i, rec, refRec, varName, value, refValue, refDiff,
-            printMe, repLen;
-            var n=0;
-            var title, currentTitle='';
-            var printTag = '';
-            var tags, tlen, t;
-            var repDataset;
-            var repRefDataset;
-            var locale = qx.locale.Manager.getInstance().getLocale();
+            showFilterGroups = this.resultData[this.reportIndex].type == 'reportDetailed' ? true : false;
+            let reports = this.resultData[this.reportIndex].data;
+
+            let data    = this.outputData.getDataset();;
+//            let refData = this.referenceData.getDataset();
+//            if (refData == null) {
+//                this.__showReference(false);
+//            }
+//            else {
+//                this.__showReference(true);
+//            }
+
+            let currentTitle='';
+            let printTag = '';
+            let repDataset, repRefDataset;
+            let locale = qx.locale.Manager.getInstance().getLocale();
             locale = locale.replace(/_.+/,'');
+            this.titleSelected  = '';
             this.reportSelected = '';
-            this.titleSelected = '';
-            for (r=0; r<rlen; r++) { // reports selected
 
-                subReports = reports[r]['subReports'];
-                srlen = subReports.length;
-                if (this.reportSelected != '') {
-                    this.reportSelected += ',';
-                }
-                this.reportSelected += subReports[0];
-                for (sr=1; sr<srlen; sr++) {
-                    this.reportSelected =
-                        this.reportSelected + '_' + subReports[sr];
-                }
+            for (let report of reports) { // reports selected
+
+                let printKey   = report.print;
+                let langLabels = report.langLabels;
 
                 currentTitle='';
-                if (reports[r][locale] != null)  {
-                    title = reports[r][locale];
-                }
-                else {
-                    title = reports[r]['en'];
-                }
+                let title = report.langLabels[locale] ? report.langLabels[locale]
+                                                      : report.langLabels.en ? report.langLabels.en
+                                                                             : printKey;
                 if (this.titleSelected != '') {
                     this.titleSelected += ',';
                 }
                 this.titleSelected += title;
-                repDataset = new Array;
+
+                if (this.reportSelected != '') {
+                    this.reportSelected += ',';
+                }
+                this.reportSelected += printKey;
+
+                repDataset    = new Array;
                 repRefDataset = new Array;
-                for (i=0; i<len; i++) { // variables
+                let seen = {};
+                let len = data.length;
+                for (let i=0; i<len; i++) { // variables
+                    let varName, rec, refRec, value, refValue, refDiff, printMe;
                     rec = data[i];
-                    if (refData != null) {
-                        refRec = refData[i];
-                    }
-                    else {
-                        refRec = null;
-                    }
+//                    if (refData != null) {
+//                        refRec = refData[i];
+//                    }
+//                    else {
+//                        refRec = null;
+//                    }
                     printMe = false;
                     printTag = String(rec.print);
-                    tags = new Array;
-                    tags = printTag.split(',');
-                    tlen = tags.length;
-                    TAGS: for (t=0; t<tlen; t++) {
-                        for (sr=0; sr<srlen; sr++) {
-                            if (tags[t] == subReports[sr]) {
-                                printMe = true;
-                                break TAGS;
-                            }
+                    let tags = printTag.split(',');
+                    for (let tag of tags) {
+                        if (tag == printKey) {
+                            printMe = true;
+                            break;
                         }
                     }
                     if ( printMe ) {
@@ -262,14 +250,8 @@ qx.Class.define('agrammon.module.output.Results', {
                             repDataset.push([ title, '', '', '', '', '', '', '', -1 ]);
                             currentTitle = title;
                         }
-                        varName = 'unknown';
-                        if (rec.labels) {
-                            varName = String(rec.labels[locale]);
-                        }
-                        else {
-                            varName = rec['var'];
-                        }
-                        value = rec.value;
+                        varName = rec.labels ? String(rec.labels[locale]) : rec.var;
+                        value   = rec.value;
                         if (refRec != null) {
                             refValue = refRec.value;
                             refDiff = value - refValue;
@@ -278,27 +260,38 @@ qx.Class.define('agrammon.module.output.Results', {
                             refValue = '-';
                             refDiff  = '-';
                         }
-                        repDataset.push([ '', // moduleName,
-                                          varName,
-                                          refValue, // reference
-                                          value,
-                                          refDiff, // change
-                                          rec.units[locale],
-                                          rec.print,
-                                          rec.labels.sort
-                                        ]);
-                        n++;
+                        if (rec.filters && rec.filters.length>0 && showFilterGroups) {
+                            var filters = rec.filters;
+                            let filterTitles = [];
+                            let filterKeys   = [];
+                            for (let filter of filters) {
+                                filterTitles.push(filter.label[locale]);
+                                filterKeys.push(filter.enum[locale]);
+                            }
+                            varName = '. . . . . . ' + filterKeys.join(', ');
+                        }
+                        else {
+                            // TODO: remove hack
+                            if (seen[rec.var]) {
+                                continue;
+                            }
+                            else {
+                                seen[rec.var] = true;
+                            }
+                        }
+                        repDataset.push([ '', // moduleName
+                            varName,
+                            refValue, // reference
+                            value,
+                            refDiff, // change
+                            rec.units[locale],
+                            rec.print,
+                            rec.labels.sort
+                        ]);
                     } // printMe
                 } // variables
-                repLen = repDataset.length;
-                if (repLen > 0) {
-                    repDataset.sort(this.__sortByVarName);
-                    for (i=0; i<repLen; i++) {
-                        dataSet.push(repDataset[i]);
-                    }
-                }
+                dataSet = dataSet.concat(repDataset);
             } // reports
-
             this.tableModel.setData(dataSet);
         },
 
@@ -319,15 +312,15 @@ qx.Class.define('agrammon.module.output.Results', {
             this.__outputPending--;
 //            var dataset = msg.getData();
 //            this.debug('Received: ' + dataset);
-            this.debug('Output pending: ' + this.__outputPending);
-            this.__getOutputData('SummaryShort');
+//            this.debug('dataReady: Output pending: ' + this.__outputPending);
+            this.__getOutputData();
         },
 
         __recalc: function() {
             if (this.getEnabled()) {
                 this.__outputPending++;
-                this.debug('__recalc(): Getting output data');
-                this.debug('Output pending: ' + this.__outputPending);
+//                this.debug('__recalc(): Getting output data');
+//                this.debug('recalc: Output pending: ' + this.__outputPending);
                 this.__clearTable();
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
             }
@@ -344,13 +337,13 @@ qx.Class.define('agrammon.module.output.Results', {
             if (enable) {
                 this.debug('enable');
                 this.__outputPending++;
-                this.debug('__enable(): Getting output data');
-                this.debug('Output pending: ' + this.__outputPending);
+//                this.debug('__enabled(): Getting output data');
+//                this.debug('enabled: Output pending: ' + this.__outputPending);
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
                 this.__title.setValue(this.tr("<b>Result summary</b>"));
             }
             else {
-                this.debug('disable');
+//                this.debug('disable');
                 this.__clearTable();
                 this.__title.setValue(this.tr("No results yet, incomplete input data"));
             }

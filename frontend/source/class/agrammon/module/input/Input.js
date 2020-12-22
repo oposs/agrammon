@@ -25,18 +25,17 @@ qx.Class.define('agrammon.module.input.Input', {
         splitpane.set({backgroundColor: 'white', padding:0});
         splitpane.add(navbar, 0);
 
-	// The regional model doesn't have the result preview
-	if (results) {
+        // The regional model doesn't have the result preview
+        if (results) {
             var splitpane2 = new qx.ui.splitpane.Pane("vertical");
             splitpane2.set({backgroundColor: 'white', padding:0});
             splitpane2.add(propEditor, 2);
             splitpane2.add(results, 1);
-
             splitpane.add(splitpane2, 1);
-	}
+        }
         else {
             splitpane.add(propEditor, 1);
-	}
+        }
 
         this.add(splitpane, { flex : 1 });
 

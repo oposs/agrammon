@@ -44,6 +44,19 @@ Dummy Module marking the startpoint for the Model Parser
       de = Total
       fr = Total
 
++SummaryShort
+  type = report
+  results = true
+  ++selector
+    en = Ammonia emissions (in kg N per year) - summary short
+    de = Ammoniak-Emissionen (in kg N pro Jahr) - Kurzzusammenfassung
+    fr = Emissions d'ammoniaque (en kg de N par année) - résumé minimal
+  ++data
+     +++SummaryTotal
+       en = Total
+       de = Total
+       fr = Total
+
 ?if !KantonalLU
   +DetailReport
     type = reportDetailed
