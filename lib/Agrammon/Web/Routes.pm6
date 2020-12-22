@@ -438,7 +438,6 @@ sub application-routes(Agrammon::Web::Service $ws) {
         # working
         post -> 'get_cfg' {
             my %cfg = $ws.get-cfg;
-            dd %cfg;
             content 'application/json', %cfg;
         }
 
