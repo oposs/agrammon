@@ -340,7 +340,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     my $nh3_loss_pigs = Sum(nh3_ntank_liquid_pigs, Storage::Slurry);
     given ( scalar($nh3_loss_pigs) ) {
       when $_ eq 0 {
-        Out(tan_into_storage_liquid_pigs);
+        scale(Out(tan_into_storage_liquid_pigs), 0);
       }
       when $_ > scalar(Out(maxlimit_of_nh3_nstorage_liquid_pigs)) {
         writeLog(
@@ -392,7 +392,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     my $nh3_loss_cattle = Sum(nh3_ntank_liquid_cattle, Storage::Slurry);
     given ( scalar($nh3_loss_cattle) ) {
       when $_ eq 0 {
-        Out(tan_into_storage_liquid_cattle);
+        scale(Out(tan_into_storage_liquid_cattle), 0);
       }
       when $_ > scalar(Out(maxlimit_of_nh3_nstorage_liquid_cattle)) {
         writeLog(
