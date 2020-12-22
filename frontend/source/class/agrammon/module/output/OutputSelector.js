@@ -69,6 +69,8 @@ qx.Class.define('agrammon.module.output.OutputSelector', {
 
             reports = reportData.length;
             for (r=0; r<reports; r++) {
+                if (reportData[r].resultView) continue;
+
                 if (reportData[r]['selector'][locale] != null) {
                     label = reportData[r]['selector'][locale];
                 }

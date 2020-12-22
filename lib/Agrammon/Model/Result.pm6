@@ -10,8 +10,14 @@ class Agrammon::Model::Result {
     has %!data-lookup;
     has Str $.order;
     has Bool $!submit = False;
+    has Bool $!result-view = False;
 
-    submethod TWEAK( :$submit, :@data --> Nil) {
+    submethod TWEAK( :$results, :$submit, :@data --> Nil) {
+        with $results {
+            if .lc eq 'true' {
+                $!result-view = True;
+            }
+        }
         with $submit {
             if .lc eq 'true' {
                 $!submit = True;
@@ -29,6 +35,7 @@ class Agrammon::Model::Result {
     method data-ordered(--> Array) { @!data-order }
 
     method is-submit(--> Bool) { $!submit }
+    method is-result-view(--> Bool) { $!result-view }
 
     method as-hash {
         return %(

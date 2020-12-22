@@ -44,7 +44,8 @@ class Agrammon::UI::Web {
                     :order($result.order),
                     :selector($result.selector),
                     :$type,
-                    :submit($result.is-submit);
+                    :submit($result.is-submit),
+                    :resultView($result.is-result-view);
 
                 my @data;
                 my @report-data = %result-hash<data>;
