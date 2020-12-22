@@ -2,7 +2,7 @@ use v6;
 use Agrammon::Config;
 
 use Test;
-plan 9;
+plan 10;
 
 my %config-expected = (
     General => {
@@ -10,7 +10,8 @@ my %config-expected = (
         log_file    => "/tmp/agrammon.log",
         log_level   => "warn",
         tempDir     =>  "agrammon",
-        pdflatex    => "/usr/bin/lualatex"
+        pdflatex    => "/usr/bin/lualatex",
+        translationDir => "share/translations",
     },
     Database => {
         name     => 'agrammon_test',
@@ -50,5 +51,11 @@ is $cfg.database<user>,     %config-expected<Database><user>,     'Config.databa
 is $cfg.database<password>, %config-expected<Database><password>, 'Config.database.user as expected';
 # hostname might be different in dev, ci, and prod
 ok $cfg.database<host>,     'Config.database.host exists';
+
+subtest "Translations" => {
+    is $cfg.translations<de><results>, 'Ergebnisse', 'German for results';
+    is $cfg.translations<en><results>, 'Results', 'English for results';
+    is $cfg.translations<fr><results>, 'Résultats', 'French for results';
+}
 
 done-testing;

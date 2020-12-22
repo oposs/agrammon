@@ -1,0 +1,60 @@
+msgid "dataset sent"
+msgid_plural "datasets sent"
+msgstr[0] "The dataset %1 of %2 was copied into your Agrammon account"
+msgstr[1] "The dataset %1 of %2 were copied into your Agrammon account"
+
+msgid "new dataset"
+msgid_plural "new datasets"
+msgstr[0] "New Agrammon dataset"
+msgstr[1] "New Agrammon datasets"
+
+msgid "dataset"
+msgstr "Agrammon dataset";
+
+msgid "results"
+msgstr "Results"
+
+msgid "results formatted"
+msgstr "Results formatted"
+
+msgid "inputs"
+msgstr "Inputs"
+
+msgid "inputs formatted"
+msgstr "Inputs formatted"
+
+msgid "title report"
+msgstr "Emission calculations for ammonia with Agrammon"
+
+msgid "data section"
+msgstr "Information on the user and the dataset"
+
+msgid "data user"
+msgstr "Username"
+
+msgid "data dataset"
+msgstr "Dataset"
+
+msgid "submission farm"
+msgstr "Farm number"
+
+msgid "submission situation"
+msgstr "Farm situation"
+
+msgid "submission sender"
+msgstr "Sender"
+
+msgid "submission recipient"
+msgstr "Submitted to"
+
+msgid "submission comment"
+msgstr "Comment"
+
+msgid "outputs"
+msgstr "Results of the emission calculation"
+
+msgid "outputLog"
+msgstr "Notes on the results"
+
+msgid "inputs"
+msgstr "Input parameters of the dataset"
