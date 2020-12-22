@@ -1,5 +1,5 @@
 # DairyCow
-UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Excretion::dimensioning_barn' WHERE data_var='Livestock::DairyCow[]::Housing::Type::dimensioning_barn';
+UPDATE data_new SET data_var='Livestock::DairyCow[]::Excretion::dimensioning_barn' WHERE data_var='Livestock::DairyCow[]::Housing::Type::dimensioning_barn';
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::DairyCow[]::Housing::Floor::UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows';
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_housing_floor' WHERE data_var='Livestock::DairyCow[]::Housing::Floor::mitigation_options_for_housing_systems_for_dairy_cows_floor';
 UPDATE data_new SET data_var='Livestock::DairyCow[]::Outdoor::floor_properties_exercise_yard' WHERE data_var='Livestock::DairyCow[]::Yard::floor_properties_exercise_yard_SHL';
@@ -21,6 +21,7 @@ UPDATE data_new SET data_var='Livestock::OtherCattle[]::Outdoor::yard_days' WHER
 UPDATE data_new SET data_var='Livestock::OtherCattle[]::Outdoor::exercise_yard' WHERE data_var='Livestock::OtherCattle[]::Yard::exercise_yard';
 UPDATE data_new SET data_var='Livestock::OtherCattle[]::Outdoor::free_correction_factor' WHERE data_var='Livestock::OtherCattle[]::Yard::free_correction_factor';
 # FatteningPigs
+UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Excretion::dimensioning_barn' WHERE data_var='Livestock::FatteningPigs[]::Housing::KArea::dimensioning_barn';
 UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_floor' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs';
 UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_floor' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel';
 UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_air' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_fattening_pigs_air';

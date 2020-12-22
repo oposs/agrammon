@@ -153,6 +153,7 @@
 2010v2.1_20120425;2648;Livestock::Equides[Mules]::Yard;yard_hours;0
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;energy_content;13.5
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;fattening_pigs;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;animalcategory;fattening_pigs
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;feeding_phase_1_crude_protein;170
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Excretion;feeding_phase_2_crude_protein;0
@@ -163,9 +164,9 @@
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;none
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_housing_floor;none
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::Type;housing_type;Slurry_Label
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_1]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;energy_content;10
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;fattening_pigs;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;dimensioning_barn;10
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;animalcategory;fattening_pigs
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;feeding_phase_1_crude_protein;140
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Excretion;feeding_phase_2_crude_protein;145
@@ -177,8 +178,8 @@
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;with_flush_channels_no_areation
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Housing::MitigationOptions;mitigation_housing_floor;with_flush_channels_no_areation
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Housing::Type;housing_type;Slurry_Conventional
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_2]::Housing::KArea;dimensioning_barn;10
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;energy_content;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;fattening_pigs;10
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;animalcategory;fattening_pigs
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Excretion;feeding_phase_1_crude_protein;140
@@ -190,9 +191,9 @@
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;with_flush_channels_no_areation
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Housing::MitigationOptions;mitigation_housing_floor;with_flush_channels_no_areation
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Housing::Type;housing_type;Deep_Litter
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_3]::Housing::KArea;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;energy_content;16
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;fattening_pigs;10
+2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;dimensioning_barn;15
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;animalcategory;fattening_pigs
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;feeding_phase_1_crude_protein;140
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Excretion;feeding_phase_2_crude_protein;145
@@ -204,7 +205,6 @@
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_fattening_pigs;with_flush_channels_no_areation
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Housing::MitigationOptions;mitigation_housing_floor;with_flush_channels_no_areation
 2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Housing::Type;housing_type;Outdoor
-2010v2.1_20120425;2648;Livestock::FatteningPigs[FP_4]::Housing::KArea;dimensioning_barn;15
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Excretion;animalcategory;beef_cattle
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::Excretion;animals;20
 2010v2.1_20120425;2648;Livestock::OtherCattle[Beefcattle 1]::GrazingInput;grazing_days;0
