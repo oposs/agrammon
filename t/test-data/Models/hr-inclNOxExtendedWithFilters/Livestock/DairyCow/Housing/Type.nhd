@@ -159,3 +159,13 @@ Selects the emission rate and other correction factors for the specific housing 
       return Val(share_liquid,Type::Loose_Housing_Slurry_Plus_Solid_Manure) when 'Loose_Housing_Slurry_Plus_Solid_Manure';
       return Val(share_liquid,Type::Loose_Housing_Deep_Litter)              when 'Loose_Housing_Deep_Litter';
     }
+
+## former KArea.nhd
++c_area
+  print = DairyCow
+  ++units 
+    en = -
+  ++description
+    Correction factor for area per animal.
+  ++formula
+    1 + (Val(area_increase, ..::Excretion) * Out(k_area));

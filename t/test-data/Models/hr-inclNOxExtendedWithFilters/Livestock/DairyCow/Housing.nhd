@@ -36,7 +36,6 @@ taxonomy = Livestock::DairyCow::Housing
 
 +Excretion
 +Housing::Type
-+Housing::KArea
 +Housing::Floor
 +Housing::CFreeFactor
 +Housing::KGrazing
@@ -81,7 +80,7 @@ taxonomy = Livestock::DairyCow::Housing
     NH3 emission factor for dairy cow housing systems.
   ++formula
     my $ef_nh3 = Val(c_grazing, Housing::KGrazing) * 
-                    Val(c_area, Housing::KArea) * 
+                    Val(c_area, Housing::Type) * 
                     Val(er_housing, Housing::Type) * 
                     Val(c_housing_floor, Housing::Floor) * 
                     Val(c_free_factor_housing, Housing::CFreeFactor);

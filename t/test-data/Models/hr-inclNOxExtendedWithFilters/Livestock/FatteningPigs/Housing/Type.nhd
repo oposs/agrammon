@@ -83,6 +83,14 @@ Selects the emission rate and other correciton factors for the specific housing 
 
 *** technical ***
 
++k_area
+  value = 0.5
+  ++units  
+    en = -
+  ++description
+    Increasing factor for larger loose housing barns, +10\% excess place leads 
+    to +5\% increase in the NH3 emission.
+
 *** external ***
 
 +..::Excretion
@@ -167,3 +175,13 @@ Selects the emission rate and other correciton factors for the specific housing 
     else {
       return 1;
     }
+
+
++c_area
+  print = FatteningPigs
+  ++units  
+    en = -
+  ++description
+    Correction factor for area per animal.
+  ++formula
+    1 + (Val(area_increase, ..::Excretion) * Tech(k_area));

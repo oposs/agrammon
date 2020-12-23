@@ -363,3 +363,13 @@ taxonomy = Livestock::OtherCattle::Housing::Type
       }
     }
 
+
++c_area
+  print = OtherCattle
+  ++units 
+    en = -
+  ++description
+    Correction factor for area per animal.
+  ++formula
+    1 + (Val(area_increase, ..::Excretion) * Out(k_area));
+
