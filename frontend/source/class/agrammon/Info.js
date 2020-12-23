@@ -68,6 +68,7 @@ qx.Class.define( 'agrammon.Info',
                    check: "String"
                  },
         submissionAddresses: {
+            nullable: true
         }
     },
 
