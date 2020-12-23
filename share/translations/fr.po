@@ -1,15 +1,16 @@
 msgid "dataset sent"
 msgid_plural "datasets sent"
-msgstr[0] "The dataset %1 of %2 was copied into your Agrammon account"
-msgstr[1] "The dataset %1 of %2 were copied into your Agrammon account"
+msgstr[0] "Le sete de données %s de %s ont été copiés dans votre compte".
+msgstr[1] "Les setes de données %s de %s a été copiés dans votre compte".
+
 
 msgid "new dataset"
 msgid_plural "new datasets"
-msgstr[0] "New Agrammon dataset"
-msgstr[1] "New Agrammon datasets"
+msgstr[0] "Nouveaux sete de données de Agrammon"
+msgstr[1] "Nouveaux setes de données de Agrammon"
 
 msgid "dataset"
-msgstr "Agrammon dataset";
+msgstr "Sete de données de Agrammon";
 
 msgid "results"
 msgstr "Résultats"
@@ -49,6 +50,9 @@ msgstr "Soumettre à"
 
 msgid "submission comment"
 msgstr "Commentaire"
+
+msgid "submission info"
+msgstr "Le sete de données sera copié dans le compte de l'utilisateur Agrammon\newline\texttt{%s}\newline en tant que sete de données\newline\texttt{%s}."
 
 msgid "outputs"
 msgstr "Résultats du calcul des émissions"

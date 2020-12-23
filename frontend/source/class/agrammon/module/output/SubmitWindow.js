@@ -131,13 +131,9 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
         this.__recipientSelect = new qx.ui.form.SelectBox();
         inputBox.add(this.__recipientLabel,  { row: row,   column: 0});
         inputBox.add(this.__recipientSelect, { row: row++, column: 1});
-        var recipients = [
-                           {name: 'Oetiker+Partner AG',  email: 'fritz.zaucker@oetiker.ch'},
-                           {name: 'Kt. Luzern, lawa',   email: 'agrammon-baugesuche.lawa@lu.ch'}
-                         ];
-        len = recipients.length;
-        for (i=0; i<len; i++) {
-            item = new qx.ui.form.ListItem(recipients[i].name, null, recipients[i].email );
+        var recipients = agrammon.Info.getInstance().getSubmissionAddresses();
+        for (let r of recipients) {
+            item = new qx.ui.form.ListItem(r.name, null, r.key );
             this.__recipientSelect.add(item);
         }
 
@@ -274,12 +270,12 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
                 guiVariant     : agrammon.Info.getInstance().getGuiVariant(),
                 version        : this.__version,
                 mode           : 'submission',
-                farmSituation  : this.__farmSituationSelect.getSelection()[0].getLabel(),
+                farmSituation  : '' + this.__farmSituationSelect.getSelection()[0].getLabel(),
                 farmNumber     : this.__farmNumberInput.getValue(),
                 comment        : comment,
                 senderName     : sender,
                 recipientName  : this.__recipientSelect.getSelection()[0].getLabel(),
-                recipientEmail : this.__recipientSelect.getSelection()[0].getModel()
+                recipientKey   : this.__recipientSelect.getSelection()[0].getModel()
             };
         },
 
@@ -321,11 +317,6 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
             var params = this.__submissionParameters();
 
             params.oldDataset = params.datasetName;
-            params.newDataset = params.farmNumber    + ', '
-                              + params.farmSituation + ', '
-                              + params.username      + ', '
-                              + params.datasetName
-                              + this.__date;
 
             rpc.callAsync( qx.lang.Function.bind(this.__submitHandler, this),
                            'submit_dataset', params);

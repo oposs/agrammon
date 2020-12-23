@@ -66,7 +66,10 @@ qx.Class.define( 'agrammon.Info',
                  },
         guiVariant: { init: '?',
                    check: "String"
-                 }
+                 },
+        submissionAddresses: {
+            nullable: true
+        }
     },
 
     members :

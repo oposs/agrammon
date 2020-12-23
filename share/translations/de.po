@@ -50,6 +50,9 @@ msgstr "Eingereicht bei"
 msgid "submission comment"
 msgstr "Kommentar"
 
+msgid "submission info"
+msgstr "Der Datensatz wird dem Agrammon-Benutzer\newline\texttt{%s} als Datensatz\newline\texttt{%s}\newline bereitgestellt."
+
 msgid "outputs"
 msgstr "Ergebnis der Emissionsberechnung"
 

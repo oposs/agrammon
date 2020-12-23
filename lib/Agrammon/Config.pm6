@@ -43,6 +43,10 @@ class Agrammon::Config {
              ~ 'password=' ~ %!database<password>;
     }
 
+    method submission {
+        %!gui<submission>
+    }
+
     method !get-translations {
         my @files = %!general<translationDir>.IO.dir.grep(*.extension eq 'po');
         my %lx;

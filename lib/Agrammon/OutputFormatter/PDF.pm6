@@ -27,7 +27,7 @@ sub create-latex($template, %data) is export {
     render-template($template ~ ".crotmp", %data);
 }
 
-sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is export {
+sub create-pdf($temp-dir-name, $pdf-prog, $timeout, $username, $dataset-name, %data) is export {
     # setup temp dir and files
     my $temp-dir = $*TMPDIR.add($temp-dir-name);
     if not  $temp-dir.e {
@@ -40,7 +40,6 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
     my $pdf-file    = "$temp-dir/$filename.pdf".IO;
     my $aux-file    = "$temp-dir/$filename.aux".IO;
     my $log-file    = "$temp-dir/$filename.log".IO;
-    my $timeout     = 30; # seconds for PDF creation
 
     # create LaTeX source with template
     $source-file.spurt(create-latex('pdfexport', %data));
@@ -145,7 +144,11 @@ sub input-output-as-pdf(
     Bool $include-filters, Bool $all-filters,
     :%submission
 ) is export {
-    note '**** input-output-as-pdf() not yet completely implemented';
+    note '**** input sorting in input-output-as-pdf() not yet implemented';
+    note "prints=$prints";
+    dd $reports[$prints];
+    dd $include-filters;
+    dd $all-filters;
 
     # get data ready for printing
     my %data = collect-data(
@@ -155,26 +158,34 @@ sub input-output-as-pdf(
         $include-filters, $all-filters,
     );
 
+    note "collect-data outputs=" ~ %data<outputs>.elems;
+
     # strings used in template
     my %lx = $cfg.translations{$language};
+
     my %titles = %(
         report => %lx{'title report'},
         data => %(
             section => %lx{'data section'},
-            user => %lx{'data user'},
+            user    => %lx{'data user'},
             dataset => %lx{'data dataset'},
         ),
-        submission => %(
+        outputs   => %lx{'outputs'},
+        outputLog => %lx{'outputLog'},
+        inputs    => %lx{'inputs'},
+    );
+
+    if %submission {
+        my $info = sprintf %lx{'submission info'}, %submission<recipient-name>, %submission<dataset-name>;
+        %titles<submission> = %(
             farm => %lx{'submission farm'},
             situation => %lx{'submission farm'},
             sender => %lx{'submission sender'},
             recipient => %lx{'submission recipient'},
-            coment => %lx{'submission comment'},
-        ),
-        outputs => %lx{'outputs'},
-        outputLog => %lx{'outputLog'},
-        inputs => %lx{'inputs'},
-    );
+            comment => %lx{'submission comment'},
+            :$info,
+        );
+    }
 
     my %print-labels = %data<print-labels>;
 
@@ -192,9 +203,10 @@ sub input-output-as-pdf(
                 $last-print = $print;
             }
             @output-formatted.push(%(
-                :unit(latex-small-spaces(latex-escape(%rec<unit>))),
-                :label(latex-chemify(latex-escape(%rec<label>))),
-                :value(format-value(%rec<value>))));
+                :unit(latex-small-spaces(latex-escape(%rec<unit> // ''))),
+                :label(latex-chemify(latex-escape(%rec<label> // ''))),
+                :value(format-value(%rec<value>)),
+            ));
         }
     }
 
@@ -257,6 +269,7 @@ sub input-output-as-pdf(
     return create-pdf(
         $*TMPDIR.add($cfg.general<tmpDir>),
         $cfg.general<pdflatex>,
+        $cfg.general<latexTimeout> // 30, # in seconds
         $user.username,
         $dataset-name,
         %data

@@ -60,10 +60,7 @@
 \vspace{1ex}
 \begin{small}
 \noindent
-Der Datensatz wird dem Agrammon-Benutzer \texttt{ {<.submission.recipient-name>} }
-zum Lesen als Datensatz\newline
-\texttt{<.submission.farm-number>, <.submission.farm-situation>, <.username>, <.dataset>}\newline
-bereitgestellt.
+<.titles.submission.info>
 \end{small}
 </?>
 

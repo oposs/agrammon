@@ -50,11 +50,11 @@ msgstr ""
 msgid "Comment on dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Incremental filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Filter on dataset name"
 msgstr ""
 
@@ -70,127 +70,127 @@ msgstr ""
 msgid "Sample datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Last change"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Parameters"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Read-only"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Model Version"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Tags"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Deleting datasets from database"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Really delete selected datasets from database?"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "datasets"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Info"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "deleted"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Sending datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Recipient of selected datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "sent"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Rename"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Rename selected dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Send"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Send selected dataset(s) to other Agrammon user"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "New"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Create new dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Delete"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Delete selected dataset(s)"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Error"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "already exists"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Rename dataset"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "New name"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Comment"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Model Variant"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgstr ""
 msgid "Input"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Instance name must not be empty."
 msgstr ""
 
@@ -298,15 +298,15 @@ msgstr ""
 msgid "Duplicate instance "
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Variable"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/input/regional/ConfigEditor.js
 msgid "Input Parameter"
 msgstr ""
 
@@ -322,11 +322,11 @@ msgstr ""
 msgid "Click to edit"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Unit"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/ui/menu/MainMenu.js
 msgid "Help"
 msgstr ""
 
@@ -346,7 +346,7 @@ msgstr ""
 msgid "Unit French"
 msgstr ""
 
-#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
 msgid "Order"
 msgstr ""
 
@@ -362,11 +362,11 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr ""
 
-#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/ui/dialog/Comment.js
 msgid "Clear"
 msgstr ""
 

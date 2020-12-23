@@ -17,7 +17,6 @@ class X::Agrammon::DB::User::NoUsername is Exception {
 
 class X::Agrammon::DB::User::CreateFailed is Exception {
     has Str $.username is required;
-
     method message {
         "Couldn't create user $!username";
     }
@@ -25,7 +24,6 @@ class X::Agrammon::DB::User::CreateFailed is Exception {
 
 class X::Agrammon::DB::User::UnknownRole is Exception {
     has Str $.role is required;
-
     method message {
         "Role '$!role' doesn't exist.";
     }
@@ -40,6 +38,13 @@ class X::Agrammon::DB::User::PasswordResetFailed is Exception {
 class X::Agrammon::DB::User::InvalidPassword is Exception {
     method message() {
         "Invalid username or password";
+    }
+}
+
+class X::Agrammon::DB::User::UnknownUser is Exception {
+    has Str $.username is required;
+    method message() {
+        "User '$!username' has no Agrammon account";
     }
 }
 

@@ -87,9 +87,17 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                 var response = req.getResponse();
                 var status = req.getStatus();
                 var statusText = req.getStatusText();
-                console.error('callAsync('+methodName+'): statusError, response=', response, ', status=', status, ':', statusText);
+                console.error('callAsync('+methodName+'): status=', status, ':', statusText, ', response=', response);
                 if (response && response.error) {
-                    handler(response.error, status);
+//                    handler(response.error, status);
+                    qx.event.message.Bus.dispatchByName(
+                        'error',
+                        [
+                            qx.locale.Manager.tr("Error") + ' ' + status,
+                            response.error,
+                            'error'
+                        ]
+                    );
                 }
                 else {
                     let msg = 'method=' + methodName + ', status=' + status + ': ' + statusText;
@@ -101,7 +109,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                 var response = req.getResponse();
                 var status = req.getStatus();
                 var statusText = req.getStatusText();
-                console.log('callAsync(): success, response=', response, ', status=', status, ':', statusText);
+//                console.log('callAsync(): success, response=', response, ', status=', status, ':', statusText);
                 handler(response);
             }, this);
             req.send();

@@ -415,11 +415,21 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             content 'application/json', $data;
         }
 
-        # TODO: test send_datasets()
         post -> LoggedIn $user, 'send_datasets' {
-            request-body -> (:@datasets!, :$recipient!) {
-                my $data = $ws.send-datasets($user, @datasets, $recipient);
+            request-body -> (:@datasets!, :$recipient!, :$language = 'de') {
+                my $data = $ws.send-datasets($user, @datasets, $recipient, $language);
+                note "send_datasets: data=";
+                dd $data;
                 content 'application/json', $data;
+                CATCH {
+                    note "Routes: $_";
+                    when X::Agrammon::DB::User::UnknownUser {
+                        conflict 'application/json', %( error => .message );
+                    }
+                    default {
+                        note "send_datasets route: $_";
+                    }
+                }
             }
         }
 
