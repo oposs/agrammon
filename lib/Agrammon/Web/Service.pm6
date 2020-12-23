@@ -13,6 +13,7 @@ use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::PDF;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
+use Agrammon::Timestamp;
 use Agrammon::Web::SessionUser;
 use Agrammon::UI::Web;
 
@@ -33,6 +34,7 @@ class Agrammon::Web::Service {
             title        => %gui<title>,
             variant      => %model<variant>,
             version      => %model<version>,
+            submission   => %gui<submission>,
         );
         return %cfg;
     }
@@ -47,26 +49,24 @@ class Agrammon::Web::Service {
     }
 
     # return list of datasets as expected by Web GUI
-    method send-datasets(Agrammon::Web::SessionUser $user, @datasets, $recipient) {
-        my $model = self.cfg.app-variant; # model 'SingleSHL';
-        my $sent = Agrammon::DB::Datasets.new(:$user).send(@datasets, $model, $recipient);
-        my $subject = 'Neue Agrammon Datensätze';
-        my $sender = $user.username;
-        my $msg;
-        if $sent == 1 {
-            $msg = "Der Datensatz @datasets[0] von $sender wurde Ihnen in Ihrem Agrammon Konto bereit gestellt";
-        }
-        else {
-            $msg = "Die Datensätze " ~ @datasets.join(', ')
-                 ~ " von $sender wurden Ihnen in Ihrem Agrammon Konto bereit gestellt";
-        }
+    method send-datasets(Agrammon::Web::SessionUser $user, @datasets, $recipient, $language) {
+        # prevent SPAMing
+        die X::Agrammon::DB::User::UnknownUser.new(:username($recipient)) unless Agrammon::DB::User.new(:username($recipient)).exists;
+
+        my %lx      = $!cfg.translations{$language};
+        my $model   = $!cfg.app-variant; # model 'SingleSHL';
+        my $sent    = Agrammon::DB::Datasets.new(:$user).send(@datasets, $model, $recipient)<sent>;
+        my $sender  = $user.username;
+        my $subject = $sent == 1 ?? %lx{'new dataset'}[0]  !! %lx{'new dataset'}[1];
+        my $format  = $sent == 1 ?? %lx{'dataset sent'}[0] !! %lx{'dataset sent'}[1];
+        my $msg     = sprintf $format, @datasets.join(', '), $sender;
         Agrammon::Email.new(
-                :to($recipient),
-                :from('support@agrammon.ch'),
-                :$subject,
-                :$msg,
+            :to($recipient),
+            :from('support@agrammon.ch'),
+            :$subject,
+            :$msg,
         ).send;
-        return $sent;
+        return %(:$sent);
     }
 
     method load-dataset(Agrammon::Web::SessionUser $user, Str $name) {
@@ -92,22 +92,29 @@ class Agrammon::Web::Service {
     }
 
     method submit-dataset(Agrammon::Web::SessionUser $user, %params) {
-        my $recipient = %params<recipientEmail>;
-        my $new-dataset = %params<newDataset>;
-        self.clone-dataset($user, $recipient, %params<oldDataset>, $new-dataset);
-        my $pdf = self.get-pdf-export($user, %params);
-        my $subject = "Agrammon Datensatz: $new-dataset";
-        if $recipient ne 'fritz.zaucker@oetiker.ch' {
-            warn "Not allowed to send eMail to $recipient";
-            $recipient = 'fritz.zaucker@oetiker.ch';
-            $subject = "SPAM: $subject";
+        my %lx = $!cfg.translations{%params<language> // 'de'};
+
+        my $recipientKey = %params<recipientKey>;
+        my $recipientMail;
+        for @($!cfg.submission) -> %s {
+            $recipientMail = %s<email> if %s<key> eq $recipientKey;
         }
+        die "Recipient for key $recipientKey not found" unless $recipientMail;
+
+        my $old-dataset  = %params<oldDataset>;
+        my $new-dataset  = submission-dataset(%params);
+        self.clone-dataset($user, $recipientMail, $old-dataset, $new-dataset);
+        my $attachment = self.get-pdf-export($user, %params);
+        my $subject = %lx<dataset> ~ ": $new-dataset";
+        my $format = %lx{'dataset sent'}[0];
+        my $msg = sprintf $format, $new-dataset, %params<username>;
+
         Agrammon::Email.new(
-            :to($recipient),
+            :to($recipientMail),
             :from('support@agrammon.ch'),
             :$subject,
-            :msg("Der Datensatz $new-dataset wurde in Ihrem Agrammon Konto bereitgestellt."),
-            :attachment($pdf),
+            :$msg,
+            :$attachment,
             :filename($new-dataset.subst(/<-[\w_.-]>/, '', :g) ~ '.pdf')
         ).send;
     }
@@ -202,14 +209,15 @@ class Agrammon::Web::Service {
             $sender-name ~~ s:g/XXX/\\newline\{\}/;
             my $comment = %params<comment>;
             $comment ~~ s:g/XXX/\\newline\{\}/;
+            my $dataset-name = submission-dataset(%params);
             %submission =
                 :farm-number(%params<farmNumber>),
                 :farm-situation(%params<farmSituation>),
                 :$comment,
                 :$sender-name,
                 :recipient-name(%params<recipientName>),
-                :recipient-email(%params<recipientEmail>)
-                :submission-dataset
+                :recipient-email(%params<recipientEmail>),
+                :$dataset-name;
         }
 
         my $inputs  = self!get-inputs($user, $dataset-name);
@@ -288,6 +296,14 @@ class Agrammon::Web::Service {
 
     method order-instances(Agrammon::Web::SessionUser $user, Str $dataset-name, @instances) {
         Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).order-instances(@instances);
+    }
+
+    sub submission-dataset(%params --> Str) {
+        %params<farmNumber>    ~ ', ' ~
+                %params<farmSituation> ~ ', ' ~
+                %params<username>      ~ ', ' ~
+                %params<datasetName>   ~ ', ' ~
+                timestamp
     }
 
 }

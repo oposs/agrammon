@@ -644,7 +644,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                             if (rec.options[o] != undefined && rec.options[o][0] == 'ignore') {
                                 rec.options.splice(o,1);
                                 rec.optionsLang.splice(o,1);
-                                this.debug('Removed ignore options');
+                                this.debug('Removed ignore options:', rec.options[o]);
                             }
                         }
                         metaData.options     = rec.options;

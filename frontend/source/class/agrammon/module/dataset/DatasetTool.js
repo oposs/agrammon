@@ -45,16 +45,11 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
         var that = this;
         this.__datasetCache = agrammon.module.dataset.DatasetCache.getInstance();
 
-        // datasetTable
-//        var datasetTable = new agrammon.module.dataset.DatasetTable();
-        var datasetTable = agrammon.module.dataset.DatasetTableSimple.getInstance();
-        this.__datasetTable = datasetTable;
+        var datasetTable = this.__datasetTable = agrammon.module.dataset.DatasetTable.getInstance();
 
         // might not work in manage dataset mode because updateView
         // is called on datasetTable from availableTagsSelected handler
-        datasetTable.addListener("cellDbltap",
-                                 this.__dblClick_func,
-                                 this);
+        datasetTable.addListener("cellDbltap", this.__dblClick_func, this);
 
         var datasetTm = datasetTable.getTableModel();
         var activeTagsTable =

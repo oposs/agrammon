@@ -46,7 +46,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
         this.__searchTimer.addListener('interval', function(e) {
 //            this.debug('timer fired, searchFilter='+ this.__searchFilter);
             this.__searchTimer.stop();
-            this.__table.getTableModel().updateView(1);
+//            this.__table.getTableModel().updateView(1);
+            this.updateView();
         }, this);
 
         this.add(this.__toolBar);
@@ -153,9 +154,10 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 nDatasets = datasets.length;
                 if (nDatasets > 0) {
                     var recipient = self.nameField.getValue();
+                    var locale = qx.locale.Manager.getInstance().getLocale();
+                    locale = locale.replace(/_.+/,'');
                     this.__rpc.callAsync(
                         function(data,exc,id) {
-                            console.log('DatasetTable: data=', data, ', exc=', exc);
                             if (exc == null) {
                                 var msg;
                                 if (data.sent == 1) {
@@ -173,17 +175,17 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                                     ]
                                 );
                                 var userName = that.__info.getUserName();
-                                console.log('userName=', userName, ', recipient=', recipient);
                                 if (userName == recipient) {
                                     qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', userName);
                                 }
                             }
                             else {
+                                console.error('send_datasets handler(): exc=', exc, ', data=', data);
                                 alert(exc);
                             }
                         },
                         'send_datasets',
-                        { recipient: recipient, datasets:  datasets }
+                        { recipient: recipient, datasets: datasets, language: locale }
                     );
                 }
                 self.close();
@@ -304,7 +306,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                                         'info'
                                     ]
                                 );
-                                that.__table.getTableModel().updateView(1);
+                                //                                that.__table.getTableModel().updateView(1);
+                                that.updateView();
 
                                 // change current dataset name if we renamed currently connected dataset
                                 if (that.__info.getDatasetName() == oldName ) {
@@ -349,20 +352,42 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
         },
 
         setFilter: function(filter) {
+            console.log('setFilter(): filter=', filter);
             this.__filterHash = filter;
-            this.__table.getTableModel().updateView(1);
+//            this.__table.getTableModel().updateView(1);
+            this.updateView();
         },
 
         getFilter: function() {
             return this.__filterHash;
         },
 
-        clearFilter: function() {
+        clearFilterOld: function() {
             this.__filterHash = {'*all*': true};
             this.__searchFilter = '';
             if (this.__table) {
                 this.__table.getTableModel().updateView(1);
             }
+        },
+
+        updateView: function() {
+            let tm = this.__table.getTableModel();
+            let data = this.__datasetStore.getDatasets();
+            if (data == null) return;
+
+            let filter = this.getFilter();
+            let searchFilter = this.__searchFilter.toLowerCase();
+
+            tm.setData(data.filter(function(row) {
+                    if ( !row[0] ) return false;
+                    return qx.lang.String.contains(row[0].toLowerCase(), searchFilter);
+                })
+            );
+        },
+
+        clearFilter: function() {
+            this.__filterHash = {'*all*': true};
+            this.__searchFilter = '';
         },
 
         getToolBar: function() {
@@ -475,17 +500,17 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
         },
 
         __createTable: function() {
-            var tableModel = new agrammon.ui.table.model.Smart; // qx.ui.table.model.Simple();
+            var tableModel = new qx.ui.table.model.Simple;
             tableModel.setColumns([
-                                    this.tr("Dataset name"),
-                                                    this.tr("Last change"),
-                                                    this.tr("Parameters"),
-                                    this.tr("Read-only"),
-                                    this.tr("Model Version"),
-                                    this.tr("Tags"),
-                                    this.tr("Comment"),
-                                    this.tr("Model Variant")
-                                  ]);
+                this.tr("Dataset name"),
+                this.tr("Last change"),
+                this.tr("Parameters"),
+                this.tr("Read-only"),
+                this.tr("Model Version"),
+                this.tr("Tags"),
+                this.tr("Comment"),
+                this.tr("Model Variant")
+            ]);
             this.__commentColumn = 6;
 
             var resizeBehaviour = { tableColumnModel:
@@ -495,10 +520,12 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                                   };
 
             var table = new qx.ui.table.Table(tableModel, resizeBehaviour);
-            table.set({ columnVisibilityButtonVisible: true, //false,
-                        keepFirstVisibleRowComplete:   true,
-                        padding: 0,
-                        showCellFocusIndicator: false });
+            table.set({
+                columnVisibilityButtonVisible: true, //false,
+                keepFirstVisibleRowComplete:   true,
+                padding: 0,
+                showCellFocusIndicator: false
+            });
             table.getDataRowRenderer().setHighlightFocusRow(false);
 
             table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
@@ -529,34 +556,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
 
             tcm.setDataCellRenderer(this.__commentColumn, new agrammon.ui.table.cellrenderer.Comment());
 
-            // setup Smart filtering
-
-            // The following view has two filters.
-            // Filter 1 passes
-            //     - all datasets if filterHash['*all*']
-            //     - or otherwise only those datasets for which
-            //       __filterHash[datasetName] is defined and are not demo datasets
-            //
-            // Filter 2 (incremental search) then passes
-            //     - all remaining datasets if __searchFilter is the empty string
-            //     - or otherwise only those datasets whose contain the
-            //       the __searchFilter string
-            tableModel.addView(  // show lines matching filter only
-                function (rowdata) {
-                    var name = rowdata[this.__searchColumn];
-//                    var readOnly = rowdata[3];
-                    var demo     = rowdata[8];
-                    var all = this.__filterHash['*all*'];
-                    return ( !demo
-                          && (all ||  (this.__filterHash[name] ) )
-                          && (name.toLowerCase().indexOf(this.__searchFilter) != -1));
-                },
-                this, null);
-
-            // init smart filtering
             this.clearFilter();
-            tableModel.setView(1);
-            tableModel.updateView(1);
 
             return table;
         }

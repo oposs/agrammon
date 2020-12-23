@@ -125,7 +125,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             CATCH {
                 # new dataset name already exists
                 when /unique/ {
-                    die X::Agrammon::DB::Dataset::AlreadyExists.new(:dataset-name($!name));
+                    die X::Agrammon::DB::Dataset::AlreadyExists.new(:$dataset-name);
                 }
             }
         }

@@ -180,7 +180,7 @@ qx.Class.define('agrammon.module.output.Results', {
                 }
             }
             if (! found) {
-                this.debug('selectMenu: no matching report for ' +reportName);
+                console.error('no result view report found');
                 return;
             }
 

@@ -1,7 +1,7 @@
 msgid "dataset sent"
 msgid_plural "datasets sent"
-msgstr[0] "The dataset %1 of %2 was copied into your Agrammon account"
-msgstr[1] "The dataset %1 of %2 were copied into your Agrammon account"
+msgstr[0] "The dataset %s of %s was copied into your Agrammon account"
+msgstr[1] "The dataset %s of %s were copied into your Agrammon account"
 
 msgid "new dataset"
 msgid_plural "new datasets"
@@ -49,6 +49,9 @@ msgstr "Submitted to"
 
 msgid "submission comment"
 msgstr "Comment"
+
+msgid "submission info"
+msgstr "The dataset will be copied into the Agrammon-user's\newline\texttt{%s}\newline account as dataset\newline\texttt{%s}."
 
 msgid "outputs"
 msgstr "Results of the emission calculation"

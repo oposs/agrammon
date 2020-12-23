@@ -112,11 +112,13 @@ qx.Class.define('agrammon.Application', {
                     navbar.setVariant(data.modelVariant);
                     agrammon.module.dataset.DatasetTable.getInstance().setVariant(data.variant);
                     mainMenu.setTitle(data.title, data.version);
-                    agrammon.Info.getInstance().setVersion(data.version);
-                    agrammon.Info.getInstance().setVariant(data.variant);
-                    agrammon.Info.getInstance().setGuiVariant(data.guiVariant);
-                    agrammon.Info.getInstance().setModelVariant(data.modelVariant);
-                    agrammon.Info.getInstance().setTitle(data.title);
+                    let info = agrammon.Info.getInstance();
+                    info.setVersion(data.version);
+                    info.setVariant(data.variant);
+                    info.setGuiVariant(data.guiVariant);
+                    info.setModelVariant(data.modelVariant);
+                    info.setTitle(data.title);
+                    info.setSubmissionAddresses(data.submission);
 		            qx.event.message.Bus.dispatchByName('agrammon.Info.setModelVariant', data.modelVariant);
                 }
                 else {
@@ -200,7 +202,7 @@ qx.Class.define('agrammon.Application', {
 //            alert('Really terminate?');
         },
 
-	__getParams : function() {
+        __getParams : function() {
             var params = "";
             var urlParams = window.location.search;
             if (urlParams.length > 0) {

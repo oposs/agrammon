@@ -51,15 +51,15 @@ msgstr "Referenz: "
 msgid "Comment on dataset"
 msgstr "Kommentar zum Datensatz"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Incremental filter on dataset name"
 msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -71,127 +71,127 @@ msgstr "Erstellen"
 msgid "Sample datasets"
 msgstr "Beispiel-Datensätze"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Last change"
 msgstr "Zuletzt geändert am"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Parameters"
 msgstr "Parameter"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Read-only"
 msgstr "schreibgeschützt"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Model Version"
 msgstr "Modell Version"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Tags"
 msgstr "Marker"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Dataset name"
 msgstr "Datensatz"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Deleting datasets from database"
 msgstr "Datensätze aus Datenbank löschen"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Really delete selected datasets from database?"
 msgstr "Die ausgewählten Datensätze wirklich aus der Datenbank löschen?"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "dataset"
 msgstr "Datensatz"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "datasets"
 msgstr "Datensätze"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Info"
 msgstr "Info"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "deleted"
 msgstr "gelöscht"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Sending datasets"
 msgstr "Datensatz senden"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Recipient of selected datasets"
 msgstr "Empfänger der ausgewählten Datensätze"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "sent"
 msgstr "gesendet"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Rename selected dataset"
 msgstr "Ausgewählte Datensätze umbenenne"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Send"
 msgstr "Senden"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Send selected dataset(s) to other Agrammon user"
 msgstr "Ausgewählte Datensätze an anderen Agrammon Benutzer schicken"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "New"
 msgstr "Neu"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Create new dataset"
 msgstr "Neuen (leeren) Datensatz anlegen"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Delete"
 msgstr "Löschen"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Delete selected dataset(s)"
 msgstr "Ausgewählte Datensätze löschen"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Dataset"
 msgstr "Datensatz"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Error"
 msgstr "Fehler"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "already exists"
 msgstr "existiert bereits."
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Rename dataset"
 msgstr "Datensatz umbenennen"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "New name"
 msgstr "Neuer Name"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Comment"
 msgstr "Kommentar"
 
-#: agrammon/module/dataset/DatasetTableSimple.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Model Variant"
 msgstr "Modell Variante"
 
