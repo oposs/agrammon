@@ -26,6 +26,7 @@ UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOpt
 UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_floor' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel';
 UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_air' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_fattening_pigs_air';
 # Pig
+UPDATE data_new SET data_var='Livestock::Pig[]::Excretion::dimensioning_barn' WHERE data_var='Livestock::Pig[]::Housing::KArea::dimensioning_barn';
 UPDATE data_new SET data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_housing_floor' WHERE data_var='Livestock::Pig[]::Housing::MitigationOptions::UNECE_category_1_mitigation_options_for_housing_systems_for_pigs';
 UPDATE data_new SET data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_housing_floor' WHERE data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_pigs_slurry_channel';
 UPDATE data_new SET data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_housing_air' WHERE data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_pigs_air';

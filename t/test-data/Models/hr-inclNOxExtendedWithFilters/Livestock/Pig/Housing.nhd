@@ -32,7 +32,6 @@ taxonomy = Livestock::Pig::Housing
 
 +Excretion
 +Housing::Type
-+Housing::KArea
 +Housing::AirScrubber
 +Housing::MitigationOptions
 +Housing::CFreeFactor
@@ -73,7 +72,7 @@ taxonomy = Livestock::Pig::Housing
   ++formula
     my $ef = Val(er_housing, Housing::Type) * 
               Val(c_free_factor_housing, Housing::CFreeFactor) *
-              Val(c_area, Housing::KArea) *
+              Val(c_area, Housing::Type) *
               (1 - Val(red_housing_floor, Housing::MitigationOptions)) * 
               (1 - Val(red_housing_air, Housing::MitigationOptions));
     #FIXME: Add message if $ef > 1?
@@ -103,7 +102,7 @@ taxonomy = Livestock::Pig::Housing
   ++formula
     my $ef = Val(er_housing, Housing::Type) * 
               Val(c_free_factor_housing, Housing::CFreeFactor) *
-              Val(c_area, Housing::KArea);
+              Val(c_area, Housing::Type);
     #FIXME: Add message if $ef > 1?
     $ef = 1 unless $ef < 1;
     return $ef;
