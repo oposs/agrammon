@@ -27,7 +27,7 @@ sub create-latex($template, %data) is export {
     render-template($template ~ ".crotmp", %data);
 }
 
-sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is export {
+sub create-pdf($temp-dir-name, $pdf-prog, $timeout, $username, $dataset-name, %data) is export {
     # setup temp dir and files
     my $temp-dir = $*TMPDIR.add($temp-dir-name);
     if not  $temp-dir.e {
@@ -40,7 +40,6 @@ sub create-pdf($temp-dir-name, $pdf-prog, $username, $dataset-name, %data) is ex
     my $pdf-file    = "$temp-dir/$filename.pdf".IO;
     my $aux-file    = "$temp-dir/$filename.aux".IO;
     my $log-file    = "$temp-dir/$filename.log".IO;
-    my $timeout     = 30; # seconds for PDF creation
 
     # create LaTeX source with template
     $source-file.spurt(create-latex('pdfexport', %data));
@@ -270,6 +269,7 @@ sub input-output-as-pdf(
     return create-pdf(
         $*TMPDIR.add($cfg.general<tmpDir>),
         $cfg.general<pdflatex>,
+        $cfg.general<latexTimeout> // 30, # in seconds
         $user.username,
         $dataset-name,
         %data

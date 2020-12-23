@@ -11,6 +11,7 @@ my %config-expected = (
         log_level   => "warn",
         tempDir     =>  "agrammon",
         pdflatex    => "/usr/bin/lualatex",
+        latexTimeout   => 30,
         translationDir => "share/translations",
     },
     Database => {

@@ -31,7 +31,6 @@ subtest "Setup" => {
     $user = Agrammon::Web::SessionUser.new(:$username);
     ok $user.load, "Load user $username";
 
-
     my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOxExtendedWithFilters/');
     my $top = 'End';
     ok my $model = Agrammon::Model.new(:$path), "Load model";
