@@ -51,6 +51,7 @@ subtest "get-cfg()" => {
     my %cfg-expected = (
         guiVariant => "Single",
         modelVariant => "SHL",
+        submission => Any,
         title => {de => "AGRAMMON 6.0 Einzelbetriebsmodell",
                   en => "AGRAMMON 6.0 Single Farm Model",
                   fr => "AGRAMMON 6.0 modèle Exploitation individuelle"

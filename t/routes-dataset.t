@@ -63,7 +63,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         delete-datasets => -> $user, @datasets {
             @datasets.elems;
         },
-        send-datasets => -> $user, @datasets, $recipient {
+        send-datasets => -> $user, @datasets, $recipient, $language {
             %( sent => @datasets.elems );
         }
     }
@@ -243,7 +243,7 @@ subtest 'Get all datasets' => {
 subtest 'Send datasets' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/send_datasets', {
-            test post(json => { datasets => ( 'DatasetC', 'DatasetD' ), :recipient('fritz@zaucker.ch') },  ),
+            test post(json => { datasets => ( 'DatasetC', 'DatasetD' ), :recipient('fritz@zaucker.ch'), :language('de') },  ),
                 status => 200,
                 json   => { :sent(2) },
         };
