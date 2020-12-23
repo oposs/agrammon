@@ -95,6 +95,18 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     +++fr
        <p> </p>
 
++dimensioning_barn
+  type = integer
+  adjustBranching = true
+  ++labels 
+    en = Number of available animal places
+    de = Anzahl Tierplätze im Stall
+    fr = Nombre de places dans l'étable
+  ++units  
+    en = -
+  ++description
+    Number of available animal places.
+
 ?if !Kantonal_LU
   +inp_n_excretion
     type = text
@@ -354,4 +366,51 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       default {
         0;
       }
+    }
+
+# +dimensioning_barn
+#   print = DairyCow
+#   ++units 
+#     en = -
+#   ++description
+#     Number of anymal places (needed in other modules).
+#   ++formula
+#     In(dimensioning_barn);
+
++area_increase
+  print = Poultry
+  ++units  
+    en = -
+  ++description
+    Factor on what barn size does increase the regularized minimal, limited to 0.5
+  ++formula 
+    if ( (Out(animals) < In(dimensioning_barn) ) and (Out(animals) != 0) ) { 
+      if ( In(dimensioning_barn) >= (Out(animals) * 1.5) ) {   
+        0.5; 
+      }
+      else {
+        In(dimensioning_barn) / Out(animals) - 1;
+      }
+    }
+    else {
+      0.0;
+    }
+
++dimensioning_check
+  print = Poultry
+  ++units
+    en = -
+  ++description
+   Check if number of animals <= number of animal places.
+  ++formula
+    if ( In(dimensioning_barn) < Out(animals) ) {
+      writeLog({
+        en => "The number of available animal places must be equal or higher than the number of animals.",
+        de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+        fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+      });
+      return "barn dimensioning too small";
+    } 
+    else {
+      return "barn dimensioning ok";
     }

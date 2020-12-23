@@ -282,6 +282,14 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
   \\TODO: Give better description!
 
 
++k_area
+  value = 0.5
+  ++units  
+    en = -
+  ++description
+    Increasing factor for larger loose housing barns, +10\% excess place leads 
+    to +5\% increase in the NH3 emission.
+
 
 *** external ***
 
@@ -436,3 +444,12 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
 		  });
       return 1.0;
     }
+
++c_area
+  print = Poultry
+  ++units  
+    en = -
+  ++description
+    Correction factor for area per animal.
+  ++formula
+    1 + (Val(area_increase, ..::Excretion) * Tech(k_area));

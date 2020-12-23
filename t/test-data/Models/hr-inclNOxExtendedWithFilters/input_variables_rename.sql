@@ -42,3 +42,4 @@ UPDATE data_new SET data_var='Livestock::SmallRuminants[]::Housing::CFreeFactor:
 UPDATE data_new SET data_var='Livestock::RoughageConsuming[]::Housing::CFreeFactor::free_correction_factor' WHERE data_var='Livestock::RoughageConsuming[]::Housing::free_correction_factor';
 #Poultry
 UPDATE data_new SET data_var='Livestock::Poultry[]::Grazing::free_range' WHERE data_var='Livestock::Poultry[]::Outdoor::free_range';
+UPDATE data_new SET data_var='Livestock::Poultry[]::Excretion::dimensioning_barn' WHERE data_var='Livestock::Poultry[]::Housing::KArea::dimensioning_barn';
