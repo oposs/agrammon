@@ -36,7 +36,6 @@ taxonomy = Livestock::OtherCattle::Housing
 
 +Excretion
 +Housing::Type
-+Housing::KArea
 +Housing::Floor
 +Housing::CFreeFactor
 +Housing::KGrazing
@@ -82,7 +81,7 @@ taxonomy = Livestock::OtherCattle::Housing
     NH3 emission factor for other cattle housing systems.
   ++formula
     my $c_housing = Val(c_grazing, Housing::KGrazing) * 
-                    Val(c_area, Housing::KArea) * 
+                    Val(c_area, Housing::Type) * 
                     Val(er_housing, Housing::Type) * 
                     Val(c_housing_floor, Housing::Floor) * 
                     Val(c_free_factor_housing, Housing::CFreeFactor);

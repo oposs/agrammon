@@ -126,6 +126,27 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     +++fr
        <p>Nombre effectif d'animaux dans la stabulation.</p>
 
++dimensioning_barn
+  type = integer
+  adjustBranching = true
+  ++labels 
+    en = Number of available animal places
+    de = Anzahl Tierplätze im Stall
+    fr = Nombre de places dans l'étable
+  ++units 
+    en = -
+  ++description
+    Number of available animal places.
+  ++help
+    +++en
+       <p>For loose housing systems: all animal places accessible for the animals must be entered. The number of animal places is higher than the stocking rate if reserve capacities are available, e.g. for a future increase of the herd size</p>
+    +++de
+       <p>Für Laufställe: es sind sämtliche Tierplätze anzugeben, welche für die Tiere zugänglich sind. Die Anzahl Tierplätze im Stall ist grösser als der Bestand, wenn etwa im Hinblick auf eine zukünftige Vergrösserung des Betriebs zusätzliche Tierplätze vorhanden sind. Mehr Tierplätze als Tiere bedeuten für Laufställe eine Erhöhung der verschmutzten Fläche pro Tier. Im Gegensatz dazu führen mehr Tierplätze als Tiere bei Anbindeställen kaum zu einer Erhöhung der verschmutzten Fläche pro Tier, da die freien Tierplätze für die Tiere nicht zugänglich sind.</p>
+       <p>Vorschlag für Standardwert: gleiche Anzahl Tierplätze wie Tierzahl</p>
+    +++fr
+       <p>Pour les stabulations libres: mentionner toutes les places accessibles aux animaux. Le nombre de places dans l'étable peut être supérieur au cheptel actuel, dans la perspective d'un agrandissement futur de l'exploitation p.ex. Dans les stabulations libres, un nombre de places supérieur au nombre d'animaux signifie une augmentation de la surface souillée par animal. Au contraire, dans les stabulations entravées, un nombre de places supérieur au nombre d'animaux ne conduit pas à une augmentation de la surface souillée par animal, vu que ces places libres ne sont pas accessibles aux animaux. </p>
+       <p>Proposition de valeur standard: nombre de places identique au nombre d'animaux</p>
+
 ?if !Kantonal_LU
   +inp_n_excretion
     type = text
@@ -410,3 +431,51 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual soluble N excreted by an animalgroup of selected cattle category.
   ++formula
     $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
+
+# +dimensioning_barn
+#   print = OtherCattle
+#   ++units 
+#     en = -
+#   ++description
+#     Number of anymal places (needed in other modules).
+#   ++formula
+#     In(dimensioning_barn);
+
++area_increase
+  print = OtherCattle
+  ++units 
+    en = -
+  ++description
+    Factor on what barn size does increase the regularized minimal, limited to 0.5
+
+  ++formula 
+    if ( (Out(animals) < In(dimensioning_barn) ) and (Out(animals) != 0) ) { 
+      if ( In(dimensioning_barn) >= (Out(animals) * 1.5) ) {   
+        0.5; 
+      }
+      else {
+        In(dimensioning_barn) / Out(animals) - 1;
+      }
+    }
+    else {
+      0.0;
+    }
+
++dimensioning_check
+  print = OtherCattle
+  ++units 
+    en = -
+  ++description
+   Check if number of animals <= number of animal places.
+  ++formula
+    if (  In(dimensioning_barn) < Out(animals) ) {
+      writeLog({
+        en => "The number of available animal places must be equal or higher than the number of animals.",
+        de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+        fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+      });
+      return "barn dimensioning too small";
+    } 
+    else {
+      return "barn dimensioning ok";
+    }
