@@ -165,6 +165,29 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
             die Düngung landwirtschaftlicher Kulturen in der Schweiz /
             GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
             pp. 4/1-4/23.</p>
+
+  +tan_fraction
+    type = text
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = TAN fraction of N excretion
+      de = TAN Anteil der N Ausscheidung
+      fr = Proportion de TAN des excrétions azotées
+    ++units
+      en = -
+      de = .
+      fr = .
+    ++description
+      TAN fraction of the annual standard N excretion
+    ++help
+      +++en
+         <p>If "Standard" is selected ...</p>
+      +++de
+         <p>Bei Eingabe <b>Standard</b> wird ...</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur de ...</p>
+
 ?endif
 
 +crude_protein
@@ -735,8 +758,28 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++description
     Annual soluble N excreted by a specified number fo pigs.
+?if !Kantonal_LU
+  ++formula
+    if ( lc In(tan_fraction) eq 'standard' ) {
+      Tech(share_Nsol) * Out(n_excretion);
+    } else {
+        my $tan = In(tan_fraction);
+        $tan = In(tan_fraction) / 100 unless $tan < 1;
+        if ( $tan < 0.35 or $tan > 0.75) {
+          writeLog({
+              en => "TODO: Der eingegebene TAN Gehalt liegt nicht zwischen 0.35 und 0.75.",
+              de => "Der eingegebene TAN Gehalt liegt nicht zwischen 0.35 und 0.75.",
+              fr => "TODO: Der eingegebene TAN Gehalt liegt nicht zwischen 0.35 und 0.75.",
+          });
+          return Tech(share_Nsol) * Out(n_excretion);
+        } else {
+          return $tan * Out(n_excretion);
+        }
+    }
+?else
   ++formula
     Tech(share_Nsol) * Out(n_excretion);
+?endif
 
 
 # +dimensioning_barn
