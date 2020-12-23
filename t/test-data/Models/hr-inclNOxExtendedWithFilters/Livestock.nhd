@@ -1104,7 +1104,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
   ++labels
     sort = 694
     en = Into soil from grazing
-    de = In boden von Weide
+    de = In Boden von Weide
     fr = Dans le sol suite au pâturage
   ++units
     en = kg N/year
