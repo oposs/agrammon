@@ -358,12 +358,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
     } else {
         my $tan = In(tan_fraction);
-        $tan = In(tan_fraction) / 100 unless $tan < 1;
-        if ( $tan < 0.35 or $tan > 0.75) {
+        if ( abs($tan - $TE->{"share_Nsol_" . Out(animalcategory)}) > 0.2) {
           writeLog({
-              en => "TODO: Der eingegebene TAN Gehalt liegt nicht zwischen 0.35 und 0.75.",
-              de => "Der eingegebene TAN Gehalt liegt nicht zwischen 0.35 und 0.75.",
-              fr => "TODO: Der eingegebene TAN Gehalt liegt nicht zwischen 0.35 und 0.75.",
+              en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
+              de => "Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
+              fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
           });
           return $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
         } else {
