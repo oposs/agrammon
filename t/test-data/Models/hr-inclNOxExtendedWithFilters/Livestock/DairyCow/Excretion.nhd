@@ -159,6 +159,29 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
             die Düngung landwirtschaftlicher Kulturen in der Schweiz /
             GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
             pp. 4/1-4/23.</p>
+
+  +tan_fraction
+    type = text
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = TAN fraction of N excretion
+      de = TAN Anteil der N Ausscheidung
+      fr = Proportion de TAN des excrétions azotées
+    ++units
+      en = -
+      de = .
+      fr = .
+    ++description
+      TAN fraction of the annual standard N excretion
+    ++help
+      +++en
+         <p>If "Standard" is selected ...</p>
+      +++de
+         <p>Bei Eingabe <b>Standard</b> wird ...</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur de ...</p>
+
 ?endif
 
 *** technical ***
@@ -258,6 +281,35 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Out(n_excretion_animal) *
     Out(animals);
 
+?if !Kantonal_LU
+  +tan_content
+    print = DairyCow
+    ++units
+      en = -
+      de = -
+      fr = -
+    ++description
+      TAN content (as fraction) of the dairy cow excretion.
+    ++formula
+      if ( lc In(tan_fraction) eq 'standard' ) {
+        return ( Tech(share_Nsol) - Tech(feed_influence_on_Nsol) ) / Val(c_feed_ration, Excretion::CFeed) +
+          Tech(feed_influence_on_Nsol);
+      } else {
+        my $tan = In(tan_fraction);
+        $tan = In(tan_fraction) / 100 unless $tan < 1;
+        if ( $tan < 0.35 or $tan > 0.75) {
+          writeLog({
+              en => "TODO: Der eingegebene TAN Gehalt liegt nicht zwischen 0.35 und 0.75.",
+              de => "Der eingegebene TAN Gehalt liegt nicht zwischen 0.35 und 0.75.",
+              fr => "TODO: Der eingegebene TAN Gehalt liegt nicht zwischen 0.35 und 0.75.",
+          });
+          return Tech(share_Nsol);
+        } else {
+          return $tan;
+        }
+      }  
+?endif
+
 +tan_excretion
   print = DairyCow
   ++units
@@ -271,13 +323,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Out(n_excretion) * Tech(share_Nsol);
 ?else
   ++formula
-    # TODO: 55% falls In(inp_n_excretion) direkt vorgegeben (wie Kantonal_LU)
-    # n related to milk yield
-    my $exc_milkyield = Out(n_excretion) / Val(c_feed_ration, Excretion::CFeed);
-    # tan related to milk yield
-    $exc_milkyield * Tech(share_Nsol) +
-    # tan related to feeding
-    (Out(n_excretion) - $exc_milkyield) * Tech(feed_influence_on_Nsol);
+    Out(n_excretion) * Out(tan_content);
 ?endif
 
 ### former KArea.nhd below
