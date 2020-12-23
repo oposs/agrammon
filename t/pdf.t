@@ -102,7 +102,7 @@ my $latex-file-expected = "$source-dir/agrammon_export.tex".IO;
 is create-latex('pdfexport', %data), $latex-file-expected.slurp, 'Create LaTeX document';
 
 my $pdf-created;
-lives-ok { $pdf-created = create-pdf($temp-dir, $pdf-program, $username, $dataset-name, %data) }, "Create PDF";
+lives-ok { $pdf-created = create-pdf($temp-dir, $pdf-program, $cfg.general<latexTimeout>, $username, $dataset-name, %data) }, "Create PDF";
 
 if not %*ENV<GITHUB_ACTIONS> {
     is $pdf-created.bytes, $pdf-file-expected.s, "PDF file $pdf-file-expected size as expected";
@@ -112,7 +112,7 @@ else {
 }
 
 %data<log>.push('\invalidLatex');
-throws-like {create-pdf($temp-dir, $pdf-program, $username, $dataset-name ~ '_broken', %data)},
+throws-like {create-pdf($temp-dir, $pdf-program, $cfg.general<latexTimeout>, $username, $dataset-name ~ '_broken', %data)},
         X::Agrammon::OutputFormatter::PDF::Failed, "Create PDF from invalid LaTeX file dies";
 
 done-testing;
