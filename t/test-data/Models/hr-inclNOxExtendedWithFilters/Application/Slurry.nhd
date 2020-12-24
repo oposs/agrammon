@@ -206,8 +206,8 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 ?if Kantonal_LU
     $nh3_loss;
 ?else
-    $nh3_loss *
-    Val(c_free_factor_application, Slurry::CfreeFactor);
+    scale($nh3_loss,
+      Val(c_free_factor_application, Slurry::CfreeFactor));
 ?endif
 
 ####################################################

@@ -316,15 +316,13 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Upper limit of the annual NH3 emission from liquid storage of pig slurry.
   ++formula
-    scalar(
-      multiplyPairwise(
-        Val(has_pigs, ::Livestock),
-        Val(tan_out_livestock_liquid, ::Livestock) P+ 
-        Out(mineralization) P-
-        Val(n2o_nliquid_housing_and_storage, ::Livestock) P-
-        Val(no_nliquid_housing_and_storage, ::Livestock) P-
-        Val(n2_nliquid_housing_and_storage, ::Livestock)
-      )
+    multiplyPairwise(
+      Val(has_pigs, ::Livestock),
+      Val(tan_out_livestock_liquid, ::Livestock) P+ 
+      Out(mineralization) P-
+      Val(n2o_nliquid_housing_and_storage, ::Livestock) P-
+      Val(no_nliquid_housing_and_storage, ::Livestock) P-
+      Val(n2_nliquid_housing_and_storage, ::Livestock)
     );
 
 # eventually change to scaling by tan!
