@@ -188,6 +188,29 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       +++fr
          <p>Si "Standard" est introduisé, la valeur de référence pour les excrétions azotées d'après PRIF 2017 (Richner et al., 2017) est utilisée (PRIF: « Principes de la fertilisation des cultures agricoles en Suisse » ). Si un nombre est introduisé une valeur  pour les excrétions azotées peut être déterminée par l'utilisateur/-trice.</p>
         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/23.</p>
+
+  +tan_fraction
+    type = text
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = TAN fraction of N excretion
+      de = TAN Anteil der N Ausscheidung
+      fr = Proportion de TAN des excrétions azotées
+    ++units
+      en = -
+      de = .
+      fr = .
+    ++description
+      TAN fraction of the annual standard N excretion
+    ++help
+      +++en
+         <p>If "Standard" is selected ...</p>
+      +++de
+         <p>Bei Eingabe <b>Standard</b> wird ...</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur de ...</p>
+
 ?endif
 
 *** technical ***
@@ -429,8 +452,28 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++description
     Annual soluble N excreted by an animalgroup of selected cattle category.
+?if !Kantonal_LU
+  ++formula
+    if ( lc In(tan_fraction) eq 'standard' ) {
+      $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
+    } else {
+        my $tan = In(tan_fraction);
+        $tan = In(tan_fraction) / 100 unless $tan < 1;
+        if ( abs($tan - $TE->{"share_Nsol_" . Out(animalcategory)}) > 0.2) {
+          writeLog({
+              en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
+              de => "Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
+              fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
+          });
+          return $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
+        } else {
+          return $tan * Out(n_excretion);
+        }
+    }
+?else
   ++formula
     $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
+?endif
 
 # +dimensioning_barn
 #   print = OtherCattle
