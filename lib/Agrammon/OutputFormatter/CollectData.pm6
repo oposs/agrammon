@@ -30,7 +30,7 @@ sub collect-data(
         ));
     }
 
-    my @prints = $reports[+$prints]<data> if $prints;
+    my @prints = $reports[+$prints]<data> if defined $prints;
     my %print-labels;
     my @print-set;
     for @prints -> @print {
@@ -48,7 +48,7 @@ sub collect-data(
             for sorted-kv($_) -> $output, $raw-value {
                 my $value = flat-value($raw-value // 'UNDEFINED');
                 my $var-print = $model.output-print($module, $output) ~ ',All';
-                if not $prints or $var-print.split(',') ∩ @print-set {
+                if not defined $prints or $var-print.split(',') ∩ @print-set {
                     my $print = ($var-print.split(',') ∩ @print-set).keys[0];
                     my $order = $model.output-labels($module, $output)<sort> || $last-order;
                     my $unit  = $model.output-unit($module, $output, $language);
