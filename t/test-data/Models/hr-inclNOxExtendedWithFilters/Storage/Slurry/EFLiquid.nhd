@@ -342,7 +342,7 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
     }
     my $er_pigs = $TE->{'ef_pig_'.In(cover_type)};
     # scale er pigs
-    if ( lc In(contains_pig_manure) eq 'no' ) {
+    if (  In(contains_pig_manure) and lc In(contains_pig_manure) eq 'no' ) {
       return 0;
     } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'no' ) {
       return $er_pigs;
