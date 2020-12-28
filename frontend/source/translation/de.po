@@ -59,7 +59,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/ui/About.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -367,7 +367,7 @@ msgstr "Branch-Konfiguration"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/input/regional/BranchEditor.js
 msgid "Clear"
 msgstr "Löschen"
 
@@ -415,11 +415,11 @@ msgstr "Ok"
 msgid "Graphical Results"
 msgstr "Resultate als Grafik"
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Choose table: "
 msgstr "Tabelle auswählen"
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Simulation log"
 msgstr "Mitteilungen zu den Resultaten"
 
