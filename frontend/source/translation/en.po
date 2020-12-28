@@ -58,7 +58,7 @@ msgstr ""
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/ui/About.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Close"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr ""
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/io/remote/Rpc.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Error"
 msgstr ""
 
@@ -182,7 +182,7 @@ msgstr ""
 msgid "Rename dataset"
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "New name"
 msgstr ""
 
@@ -298,7 +298,7 @@ msgstr ""
 msgid "Duplicate instance "
 msgstr ""
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr ""
 
@@ -414,11 +414,11 @@ msgstr ""
 msgid "Graphical Results"
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Choose table: "
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Graphs.js
 msgid "Simulation log"
 msgstr "Notes on the results"
 
