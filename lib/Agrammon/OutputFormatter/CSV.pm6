@@ -3,9 +3,11 @@ use Agrammon::Model;
 use Agrammon::Outputs;
 
 sub output-as-csv(
-        $simulation-name, $dataset-id, Agrammon::Model $model,
-        Agrammon::Outputs $outputs, Str $unit-language,
-        $with-filters? --> Str
+    $simulation-name, $dataset-id,
+    Agrammon::Model $model,
+    Agrammon::Outputs $outputs,
+    Str $unit-language,
+    Bool $include-filters?, Bool :$all-filters = False --> Str
 ) is export {
     # TODO: handle with-filters
     return (gather for $outputs.get-outputs-hash.sort(*.key) {

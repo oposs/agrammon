@@ -2,10 +2,14 @@ use v6;
 use Agrammon::Model;
 use Agrammon::Outputs;
 
-sub output-as-text(Agrammon::Model $model, Agrammon::Outputs $outputs, Str $language,
-                   Str $prints, Bool $include-filters, Bool :$all-filters = False --> Str) is export {
+sub output-as-text(
+    Agrammon::Model $model,
+    Agrammon::Outputs $outputs,
+    Str $language, Str $reports-selected,
+    Bool $include-filters, Bool :$all-filters = False, --> Str
+) is export {
     my @lines;
-    my @print-set = $prints.split(',') if $prints;
+    my @print-set = $reports-selected.split(',') if defined $reports-selected;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         my $n = 0;
         my @module-lines;
@@ -15,7 +19,7 @@ sub output-as-text(Agrammon::Model $model, Agrammon::Outputs $outputs, Str $lang
             for sorted-kv($_) -> $output, $value {
                 my $val = flat-value($value // 'UNDEFINED');
                 my $var-print = $model.output-print($module, $output) ~ ',All';
-                if not $prints or $var-print.split(',') ∩ @print-set {
+                if not defined $reports-selected or $var-print.split(',') ∩ @print-set {
                     $n++;
                     my $unit = $model.output-unit($module, $output, $language);
                     push @module-lines, "    $output = $val $unit";
@@ -35,7 +39,7 @@ sub output-as-text(Agrammon::Model $model, Agrammon::Outputs $outputs, Str $lang
                     for sorted-kv(%values) -> $output, $value {
                         my $val = flat-value($value // 'UNDEFINED');
                         my $var-print = $model.output-print($module, $output) ~ ',All';
-                        if not $prints or $var-print.split(',') ∩ @print-set {
+                        if not defined $reports-selected or $var-print.split(',') ∩ @print-set {
                             $n++;
                             my $unit = $model.output-unit($module, $output, $language);
                             push @module-lines, "        $output = $val $unit";

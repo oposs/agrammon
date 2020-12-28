@@ -3,11 +3,13 @@ use Agrammon::Model;
 use Agrammon::Outputs;
 use Agrammon::Outputs::FilterGroupCollection;
 
-sub output-as-json(Agrammon::Model $model,
-                   Agrammon::Outputs $outputs,
-                   $language, $prints,
-                   Bool $include-filters
-                   ) is export {
+sub output-as-json(
+    Agrammon::Model $model,
+    Agrammon::Outputs $outputs,
+    $language, $prints,
+    Bool $include-filters,
+    Bool :$all-filters = False
+) is export {
     return get-data($model, $outputs, $include-filters, $language, $prints);
 }
 
