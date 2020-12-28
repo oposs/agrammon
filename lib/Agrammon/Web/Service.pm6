@@ -175,15 +175,15 @@ class Agrammon::Web::Service {
     }
 
     method get-excel-export(Agrammon::Web::SessionUser $user, %params) {
-        my $dataset-name = %params<datasetName>;
-        my $language     = %params<language>;
-        my $prints       = %params<reports>;
+        my $dataset-name    = %params<datasetName>;
+        my $language        = %params<language>;
+        my $report-selected = %params<reportSelected>.Int;
 
         my $inputs  = self!get-inputs($user, $dataset-name);
         my $outputs = self!get-outputs($user, $dataset-name);
         my $reports = self.get-input-variables<reports>;
 
-        my $type = $reports[$prints]<type> // '';
+        my $type = $reports[$report-selected]<type> // '';
         my $with-filters = $type eq 'reportDetailed';
         my $all-filters = $type eq 'reportDetailed';
 
@@ -192,15 +192,15 @@ class Agrammon::Web::Service {
             $user,
             $dataset-name,
             $!model, $outputs, $inputs, $reports,
-            $language, $prints,
+            $language, $report-selected,
             $with-filters, $all-filters
         );
     }
 
     method get-pdf-export(Agrammon::Web::SessionUser $user, %params) {
-        my $dataset-name = %params<datasetName>;
-        my $language     = %params<language>;
-        my $prints       = %params<reports>;
+        my $dataset-name    = %params<datasetName>;
+        my $language        = %params<language>;
+        my $report-selected = %params<reportSelected>.Int;
 
         my %submission;
         if %params<mode> and %params<mode> eq 'submission' {
@@ -224,7 +224,7 @@ class Agrammon::Web::Service {
         my $outputs = self!get-outputs($user, $dataset-name);
         my $reports = self.get-input-variables<reports>;
 
-        my $type = $reports[$prints]<type> // '';
+        my $type = $reports[$report-selected]<type> // '';
         my $with-filters = $type eq 'reportDetailed';
         my $all-filters  = $type eq 'reportDetailed';
 
@@ -233,7 +233,7 @@ class Agrammon::Web::Service {
             $user,
             $dataset-name,
             $!model, $outputs, $inputs, $reports,
-            $language, $prints,
+            $language, $report-selected,
             $with-filters, $all-filters, :%submission
        );
     }

@@ -13,7 +13,7 @@ sub input-output-as-excel(
     Agrammon::Web::SessionUser $user,
     Str $dataset-name, Agrammon::Model $model,
     Agrammon::Outputs $outputs, Agrammon::Inputs $inputs, $reports,
-    Str $language, $prints,
+    Str $language, Int $report-selected,
     Bool $include-filters, Bool $all-filters
 ) is export {
     my $workbook = Spreadsheet::XLSX.new;
@@ -76,7 +76,7 @@ sub input-output-as-excel(
     my %data = collect-data(
         $model,
         $outputs, $inputs, $reports,
-        $language, $prints,
+        $language, $report-selected,
         $include-filters, $all-filters
     );
 

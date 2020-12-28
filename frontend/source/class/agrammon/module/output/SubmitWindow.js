@@ -263,8 +263,7 @@ qx.Class.define('agrammon.module.output.SubmitWindow', {
             return {
                 language       : lang,
                 username       : info.getUserName(),
-                reports        : this.__reportSelected,
-                titles         : this.__titleSelected,
+                reportSelected : this.__reportSelected,
                 datasetName    : info.getDatasetName(),
                 modelVariant   : agrammon.Info.getInstance().getModelVariant(),
                 guiVariant     : agrammon.Info.getInstance().getGuiVariant(),

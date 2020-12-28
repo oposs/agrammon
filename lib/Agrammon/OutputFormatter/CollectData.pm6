@@ -6,7 +6,7 @@ use Agrammon::Outputs::FilterGroupCollection;
 sub collect-data(
     Agrammon::Model $model,
     Agrammon::Outputs $outputs, Agrammon::Inputs $inputs, $reports,
-    Str $language, $prints,
+    Str $language, Int $report-selected,
     Bool $include-filters, Bool $all-filters
 ) is export {
 
@@ -30,7 +30,7 @@ sub collect-data(
         ));
     }
 
-    my @prints = $reports[+$prints]<data> if defined $prints;
+    my @prints = $reports[$report-selected]<data> if defined $report-selected;
     my %print-labels;
     my @print-set;
     for @prints -> @print {
@@ -39,7 +39,6 @@ sub collect-data(
             %print-labels{$print<print>} = $print<langLabels>;
         }
     }
-
     # add outputs
     my @outputs = ();
     my $last-order = -1;
@@ -48,7 +47,7 @@ sub collect-data(
             for sorted-kv($_) -> $output, $raw-value {
                 my $value = flat-value($raw-value // 'UNDEFINED');
                 my $var-print = $model.output-print($module, $output) ~ ',All';
-                if not defined $prints or $var-print.split(',') ∩ @print-set {
+                if not defined $report-selected or $var-print.split(',') ∩ @print-set {
                     my $print = ($var-print.split(',') ∩ @print-set).keys[0];
                     my $order = $model.output-labels($module, $output)<sort> || $last-order;
                     my $unit  = $model.output-unit($module, $output, $language);
@@ -74,7 +73,7 @@ sub collect-data(
                     for sorted-kv(%values) -> $output, $raw-value {
                         my $value = flat-value($raw-value // 'UNDEFINED');
                         my $var-print = $model.output-print($module, $output) ~ ',All';
-                        if not $prints or $var-print.split(',') ∩ @print-set {
+                        if not defined $report-selected or $var-print.split(',') ∩ @print-set {
                             my $print = ($var-print.split(',') ∩ @print-set).keys[0];
                             my $order = $model.output-labels($module, $output)<sort> || $last-order;
                             my $unit  = $model.output-unit($module, $output, $language);
@@ -97,7 +96,6 @@ sub collect-data(
             }
         }
     }
-
     return %( :@inputs, :@outputs, :%print-labels );
 }
 
