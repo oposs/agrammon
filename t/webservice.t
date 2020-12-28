@@ -369,7 +369,7 @@ subtest "get-excel-export" => {
     my %params = %(
         :datasetName($dataset-name),
         :language('de'),
-        :reports(0),
+        :reportSelected(0),
     );
     ok my $workbook = $ws.get-excel-export($user, %params), "Create workbook";
 

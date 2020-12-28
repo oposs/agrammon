@@ -99,7 +99,7 @@
 \section{<.titles.inputs>}
 <@inputs>
 <?.module>
-<!.first-module>
+<!{ .first-module || .first-instance }>
 \bottomrule % not first-module
 \end{tabular}
 \end{scriptsize}

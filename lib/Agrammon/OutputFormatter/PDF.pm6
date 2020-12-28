@@ -140,25 +140,18 @@ sub input-output-as-pdf(
     Agrammon::Web::SessionUser $user,
     Str $dataset-name, Agrammon::Model $model,
     Agrammon::Outputs $outputs, Agrammon::Inputs $inputs, $reports,
-    Str $language, $prints,
+    Str $language, Int $report-selected,
     Bool $include-filters, Bool $all-filters,
     :%submission
 ) is export {
-    note '**** input sorting in input-output-as-pdf() not yet implemented';
-    note "prints=$prints";
-    dd $reports[$prints];
-    dd $include-filters;
-    dd $all-filters;
 
     # get data ready for printing
     my %data = collect-data(
         $model,
         $outputs, $inputs, $reports,
-        $language, $prints,
+        $language, $report-selected,
         $include-filters, $all-filters,
     );
-
-    note "collect-data outputs=" ~ %data<outputs>.elems;
 
     # strings used in template
     my %lx = $cfg.translations{$language};

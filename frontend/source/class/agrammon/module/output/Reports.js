@@ -167,15 +167,14 @@ qx.Class.define('agrammon.module.output.Reports', {
             var version     = agrammon.Info.getInstance().getVersion();
             var datasetName = this.__info.getDatasetName();
             var params = {
-                language     : locale,
-                username     : userName,
-                reports      : this.reportIndex,
-                format       : 'excel',
-                titles       : this.titleSelected,
-                datasetName  : datasetName,
-                modelVariant : agrammon.Info.getInstance().getModelVariant(),
-                guiVariant   : agrammon.Info.getInstance().getGuiVariant(),
-                version      : version
+                language       : locale,
+                username       : userName,
+                reportSelected : this.reportIndex,
+                titles         : this.titleSelected,
+                datasetName    : datasetName,
+                modelVariant   : agrammon.Info.getInstance().getModelVariant(),
+                guiVariant     : agrammon.Info.getInstance().getGuiVariant(),
+                version        : version
             };
 
             var url = 'export/excel';
@@ -217,14 +216,14 @@ qx.Class.define('agrammon.module.output.Reports', {
             var version     = agrammon.Info.getInstance().getVersion();
             var datasetName = this.__info.getDatasetName();
             var params = {
-                language     : locale,
-                username     : userName,
-                reports      : this.reportIndex,
-                titles       : this.titleSelected,
-                datasetName  : datasetName,
-                modelVariant : agrammon.Info.getInstance().getModelVariant(),
-                guiVariant   : agrammon.Info.getInstance().getGuiVariant(),
-                version      : version
+                language       : locale,
+                username       : userName,
+                reportSelected : this.reportIndex,
+                titles         : this.titleSelected,
+                datasetName    : datasetName,
+                modelVariant   : agrammon.Info.getInstance().getModelVariant(),
+                guiVariant     : agrammon.Info.getInstance().getGuiVariant(),
+                version        : version
             };
 
             var url = 'export/pdf';
