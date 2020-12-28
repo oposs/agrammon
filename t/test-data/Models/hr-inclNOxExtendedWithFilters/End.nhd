@@ -62,7 +62,7 @@ Dummy Module marking the startpoint for the Model Parser
     type = reportDetailed
     ++selector
       en = Emissions and fluxes (in kg N per year) - detailed report
-      de = Emissionen und Flüsse (in kg N pro Jahr) - detaillierte Zusammenfassung
+      de = Emissionen und Flüsse (in kg N pro Jahr) - Detaillreport
       fr = Emissions et flux d'azote (en kg de N par année) - résumé detaillé
     ++data
        +++LivestockNH3
