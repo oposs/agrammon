@@ -330,7 +330,6 @@
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_slurry_channel;none
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::MitigationOptions;UNECE_category_1_mitigation_options_for_housing_systems_for_pigs;none
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::Type;housing_type_SHL;Slurry_Conventional
-2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;animalcategory;weaned_piglets_up_to_25kg
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;crude_protein;180
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;energy_content;13.5
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;pigs;5

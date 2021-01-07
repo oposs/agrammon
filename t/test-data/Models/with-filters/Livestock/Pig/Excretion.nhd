@@ -39,6 +39,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 +animalcategory
   type = enum
   filter = true
+  default_calc = weaned_piglets_up_to_25kg
   ++enum
     +++nursing_sows
        en = nursing_sows

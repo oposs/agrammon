@@ -8,9 +8,12 @@ class Agrammon::Model::FilterSet {
     #| An individual filter field.
     my class Filter {
         has Str $.taxonomy is required;
-        has Str $.input-name is required;
-        has Str $.filter-key = $!taxonomy ~ '::' ~ $!input-name;
+        has Agrammon::Model::Input $.input is required;
+        has Str $.filter-key = $!taxonomy ~ '::' ~ $!input.name;
         has @.options is required;
+        method input-name() {
+            $!input.name
+        }
     }
 
     has Filter @!filters;
@@ -22,16 +25,14 @@ class Agrammon::Model::FilterSet {
     }
 
     method !add-from-module(Agrammon::Model::Module $module --> Nil) {
+        my $taxonomy = $module.taxonomy;
         for $module.input -> Agrammon::Model::Input $input {
             if $input.is-filter {
-                my @enums := $input.enum-ordered;
-                unless @enums {
+                my @options := $input.enum-ordered;
+                unless @options {
                     die "Filter input '$input.name()' in module '$module.taxonomy()' is not an enum type";
                 }
-                @!filters.push: Filter.new:
-                        taxonomy => $module.taxonomy,
-                        input-name => $input.name,
-                        options => @enums;
+                @!filters.push: Filter.new: :$taxonomy, :$input, :@options;
             }
         }
     }
@@ -40,6 +41,9 @@ class Agrammon::Model::FilterSet {
     method filters-for($multi-input --> Hash) {
         hash @!filters.map: -> Filter $filter {
             with $multi-input.input-hash-for($filter.taxonomy){$filter.input-name} {
+                $filter.filter-key => $_
+            }
+            orwith $filter.input.default-calc {
                 $filter.filter-key => $_
             }
             else {
