@@ -217,7 +217,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Average free range hours per day.
   ++formula
-    if (  In(free_range) and lc In(free_range) eq 'yes' ) {
+    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
       return $TE->{'free_range_hours_'.Val(animalcategory, Excretion)};
     } else {
       return 0;

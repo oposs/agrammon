@@ -321,7 +321,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     my $cat = Out(animalcategory);
     my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
-    $exc = In(inp_n_excretion) unless lc In(inp_n_excretion) eq 'standard';
+    $exc = In(inp_n_excretion) unless ( (not defined In(inp_n_excretion)) or lc In(inp_n_excretion) eq 'standard' );
     if (($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
         writeLog({
             en => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
@@ -354,7 +354,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual soluble N excreted by an animalgroup of selected poultry category.
 ?if !Kantonal_LU
   ++formula
-    if ( lc In(tan_fraction) eq 'standard' ) {
+    if ( (not defined In(tan_fraction)) or lc In(tan_fraction) eq 'standard' ) {
       $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
     } else {
         my $tan = In(tan_fraction);

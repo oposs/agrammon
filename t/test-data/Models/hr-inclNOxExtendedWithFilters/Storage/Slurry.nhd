@@ -225,7 +225,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
   ++description
     Surface area of slurry storage.
   ++formula
-    if (not defined In(depth) or Out(depth) <= 0) {
+    if ( (not defined In(depth)) or Out(depth) <= 0 ) {
         return 0;
     } else {
         return Out(volume) / Out(depth);

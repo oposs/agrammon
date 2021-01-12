@@ -645,7 +645,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     }
 ?else
   ++formula
-    if ( lc In(inp_n_excretion) eq 'standard' ) {
+    if ( (not defined In(inp_n_excretion)) or lc In(inp_n_excretion) eq 'standard' ) {
       my $exc = Tech(standard_N_excretion_fattening_pigs) * 
                 (1 - (
                   Tech(standard_crude_protein_fattening_pigs) - 
@@ -713,7 +713,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual soluble N excreted by a specified number of fattening pigs.
 ?if !Kantonal_LU
   ++formula
-    if ( lc In(tan_fraction) eq 'standard' ) {
+    if ( (not defined In(tan_fraction)) or lc In(tan_fraction) eq 'standard' ) {
       Tech(share_Nsol) * Out(n_excretion);
     } else {
         my $tan = In(tan_fraction);
