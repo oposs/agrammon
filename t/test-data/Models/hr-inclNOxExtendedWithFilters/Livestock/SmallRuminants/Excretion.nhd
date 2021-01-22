@@ -146,9 +146,9 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       de = TAN Anteil der N Ausscheidung
       fr = Proportion de TAN des excrétions azotées
     ++units
-      en = -
-      de = .
-      fr = .
+      en = %
+      de = %
+      fr = %
     ++description
       TAN fraction of the annual standard N excretion
     ++help
