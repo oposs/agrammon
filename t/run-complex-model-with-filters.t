@@ -13,11 +13,21 @@ use Agrammon::TechnicalParser;
 my $temp-dir = $*TMPDIR.add('agrammon_testing');
 
 #| Expected results
-my $nh3-ntotal = 3157.775;
-my $nh3-nanimalproduction = 3135.575;
-my $nh3-napplication = 1351.033;
-my $n-into-application = 7480.652;
-my $tan-into-application = 3202.854;
+my %expected-results =
+    'hr-inclNOxExtendedWithFilters' => {
+        'nh3_ntotal' => 3153.837,
+        'nh3_nanimalproduction' => 3131.637,
+        'nh3_napplication' => 1347.095,
+        'n_into_application' => 7480.652,
+        'tan_into_application' => 3202.854
+    },
+    'hr-inclNOxExtended' => {
+        'nh3_ntotal' => 3157.775,
+        'nh3_nanimalproduction' => 3135.575,
+        'nh3_napplication' => 1351.033,
+        'n_into_application' => 7480.652,
+        'tan_into_application' => 3202.854
+    };
 
 my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
 my $fh = open $*PROGRAM.parent.add("test-data/$filename");
@@ -49,15 +59,15 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                 'Successfully executed model';
         my %output-hash = $output.get-outputs-hash;
 
-        is (+%output-hash<Total><nh3_ntotal>).round(.001), $nh3-ntotal.round(.001),
+        is (+%output-hash<Total><nh3_ntotal>).round(.001), %expected-results{$model-version}{'nh3_ntotal'}:v.round(.001),
                 "Correct nh3_ntotal result: { (+%output-hash<Total><nh3_ntotal>).round(.001) }";
-        is (+%output-hash<Total><nh3_nanimalproduction>).round(.001), $nh3-nanimalproduction.round(.001),
+        is (+%output-hash<Total><nh3_nanimalproduction>).round(.001), %expected-results{$model-version}{'nh3_nanimalproduction'}:v.round(.001),
                 "Correct nh3_nanimalproduction result: { (+%output-hash<Total><nh3_nanimalproduction>).round(.001) }";
-        is (+%output-hash<Application><nh3_napplication>).round(.001), $nh3-napplication.round(.001),
+        is (+%output-hash<Application><nh3_napplication>).round(.001), %expected-results{$model-version}{'nh3_napplication'}:v.round(.001),
                 "Correct nh3_napplication result: { (+%output-hash<Application><nh3_napplication>).round(.001) }";
-        is (+%output-hash<Storage><n_into_application>).round(.001), $n-into-application.round(.001),
+        is (+%output-hash<Storage><n_into_application>).round(.001), %expected-results{$model-version}{'n_into_application'}:v.round(.001),
                 "Correct n_into_application result: { (+%output-hash<Storage><n_into_application>).round(.001) }";
-        is (+%output-hash<Storage><tan_into_application>).round(.001), $tan-into-application.round(.001),
+        is (+%output-hash<Storage><tan_into_application>).round(.001), %expected-results{$model-version}{'tan_into_application'}:v.round(.001),
                 "Correct tan_into_application result: { (+%output-hash<Storage><tan_into_application>).round(.001) }";
 
         # check balance in N and TAN flows
