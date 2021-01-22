@@ -115,7 +115,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 ####################################################
 #### liquid application old (incorrect) way
 
-?if !Single_correct
+?if Single_old
   +pigs_share_n_out_livestock_liquid
     print = old      
     ++units 
@@ -154,7 +154,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NH3 emission from slurry application.
   ++formula
-?if !Single_correct
+?if Single_old
     #### liquid application old incorrect way
     my $nh3_loss = scale( 
       Val(tan_into_application_liquid, ::Storage),

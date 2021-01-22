@@ -17,24 +17,24 @@ my $model-version = 'hr-inclNOxExtendedWithFilters';
 my $model-variants = (
     # # model version for web (Baugesuch Kanton Luzern)
     # 'Kantonal_LU',
-    # # model version for command line (no reports, extended variable output)
+    # # todo: specific model version for command line (no reports, extended variable output)
     # 'Single_extendedOutput',
-    # # model version for command line (correct version of application emission -> default in the future)
-    # 'Single_correct',
-    # # default model version for web (detailed reports, reduced variable output)
-    # 'Single_default'
+    # # default model version (web, cli)
+    # 'Single_default',
+    # # old model version (wrong calculation of slurry application losses)
+    # 'Single_old'
     );
 
 #| Expected results
 my %expected-results =
     'Kantonal_LU' => {
-        'nh3_ntotal' => 3358.751,
-        'nh3_nanimalproduction' => 3336.551,
-        'nh3_napplication' => 1550.348,
+        'nh3_ntotal' => 3246.747,
+        'nh3_nanimalproduction' => 3224.547,
+        'nh3_napplication' => 1438.344,
         'n_into_application' => 7692.974,
         'tan_into_application' => 3336.359
     },
-    'Single_correct' => {
+    'Single_default' => {
         'nh3_ntotal' => 3153.837,
         'nh3_nanimalproduction' => 3131.637,
         'nh3_napplication' => 1347.095,
@@ -42,13 +42,13 @@ my %expected-results =
         'tan_into_application' => 3202.854
     },
     'Single_extendedOutput' => {
-        'nh3_ntotal' => 3157.775,
-        'nh3_nanimalproduction' => 3135.575,
-        'nh3_napplication' => 1351.033,
+        'nh3_ntotal' => 3153.837,
+        'nh3_nanimalproduction' => 3131.637,
+        'nh3_napplication' => 1347.095,
         'n_into_application' => 7480.652,
         'tan_into_application' => 3202.854
     },
-    'Single_default' => {
+    'Single_old' => {
         'nh3_ntotal' => 3157.775,
         'nh3_nanimalproduction' => 3135.575,
         'nh3_napplication' => 1351.033,
