@@ -299,14 +299,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
         $tan = In(tan_fraction) / 100 unless $tan < 1;
         if ( abs($tan - Tech(share_Nsol)) > 0.2) {
           writeLog({
-              en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
-              de => "Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
-              fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
+              en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab!",
+              de => "Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab!",
+              fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab!"
           });
-          return Tech(share_Nsol);
-        } else {
-          return $tan;
         }
+        return $tan;
       }  
 ?endif
 

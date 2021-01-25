@@ -679,17 +679,15 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
               $TE->{'cfeed_' . Out(animalcategory)});
     if( $Nexcr < $minimal ) {
       writeLog({
-        en => "The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
-              . "The excretion was set to " . $minimal ." kg N per animal!",
-        de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
-              . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!",
-        fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
-              . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!"
+        en => "The entries for the contents of energy and crude protein"
+            . " of the ration result in a N excretion below the minimum for pigs!",
+        de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken"
+            . " eine N Ausscheidung unterhalb des Minimums für Schweine!",
+        fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration"
+            . " bewirken eine N Ausscheidung unterhalb des Minimums für Schweine!"
       });
-      return $minimal;
-    } else {
-      return $Nexcr;
     }
+    return $Nexcr;
 ?else
   ++formula
     my $minimal = $TE->{'minimal_N_excretion_' . Out(animalcategory)};
@@ -703,39 +701,32 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
                 $TE->{'cfeed_' . Out(animalcategory)});
       if( $Nexcr < $minimal ) {
         writeLog({
-          en => "The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
-                . "The excretion was set to " . $minimal ." kg N per animal!",
-          de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
-                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!",
-          fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
-                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!"
+          en => "The entries for the contents of energy and crude protein"
+              . " of the ration result in a N excretion below the minimum for pigs!",
+          de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken"
+              . " eine N Ausscheidung unterhalb des Minimums für Schweine!",
+          fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration"
+              . " bewirken eine N Ausscheidung unterhalb des Minimums für Schweine!"
         });
-        return $minimal;
-      } else {
-        return $Nexcr;
       }
+      return $Nexcr;
     } else {
       if( In(inp_n_excretion) < $minimal ) {
         writeLog({
-          en => "The entry for N excretion is below the minimum for pigs.\n"
-                . "The excretion was set to " . $minimal ." kg N per animal!",
-          de => "Der gewählte N Ausscheidung liegt unterhalb des Minimums für Schweine! \n"
-                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!",
-          fr => "Franz.: Der gewählte N Ausscheidung liegt unterhalb des Minimums für Schweine! \n"
-                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!"
+          en => "The entry for N excretion is below the minimum for pigs!",
+          de => "Der gewählte N Ausscheidung liegt unterhalb des Minimums für Schweine!",
+          fr => "Franz.: Der gewählte N Ausscheidung liegt unterhalb des Minimums für Schweine!"
         });
-        return $minimal;
-      } else {
-        if ( In(inp_n_excretion) < 0.25 * $stdN or 
-             In(inp_n_excretion) > 1.75 * $stdN ) {
-          writeLog({
-            en => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-            de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-            fr => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-          });
-        }
-        return In(inp_n_excretion);
       }
+      if ( In(inp_n_excretion) < 0.25 * $stdN or 
+           In(inp_n_excretion) > 1.75 * $stdN ) {
+        writeLog({
+          en => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+          de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+          fr => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab."
+        });
+      }
+      return In(inp_n_excretion);
     }
 ?endif
 
@@ -767,14 +758,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
         $tan = In(tan_fraction) / 100 unless $tan < 1;
         if ( abs($tan - Tech(share_Nsol)) > 0.2) {
           writeLog({
-              en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
-              de => "Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
-              fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
+              en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab!",
+              de => "Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab!",
+              fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab!"
           });
-          return Tech(share_Nsol) * Out(n_excretion);
-        } else {
-          return $tan * Out(n_excretion);
         }
+        return $tan * Out(n_excretion);
     }
 ?else
   ++formula
