@@ -631,18 +631,13 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
               Tech(cfeed_fattening_pigs));
     if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
       writeLog({
-        en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
-              . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
-        de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
-              . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
+        en => "The entry for the N excretion is below the minimum for fattening pigs!",
+        de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine!",
         fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
               ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
-              ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
       });
-      return Tech(minimal_N_excretion_fattening_pigs);
-    } else {
-      return $exc;
     }
+    return $exc;
 ?else
   ++formula
     if ( (not defined In(inp_n_excretion)) or lc In(inp_n_excretion) eq 'standard' ) {
@@ -654,41 +649,30 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
                 Tech(cfeed_fattening_pigs));
       if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
         writeLog({
-          en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
-                . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
-          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
-                . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
+          en => "The entry for the N excretion is below the minimum for fattening pigs!",
+          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine!",
           fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
                 ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
-                ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
         });
-        return Tech(minimal_N_excretion_fattening_pigs);
-      } else {
-        return $exc;
       }
+      return $exc;
     } else {
       if ( In(inp_n_excretion) < Tech(minimal_N_excretion_fattening_pigs) ) {
         writeLog({
-          en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
-                . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
-          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
-                . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
+          en => "The entry for the N excretion is below the minimum for fattening pigs!",
+          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine!",
           fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
                 ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
-                ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
         });
-        return Tech(minimal_N_excretion_fattening_pigs);
-      } else {
-        if ( (In(inp_n_excretion) < 0.25 * Tech(standard_N_excretion_fattening_pigs)) or (In(inp_n_excretion) > 1.75 * Tech(standard_N_excretion_fattening_pigs)) ) {
-          writeLog({
-            en => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-            de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-            fr => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-          });
-        }
-        return In(inp_n_excretion);
       }
-
+      if ( (In(inp_n_excretion) < 0.25 * Tech(standard_N_excretion_fattening_pigs)) or (In(inp_n_excretion) > 1.75 * Tech(standard_N_excretion_fattening_pigs)) ) {
+        writeLog({
+          en => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+          de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
+          fr => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab."
+        });
+      }
+      return In(inp_n_excretion);
     }
 ?endif
 
@@ -720,14 +704,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
         $tan = In(tan_fraction) / 100 unless $tan < 1;
         if ( abs($tan - Tech(share_Nsol)) > 0.2) {
           writeLog({
-              en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
-              de => "Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
-              fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 0.2 vom Standardwert ab. Der Standardwert wird verwendet.",
+              en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab.",
+              de => "Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab",
+              fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab."
           });
-          return Tech(share_Nsol) * Out(n_excretion);
-        } else {
-          return $tan * Out(n_excretion);
         }
+        return $tan * Out(n_excretion);
     }
 ?else
   ++formula
