@@ -100,7 +100,7 @@ class Agrammon::DB::User does Agrammon::DB {
         return self;
     }
 
-    method load {
+    method load() {
         die X::Agrammon::DB::User::NoUsername.new unless $!username;
         self.with-db: -> $db {
             my $u = $db.query(q:to/USER/, $!username).hash;
