@@ -14,10 +14,13 @@ qx.Class.define('agrammon.ui.dialog.Dialog', {
     // FIX ME: navBar is not used
     //         recycle this widget; perhaps join with Confirm
     //         or use Dialog contrib?
-    construct: function (title, label, execFunc, navBar) {
+    construct: function (title, label, value, execFunc, navBar) {
         this.base(arguments);
         this.setLayout(new qx.ui.layout.VBox(10));
 
+        if (value == null) {
+            value = '';
+        }
         // qx.locale.Manager.getInstance().addListener("changeLocale",
         //                                                 this._update, this);
 
@@ -33,7 +36,7 @@ qx.Class.define('agrammon.ui.dialog.Dialog', {
         var nameLabel = new qx.ui.basic.Label(label);
         vbox.add(nameLabel);
 
-        var nameField = new qx.ui.form.TextField();
+        var nameField = new qx.ui.form.TextField(value);
         this.nameField = nameField;
         vbox.add(nameField);
         nameField.focus();

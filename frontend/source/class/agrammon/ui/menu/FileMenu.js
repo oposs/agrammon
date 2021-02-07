@@ -122,6 +122,7 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
             }, this);
             dialog = new agrammon.ui.dialog.Dialog(this.tr("Cloning dataset"),
                                             this.tr("New dataset name"),
+                                            agrammon.Info.getInstance().getDatasetName(),
                                             okFunction, this);
             return;
         }, this);

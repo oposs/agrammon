@@ -1028,6 +1028,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var dialog = new agrammon.ui.dialog.Dialog(
                 this.tr('Rename instance ') + oldLabel,
                 this.tr('New name'),
+                oldLabel,
                 okFunction, this
             );
         },
@@ -1076,6 +1077,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             dialog = new agrammon.ui.dialog.Dialog(this.tr('Duplicate instance ')
                                                 + oldLabel,
                                                 this.tr('New name'),
+                                                oldLabel,
                                                 okFunction, this);
             return;
         }, // copyInstance
@@ -1152,6 +1154,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
 //            this.debug('addInstance(): this = ' + this);
             dialog = new agrammon.ui.dialog.Dialog(this.tr('Add instance'),
                                              'Name',
+                                             null, // value
                                              okFunction, this);
             return;
         }, // addSingleInstance()
