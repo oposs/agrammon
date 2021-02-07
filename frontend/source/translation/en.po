@@ -18,7 +18,7 @@ msgstr ""
 msgid "Authentication error"
 msgstr ""
 
-#: agrammon/Application.js
+#. NO LONGER USED
 msgid "Invalid username or password"
 msgstr ""
 
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr ""
 
@@ -186,7 +186,7 @@ msgstr ""
 msgid "New name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/PropTable.js
 msgid "Comment"
 msgstr ""
 
@@ -302,11 +302,11 @@ msgstr ""
 msgid "Add instance"
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/input/PropTable.js
 msgid "Variable"
 msgstr ""
 
-#: agrammon/module/input/regional/ConfigEditor.js
+#: agrammon/module/input/PropTable.js
 msgid "Input Parameter"
 msgstr ""
 
@@ -322,7 +322,7 @@ msgstr ""
 msgid "Click to edit"
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/input/PropTable.js
 msgid "Unit"
 msgstr ""
 
@@ -346,7 +346,7 @@ msgstr ""
 msgid "Unit French"
 msgstr ""
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/input/PropTable.js
 msgid "Order"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/user/Login.js
 msgid "Cancel"
 msgstr ""
 
@@ -410,15 +410,15 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: agrammon/module/output/Graphs.js
+#. NO LONGER USED
 msgid "Graphical Results"
 msgstr ""
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Choose table: "
 msgstr ""
 
-#: agrammon/module/output/Graphs.js
+#: agrammon/module/output/Reports.js
 msgid "Simulation log"
 msgstr "Notes on the results"
 
@@ -582,7 +582,7 @@ msgstr ""
 msgid "Create Account"
 msgstr ""
 
-#: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
 msgid "Reset Password"
 msgstr ""
 
@@ -618,7 +618,7 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
 msgid "Reset password"
 msgstr ""
 
@@ -935,4 +935,8 @@ msgstr ""
 
 #: agrammon/module/output/SubmitWindow.js
 msgid "Report submitted successfully."
+msgstr ""
+
+#: agrammon/Application.js
+msgid "Invalid username or password X"
 msgstr ""

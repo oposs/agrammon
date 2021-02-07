@@ -690,6 +690,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                 }, this);
                 dialog = new agrammon.ui.dialog.Dialog(this.tr("Cloning dataset"),
                                                 this.tr("New dataset name"),
+                                                oldDatasetName,
                                                 okFunction, this);
                 return;
             }, this);
@@ -967,6 +968,20 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
             this.__tagToolBar.add(this.__btnDel);
             this.__btnRename.addListener("execute", function(e) {
                 var dialog;
+                var table;
+                // only one of the two tag tables can have a selection if rename is called
+                if (this.__totalTagsSelected(this.__activeTagsTable)) {
+                    table = this.__activeTagsTable;
+//                        this.debug('renameCommand: activeTagsTable');
+                }
+                else {
+                    table = this.__availableTagsTable;
+//                        this.debug('renameCommand: availableTagsTable');
+                }
+                var data = table.getSelectionModel().getSelectedRanges();
+                var row = data[0]['minIndex'];
+                var tm = table.getTableModel();
+                var tag_old = tm.getValue(0, row, 1);
                 var okFunction = qx.lang.Function.bind(function(self) {
                     var tag_new = self.nameField.getValue();
                     if (this.__datasetCache.tagExists(tag_new)) {
@@ -977,20 +992,6 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         return;
                     }
 
-                    var table;
-                    // only one of the two tag tables can have a selection if rename is called
-                    if (this.__totalTagsSelected(this.__activeTagsTable)) {
-                        table = this.__activeTagsTable;
-//                        this.debug('renameCommand: activeTagsTable');
-                    }
-                    else {
-                        table = this.__availableTagsTable;
-//                        this.debug('renameCommand: availableTagsTable');
-                    }
-                    var data = table.getSelectionModel().getSelectedRanges();
-                    var row = data[0]['minIndex'];
-                    var tm = table.getTableModel();
-                    var tag_old = tm.getValue(0, row, 1);
 
                     tm.setValue(0, row, tag_new, 1);
 
@@ -1009,6 +1010,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                 dialog = new agrammon.ui.dialog.Dialog(
                         this.tr("Rename tag"),
                         this.tr("New tag name"),
+                        tag_old,
                         okFunction, this);
                 }, this);
 
@@ -1045,6 +1047,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                 var dialog = new agrammon.ui.dialog.Dialog(
                     this.tr("Creating new tag"),
                     this.tr("New tag name"),
+                    null, // value
                     okFunction, this
                 );
             }, this);

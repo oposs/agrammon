@@ -19,7 +19,7 @@ msgstr "Neuigkeiten"
 msgid "Authentication error"
 msgstr "Fehler bei der Authentisierung"
 
-#: agrammon/Application.js
+#. NO LONGER USED
 msgid "Invalid username or password"
 msgstr "Ungültiger Benutzername oder Passwort"
 
@@ -59,7 +59,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -111,7 +111,7 @@ msgstr "Datensatz"
 msgid "datasets"
 msgstr "Datensätze"
 
-#: agrammon/ui/menu/OptionMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Info"
 msgstr "Info"
 
@@ -171,7 +171,7 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/input/NavBar.js
 msgid "Error"
 msgstr "Fehler"
 
@@ -183,11 +183,11 @@ msgstr "existiert bereits."
 msgid "Rename dataset"
 msgstr "Datensatz umbenennen"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/NavBar.js
 msgid "New name"
 msgstr "Neuer Name"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/PropTable.js
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -279,7 +279,7 @@ msgstr "Filter auf Marker Name"
 msgid "Input"
 msgstr "Eingabe"
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/input/NavBar.js
 msgid "Instance name must not be empty."
 msgstr "Der Kategorie-Name darf nicht leer sein."
 
@@ -299,15 +299,15 @@ msgstr "Umbenennen Kategorie "
 msgid "Duplicate instance "
 msgstr "Duplizieren Kategorie "
 
-#: agrammon/ui/menu/NavMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/input/PropTable.js
 msgid "Variable"
 msgstr "Variable"
 
-#: agrammon/module/input/regional/ConfigEditor.js
+#: agrammon/module/input/PropTable.js
 msgid "Input Parameter"
 msgstr "Eingabe-Parameter"
 
@@ -323,7 +323,7 @@ msgstr ""
 msgid "Click to edit"
 msgstr "Zum Editieren anklicken"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/input/PropTable.js
 msgid "Unit"
 msgstr "Einheit"
 
@@ -347,7 +347,7 @@ msgstr "Einheit Deutsch"
 msgid "Unit French"
 msgstr "Einheit Französisch"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/input/PropTable.js
 msgid "Order"
 msgstr "Sortierung"
 
@@ -363,11 +363,11 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/user/Login.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/ui/dialog/Comment.js
 msgid "Clear"
 msgstr "Löschen"
 
@@ -411,7 +411,7 @@ msgstr "Kategorie-Name"
 msgid "Ok"
 msgstr "Ok"
 
-#: agrammon/module/output/Graphs.js
+#. NO LONGER USED
 msgid "Graphical Results"
 msgstr "Resultate als Grafik"
 
@@ -583,7 +583,7 @@ msgstr "Organisation (optional)"
 msgid "Create Account"
 msgstr "Konto erstellen"
 
-#: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
 msgid "Reset Password"
 msgstr "Passwort neu setzen"
 
@@ -619,7 +619,7 @@ msgstr "Passwort zurück setzen"
 msgid "Login"
 msgstr "Anmelden"
 
-#: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
 msgid "Reset password"
 msgstr "Passwort zurücksetzen"
 
@@ -929,4 +929,8 @@ msgstr "Hilfe-Text im Moment nur auf Deutsch verfügbar "
 
 #: agrammon/module/user/Login.js
 msgid "Remember"
+msgstr ""
+
+#: agrammon/Application.js
+msgid "Invalid username or password X"
 msgstr ""

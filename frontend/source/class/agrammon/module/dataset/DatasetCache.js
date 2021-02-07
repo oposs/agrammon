@@ -65,7 +65,6 @@ qx.Class.define('agrammon.module.dataset.DatasetCache',
                     datasets.push(data[i]);
                 }
                 that.__datasets = datasets;
-//                console.log('datasets=', datasets);
                 qx.event.message.Bus.dispatchByName('Agrammon.datasetsLoaded');
             }
             else {
@@ -136,7 +135,6 @@ qx.Class.define('agrammon.module.dataset.DatasetCache',
         * Get the datasets.
         */
         getDatasets: function(){
-            console.log('getDatasets(): __datasets=', this.__datasets);
             return this.__datasets;
         },
 

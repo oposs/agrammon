@@ -194,6 +194,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 new agrammon.ui.dialog.Dialog(
                     this.tr("Sending datasets"),
                     this.tr("Recipient of selected datasets"),
+                    null, // value
                     okFunction,
                     this
                 );
@@ -325,6 +326,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 }, this);
                 var dialog = new agrammon.ui.dialog.Dialog(this.tr("Rename dataset"),
                                                        this.tr("New name"),
+                                                       oldName,
                                                        okFunction, this);
             }, this);
 
