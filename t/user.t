@@ -70,7 +70,7 @@ transactionally {
             :organisation<XO>,
             :$password,
         ), 'Create new user account';
-        ok $uid = $user.create-account('user'), "Create account, uid=$uid";
+        ok $uid = $user.create-account('user').id, "Create account, uid=$uid";
         is $user.role.name, 'user', "User role is user";
 
         ok $user = Agrammon::DB::User.new(
@@ -80,7 +80,7 @@ transactionally {
             :organisation<XO>,
             :$password,
         ), 'Create new user account';
-        ok $uid = $user.create-account(Any), "Create account, uid=$uid";
+        ok $uid = $user.create-account(Any).id, "Create account, uid=$uid";
         is $user.role.name, 'user', "User role is user by default";
 
         throws-like {$uid = $user.create-account('admin')},
