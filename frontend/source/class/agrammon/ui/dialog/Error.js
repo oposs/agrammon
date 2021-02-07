@@ -56,7 +56,6 @@ qx.Class.define('agrammon.ui.dialog.Error', {
 
         btn.addListener("execute", function(e) {
             if (that.__msg) {
-//                that.debug('msg='+that.__msg.msg+', data='+that.__msg.data);
                 qx.event.message.Bus.dispatchByName(that.__msg.msg, that.__msg.data);
             }
             that.close();

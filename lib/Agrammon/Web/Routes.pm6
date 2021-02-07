@@ -17,15 +17,15 @@ sub routes(Agrammon::Web::Service $ws) is export {
     my $schema = 'share/agrammon.openapi';
     my $root = '';
     route {
-        # before {
-        #     # Consume and re-instate request.
-        #     my $blob = await request.body-blob;
-        #     request.set-body($blob);
-        #     # Dump.
-        #     my $req = ~request;
-        #     try $req ~= $blob.decode('utf-8');
-        #     note $req;
-        # }
+#        before {
+#            # Consume and re-instate request.
+#            my $blob = await request.body-blob;
+#            request.set-body($blob);
+#            # Dump.
+#            my $req = ~request;
+#            try $req ~= $blob.decode('utf-8');
+#            note $req;
+#        }
         include static-content($root);
         include api-routes($schema, $ws);
         include dataset-routes($ws);
@@ -418,8 +418,6 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
         post -> LoggedIn $user, 'send_datasets' {
             request-body -> (:@datasets!, :$recipient!, :$language = 'de') {
                 my $data = $ws.send-datasets($user, @datasets, $recipient, $language);
-                note "send_datasets: data=";
-                dd $data;
                 content 'application/json', $data;
                 CATCH {
                     note "Routes: $_";
@@ -449,6 +447,14 @@ sub application-routes(Agrammon::Web::Service $ws) {
         post -> 'get_cfg' {
             my %cfg = $ws.get-cfg;
             content 'application/json', %cfg;
+        }
+
+        post -> Agrammon::Web::SessionUser $user, 'logout' {
+            $user.logout();
+            content 'application/json', %(
+                user       => $user.username,
+                sudoUser   => 0
+            );
         }
 
         # TODO: implement news in auth()

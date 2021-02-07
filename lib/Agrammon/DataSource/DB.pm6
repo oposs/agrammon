@@ -21,7 +21,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
         has Str @.input-values-b is rw;
         has @.matrix is rw;
     }
-    
+
     method read($user, Str $dataset, %distribution-map) {
         self.with-db: -> $db {
 
@@ -34,7 +34,6 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                     AND data_var not like '%ignore'
                 ORDER BY data_instance, branches_data, data_var, data_val
             STATEMENT
-                                 
             my @rows = $results.arrays;
 
             my $dist-input = Agrammon::Inputs::Distribution.new(
