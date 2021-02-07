@@ -9,14 +9,14 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 14;
+plan 15;
 
 # routing tests related to application logic
 
 sub make-fake-auth($role) {
     mocked(
         Agrammon::Web::SessionUser,
-        returning => { :id(42), :logged-in, }
+        returning => { :id(42), :logged-in, :username('username') }
     )
 }
 
@@ -25,7 +25,7 @@ my $fake-auth = make-fake-auth($role);
 
 my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
-        get-cfg =>  %( :title('Agrammon'), :version('SHL') ),
+        get-cfg => %( :title('Agrammon'), :version('SHL') ),
         load-branch-data => ( 1, 2 ),
     },
     overriding => {
@@ -245,6 +245,14 @@ subtest 'Order instances' => {
         };
         check-mock $fake-store,
             *.called('order-instances', times => 1);
+    }
+}
+
+subtest 'Logout' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test post('/logout'),
+                status => 200,
+                json   => { :user('username'), :!sudoUser };
     }
 }
 

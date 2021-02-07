@@ -98,10 +98,12 @@ transactionally {
         is $new-user.username, $username, "Username is $username";
     }
 
-    subtest "auth()" => {
+    subtest "auth() and logout()" => {
         ok my $session-user = Agrammon::Web::SessionUser.new(:$username), "Create Agrammon::Web::SessionUser with username $username";
         throws-like { $session-user.auth($username, 'WrongPW').logged-in }, X::Agrammon::DB::User::InvalidPassword, "$username was not authenticated with $password";
         ok $session-user.auth($username, $password).logged-in, "$username was authenticated with $password";
+        ok ! $session-user.logout, "Logout $username";
+        ok ! $session-user.logged-in, "$username is logged out";
     }
 
 }

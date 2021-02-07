@@ -454,8 +454,8 @@ sub application-routes(Agrammon::Web::Service $ws) {
         post -> Agrammon::Web::SessionUser $user, 'logout' {
             $user.logout();
             content 'application/json', %(
-                user       => $user.username,
-                sudoUser   => 0
+                :user($user.username),
+                :!sudoUser,
             );
         }
 
@@ -470,7 +470,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
                         role       => $user.role.name,
                         last_login => $user.last-login,
                         news       => Nil,
-                        sudoUser   => 0
+                        :!sudoUser,
                     );
                 }
                 CATCH {
