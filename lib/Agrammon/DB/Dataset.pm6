@@ -65,12 +65,21 @@ class X::Agrammon::DB::Dataset::InstanceRenameFailed is Exception {
     }
 }
 
-#| Error when instance couldn't be renamed.
+#| Error when input comment couldn't be renamed.
 class X::Agrammon::DB::Dataset::StoreInputCommentFailed is Exception {
     has Str $.comment is required;
     has Str $.variable is required;
     method message {
         "Couldn't save comment '$!comment' for variable '$!variable'."
+    }
+}
+
+#| Error when dataset comment couldn't be renamed.
+class X::Agrammon::DB::Dataset::StoreDatasetCommentFailed is Exception {
+    has Str $.comment is required;
+    has Str $.dataset is required;
+    method message {
+        "Couldn't save comment '$!comment' for dataset '$!dataset'."
     }
 }
 
@@ -266,7 +275,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
              ORDER BY data_instance_order ASC, data_var
             DATASET
             $!data = $results.arrays;
-            $!comment
         }
         return self;
     }
@@ -316,6 +324,10 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             RETURNING dataset_comment
             SQL
             $!comment = $comment;
+
+            # couldn't save comment
+            die X::Agrammon::DB::Dataset::StoreDatasetCommentFailed.new(:$comment, :dataset($!name)) unless $ret.rows;
+
             return $ret.rows;
         }
     }
@@ -336,10 +348,11 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                      VALUES          (dataset_name2id($2,$3), $4, $1)
                 RETURNING data_comment
                 SQL
-            return $ret.rows;
 
             # couldn't save comment
             die X::Agrammon::DB::Dataset::StoreInputCommentFailed.new(:$comment, :$variable) unless $ret.rows;
+
+            return $ret.rows;
         }
     }
 
@@ -362,13 +375,14 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                 RETURNING data_comment
             SQL
 
-            return $ret.rows;
             # couldn't save comment
             die X::Agrammon::DB::Dataset::StoreInputCommentFailed.new(:$comment, :$variable) unless $ret.rows;
+
+            return $ret.rows;
         }
     }
 
-    method store-input-comment($variable!, $comment) {
+    method store-input-comment($variable, $comment) {
         my $instance;
         my $variable-name = $variable;
         if $variable-name ~~ s/\[(.+)\]/[]/ {
@@ -396,9 +410,11 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                      VALUES          (dataset_name2id($2,$3), $4, $1)
                 RETURNING data_val
             SQL
-            return $ret.rows;
 
+            # couldn't store variable
             die X::Agrammon::DB::Dataset::StoreDataFailed.new($variable) unless $ret.rows;
+
+            return $ret.rows;
         }
     }
 
@@ -420,9 +436,11 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                      VALUES (dataset_name2id($2,$3), $4, $1, $5)
                 RETURNING data_comment
             SQL
-            return $ret.rows;
 
+            # couldn't store variable
             die X::Agrammon::DB::Dataset::StoreDataFailed.new($variable) unless $ret.rows;
+
+            return $ret.rows;
         }
     }
 

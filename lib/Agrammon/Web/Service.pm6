@@ -273,7 +273,7 @@ class Agrammon::Web::Service {
         }
     }
 
-    method store-input-comment(Agrammon::Web::SessionUser $user, $dataset!, $variable!, $comment --> Nil) {
+    method store-input-comment(Agrammon::Web::SessionUser $user, $dataset, $variable, $comment --> Nil) {
         Agrammon::DB::Dataset.new(:$user, :name($dataset)).store-input-comment($variable, $comment);
     }
 

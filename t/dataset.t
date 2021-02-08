@@ -66,7 +66,6 @@ subtest 'Create dataset' => {
 #    is $dataset.user.username,   'agtestuser',     'User has correct user';
 }
 
-# done-testing; exit;
 
 transactionally {
     my $dataset-name = 'agtest';
