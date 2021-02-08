@@ -52,7 +52,7 @@ subtest 'Create dataset' => {
         :mod-date($date),
         :data(),
         :tags()
-        :user($user)
+        :$user
     ), 'Create new dataset';
     is $dataset.name,     'agtest', 'User has correct username';
     is $dataset.read-only, True,     'Dataset is read-only';
@@ -63,7 +63,6 @@ subtest 'Create dataset' => {
     is $dataset.mod-date,    $date,     'User has correct mod-date';
     is $dataset.data.elems,  0,     'User has 0 data';
     is $dataset.tags.elems,  0,     'User has 0 tags';
-#    is $dataset.user.username,   'agtestuser',     'User has correct user';
 }
 
 
