@@ -65,21 +65,21 @@ class X::Agrammon::DB::Dataset::InstanceRenameFailed is Exception {
     }
 }
 
-#| Error when input comment couldn't be renamed.
+#| Error when input comment couldn't be stored.
 class X::Agrammon::DB::Dataset::StoreInputCommentFailed is Exception {
     has Str $.comment is required;
     has Str $.variable is required;
     method message {
-        "Couldn't save comment '$!comment' for variable '$!variable'."
+        "Couldn't store comment '$!comment' for variable '$!variable'."
     }
 }
 
-#| Error when dataset comment couldn't be renamed.
+#| Error when dataset comment couldn't be stored.
 class X::Agrammon::DB::Dataset::StoreDatasetCommentFailed is Exception {
     has Str $.comment is required;
     has Str $.dataset is required;
     method message {
-        "Couldn't save comment '$!comment' for dataset '$!dataset'."
+        "Couldn't stored comment '$!comment' for dataset '$!dataset'."
     }
 }
 
