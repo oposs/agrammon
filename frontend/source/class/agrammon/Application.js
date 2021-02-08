@@ -11,7 +11,7 @@ qx.Class.define('agrammon.Application', {
           * TODOC
           *
           * @return {var} TODOC
-	  * @lint ignoreDeprecated(alert)
+	      * @lint ignoreDeprecated(alert)
           */
         main: function() {
             this.base(arguments);
@@ -37,14 +37,14 @@ qx.Class.define('agrammon.Application', {
                 qx.log.appender.Console;
             }
 
-	    var param, params = this.__getParams();
-	    for (var i=0; i<params.length; i++) {
+	        var param, params = this.__getParams();
+	        for (var i=0; i<params.length; i++) {
                 if (params[i] != null) {
                     param = params[i].split("=");
                 }
-		if (param[0] == 'lang') {
- 	            qx.locale.Manager.getInstance().setLocale(param[1]);
-		}
+		        if (param[0] == 'lang') {
+                    qx.locale.Manager.getInstance().setLocale(param[1]);
+		        }
             }
 
             var that = this;
@@ -67,6 +67,9 @@ qx.Class.define('agrammon.Application', {
 
             // Dto for log messages.
             root.add(new agrammon.ui.dialog.Log());
+
+            this.__loginDialog =
+                new agrammon.module.user.Login(this.tr("Please authenticate yourself"));
 
             // the base layout of the page.
             var main = new qx.ui.container.Composite(new qx.ui.layout.VBox());
@@ -124,7 +127,7 @@ qx.Class.define('agrammon.Application', {
                 else {
                     alert(exc);
                 }
-                this.__loginScreen();
+                this.__loginDialog.open();
             }, this);
 
             this.__rpc.callAsync( getCfgFunc, 'get_cfg');
@@ -134,23 +137,22 @@ qx.Class.define('agrammon.Application', {
                     var user      = data.user;
                     var role      = data.role;
                     var news      = data.news;
-                    var password  = this.__password;
-                    var remember  = this.__remember;
                     var lastLogin = String(data.last_login);
-                    that.debug('__authenticate(): user='+user+', role='+role+', password='+password+', remember='+remember);
 
-                    qx.event.message.Bus.dispatchByName('agrammon.info.setUser',
-                                                        { username: user,
-                                                          role:     role }
+                    qx.event.message.Bus.dispatchByName(
+                        'agrammon.info.setUser',
+                        { username : user, role : role }
                     );
                     if (news && news != '') {
-                        var dialog =
-                            new agrammon.ui.dialog.News(that.tr("Latest news"),
-                                                  news,
-                                                  function () {
-                                                      dialog.close();
-                                                      qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openConnect');
-                                                  }, lastLogin);
+                        var dialog = new agrammon.ui.dialog.News(
+                            that.tr("Latest news"),
+                            news,
+                            function () {
+                                dialog.close();
+                                qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openConnect');
+                            },
+                            lastLogin
+                        );
                     }
                     else {
                         qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openConnect');
@@ -162,7 +164,7 @@ qx.Class.define('agrammon.Application', {
                 else {
                     qx.event.message.Bus.dispatchByName('error',
                          [ qx.locale.Manager.tr("Authentication error"),
-                           qx.locale.Manager.tr("Invalid username or password"),
+                           qx.locale.Manager.tr("Invalid username or password X"),
                            'error',
                            { msg: 'agrammon.main.logout', data: null}
                          ]
@@ -178,9 +180,9 @@ qx.Class.define('agrammon.Application', {
 
         __authenticate: null,
         __rpc:          null,
-        __password:     null,
+        __loginDialog:  null,
 
-        supports_html5_storage: function() {
+        __supports_html5_storage: function() {
             try {
                 return 'localStorage' in window && window['localStorage'] !== null;
             } catch (e) {
@@ -191,7 +193,6 @@ qx.Class.define('agrammon.Application', {
         close : function(e) {
             this.base(arguments);
             this.debug('Application.close()');
-//            alert('Really close?');
             // Prompt user
             // return "AGRAMMON: Do you really want to close the application?";
         },
@@ -199,7 +200,6 @@ qx.Class.define('agrammon.Application', {
         terminate : function(e) {
             this.base(arguments);
             this.debug('Application.terminate()');
-//            alert('Really terminate?');
         },
 
         __getParams : function() {
@@ -217,61 +217,45 @@ qx.Class.define('agrammon.Application', {
         __login: function(msg) {
             var userData     = msg.getData();
             this.debug('__login(' + userData.user + ')');
-            if (this.supports_html5_storage() && userData.remember) {
+            if (this.__supports_html5_storage() && userData.remember) {
                 localStorage.setItem('agrammonUsername', userData.user);
                 localStorage.setItem('agrammonPassword', userData.password);
                 localStorage.setItem('agrammonRemember', userData.remember);
             }
-            this.__password = userData.password;
             this.__rpc.callAsync( this.__authenticate, 'auth', userData);
         },
 
         __logout: function() {
-            var userData =  {user: 'logout', password: ''};
-            this.__rpc.callAsync( qx.lang.Function.bind(this.__logoutFunc,this), 'auth', userData);
+            this.__rpc.callAsync( qx.lang.Function.bind(this.__logoutFunc,this), 'logout');
             qx.event.message.Bus.dispatchByName('agrammon.NavBar.clearTree', null);
             qx.event.message.Bus.dispatchByName('agrammon.input.select');
         },
 
-	    /**
-	     * @lint ignoreDeprecated(alert)
-	     */
         __logoutFunc: function(data, exc, id) {
             if (exc == null || exc == 403) {
+                this.__loginDialog.open();
+                // TODO: implement sudo
                 if (data.sudoUser) {
                     var infoOnly = true;
-                    var dialog =
-                        new agrammon.ui.dialog.Confirm(this.tr("End change user"),
-                                                       this.tr("Returning from %1 to %2", data.sudoUser, data.user),
-                                                       qx.lang.Function.bind(function() {
-                                                           this.__authenticate(data, exc, id);
-                                                           dialog.close()
-                                                       }, this), this, infoOnly);
+                    var dialog = new agrammon.ui.dialog.Confirm(
+                        this.tr("End change user"),
+                        this.tr("Returning from %1 to %2", data.sudoUser, data.user),
+                        qx.lang.Function.bind(function() {
+                            this.__authenticate(data, exc, id);
+                            dialog.close()
+                        }, this),
+                        this,
+                        infoOnly
+                    );
                     return;
                 }
                 qx.event.message.Bus.dispatchByName('agrammon.info.setUser',    '-');
                 qx.event.message.Bus.dispatchByName('agrammon.info.setDataset', '-');
-                this.__loginScreen();
             }
             else {
                 alert(exc);
             }
-        },
-
-        /**
-          * TODOC
-          *
-          * @return {var} TODOC
-          */
-
-//           * @lint ignore(Agrammon)
-
-        __loginScreen: function() {
-            var loginDialog =
-                new agrammon.module.user.Login(this.tr("Please authenticate yourself"));
-            loginDialog.open();
+            this.__loginDialog.open();
         }
-
     }
-}
-);
+});
