@@ -6,7 +6,7 @@ use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
-# plan 6;
+plan 11;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
