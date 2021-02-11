@@ -292,8 +292,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       TAN content (as fraction) of the dairy cow excretion.
     ++formula
       if ( (not defined In(tan_fraction)) or lc In(tan_fraction) eq 'standard' ) {
-        return ( Tech(share_Nsol) - Tech(feed_influence_on_Nsol) ) / Val(c_feed_ration, Excretion::CFeed) +
-          Tech(feed_influence_on_Nsol);
+        if ( (not defined In(inp_n_excretion)) or lc In(inp_n_excretion) eq 'standard' ) {
+          return ( Tech(share_Nsol) - Tech(feed_influence_on_Nsol) ) / Val(c_feed_ration, Excretion::CFeed) +
+            Tech(feed_influence_on_Nsol);
+        } else {
+          return Tech(share_Nsol);
+        }
       } else {
         my $tan = In(tan_fraction);
         $tan = In(tan_fraction) / 100 unless $tan < 1;
