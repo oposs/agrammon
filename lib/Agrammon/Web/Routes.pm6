@@ -3,6 +3,7 @@ use v6;
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
 
+use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
@@ -482,19 +483,24 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # TODO: test/implement load_branch_data()
+        # TODO: test
         post -> LoggedIn $user, 'load_branch_data' {
-            request-body -> (:$name!) {
-                my $ret = $ws.load-branch-data($user, $name);
-                content 'application/json', $ret;
+            request-body -> (:$name!, :%data!) {
+                my $data = $ws.load-branch-data($user, $name, %data);
+                content 'application/json', $data;
             }
         }
 
-        # TODO: test/implement store_branch_data()
+        # TODO: test
         post -> LoggedIn $user, 'store_branch_data' {
-            request-body -> (:datasetName($dataset-name)!, :%data!) {
-                my $ret = $ws.store-branch-data($user, $dataset-name, %data);
-                content 'application/json', $ret;
+            request-body -> (:name($dataset-name)!, :%data!) {
+                $ws.store-branch-data($user, $dataset-name, %data);
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::StoreBranchDataFailed {
+                        conflict 'application/json', %( error => .message );
+                    }
+                }
             }
         }
 

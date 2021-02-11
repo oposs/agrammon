@@ -26,7 +26,7 @@ my $fake-auth = make-fake-auth($role);
 my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
         get-cfg => %( :title('Agrammon'), :version('SHL') ),
-        load-branch-data => ( 1, 2 ),
+#        load-branch-data => ( 1, 2 ),
     },
     overriding => {
         get-input-variables => {
@@ -53,8 +53,10 @@ my $fake-store = mocked(Agrammon::Web::Service,
         order-instances => -> $user, $dataset-name, @instances {
             %( sorted => 1 )
         },
-        store-branch-data => -> $user, %data, $dataset-name {
-            %( stored => 1 )
+        store-branch-data => -> $user, $dataset-name, %data {
+        },
+        load-branch-data => -> $user, $dataset-name, %data {
+            %( :fractions([50, 50]), :options(['option1', 'option2']) )
         },
         store-input-comment => -> $user, $dataset-name, $variable, $comment {
         },
@@ -205,9 +207,9 @@ subtest 'Delete instance' => {
 subtest 'Load branch data' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/load_branch_data', {
-            test post(json => { :name('DatasetC') }),
+            test post(json => { :name('DatasetC'), :data(%()) }),
                 status => 200,
-                json   => [1, 2 ], # check what we really expect
+                json => { :fractions([50, 50]), :options(['option1', 'option2']) }
         };
         check-mock $fake-store,
             *.called('load-branch-data', times => 1);
@@ -217,9 +219,8 @@ subtest 'Load branch data' => {
 subtest 'Store branch data' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_branch_data', {
-            test post(json => { :datasetName('DatasetC'), data => %( :x(1), :y(2) ) }),
-                status => 200,
-                json   => { stored => 1 }, # check what we really expect
+            test post(json => { :name('DatasetC'), :data(%()) }),
+                status => 204,
         };
         check-mock $fake-store,
             *.called('store-branch-data', times => 1);
