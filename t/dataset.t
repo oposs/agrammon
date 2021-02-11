@@ -163,7 +163,8 @@ transactionally {
                     "more than 4 times a month",
                     "once a day",
                     "no manure belt"]
-                }),
+                }
+            ),
             :tdata($[
                 ["manure belt with manure belt drying system", "0", "5", "0", "0", "0", "0"],
                 ["manure belt without manure belt drying system", "0", "0", "10", "7", "0", "0"],
