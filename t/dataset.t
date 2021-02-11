@@ -4,9 +4,13 @@ use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
 use Agrammon::Web::SessionUser;
 use DB::Pg;
+use JSON::Fast;
 use Test;
 
-plan 11;
+use lib 't/lib';
+use AgrammonTest;
+
+plan 12;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -73,8 +77,6 @@ transactionally {
     my $dataset;
     my $dataset-id;
 
-    ok prepare-test-db, 'Test database prepared';
-
     subtest 'create-account()' => {
         ok $user = Agrammon::DB::User.new(
                 :username<agtest>,
@@ -84,8 +86,9 @@ transactionally {
                 :$password,
                 ), 'Create new user account';
         ok $uid = $user.create-account('user').id, "Create account, uid=$uid";
-
     }
+
+    ok prepare-test-db($uid), 'Test database prepared';
 
     subtest 'create()' => {
         ok $dataset = Agrammon::DB::Dataset.new(
@@ -121,74 +124,93 @@ transactionally {
         is @row[4], 'Input comment', "Input has right comment";
     }
 
+    subtest 'Branching' => {
+        subtest 'load dataset' => {
+            my $name = 'BranchTest';
+            ok $dataset = Agrammon::DB::Dataset.new(:$name, :$user), "Create dataset object";
+            ok $dataset.load, "Dataset id=$dataset-id loaded";
+        }
+
+        subtest 'store and load branch data' => {
+            # TODO: cleanup data sent by the frontend
+            my $data-json = '{
+                "dataset_name":"TestRegionalBranched",
+                "instance":"Branched",
+                "vars":[
+                    "Livestock::Poultry[]::Housing::Type::housing_type",
+                    "Livestock::Poultry[]::Housing::Type::manure_removal_interval"
+                ],
+                "options":{
+                    "Livestock::Poultry[]::Housing::Type::housing_type":[
+                        "manure belt with manure belt drying system",
+                        "manure belt without manure belt drying system",
+                        "deep pit",
+                    "deep litter"],
+                    "Livestock::Poultry[]::Housing::Type::manure_removal_interval":[
+                        "less than twice a month",
+                        "twice a month",
+                        "3 to 4 times a month",
+                        "more than 4 times a month",
+                        "once a day",
+                        "no manure belt"
+                    ]
+                },
+                "data":[
+                    ["0","5","0","0","0","0"],
+                    ["0","0","10","7","0","0"],
+                    ["13","20","0","0","0","22"],
+                    ["0","15","0","8","0","0"]
+                ],
+                "tdata":[
+                    ["manure belt with manure belt drying system","0","5","0","0","0","0"],
+                    ["manure belt without manure belt drying system","0","0","10","7","0","0"],
+                    ["deep pit","13","20","0","0","0","22"],
+                    ["deep litter","0","15","0","8","0","0"]
+                ],
+                "voptions":[
+                    ["manure belt with manure belt drying system","manure belt without manure belt drying system","deep pit","deep litter"],
+                    ["less than twice a month","twice a month","3 to 4 times a month","more than 4 times a month","once a day","no manure belt"]
+                ]
+            }';
+            my $data = from-json $data-json;
+
+            ok $dataset.store-branch-data(
+                $data<vars>, $data<instance>, $data<options>, $data<data>
+            ), "Store branch data";
+
+            my $results;
+            ok $results = $dataset.load-branch-data($data<vars>, $data<instance>), 'Load branch data';
+
+            my @fractions-expected = (
+                0e0, 5e0, 0e0, 0e0, 0e0, 0e0,     0e0, 0e0, 10e0, 7e0, 0e0, 0e0,
+                13e0, 20e0, 0e0, 0e0, 0e0, 22e0,  0e0, 15e0, 0e0, 8e0,    0e0,    0e0,
+            );
+            my @options-expected = (
+                [<
+                    manure_belt_with_manure_belt_drying_system
+                    manure_belt_without_manure_belt_drying_system
+                    deep_pit
+                    deep_litter
+                >],
+                [<
+                    less_than_twice_a_month
+                    twice_a_month
+                    3_to_4_times_a_month
+                    more_than_4_times_a_month
+                    once_a_day
+                    no_manure_belt
+                >],
+            );
+            is-deeply $results<options>,   @options-expected,   "Got correct options";
+            is-deeply $results<fractions>, @fractions-expected, "Got correct fractions";
+        }
+    }
+
 # TODO
 # order instances
 # delete-instance
 # rename-instance
 # clone
-
 }
 
 done-testing;
-
-sub prepare-test-db {
-    my $db = $*AGRAMMON-DB-HANDLE;
-
-    $db.query(q:to/SQL/);
-    CREATE TABLE IF NOT EXISTS role (
-        role_id       SERIAL NOT NULL PRIMARY KEY, -- Unique ID
-        role_name     TEXT NOT NULL UNIQUE
-    )
-    SQL
-
-    my $results = $db.query(q:to/SQL/);
-    SELECT role_id
-      FROM role
-    SQL
-
-    my @ids = $results.arrays.sort;
-    if not @ids eqv [[0],[1],[2]] {
-        my $sth = $db.prepare(q:to/SQL/);
-            INSERT INTO role (role_id, role_name)
-            VALUES ($1, $2)
-        SQL
-        $sth.execute(0, 'admin');
-        $sth.execute(1, 'user');
-        $sth.execute(2, 'support');
-    }
-
-    $db.query(q:to/SQL/);
-    CREATE TABLE IF NOT EXISTS pers (
-        pers_id         SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
-        pers_email      TEXT NOT NULL UNIQUE,                    -- used as login name
-        pers_first      TEXT NOT NULL CHECK (pers_first != ''),  -- First Name of Person
-        pers_last       TEXT NOT NULL CHECK (pers_last != ''),   -- Last Name of Person
-        pers_password   TEXT NOT NULL,                           -- Password
-        pers_org        TEXT NOT NULL,                           -- Organisation
-        pers_last_login TIMESTAMP WITHOUT TIME ZONE,
-        pers_created    TIMESTAMP WITHOUT TIME ZONE,
-        pers_role       INTEGER NOT NULL REFERENCES role(role_id) DEFAULT 1
-    )
-    SQL
-
-    $db.query(q:to/SQL/);
-    CREATE TABLE IF NOT EXISTS dataset (
-        dataset_id       SERIAL NOT NULL PRIMARY KEY,                 -- Unique ID
-        dataset_name     TEXT NOT NULL,                               -- dataset name
-        dataset_pers     INTEGERT NOT NULL REFERENCES pers(pers_id),  -- owner
-        dataset_version  TEXT DEFAULT '2.0',                          -- Version
-        dataset_comment  TEXT,
-        dataset_model    TEXT,
-        dataset_readonly BOOLEAN DEFAULT False
-    )
-    SQL
-
-    return 1;
-}
-
-sub transactionally(&test) {
-    my $*AGRAMMON-DB-HANDLE = my $db = $*AGRAMMON-DB-CONNECTION.db;
-    $db.begin;
-    test($db);
-    $db.finish;
-}

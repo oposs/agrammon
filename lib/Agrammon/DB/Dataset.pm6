@@ -198,7 +198,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     method submit($email) {
         my $new-dataset = 'newDataset';
 
-        # TODO: clone dataset; implement sending eMail
+        # TODO: move here from Routes.pm
         warn "Submitting dataset and sending mail for submit($email) not yet implemented";
         return $new-dataset;
     }
@@ -216,7 +216,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
         return self;
     }
-
 
     #| Set tag on datasets.
     method set-tag(@datasets, $tag-name --> Nil) {
@@ -254,7 +253,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                                            WHERE tag_name = $1 )
                        AND tagds_dataset IN ( SELECT dataset_id
                                                 FROM dataset
-                                                WHERE dataset_name = $2 )
+                                               WHERE dataset_name = $2 )
                 SQL
                 CATCH {
                     # other DB failure
@@ -277,40 +276,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $!data = $results.arrays;
         }
         return self;
-    }
-
-    method load-branch-data {
-        warn "*** load-branch-data() not yet implemented";
-        my @data;
-        # self.with-db: -> $db {
-        #     my $username = $!user.username;
-        #     my $results = $db.query(q:to/DATASET/, $username, $!name);
-        #     SELECT data_var, data_val, data_instance_order, branches_data, data_comment
-        #       FROM data_view LEFT JOIN branches ON (branches_var=data_id)
-        #      WHERE data_dataset=dataset_name2id($1,$2)
-        #        AND data_var not like '%::ignore'
-        #      ORDER BY data_instance_order ASC, data_var
-        #     DATASET
-        #     $!data = $results.arrays;
-        # }
-        return @data;
-    }
-
-    method store-branch-data(%data) {
-        warn "*** store-branch-data() not yet implemented";
-        my @data;
-        # self.with-db: -> $db {
-        #     my $username = $!user.username;
-        #     my $results = $db.query(q:to/DATASET/, $username, $!name);
-        #     SELECT data_var, data_val, data_instance_order, branches_data, data_comment
-        #       FROM data_view LEFT JOIN branches ON (branches_var=data_id)
-        #      WHERE data_dataset=dataset_name2id($1,$2)
-        #        AND data_var not like '%::ignore'
-        #      ORDER BY data_instance_order ASC, data_var
-        #     DATASET
-        #     $!data = $results.arrays;
-        # }
-        return @data.keys.elems;
     }
 
     method store-comment($comment) {
@@ -540,6 +505,81 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         CATCH {
             die X::Agrammon::DB::Dataset::InstanceReorderFailed.new(:$!name);
         }
+    }
+
+    method store-branch-data(Array $vars, Str $instance, Hash $options, Array $fractions) {
+        my $dataset-name = $!name;
+
+        # pg-array syntax: "{1,2,3}"
+        my $fractions-pg = '{' ~ $fractions[*;*].join(',') ~ '}';
+
+        my @branch-variables;
+        # Get variable ids and names
+        self.with-db: -> $db {
+            my $username = $!user.username;
+            @branch-variables = $db.query(q:to/SQL/, $username, $dataset-name, $vars[0], $vars[1], $instance).hashes;
+            SELECT data_id, data_var
+                  FROM data_new
+                 WHERE data_dataset=dataset_name2id($1,$2)
+                   AND data_var IN ($3,$4)
+                   AND data_instance = $5
+                   ORDER BY data_id
+            SQL
+        }
+
+        for @branch-variables -> %var {
+            my $var-id   = %var<data_id>;
+            my $var-name = %var<data_var>;
+
+            # pg array syntax: { "test_1", "test_2" }
+            my $options-pg = '{' ~ $options{$var-name}.map(*.subst(' ', '_', :g) ).join(',') ~ '}';
+
+            self.with-db: -> $db {
+                my $ret = $db.query(q:to/SQL/, $var-id, $fractions-pg, $options-pg);
+                    INSERT INTO branches (branches_var, branches_data, branches_options)
+                                  VALUES ($1, $2, $3)
+                    ON CONFLICT (branches_var)
+                    DO
+                        UPDATE SET branches_data = EXCLUDED.branches_data,
+                                   branches_options = EXCLUDED.branches_options
+                    SQL
+                die "Couldn't save branch data" unless $ret;
+
+                $db.query(q:to/SQL/, $!user.username, $dataset-name);
+                    UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                     WHERE dataset_id=dataset_name2id($1,$2)
+                SQL
+            }
+
+            return 'Branch data saved';
+        }
+    }
+
+    method load-branch-data($vars, $instance) {
+        my $data;
+        self.with-db: -> $db {
+            my $username = $!user.username;
+            my @vars = $db.query(q:to/SQL/, $username, $!name, $vars[0], $vars[1], $instance).arrays;
+                SELECT data_id
+                  FROM data_new
+                 WHERE data_dataset=dataset_name2id($1,$2)
+                   AND data_var IN ($3,$4)
+                   AND data_instance = $5
+                 ORDER BY data_id
+            SQL
+
+            my $branches = $db.query(q:to/SQL/, |@vars[*;*]).hashes;
+                SELECT branches_data, branches_options
+                  FROM branches
+                 WHERE branches_var in ($1,$2)
+                 ORDER BY branches_id
+            SQL
+            $data = {
+                fractions => $branches[0]<branches_data>,
+                options   => [ $branches[0]<branches_options>, $branches[1]<branches_options> ]
+            };
+        }
+        return $data;
     }
 
 }
