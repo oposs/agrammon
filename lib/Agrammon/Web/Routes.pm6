@@ -485,16 +485,16 @@ sub application-routes(Agrammon::Web::Service $ws) {
         # TODO: test/implement load_branch_data()
         post -> LoggedIn $user, 'load_branch_data' {
             request-body -> (:$name!) {
-                my $data = $ws.load-branch-data($user, $name);
-                content 'application/json', $data;
+                my $ret = $ws.load-branch-data($user, $name);
+                content 'application/json', $ret;
             }
         }
 
         # TODO: test/implement store_branch_data()
         post -> LoggedIn $user, 'store_branch_data' {
             request-body -> (:datasetName($dataset-name)!, :%data!) {
-                my $data = $ws.store-branch-data($user, %data, $dataset-name);
-                content 'application/json', $data;
+                my $ret = $ws.store-branch-data($user, $dataset-name, %data);
+                content 'application/json', $ret;
             }
         }
 
