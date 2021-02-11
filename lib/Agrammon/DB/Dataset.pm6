@@ -335,16 +335,16 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable, $instance);
                 UPDATE data_new SET data_comment = $1
-                 WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
-                                                           AND data_instance = $5
+                 WHERE data_dataset=dataset_name2id($2,$3)
+                   AND data_var      = $4
+                   AND data_instance = $5
                 RETURNING data_comment
             SQL
-
             return $ret.rows if $ret.rows;
 
             $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable, $instance);
                 INSERT INTO data_new (data_dataset, data_var, data_comment, data_instance)
-                     VALUES          (dataset_name2id($2,$3), $4, $1, $5)
+                              VALUES (dataset_name2id($2,$3), $4, $1, $5)
                 RETURNING data_comment
             SQL
 
@@ -355,15 +355,15 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method store-input-comment($variable, $comment) {
+    method store-input-comment($var-name, $comment) {
         my $instance;
-        my $variable-name = $variable;
-        if $variable-name ~~ s/\[(.+)\]/[]/ {
+        my $var = $var-name;
+        if $var ~~ s/\[(.+)\]/[]/ {
             $instance = $0;
         }
 
-        $instance ?? self!store-instance-variable-comment($variable, $instance, $comment)
-                  !! self!store-variable-comment($variable, $comment);
+        $instance ?? self!store-instance-variable-comment($var, $instance, $comment)
+                  !! self!store-variable-comment($var, $comment);
     }
 
     method !store-variable($variable, $value) {

@@ -20,6 +20,7 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
 my $*AGRAMMON-DB-CONNECTION;
 
 subtest 'Connect to database' => {
+    plan 2;
     my $conninfo;
     my $cfg-file;
     if %*ENV<DRONE_REPO> {
@@ -36,6 +37,7 @@ subtest 'Connect to database' => {
 
 my $user;
 subtest 'Create user' => {
+    plan 2;
     ok $user = Agrammon::DB::User.new(
         :username<agtestuser>,
     ), 'Create new user';
@@ -43,8 +45,8 @@ subtest 'Create user' => {
 }
 
 subtest 'Create dataset' => {
+    plan 10;
     my $date = DateTime.new('2020-04-01T00:00:00Z');
-    diag $date;
     ok my $dataset = Agrammon::DB::Dataset.new(
         :id<42>,
         :name<agtest>,
@@ -78,6 +80,7 @@ transactionally {
     my $dataset-id;
 
     subtest 'create-account()' => {
+        plan 2;
         ok $user = Agrammon::DB::User.new(
                 :username<agtest>,
                 :firstname<XF>,
@@ -91,6 +94,7 @@ transactionally {
     ok prepare-test-db($uid), 'Test database prepared';
 
     subtest 'create()' => {
+        plan 2;
         ok $dataset = Agrammon::DB::Dataset.new(
                 :name<agtest>,
                 :$user
@@ -99,32 +103,43 @@ transactionally {
     }
 
     subtest 'rename()' => {
+        plan 2;
         is $dataset.rename($dataset-name ~ '1'), $dataset-name ~ '1', "Dataset has correct new name";
         is $dataset.rename($dataset-name), $dataset-name, "Dataset has correct old name";
     }
 
     subtest 'store-comment()' => {
+        plan 2;
         is $dataset.store-comment('Dataset comment'), 1, 'Store dataset comment';
         is $dataset.comment, 'Dataset comment', "Dataset has right comment";
     }
 
-    subtest 'store-input-comment()' => {
-        is $dataset.store-input-comment('my-variable', 'Input comment'), 1, "Store single input comment";
-    }
-
     subtest 'store-input()' => {
         is $dataset.store-input("my-variable", 42), 1, "Store single input";
+        is $dataset.store-input("my-multi-variable[Branch]::test", 43), 1, "Store multi input";
+    }
+
+    subtest 'store-input-comment()' => {
+        is $dataset.store-input-comment('my-variable', 'Single input comment'), 1, "Store single input comment";
+        is $dataset.store-input-comment('my-multi-variable[Branch]::test', 'Multi input comment'), 1, "Store multi input comment";
     }
 
     subtest 'load()' => {
+        plan 7;
         ok $dataset.load(), 'Load dataset';
         my @row = $dataset.data[0];
+        is @row[0], 'my-multi-variable[Branch]::test', "Input has right name";
+        is @row[1], 43, "Input has right value";
+        is @row[4], 'Multi input comment', "Input has right comment";
+        @row = $dataset.data[1];
         is @row[0], 'my-variable', "Input has right name";
         is @row[1], 42, "Input has right value";
-        is @row[4], 'Input comment', "Input has right comment";
+        is @row[4], 'Single input comment', "Input has right comment";
     }
 
     subtest 'Store and load branch data' => {
+        plan 6;
+
         # TODO: cleanup data sent by the frontend
         my $data = %(
             :data($[
