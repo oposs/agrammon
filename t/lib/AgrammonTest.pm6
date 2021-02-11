@@ -101,5 +101,5 @@ sub transactionally(&test) is export {
     my $*AGRAMMON-DB-HANDLE = my $db = $*AGRAMMON-DB-CONNECTION.db;
     $db.begin;
     test($db);
-    $db.finish;
+    LEAVE $db.finish;
 }

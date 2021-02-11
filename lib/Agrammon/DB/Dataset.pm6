@@ -91,6 +91,14 @@ class X::Agrammon::DB::Dataset::StoreDataFailed is Exception {
     }
 }
 
+#| Error when branching data couldn't be saved.
+class X::Agrammon::DB::Dataset::StoreBranchDataFailed is Exception {
+    has Str $.variable is required;
+    method message {
+        "Branching data for variable '$!variable' couldn't be saved."
+    }
+}
+
 #| Error when tag couldn't be set.
 class X::Agrammon::DB::Dataset::SetTagFailed is Exception {
     has Str $.tag-name is required;
@@ -203,7 +211,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         return $new-dataset;
     }
 
-    method lookup {
+    method lookup() {
         self.with-db: -> $db {
             my $username = $!user.username;
             my $results = $db.query(q:to/DATASET/, $!user.id, $!name);
@@ -510,9 +518,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     method store-branch-data(@vars, Str $instance, %options, @fractions) {
         my $dataset-name = $!name;
 
-        # pg-array syntax: "{1,2,3}"
-        my $fractions-pg = '{' ~ @fractions[*;*].join(',') ~ '}';
-
         my @branch-variables;
         # Get variable ids and names
         self.with-db: -> $db {
@@ -531,31 +536,29 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             my $var-id   = %var<data_id>;
             my $var-name = %var<data_var>;
 
-            # pg array syntax: { "test_1", "test_2" }
-            my $options-pg = '{' ~ %options{$var-name}.map(*.subst(' ', '_', :g) ).join(',') ~ '}';
-
+            my @options = %options{$var-name}.map(*.subst(' ', '_', :g) );
             self.with-db: -> $db {
-                my $ret = $db.query(q:to/SQL/, $var-id, $fractions-pg, $options-pg);
+                my $ret = $db.query(q:to/SQL/, $var-id, @fractions[*;*], @options);
                     INSERT INTO branches (branches_var, branches_data, branches_options)
                                   VALUES ($1, $2, $3)
                     ON CONFLICT (branches_var)
                     DO
-                        UPDATE SET branches_data = EXCLUDED.branches_data,
+                        UPDATE SET branches_data    = EXCLUDED.branches_data,
                                    branches_options = EXCLUDED.branches_options
                     SQL
-                die "Couldn't save branch data" unless $ret;
+                die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new(:variable($var-name)) unless $ret;
+            }
+        }
 
-                $db.query(q:to/SQL/, $!user.username, $dataset-name);
+        self.with-db: -> $db {
+            $db.query(q:to/SQL/, $!user.username, $dataset-name);
                     UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
                      WHERE dataset_id=dataset_name2id($1,$2)
                 SQL
-            }
-
-            return 'Branch data saved';
         }
     }
 
-    method load-branch-data(@var-names, $instance) {
+    method load-branch-data(@var-names, Str $instance) {
         my $data;
         self.with-db: -> $db {
             my $username = $!user.username;

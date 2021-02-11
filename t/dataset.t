@@ -124,86 +124,79 @@ transactionally {
         is @row[4], 'Input comment', "Input has right comment";
     }
 
-    subtest 'Branching' => {
-        subtest 'load dataset' => {
-            my $name = 'BranchTest';
-            ok $dataset = Agrammon::DB::Dataset.new(:$name, :$user), "Create dataset object";
-            ok $dataset.load, "Dataset id=$dataset-id loaded";
-        }
-
-        subtest 'store and load branch data' => {
-            # TODO: cleanup data sent by the frontend
-            my $data-json = '{
-                "dataset_name":"TestRegionalBranched",
-                "instance":"Branched",
-                "vars":[
-                    "Livestock::Poultry[]::Housing::Type::housing_type",
-                    "Livestock::Poultry[]::Housing::Type::manure_removal_interval"
+    subtest 'Store and load branch data' => {
+        # TODO: cleanup data sent by the frontend
+        my $data = %(
+            :data($[
+                ["0", "5", "0", "0", "0", "0"],
+                ["0", "0", "10", "7", "0", "0"],
+                ["13", "20", "0", "0", "0", "22"],
+                ["0", "15", "0", "8", "0", "0"]]
+            ),
+            :dataset_name("BranchTest"),
+            :instance("Branched"),
+            :options(
+                ${"Livestock::Poultry[]::Housing::Type::housing_type" => $[
+                    "manure belt with manure belt drying system",
+                    "manure belt without manure belt drying system",
+                    "deep pit", "deep litter"
                 ],
-                "options":{
-                    "Livestock::Poultry[]::Housing::Type::housing_type":[
-                        "manure belt with manure belt drying system",
-                        "manure belt without manure belt drying system",
-                        "deep pit",
-                    "deep litter"],
-                    "Livestock::Poultry[]::Housing::Type::manure_removal_interval":[
-                        "less than twice a month",
-                        "twice a month",
-                        "3 to 4 times a month",
-                        "more than 4 times a month",
-                        "once a day",
-                        "no manure belt"
-                    ]
-                },
-                "data":[
-                    ["0","5","0","0","0","0"],
-                    ["0","0","10","7","0","0"],
-                    ["13","20","0","0","0","22"],
-                    ["0","15","0","8","0","0"]
-                ],
-                "tdata":[
-                    ["manure belt with manure belt drying system","0","5","0","0","0","0"],
-                    ["manure belt without manure belt drying system","0","0","10","7","0","0"],
-                    ["deep pit","13","20","0","0","0","22"],
-                    ["deep litter","0","15","0","8","0","0"]
-                ],
-                "voptions":[
-                    ["manure belt with manure belt drying system","manure belt without manure belt drying system","deep pit","deep litter"],
-                    ["less than twice a month","twice a month","3 to 4 times a month","more than 4 times a month","once a day","no manure belt"]
-                ]
-            }';
-            my $data = from-json $data-json;
+                "Livestock::Poultry[]::Housing::Type::manure_removal_interval" => $[
+                    "less than twice a month",
+                    "twice a month",
+                    "3 to 4 times a month",
+                    "more than 4 times a month",
+                    "once a day",
+                    "no manure belt"]
+                }),
+            :tdata($[
+                ["manure belt with manure belt drying system", "0", "5", "0", "0", "0", "0"],
+                ["manure belt without manure belt drying system", "0", "0", "10", "7", "0", "0"],
+                ["deep pit", "13", "20", "0", "0", "0", "22"],
+                ["deep litter", "0", "15", "0", "8", "0", "0"]
+            ]),
+            :vars($[
+                "Livestock::Poultry[]::Housing::Type::housing_type",
+                "Livestock::Poultry[]::Housing::Type::manure_removal_interval"
+            ]),
+            :voptions($[
+                ["manure belt with manure belt drying system", "manure belt without manure belt drying system", "deep pit", "deep litter"],
+                ["less than twice a month", "twice a month", "3 to 4 times a month", "more than 4 times a month", "once a day", "no manure belt"]
+            ])
+        );
+        my $name = $data<dataset_name>;
+        ok $dataset = Agrammon::DB::Dataset.new(:$name, :$user), "Create dataset object";
+        ok $dataset.load, "Dataset id=$dataset-id loaded";
 
-            ok $dataset.store-branch-data(
-                $data<vars>, $data<instance>, $data<options>, $data<data>
-            ), "Store branch data";
+        lives-ok { $dataset.store-branch-data(
+            $data<vars>, $data<instance>, $data<options>, $data<data>
+        ) }, "Store branch data";
 
-            my $results;
-            ok $results = $dataset.load-branch-data($data<vars>, $data<instance>), 'Load branch data';
+        my $results;
+        ok $results = $dataset.load-branch-data($data<vars>, $data<instance>), 'Load branch data';
 
-            my @fractions-expected = (
-                0e0, 5e0, 0e0, 0e0, 0e0, 0e0,     0e0, 0e0, 10e0, 7e0, 0e0, 0e0,
-                13e0, 20e0, 0e0, 0e0, 0e0, 22e0,  0e0, 15e0, 0e0, 8e0,    0e0,    0e0,
-            );
-            my @options-expected = (
-                [<
-                    manure_belt_with_manure_belt_drying_system
-                    manure_belt_without_manure_belt_drying_system
-                    deep_pit
-                    deep_litter
-                >],
-                [<
-                    less_than_twice_a_month
-                    twice_a_month
-                    3_to_4_times_a_month
-                    more_than_4_times_a_month
-                    once_a_day
-                    no_manure_belt
-                >],
-            );
-            is-deeply $results<options>,   @options-expected,   "Got correct options";
-            is-deeply $results<fractions>, @fractions-expected, "Got correct fractions";
-        }
+        my @fractions-expected = (
+            0e0, 5e0, 0e0, 0e0, 0e0, 0e0,     0e0, 0e0, 10e0, 7e0, 0e0, 0e0,
+            13e0, 20e0, 0e0, 0e0, 0e0, 22e0,  0e0, 15e0, 0e0, 8e0,    0e0,    0e0,
+        );
+        my @options-expected = (
+            [<
+                manure_belt_with_manure_belt_drying_system
+                manure_belt_without_manure_belt_drying_system
+                deep_pit
+                deep_litter
+            >],
+            [<
+                less_than_twice_a_month
+                twice_a_month
+                3_to_4_times_a_month
+                more_than_4_times_a_month
+                once_a_day
+                no_manure_belt
+            >],
+        );
+        is-deeply $results<options>,   @options-expected,   "Got correct options";
+        is-deeply $results<fractions>, @fractions-expected, "Got correct fractions";
     }
 
 # TODO
