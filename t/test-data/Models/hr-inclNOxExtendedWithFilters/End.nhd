@@ -62,7 +62,7 @@ Dummy Module marking the startpoint for the Model Parser
     type = reportDetailed
     ++selector
       en = Emissions and fluxes (in kg N per year) - detailed report
-      de = Emissionen und Flüsse (in kg N pro Jahr) - Detaillreport
+      de = Emissionen und Flüsse (in kg N pro Jahr) - Detailreport
       fr = Emissions et flux d'azote (en kg de N par année) - résumé detaillé
     ++data
        +++LivestockNH3
@@ -102,7 +102,7 @@ Dummy Module marking the startpoint for the Model Parser
     type = reportDetailed
     ++selector
       en = NH3 Emissions and fluxes (in kg N per year) - detailed report
-      de = NH3 Emissionen und Flüsse (in kg N pro Jahr) - Detaillreport
+      de = NH3 Emissionen und Flüsse (in kg N pro Jahr) - Detailreport
       fr = NH3 Emissions et flux d'azote (en kg de N par année) - résumé detaillé
     ++data
        +++LivestockNH3
@@ -122,7 +122,7 @@ Dummy Module marking the startpoint for the Model Parser
     type = reportDetailed
     ++selector
       en = TAN Emissions and fluxes (in kg N per year) - detailed report
-      de = TAN Emissionen und Flüsse (in kg N pro Jahr) - Detaillreport
+      de = TAN Emissionen und Flüsse (in kg N pro Jahr) - Detailreport
       fr = TAN Emissions et flux d'azote (en kg de N par année) - résumé detaillé
     ++data
       +++LivestockTAN
@@ -134,7 +134,7 @@ Dummy Module marking the startpoint for the Model Parser
     type = reportDetailed
     ++selector
       en = N Emissions and fluxes (in kg N per year) - detailed report
-      de = N Emissionen und Flüsse (in kg N pro Jahr) - Detaillreport
+      de = N Emissionen und Flüsse (in kg N pro Jahr) - Detailreport
       fr = N Emissions et flux d'azote (en kg de N par année) - résumé detaillé
     ++data
       +++LivestockN2O
