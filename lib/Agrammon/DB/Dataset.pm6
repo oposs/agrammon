@@ -555,11 +555,11 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method load-branch-data($vars, $instance) {
+    method load-branch-data(@var-names, $instance) {
         my $data;
         self.with-db: -> $db {
             my $username = $!user.username;
-            my @vars = $db.query(q:to/SQL/, $username, $!name, $vars[0], $vars[1], $instance).arrays;
+            my @vars = $db.query(q:to/SQL/, $username, $!name, |@var-names, $instance).arrays;
                 SELECT data_id
                   FROM data_new
                  WHERE data_dataset=dataset_name2id($1,$2)
