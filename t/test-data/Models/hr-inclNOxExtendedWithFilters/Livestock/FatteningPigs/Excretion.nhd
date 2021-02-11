@@ -631,13 +631,18 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
               Tech(cfeed_fattening_pigs));
     if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
       writeLog({
-        en => "The entry for the N excretion is below the minimum for fattening pigs!",
-        de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine!",
+        en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
+              . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
+        de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
+              . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
         fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
               ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
+              ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
       });
+      return Tech(minimal_N_excretion_fattening_pigs);
+    } else {
+      return $exc;
     }
-    return $exc;
 ?else
   ++formula
     if ( (not defined In(inp_n_excretion)) or lc In(inp_n_excretion) eq 'standard' ) {
@@ -649,13 +654,18 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
                 Tech(cfeed_fattening_pigs));
       if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
         writeLog({
-          en => "The entry for the N excretion is below the minimum for fattening pigs!",
-          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine!",
+          en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
+                . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
+          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
+                . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
           fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
                 ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
+                ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
         });
+        return Tech(minimal_N_excretion_fattening_pigs);
+      } else {
+        return $exc;
       }
-      return $exc;
     } else {
       if ( In(inp_n_excretion) < Tech(minimal_N_excretion_fattening_pigs) ) {
         writeLog({

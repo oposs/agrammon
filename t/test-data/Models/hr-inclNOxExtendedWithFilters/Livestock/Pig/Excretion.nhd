@@ -679,15 +679,17 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
               $TE->{'cfeed_' . Out(animalcategory)});
     if( $Nexcr < $minimal ) {
       writeLog({
-        en => "The entries for the contents of energy and crude protein"
-            . " of the ration result in a N excretion below the minimum for pigs!",
-        de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken"
-            . " eine N Ausscheidung unterhalb des Minimums für Schweine!",
-        fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration"
-            . " bewirken eine N Ausscheidung unterhalb des Minimums für Schweine!"
+        en => "The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
+              . "The excretion was set to " . $minimal ." kg N per animal!",
+        de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+              . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!",
+        fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+              . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!"
       });
+      return $minimal;
+    } else {
+      return $Nexcr;
     }
-    return $Nexcr;
 ?else
   ++formula
     my $minimal = $TE->{'minimal_N_excretion_' . Out(animalcategory)};
@@ -701,15 +703,17 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
                 $TE->{'cfeed_' . Out(animalcategory)});
       if( $Nexcr < $minimal ) {
         writeLog({
-          en => "The entries for the contents of energy and crude protein"
-              . " of the ration result in a N excretion below the minimum for pigs!",
-          de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken"
-              . " eine N Ausscheidung unterhalb des Minimums für Schweine!",
-          fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration"
-              . " bewirken eine N Ausscheidung unterhalb des Minimums für Schweine!"
+          en => "The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
+                . "The excretion was set to " . $minimal ." kg N per animal!",
+          de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!",
+          fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+                . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!"
         });
+        return $minimal;
+      } else {
+        return $Nexcr;
       }
-      return $Nexcr;
     } else {
       if( In(inp_n_excretion) < $minimal ) {
         writeLog({
