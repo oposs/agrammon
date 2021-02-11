@@ -423,11 +423,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
     $exc = In(inp_n_excretion) unless ( (not defined In(inp_n_excretion)) or lc In(inp_n_excretion) eq 'standard' );
-    if ( ($exc < 0.25 * $TE->{$key}) or ($exc > 1.75 * $TE->{$key})) {
+    if ( ($exc < 0.7 * $TE->{$key}) or ($exc > 1.3 * $TE->{$key})) {
       writeLog({
-        en => "FIX: Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
-        de => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab.",
-        fr => "FIX: Die eingegebene N-Ausscheidung für $cat weicht mehr als 75% vom Standard ab."
+        en => "FIX: Die eingegebene N-Ausscheidung für $cat weicht mehr als 30% vom Standard ab.",
+        de => "Die eingegebene N-Ausscheidung für $cat weicht mehr als 30% vom Standard ab.",
+        fr => "FIX: Die eingegebene N-Ausscheidung für $cat weicht mehr als 30% vom Standard ab."
       });
     }
     return $exc;

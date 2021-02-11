@@ -722,12 +722,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
           fr => "Franz.: Der gewählte N Ausscheidung liegt unterhalb des Minimums für Schweine!"
         });
       }
-      if ( In(inp_n_excretion) < 0.25 * $stdN or 
-           In(inp_n_excretion) > 1.75 * $stdN ) {
+      if ( In(inp_n_excretion) < 0.7 * $stdN or 
+           In(inp_n_excretion) > 1.3 * $stdN ) {
         writeLog({
-          en => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-          de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab.",
-          fr => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 75% vom Standard ab."
+          en => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 30% vom Standard ab.",
+          de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 30% vom Standard ab.",
+          fr => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 30% vom Standard ab."
         });
       }
       return In(inp_n_excretion);
