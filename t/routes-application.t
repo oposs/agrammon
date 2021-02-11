@@ -26,7 +26,6 @@ my $fake-auth = make-fake-auth($role);
 my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
         get-cfg => %( :title('Agrammon'), :version('SHL') ),
-#        load-branch-data => ( 1, 2 ),
     },
     overriding => {
         get-input-variables => {
