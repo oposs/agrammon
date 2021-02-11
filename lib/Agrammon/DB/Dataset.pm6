@@ -507,17 +507,17 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method store-branch-data(Array $vars, Str $instance, Hash $options, Array $fractions) {
+    method store-branch-data(@vars, Str $instance, %options, @fractions) {
         my $dataset-name = $!name;
 
         # pg-array syntax: "{1,2,3}"
-        my $fractions-pg = '{' ~ $fractions[*;*].join(',') ~ '}';
+        my $fractions-pg = '{' ~ @fractions[*;*].join(',') ~ '}';
 
         my @branch-variables;
         # Get variable ids and names
         self.with-db: -> $db {
             my $username = $!user.username;
-            @branch-variables = $db.query(q:to/SQL/, $username, $dataset-name, $vars[0], $vars[1], $instance).hashes;
+            @branch-variables = $db.query(q:to/SQL/, $username, $dataset-name, |@vars, $instance).hashes;
             SELECT data_id, data_var
                   FROM data_new
                  WHERE data_dataset=dataset_name2id($1,$2)
@@ -532,7 +532,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             my $var-name = %var<data_var>;
 
             # pg array syntax: { "test_1", "test_2" }
-            my $options-pg = '{' ~ $options{$var-name}.map(*.subst(' ', '_', :g) ).join(',') ~ '}';
+            my $options-pg = '{' ~ %options{$var-name}.map(*.subst(' ', '_', :g) ).join(',') ~ '}';
 
             self.with-db: -> $db {
                 my $ret = $db.query(q:to/SQL/, $var-id, $fractions-pg, $options-pg);
