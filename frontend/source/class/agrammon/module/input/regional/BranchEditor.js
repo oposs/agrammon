@@ -31,7 +31,7 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
         this.__yValue = new qx.ui.basic.Label('').set({font: 'bold'});
         var total = new qx.ui.basic.Label(this.tr("Total")+': ');
         this.__totalValue = new qx.ui.basic.Label('').set({font: 'bold'});
- 
+
        this.debug('vars='+this.__vars[0]+'/'+this.__vars[1]);
 
         var height = qx.bom.Document.getHeight() - 20;
@@ -348,18 +348,16 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
             this.__table.getTableModel().setData(tData);
 
 
-            this.__rpc.callAsync(this.__store_branch_func,
-                                 'store_branch_data',
-                                 {
-                                   dataset_name: datasetName,
-                                   instance:     instance1,
-                                   vars:         vars,
-                                   options:      options,
-                                   data:         data,
-                                   tdata:        tData,
-                                   voptions:     voptions
-                                 }
-            );
+            var params = {
+                dataset_name: datasetName,
+                instance:     instance1,
+                vars:         vars,
+                options:      options,
+                data:         data,
+                tdata:        tData,
+                voptions:     voptions
+            }
+            this.__rpc.callAsync(this.__store_branch_func, 'store_branch_data', params);
 
             // invalidate output on changes and check completeness of data
             qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');

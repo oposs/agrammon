@@ -282,12 +282,14 @@ class Agrammon::Web::Service {
         $!outputs-cache.invalidate($user.username, $dataset-name);
     }
 
-    method load-branch-data(Agrammon::Web::SessionUser $user, Str $name) {
-        return Agrammon::DB::Dataset.new(:$user, :$name).lookup.load-branch-data;
+    method load-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
+        return Agrammon::DB::Dataset.new(:$user, :$name).lookup
+            .load-branch-data(%data<vars>, %data<instance>);
     }
 
     method store-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
-        return Agrammon::DB::Dataset.new(:$user, :$name).store-branch-data(%data);
+        return Agrammon::DB::Dataset.new(:$user, :$name).lookup
+            .store-branch-data(%data<vars>, %data<instance>, %data<options>, %data<data>);
     }
 
     method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $variable-pattern --> Nil) {

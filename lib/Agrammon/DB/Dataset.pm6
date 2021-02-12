@@ -91,6 +91,14 @@ class X::Agrammon::DB::Dataset::StoreDataFailed is Exception {
     }
 }
 
+#| Error when branching data couldn't be saved.
+class X::Agrammon::DB::Dataset::StoreBranchDataFailed is Exception {
+    has Str $.variable is required;
+    method message {
+        "Branching data for variable '$!variable' couldn't be saved."
+    }
+}
+
 #| Error when tag couldn't be set.
 class X::Agrammon::DB::Dataset::SetTagFailed is Exception {
     has Str $.tag-name is required;
@@ -198,12 +206,12 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     method submit($email) {
         my $new-dataset = 'newDataset';
 
-        # TODO: clone dataset; implement sending eMail
+        # TODO: move here from Routes.pm
         warn "Submitting dataset and sending mail for submit($email) not yet implemented";
         return $new-dataset;
     }
 
-    method lookup {
+    method lookup() {
         self.with-db: -> $db {
             my $username = $!user.username;
             my $results = $db.query(q:to/DATASET/, $!user.id, $!name);
@@ -216,7 +224,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
         return self;
     }
-
 
     #| Set tag on datasets.
     method set-tag(@datasets, $tag-name --> Nil) {
@@ -254,7 +261,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                                            WHERE tag_name = $1 )
                        AND tagds_dataset IN ( SELECT dataset_id
                                                 FROM dataset
-                                                WHERE dataset_name = $2 )
+                                               WHERE dataset_name = $2 )
                 SQL
                 CATCH {
                     # other DB failure
@@ -277,40 +284,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $!data = $results.arrays;
         }
         return self;
-    }
-
-    method load-branch-data {
-        warn "*** load-branch-data() not yet implemented";
-        my @data;
-        # self.with-db: -> $db {
-        #     my $username = $!user.username;
-        #     my $results = $db.query(q:to/DATASET/, $username, $!name);
-        #     SELECT data_var, data_val, data_instance_order, branches_data, data_comment
-        #       FROM data_view LEFT JOIN branches ON (branches_var=data_id)
-        #      WHERE data_dataset=dataset_name2id($1,$2)
-        #        AND data_var not like '%::ignore'
-        #      ORDER BY data_instance_order ASC, data_var
-        #     DATASET
-        #     $!data = $results.arrays;
-        # }
-        return @data;
-    }
-
-    method store-branch-data(%data) {
-        warn "*** store-branch-data() not yet implemented";
-        my @data;
-        # self.with-db: -> $db {
-        #     my $username = $!user.username;
-        #     my $results = $db.query(q:to/DATASET/, $username, $!name);
-        #     SELECT data_var, data_val, data_instance_order, branches_data, data_comment
-        #       FROM data_view LEFT JOIN branches ON (branches_var=data_id)
-        #      WHERE data_dataset=dataset_name2id($1,$2)
-        #        AND data_var not like '%::ignore'
-        #      ORDER BY data_instance_order ASC, data_var
-        #     DATASET
-        #     $!data = $results.arrays;
-        # }
-        return @data.keys.elems;
     }
 
     method store-comment($comment) {
@@ -362,16 +335,16 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable, $instance);
                 UPDATE data_new SET data_comment = $1
-                 WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
-                                                           AND data_instance = $5
+                 WHERE data_dataset=dataset_name2id($2,$3)
+                   AND data_var      = $4
+                   AND data_instance = $5
                 RETURNING data_comment
             SQL
-
             return $ret.rows if $ret.rows;
 
             $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable, $instance);
                 INSERT INTO data_new (data_dataset, data_var, data_comment, data_instance)
-                     VALUES          (dataset_name2id($2,$3), $4, $1, $5)
+                              VALUES (dataset_name2id($2,$3), $4, $1, $5)
                 RETURNING data_comment
             SQL
 
@@ -382,15 +355,15 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method store-input-comment($variable, $comment) {
+    method store-input-comment($var-name, $comment) {
         my $instance;
-        my $variable-name = $variable;
-        if $variable-name ~~ s/\[(.+)\]/[]/ {
+        my $var = $var-name;
+        if $var ~~ s/\[(.+)\]/[]/ {
             $instance = $0;
         }
 
-        $instance ?? self!store-instance-variable-comment($variable, $instance, $comment)
-                  !! self!store-variable-comment($variable, $comment);
+        $instance ?? self!store-instance-variable-comment($var, $instance, $comment)
+                  !! self!store-variable-comment($var, $comment);
     }
 
     method !store-variable($variable, $value) {
@@ -540,6 +513,76 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         CATCH {
             die X::Agrammon::DB::Dataset::InstanceReorderFailed.new(:$!name);
         }
+    }
+
+    method store-branch-data(@vars, Str $instance, %options, @fractions) {
+        my $dataset-name = $!name;
+
+        my @branch-variables;
+        # Get variable ids and names
+        self.with-db: -> $db {
+            my $username = $!user.username;
+            @branch-variables = $db.query(q:to/SQL/, $username, $dataset-name, |@vars, $instance).hashes;
+            SELECT data_id, data_var
+                  FROM data_new
+                 WHERE data_dataset=dataset_name2id($1,$2)
+                   AND data_var IN ($3,$4)
+                   AND data_instance = $5
+                   ORDER BY data_id
+            SQL
+        }
+
+        for @branch-variables -> %var {
+            my $var-id   = %var<data_id>;
+            my $var-name = %var<data_var>;
+
+            my @options = %options{$var-name}.map(*.subst(' ', '_', :g) );
+            self.with-db: -> $db {
+                my $ret = $db.query(q:to/SQL/, $var-id, @fractions[*;*], @options);
+                    INSERT INTO branches (branches_var, branches_data, branches_options)
+                                  VALUES ($1, $2, $3)
+                    ON CONFLICT (branches_var)
+                    DO
+                        UPDATE SET branches_data    = EXCLUDED.branches_data,
+                                   branches_options = EXCLUDED.branches_options
+                    SQL
+                die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new(:variable($var-name)) unless $ret;
+            }
+        }
+
+        self.with-db: -> $db {
+            $db.query(q:to/SQL/, $!user.username, $dataset-name);
+                    UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                     WHERE dataset_id=dataset_name2id($1,$2)
+                SQL
+        }
+    }
+
+    method load-branch-data(@var-names, Str $instance) {
+        my $data;
+        self.with-db: -> $db {
+            my $username = $!user.username;
+            my @vars = $db.query(q:to/SQL/, $username, $!name, |@var-names, $instance).arrays;
+                SELECT data_id
+                  FROM data_new
+                 WHERE data_dataset=dataset_name2id($1,$2)
+                   AND data_var IN ($3,$4)
+                   AND data_instance = $5
+                 ORDER BY data_id
+            SQL
+
+            my $branches = $db.query(q:to/SQL/, |@vars[*;*]).hashes;
+                SELECT branches_data, branches_options
+                  FROM branches
+                 WHERE branches_var in ($1,$2)
+                 ORDER BY branches_id
+            SQL
+            $data = {
+                fractions => $branches[0]<branches_data>,
+                options   => [ $branches[0]<branches_options>, $branches[1]<branches_options> ]
+            };
+        }
+        return $data;
     }
 
 }

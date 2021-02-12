@@ -10,9 +10,12 @@ use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
+use lib 't/lib';
+use AgrammonTest;
+
 # FIX ME: use separate test database
 
-plan 38;
+plan 37;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -90,8 +93,8 @@ transactionally {
 
     subtest "clone-dataset" => {
         my $new-username = 'fritz.zaucker@oetiker.ch';
-        my $old-dataset  = 'Agrammon6Testing';
-        my $new-dataset  = 'Agrammon6Testing Kopie';
+        my $old-dataset = 'Agrammon6Testing';
+        my $new-dataset = 'Agrammon6Testing Kopie';
         lives-ok { $ws.clone-dataset($user, $new-username, $old-dataset, $new-dataset) }, "Clone dataset";
     }
 
@@ -131,16 +134,16 @@ transactionally {
 
     subtest "change-password" => {
         lives-ok    { $ws.change-password($user, "test12", "test34") }, 'Password update sucessful';
-        throws-like {$ws.change-password($user, "test12", "test34") },
+        throws-like { $ws.change-password($user, "test12", "test34") },
             X::Agrammon::DB::User::InvalidPassword, 'Password invalid';
-        throws-like {$ws.change-password($user, "test34", "test34") },
+        throws-like { $ws.change-password($user, "test34", "test34") },
             X::Agrammon::DB::User::PasswordsIdentical, 'Passwords identical';
     }
 
     subtest "reset-password" => {
         lives-ok  { $ws.reset-password($user, 'foo@bar.com', "test12", "hash") }, 'Password reset sucessful';
         throws-like { $ws.reset-password($user, 'foo@bar.com', "test34", "") },
-                X::Agrammon::DB::User::PasswordResetFailed, 'Passwords reset without key fails';
+            X::Agrammon::DB::User::PasswordResetFailed, 'Passwords reset without key fails';
     }
 
     subtest "create-tag" => {
@@ -151,9 +154,9 @@ transactionally {
         lives-ok { $ws.rename-tag($user, '00MyTestTag', '00MyNewTestTag') }, "Rename tag";
     }
 
-     subtest "get-tags()" => {
+    subtest "get-tags()" => {
         ok my $tags = $ws.get-tags($user), "Get tags";
-        ok $tags.elems >= 12,  "Found 12+ tags";
+        ok $tags.elems >= 12, "Found 12+ tags";
         is $tags[0], '00MyNewTestTag', 'First tag has name 00MyNewTestTag';
     }
 
@@ -175,14 +178,14 @@ transactionally {
     }
 
     subtest "store-input-comment" => {
-        my $dataset  = 'MyNewTestDataset';
+        my $dataset = 'MyNewTestDataset';
         my $variable = 'Application::Slurry::Csoft::appl_evening';
-        my $comment  = 'MyComment';
+        my $comment = 'MyComment';
         lives-ok { $ws.store-input-comment($user, $dataset, $variable, $comment) }, "Store input comment";
     }
 
     subtest "load-dataset" => {
-        my @data = $ws.load-dataset($user, 'Agrammon6Testing');
+        lives-ok { $ws.load-dataset($user, 'Agrammon6Testing') }, "Load Agrammon6Testing";
     };
 
     subtest "rename-instance" => {
@@ -196,7 +199,10 @@ transactionally {
     }
 
     subtest "order-instances" => {
-        lives-ok { $ws.order-instances($user, 'Agrammon6Testing', ('Livestock::OtherCattle[Test1]', 'Livestock::OtherCattle[Test]',) ) }, "Order instances";
+        lives-ok { $ws.order-instances(
+            $user, 'Agrammon6Testing',
+            ('Livestock::OtherCattle[Test1]', 'Livestock::OtherCattle[Test]',))
+        }, "Order instances";
     };
 
     subtest "store-data" => {
@@ -210,6 +216,12 @@ transactionally {
         my @branches;
         my @options;
         lives-ok { $ws.store-data($user, $dataset, $variable, $value, @branches, @options, $row) }, "Instance input stored";
+
+        for %{ "Livestock::Poultry[Branched]::Housing::Type::housing_type" => 'deep_pit',
+               "Livestock::Poultry[Branched]::Housing::Type::manure_removal_interval" => 'once_a_day'
+        }.kv -> $variable, $value {
+           lives-ok { $ws.store-data($user, $dataset, $variable, $value, @branches, @options, $row++) }, "Instance input stored";
+       }
     }
 
     subtest "delete-instance" => {
@@ -221,12 +233,51 @@ transactionally {
         ) }, "Instance deleted";
     }
 
-    subtest "load-branch-data" => sub {
-        return $ws.load-branch-data($user, 'MyTestDataset');
-    }
+    subtest "store and load branch data" => sub {
+        my @vars = (
+            "Livestock::Poultry[]::Housing::Type::housing_type",
+            "Livestock::Poultry[]::Housing::Type::manure_removal_interval",
+        );
+        my $instance = 'Branched';
+        lives-ok { $ws.store-branch-data(
+            $user, 'MyNewTestDataset', %(
+                :@vars,
+                :$instance,
+                :options(
+                    ${"Livestock::Poultry[]::Housing::Type::housing_type" => $[
+                        "manure belt with manure belt drying system",
+                        "manure belt without manure belt drying system",
+                        "deep pit", "deep litter"
+                    ],
+                    "Livestock::Poultry[]::Housing::Type::manure_removal_interval" => $[
+                        "less than twice a month",
+                        "twice a month",
+                        "3 to 4 times a month",
+                        "more than 4 times a month",
+                        "once a day",
+                        "no manure belt"
+                    ]}
+                ),
+                :data($[
+                    ["0", "5", "0", "0", "0", "0"],
+                    ["0", "0", "10", "7", "0", "0"],
+                    ["13", "20", "0", "0", "0", "22"],
+                    ["0", "15", "0", "8", "0", "0"]
+                ])
+            )
+        )}, "Store branch data";
 
-    subtest "store-branch-data" => sub {
-        return $ws.store-branch-data($user, 'MyTestDataset', %( :x(1), :y(2) ) );
+        lives-ok {  $ws.load-branch-data(
+            $user, 'MyNewTestDataset', %(
+                :vars(
+                    $[
+                        "Livestock::Poultry[]::Housing::Type::housing_type",
+                        "Livestock::Poultry[]::Housing::Type::manure_removal_interval"
+                    ]
+                ),
+                :$instance
+            )
+        )}, "Load branch data";
     }
 
     subtest "delete-datasets" => {
@@ -383,10 +434,3 @@ subtest "get-excel-export" => {
 }
 
 done-testing;
-
-sub transactionally(&test) {
-    my $*AGRAMMON-DB-HANDLE = my $db = $*AGRAMMON-DB-CONNECTION.db;
-    $db.begin;
-    test($db);
-    $db.finish;
-}
