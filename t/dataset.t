@@ -4,7 +4,6 @@ use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
 use Agrammon::Web::SessionUser;
 use DB::Pg;
-use JSON::Fast;
 use Test;
 
 use lib 't/lib';
