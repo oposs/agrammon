@@ -91,6 +91,7 @@ qx.Class.define('agrammon.Application', {
 
 	        var mainMenu;
 
+            var results;
             var getCfgFunc = qx.lang.Function.bind(function(data, exc, id) {
                 if (exc == null) {
                     this.debug('getCfgFunc(): title='   +data.title.en);
@@ -99,7 +100,6 @@ qx.Class.define('agrammon.Application', {
                     this.debug('getCfgFunc(): guiVariant=' +data.guiVariant);
                     this.debug('getCfgFunc(): modelVariant=' +data.modelVariant);
 
-		            var results;
 		            if (data.guiVariant != 'Regional') {
  	                    results = new agrammon.module.output.Results(output);
                     }
@@ -159,6 +159,10 @@ qx.Class.define('agrammon.Application', {
                     }
                     // enable admin menu
                     mainMenu.showAdmin(role == 'admin' || role == 'support');
+                    console.log('role=', role);
+                    if (role != 'admin') { // TODO: fix update
+                        results.exclude();
+                    }
                     qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', user);
                 }
                 else {
