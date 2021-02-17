@@ -34,8 +34,6 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
   default_calc = unknown
   default_gui  = unknown
   ++enum
-    +++ignore
-       en = Dummy entry LU
     +++low
        en = pH <= 7.0
        de = pH <= 7.0
