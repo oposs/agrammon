@@ -134,6 +134,10 @@ multi format-value(Str $value) {
     latex-escape($value);
 }
 
+multi format-value(Any) {
+    return "UNDEFINED VALUE";
+}
+
 # TODO: make PDF match current Agrammon PDF report
 sub input-output-as-pdf(
     Agrammon::Config $cfg,
