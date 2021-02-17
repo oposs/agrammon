@@ -12,7 +12,7 @@
         "email": "fritz.zaucker@oetiker.ch"
       }
     ],
-    "version": "6.0.0-beta"
+    "version": "6.0.0-rc1"
   },
   "provides": {
     "namespace": "agrammon",
@@ -22,7 +22,7 @@
     "translation": "source/translation"
   },
   "requires": {
-    "@qooxdoo/framework": "^6.0.0-beta",
-    "@qooxdoo/compiler": "^1.0.0-beta"
+    "@qooxdoo/framework": "^6.0.0",
+    "@qooxdoo/compiler": "^1.0.0"
   }
 }
