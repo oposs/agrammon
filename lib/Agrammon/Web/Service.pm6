@@ -119,7 +119,7 @@ class Agrammon::Web::Service {
         ).send;
     }
 
-    method store-dataset-comment(Agrammon::Web::SessionUser $user, Str $name, Str $comment) {
+    method store-dataset-comment(Agrammon::Web::SessionUser $user, Str $name, $comment) {
         return Agrammon::DB::Dataset.new(:$user, :$name).store-comment($comment);
     }
 

@@ -293,7 +293,7 @@ paths:
                                $ref: "#/components/schemas/Error"
     /store_input_comment:
         post:
-            summary: Create new user account
+            summary: Store input comment
             operationId: storeInputComment
             requestBody:
                 required: true
@@ -314,6 +314,7 @@ paths:
                                 comment:
                                     description: Comment
                                     type: string
+                                    nullable: true
             responses:
                 '204':
                     description: Comment stored
