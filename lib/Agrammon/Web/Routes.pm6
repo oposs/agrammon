@@ -511,5 +511,5 @@ sub html-error(%error) {
 }
 
 sub cleanup-filename($filename) {
-    $filename.subst(/<-[\w\s_.-]>/, '', :g);
+    $filename.subst(/<-[\w\ _.-]>/, '', :g);
 }
