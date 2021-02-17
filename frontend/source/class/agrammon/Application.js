@@ -159,7 +159,6 @@ qx.Class.define('agrammon.Application', {
                     }
                     // enable admin menu
                     mainMenu.showAdmin(role == 'admin' || role == 'support');
-                    console.log('role=', role);
                     if (role != 'admin') { // TODO: fix update
                         results.exclude();
                     }
