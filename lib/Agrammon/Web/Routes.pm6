@@ -40,7 +40,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
     }
 }
 
-sub static-content($root, $ws) {
+sub static-content($root) {
     route {
         my $root = %*ENV<SOURCE_MODE> ?? 'frontend/compiled/source' !! 'public';
 
