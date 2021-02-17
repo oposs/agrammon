@@ -306,7 +306,7 @@ sub api-routes (Str $schema, $ws) {
         operation 'exportExcel', -> LoggedIn $user {
             request-body -> %params {
                 # prevent header injection
-                my $filename = "%params<datasetName>.subst(/<-[\w\s_.-]>/, '', :g).xlsx";
+                my $filename = cleanup-filename "%params<datasetName>.xlsx";
                 my $excel = $ws.get-excel-export($user, %params).to-blob;
                 response.append-header(
                     'Content-disposition',
@@ -326,7 +326,7 @@ sub api-routes (Str $schema, $ws) {
             request-body -> %params {
                 my $pdf = $ws.get-pdf-export($user, %params);
                 # prevent header injection
-                my $filename = "%params<datasetName>.subst(/<-[\w\s_.-]>/, '', :g).pdf";
+                my $filename = cleanup-filename "%params<datasetName>.pdf";
                 response.append-header(
                     'Content-disposition',
                     qq{attachment; filename="$filename"}
@@ -510,8 +510,12 @@ sub application-routes(Agrammon::Web::Service $ws) {
 }
 
 sub html-error(%error) {
-    return qq:to/HTML/;
-            <dl><dt><b>Fehler bei der Erstellung der Datei {%error<filename>}:</b></dt> <dd>{%error<error>}</dd></dl>
-            <p>Bitte kontaktieren Sie den <a href="mailto:support@agrammon.ch">Agrammon Support</a>.</p>
-        HTML
+    qq:to/HTML/;
+        <dl><dt><b>Fehler bei der Erstellung der Datei {%error<filename>}:</b></dt> <dd>{%error<error>}</dd></dl>
+        <p>Bitte kontaktieren Sie den <a href="mailto:support@agrammon.ch">Agrammon Support</a>.</p>
+    HTML
+}
+
+sub cleanup-filename($filename) {
+    $filename.subst(/<-[\w\s_.-]>/, '', :g);
 }
