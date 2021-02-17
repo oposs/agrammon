@@ -134,8 +134,8 @@ sub input-output-as-excel(
         $output-sheet.set($row, $col+1, %rec<label> // 'Output: ???');
         $output-sheet.set($row, $col+2, %rec<value>, :number-format('0.000'));
         $output-sheet.set($row, $col+3, %rec<unit> // 'Unit: ???');
-# Kept on purpose
-#        $output-sheet.set($row, $col+4, %rec<order>);
+        # Kept on purpose
+        # $output-sheet.set($row, $col+4, %rec<order>);
         $row++;
 
         if $print and $print ne $last-print {
@@ -147,7 +147,7 @@ sub input-output-as-excel(
         $output-sheet-formatted.set($row-formatted, $col+2, %rec<value>, :number-format('0.0'));
         $output-sheet-formatted.set($row-formatted, $col+3, %rec<unit> // 'Unit: ???');
         # Kept on purpose
-#        $output-sheet-formatted.set($row-formatted, $col+4, %rec<order>);
+        # $output-sheet-formatted.set($row-formatted, $col+4, %rec<order>);
         $row-formatted++;
     }
     return $workbook;
