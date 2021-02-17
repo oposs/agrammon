@@ -96,7 +96,7 @@ sub input-output-as-excel(
         $input-sheet.set($row, $col+0, %rec<gui>);
         $input-sheet.set($row, $col+1, %rec<instance>);
         $input-sheet.set($row, $col+2, %rec<input>);
-        $input-sheet.set($row, $col+3, (%rec<value> // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
+        $input-sheet.set($row, $col+3, (%rec<value> // '???'), :number-format('0.000'), :horizontal-align(RightAlign));
         $input-sheet.set($row, $col+4, %rec<unit>);
         $row++;
 
@@ -115,7 +115,7 @@ sub input-output-as-excel(
 #            $last-instance = $instance;
 #        }
 #        $input-sheet-formatted.set($row-formatted, $col+1, %rec<input>);
-#        $input-sheet-formatted.set($row-formatted, $col+2, (%rec<value-translated> // '???'), :number-format('#,#'), :horizontal-align(RightAlign));
+#        $input-sheet-formatted.set($row-formatted, $col+2, (%rec<value-translated> // '???'), :number-format('0.0'), :horizontal-align(RightAlign));
 #        $input-sheet-formatted.set($row-formatted, $col+3, %rec<unit>);
 #        $row-formatted++;
     }
@@ -132,9 +132,10 @@ sub input-output-as-excel(
         my $print = %rec<print>; # can be undefined or empty
         $output-sheet.set($row, $col+0, %print-labels{$print}{$language} // '') if $print;
         $output-sheet.set($row, $col+1, %rec<label> // 'Output: ???');
-        $output-sheet.set($row, $col+2, %rec<value>, :number-format('#,###'));
+        $output-sheet.set($row, $col+2, %rec<value>, :number-format('0.000'));
         $output-sheet.set($row, $col+3, %rec<unit> // 'Unit: ???');
-        $output-sheet.set($row, $col+4, %rec<order>);
+        # Kept on purpose
+        # $output-sheet.set($row, $col+4, %rec<order>);
         $row++;
 
         if $print and $print ne $last-print {
@@ -143,9 +144,10 @@ sub input-output-as-excel(
             $row-formatted++;
         }
         $output-sheet-formatted.set($row-formatted, $col+1, %rec<label> // 'Output: ???');
-        $output-sheet-formatted.set($row-formatted, $col+2, %rec<value>, :number-format('#,###'));
+        $output-sheet-formatted.set($row-formatted, $col+2, %rec<value>, :number-format('0.0'));
         $output-sheet-formatted.set($row-formatted, $col+3, %rec<unit> // 'Unit: ???');
-        $output-sheet-formatted.set($row-formatted, $col+4, %rec<order>);
+        # Kept on purpose
+        # $output-sheet-formatted.set($row-formatted, $col+4, %rec<order>);
         $row-formatted++;
     }
     return $workbook;
