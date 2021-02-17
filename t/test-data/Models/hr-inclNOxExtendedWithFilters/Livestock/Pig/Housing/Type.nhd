@@ -17,7 +17,6 @@ Selects the emission rate and other correciton factors for the specific housing 
 
 +housing_type
   type  = enum
-  default_calc = ignore
   ++enum
     +++Slurry_Conventional
        en = slurry conventional
