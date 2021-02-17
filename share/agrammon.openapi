@@ -467,15 +467,15 @@ paths:
                 '400':
                     description: Getting Excel export failed
                     content:
-                        application/json:
+                        text/html; charset=utf-8:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                type: string
                 '500':
                     description: Getting Excel export failed
                     content:
-                        application/json:
+                        text/html; charset=utf-8:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                type: string
     /export/pdf:
         post:
             summary: Get PDF export
@@ -497,15 +497,15 @@ paths:
                 '400':
                     description: Getting PDF export failed
                     content:
-                        application/json:
+                        text/html; charset=utf-8:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                type: string
                 '500':
                     description: Getting PDF export failed
                     content:
-                        application/json:
+                        text/html; charset=utf-8:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                type: string
 components:
     schemas:
         GetReport:

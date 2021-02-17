@@ -40,7 +40,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
     }
 }
 
-sub static-content($root) {
+sub static-content($root, $ws) {
     route {
         my $root = %*ENV<SOURCE_MODE> ?? 'frontend/compiled/source' !! 'public';
 
@@ -305,36 +305,38 @@ sub api-routes (Str $schema, $ws) {
         }
         operation 'exportExcel', -> LoggedIn $user {
             request-body -> %params {
+                # prevent header injection
+                my $filename = "%params<datasetName>.subst(/<-[\w\s_.-]>/, '', :g).xlsx";
+                my $excel = $ws.get-excel-export($user, %params).to-blob;
                 response.append-header(
                     'Content-disposition',
-                    # prevent header injection
-                    "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).xlsx"
+                    qq{attachment; filename="$filename"}
                 );
-                content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    $ws.get-excel-export($user, %params).to-blob;
-                 CATCH {
+                content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $excel;
+                CATCH {
                     default {
                         note "$_";
                         response.status = 500;
-                        content 'application/json', %( error => .message )
+                        content 'text/html', html-error( %( :error(.message), :$filename ) );
                     }
                 }
             }
         }
         operation 'exportPDF', -> LoggedIn $user {
             request-body -> %params {
+                my $pdf = $ws.get-pdf-export($user, %params);
+                # prevent header injection
+                my $filename = "%params<datasetName>.subst(/<-[\w\s_.-]>/, '', :g).pdf";
                 response.append-header(
                     'Content-disposition',
-                    # prevent header injection
-                    "attachment; filename=%params<datasetName>.subst(/<-[\w_.-]>/, '', :g).pdf"
-                    );
-                content 'application/pdf',
-                        $ws.get-pdf-export($user, %params);
+                    qq{attachment; filename="$filename"}
+                );
+                content 'application/pdf', $pdf;
                 CATCH {
                     default {
                         note "$_";
                         response.status = 500;
-                        content 'application/json', %( error => .message )
+                        content 'text/html', html-error( %( :error(.message), :$filename ) );
                     }
                 }
             }
@@ -505,4 +507,11 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
     }
+}
+
+sub html-error(%error) {
+    return qq:to/HTML/;
+            <dl><dt><b>Fehler bei der Erstellung der Datei {%error<filename>}:</b></dt> <dd>{%error<error>}</dd></dl>
+            <p>Bitte kontaktieren Sie den <a href="mailto:support@agrammon.ch">Agrammon Support</a>.</p>
+        HTML
 }
