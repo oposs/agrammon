@@ -296,7 +296,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
              WHERE dataset_id=dataset_name2id($2,$3)
             RETURNING dataset_comment
             SQL
-            $!comment = $comment ?? $comment !! Nil;
+            $!comment = $comment || Nil;
 
             # couldn't save comment
             die X::Agrammon::DB::Dataset::StoreDatasetCommentFailed.new(:$comment, :dataset($!name)) unless $ret.rows;
