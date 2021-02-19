@@ -108,8 +108,13 @@ sub latex (IO::Path $path, $technical-file, $variants, $sort) is export {
 }
 
 #| Create Agrammon user
-multi sub MAIN('create-user', Str $username, Str $firstname, Str $lastname) is export {
-    say "Will create Agrammon user; NYI";
+multi sub MAIN('create-user', ExistingFile $cfg-filename, Str $username, Str $firstname, Str $lastname, Str $password, Str $role?) is export {
+    create-user($cfg-filename, $username, $firstname, $lastname, $password, $role);
+}
+
+#| Set Agrammon user password
+multi sub MAIN('set-password', ExistingFile $cfg-filename, Str $username, Str $password) is export {
+    set-password($cfg-filename, $username, $password);
 }
 
 sub USAGE() is export {
@@ -118,6 +123,26 @@ sub USAGE() is export {
     USAGE
 }
 
+sub create-user($cfg-filename, $username, $firstname, $lastname, $password, $role?) {
+    connect-db($cfg-filename);
+    my $user = Agrammon::DB::User.new(
+        :$username, :$firstname, :$lastname, :$password
+    );
+    $user.create-account($role);
+    CATCH {
+        when X::Agrammon::DB::User::Exists  {
+            note "User $username already exists";
+            return;
+        }
+    }
+    say "User $username created";
+}
+
+sub set-password($cfg-filename, $username, $password) {
+    connect-db($cfg-filename);
+    Agrammon::DB::User.new(:$username).set-password($username, $password);
+    say "New password set for user $username";
+}
 
 sub dump-model (IO::Path $path, $variants, $sort) is export {
     die "ERROR: dump expects a .nhd file" unless $path.extension eq 'nhd';
@@ -206,12 +231,19 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
     }
 }
 
+sub connect-db(Str $cfg-filename) {
+    my $cfg = Agrammon::Config.new;
+    $cfg.load($cfg-filename);
+    my $db = DB::Pg.new(conninfo => $cfg.db-conninfo);
+    PROCESS::<$AGRAMMON-DB-CONNECTION> = $db;
+    return ($cfg, $db);
+}
+
 sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export {
 
     # initialization
-    my $cfg = Agrammon::Config.new;
     note "Loading config from $cfg-filename";
-    $cfg.load($cfg-filename);
+    my ($cfg, $db) = connect-db($cfg-filename);
     my $variants = $cfg.model-variant;
 
     my $model-path = $model-filename.IO;
@@ -219,7 +251,6 @@ sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export 
 
     note "Running model variant $variants from $model-path";
     my $module-path = $model-path.parent;
-    my $module-file = $model-path.basename;
     my $module = $model-path.IO.extension('').basename;
     my $tech-input = $technical-file // $module-path.add('technical.cfg');
     my %technical-parameters = timed "Load parameters from $tech-input", {
@@ -232,9 +263,6 @@ sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export 
     my $model = timed "Load model from $module-path/$module.nhd", {
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     }
-
-    my $db = DB::Pg.new(conninfo => $cfg.db-conninfo);
-    PROCESS::<$AGRAMMON-DB-CONNECTION> = $db;
 
     my $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters);
 
