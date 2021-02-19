@@ -221,13 +221,6 @@ livestock. Atmospheric Environment 35:5331-5338.
     Number of Days whith access to yard and pasture
   ++formula
     if( (Val(grazing_days, GrazingInput) + In(yard_days)) > 365 ){
-      # writeLog({
-      #   en => "The sum of days with access to the exercise yard and of grazing "
-      #         . "days per year for dairy cows is higher than 365!\n",
-      #   de => "Die Summe der Weide- und Laufhoftage für Milchkühe ist grösser als 365!\n",
-      #   fr => "La somme des jours de pâturage et des jours avec accès au parcours extérieur " 
-      #         . "pour les vâches laitières est supérieure à 365 !\n",
-      #          }); 
       return Val(grazing_days, GrazingInput) + In(yard_days) - 365;
     } else {
       return 0;
@@ -243,13 +236,6 @@ livestock. Atmospheric Environment 35:5331-5338.
     Number of Hours per Day whith access to yard and pasture
   ++formula
     if( (Val(grazing_hours, GrazingInput) + In(yard_hours)) > 24 ){
-      # writeLog({
-      #   en => "The sum of days with access to the exercise yard and of grazing "
-      #         . "days per year for dairy cows is higher than 24!\n",
-      #   de => "Die Summe der Weide- und Laufhoftage für Milchkühe ist grösser als 24!\n",
-      #   fr => "La somme des jours de pâturage et des jours avec accès au parcours extérieur " 
-      #         . "pour les vâches laitières est supérieure à 24 !\n",
-      #          }); 
       return Val(grazing_hours, GrazingInput) + In(yard_hours) - 24;
     } else {
       return 0;
