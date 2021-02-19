@@ -138,7 +138,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     has Agrammon::DB::Tag  @.tags;
     has Agrammon::DB::User $.user;
 
-    method !create-dataset( $dataset-name, $username, $version, $model, $comment ) {
+    method !create-dataset( $dataset-name, $username, $version, $model, $comment? ) {
         my @ret;
         self.with-db: -> $db {
             @ret = $db.query(q:to/SQL/, $dataset-name, $version, $model, $comment, $username).array;
