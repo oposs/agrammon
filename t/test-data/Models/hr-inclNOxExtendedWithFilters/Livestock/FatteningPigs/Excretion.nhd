@@ -635,8 +635,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
               . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
         de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
               . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
-        fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
-              ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
+        fr => "La teneur de la ration en énergie et en matière azotée engendrent une "
+              ."excrétion  de N inférieure au minimum prévu pour les porcs à l'engrais. "
               ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
       });
       return Tech(minimal_N_excretion_fattening_pigs);
@@ -658,9 +658,9 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
                 . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
           de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
                 . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
-          fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
-                ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
-                ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
+          fr => "La teneur de la ration en énergie et en matière azotée engendrent une "
+              ."excrétion  de N inférieure au minimum prévu pour les porcs à l'engrais. "
+              ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
         });
         return Tech(minimal_N_excretion_fattening_pigs);
       } else {
@@ -671,15 +671,14 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
         writeLog({
           en => "The entry for the N excretion is below the minimum for fattening pigs!",
           de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine!",
-          fr => "FIX: Les teneurs choisies en énergie et en matière azotée de la ration provoquent une "
-                ."excrétion azotée inférieure au minimum prévu pour les porcs à l'engrais. "
+          fr => "Les excrétions azotées sont inférieures au minimum pour les porcs à l'engrais!"
         });
       }
       if ( (In(inp_n_excretion) < 0.7 * Tech(standard_N_excretion_fattening_pigs)) or (In(inp_n_excretion) > 1.3 * Tech(standard_N_excretion_fattening_pigs)) ) {
         writeLog({
-          en => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 30% vom Standard ab.",
-          de => "Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 30% vom Standard ab.",
-          fr => "FIX: Die eingegebene N-Ausscheidung für Mastschweine weicht mehr als 30% vom Standard ab."
+            en => "The N excretion entered for fattening pigs differs from the standard by more than 30%!",
+            de => "Die eingegebene N-Ausscheidung für Mastschweine weicht um mehr als 30% vom Standard ab!",
+            fr => "Les excrétions azotées saisies les porcs à l'engrais s'écartent de plus de 30 % du standard!",
         });
       }
       return In(inp_n_excretion);
@@ -714,9 +713,9 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
         $tan = In(tan_fraction) / 100;
         if ( abs($tan - Tech(share_Nsol)) > 0.2) {
           writeLog({
-              en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab.",
-              de => "Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab",
-              fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab."
+            en => "The TAN fraction of N excretion entered for fattening pigs differs from the standard by more than 20%!",
+            de => "Der eingegebene TAN Anteil der N Ausscheidung für Mastschweine weicht um mehr als 20% vom Standard ab!",
+            fr => "La proportion du TAN des excrétions azotées saisies pour les porcs à l'engrais s'écartent de plus de 20 % du standard!"
           });
         }
         return $tan * Out(n_excretion);
