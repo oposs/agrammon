@@ -6,6 +6,7 @@
  * @asset(qx/icon/${qx.icontheme}/16/actions/document-save-as.png)
  * @asset(qx/icon/${qx.icontheme}/16/actions/document-new.png)
  * @asset(qx/icon/${qx.icontheme}/16/actions/document-send.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/insert-text.png)
  * @asset(qx/icon/${qx.icontheme}/16/actions/window-close.png)
  * @asset(qx/icon/${qx.icontheme}/16/apps/office-calendar.png)
  * @asset(qx/icon/${qx.icontheme}/16/apps/office-database.png)
@@ -219,6 +220,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
         __btnNew: null,
         __btnRename: null,
         __btnDel: null,
+        __btnUpload: null,
 
         __btnSetReference: null,
         __btnClearReference: null,
@@ -244,26 +246,38 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
        */
         __createToolbarButtons: function() {
 
-            this.__btnRename =
-                new qx.ui.toolbar.Button(this.tr("Rename"),
+            this.__btnRename = new qx.ui.toolbar.Button(this.tr("Rename"),
                                          "icon/16/actions/document-save-as.png");
             this.__btnRename.setToolTip(new qx.ui.tooltip.ToolTip(this.tr("Rename selected dataset")));
-            this.__btnSend =
-                new qx.ui.toolbar.Button(this.tr("Send"),
+            this.__btnSend = new qx.ui.toolbar.Button(this.tr("Send"),
                                          "icon/16/actions/document-send.png");
             this.__btnSend.setToolTip(new qx.ui.tooltip.ToolTip(this.tr("Send selected dataset(s) to other Agrammon user")));
 
-            this.__btnNew =
-                new qx.ui.toolbar.Button(this.tr("New"),
+            this.__btnNew = new qx.ui.toolbar.Button(this.tr("New"),
                                          "icon/16/actions/document-new.png");
             this.__btnNew.setToolTip(new qx.ui.tooltip.ToolTip(this.tr("Create new dataset")));
             this.__btnDel = new qx.ui.toolbar.Button(this.tr("Delete"),
                                          'icon/16/actions/window-close.png');
             this.__btnDel.setToolTip(new qx.ui.tooltip.ToolTip(this.tr("Delete selected dataset(s)")));
+            this.__btnRename = new qx.ui.toolbar.Button(this.tr("Rename"),
+                                         "icon/16/actions/document-save-as.png");
+
+            var uploadPopup = this.__createUploader();
+            this.__btnUpload = new qx.ui.toolbar.Button(this.tr("Upload")).set({
+                icon : "icon/16/actions/insert-text.png",
+                toolTip : new qx.ui.tooltip.ToolTip(this.tr("Upload dataset"))
+            });
+
+
             this.__toolBar.add(this.__btnRename);
             this.__toolBar.add(this.__btnNew);
             this.__toolBar.add(this.__btnDel);
             this.__toolBar.add(this.__btnSend);
+            this.__toolBar.add(this.__btnUpload);
+
+            this.__btnUpload.addListener("execute", function(e) {
+                uploadPopup.open();
+            }, this);
 
             this.__btnNew.addListener("execute", function(e) {
                 qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openNew', this);
@@ -561,6 +575,119 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
             this.clearFilter();
 
             return table;
+        },
+
+        __createUploader : function() {
+            var popup = new qx.ui.window.Window(this.tr('Upload dataset')).set({
+                layout : new qx.ui.layout.VBox(10),
+                centerOnAppear: true,
+                modal : true
+            });
+            var datasetName = new qx.ui.form.TextField();
+            var comment = new qx.ui.form.TextArea();
+            var form = new qx.ui.form.Form();
+            form.add(datasetName, this.tr('Dataset name'));
+            form.add(comment, this.tr('Comment'));
+            popup.add(new qx.ui.form.renderer.Single(form));
+
+            var uploadBtn = new com.zenesis.qx.upload.UploadButton("Upload dataset").set({
+                allowGrowX: false,
+                alignX: 'right',
+                alignY: 'middle',
+                enabled: true,
+                allowGrowY: false,
+                icon : "icon/16/actions/insert-text.png"
+            });
+
+            var uploader = new com.zenesis.qx.upload.UploadMgr(uploadBtn, "/upload");
+            var cancelBtn = new qx.ui.form.Button(this.tr('Cancel'));
+             var okBtn = new qx.ui.form.Button(this.tr('OK'));
+            okBtn.addListener('execute', function() {
+                popup.close();
+            }, this);
+
+            var btnRow = new qx.ui.container.Composite(new qx.ui.layout.HBox(10), 'right');
+            popup.add(btnRow);
+            btnRow.add(cancelBtn);
+            btnRow.add(uploadBtn);
+
+            var progressRow = new qx.ui.container.Composite(new qx.ui.layout.HBox(10), 'right');
+            popup.add(progressRow);
+            var uploadProgress = new qx.ui.basic.Label();
+            progressRow.add(uploadProgress);
+            progressRow.add(new qx.ui.core.Spacer(1), {flex : 1})
+            progressRow.add(okBtn);
+
+            var uploadResponse = new qx.ui.basic.Label();
+            popup.add(uploadResponse);
+
+            popup.addListener('appear', function() {
+                cancelBtn.setEnabled(false);
+                okBtn.setEnabled(false);
+                uploadBtn.setEnabled(true);
+                uploadProgress.resetValue();
+                uploadResponse.resetValue();
+            }, this);
+            uploader.addListener("addFile", function(evt) {
+                var file = evt.getData();
+                uploader.setParam('comment', comment.getValue());
+                uploader.setParam('datasetName', datasetName.getValue());
+                cancelBtn.setEnabled(true);
+                uploadBtn.setEnabled(false);
+                var filename = file.getFilename();
+                var username = this.__info.getUserName()
+
+                var cancelListenerId = cancelBtn.addListener('execute', function(e) {
+                    if (file.getState() == "uploading" || file.getState() == "not-started") {
+                        uploader.cancel(file);
+                    }
+                }, this);
+
+                var responseListenerId = file.addListener("changeResponse", function(e) {
+                    var response = qx.lang.Json.parse(e.getData());
+                    uploadResponse.setValue(this.tr('Uploaded %1 lines', response.lines));
+                    if (progressListenerId) {
+                        file.removeListenerById(progressListenerId);
+                    }
+                    if (stateListenerId) {
+                        file.removeListenerById(stateListenerId);
+                    }
+                    if (cancelListenerId) {
+                        cancelBtn.removeListenerById(cancelListenerId);
+                    }
+                    okBtn.setEnabled(true);
+                    uploadBtn.setEnabled(true);
+                    cancelBtn.setEnabled(false);
+                }, this);
+
+                var stateListenerId = file.addListener("changeState", function(evt) {
+                    var state = evt.getData();
+                    if (state == "uploading") {
+                        this.debug(file.getFilename() + " (Uploading...)");
+                    }
+                    else if (state == "uploaded" || state == "cancelled") {
+                        if (state == "uploaded") {
+                            this.debug(file.getFilename() + " (Complete)");
+                            uploadProgress.resetValue();
+                            // TODO: this needs a delay
+                            qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', username);
+                        }
+                        if (state == "cancelled") {
+                           this.debug(file.getFilename() + " (Cancelled)");
+                        }
+                    }
+                }, this);
+
+                var progressListenerId = file.addListener("changeProgress", function(evt) {
+                    uploadProgress.setValue(
+                          "Upload " + file.getFilename() + ": "
+                        + evt.getData() + " / " + file.getSize() + " - "
+                        + Math.round(evt.getData() / file.getSize() * 100) + "%"
+                    );
+                }, this);
+
+            }, this);
+            return popup;
         }
 
     }

@@ -2,9 +2,11 @@ use v6;
 
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
+use Cro::Uri :decode-percents;
 
 use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
+use Agrammon::Timestamp;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 
@@ -495,6 +497,26 @@ sub application-routes(Agrammon::Web::Service $ws) {
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::Dataset::StoreBranchDataFailed {
+                        conflict 'application/json', %( error => .message );
+                    }
+                }
+            }
+        }
+
+        post -> LoggedIn $user, 'upload' {
+            request-body -> (:$file, :datasetName($dataset-name), :$comment) {
+                my $file-name = $file.filename;
+                my $content = $file.body-text;
+                my $comment-string = $comment && decode-percents($comment.body-text) || "$file-name uploaded " ~ timestamp;
+                my $lines = $ws.upload-dataset(
+                    $user, decode-percents($dataset-name.body-text),
+                    $content,
+                    $comment-string
+                );
+                content 'application/json', { :$lines };
+                CATCH {
+                    note "$_";
+                    when X::Agrammon::DB::Dataset::UploadFailed {
                         conflict 'application/json', %( error => .message );
                     }
                 }
