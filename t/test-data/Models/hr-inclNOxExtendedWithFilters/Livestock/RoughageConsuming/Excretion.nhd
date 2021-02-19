@@ -518,9 +518,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
             en => "The TAN fraction of N excretion entered for other roughage consuming animals differs from the standard by more than 20%!",
             de => "Der eingegebene TAN Anteil der N Ausscheidung für andere Raufutterverzehrer weicht um mehr als 20% vom Standard ab!",
             fr => "La proportion du TAN des excrétions azotées saisies pour les autres animaux consommant des fourrages grossiers s'écartent de plus de 20 % du standard!"
-            en => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab!",
-            de => "Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab!",
-            fr => "TODO: Der eingegebene TAN Gehalt weicht um mehr als 20% vom Standardwert ab!"
         });
       }
       return $tan * Out(n_excretion);
