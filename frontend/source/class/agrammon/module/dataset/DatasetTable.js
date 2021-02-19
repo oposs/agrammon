@@ -268,7 +268,6 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 toolTip : new qx.ui.tooltip.ToolTip(this.tr("Upload dataset"))
             });
 
-
             this.__toolBar.add(this.__btnRename);
             this.__toolBar.add(this.__btnNew);
             this.__toolBar.add(this.__btnDel);
