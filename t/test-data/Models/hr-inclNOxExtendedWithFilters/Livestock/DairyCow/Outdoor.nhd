@@ -342,13 +342,6 @@ taxonomy = Livestock::DairyCow::Outdoor
   ++formula
     # check yard exists?! -> 0
     if( (Out(grazing_days) + Out(yard_days)) > 365 ){
-      writeLog({
-        en => "The sum of days with access to the exercise yard and of grazing "
-              . "days per year for dairy cows is higher than 365!\n",
-        de => "Die Summe der Weide- und Laufhoftage für Milchkühe ist grösser als 365!\n",
-        fr => "La somme des jours de pâturage et des jours avec accès au parcours extérieur " 
-              . "pour les vâches laitières est supérieure à 365 !\n",
-               }); 
       return Out(grazing_days) + Out(yard_days) - 365;
     } else {
       return 0;
