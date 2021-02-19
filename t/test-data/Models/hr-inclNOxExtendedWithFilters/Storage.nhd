@@ -343,9 +343,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       when $_ > scalar(Out(maxlimit_of_nh3_nstorage_liquid_pigs)) {
         writeLog(
             {
-              en => "NH3 loss from pigs is limited to maximum available TAN!\n",
-              de => "TODO\n",
-              fr => "TODO\n"
+                en => "The size of the slurry store induces an NH3 loss which is larger than the TAN flow into the store. NH3 loss from storage liquid is corrected accordingly!\n",
+                de => "Die Grösse des Güllelagers hat zur Folge, dass die NH3 Verluste grösser sind als der TAN Fluss ins Lager. Die NH3 Verluste von Hofdüngerlagerung flüssig werden entsprechend korrigiert!\n",
+                fr => "La dimension de la fosse à lisier induit une perte de NH3 plus élevée que le flux de TAN dans la fosse. La perte de NH3 issue du stockage des engrais de ferme liquide sera ainsi corrigée!\n"
             }
         );  
         Out(maxlimit_of_nh3_nstorage_liquid_pigs);         
@@ -395,9 +395,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       when $_ > scalar(Out(maxlimit_of_nh3_nstorage_liquid_cattle)) {
         writeLog(
             {
-              en => "NH3 loss from cattle is limited to maximum available TAN!\n",
-              de => "TODO\n",
-              fr => "TODO\n"
+                en => "The size of the slurry store induces an NH3 loss which is larger than the TAN flow into the store. NH3 loss from storage liquid is corrected accordingly!\n",
+                de => "Die Grösse des Güllelagers hat zur Folge, dass die NH3 Verluste grösser sind als der TAN Fluss ins Lager. Die NH3 Verluste von Hofdüngerlagerung flüssig werden entsprechend korrigiert!\n",
+                fr => "La dimension de la fosse à lisier induit une perte de NH3 plus élevée que le flux de TAN dans la fosse. La perte de NH3 issue du stockage des engrais de ferme liquide sera ainsi corrigée!\n"
             }
         );  
         Out(maxlimit_of_nh3_nstorage_liquid_cattle);         
