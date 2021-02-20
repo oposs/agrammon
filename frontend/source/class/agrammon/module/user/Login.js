@@ -139,7 +139,7 @@ qx.Class.define('agrammon.module.user.Login', {
                     }
                 }
                 this.password.clearValue();
-                var sudoUser;
+                var sudoUser = null;
                 if (sudo) {
                     sudoUser = agrammon.Info.getInstance().getUserName();
                 }

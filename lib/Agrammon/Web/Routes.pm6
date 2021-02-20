@@ -460,7 +460,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         # TODO: implement news in auth()
         post -> Agrammon::Web::SessionUser $user, 'auth' {
-            request-body -> :$username, :$password, :sudoUsername($sudo-username) {
+            request-body -> (:$username, :$password, :sudoUsername($sudo-username)) {
                 if $user.auth($username, $password, $sudo-username) {
                     content 'application/json', %(
                         :$username,
