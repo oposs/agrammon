@@ -118,26 +118,6 @@ qx.Class.define('agrammon.module.user.Login', {
                     remember = that.__remember.getValue();
                 }
                 
-			    var userShortcuts = {
-                    'fz': 'fritz.zaucker@oetiker.ch',
-                    'rp': 'roman.plessl@oetiker.ch',
-                    'to': 'tobias@oetiker.ch',
-                    'mo': 'manuel@oetiker.ch',
-                    'hr': 'hr@bjengineering.ch',
-                    'cb': 'cyrill.bonjour@bjengineering.ch',
-                    'hm': 'harald.menzi@bfh.ch',
-                    'ba': 'beat.achermann@bafu.admin.ch',
-                    'cl': 'christian.leuenberger@leupro.ch',
-                    'an': 'aurelia.nyfeler@bjengineering.ch',
-                    'tk': 'thomas.kupper@bfh.ch',
-                    'fb': 'fritz.birrer@lu.ch'
-                };
-                for (var key in userShortcuts) {
-                    if (username == key) {
-                        username = userShortcuts[key];
-                        break;
-                    }
-                }
                 this.password.clearValue();
                 var sudoUser = null;
                 if (sudo) {
