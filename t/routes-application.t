@@ -206,7 +206,7 @@ subtest 'Delete instance' => {
 subtest 'Load branch data' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/load_branch_data', {
-            test post(json => { :name('DatasetC'), :data(%()) }),
+            test post(json => { :datasetName('DatasetC'), :data(%()) }),
                 status => 200,
                 json => { :fractions([50, 50]), :options(['option1', 'option2']) }
         };
@@ -218,7 +218,7 @@ subtest 'Load branch data' => {
 subtest 'Store branch data' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/store_branch_data', {
-            test post(json => { :name('DatasetC'), :data(%()) }),
+            test post(json => { :datasetName('DatasetC'), :data(%()) }),
                 status => 204,
         };
         check-mock $fake-store,
