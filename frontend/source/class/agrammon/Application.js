@@ -134,14 +134,14 @@ qx.Class.define('agrammon.Application', {
 
             this.__authenticate = function(data, exc, id) {
                 if (exc == null) {
-                    var user      = data.user;
+                    var username  = data.username;
                     var role      = data.role;
                     var news      = data.news;
                     var lastLogin = String(data.last_login);
 
                     qx.event.message.Bus.dispatchByName(
                         'agrammon.info.setUser',
-                        { username : user, role : role }
+                        { username : username, role : role }
                     );
                     if (news && news != '') {
                         var dialog = new agrammon.ui.dialog.News(
@@ -162,7 +162,7 @@ qx.Class.define('agrammon.Application', {
                     if (role != 'admin') { // TODO: fix update
                         results.exclude();
                     }
-                    qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', user);
+                    qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', username);
                 }
                 else {
                     qx.event.message.Bus.dispatchByName('error',
@@ -224,6 +224,9 @@ qx.Class.define('agrammon.Application', {
                 localStorage.setItem('agrammonUsername', userData.username);
                 localStorage.setItem('agrammonPassword', userData.password);
                 localStorage.setItem('agrammonRemember', userData.remember);
+            }
+            if (userData.sudoUsername === undefined) {
+                userData.sudoUsername = null;
             }
             this.__rpc.callAsync( this.__authenticate, 'auth', userData);
         },
