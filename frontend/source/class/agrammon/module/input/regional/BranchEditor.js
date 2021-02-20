@@ -347,16 +347,18 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
 //            this.debug('options='+options);
             this.__table.getTableModel().setData(tData);
 
-
             var params = {
-                dataset_name: datasetName,
-                instance:     instance1,
-                vars:         vars,
-                options:      options,
-                data:         data,
-                tdata:        tData,
-                voptions:     voptions
+                datasetName : datasetName,
+                data : {
+                    instance : instance1,
+                    vars :     vars,
+                    options :  options,
+//                    tdata:     tData,
+//                    voptions:  voptions
+                    data :     data
+                }
             }
+//            console.log('__storeBranchData(): params=', params);
             this.__rpc.callAsync(this.__store_branch_func, 'store_branch_data', params);
 
             // invalidate output on changes and check completeness of data
@@ -387,12 +389,15 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
           */
         __load_branch_func: function(data, exc, id) {
             if (exc == null) {
+//                console.log('__load_branch_func(): data=', data);
                 var row, col, n=0;
                 var tm = this.__table.getTableModel();
+                var fractions = data.fractions;
                 for (row=0; row<this.__nRows; row++) {
                     for (col=0; col<this.__nCols; col++) {
+//                        console.log('  row=', row, ', col=', col, ', n=', n, ', fractions[n]=', fractions[n]);
 //                        this.debug('__load_branch_func(): data='+data[n]);
-                        tm.setValue(col+1, row, Number(data[n]));
+                        tm.setValue(col+1, row, Number(fractions[n]));
                         n++;
                     }
                 }
@@ -423,13 +428,16 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
                       +instance1+'/'+instance2);
             }
 
-            this.__rpc.callAsync(qx.lang.Function.bind(this.__load_branch_func, this),
-                                 'load_branch_data',
-                                 {
-                                   dataset_name: datasetName,
-                                   instance:     instance1,
-                                   vars:         vars
-                                 }
+            this.__rpc.callAsync(
+                qx.lang.Function.bind(this.__load_branch_func, this),
+                'load_branch_data',
+                {
+                   datasetName: datasetName,
+                   data : {
+                       instance:    instance1,
+                       vars:        vars
+                   }
+                }
             );
             this.close();
         }, // __loadBranchData

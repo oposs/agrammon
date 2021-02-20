@@ -414,6 +414,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             content 'application/json', $data;
         }
 
+        # working
         post -> LoggedIn $user, 'send_datasets' {
             request-body -> (:@datasets!, :$recipient!, :$language = 'de') {
                 my $data = $ws.send-datasets($user, @datasets, $recipient, $language);
@@ -448,6 +449,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
             content 'application/json', %cfg;
         }
 
+        # working
         post -> Agrammon::Web::SessionUser $user, 'logout' {
             $user.logout();
             content 'application/json', %(
@@ -479,17 +481,17 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # TODO: test
+        # working
         post -> LoggedIn $user, 'load_branch_data' {
-            request-body -> (:$name!, :%data!) {
-                my $data = $ws.load-branch-data($user, $name, %data);
+            request-body -> (:datasetName($dataset-name), :%data!) {
+                my $data = $ws.load-branch-data($user, $dataset-name, %data);
                 content 'application/json', $data;
             }
         }
 
-        # TODO: test
+        # working
         post -> LoggedIn $user, 'store_branch_data' {
-            request-body -> (:name($dataset-name)!, :%data!) {
+            request-body -> (:datasetName($dataset-name)!, :%data!) {
                 $ws.store-branch-data($user, $dataset-name, %data);
                 CATCH {
                     note "$_";
