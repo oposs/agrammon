@@ -5,7 +5,7 @@ use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
-plan 6;
+plan 7;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -45,9 +45,11 @@ subtest 'Create user' => {
 }
 
 transactionally {
-    my $username = 'agtest';
+    my $username  = 'agtest';
+    my $username2 = 'agtest2';
+    my $username3 = 'agtest3';
     my $password = 'XP';
-    my $uid;
+    my ($uid, $uid2, $uid3);
 
     ok prepare-test-db, 'Test database prepared';
 
@@ -59,34 +61,34 @@ transactionally {
             :organisation<XO>,
             :$password,
         ), 'Create new admin account';
-        ok $uid = $user.create-account('admin'), "Create account, uid=$uid";
+        ok $uid = $user.create-account('admin').id, "Create account, uid=$uid";
         is $user.username, $username, "Username is $username";
         is $user.role.name, 'admin', "User role is admin";
 
         ok $user = Agrammon::DB::User.new(
-            :username<agtest2>,
+            :username($username2),
             :firstname<XF>,
             :lastname<XL>,
             :organisation<XO>,
             :$password,
         ), 'Create new user account';
-        ok $uid = $user.create-account('user').id, "Create account, uid=$uid";
+        ok $uid2 = $user.create-account('user').id, "Create account, uid=$uid2";
         is $user.role.name, 'user', "User role is user";
 
         ok $user = Agrammon::DB::User.new(
-            :username<agtest3>,
+            :username($username3),
             :firstname<XF>,
             :lastname<XL>,
             :organisation<XO>,
             :$password,
         ), 'Create new user account';
-        ok $uid = $user.create-account(Any).id, "Create account, uid=$uid";
+        ok $uid3 = $user.create-account(Any).id, "Create account, uid=$uid3";
         is $user.role.name, 'user', "User role is user by default";
 
-        throws-like {$uid = $user.create-account('admin')},
+        throws-like { $user.create-account('admin')},
             X::Agrammon::DB::User::Exists, "Cannot create existing account";
 
-        throws-like { die X::Agrammon::DB::User::CreateFailed.new(:username('agtest3')) },
+        throws-like { die X::Agrammon::DB::User::CreateFailed.new(:username($username3)) },
             X::Agrammon::DB::User::CreateFailed, "CreateFailed exception works";
     }
 
@@ -104,6 +106,42 @@ transactionally {
         ok $session-user.auth($username, $password).logged-in, "$username was authenticated with $password";
         ok ! $session-user.logout, "Logout $username";
         ok ! $session-user.logged-in, "$username is logged out";
+    }
+
+    subtest "sudo()" => {
+        my $session-user;
+        subtest "login $username" => {
+            ok $session-user = Agrammon::Web::SessionUser.new(:$username).load,
+                "Create Agrammon::Web::SessionUser with username $username";
+            ok $session-user.may-sudo, "$username may change account";
+            ok $session-user.auth($username, $password).logged-in, "$username was authenticated with $password";
+            is $session-user.username, $username, "Username is $username";
+            is $session-user.id, $uid, "Uid is $uid";
+        }
+
+        subtest "sudo $username -> $username2" => {
+            ok $session-user.auth($username2, $password, $username).logged-in, "Change to account $username2";
+            is $session-user.username, $username2, "Username is $username2";
+            is $session-user.id, $uid2, "Uid is $uid2";
+            ok ! $session-user.may-sudo, "$username2 may not change account";
+        }
+
+        subtest "sudo $username2 -> $username3" => {
+            throws-like { $session-user.auth($username2, $password, $username3) },
+                        X::Agrammon::DB::User::MayNotSudo, "$username2 cannot sudo";
+        }
+
+        subtest "logout $username2, back to $username" => {
+            ok !$session-user.logout, "Logout $username2";
+            ok $session-user.logged-in, "$username is logged in";
+            is $session-user.username, $username, "Username is $username";
+            is $session-user.id, $uid, "Uid is $uid";
+        }
+
+        subtest "logout $username" => {
+            ok !$session-user.logout, "Logout $username";
+            ok !$session-user.logged-in, "$username is logged out";
+        }
     }
 
 }

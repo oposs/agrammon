@@ -143,12 +143,13 @@ qx.Class.define('agrammon.module.user.Login', {
                 if (sudo) {
                     sudoUser = agrammon.Info.getInstance().getUserName();
                 }
-                qx.event.message.Bus.dispatchByName('agrammon.main.login',
-                                              {'user':     username,
-                                               'password': password,
-                                               'remember': remember,
-                                               'sudoUser': sudoUser
-                                               });
+                qx.event.message.Bus.dispatchByName(
+                    'agrammon.main.login',
+                    {
+                        username : username, password : password,
+                        remember : remember, sudoUsername : sudoUser
+                    }
+                );
                 this.close();
             },
            this

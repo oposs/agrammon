@@ -221,7 +221,7 @@ qx.Class.define('agrammon.Application', {
             var userData     = msg.getData();
             this.debug('__login(' + userData.user + ')');
             if (this.__supports_html5_storage() && userData.remember) {
-                localStorage.setItem('agrammonUsername', userData.user);
+                localStorage.setItem('agrammonUsername', userData.username);
                 localStorage.setItem('agrammonPassword', userData.password);
                 localStorage.setItem('agrammonRemember', userData.remember);
             }

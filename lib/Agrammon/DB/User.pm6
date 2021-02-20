@@ -48,6 +48,13 @@ class X::Agrammon::DB::User::UnknownUser is Exception {
     }
 }
 
+class X::Agrammon::DB::User::MayNotSudo is Exception {
+    has Str $.username is required;
+    method message() {
+        "User '$!username' may not change to another account";
+    }
+}
+
 class X::Agrammon::DB::User::PasswordsIdentical is Exception {
     method message() {
         "Old and new password must be different";
