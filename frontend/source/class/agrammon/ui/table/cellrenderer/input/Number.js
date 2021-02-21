@@ -40,7 +40,6 @@ qx.Class.define('agrammon.ui.table.cellrenderer.input.Number', {
 
     _getContentHtml : function(cellInfo)
     {
-//      var nf = this.getNumberFormat();
       var nf = new agrammon.util.FancyNumberFormat();
 
       if (nf)

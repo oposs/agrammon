@@ -29,6 +29,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
         qx.event.message.Bus.subscribe('agrammon.PropTable.clear',
                                        this.clear, this);
 
+        this.__langHash = { en: 1, de: 2, fr: 3 };
         // cell renderer factory function
         // returns a cell renderer instance
         var propertyCellRendererFactoryFunc = function (cellInfo) {
@@ -155,12 +156,14 @@ qx.Class.define('agrammon.module.input.PropTable', {
              this.tr("Unit German"),             // 12, german unit
              this.tr("Unit French"),             // 13, french unit
              this.tr("Comment"),                 // 14, comment
-             this.tr("Order")                    // 15, order
+             this.tr("Order"),                   // 15, order
+             this.tr("Default")                  // 16, defaultValue
             ]);
         this.__valueColumn   =  5;
         this.__helpColumn    =  9;
         this.__commentColumn = 14;
         this.__orderColumn   = 15;
+        this.__defaultColumn = 16;
 
         var resizeBehaviour = { tableColumnModel:
             function(obj) {
@@ -180,12 +183,14 @@ qx.Class.define('agrammon.module.input.PropTable', {
 
         propertyEditor_tableModel.setColumnEditable(this.__valueColumn, true);
         // layout
-        propertyEditor.set({columnVisibilityButtonVisible: false,
-                            keepFirstVisibleRowComplete: true,
-                            statusBarVisible: true,
-                            showCellFocusIndicator: true,
-                            focusable: true,
-                            padding: 0});
+        propertyEditor.set({
+            columnVisibilityButtonVisible: true,
+            keepFirstVisibleRowComplete: true,
+            statusBarVisible: true,
+            showCellFocusIndicator: true,
+            focusable: true,
+            padding: 0
+        });
         // make debugging easier
         if ((qx.core.Environment.get("qx.debug"))) {
             propertyEditor.setColumnVisibilityButtonVisible(true);
@@ -222,10 +227,8 @@ qx.Class.define('agrammon.module.input.PropTable', {
         // 5th column for editing the value
         // has special cell renderers and cell editors
         tcm.getBehavior().setWidth(this.__valueColumn, 250);
-        tcm.setDataCellRenderer(this.__valueColumn,
-                                propertyCellRendererFactory);
-        tcm.setCellEditorFactory(this.__valueColumn,
-                                 propertyCellEditorFactory);
+        tcm.setDataCellRenderer(this.__valueColumn,  propertyCellRendererFactory);
+        tcm.setCellEditorFactory(this.__valueColumn, propertyCellEditorFactory);
 
         // 6th column has the unit
         tcm.setColumnVisible(6,true); // initially visible
@@ -263,11 +266,12 @@ qx.Class.define('agrammon.module.input.PropTable', {
                                 new agrammon.ui.table.cellrenderer.Comment(25,16));
 
         // 15th column has the sort order
-        tcm.setColumnVisible(15,false); // initially invisible
-        tcm.getBehavior().setWidth(this.__orderColumn,50);
+        tcm.setColumnVisible(15,true); // initially invisible
+        tcm.getBehavior().setWidth(this.__orderColumn, 100);
 
         // 16th column has the default value
-//        tcm.setColumnVisible(16,false); // initially invisible
+        tcm.setColumnVisible(16,false); // initially invisible
+        tcm.getBehavior().setWidth(this.__defaultColumn, 100);
 
         var tm = propertyEditor.getTableModel();
         for (var col=0; col<this.__orderColumn; col++) {
@@ -285,7 +289,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
     members :
     {
         __currentFolder:  null,
-        __langHash:       { en: 1, de: 2, fr: 3 },
+        __langHash:       null,
         __rpc:            null,
         __info:           null,
         __valueColumn:    null,
@@ -293,16 +297,10 @@ qx.Class.define('agrammon.module.input.PropTable', {
         __commentColumn:  null,
         __commentEditor:  null,
         __orderColumn:    null,
+        __defaultColumn:  null,
         __propertyEditor: null,
 
         setData: function(folder, data) {
-            if (folder == null) {
-//                this.debug('PropTable.setData(): folder=null (clear)');
-            }
-            else {
-//                 this.debug('setData(): folder=' + folder.getName());
-//                 this.debug('setData(): data=' + data);
-            }
 
             // FIX: filter ignore parameters
             var newData = new Array;
@@ -325,20 +323,16 @@ qx.Class.define('agrammon.module.input.PropTable', {
             // FIX ME: this is called very often on language change
             // remove event listener before bulk table update
 //            this.debug('Removing dataChanged listener');
-            tableModel.removeListener("dataChanged",
-                                      this.__dataChanged_func, this);
+            tableModel.removeListener("dataChanged", this.__dataChanged_func, this);
             tableModel.setData(newData);
             this.sort();
 
             // enable event handler for user changes to table data
-            tableModel.addListener("dataChanged",
-                                        this.__dataChanged_func,
-                                        this);
+            tableModel.addListener("dataChanged", this.__dataChanged_func, this);
             qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
         },
 
         __dataChanged_func: function(e) {
-//            this.debug('__dataChanged_func(): e=' + e);
             if ( ! (e instanceof qx.event.type.Data) ) {
                 return;
             }
@@ -353,14 +347,10 @@ qx.Class.define('agrammon.module.input.PropTable', {
             var varname = tableModel.getValue(0, fR);
             var value   = tableModel.getValue(this.__valueColumn, fR);
             var comment = tableModel.getValue(this.__commentColumn, fR);
-//            this.debug('__dataChanged_func1(): ' + this.__currentFolder.getLabel()
-//                        + ' - ' + varname + '=' + value);
             if (value != null) {
                 value = '' + value;
                 if (value.match(/en:(.+)/)) {
                     value = RegExp.$1;
-//                    this.debug('__dataChanged_func2(): ' + this.__currentFolder.getLabel()
-//                               + ' - ' + varname + '=' + value);
                 }
             }
             var datasetName = this.__info.getDatasetName() + '';
@@ -391,7 +381,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
           * TODOC
           *
           * @return {var} TODOC
-      * @lint ignoreDeprecated(alert)
+          * @lint ignoreDeprecated(alert)
           */
         __store_data_func: function(data, exc, id) {
             if (exc == null) {
@@ -404,9 +394,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
         },
 
         clear: function() {
-//            this.debug('PropTable.clear()');
             this.setData(null, new Array);
-            // this.setData(null, null); // doesn't work
             return;
           },
 
@@ -416,8 +404,6 @@ qx.Class.define('agrammon.module.input.PropTable', {
           },
 
         sort: function() {
-//            this.debug('Sorting by column '+this._orderColumn);
-//            this.__propertyEditor.getTableModel().sortByColumn(this.__orderColumn, true);
             this.__propertyEditor.getTableModel().sortByColumn(15, true);
         },
 
@@ -438,7 +424,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
           * TODOC
           *
           * @return {var} TODOC
-      * @lint ignoreDeprecated(alert)
+          * @lint ignoreDeprecated(alert)
           */
         changeLanguage: function() {
             // FIX ME: deal with sub locales
@@ -468,7 +454,6 @@ qx.Class.define('agrammon.module.input.PropTable', {
             var tm    = this.__propertyEditor.getTableModel();
             var val   = tm.getValue(col,row);
             var nrows = tm.getRowCount();
-//	    this.debug('__keypressed(): val=', val, ', key=', key, ', row=', row, ', nrows=', nrows);
             // jump over flattened and branched variables, handling table ends
             var dir;
             while (val == 'flattened' || val == 'branched') {
@@ -494,9 +479,9 @@ qx.Class.define('agrammon.module.input.PropTable', {
                     }
                     break;
                 }
-		row += dir;
-		this.__propertyEditor.setFocusedCell(col,row,true);
-		val   = tm.getValue(col,row);
+                row += dir;
+                this.__propertyEditor.setFocusedCell(col,row,true);
+                val   = tm.getValue(col,row);
             }
         },
 
@@ -522,8 +507,6 @@ qx.Class.define('agrammon.module.input.PropTable', {
                     options:     options
                 }
             );
-
-            return;
         },
 
         __click_func: function(e) {
@@ -564,22 +547,18 @@ qx.Class.define('agrammon.module.input.PropTable', {
                         // get the option keys and add to optionLang hash
                         opt = [];
                         for (j=0; j<metaData.options.length; j++) {
-//                            var option = metaData.options[j][0];
-//                            this.debug('PropTable: option='+option);
                             opt.push(metaData.options[j][0]);
                         }
-//                        this.debug('PropTable: opt='+opt);
                         metaData.optionsLang['key'] = opt;
-//                        this.debug('PropTable: optionsLang[key]='+metaData.optionsLang['key']);
                         options.push(metaData.optionsLang);
                         labels.push(tm.getValue(4, i));
                         vars.push(tm.getValue(0, i));
                     }
                 }
-                var branchEditor =
-                    new agrammon.module.input.regional.BranchEditor(vars, labels, options,
-                                                         this.__currentFolder
-                                                        );
+                var branchEditor = new agrammon.module.input.regional.BranchEditor(
+                    vars, labels, options,
+                    this.__currentFolder
+                );
                 branchEditor.open();
                 return;
             }

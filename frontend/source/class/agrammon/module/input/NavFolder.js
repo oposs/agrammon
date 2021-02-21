@@ -465,18 +465,18 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             key.match(/.+_flattened(\d?\d?)_(.+)$/);
             var i = RegExp.$1;
             var f = RegExp.$2;
-//            this.debug('insertData: var='+oldVar.getName()+', f='+f+', i='+i, ', value=', value);
             var labels = oldVar.getOptionLabels(f);
-// FIX ME: next line really not needed?
-//            oldVar.setMetaType({type: 'integer'});
             var newVar = oldVar.clone(key);
+            // flattened inputs are percentages not enum as their parent
+            newVar.setType('percent');
+            newVar.setDefaultValue(null);
             newVar.setValue(value);
             newVar.setLabels(labels);
             newVar.setUnits({en: '%', de: '%', fr: '%'});
             newVar.setHelpIcon(null);
             newVar.setHelpFunction(null);
-//            newVar.setMetaData({type: 'integer'});
             newVar.setMetaData({type: 'percent'});
+            // flattened inputs come after parent
             newVar.setOrder(oldVar.getOrder()+Number(i)+1);
             if (pos>this.__propData.length) {
                 this.__propData.push(newVar);
