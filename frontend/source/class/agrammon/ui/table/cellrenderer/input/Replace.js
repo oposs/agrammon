@@ -39,12 +39,7 @@ qx.Class.define('agrammon.ui.table.cellrenderer.input.Replace', {
     _getCellStyle : function(cellInfo)
     {
         var color;
-        var metaData = cellInfo.rowData[8];
-//        this.debug('var = ' + cellInfo.rowData[0]);
-//        this.debug('  value =>'+cellInfo.value+'<');
-        // if (metaData.branches) {
-        //     this.debug('  metaData.branches = '+metaData.branches);
-        // }
+        var metaData = cellInfo.rowData[7];
         switch (cellInfo.value) {
         case null:
         case undefined:
@@ -59,23 +54,13 @@ qx.Class.define('agrammon.ui.table.cellrenderer.input.Replace', {
             break;
         case 'branched':
             cellInfo.value = qx.locale.Manager.tr("*** Configure Branching ***");
-            if (!metaData.branches) {
+            var branches = metaData.branches;
+            if (!branches) {
                 color = (cellInfo.row % 2 == 1 ? "#f1c6ca" : "#f1dfe1");
                 break;
             }
             else {
                 var total = 0;
-                // FIX ME: this should not be necessary
-                var branches = metaData.branches;
-                if (branches instanceof Array) {
-                }
-                else {
-                    branches = metaData.branches;
-                    branches = branches.replace(/\{/,'');
-                    branches = branches.replace(/\}/,'');
-                    branches = branches.split(/,/);
-                }
-
                 for (var j=0; j<branches.length; j++) {
                     total += Number(branches[j]);
                 }
