@@ -97,20 +97,17 @@ qx.Class.define('agrammon.module.input.NavBar', {
 
         this.__sibblings = [];
         var orderInstances = function() {
-            var dataset  = this.__info.getDatasetName();
-            let params =  {
+            var dataset = this.__info.getDatasetName();
+            let params  = {
                 instances:   this.__sibblings,
                 datasetName: dataset
             };
-            console.log('order_instance, params=', params);
             this.__rpc.callAsync(this.order_instances_func, 'order_instances', params);
         };
 
         this.order_instances_func = function(data, exc, id) {
             return; // errors handled in async handler
-            if (exc == null) {
-            }
-            else {
+            if (exc) {
                 alert(exc);
             }
         };
@@ -475,41 +472,26 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     folder = this.__navHash[folderName]['folder'];
                     // FIX ME
                     var noCheck = true;
-//                    this.debug('Calling setData('+varName + ',' + value+')');
                     var regex = /(.+)(_flattened\d?\d?_.+)$/;
                     var match = regex.exec(varName);
-//                  this.debug('match='+match+' for '+varName);
                     if ( match !== null ) {
-                        // this.debug('match.length='+match.length+' for '+varName);
-                        // for (m=0; m<match.length; m++) {
-                        //     this.debug('Match['+m+'] = '+match[m]);
-                        // }
                         var vname = match[1];
                         var fname = match[2];
-			if (vname.match(/test/)) {
-                            this.debug('flattened variable: '+vname + ' - ' + fname, ', value=', value);
-			}
                         var ds = folder.getDataset();
                         var v, vlen=ds.length;
                         for (v=0; v<vlen; v++) {
                             if (vname == ds[v].getName()) {
-//                                this.debug('Found master variable: ' + vname);
-//                                this.debug('Calling insertData('+varName + ',' + value + ','+v+1+')');
-                                folder.insertData(varName, value, noCheck, v+1, fname);
+                                folder.insertData(varName, value, noCheck, v+1);
                                 break;
                             }
-                            // else {
-                            //     this.debug('Skipping variable: ' + ds[v].getName());
-                            // }
                         }
                     }
                     else if (folder.setData(varName, value, comment, noCheck, branch_values)) {
                         nset++;
                     }
-                    else {          // not found
-                        this.debug('_loadDatasetFunction(): couldn\'t set '
-                                   + varName + '  /  ' + folderName);
-//FIX ME: better ask before deleting ...
+                    else { // not found
+                        this.debug('_loadDatasetFunction(): couldn\'t set ' + varName + ' / ' + folderName);
+                        // FIX ME: better ask before deleting ...
                         // qx.event.message.Bus.dispatchByName(
                         //    'agrammon.NavBar.deleteInstanceData',
                         //    { pattern: varName,
@@ -520,20 +502,15 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     }
                 }
                 else {
-                    this.debug('_loadDatasetFunction(): couldn\'t find folder for '
-                               + varName);
+                    this.debug('_loadDatasetFunction(): couldn\'t find folder for ' + varName);
                     msg = '\t' + msg + varName + '\n';
                     no++;
                }
             }
-//            var all = nset+no;
-//            this.debug('_loadDatasetFunction(): set '
-//                       + nset + ' variables (' + all + ')');
             if (no != 0) {
                 msg = 'No match for ' + no + ' variables:\n'
                       + msg
-                    + '\nVariables should be deleted from dataset.';
-//                alert(msg);
+                      + '\nVariables should be deleted from dataset.';
                 this.debug('ERROR: '+msg);
                 qx.event.message.Bus.dispatchByName('error', [this.tr("Error"), msg]);
             }
@@ -541,7 +518,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             // FIX ME: where should this really be
             qx.event.message.Bus.dispatchByName('agrammon.PropTable.clear');
             qx.event.message.Bus.dispatchByName('agrammon.Output.reCalc');
-            return;
         },
 
         __loadDataset: function(msg) { // FIX ME: merge with next function
@@ -554,9 +530,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             qx.event.message.Bus.dispatchByName('agrammon.input.select');
             qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
             qx.event.message.Bus.dispatchByName('agrammon.NavBar.getInput', dataset);
-            // this.__getInput(dataset);
-
-            return;
         },
 
         /**
@@ -599,8 +572,8 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 }
                 else {
                     if ( rec.type.match(/enum/) && rec.units.de != '%') { // combobox
-//			console.log('rec.units=', rec.units);
-                        defaultValue = '*** Select ***';                    }
+                        defaultValue = '*** Select ***';
+                    }
                     else {
                         defaultValue = null;
                     }
@@ -615,15 +588,10 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 case 'integer':
                 case 'percent':
                 case 'text':
-                    if (rec.variable.match(/dilution_parts_water/) ) {
-                        console.warn('  scalar reached for rec.type=', rec.type);
-                    }
                     metaData.type      = rec.type;
                     metaData.validator = rec.validator;
                     if (rec.branch) {
                         metaData.branch = true;
-                        // this.debug('NavBar: Branch variable:' + rec.variable
-                        //           + 'branch='+rec.branch);
                     }
                     if (rec.type == 'percent') {
                         defaultValue = null;
@@ -635,18 +603,16 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 case 'comment':
                     break;
                 default:
-                    if (rec.variable.match(/dilution_parts_water/) ) {
-                        console.warn('  default reached for rec.type=', rec.type);
-                    }
                     if ( rec.type.match(/enum/) ) { // combobox
                         var olen = rec.options.length;
-                        for (var o=0; o<olen; o++) {
-                            if (rec.options[o] != undefined && rec.options[o][0] == 'ignore') {
-                                rec.options.splice(o,1);
-                                rec.optionsLang.splice(o,1);
-                                this.debug('Removed ignore options:', rec.options[o]);
-                            }
-                        }
+// TODO: remove unless needed
+//                        for (var o=0; o<olen; o++) {
+//                            if (rec.options[o] != undefined && rec.options[o][0] == 'ignore') {
+//                                rec.options.splice(o,1);
+//                                rec.optionsLang.splice(o,1);
+//                                this.debug('Removed ignore options:', rec.options[o]);
+//                            }
+//                        }
                         metaData.options     = rec.options;
                         metaData.optionsLang = rec.optionsLang;
                     }
@@ -657,8 +623,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     }
                     break;
                 }
-                helpFunction =
-                    agrammon.util.Validators.getHelpFunction(rec.validator, rec.type, rec.help);
+                helpFunction = agrammon.util.Validators.getHelpFunction(rec.validator, rec.type, rec.help);
                 if (rec.value == undefined) {
                     rec.value = defaultValue;
                 }
@@ -673,7 +638,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     units:        rec.units,
                     helpFunction: helpFunction,
                     show:         rec.show,
-                    order:        rec.order*100 // FIXME: used?
+                    order:        rec.order
                 });
                 navFolder.addData(variable);
 
@@ -681,7 +646,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     var datasetName = this.__info.getDatasetName();
                     // FIX ME: this is a copy from PropTable
                     if (! rec.variable.match(/\[\]/)) {
-                        // this.debug('Adding variable '+rec.variable+' = '+rec.value);
                         this.__rpc.callAsync(this.__store_data_func,
                             'store_data',
                             {
@@ -729,9 +693,11 @@ qx.Class.define('agrammon.module.input.NavBar', {
             this.__rootFolder.setIcon('agrammon/nh3-rotate.gif');
             // FIX ME: where should this really be
             qx.event.message.Bus.dispatchByName('agrammon.PropTable.clear');
-            this.__rpc.callAsyncSmart( this.getInputVariablesHandler,
-                                       'get_input_variables', {datasetName: dataset.name});
-            return;
+            this.__rpc.callAsyncSmart(
+                this.getInputVariablesHandler,
+                'get_input_variables',
+                 {datasetName: dataset.name}
+             );
         },
 
         // create individual tree folders
@@ -747,10 +713,8 @@ qx.Class.define('agrammon.module.input.NavBar', {
 
             // FIX: this assumes no instances on top level!
             if (isToplevel) { // create top level entry
-//                this.debug('_addEntry(): topLevel');
                 folderName  = guiNode;
-                navFolder = this.__createNavFolder(guiLabels, 'isPlain', null,
-                                                  folderName, instanceOrder);
+                navFolder = this.__createNavFolder(guiLabels, 'isPlain', null, folderName, instanceOrder);
                 parentName = 'root';
                 parent = this.__navHash['root']['folder'];
                 this.__addFolder(folderName, navFolder, parent, instanceOrder);
@@ -768,12 +732,10 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 var instanceMarker = '';
                 if (instance == '') { // not an instance
                     filter = /(.+)::(.+)/;
-//                    this.debug('_addEntry(): not an instance');
                 }
                 else {
                     filter = /(.+)\[(.+)\]/;
                     instanceMarker = '[]';
-//                    this.debug('_addEntry(): instance='+instance+', res='+res);
                 }
 
                 filter.exec(folderName);
@@ -800,18 +762,13 @@ qx.Class.define('agrammon.module.input.NavBar', {
 
                 // find parent folder
                 if (! this.__navHash[parentName]) {
-//                     this.debug('_addEntry(): calling __addEntry again,'
-//                                + ' parentName='+parentName
-//                                +', parentLabels[de]='+parentLabels['de']);
                     this.__addEntry(parentName, parentLabels, instanceOrder);
                 }
 
-                // this.debug('guiLabels[de]='+guiLabels['de']);
                 for (fKey in guiLabels) {
                     filter.exec(guiLabels[fKey]);
                     guiLabels[fKey] = RegExp.$2;
                 }
-                // this.debug('guiLabels[de]='+guiLabels['de']);
 
                 if (this.__navHash[parentName]) {
                     parent = this.__navHash[parentName]['folder'];
@@ -848,7 +805,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             if (parentFolder != null) {
                 parentFolder.addChild(navFolder);
             }
-            return;
         },
 
         __addFolderHandler: function(msg) {
@@ -857,7 +813,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var navFolder = data['folder'];
             var parentFolder = data['parent'];
             this.__addFolder(entry, navFolder, parentFolder);
-            return;
         },
 
         getTree: function() {
@@ -882,7 +837,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 entry = this.__navHash[key];
                 parent = entry['parent'];
                 folder = entry['folder'];
-//                this.debug('buildTree(): key=' + key +', parent=' + parent);
                 if (key != 'root') {
                     parent.add(folder);
                     parent.addChild(folder);
@@ -902,7 +856,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
         },
 
         delInstance: function(folder) {
-//            this.debug('delInstance(): folder=' + folder);
             var parentFolder = folder.getParentNavFolder();
             var parentName  = parentFolder.getName();
             var folderLabel = folder.getLabel();
@@ -925,7 +878,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
                                      this.changeSelectionHandler, this);
             this.__navTree.setSelection([parentFolder]);
             this.__rootFolder.isComplete();
-            return;
         }, // delInstance
 
         /**
@@ -1003,24 +955,16 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var parentFolder = oldFolder.getParentNavFolder();
             var oldLabel     = oldFolder.getLabel();
             var parentName   = parentFolder.getName();
-            // this.debug('renInstance('+oldFolder +'): oldLabel = ' + oldLabel);
-            // this.debug('renInstance('+oldFolder +'): parentFolder = ' + parentFolder);
 
             var okFunction =  qx.lang.Function.bind(function(self) {
                 var newLabel = self.nameField.getValue();
-                if (!agrammon.module.input.NavBar.validInstanceName(
-                        newLabel,
-                        parentFolder
-                    )) {
+                if (!agrammon.module.input.NavBar.validInstanceName(newLabel, parentFolder)) {
                     return;
                 }
 
-                qx.event.message.Bus.dispatchByName('agrammon.NavBar.renameInstanceData',
-                                              { pattern: parentName,
-                                                oldInstance: oldLabel,
-                                                newInstance: newLabel,
-                                                folder: oldFolder
-                                              }
+                qx.event.message.Bus.dispatchByName(
+                    'agrammon.NavBar.renameInstanceData',
+                    { pattern: parentName, oldInstance: oldLabel, newInstance: newLabel, folder: oldFolder }
                 );
                 self.close();
             }, this);
@@ -1043,13 +987,11 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var parentFolder   = selectedFolder.getParentNavFolder();
             var oldLabel       = treeFolder.getLabel();
             var parentName     = parentFolder.getName();
-//            this.debug('copyInstance(): treeFolder = ' + oldLabel);
             var dialog;
 
             var okFunction =  qx.lang.Function.bind(function(self) {
                 var newLabel = self.nameField.getValue();
-                if (!agrammon.module.input.NavBar.validInstanceName(newLabel,
-                                                                    parentFolder)) {
+                if (!agrammon.module.input.NavBar.validInstanceName(newLabel, parentFolder)) {
                     return;
                 }
 
@@ -1074,19 +1016,18 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 self.close();
             }, this);
 
-            dialog = new agrammon.ui.dialog.Dialog(this.tr('Duplicate instance ')
-                                                + oldLabel,
-                                                this.tr('New name'),
-                                                oldLabel,
-                                                okFunction, this);
-            return;
+            dialog = new agrammon.ui.dialog.Dialog(
+                this.tr('Duplicate instance ') + oldLabel,
+                this.tr('New name'),
+                oldLabel,
+                okFunction, this
+            );
         }, // copyInstance
 
         getTreeFolder : function (instance) {
             if (instance == null) {
                 return null;
             }
-//            this.debug('getTreeFolder: instance='+instance)  ;
 
             if (instance.classname === this.classname) {
                 return instance;
@@ -1111,37 +1052,31 @@ qx.Class.define('agrammon.module.input.NavBar', {
 
             var okFunction =  qx.lang.Function.bind(function(self) {
                 var newLabel = self.nameField.getValue();
-                if (!agrammon.module.input.NavBar.validInstanceName(newLabel,
-                                                                    parentFolder)) {
+                if (!agrammon.module.input.NavBar.validInstanceName(newLabel, parentFolder)) {
                     return;
                 }
 
                 var newLabels = {
-                    'en': newLabel,
-                    'de': newLabel,
-                    'fr': newLabel,
-                    'it': newLabel
+                    en: newLabel,
+                    de: newLabel,
+                    fr: newLabel,
+                    it: newLabel
                 };
-                var folderName =
-                    parentName.replace(/\[\]/, '[' + newLabel + ']');
-//                this.debug('addInstance(): folderName='+folderName);
+                var folderName = parentName.replace(/\[\]/, '[' + newLabel + ']');
 
                 var newFolder = this.__createNavFolder(newLabels, 'isInstance', null, folderName);
 
                 // doesn't work because called from FileMenu context
                 // this.navBar._addFolder(folderName, newFolder, parentFolder);
-
-                qx.event.message.Bus.dispatchByName('agrammon.NavBar.addFolder',
-                                              {'entry' : folderName,
-                                               'folder': newFolder,
-                                               'parent': parentFolder}
-                                              );
+                qx.event.message.Bus.dispatchByName(
+                    'agrammon.NavBar.addFolder',
+                    { entry : folderName,  folder : newFolder, parent : parentFolder }
+                );
                 // doesn't work either because called from FileMenu context
                 // var newData = this.__copyInstanceData(sourceData, newLabel);
 
                 newLabel =  '['+newLabel+']';
                 var newData = parentFolder.cloneDataset(newLabel);
-//                newFolder.setDataset(newData, true, false);
                 newFolder.setDataset(newData, true, true);
                 parentFolder.add(newFolder);
                 parentFolder.setOpen(true);
@@ -1151,12 +1086,12 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 dialog.close();
             }, this); // okFunction
 
-//            this.debug('addInstance(): this = ' + this);
-            dialog = new agrammon.ui.dialog.Dialog(this.tr('Add instance'),
-                                             'Name',
-                                             null, // value
-                                             okFunction, this);
-            return;
+            dialog = new agrammon.ui.dialog.Dialog(
+                this.tr('Add instance'),
+                 'Name',
+                 null, // value
+                 okFunction, this
+            );
         }, // addSingleInstance()
 
         __addRegionalInstance: function(tree) {
@@ -1164,14 +1099,13 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var parentName   = parentFolder.getName();
 
             var configEditor = new agrammon.module.input.regional.ConfigEditor();
-            var branchWindow =
-                new agrammon.module.input.regional.ConfigInstance(configEditor, tree,
-                                                       parentName, parentFolder,
-                                                       this.__rootFolder);
+            var branchWindow = new agrammon.module.input.regional.ConfigInstance(
+                configEditor, tree,
+               parentName, parentFolder,
+               this.__rootFolder
+            );
             branchWindow.open();
             configEditor.setData(parentFolder);
-
-            return;
         }, // addRegionalInstance()
 
         /**
@@ -1182,7 +1116,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
           */
         addInstance: function(tree) {
             var variant = agrammon.Info.getInstance().getGuiVariant();
-//            var variant = this.getVariant();
             this.debug('addInstance(): variant='+variant);
             switch (variant) {
             case 'Single':
@@ -1205,8 +1138,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
           */
         __handleIgnore: function() {
             var variant = agrammon.Info.getInstance().getGuiVariant();
-//            var variant = this.getVariant();
-            this.debug('_handleIgnore(): variant='+variant);
             switch (variant) {
             case 'Single':
                 return false;
