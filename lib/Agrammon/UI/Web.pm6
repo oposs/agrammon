@@ -6,12 +6,12 @@ class Agrammon::UI::Web {
 
     method !get-inputs {
         my @inputs;
+        # we want the inputs shown in the GUI in load order as well
+        my $order = 0;
         for $!model.load-order -> $module {
-            # we want the inputs shown in the GUI in load order as well
-            my $order = 100;
-            my $order-increment = 100;
+            $order += 1000;
             for $module.input -> $input {
-                $order += $order-increment;
+                $order += 100;
                 my %input-hash = $input.as-hash;
                 %input-hash<order> = $order;
                 my $gui= $module.gui || $module.gui-root-module.gui;
