@@ -124,7 +124,7 @@ sub USAGE() is export {
 }
 
 sub create-user($cfg-filename, $username, $firstname, $lastname, $password, $role?) {
-    connect-db($cfg-filename);
+    get-cfg-and-db-handle($cfg-filename);
     my $user = Agrammon::DB::User.new(
         :$username, :$firstname, :$lastname, :$password
     );
@@ -139,7 +139,7 @@ sub create-user($cfg-filename, $username, $firstname, $lastname, $password, $rol
 }
 
 sub set-password($cfg-filename, $username, $password) {
-    connect-db($cfg-filename);
+    get-cfg-and-db-handle($cfg-filename);
     Agrammon::DB::User.new(:$username).set-password($username, $password);
     say "New password set for user $username";
 }
@@ -231,7 +231,7 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
     }
 }
 
-sub connect-db(Str $cfg-filename) {
+sub get-cfg-and-db-handle(Str $cfg-filename) {
     my $cfg = Agrammon::Config.new;
     $cfg.load($cfg-filename);
     my $db = DB::Pg.new(conninfo => $cfg.db-conninfo);
@@ -243,7 +243,7 @@ sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export 
 
     # initialization
     note "Loading config from $cfg-filename";
-    my ($cfg, $db) = connect-db($cfg-filename);
+    my ($cfg, $db) = get-cfg-and-db-handle($cfg-filename);
     my $variants = $cfg.model-variant;
 
     my $model-path = $model-filename.IO;
