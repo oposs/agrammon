@@ -36,7 +36,7 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
     }
 
     method may-sudo {
-        return $!logged-in and self.role.name eq 'admin' | 'support';
+        return $!logged-in && self.role.name eq 'admin' | 'support';
     }
 
     # Add what's needed to be persisted to database
