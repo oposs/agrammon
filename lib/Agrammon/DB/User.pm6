@@ -137,15 +137,16 @@ class Agrammon::DB::User does Agrammon::DB {
         return self;
     }
 
-    method exists {
+    method exists() {
+        my $uid;
         self.with-db: -> $db {
-            my $uid = $db.query(q:to/USER/, $!username).value;
+            $uid = $db.query(q:to/USER/, $!username).value;
                 SELECT pers_id AS id
                   FROM pers
                  WHERE pers_email = $1
             USER
-            return $uid;
         }
+        return $uid;
     }
 
     method password-is-valid(Str $username, Str $password) {
@@ -172,6 +173,18 @@ class Agrammon::DB::User does Agrammon::DB {
             SQL
 
             die X::Agrammon::DB::User::InvalidPassword.new unless self.password-is-valid($!username, $new);
+        }
+    }
+
+    method set-password($username, $password) {
+        self.with-db: -> $db {
+            $db.query(q:to/SQL/, $username, $password);
+                UPDATE pers
+                    SET pers_password = crypt($2, gen_salt('bf'))
+                    WHERE pers_email  = $1
+                RETURNING pers_email
+            SQL
+            die X::Agrammon::DB::User::InvalidPassword.new unless self.password-is-valid($!username, $password);
         }
     }
 
