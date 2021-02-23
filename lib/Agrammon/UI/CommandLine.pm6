@@ -132,7 +132,7 @@ sub create-user($cfg-filename, $username, $firstname, $lastname, $password, $rol
     CATCH {
         when X::Agrammon::DB::User::Exists  {
             note "User $username already exists";
-            return;
+            return 1;
         }
     }
     say "User $username created";
