@@ -938,3 +938,7 @@ msgstr ""
 #: agrammon/module/input/regional/BranchEditor.js
 msgid "Save"
 msgstr ""
+
+#: agrammon/module/input/PropTable.js
+msgid "Default"
+msgstr ""

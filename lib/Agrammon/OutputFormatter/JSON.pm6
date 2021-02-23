@@ -20,7 +20,7 @@ sub output-for-gui(Agrammon::Model $model,
                    ) is export {
     my %output = %(
         data => get-data($model, $outputs, $include-filters, $language),
-        log  => %(),
+        log  => $outputs.log-collector.messages,
     );
     return %output;
 }

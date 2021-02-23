@@ -79,25 +79,27 @@ qx.Class.define('agrammon.module.output.Output', {
             locale = locale.replace(/_.+/,'');
             var i, len = logData.length;
             var logText = '';
-        if (format == 'html') {
-            logText += "<ul>";
-        }
+            if (format == 'html') {
+                logText += "<ul>";
+            }
             for (i=0; i<len; i++) {
                 if (format == 'html') {
-                    if (logData[i]['msg']) {
-                        logText += '<li><b>'+logData[i]['msg'][locale]+'</b></li>';
-                    }
+//                    if (logData[i]['msg']) {
+//                        logText += '<li><b>'+logData[i]['msg'][locale]+'</b></li>';
+//                    }
+                    logText += '<li>'+logData[i][locale]+'</li>';
                 }
                 else { // FIX ME: remove this (but fix in submit() first (Kantonalmodell)
-                    logText += '\\verbdef\\varTitle{' + logData[i]['msg'][locale]+ '}';
-                    logText += '\\verbdef\\varDesc{'  + logData[i]['var']        + '}';
+//                    logText += '\\verbdef\\varTitle{' + logData[i]['msg'][locale]+ '}';
+//                    logText += '\\verbdef\\varDesc{'  + logData[i]['var']        + '}';
+//                    logText += '\\mbox{ }\\newline (\\varDesc)';
+                    logText += '\\verbdef\\varTitle{' + logData[i][locale]+ '}';
                     logText += '\\item[\\varTitle]';
-                    logText += '\\mbox{ }\\newline (\\varDesc)';
                 }
             }
-        if (format == 'html') {
-            logText += "</ul>";
-        }
+            if (format == 'html') {
+                logText += "</ul>";
+            }
 
             return logText;
         }
