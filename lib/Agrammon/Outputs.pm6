@@ -1,5 +1,6 @@
 use v6;
 use Agrammon::Outputs::FilterGroupCollection;
+use Agrammon::Formula::LogCollector;
 
 class X::Agrammon::Outputs::Unset is Exception {
     has $.module is required;
@@ -89,6 +90,7 @@ class Agrammon::Outputs::Instance does Agrammon::Outputs::SingleOutputStorage {
 
 class Agrammon::Outputs does Agrammon::Outputs::SingleOutputStorage {
     has %!instances;
+    has Agrammon::Formula::LogCollector $.log-collector .= new;
 
     method declare-multi-instance(Str $taxonomy-prefix --> Nil) {
         %!instances{$taxonomy-prefix} //= {};
