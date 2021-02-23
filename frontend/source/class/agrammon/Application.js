@@ -159,7 +159,7 @@ qx.Class.define('agrammon.Application', {
                     }
                     // enable admin menu
                     mainMenu.showAdmin(role == 'admin' || role == 'support');
-                    if (role != 'admin') { // TODO: fix update
+                    if (results && role != 'admin') { // TODO: fix update
                         results.exclude();
                     }
                     qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', username);
@@ -239,8 +239,8 @@ qx.Class.define('agrammon.Application', {
 
         __logoutFunc: function(data, exc, id) {
             if (exc == null || exc == 403) {
-                this.__loginDialog.open();
                 // TODO: implement sudo
+                console.log('data=', data);
                 if (data.sudoUser) {
                     var infoOnly = true;
                     var dialog = new agrammon.ui.dialog.Confirm(

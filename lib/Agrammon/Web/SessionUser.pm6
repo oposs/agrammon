@@ -5,13 +5,12 @@ use Agrammon::DB::User;
 class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
     has Bool $.logged-in = False;
     has Bool $.sudo-user = False;
-    has Str $.sudo-username;
+    has Str  $.sudo-username;
 
     method auth($username, $password, $sudo-username?) {
         if $sudo-username {
             die X::Agrammon::DB::User::MayNotSudo.new(:username($sudo-username)) unless self.may-sudo;
 
-            $!logged-in = True;
             $!sudo-user = True;
             $!sudo-username = $sudo-username;
         }
@@ -22,13 +21,16 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
 
         self.set-username($username);
         self.load;
+        note "SessionUser: sudo-username=", ($!sudo-username // 'UNDEF');
         return self;
     }
 
     method logout() {
+        note "SessionUser.logout: sudo-username=", ($!sudo-username // 'UNDEF'), ', sudo-user=', ($!sudo-username // 'UNDEF');
         if $!sudo-user {
             self.set-username($!sudo-username);
             self.load;
+            note "   Clearing sudo-user and sudo-username";
             $!sudo-username = Nil;
             $!sudo-user = False;
         }
@@ -46,6 +48,6 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
     }
 
     method may-sudo {
-        return self.role.name eq 'admin' or ~self.role.name eq 'support';
+        return $!logged-in and self.role.name eq 'admin' | 'support';
     }
 }

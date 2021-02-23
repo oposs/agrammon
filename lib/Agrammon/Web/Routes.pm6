@@ -449,19 +449,14 @@ sub application-routes(Agrammon::Web::Service $ws) {
             content 'application/json', %cfg;
         }
 
-        # working
-        post -> Agrammon::Web::SessionUser $user, 'logout' {
-            $user.logout();
-            content 'application/json', %(
-                :user($user.username),
-                :!sudoUser,
-            );
-        }
-
         # TODO: implement news in auth()
         post -> Agrammon::Web::SessionUser $user, 'auth' {
-            request-body -> (:$username, :$password, :sudoUsername($sudo-username), *%rest) {
+            request-body -> (:$username, :$password, :$sudo, *%rest) {
+                note "sudo=", ($sudo // 'UNDEF');
+                my $sudo-username = $user.username if $user.logged-in && $sudo;
+                note "Routes1: sudo-username=", ($sudo-username // 'UNDEF');
                 if $user.auth($username, $password, $sudo-username) {
+                    note "Routes2: sudo-username=", ($sudo-username // 'UNDEF');
                     content 'application/json', %(
                         :$username,
                         :role($user.role.name),
@@ -479,7 +474,18 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # working
+        post -> LoggedIn $user, 'logout' {
+            dd $user;
+            my $sudo-username = $user.sudo-username;
+            note "Routes.logout: sudo-username=", ($sudo-username // 'UNDEF');
+            $user.logout();
+            content 'application/json', %(
+                :user($user.username),
+                :sudoUser($sudo-username),
+            );
+        }
+
+        # TODO: test
         post -> LoggedIn $user, 'load_branch_data' {
             request-body -> (:datasetName($dataset-name), :%data!) {
                 my $data = $ws.load-branch-data($user, $dataset-name, %data);
