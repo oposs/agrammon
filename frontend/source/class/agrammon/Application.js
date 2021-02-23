@@ -137,7 +137,7 @@ qx.Class.define('agrammon.Application', {
                     var username  = data.username;
                     var role      = data.role;
                     var news      = data.news;
-                    var lastLogin = String(data.last_login);
+                    var lastLogin = String(data.lastLogin);
 
                     qx.event.message.Bus.dispatchByName(
                         'agrammon.info.setUser',

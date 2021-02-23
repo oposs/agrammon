@@ -465,7 +465,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
                     content 'application/json', %(
                         :$username,
                         :role($user.role.name),
-                        :last_login($user.last-login),
+                        :lastLogin($user.last-login),
                         :news(Nil),
                         :sudoUser($user.sudo-user),
                     );
