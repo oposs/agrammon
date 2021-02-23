@@ -449,27 +449,17 @@ sub application-routes(Agrammon::Web::Service $ws) {
             content 'application/json', %cfg;
         }
 
-        # working
-        post -> Agrammon::Web::SessionUser $user, 'logout' {
-            $user.logout();
-            content 'application/json', %(
-                :user($user.username),
-                :!sudoUser,
-            );
-        }
-
         # TODO: implement news in auth()
         post -> Agrammon::Web::SessionUser $user, 'auth' {
-            request-body -> %data {
-                my $username = %data<user>;
-                my $password = %data<password>;
-                if $user.auth($username, $password) {
+            request-body -> (:$username, :$password, :$sudo, *%rest) {
+                my $sudo-username = $user.username if $user.logged-in && $sudo;
+                if $user.auth($username, $password, $sudo-username) {
                     content 'application/json', %(
-                        user       => $username,
-                        role       => $user.role.name,
-                        last_login => $user.last-login,
-                        news       => Nil,
-                        :!sudoUser,
+                        :$username,
+                        :role($user.role.name),
+                        :lastLogin($user.last-login),
+                        :news(Nil),
+                        :sudoUser($user.sudo-username),
                     );
                 }
                 CATCH {
@@ -481,7 +471,16 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # working
+        post -> LoggedIn $user, 'logout' {
+            my $old-username = $user.logout();
+            content 'application/json', %(
+                :username($user.username),
+                :sudoUser($old-username),
+                :role($user.role.name),
+            );
+        }
+
+        # TODO: test
         post -> LoggedIn $user, 'load_branch_data' {
             request-body -> (:datasetName($dataset-name), :%data!) {
                 my $data = $ws.load-branch-data($user, $dataset-name, %data);

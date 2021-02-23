@@ -18,10 +18,12 @@ qx.Class.define('agrammon.module.user.Login', {
         this.setLayout(new qx.ui.layout.HBox(10));
 
         var that = this;
-        this.set({modal: true,
-                  showClose: false, showMinimize: false, showMaximize: false,
-                  caption: title
-                 });
+        this.set({
+            modal: true,
+            showClose: false, showMinimize: false, showMaximize: false,
+            centerOnAppear : true,
+            caption: title
+        });
 
         var leftBox =
             new qx.ui.container.Composite(new qx.ui.layout.VBox(10));
@@ -34,20 +36,16 @@ qx.Class.define('agrammon.module.user.Login', {
             this.add(rightBox);
         }
 
-        qx.locale.Manager.getInstance().addListener("changeLocale",
-                                                    this.__changeLanguage,
-                                                    this);
+        qx.locale.Manager.getInstance().addListener("changeLocale", this.__changeLanguage, this);
 
-        var user = new agrammon.ui.form.VarInput(this.tr("Username"), '', '', '', 'Enter username');
-        this.user = user;
+        var user = this.__user = new agrammon.ui.form.VarInput(this.tr("Username"), '', '', '', 'Enter username');
         leftBox.add(user);
         user.setPadding(5);
         user.setPaddingBottom(0);
 
-        var password = new agrammon.ui.form.VarPassword(this.tr("Password"));
+        var password = this.__password = new agrammon.ui.form.VarPassword(this.tr("Password"));
         password.setPadding(5);
         password.setPaddingTop(0);
-        this.password = password;
         if (!sudo) {
             leftBox.add(password);
         }
@@ -85,8 +83,8 @@ qx.Class.define('agrammon.module.user.Login', {
                                   "icon/16/actions/dialog-cancel.png");
 
         btnCancel.addListener("execute", function(e) {
-            this.user.clearValue();
-            this.password.clearValue();
+            this.__user.clearValue();
+            this.__password.clearValue();
             if (sudo) {
                 that.close();
             }
@@ -95,92 +93,50 @@ qx.Class.define('agrammon.module.user.Login', {
         // FIX ME: deal with sub locales
         var locale = qx.locale.Manager.getInstance().getLocale();
         locale = locale.replace(/_.+/,'');
-//        this.debug('Login: locale='+locale);
-        var help = new agrammon.ui.dialog.DocWindow(this.tr("Help"),
-                                             this.__baseUrl + 'doc/login.'
-                                             + locale + '.html');
-        this.help = help;
-        btnHelp.addListener("execute",
-            function(e) {
-                this.user.clearValue();
-                this.password.clearValue();
-                help.open();
-            },
-            this
+        var help = this.__help = new agrammon.ui.dialog.DocWindow(
+            this.tr("Help"),
+            this.__baseUrl + 'doc/login.' + locale + '.html'
         );
+        btnHelp.addListener("execute", function(e) {
+            this.__user.clearValue();
+            this.__password.clearValue();
+            help.open();
+        }, this);
 
-        btnOK.addListener("execute",
-            function(e) {
-                var username      = this.user.getValue();
-                var password      = this.password.getValue();
-                var remember = false;
-                if (that.supports_html5_storage() && !sudo) {
-                    remember = that.__remember.getValue();
-                }
-                
-			    var userShortcuts = {
-                    'fz': 'fritz.zaucker@oetiker.ch',
-                    'rp': 'roman.plessl@oetiker.ch',
-                    'to': 'tobias@oetiker.ch',
-                    'mo': 'manuel@oetiker.ch',
-                    'hr': 'hr@bjengineering.ch',
-                    'cb': 'cyrill.bonjour@bjengineering.ch',
-                    'hm': 'harald.menzi@bfh.ch',
-                    'ba': 'beat.achermann@bafu.admin.ch',
-                    'cl': 'christian.leuenberger@leupro.ch',
-                    'an': 'aurelia.nyfeler@bjengineering.ch',
-                    'tk': 'thomas.kupper@bfh.ch',
-                    'fb': 'fritz.birrer@lu.ch'
-                };
-                for (var key in userShortcuts) {
-                    if (username == key) {
-                        username = userShortcuts[key];
-                        break;
-                    }
-                }
-                this.password.clearValue();
-                var sudoUser;
-                if (sudo) {
-                    sudoUser = agrammon.Info.getInstance().getUserName();
-                }
-                qx.event.message.Bus.dispatchByName('agrammon.main.login',
-                                              {'user':     username,
-                                               'password': password,
-                                               'remember': remember,
-                                               'sudoUser': sudoUser
-                                               });
-                this.close();
-            },
-           this
-        );
+        btnOK.addListener("execute", function(e) {
+            var username = this.__user.getValue();
+            var password = this.__password.getValue();
+            var remember = false;
+            if (that.supports_html5_storage() && !sudo) {
+                remember = that.__remember.getValue();
+            }
 
-        btnNew.addListener("execute",
-            function(e) {
-                this.debug('btNew: this='+this);
-                var username    = this.user.getValue();
-                var newDialog =
-                    new agrammon.module.user.Account(this.tr("Create new account"),
-                                                     username, 'userCreate');
-                newDialog.open();
-                this.password.clearValue();
-                this.close();
-            },
-           this
-        );
+            this.__password.clearValue();
+            qx.event.message.Bus.dispatchByName(
+                'agrammon.main.login',
+                {
+                    username : username, password : password,
+                    remember : remember, sudo : sudo
+                }
+            );
+            this.close();
+        }, this);
 
-        btnPassword.addListener("execute",
-            function(e) {
-                this.debug('btPassword: this='+this);
-                var username    = this.user.getValue();
-                var newDialog =
-                    new agrammon.module.user.Account(this.tr("Reset password"),
-                                                     username, 'reset');
-                newDialog.open();
-                this.password.clearValue();
-                this.close();
-            },
-           this
-        );
+        btnNew.addListener("execute", function(e) {
+            var username  = this.__user.getValue();
+            var newDialog = new agrammon.module.user.Account(this.tr("Create new account"), username, 'userCreate');
+            newDialog.open();
+            this.__password.clearValue();
+            this.close();
+        } ,this);
+
+        btnPassword.addListener("execute", function(e) {
+            var username  = this.__user.getValue();
+            var newDialog = new agrammon.module.user.Account(this.tr("Reset password"), username, 'reset');
+            newDialog.open();
+            this.__password.clearValue();
+            this.close();
+        }, this);
 
         bbox.add(btnCancel, {flex : 1});
         bbox.add(btnOK, {flex : 1});
@@ -189,7 +145,6 @@ qx.Class.define('agrammon.module.user.Login', {
         rightBox.add(btnPassword, {flex : 0});
         rightBox.add(btnNew, {flex : 0});
 
-        //  breaks internet explorer
         this.addListener('keydown', function(e) {
             if (e.getKeyIdentifier() == 'Enter') {
                 btnOK.execute();
@@ -209,8 +164,6 @@ qx.Class.define('agrammon.module.user.Login', {
         btnNew.setTabIndex(idx++);
 
         this.addListener('appear', function() {
-            this.center();
-            this.debug('login appear');
             var appUsername, appPassword, appRemember;
             if (this.supports_html5_storage()) {
                 appUsername = localStorage.getItem('agrammonUsername');
@@ -228,27 +181,27 @@ qx.Class.define('agrammon.module.user.Login', {
                 password.setValue(appPassword);
             }
 
-            if (user.getValue() != '' && password.getValue() != '') {
-                btnOK.focus();
+            if (!user.getValue()) {
+                user.focus();
             }
-            else if (user.getValue() != null) {
-                password.focus();
+            else if (!password.getValue()) {
+                password.getInputField().focus();
             }
             else {
-                user.focus();
+                btnOK.focus();
             }
 
         }, this);
 
-//        var root = qx.core.Init.getApplication().getRoot();
-//        this.open();
-//        root.add(this);
     }, // construct
 
     members :
     {
-        __rpc: null,
-        __baseUrl: null,
+        __rpc      : null,
+        __baseUrl  : null,
+        __user     : null,
+        __help     : null,
+        __password : null,
 
         supports_html5_storage: function() {
             try {
@@ -261,11 +214,9 @@ qx.Class.define('agrammon.module.user.Login', {
         __changeLanguage: function() {
             // FIX ME: deal with sub locales
             var locale = qx.locale.Manager.getInstance().getLocale();
-//            this.debug('Login: locale='+locale);
             locale = locale.replace(/_.+/,'');
             this.debug('Login: locale='+locale);
-            this.help.setSource(this.__baseUrl
-                                + 'doc/login.' + locale + '.html');
+            this.__help.setSource(this.__baseUrl + 'doc/login.' + locale + '.html');
         }
 
     }

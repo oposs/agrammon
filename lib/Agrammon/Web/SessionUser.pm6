@@ -4,11 +4,17 @@ use Agrammon::DB::User;
 
 class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
     has Bool $.logged-in = False;
+    has Str $.sudo-username;
 
-    method auth($username, $password) {
-        $!logged-in = self.password-is-valid($username, $password);
-
-        die X::Agrammon::DB::User::InvalidPassword.new unless $!logged-in;
+    method auth($username, $password, $sudo-username?) {
+        if $sudo-username {
+            die X::Agrammon::DB::User::MayNotSudo.new(:username($sudo-username)) unless self.may-sudo;
+            $!sudo-username = $sudo-username;
+        }
+        else {
+            $!logged-in = self.password-is-valid($username, $password);
+            die X::Agrammon::DB::User::InvalidPassword.new unless $!logged-in;
+        }
 
         self.set-username($username);
         self.load;
@@ -16,14 +22,30 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
     }
 
     method logout() {
-        $!logged-in = False;
+        my $old-username;
+        if $!sudo-username {
+            $old-username = self.username;
+            self.set-username($!sudo-username);
+            self.load;
+            $!sudo-username = Nil;
+        }
+        else {
+            $!logged-in = False;
+        }
+        return $old-username;
     }
 
+    method may-sudo {
+        return $!logged-in && self.role.name eq 'admin' | 'support';
+    }
+
+    # Add what's needed to be persisted to database
     method to-json() {
-        { :$!logged-in, :$.username }
+        { :$!logged-in, :$.username, |(:$!sudo-username if $!sudo-username) }
     }
 
-    method from-json((:$logged-in = False, :$username = Str)) {
-        self.new(:$logged-in, :$username).load
+    method from-json((:$logged-in = False, :$username = Str, :$sudo-username = Str)) {
+        self.new(:$logged-in, :$username, :$sudo-username).load
     }
+
 }

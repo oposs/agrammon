@@ -40,23 +40,19 @@ qx.Class.define('agrammon.ui.menu.AdminMenu', {
         },
 
         __createAccount: function() {
-             var newDialog =
-                 new agrammon.module.user.Account(this.tr("Create account"),
-                                                  null, 'adminCreate');
+             var newDialog = new agrammon.module.user.Account(this.tr("Create account"), null, 'adminCreate');
             newDialog.open();
         },
 
         __resetPassword: function() {
             var newDialog =
-                new agrammon.module.user.Account(this.tr("Reset password"),
-                                                 null, 'adminReset');
+                new agrammon.module.user.Account(this.tr("Reset password"), null, 'adminReset');
             newDialog.open();
         },
 
         __sudo: function() {
             var sudo = true;
-            var loginDialog =
-                new agrammon.module.user.Login(this.tr("Change to user account"), sudo);
+            var loginDialog = new agrammon.module.user.Login(this.tr("Change to user account"), sudo);
             loginDialog.open();
         }
 

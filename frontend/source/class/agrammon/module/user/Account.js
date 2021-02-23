@@ -335,12 +335,12 @@ qx.Class.define('agrammon.module.user.Account', {
         this.activateAccount = activateAccount;
 
         var login = function(e) {
-//            this.debug('login(): this='+this);
             var username    = this.user.getValue();
             var password    = this.password1.getValue().toLowerCase();
-            qx.event.message.Bus.dispatchByName('agrammon.main.login',
-                                          {'user':     username,
-                                           'password': password});
+            qx.event.message.Bus.dispatchByName(
+                'agrammon.main.login',
+                { username : username, password : password }
+            );
             this.close();
         };
         this.login = login;

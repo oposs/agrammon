@@ -134,14 +134,14 @@ qx.Class.define('agrammon.Application', {
 
             this.__authenticate = function(data, exc, id) {
                 if (exc == null) {
-                    var user      = data.user;
+                    var username  = data.username;
                     var role      = data.role;
                     var news      = data.news;
-                    var lastLogin = String(data.last_login);
+                    var lastLogin = String(data.lastLogin);
 
                     qx.event.message.Bus.dispatchByName(
                         'agrammon.info.setUser',
-                        { username : user, role : role }
+                        { username : username, role : role }
                     );
                     if (news && news != '') {
                         var dialog = new agrammon.ui.dialog.News(
@@ -159,10 +159,10 @@ qx.Class.define('agrammon.Application', {
                     }
                     // enable admin menu
                     mainMenu.showAdmin(role == 'admin' || role == 'support');
-                    if (role != 'admin') { // TODO: fix update
+                    if (results && role != 'admin') { // TODO: fix update
                         results.exclude();
                     }
-                    qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', user);
+                    qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', username);
                 }
                 else {
                     qx.event.message.Bus.dispatchByName('error',
@@ -221,9 +221,12 @@ qx.Class.define('agrammon.Application', {
             var userData     = msg.getData();
             this.debug('__login(' + userData.user + ')');
             if (this.__supports_html5_storage() && userData.remember) {
-                localStorage.setItem('agrammonUsername', userData.user);
+                localStorage.setItem('agrammonUsername', userData.username);
                 localStorage.setItem('agrammonPassword', userData.password);
                 localStorage.setItem('agrammonRemember', userData.remember);
+            }
+            if (userData.sudoUsername === undefined) {
+                userData.sudoUsername = null;
             }
             this.__rpc.callAsync( this.__authenticate, 'auth', userData);
         },
@@ -236,13 +239,11 @@ qx.Class.define('agrammon.Application', {
 
         __logoutFunc: function(data, exc, id) {
             if (exc == null || exc == 403) {
-                this.__loginDialog.open();
-                // TODO: implement sudo
                 if (data.sudoUser) {
                     var infoOnly = true;
                     var dialog = new agrammon.ui.dialog.Confirm(
                         this.tr("End change user"),
-                        this.tr("Returning from %1 to %2", data.sudoUser, data.user),
+                        this.tr("Returning from %1 to %2", data.sudoUser, data.username),
                         qx.lang.Function.bind(function() {
                             this.__authenticate(data, exc, id);
                             dialog.close()
