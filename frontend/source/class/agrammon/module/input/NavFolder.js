@@ -273,9 +273,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             if (this.isRoot()) {
                 if (nset !=0) {
                     if (complete != undefined) {
-//                        this.debug('NavFolder: enabling output, complete='+complete);
-                        qx.event.message.Bus.dispatchByName('agrammon.outputEnabled',
-                                                      complete);
+                        qx.event.message.Bus.dispatchByName('agrammon.outputEnabled', complete);
                     }
                 }
             }
@@ -286,7 +284,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
           * TODOC
           *
           * @return {var} TODOC
-      * @lint ignoreDeprecated(alert)
+          * @lint ignoreDeprecated(alert)
           */
         isComplete: function(nset) {
 
@@ -366,7 +364,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
           * TODOC
           *
           * @return {var} TODOC
-      * @lint ignoreDeprecated(alert)
+          * @lint ignoreDeprecated(alert)
           */
         setData: function(key, value, comment, noCheck, branch_values) {
             var i, ii, len, len2, option, found,
@@ -408,6 +406,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                         value = value.replace(/\s+/g, '');
                         value = value.replace(/\'/g,'');
 
+                        // TODO: remove if statement
                         if (value != '***Select***' && value != 'ignore') {
                             options = new Array();
                             found = false;
@@ -547,39 +546,26 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             return this.__propData.length;
         }, // setDataSet
 
-   /**
-     * Add a tree item to this item before the existing child <code>before</code>.
-     *
-     * @param treeItem {AbstractTreeItem} tree item to add
-     * @param before {AbstractTreeItem} existing child to add the item before
-     */
-    addBefore : function(treeItem, before)
-    {
-        var parent  = before.getParentNavFolder();
-        if ((qx.core.Environment.get("qx.debug"))) {
-            this.assert(parent.getChildren().indexOf(before) >= 0);
+        /**
+         * Add a tree item to this item before the existing child <code>before</code>.
+         *
+         * @param treeItem {AbstractTreeItem} tree item to add
+         * @param before {AbstractTreeItem} existing child to add the item before
+         */
+        addBefore : function(treeItem, before) {
+            var parent  = before.getParentNavFolder();
+            if ((qx.core.Environment.get("qx.debug"))) {
+                this.assert(parent.getChildren().indexOf(before) >= 0);
+            }
+            var it = parent.getChildren().indexOf(treeItem);
+            var ib = parent.getChildren().indexOf(before);
+            if (it>ib) {
+                parent.addAt(treeItem, ib);
+            }
+            else {
+                parent.addAt(treeItem, ib-1);
+            }
         }
-        var it = parent.getChildren().indexOf(treeItem);
-        var ib = parent.getChildren().indexOf(before);
-//        var n = parent.getChildren().length;
-//        this.debug('addBefore: n=' + n);
-//        this.debug('addBefore: treeItem='
-//                   + treeItem + ' -> ' + treeItem.getLabels()['en']);
-//        this.debug('       index(treeItem)='
-//                   + this.getChildren().indexOf(treeItem));
-//        this.debug('addBefore: before='
-//                   + before + ' -> ' + before.getLabels()['en']);
-//        this.debug('       index(before)=  '
-//                   + this.getChildren().indexOf(before));
-        if (it>ib) {
-            parent.addAt(treeItem, ib);
-        }
-        else {
-            parent.addAt(treeItem, ib-1);
-        }
-    }
-
-
 
     }
 

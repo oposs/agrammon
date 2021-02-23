@@ -359,9 +359,13 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
           */
         __load_branch_func: function(data, exc, id) {
             if (exc == null) {
+                var fractions = data.fractions;
+                // no data defined yet
+                if (!fractions) {
+                    return;
+                }
                 var row, col, n=0;
                 var tm = this.__table.getTableModel();
-                var fractions = data.fractions;
                 for (row=0; row<this.__nRows; row++) {
                     for (col=0; col<this.__nCols; col++) {
                         tm.setValue(col+1, row, Number(fractions[n]));
