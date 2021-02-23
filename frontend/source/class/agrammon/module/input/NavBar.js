@@ -555,6 +555,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 rec.show = true;
                 metaData = {};
 
+                // TODO: remove, but check dummy select boxes used for filtering as animalcategory
                 // deal with model variants
                 mlen = rec.models.length;
                 for (m=0; m<mlen; m++) {
