@@ -1,5 +1,6 @@
 use v6;
 
+use Agrammon::DB::Role;
 use Agrammon::Web::Routes;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
@@ -16,11 +17,11 @@ plan 15;
 sub make-fake-auth($role) {
     mocked(
         Agrammon::Web::SessionUser,
-        returning => { :id(42), :logged-in, :username('username') }
+        returning => { :id(42), :logged-in, :username('username'), :$role }
     )
 }
 
-my $role = 'user';
+my $role = Agrammon::DB::Role.new(:name('user'));
 my $fake-auth = make-fake-auth($role);
 
 my $fake-store = mocked(Agrammon::Web::Service,
@@ -252,7 +253,7 @@ subtest 'Logout' => {
     test-service routes($fake-store), :$fake-auth, {
         test post('/logout'),
                 status => 200,
-                json   => { :user('username'), :!sudoUser };
+                json   => { :username('username'), :role('user'),  :sudoUser(Any) }
     }
 }
 
