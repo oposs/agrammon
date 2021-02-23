@@ -239,13 +239,11 @@ qx.Class.define('agrammon.Application', {
 
         __logoutFunc: function(data, exc, id) {
             if (exc == null || exc == 403) {
-                // TODO: implement sudo
-                console.log('data=', data);
                 if (data.sudoUser) {
                     var infoOnly = true;
                     var dialog = new agrammon.ui.dialog.Confirm(
                         this.tr("End change user"),
-                        this.tr("Returning from %1 to %2", data.sudoUser, data.user),
+                        this.tr("Returning from %1 to %2", data.sudoUser, data.username),
                         qx.lang.Function.bind(function() {
                             this.__authenticate(data, exc, id);
                             dialog.close()

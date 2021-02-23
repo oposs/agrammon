@@ -4,14 +4,11 @@ use Agrammon::DB::User;
 
 class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
     has Bool $.logged-in = False;
-    has Bool $.sudo-user = False;
-    has Str  $.sudo-username;
+    has Str $.sudo-username;
 
     method auth($username, $password, $sudo-username?) {
         if $sudo-username {
             die X::Agrammon::DB::User::MayNotSudo.new(:username($sudo-username)) unless self.may-sudo;
-
-            $!sudo-user = True;
             $!sudo-username = $sudo-username;
         }
         else {
@@ -21,33 +18,34 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
 
         self.set-username($username);
         self.load;
-        note "SessionUser: sudo-username=", ($!sudo-username // 'UNDEF');
         return self;
     }
 
     method logout() {
-        note "SessionUser.logout: sudo-username=", ($!sudo-username // 'UNDEF'), ', sudo-user=', ($!sudo-username // 'UNDEF');
-        if $!sudo-user {
+        my $old-username;
+        if $!sudo-username {
+            $old-username = self.username;
             self.set-username($!sudo-username);
             self.load;
-            note "   Clearing sudo-user and sudo-username";
             $!sudo-username = Nil;
-            $!sudo-user = False;
         }
         else {
             $!logged-in = False;
         }
-    }
-
-    method to-json() {
-        { :$!logged-in, :$.username }
-    }
-
-    method from-json((:$logged-in = False, :$username = Str)) {
-        self.new(:$logged-in, :$username).load
+        return $old-username;
     }
 
     method may-sudo {
         return $!logged-in and self.role.name eq 'admin' | 'support';
     }
+
+    # Add what's needed to be persisted to database
+    method to-json() {
+        { :$!logged-in, :$.username, |(:$!sudo-username if $!sudo-username) }
+    }
+
+    method from-json((:$logged-in = False, :$username = Str, :$sudo-username = Str)) {
+        self.new(:$logged-in, :$username, :$sudo-username).load
+    }
+
 }

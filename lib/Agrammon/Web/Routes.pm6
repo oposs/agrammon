@@ -452,17 +452,14 @@ sub application-routes(Agrammon::Web::Service $ws) {
         # TODO: implement news in auth()
         post -> Agrammon::Web::SessionUser $user, 'auth' {
             request-body -> (:$username, :$password, :$sudo, *%rest) {
-                note "sudo=", ($sudo // 'UNDEF');
                 my $sudo-username = $user.username if $user.logged-in && $sudo;
-                note "Routes1: sudo-username=", ($sudo-username // 'UNDEF');
                 if $user.auth($username, $password, $sudo-username) {
-                    note "Routes2: sudo-username=", ($sudo-username // 'UNDEF');
                     content 'application/json', %(
                         :$username,
                         :role($user.role.name),
                         :lastLogin($user.last-login),
                         :news(Nil),
-                        :sudoUser($user.sudo-user),
+                        :sudoUser($user.sudo-username),
                     );
                 }
                 CATCH {
@@ -475,13 +472,11 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         post -> LoggedIn $user, 'logout' {
-            dd $user;
-            my $sudo-username = $user.sudo-username;
-            note "Routes.logout: sudo-username=", ($sudo-username // 'UNDEF');
-            $user.logout();
+            my $old-username = $user.logout();
             content 'application/json', %(
-                :user($user.username),
-                :sudoUser($sudo-username),
+                :username($user.username),
+                :sudoUser($old-username),
+                :role($user.role.name),
             );
         }
 
