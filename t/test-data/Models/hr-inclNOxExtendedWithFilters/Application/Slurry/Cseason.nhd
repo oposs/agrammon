@@ -159,13 +159,13 @@ is applied.
     Correction factor of the standard emission rate depending on season of 
     application.
   ++formula
-    if( abs(Out(appl_summer)+Out(appl_autumn_winter_spring)-100) < 0.000001 ){
+    if( abs(Out(appl_summer)+Out(appl_autumn_winter_spring)-1) < 0.000001 ){
     	return (1 + ( Out(appl_summer) * Tech(c_summer) +
    	            Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
     }
     else {
         writeLog({en => "Please correct accordingly: the categories of \"share of solid manure applied June to August\" "
-		        . "and \"share of solid manure applied September to May\" do not add up to 100\%!\n",
+		        . "and \"share of solid manure applied September to May\" do not add up to 100\%!",
                   de => "Bitte korrigieren: die Summe der Kategorien Ausbringung von Gülle im Sommer und von "
                         . "September bis Mai ist nicht gleich 100\%\n",
                   fr => "Veuillez corriger: la somme des catégories «Part de lisier épandu en été» et «de "

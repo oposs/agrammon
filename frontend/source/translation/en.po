@@ -618,7 +618,7 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: agrammon/module/user/Account.js
+#: agrammon/ui/menu/AdminMenu.js
 msgid "Reset password"
 msgstr ""
 
@@ -943,4 +943,8 @@ msgstr ""
 
 #: agrammon/module/input/regional/BranchEditor.js
 msgid "Save"
+msgstr ""
+
+#: agrammon/module/input/PropTable.js
+msgid "Default"
 msgstr ""

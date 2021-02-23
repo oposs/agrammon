@@ -1,6 +1,7 @@
 use v6;
 use Agrammon::Formula::Compiler;
 use Agrammon::Inputs;
+use Agrammon::Formula::LogCollector;
 use Agrammon::ModuleBuilder;
 use Agrammon::ModuleParser;
 use Agrammon::Model::FilterSet;
@@ -91,7 +92,8 @@ class Agrammon::Model {
         }
 
         method run(:$input!, :%technical!) {
-            my $outputs = Agrammon::Outputs.new;
+            my $outputs = Agrammon::Outputs.new();
+            my $*AGRAMMON-LOG = $outputs.log-collector;
             my %run-already;
             self!run-internal($input, %technical, $outputs, %run-already);
             return $outputs;
