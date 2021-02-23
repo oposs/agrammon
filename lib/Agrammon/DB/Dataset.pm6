@@ -13,11 +13,30 @@ class X::Agrammon::DB::Dataset::AlreadyExists is Exception {
     }
 }
 
-#| Error when a dataset upload failed for the user.
-class X::Agrammon::DB::Dataset::UploadFailed is Exception {
+#| CSV format error during dataset upload by user.
+class X::Agrammon::DB::Dataset::UploadCSVError is Exception {
     has Str $.dataset-name is required;
+    has Str $.msg is required;
     method message {
-        "Dataset '$!dataset-name' couldn't be uploaded."
+        "CSV format error, dataset '$!dataset-name' couldn't be uploaded: $!msg"
+    }
+}
+
+#| Database error during dataset upload by user.
+class X::Agrammon::DB::Dataset::UploadDatabaseFailure is Exception {
+    has Str $.dataset-name is required;
+    has Str $.msg is required;
+    method message {
+        "Database failure, dataset '$!dataset-name' couldn't be uploaded: $!msg"
+    }
+}
+
+#| Database error during dataset upload by user.
+class X::Agrammon::DB::Dataset::UploadUnknowFailure is Exception {
+    has Str $.dataset-name is required;
+    has Str $.msg is required;
+    method message {
+        "Unknown failure, dataset '$!dataset-name' couldn't be uploaded: $!msg"
     }
 }
 
@@ -309,8 +328,15 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $i++;
         }
         CATCH {
-            # DB failure
-            die X::Agrammon::DB::Dataset::UploadFailed.new(:dataset-name($!name));
+            when CSV::Diag {
+                die X::Agrammon::DB::Dataset::UploadCSVError.new(:dataset-name($!name), .message);
+            }
+            when X::Agrammon::DB::Dataset::StoreDataFailed {
+                die X::Agrammon::DB::Dataset::UploadDatabaseFailure.new(:dataset-name($!name), .message);
+            }
+            default {
+                die X::Agrammon::DB::Dataset::UploadUnknowFailure.new(:dataset-name($!name), .message);
+            }
         }
         return $i;
     }

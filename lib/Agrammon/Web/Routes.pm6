@@ -504,7 +504,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
         }
 
         post -> LoggedIn $user, 'upload' {
-            request-body -> (:$file, :datasetName($dataset-name), :$comment) {
+            request-body -> (:$file!, :datasetName($dataset-name)!, :$comment) {
                 my $file-name = $file.filename;
                 my $content = $file.body-text;
                 my $comment-string = $comment && decode-percents($comment.body-text) || "$file-name uploaded " ~ timestamp;
@@ -516,9 +516,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
                 content 'application/json', { :$lines };
                 CATCH {
                     note "$_";
-                    when X::Agrammon::DB::Dataset::UploadFailed {
-                        conflict 'application/json', %( error => .message );
-                    }
+                    bad-request 'application/json', %( error => .message );
                 }
             }
         }
