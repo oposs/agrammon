@@ -113,8 +113,8 @@ transactionally {
         subtest "login $username" => {
             ok $session-user = Agrammon::Web::SessionUser.new(:$username).load,
                 "Create Agrammon::Web::SessionUser with username $username";
-            ok $session-user.may-sudo, "$username may change account";
             ok $session-user.auth($username, $password).logged-in, "$username was authenticated with $password";
+            ok $session-user.may-sudo, "$username may change account";
             is $session-user.username, $username, "Username is $username";
             is $session-user.id, $uid, "Uid is $uid";
         }
@@ -132,7 +132,7 @@ transactionally {
         }
 
         subtest "logout $username2, back to $username" => {
-            ok !$session-user.logout, "Logout $username2";
+            is $session-user.logout, $username2, "Logout $username2 returns old username";
             ok $session-user.logged-in, "$username is logged in";
             is $session-user.username, $username, "Username is $username";
             is $session-user.id, $uid, "Uid is $uid";
