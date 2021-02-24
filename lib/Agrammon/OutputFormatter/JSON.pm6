@@ -18,11 +18,10 @@ sub output-for-gui(Agrammon::Model $model,
                    :$include-filters,
                    :$language
                    ) is export {
-    my %output = %(
+    return %(
         data => get-data($model, $outputs, $include-filters, $language),
-        log  => $outputs.log-collector.entries.map(*.messages),
+        log  => $outputs.log-collector.entries.map( *.to-json ),
     );
-    return %output;
 }
 
 sub get-data($model, $outputs, $include-filters, $language?, $prints?) {
