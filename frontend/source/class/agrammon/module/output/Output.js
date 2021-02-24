@@ -84,17 +84,13 @@ qx.Class.define('agrammon.module.output.Output', {
             }
             for (i=0; i<len; i++) {
                 if (format == 'html') {
-//                    if (logData[i]['msg']) {
-//                        logText += '<li><b>'+logData[i]['msg'][locale]+'</b></li>';
-//                    }
-                    logText += '<li>'+logData[i][locale]+'</li>';
+                    logText += '<li>'+logData[i].messages[locale]+'</li>';
                 }
                 else { // FIX ME: remove this (but fix in submit() first (Kantonalmodell)
-//                    logText += '\\verbdef\\varTitle{' + logData[i]['msg'][locale]+ '}';
-//                    logText += '\\verbdef\\varDesc{'  + logData[i]['var']        + '}';
-//                    logText += '\\mbox{ }\\newline (\\varDesc)';
-                    logText += '\\verbdef\\varTitle{' + logData[i][locale]+ '}';
+                    logText += '\\verbdef\\varTitle{' + logData[i].messages[locale]+ '}';
+                    logText += '\\verbdef\\varDesc{'  + logData[i].output        + '}';
                     logText += '\\item[\\varTitle]';
+                    logText += '\\mbox{ }\\newline (\\varDesc)';
                 }
             }
             if (format == 'html') {

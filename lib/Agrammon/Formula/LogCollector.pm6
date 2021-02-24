@@ -5,6 +5,10 @@ class Agrammon::Formula::LogCollector {
         has $.taxonomy is required;
         has $.output is required;
         has %.messages is required;
+
+        method to-json {
+            { :$!taxonomy, :$!output, :%!messages }
+        }
     }
 
     has Entry @.entries;
