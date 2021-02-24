@@ -23,6 +23,7 @@
   },
   "requires": {
     "@qooxdoo/framework": "^6.0.0",
-    "@qooxdoo/compiler": "^1.0.0"
+    "@qooxdoo/compiler": "^1.0.0",
+    "johnspackman/UploadMgr": "^1.0.5"
   }
 }

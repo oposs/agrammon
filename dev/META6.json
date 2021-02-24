@@ -9,6 +9,7 @@
   ],
   "auth": "Oetiker+Partner",
   "depends": [
+    "Cro::Core",
     "Cro::HTTP",
     "Cro::HTTP::Session::Pg",
     "Cro::OpenAPI::RoutesFromDefinition",
@@ -17,6 +18,7 @@
     "DB::Pg",
     "Digest::SHA1::Native",
     "Email::MIME",
+    "IO::String",
     "LibXML:ver<0.5.12+>",
     "Net::SMTP::Client::Async",
     "POFile",

@@ -300,6 +300,10 @@ class Agrammon::Web::Service {
         Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).order-instances(@instances);
     }
 
+    method upload-dataset(Agrammon::Web::SessionUser $user, Str $dataset-name, $content, $comment) {
+        Agrammon::DB::Dataset.new(:$user, :name($dataset-name), :$comment).create.upload-data($content);
+    }
+
     sub submission-dataset(%params --> Str) {
         %params<farmNumber>    ~ ', ' ~
                 %params<farmSituation> ~ ', ' ~

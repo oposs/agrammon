@@ -1,4 +1,6 @@
 use v6;
+
+use Text::CSV;
 use Agrammon::DB;
 use Agrammon::DB::Tag;
 use Agrammon::DB::User;
@@ -8,6 +10,33 @@ class X::Agrammon::DB::Dataset::AlreadyExists is Exception {
     has Str $.dataset-name is required;
     method message {
         "Dataset '$!dataset-name' already exists."
+    }
+}
+
+#| CSV format error during dataset upload by user.
+class X::Agrammon::DB::Dataset::UploadCSVError is Exception {
+    has Str $.dataset-name is required;
+    has Str $.msg is required;
+    method message {
+        "CSV format error, dataset '$!dataset-name' couldn't be uploaded: $!msg"
+    }
+}
+
+#| Database error during dataset upload by user.
+class X::Agrammon::DB::Dataset::UploadDatabaseFailure is Exception {
+    has Str $.dataset-name is required;
+    has Str $.msg is required;
+    method message {
+        "Database failure, dataset '$!dataset-name' couldn't be uploaded: $!msg"
+    }
+}
+
+#| Unknown failure during dataset upload by user.
+class X::Agrammon::DB::Dataset::UploadUnknowFailure is Exception {
+    has Str $.dataset-name is required;
+    has Str $.msg is required;
+    method message {
+        "Unknown failure, dataset '$!dataset-name' couldn't be uploaded: $!msg"
     }
 }
 
@@ -128,15 +157,15 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     has Agrammon::DB::Tag  @.tags;
     has Agrammon::DB::User $.user;
 
-    method !create-dataset( $dataset-name, $username, $version, $model ) {
+    method !create-dataset( $dataset-name, $username, $version, $model, $comment? ) {
         my @ret;
         self.with-db: -> $db {
-            @ret = $db.query(q:to/SQL/, $dataset-name, $version, $model, $username).array;
+            @ret = $db.query(q:to/SQL/, $dataset-name, $version, $model, $comment, $username).array;
                 INSERT INTO dataset (dataset_name, dataset_pers,
-                                     dataset_version, dataset_model)
-                  SELECT $1, pers_id, $2, $3
+                                     dataset_version, dataset_model, dataset_comment)
+                  SELECT $1, pers_id, $2, $3, $4
                     FROM pers
-                   WHERE pers_email = $4
+                   WHERE pers_email = $5
                 RETURNING dataset_id, dataset_mod_date
             SQL
             CATCH {
@@ -150,7 +179,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     }
 
     method create {
-        my $ds = self!create-dataset( $!name, $!user.username, $!version, $!model );
+        my $ds = self!create-dataset( $!name, $!user.username, $!version, $!model, $!comment );
         $!id = $ds<id>;
         $!mod-date = $ds<mod-date>;
         return self;
@@ -284,6 +313,32 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             $!data = $results.arrays;
         }
         return self;
+    }
+
+    method upload-data($content) {
+        my $fh = IO::String.new($content);
+        my $csv = Text::CSV.new;
+        my $i = 0;
+        while (my @row = $csv.getline($fh)) {
+            my ($var-name, $value) = @row;
+            next unless $var-name;
+            # skip comments
+            next if $var-name ~~ /^\#/;
+            self.store-input($var-name, $value);
+            $i++;
+        }
+        CATCH {
+            when CSV::Diag {
+                die X::Agrammon::DB::Dataset::UploadCSVError.new(:dataset-name($!name), :msg(.message));
+            }
+            when X::Agrammon::DB::Dataset::StoreDataFailed {
+                die X::Agrammon::DB::Dataset::UploadDatabaseFailure.new(:dataset-name($!name), :msg(.message));
+            }
+            default {
+                die X::Agrammon::DB::Dataset::UploadUnknowFailure.new(:dataset-name($!name), :msg(.message));
+            }
+        }
+        return $i;
     }
 
     method store-comment($comment) {
