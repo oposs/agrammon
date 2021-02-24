@@ -6,7 +6,7 @@ sub get-builtins is export {
     return INIT %(
         writeLog => -> %langMessages {
             with $*AGRAMMON-LOG {
-                .add-to-log(%langMessages);
+                .add-to-log($*AGRAMMON-TAXONOMY // 'Unknown', $*AGRAMMON-OUTPUT // 'Unknown', %langMessages);
             }
         },
         die => -> *@message {
