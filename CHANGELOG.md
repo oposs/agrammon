@@ -1,8 +1,6 @@
 # Agrammon Change Log
 
-- 6.0.1, 2021-03 -28, christoph.haeni@bfh,ch
-  - Simulationsmodell
-    - Improved french translations
+**This is not complete yet.**
 
 - 6.0.0, 2021-02-24, fritz.zaucker@oetiker.ch
   - Web Application

@@ -26,13 +26,16 @@ qx.Class.define("agrammon.Changelog", {
 
         let docu = new qx.ui.embed.Html();
         qxShowdown.Load;
-        let req = new qx.io.remote.Request("doc/CHANGELOG.md");
-        req.addListener("completed", function (e) {
-            let md = e.getContent();
-            let converter = new showdown.Converter();
-            docu.setHtml(converter.makeHtml(md));
-        });
-        req.send();
+
+        this.addListenerOnce('appear', function() {
+           let req = new qx.io.remote.Request("doc/CHANGELOG.md");
+           req.addListener("completed", function (e) {
+                let md = e.getContent();
+                let converter = new showdown.Converter();
+                docu.setHtml(converter.makeHtml(md));
+            });
+            req.send();
+        }, this);
 
         docu.set({
             minWidth : 500,

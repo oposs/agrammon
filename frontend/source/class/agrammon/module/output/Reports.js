@@ -120,7 +120,7 @@ qx.Class.define('agrammon.module.output.Reports', {
         tcm.setColumnVisible(2,false); // ref value
         tcm.setColumnVisible(4,false); // change
         tcm.setColumnVisible(6,false); // print
-        tcm.setColumnVisible(7,true); // order
+        tcm.setColumnVisible(7,false); // order
         tableModel.setColumnSortable(0,false);
         tableModel.setColumnSortable(1,false);
         tableModel.setColumnSortable(2,false);

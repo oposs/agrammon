@@ -266,7 +266,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
                                 new agrammon.ui.table.cellrenderer.Comment(25,16));
 
         // 15th column has the sort order
-        tcm.setColumnVisible(15,true); // initially invisible
+        tcm.setColumnVisible(15,false); // initially invisible
         tcm.getBehavior().setWidth(this.__orderColumn, 100);
 
         // 16th column has the default value
