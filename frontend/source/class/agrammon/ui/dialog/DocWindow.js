@@ -14,19 +14,21 @@ qx.Class.define('agrammon.ui.dialog.DocWindow', {
         this.base(arguments);
         this.setLayout(new qx.ui.layout.VBox());
 
-        // modal window, now locale listener needed
-
-        this.set({width:600, height:400, modal: true,
-                  showClose: true, showMinimize: false, showMaximize: false,
-		  caption: title
-                 });
+        this.set({
+            width:600, height:400,
+            modal: true,
+            showClose: true, showMinimize: false, showMaximize: false,
+		    caption: title,
+		    centerOnAppear : true
+         });
         this.getChildControl("pane").setBackgroundColor("white");
         var vBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
 
         var docuText = new qx.ui.embed.Iframe();
         this.docuText = docuText;
-        docuText.set({width: 600, height: 400, padding: 10,
-                      source: url
+        docuText.set({
+            width: 600, height: 400, padding: 10,
+            source: url
         });
 
         var btnCancel =
@@ -48,7 +50,7 @@ qx.Class.define('agrammon.ui.dialog.DocWindow', {
         this.add(vBox);
 
         return this;
-    }, // construct
+    },
 
     members :
     {

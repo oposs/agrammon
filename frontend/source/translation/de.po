@@ -59,7 +59,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -941,4 +941,24 @@ msgstr ""
 
 #: agrammon/module/input/PropTable.js
 msgid "Default"
+msgstr ""
+
+#: agrammon/module/dataset/DatasetTable.js
+msgid "Upload"
+msgstr ""
+
+#: agrammon/module/dataset/DatasetTable.js
+msgid "Upload dataset"
+msgstr ""
+
+#: agrammon/module/dataset/DatasetTable.js
+msgid "Uploaded %1 lines"
+msgstr ""
+
+#: agrammon/ui/menu/HelpMenu.js
+msgid "CHANGELOG"
+msgstr ""
+
+#: agrammon/Changelog.js
+msgid "Changelog"
 msgstr ""

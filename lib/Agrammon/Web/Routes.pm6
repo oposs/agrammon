@@ -100,8 +100,12 @@ sub static-content($root) {
             }
         }
 
+        get -> 'doc', *$path {
+            dd $path;
+            static "share/doc/$path"
+        }
 
-# TODO: needs later fixing
+        # TODO: needs later fixing
 #        get -> 'QxJqPlot/source/resource', *@path {
 #            static $root ~ 'static/resource', @path
 #        }
