@@ -619,7 +619,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     }
                     else {
                         var err = 'This should not happen: unknown variable type=' + rec.type + ' for variable ' + rec.variable;
-                        console.log(err);
+                        console.error(err);
                         alert(err);
                     }
                     break;
@@ -928,6 +928,13 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var folder      = data.folder;
             var datasetName = this.__info.getDatasetName();
 
+            var params = {
+                datasetName     : datasetName,
+                oldName         : oldInstance,
+                newName         : newInstance,
+                variablePattern : pattern
+            };
+
             var that = this;
             // rename instance variables in database
             this.__rpc.callAsync(
@@ -936,14 +943,11 @@ qx.Class.define('agrammon.module.input.NavBar', {
                         alert(exc + ': ' + data.error);
                     }
                     else {
-                        folder.setLabel(newInstance);
+                        folder.setName(newInstance, that.__propEditor);
                     }
                 },
-                'rename_instance', {
-                datasetName     : datasetName,
-                oldName         : oldInstance,
-                newName         : newInstance,
-                variablePattern : pattern}
+                'rename_instance',
+                params
             );
         },
 

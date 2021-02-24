@@ -1,6 +1,6 @@
 
 /* ************************************************************************
- 
+
 ************************************************************************ */
 
 qx.Class.define( 'agrammon.Info',
@@ -130,6 +130,10 @@ qx.Class.define( 'agrammon.Info',
 
         setRole: function(value) {
             this.__user['role'] = value;
+        },
+
+        getRole: function() {
+            return this.__user['role'];
         },
 
         isAdmin: function() {
