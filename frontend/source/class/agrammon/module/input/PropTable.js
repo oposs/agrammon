@@ -300,7 +300,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
         __propertyEditor: null,
 
         setRole : function(role) {
-            this.__propertyEditor.setColumnVisibilityButtonVisible(role == 'admin' || role == 'support');
+            this.__propertyEditor.setColumnVisibilityButtonVisible(role == 'admin');
         },
 
         setData: function(folder, data) {

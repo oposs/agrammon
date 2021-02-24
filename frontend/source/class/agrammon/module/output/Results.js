@@ -67,7 +67,7 @@ qx.Class.define('agrammon.module.output.Results', {
         var outputTable = new qx.ui.table.Table(tableModel, custom);
         outputTable.set({ padding: 0,
                   keepFirstVisibleRowComplete: true,
-                  columnVisibilityButtonVisible: info.isAdmin() || info.isSupport(),
+                  columnVisibilityButtonVisible: info.isAdmin(),
                   statusBarVisible: false
                 });
         outputTable.setMetaColumnCounts([1, -1]);
