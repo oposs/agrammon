@@ -124,7 +124,7 @@ class Agrammon::Model {
                 $dep!run-internal($input, %technical, $outputs, %run-already);
             }
 
-            my $tax = $!module.taxonomy;
+            my $*AGRAMMON-TAXONOMY = my $tax = $!module.taxonomy;
             my $env = Agrammon::Environment.new(
                 input => $input.input-hash-for($tax),
                 input-defaults => $!module.input-defaults,
@@ -133,7 +133,7 @@ class Agrammon::Model {
                 output => $outputs
             );
             for $!module.output -> $output {
-                my $name = $output.name;
+                my $*AGRAMMON-OUTPUT = my $name = $output.name;
                 $outputs.add-output($tax, $name, $output.compiled-formula()($env));
                 CONTROL {
                     when CX::Warn {
