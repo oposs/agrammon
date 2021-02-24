@@ -31,7 +31,7 @@ class X::Agrammon::DB::Dataset::UploadDatabaseFailure is Exception {
     }
 }
 
-#| Database error during dataset upload by user.
+#| Unknown failure during dataset upload by user.
 class X::Agrammon::DB::Dataset::UploadUnknowFailure is Exception {
     has Str $.dataset-name is required;
     has Str $.msg is required;
@@ -329,13 +329,13 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
         CATCH {
             when CSV::Diag {
-                die X::Agrammon::DB::Dataset::UploadCSVError.new(:dataset-name($!name), .message);
+                die X::Agrammon::DB::Dataset::UploadCSVError.new(:dataset-name($!name), :msg(.message));
             }
             when X::Agrammon::DB::Dataset::StoreDataFailed {
-                die X::Agrammon::DB::Dataset::UploadDatabaseFailure.new(:dataset-name($!name), .message);
+                die X::Agrammon::DB::Dataset::UploadDatabaseFailure.new(:dataset-name($!name), :msg(.message));
             }
             default {
-                die X::Agrammon::DB::Dataset::UploadUnknowFailure.new(:dataset-name($!name), .message);
+                die X::Agrammon::DB::Dataset::UploadUnknowFailure.new(:dataset-name($!name), :msg(.message));
             }
         }
         return $i;
