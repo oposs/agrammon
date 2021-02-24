@@ -80,9 +80,11 @@ qx.Class.define('agrammon.ui.menu.MainMenu', {
         __tooltip:     null,
 
         showAdmin: function(show) {
+            var info = agrammon.Info.getInstance();
             if (show) {
                 this.__adminButton.show();
-                this.__adminMenu.enableAdmin(agrammon.Info.getInstance().isAdmin());
+
+                this.__adminMenu.enableAdmin(info.isAdmin() || info.isSupport());
             }
             else {
                 this.__adminButton.exclude();

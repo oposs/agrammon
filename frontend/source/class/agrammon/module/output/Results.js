@@ -63,10 +63,11 @@ qx.Class.define('agrammon.module.output.Results', {
             }
         };
 
+        var info = agrammon.Info.getInstance();
         var outputTable = new qx.ui.table.Table(tableModel, custom);
         outputTable.set({ padding: 0,
                   keepFirstVisibleRowComplete: true,
-//                  columnVisibilityButtonVisible: false,
+                  columnVisibilityButtonVisible: info.isAdmin(),
                   statusBarVisible: false
                 });
         outputTable.setMetaColumnCounts([1, -1]);

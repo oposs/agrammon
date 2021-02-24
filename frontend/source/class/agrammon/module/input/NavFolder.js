@@ -120,8 +120,20 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             return this.__folderName;
         }, // getName
 
-        setName: function(newName) {
+        __updateVariableNames : function(newInstanceName) {
+            var data = this.__propData;
+            for (let row of data) {
+                let oldName = row.getName();
+                let newName = oldName.replace(/\[.+\]/, '[' + newInstanceName + ']');
+                row.setName(newName);
+            }
+        },
+
+        setName: function(newName, propEditor) {
             this.__folderName = newName;
+            this.__updateVariableNames(newName);
+            // set this folders data in propEditor table
+            propEditor.setData(this, this.__propData);
             this.setLabel(newName);
         }, // setName
 

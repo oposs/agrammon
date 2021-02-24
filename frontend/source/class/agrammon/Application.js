@@ -138,7 +138,6 @@ qx.Class.define('agrammon.Application', {
                     var role      = data.role;
                     var news      = data.news;
                     var lastLogin = String(data.lastLogin);
-
                     qx.event.message.Bus.dispatchByName(
                         'agrammon.info.setUser',
                         { username : username, role : role }
@@ -159,6 +158,7 @@ qx.Class.define('agrammon.Application', {
                     }
                     // enable admin menu
                     mainMenu.showAdmin(role == 'admin' || role == 'support');
+                    propEditor.setRole(role);
                     if (results && role != 'admin') { // TODO: fix update
                         results.exclude();
                     }

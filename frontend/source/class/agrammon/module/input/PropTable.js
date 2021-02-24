@@ -16,7 +16,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
         this.setLayout(new qx.ui.layout.VBox());
 
         this.__rpc  = agrammon.io.remote.Rpc.getInstance();
-        this.__info = agrammon.Info.getInstance();
+        var info = this.__info = agrammon.Info.getInstance();
 
         qx.locale.Manager.getInstance().addListener("changeLocale",
                                                     this.changeLanguage, this);
@@ -80,7 +80,6 @@ qx.Class.define('agrammon.module.input.PropTable', {
         var propertyCellEditorFactoryFunc = function (cellInfo) {
             let metaData   = cellInfo.table.getTableModel().getRowData(cellInfo.row)[7];
             let cellEditor = new agrammon.ui.table.celleditor.FancyTextField;
-//            console.log('metaData=', metaData);
             let validators;
             for ( let cmd in metaData ) {
                 switch ( cmd ) {
@@ -184,7 +183,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
         propertyEditor_tableModel.setColumnEditable(this.__valueColumn, true);
         // layout
         propertyEditor.set({
-            columnVisibilityButtonVisible: true,
+            columnVisibilityButtonVisible: false,
             keepFirstVisibleRowComplete: true,
             statusBarVisible: true,
             showCellFocusIndicator: true,
@@ -299,6 +298,10 @@ qx.Class.define('agrammon.module.input.PropTable', {
         __orderColumn:    null,
         __defaultColumn:  null,
         __propertyEditor: null,
+
+        setRole : function(role) {
+            this.__propertyEditor.setColumnVisibilityButtonVisible(role == 'admin');
+        },
 
         setData: function(folder, data) {
 
