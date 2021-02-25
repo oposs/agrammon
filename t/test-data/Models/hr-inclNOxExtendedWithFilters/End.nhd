@@ -101,9 +101,9 @@ Dummy Module marking the startpoint for the Model Parser
   +DetailReportNH3
     type = reportDetailed
     ++selector
-      en = NH3 Emissions and fluxes (in kg N per year) - detailed report
-      de = NH3 Emissionen und Flüsse (in kg N pro Jahr) - Detailreport
-      fr = NH3 Emissions et flux d'azote (en kg de N par année) - résumé detaillé
+      en = NH3 Emissions (in kg N per year) - detailed report
+      de = NH3 Emissionen (in kg N pro Jahr) - Detailreport
+      fr = Emissions de NH3 (en kg de N par année) - résumé detaillé
     ++data
        +++LivestockNH3
          en = Livestock production NH3-Emissions
@@ -121,9 +121,9 @@ Dummy Module marking the startpoint for the Model Parser
   +DetailReportTAN
     type = reportDetailed
     ++selector
-      en = TAN Emissions and fluxes (in kg N per year) - detailed report
-      de = TAN Emissionen und Flüsse (in kg N pro Jahr) - Detailreport
-      fr = TAN Emissions et flux d'azote (en kg de N par année) - résumé detaillé
+      en = TAN fluxes (in kg N per year) - detailed report
+      de = TAN Flüsse (in kg N pro Jahr) - Detailreport
+      fr = Flux de TAN (en kg de N par année) - résumé detaillé
     ++data
       +++LivestockTAN
         en = TAN flux livestock production
@@ -133,9 +133,9 @@ Dummy Module marking the startpoint for the Model Parser
   +DetailReportN
     type = reportDetailed
     ++selector
-      en = N Emissions and fluxes (in kg N per year) - detailed report
-      de = N Emissionen und Flüsse (in kg N pro Jahr) - Detailreport
-      fr = N Emissions et flux d'azote (en kg de N par année) - résumé detaillé
+      en = N2O, NO, N2 emissions and N fluxes (in kg N per year) - detailed report
+      de = N2O, NO, N2 Emissionen und N Flüsse (in kg N pro Jahr) - Detailreport
+      fr = Emissions de N2O, NO, N2 et flux d'azote (en kg de N par année) - résumé detaillé
     ++data
       +++LivestockN2O
         en = Livestock production N2O-Emissions
