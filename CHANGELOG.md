@@ -2,7 +2,7 @@
 
 **This is not complete yet.**
 
-- 6.0.0, 2021-02-24, fritz.zaucker@oetiker.ch
+- 6.0.0-rc1, 2021-02-25, fritz.zaucker@oetiker.ch
   - Web Application
     - Added upload of datasets from CSV files in dataset popups
     - Additional detailed result reports
