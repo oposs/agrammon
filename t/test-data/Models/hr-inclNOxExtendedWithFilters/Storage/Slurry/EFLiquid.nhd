@@ -390,7 +390,7 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
       return (1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock)) * $er_cattle;
     }
 
-?if !Kantonal_LU 
+?if !Kantonal_LU
   +c_free_factor_storage_slurry
     print = 10
     ++units 
