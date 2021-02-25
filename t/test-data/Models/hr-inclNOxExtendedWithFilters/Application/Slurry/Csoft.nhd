@@ -26,7 +26,7 @@ taxonomy = Application::Slurry::Csoft
 
 *** input ***
 
-?if !Kantonal_LU 
+?if !Kantonal_LU
   +appl_evening 
     type  = percent
     default_calc = 0 

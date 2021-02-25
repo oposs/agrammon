@@ -57,7 +57,7 @@ Dummy Module marking the startpoint for the Model Parser
        de = Total
        fr = Total
 
-?if !KantonalLU
+?if !Kantonal_LU
   +DetailReport
     type = reportDetailed
     ++selector

@@ -62,7 +62,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
        <p>Cette part comprend les fientes ou le fumier stocké sous une couverture en dur, dans le sens d'un contenant fermé, ou sous un autre type de couverture, p.ex. une bâche. </p>
        <p>Proposition de valeur standard: 70%</p>
 
-?if !Kantonal_LU 
+?if !Kantonal_LU
   +free_correction_factor
     type = float
     default_calc = 0
