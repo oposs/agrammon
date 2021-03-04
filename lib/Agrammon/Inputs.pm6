@@ -147,45 +147,65 @@ class X::Agrammon::Inputs::Distribution::BadBranchMatrix is Exception {
 #| flattening or branching approach. Can produce an C<Agrammon::Inputs> object given a
 #| model (the model being needed to understand which input to distribute).
 class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
+    #| The value to place into an input when we produce a distribution.
+    my class DistributionProductKey {
+        has Str $.sub-taxonomy is required;
+        has Str $.input-name is required;
+        has $.value is required;
+    }
+
     #| A member of the product calculation for a generated input. This abstracts the
-    #| differences between a flattened input (one field) and a branched input (2 fields).
+    #| differences between a flattened input (sets a single input as the "key") and
+    #| a branched input (which sets two).
     my class DistributionProductElement {
-        has %.values;
-        has $.percentage;
+        has DistributionProductKey @.values is required;
+        has $.percentage is required;
     }
 
     #| The things flattened and branched inputs have in common.
     my role Distributable {
-        has $.sub-taxonomy;
-        method distributes-input(Str $name --> Bool) { ... }
+        method distributes-input(Str $sub-taxonomy, Str $name --> Bool) { ... }
         method distribution-products(--> Iterable) { ... }
     }
 
     #| A flattened input, with details of the distribution.
     my class Flattened does Distributable {
+        has $.sub-taxonomy;
         has $.input-name;
         has %.value-percentages;
-        method distributes-input(Str $name --> Bool) { $name eq $!input-name }
+        method distributes-input(Str $sub-taxonomy, Str $name --> Bool) {
+            $sub-taxonomy eq $!sub-taxonomy && $name eq $!input-name
+        }
         method distribution-products(--> Iterable) {
             %!value-percentages.kv.map: -> $value, $percentage {
-                DistributionProductElement.new(:values{ $!input-name => $value }, :$percentage)
+                DistributionProductElement.new:
+                        :values(DistributionProductKey.new(:$!sub-taxonomy, :$!input-name, :$value)),
+                        :$percentage
             }
         }
     }
 
     #| A branched input, with details of the matrix.
     my class Branched does Distributable {
+        has $.sub-taxonomy-a;
         has $.input-name-a;
         has @.input-values-a;
+        has $.sub-taxonomy-b;
         has $.input-name-b;
         has @.input-values-b;
         has @.matrix;
-        method distributes-input(Str $name --> Bool) { so $name eq $!input-name-a | $!input-name-b }
+        method distributes-input(Str $sub-taxonomy, Str $name --> Bool) {
+            $sub-taxonomy eq $!sub-taxonomy-a && $name eq $!input-name-a ||
+                    $sub-taxonomy eq $!sub-taxonomy-b && $name eq $!input-name-b
+        }
         method distribution-products(--> Iterable) {
             gather for @!input-values-a.kv -> $i, $value-a {
                 for @!input-values-b.kv -> $j, $value-b {
                     take DistributionProductElement.new:
-                        values => { $!input-name-a => $value-a, $!input-name-b => $value-b },
+                        values => (
+                            DistributionProductKey.new(:sub-taxonomy($!sub-taxonomy-a), :input-name($!input-name-a), :value($value-a)),
+                            DistributionProductKey.new(:sub-taxonomy($!sub-taxonomy-b), :input-name($!input-name-b), :value($value-b))
+                        ),
                         percentage => @!matrix[$i;$j];
                 }
             }
@@ -207,12 +227,12 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                 :$sub-taxonomy, :$input-name, :%value-percentages;
     }
 
-    method add-multi-input-branched(Str $taxonomy, Str $instance-id, Str $sub-taxonomy,
-            Str $input-name-a, @input-values-a, Str $input-name-b, @input-values-b,
+    method add-multi-input-branched(Str $taxonomy, Str $instance-id,
+            Str $sub-taxonomy-a, Str $input-name-a, @input-values-a,
+            Str $sub-taxonomy-b, Str $input-name-b, @input-values-b,
             @matrix --> Nil) {
-        for $input-name-a, $input-name-b {
-            self!ensure-no-dupe($taxonomy, $instance-id, $sub-taxonomy, $_);
-        }
+        self!ensure-no-dupe($taxonomy, $instance-id, $sub-taxonomy-a, $input-name-a);
+        self!ensure-no-dupe($taxonomy, $instance-id, $sub-taxonomy-b, $input-name-b);
         unless @matrix.elems == @input-values-a && all(@matrix>>.elems) == @input-values-b {
             die X::Agrammon::Inputs::Distribution::BadBranchMatrix.new:
                 :$taxonomy, :$instance-id, :$input-name-a, :$input-name-b,
@@ -222,17 +242,21 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         unless @matrix.map(*.sum).sum == 100 {
             die X::Agrammon::Inputs::Distribution::BadSum.new:
                     :what('branch matrix'),
-                    :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
+                    :taxonomy(
+                        $taxonomy ~ ("::$sub-taxonomy-a" if $sub-taxonomy-a)
+                        ~ '/' ~
+                        $taxonomy ~ ("::$sub-taxonomy-b" if $sub-taxonomy-b)
+                    ),
                     :$instance-id, :input-name("$input-name-a/$input-name-b");
         }
         %!distributed-by-taxonomy{$taxonomy}{$instance-id}.push: Branched.new:
-                :$sub-taxonomy, :$input-name-a, :@input-values-a,
-                :$input-name-b, :@input-values-b, :@matrix;
+                :$sub-taxonomy-a, :$input-name-a, :@input-values-a,
+                :$sub-taxonomy-b, :$input-name-b, :@input-values-b, :@matrix;
     }
 
     method !ensure-no-dupe(Str $taxonomy, Str $instance-id, Str $sub-taxonomy, Str $input-name --> Nil) {
         if %!distributed-by-taxonomy{$taxonomy}{$instance-id} -> @check {
-            with @check.first({ .sub-taxonomy eq $sub-taxonomy && .distributes-input($input-name) }) {
+            with @check.first(*.distributes-input($sub-taxonomy, $input-name)) {
                 when Flattened {
                     die X::Agrammon::Inputs::Distribution::AlreadyFlattened.new:
                             :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
@@ -301,9 +325,9 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
             my $comp-percentage = [*] $products.map(*.percentage / 100);
             $target.add-multi-input($taxonomy, $dist-instance-id, $dist-sub-taxonomy, $dist-name,
                     ($comp-percentage * $dist-total).narrow);
-            for flat $products.map(*.values.kv) -> $input-name, $enum {
-                $target.add-multi-input($taxonomy, $dist-instance-id, @distribute[0].sub-taxonomy,
-                        $input-name, $enum);
+            for flat $products.map(*.values) {
+                $target.add-multi-input($taxonomy, $dist-instance-id, .sub-taxonomy,
+                        .input-name, .value);
             }
             self!copy-instance-input($taxonomy, $dist-instance-id, %instance-input, $target);
         }

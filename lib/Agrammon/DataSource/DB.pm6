@@ -14,9 +14,10 @@ class Agrammon::DataSource::DB does Agrammon::DB {
     my class Branched {
         has Str $.taxonomy;
         has Str $.instance-id;
-        has Str $.sub-taxonomy;
+        has Str $.sub-taxonomy-a;
         has Str $.input-name-a;
         has Str @.input-values-a;
+        has Str $.sub-taxonomy-b is rw;
         has Str $.input-name-b is rw;
         has Str @.input-values-b is rw;
         has @.matrix is rw;
@@ -24,7 +25,6 @@ class Agrammon::DataSource::DB does Agrammon::DB {
 
     method read($user, Str $dataset, %distribution-map) {
         self.with-db: -> $db {
-
             my $results = $db.query(q:to/STATEMENT/, $user, $dataset);
                 SELECT data_var, data_val, data_instance,
                        branches_data, branches_options,
@@ -35,7 +35,6 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                 ORDER BY data_instance, branches_data, data_var, data_val
             STATEMENT
             my @rows = $results.arrays;
-
             my $dist-input = Agrammon::Inputs::Distribution.new(
                 simulation-name => 'DB',
                 dataset-id      => $dataset
@@ -67,7 +66,6 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $var = $sub-var;
                         }
 
-
                         if $current-branched && $value ne 'branched' {
                             die "Missing second step of branched input";
                         }
@@ -86,20 +84,19 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $current-flattened.value-percentages{$key} = $value;
                         }
                         elsif $value eq 'branched' {
-                            if $current-branched {
-                                given $current-branched {
-                                    .input-name-b = $var;
-                                    .input-values-b = @row[4].list;
-                                    .matrix = @row[3].rotor(@row[4].elems);
-                                }
-                                push @branched-to-add, $current-branched;
-                                $current-branched = Nil;
+                            with $current-branched {
+                                .sub-taxonomy-b = $sub-tax;
+                                .input-name-b = $var;
+                                .input-values-b = @row[4].list;
+                                .matrix = @row[3].rotor(@row[4].elems);
+                                push @branched-to-add, $_;
+                                $_ = Nil;
                             }
                             else {
                                 $current-branched = Branched.new:
                                         taxonomy => $tax,
                                         instance-id => $instance,
-                                        sub-taxonomy => $sub-tax,
+                                        sub-taxonomy-a => $sub-tax,
                                         input-name-a => $var,
                                         input-values-a => @row[4].list;
                             }
@@ -127,10 +124,11 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                         .input-name, .value-percentages);
             }
             for @branched-to-add {
-                $dist-input.add-multi-input-branched(.taxonomy, .instance-id, .sub-taxonomy,
-                        .input-name-a, .input-values-a, .input-name-b, .input-values-b, .matrix);
+                $dist-input.add-multi-input-branched(.taxonomy, .instance-id,
+                         .sub-taxonomy-a, .input-name-a, .input-values-a,
+                         .sub-taxonomy-b, .input-name-b, .input-values-b,
+                         .matrix);
             }
-
             return $dist-input.to-inputs(%distribution-map);
         }
     }
