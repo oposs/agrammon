@@ -149,7 +149,7 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
                     return new qx.ui.table.columnmodel.Resize(obj);
                 }
             };
-            var table = new qx.ui.table.Table(tableModel, resizeBehaviour);
+            var table = this.__table = new qx.ui.table.Table(tableModel, resizeBehaviour);
             var rowHeight = table.getRowHeight();
             table.set({
                 //columnVisibilityButtonVisible: true,
@@ -165,8 +165,6 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
                 padding: 10
             });
 
-            this.__table = table;
-            table.getTableModel().addListener("dataChanged", this.__dataChanged_func, this);
             table.getDataRowRenderer().setHighlightFocusRow(false);
 
             var tableColumnModel = table.getTableColumnModel();
@@ -229,8 +227,9 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
         },
 
         __dataChanged_func: function(e) {
-            var data = this.__table.getTableModel().getData();
-            var nCols = data[0].length, nRows = data.length;
+            var tm = this.__table.getTableModel();
+            var data = tm.getData();
+            var nCols = tm.getColumnCount(), nRows = tm.getRowCount();
             var rowData, row, col, total = 0;
             for (row=0; row<nRows; row++) { // row=0 is first data row
                 rowData = data[row];
