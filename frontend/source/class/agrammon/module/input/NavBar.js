@@ -551,6 +551,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             this.debug('modelVariant='+modelVariant);
             len = data.length;
             for (i=0; i<len; i++) {
+                defaultValue = null;
                 rec = data[i];
                 rec.show = true;
                 metaData = {};
@@ -663,7 +664,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             this.buildTree();
             this.__rootFolder.setIcon('agrammon/nh3.png');
             this.__rootFolder.isComplete(0); // set icons
-            return;
         }, // __getInputVariables()
 
 
