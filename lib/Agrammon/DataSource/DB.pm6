@@ -81,6 +81,8 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                         }
                         elsif $flattend-prefix && $var.starts-with($flattend-prefix ~ '_flattened') {
                             my $key = $var.substr(($flattend-prefix ~ '_flattened00_').chars);
+                            # TODO: flattened variables should be stored with _ instead of space
+                            $key ~~ s:g/ ' ' /_/;
                             $current-flattened.value-percentages{$key} = $value;
                         }
                         elsif $value eq 'branched' {
