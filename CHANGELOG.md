@@ -1,5 +1,9 @@
 # Agrammon Change Log
 
+-  6.0.0-rc2, 2021-03-05, fritz.zaucker@oetiker.ch
+  - Fix branching over multiple sub modules
+  - Fix flattening
+
 **This is not complete yet.**
 
 - 6.0.0-rc1, 2021-02-25, fritz.zaucker@oetiker.ch
