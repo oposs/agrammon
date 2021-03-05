@@ -3,6 +3,8 @@
 -  6.0.0-rc2, 2021-03-05, fritz.zaucker@oetiker.ch
   - Fix branching over multiple sub modules
   - Fix flattening
+  - Fix totals in branch editor
+  - Fix defaults for flattened inputs
 
 **This is not complete yet.**
 
