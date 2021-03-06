@@ -18,7 +18,7 @@ msgstr ""
 msgid "Authentication error"
 msgstr ""
 
-#. NO LONGER USED
+#: agrammon/Application.js
 msgid "Invalid username or password"
 msgstr ""
 
@@ -370,10 +370,6 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#. NO LONGER USED
-msgid "Save config"
-msgstr ""
-
 #: agrammon/module/input/regional/BranchEditor.js
 msgid "Total must be 100%. Now: "
 msgstr ""
@@ -408,10 +404,6 @@ msgstr ""
 
 #: agrammon/module/input/regional/ConfigInstance.js
 msgid "Ok"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Graphical Results"
 msgstr ""
 
 #: agrammon/module/output/Reports.js
@@ -532,10 +524,6 @@ msgstr ""
 
 #: agrammon/module/output/SubmitWindow.js
 msgid "Submit"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Report submitted sucessfully."
 msgstr ""
 
 #: agrammon/module/output/SubmitWindow.js
@@ -676,10 +664,6 @@ msgstr ""
 
 #: agrammon/ui/About.js
 msgid "Implemented by"
-msgstr ""
-
-#. NO LONGER USED
-msgid "ViewerIframe.__load(): could not load document %1"
 msgstr ""
 
 #: agrammon/ui/dialog/Comment.js
@@ -926,19 +910,12 @@ msgstr ""
 msgid "Help text currently only available in German"
 msgstr ""
 
-#. NO LONGER USED
-msgstr ""
-
 #: agrammon/module/user/Login.js
 msgid "Remember"
 msgstr ""
 
 #: agrammon/module/output/SubmitWindow.js
 msgid "Report submitted successfully."
-msgstr ""
-
-#: agrammon/Application.js
-msgid "Invalid username or password X"
 msgstr ""
 
 #: agrammon/module/input/regional/BranchEditor.js
@@ -969,26 +946,10 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
-#. NO LONGER USED
-msgid "Coomunication error"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Please login again"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Communication rror: please -reauthenticate yourself"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Communication error: please login again"
-msgstr ""
-
 #: agrammon/io/remote/Rpc.js
 msgid "Session expired: please login again"
 msgstr ""
 
 #: agrammon/io/remote/Rpc.js
-msgid "Error %1: %2 please login again"
+msgid "Error %1: %2 - please login again"
 msgstr ""

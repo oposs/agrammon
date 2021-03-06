@@ -167,7 +167,7 @@ qx.Class.define('agrammon.Application', {
                 else {
                     qx.event.message.Bus.dispatchByName('error',
                          [ qx.locale.Manager.tr("Authentication error"),
-                           qx.locale.Manager.tr("Invalid username or password X"),
+                           qx.locale.Manager.tr("Invalid username or password"),
                            'error',
                            { msg: 'agrammon.main.logout', data: null}
                          ]

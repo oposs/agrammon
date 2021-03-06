@@ -1,7 +1,6 @@
 # Automatically generated, 2007.
 #. NO LONGER USED
-msgid ""
-msgstr "Report-Msgid-Bugs-To: \nPOT-Creation-Date: 2009-02-12 15:52+0100\nPO-Revision-Date: 2007-10-19 09:30+0200\nLast-Translator: Automatically generated\nLanguage-Team: none\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\nProject-Id-Version PACKAGE VERSION\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
+msgstr ""
 
 #: agrammon/Application.js
 msgid "Agrammon is not supported on Internet Explorer below version 7"
@@ -18,10 +17,6 @@ msgstr "Neuigkeiten"
 #: agrammon/Application.js
 msgid "Authentication error"
 msgstr "Fehler bei der Authentisierung"
-
-#. NO LONGER USED
-msgid "Invalid username or password"
-msgstr "Ungültiger Benutzername oder Passwort"
 
 #: agrammon/Application.js
 msgid "End change user"
@@ -371,10 +366,6 @@ msgstr "Abbrechen"
 msgid "Clear"
 msgstr "Löschen"
 
-#. NO LONGER USED
-msgid "Save config"
-msgstr "Konfiguration speichern"
-
 #: agrammon/module/input/regional/BranchEditor.js
 msgid "Total must be 100%. Now: "
 msgstr "Total muss 100% sein. Jetzt: "
@@ -410,10 +401,6 @@ msgstr "Kategorie-Name"
 #: agrammon/module/input/regional/ConfigInstance.js
 msgid "Ok"
 msgstr "Ok"
-
-#. NO LONGER USED
-msgid "Graphical Results"
-msgstr "Resultate als Grafik"
 
 #: agrammon/module/output/Reports.js
 msgid "Choose table: "
@@ -669,7 +656,7 @@ msgstr "Das Simulationsmodell Agrammon erlaubt die Berechnung der Ammoniakemissi
 
 #: agrammon/ui/About.js
 msgid "Documentation"
-msgstr ""
+msgstr "Dokumentation"
 
 #: agrammon/ui/About.js
 msgid "For detailed information about the model please consult the Agrammon website at"
@@ -678,10 +665,6 @@ msgstr "Für detaillierte Informationen über das Modell konsultieren Sie bitte 
 #: agrammon/ui/About.js
 msgid "Implemented by"
 msgstr "Implementiert durch"
-
-#. NO LONGER USED
-msgid "ViewerIframe.__load(): could not load document %1"
-msgstr ""
 
 #: agrammon/ui/dialog/Comment.js
 msgid "Save comment"
@@ -929,15 +912,15 @@ msgstr "Hilfe-Text im Moment nur auf Deutsch verfügbar "
 
 #: agrammon/module/user/Login.js
 msgid "Remember"
-msgstr ""
+msgstr "Merken"
 
 #: agrammon/Application.js
-msgid "Invalid username or password X"
-msgstr ""
+msgid "Invalid username or password"
+msgstr "Ungültiger Benutzername oder Passwort"
 
 #: agrammon/module/input/regional/BranchEditor.js
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: agrammon/module/input/PropTable.js
 msgid "Default"
@@ -945,15 +928,15 @@ msgstr ""
 
 #: agrammon/module/dataset/DatasetTable.js
 msgid "Upload"
-msgstr ""
+msgstr "Hochladen"
 
 #: agrammon/module/dataset/DatasetTable.js
 msgid "Upload dataset"
-msgstr ""
+msgstr "Datensatz hochladen"
 
 #: agrammon/module/dataset/DatasetTable.js
 msgid "Uploaded %1 lines"
-msgstr ""
+msgstr "%1 Zeilen hochgeladen"
 
 #: agrammon/ui/menu/HelpMenu.js
 msgid "CHANGELOG"
@@ -963,26 +946,10 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
-#. NO LONGER USED
-msgid "Coomunication error"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Please login again"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Communication rror: please -reauthenticate yourself"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Communication error: please login again"
-msgstr ""
-
 #: agrammon/io/remote/Rpc.js
 msgid "Session expired: please login again"
-msgstr ""
+msgstr "Sitzung abgelaufen: bitte neu anmelden"
 
 #: agrammon/io/remote/Rpc.js
-msgid "Error %1: %2 please login again"
-msgstr ""
+msgid "Error %1: %2 - please login again"
+msgstr "Fehler %1: %2 - bitte neu anmelden"
