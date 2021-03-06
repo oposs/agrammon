@@ -68,13 +68,13 @@ transactionally {
     is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
             { dist-me => 200, simple => 42 }, 'Correct distribution value for second flattened input';
     is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
-            { flat-a => 'y', simple => 101 }, 'Correct enum value for second flattened input';
+            { flat-a => 'y_y', simple => 101 }, 'Correct enum value for second flattened input with _ in enum';
     is-deeply @instances[1].input-hash-for('Test::Base::Retained'),
             { simple => 13 }, 'Non-distributed instance data was correctly loaded';
     is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
             { dist-me => 500, simple => 42 }, 'Correct distribution value for third flattened input';
     is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
-            { flat-a => 'z', simple => 101 }, 'Correct enum value for third flattened input';
+            { flat-a => 'z_z', simple => 101 }, 'Correct enum value for third flattened input with space in enum';
     is-deeply @instances[2].input-hash-for('Test::Base::Retained'),
             { simple => 13 }, 'Non-distributed instance data was correctly loaded';
 }
@@ -175,8 +175,10 @@ sub prepare-test-db-flattened-data($user, $dataset) {
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Sub::simple', 42);
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a', 'flattened');
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened00_x', 30);
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened01_y', 20);
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened02_z', 50);
+    # enum value with _
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened01_y_y', 20);
+    # enum value with space
+    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened02_z z', 50);
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::simple', 101);
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Retained::simple', 13);
 }
@@ -228,7 +230,7 @@ sub prepare-test-db-schema($db, $user) {
         pers_email    TEXT NOT NULL UNIQUE,                    -- used as login name
         pers_first    TEXT NOT NULL CHECK (pers_first != ''),  -- First Name of Person
         pers_last     TEXT NOT NULL CHECK (pers_last != ''),   -- Last Name of Person
-        pers_password TEXT NOT NULL                               -- Password for pers data
+        pers_password TEXT NOT NULL                            -- Password for pers data
     )
     STATEMENT
 
