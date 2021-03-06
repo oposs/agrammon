@@ -57,7 +57,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
 
             var superHandler = function(ret, exc, id) {
                 if (exc && exc.code == 6) {
-                    var login = agrammon.module.user.Login.getInstance();
+                    var login = new agrammon.module.user.Login();
                     login.addListenerOnce('login', function(e) {
                         origArguments.callee.base.apply(origThis, origArguments);
                     });
@@ -68,7 +68,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                 origHandler(ret, exc, id);
             };
 
-            if (methodName != 'login') {
+            if (methodName != 'auth') {
                 arguments[0] = superHandler;
             }
 
@@ -95,15 +95,20 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                         'error',
                     ];
                     if (!agrammon.Info.getInstance().getUserName()) {
-                        params.push(
-                           { msg: 'agrammon.main.logout', data: null}
-                        );
+                        params.push( { msg: 'agrammon.main.logout', data: null} );
                     }
                     qx.event.message.Bus.dispatchByName('error', params);
                 }
                 else {
-                    let msg = 'method=' + methodName + ', status=' + status + ': ' + statusText;
-                    alert(msg);
+                    switch (status) {
+                    case 404:
+                    case 401:
+                        new agrammon.module.user.Login(qx.locale.Manager.tr("Session expired: please login again")).open();
+                        break;
+                    default:
+                        new agrammon.module.user.Login(qx.locale.Manager.tr("Error %1: %2 please login again", status, statusText)).open();
+                        break;
+                    }
                 }
             }, this);
             req.addListener("success", function(e) {

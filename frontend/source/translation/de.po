@@ -962,3 +962,27 @@ msgstr ""
 #: agrammon/Changelog.js
 msgid "Changelog"
 msgstr ""
+
+#. NO LONGER USED
+msgid "Coomunication error"
+msgstr ""
+
+#. NO LONGER USED
+msgid "Please login again"
+msgstr ""
+
+#. NO LONGER USED
+msgid "Communication rror: please -reauthenticate yourself"
+msgstr ""
+
+#. NO LONGER USED
+msgid "Communication error: please login again"
+msgstr ""
+
+#: agrammon/io/remote/Rpc.js
+msgid "Session expired: please login again"
+msgstr ""
+
+#: agrammon/io/remote/Rpc.js
+msgid "Error %1: %2 please login again"
+msgstr ""
