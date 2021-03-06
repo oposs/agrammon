@@ -106,7 +106,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                         new agrammon.module.user.Login(qx.locale.Manager.tr("Session expired: please login again")).open();
                         break;
                     default:
-                        new agrammon.module.user.Login(qx.locale.Manager.tr("Error %1: %2 please login again", status, statusText)).open();
+                        new agrammon.module.user.Login(qx.locale.Manager.tr("Error %1: %2 - please login again", status, statusText)).open();
                         break;
                     }
                 }
