@@ -124,7 +124,8 @@ transactionally {
     }
 
     subtest "Branching over inputs from submodule AnotherSub and AnotherSub2" => {
-        my @instances = @instancesB.sort({ .<flat-b>, .<flat-a> given .input-hash-for('Test::Base::AnotherSub') });
+        my @instances = @instancesB;
+        @instances .= sort({ .input-hash-for('Test::Base::AnotherSub2')<flat-b>, .input-hash-for('Test::Base::AnotherSub')<flat-a> });
         is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
                 { dist-me => 120, simple => 42 }, 'Correct distribution value for first branched input';
         is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub'),
@@ -132,29 +133,29 @@ transactionally {
         is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub2'),
                 { flat-b => 'a' }, 'Correct enum value for first branched input from second submodule';
         is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
-                { dist-me => 120, simple => 42 }, 'Correct distribution value for second branched input';
+                { dist-me => 180, simple => 42 }, 'Correct distribution value for second branched input';
         is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
-                { flat-a => 'x', simple => 101 }, 'Correct enum value for second branched input from first submodule';
+                { flat-a => 'y', simple => 101 }, 'Correct enum value for second branched input from first submodule';
         is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub2'),
-                { flat-b => 'b' }, 'Correct enum value for second branched input from second submodule';
+                { flat-b => 'a' }, 'Correct enum value for second branched input from second submodule';
         is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
-                { dist-me => 180, simple => 42 }, 'Correct distribution value for third branched input';
+                { dist-me => 80, simple => 42 }, 'Correct distribution value for third branched input';
         is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
-                { flat-a => 'y', simple => 101 }, 'Correct enum value for third branched input from first submodule';
+                { flat-a => 'z', simple => 101 }, 'Correct enum value for third branched input from first submodule';
         is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub2'),
                 { flat-b => 'a' }, 'Correct enum value for third branched input from second submodule';
         is-deeply @instances[3].input-hash-for('Test::Base::Sub'),
-                { dist-me => 200, simple => 42 }, 'Correct distribution value for fourth branched input';
+                { dist-me => 120, simple => 42 }, 'Correct distribution value for fourth branched input';
         is-deeply @instances[3].input-hash-for('Test::Base::AnotherSub'),
-                { flat-a => 'y', simple => 101 }, 'Correct enum value for fourth branched input from first submodule';
+                { flat-a => 'x', simple => 101 }, 'Correct enum value for fourth branched input from first submodule';
         is-deeply @instances[3].input-hash-for('Test::Base::AnotherSub2'),
                 { flat-b => 'b' }, 'Correct enum value for fourth branched input from second submodule';
         is-deeply @instances[4].input-hash-for('Test::Base::Sub'),
-                { dist-me => 80, simple => 42 }, 'Correct distribution value for fifth branched input from first submodule';
+                { dist-me => 200, simple => 42 }, 'Correct distribution value for fifth branched input from first submodule';
         is-deeply @instances[4].input-hash-for('Test::Base::AnotherSub'),
-                { flat-a => 'z', simple => 101 }, 'Correct enum value for fifth branched input from second submodule';
+                { flat-a => 'y', simple => 101 }, 'Correct enum value for fifth branched input from second submodule';
         is-deeply @instances[4].input-hash-for('Test::Base::AnotherSub2'),
-                { flat-b => 'a' }, 'Correct enum value for fifth branched input';
+                { flat-b => 'b' }, 'Correct enum value for fifth branched input';
         is-deeply @instances[5].input-hash-for('Test::Base::Sub'),
                 { dist-me => 300, simple => 42 }, 'Correct distribution value for sixth branched input';
         is-deeply @instances[5].input-hash-for('Test::Base::AnotherSub'),
