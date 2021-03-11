@@ -123,44 +123,43 @@ transactionally {
                 { flat-a => 'z', flat-b => 'b', simple => 101 }, 'Correct enum value for sixth branched input';
     }
 
-    subtest "Branching over inputs from submodule AnotherSub and AnotherSub2" => {
-        my @instances = @instancesB;
-        @instances .= sort({ .input-hash-for('Test::Base::AnotherSub2')<flat-b>, .input-hash-for('Test::Base::AnotherSub')<flat-a> });
+    subtest "Branching over inputs from submodules AnotherSubA and AnotherSubB" => {
+        my @instances = @instancesB.sort({ .input-hash-for('Test::Base::AnotherSubB')<flat-b>, .input-hash-for('Test::Base::AnotherSubA')<flat-a> });
         is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
                 { dist-me => 120, simple => 42 }, 'Correct distribution value for first branched input';
-        is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub'),
+        is-deeply @instances[0].input-hash-for('Test::Base::AnotherSubA'),
                 { flat-a => 'x',  simple => 101 }, 'Correct enum value for first branched input from first submodule';
-        is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub2'),
+        is-deeply @instances[0].input-hash-for('Test::Base::AnotherSubB'),
                 { flat-b => 'a' }, 'Correct enum value for first branched input from second submodule';
         is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
-                { dist-me => 180, simple => 42 }, 'Correct distribution value for second branched input';
-        is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
+                { dist-me => 80, simple => 42 }, 'Correct distribution value for second branched input';
+        is-deeply @instances[1].input-hash-for('Test::Base::AnotherSubA'),
                 { flat-a => 'y', simple => 101 }, 'Correct enum value for second branched input from first submodule';
-        is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub2'),
+        is-deeply @instances[1].input-hash-for('Test::Base::AnotherSubB'),
                 { flat-b => 'a' }, 'Correct enum value for second branched input from second submodule';
         is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
-                { dist-me => 80, simple => 42 }, 'Correct distribution value for third branched input';
-        is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
+                { dist-me => 200, simple => 42 }, 'Correct distribution value for third branched input';
+        is-deeply @instances[2].input-hash-for('Test::Base::AnotherSubA'),
                 { flat-a => 'z', simple => 101 }, 'Correct enum value for third branched input from first submodule';
-        is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub2'),
+        is-deeply @instances[2].input-hash-for('Test::Base::AnotherSubB'),
                 { flat-b => 'a' }, 'Correct enum value for third branched input from second submodule';
         is-deeply @instances[3].input-hash-for('Test::Base::Sub'),
-                { dist-me => 120, simple => 42 }, 'Correct distribution value for fourth branched input';
-        is-deeply @instances[3].input-hash-for('Test::Base::AnotherSub'),
+                { dist-me => 180, simple => 42 }, 'Correct distribution value for fourth branched input';
+        is-deeply @instances[3].input-hash-for('Test::Base::AnotherSubA'),
                 { flat-a => 'x', simple => 101 }, 'Correct enum value for fourth branched input from first submodule';
-        is-deeply @instances[3].input-hash-for('Test::Base::AnotherSub2'),
+        is-deeply @instances[3].input-hash-for('Test::Base::AnotherSubB'),
                 { flat-b => 'b' }, 'Correct enum value for fourth branched input from second submodule';
         is-deeply @instances[4].input-hash-for('Test::Base::Sub'),
-                { dist-me => 200, simple => 42 }, 'Correct distribution value for fifth branched input from first submodule';
-        is-deeply @instances[4].input-hash-for('Test::Base::AnotherSub'),
+                { dist-me => 120, simple => 42 }, 'Correct distribution value for fifth branched input from first submodule';
+        is-deeply @instances[4].input-hash-for('Test::Base::AnotherSubA'),
                 { flat-a => 'y', simple => 101 }, 'Correct enum value for fifth branched input from second submodule';
-        is-deeply @instances[4].input-hash-for('Test::Base::AnotherSub2'),
+        is-deeply @instances[4].input-hash-for('Test::Base::AnotherSubB'),
                 { flat-b => 'b' }, 'Correct enum value for fifth branched input';
         is-deeply @instances[5].input-hash-for('Test::Base::Sub'),
                 { dist-me => 300, simple => 42 }, 'Correct distribution value for sixth branched input';
-        is-deeply @instances[5].input-hash-for('Test::Base::AnotherSub'),
+        is-deeply @instances[5].input-hash-for('Test::Base::AnotherSubA'),
                 { flat-a => 'z', simple => 101 }, 'Correct enum value for sixth branched input from first submodule';
-        is-deeply @instances[5].input-hash-for('Test::Base::AnotherSub2'),
+        is-deeply @instances[5].input-hash-for('Test::Base::AnotherSubB'),
                 { flat-b => 'b' }, 'Correct enum value for sixth branched input from second submodule';
     }
 };
@@ -274,13 +273,13 @@ sub prepare-test-db-branched-data($user, $dataset) {
     # branch over inputs from different submodules
     $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::Sub::dist-me', 1000);
     $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::Sub::simple', 42);
-    given $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSub::flat-a', 'branched').value -> $id {
+    given $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSubA::flat-a', 'branched').value -> $id {
         $sth-branch.execute($id, '{12,18,8,12,20,30}', '{x,y,z}');
     };
-    given $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSub2::flat-b', 'branched').value -> $id {
+    given $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSubB::flat-b', 'branched').value -> $id {
         $sth-branch.execute($id, '{12,18,8,12,20,30}', '{a,b}');
     };
-    $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSub::simple', 101);
+    $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSubA::simple', 101);
 }
 
 sub prepare-test-db-schema($db, $user) {
