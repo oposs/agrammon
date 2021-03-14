@@ -194,6 +194,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
         my $ds = self!create-dataset( $new-dataset, $new-username, $!version, $!model);
         self.with-db: -> $db {
+            # clone inputs
             $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset);
                 INSERT INTO data_new (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
                      SELECT $1, data_var, data_instance, data_val, data_instance_order, data_comment
@@ -201,7 +202,35 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                       WHERE data_dataset = dataset_name2id($2, $3)
             SQL
 
+            # get branched inputs from new dataset
+            my @rows = $db.query(q:to/SQL/, $old-username, $new-dataset).arrays;
+            SELECT data_id
+              FROM data_new LEFT JOIN branches ON (branches_var=data_id)
+             WHERE data_dataset=dataset_name2id($1,$2)
+               AND data_val = 'branched'
+             ORDER BY data_instance, data_id -- don't change sort order!!!
+            SQL
+
+            # get branch data from old dataset
+            my @data = $db.query(q:to/SQL/, $old-username, $old-dataset).arrays;
+                SELECT branches_data, branches_options, data_var
+                  FROM data_new LEFT JOIN branches ON (branches_var=data_id)
+                 WHERE data_dataset = dataset_name2id($1, $2) AND branches_data is not null
+              ORDER BY data_instance, data_id -- don't change sort order!!!
+            SQL
+
+            # clone branching data (rows from new and data from old dataset)
+            my $n = 0;
+            for @data -> $data {
+                $db.query(q:to/SQL/, @rows[$n], $data[0], $data[1]);
+                    INSERT INTO branches (branches_var, branches_data, branches_options)
+                       VALUES ($1, $2, $3)
+                SQL
+                $n++;
+            }
+
             CATCH {
+                note $_;
                 die X::Agrammon::DB::Dataset::CloneFailed.new(:$old-username, :$new-username, :$old-dataset, :$new-dataset);
             }
         }
@@ -583,7 +612,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                  WHERE data_dataset=dataset_name2id($1,$2)
                    AND data_var IN ($3,$4)
                    AND data_instance = $5
-                   ORDER BY data_id
+                   ORDER BY data_instance, data_id
             SQL
         }
 
