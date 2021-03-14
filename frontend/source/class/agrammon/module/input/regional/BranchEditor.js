@@ -263,13 +263,13 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
         __storeBranchData: function() {
             this.__table.stopEditing();
             var datasetName = this.__info.getDatasetName() + '';
-            var data = [], rData, tData = this.__table.getTableModel().getData();
+            var data = [], cData, tData = this.__table.getTableModel().getData();
             var data1 = [];
             var row, col, vars = [], options = {}, total=0;
             var allNull = true;
-            for (row=0; row<this.__nRows; row++) { // row=0 is first data row
-                rData = [];
-                for (col=0; col<this.__nCols; col++) {
+            for (col=0; col<this.__nCols; col++) {
+                cData = [];
+                for (row=0; row<this.__nRows; row++) { // row=0 is first data row
                     if (!tData[row][col+1]) {
                         tData[row][col+1] = 0;
                     }
@@ -277,10 +277,10 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
                         allNull = false;
                     }
                     total += Number(tData[row][col+1]);
-                    rData.push(tData[row][col+1]);
+                    cData.push(tData[row][col+1]);
                     data1.push(tData[row][col+1]); // need 1-dimensional array below
                 }
-                data.push(rData);
+                data.push(cData);
             }
             if ( ((total < 99.99) || (total>100.01)) && ! (allNull || (total==0))) {
                 qx.event.message.Bus.dispatchByName(
@@ -365,8 +365,8 @@ qx.Class.define('agrammon.module.input.regional.BranchEditor', {
                 }
                 var row, col, n=0;
                 var tm = this.__table.getTableModel();
-                for (row=0; row<this.__nRows; row++) {
-                    for (col=0; col<this.__nCols; col++) {
+                for (col=0; col<this.__nCols; col++) {
+                    for (row=0; row<this.__nRows; row++) {
                         tm.setValue(col+1, row, Number(fractions[n]));
                         n++;
                     }
