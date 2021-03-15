@@ -83,7 +83,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +pigs
   type = float
-  branch = true
+  distribute = true
   validator = ge(0);
   ++labels
     en = Number of animals
@@ -103,7 +103,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 +dimensioning_barn
   type = integer
-  adjustBranching = true
+  distribute = true
   ++labels 
     en = Number of available animal places
     de = Anzahl Tierplätze im Stall
