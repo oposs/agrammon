@@ -48,7 +48,7 @@ for "$test-root/CMilk.nhd", "$test-root/CMilk-crazy-ws.nhd" -> $module-file {
             is .help.keys.sort, <de en fr>, 'Correct help keys';
             is .help<fr>, '<p>Proposition de valeur standard: 6500 kg par an </p>',
                 'Correct help value';
-            nok .is-branch, 'This is not a branch input';
+            nok .is-distribute, 'This is not a distribution input';
         }
 
         my @technical = $model.technical;
@@ -166,8 +166,8 @@ subtest "Loading $module-file" => {
     ok $parsed, "Successfully parsed $module-file";
     my $model = $parsed.ast;
     isa-ok $model, Agrammon::Model::Module, 'Parsing results in a Module';
-    nok $model.input[0].is-branch, 'First input is not a branch';
-    ok $model.input[1].is-branch, 'First input is a branch';
+    nok $model.input[0].is-distribute, 'First input is not a distribution input';
+    ok $model.input[1].is-distribute, 'First input is a distribution input';
 }
 
 done-testing;

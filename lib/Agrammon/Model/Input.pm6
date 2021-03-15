@@ -20,19 +20,19 @@ class Agrammon::Model::Input {
     has @!enum-order;
     has %!enum-lookup;
     has Int $.order;
-    has Bool $!branch = False;
+    has Bool $!distribute = False;
     has Bool $!filter = False;
 
-    submethod TWEAK(:$default_calc, :$default_gui, :$branch, :$filter, :@enum --> Nil) {
+    submethod TWEAK(:$default_calc, :$default_gui, :$distribute, :$filter, :@enum --> Nil) {
         with $default_calc {
             $!default-calc = val($_);
         }
         with $default_gui {
             $!default-gui = val($_);
         }
-        with $branch {
+        with $distribute {
             if .lc eq 'true' {
-                $!branch = True;
+                $!distribute = True;
             }
         }
         if @enum {
@@ -50,7 +50,7 @@ class Agrammon::Model::Input {
 
     method enum-ordered(--> Array) { @!enum-order }
 
-    method is-branch(--> Bool) { $!branch }
+    method is-distribute(--> Bool) { $!distribute }
 
     method is-filter(--> Bool) { $!filter }
 
