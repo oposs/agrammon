@@ -17,7 +17,7 @@ taxonomy = Simple::Sub1
 +sub1Input1
   type = integer
   validator = ge(0)
-#  branch = true
+#  distribute = true
   ++labels
     en = Input1
     de = Eingabe1

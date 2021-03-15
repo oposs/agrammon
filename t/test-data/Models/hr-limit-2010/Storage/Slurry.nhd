@@ -27,7 +27,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
 
 +volume
   type  = float
-  branch = true
+  distribute = true
   ++labels
     en = Volume of slurry store (without channels and gutters)
     de = Volumen des Güllelagers

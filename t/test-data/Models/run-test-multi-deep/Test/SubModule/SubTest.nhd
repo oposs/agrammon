@@ -17,7 +17,7 @@ taxonomy = Test::SubModule::SubTest
 +kids
   type = integer
   validator = ge(0)
-  branch = true
+  distribute = true
   ++labels
     en = Monkey kids
     de = Affenkinder
