@@ -203,10 +203,10 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             SQL
 
             # get branched inputs from new dataset
-            my @rows = $db.query(q:to/SQL/, $old-username, $new-dataset).arrays;
+            my @rows = $db.query(q:to/SQL/, $ds<id>).arrays;
             SELECT data_id
               FROM data_new LEFT JOIN branches ON (branches_var=data_id)
-             WHERE data_dataset=dataset_name2id($1,$2)
+             WHERE data_dataset=$1
                AND data_val = 'branched'
              ORDER BY data_instance, data_id -- don't change sort order!!!
             SQL
@@ -220,13 +220,11 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             SQL
 
             # clone branching data (rows from new and data from old dataset)
-            my $n = 0;
-            for @data -> $data {
-                $db.query(q:to/SQL/, @rows[$n], $data[0], $data[1]);
+            for flat @data Z @rows -> $data, $row {
+                $db.query(q:to/SQL/, $row, $data[0], $data[1]);
                     INSERT INTO branches (branches_var, branches_data, branches_options)
                        VALUES ($1, $2, $3)
                 SQL
-                $n++;
             }
 
             CATCH {
