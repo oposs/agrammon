@@ -448,31 +448,33 @@ class Agrammon::Model {
     }
 
     method distribution-map() {
-        $!distribution-map-cache ||= %(gather {
-            sub walk-to-instance(ModuleRunner $current) {
-                if $current.module.is-multi {
-                    walk-instance($current, $current.module.taxonomy);
+        $!distribution-map-cache ||= do {
+            my \distributables = gather {
+                sub walk-to-instance(ModuleRunner $current) {
+                    if $current.module.is-multi {
+                        walk-instance($current, $current.module.taxonomy);
+                    }
+                    else {
+                        for $current.dependencies {
+                            walk-to-instance($_);
+                        }
+                    }
                 }
-                else {
+                sub walk-instance(ModuleRunner $current, Str $base) {
+                    for $current.module.input {
+                        if .is-distribute {
+                            take $base => $current.module.taxonomy ~ '::' ~ .name;
+                        }
+                    }
                     for $current.dependencies {
-                        walk-to-instance($_);
+                        walk-instance($_, $base);
                     }
                 }
+                walk-to-instance($!entry-point);
             }
-            sub walk-instance(ModuleRunner $current, Str $base) {
-                for $current.module.input {
-                    if .is-distribute {
-                        take $base => $current.module.taxonomy ~ '::' ~ .name;
-                        return True;
-                    }
-                }
-                for $current.dependencies {
-                    return True if walk-instance($_, $base);
-                }
-                return False;
-            }
-            walk-to-instance($!entry-point);
-        });
+            my %result;
+            distributables.categorize(*.key, :as(*.value), :into(%result))
+        };
         %$!distribution-map-cache
     }
 

@@ -271,14 +271,22 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         }
     }
 
-    method to-inputs(%dist-map) {
+    #| Produces an Agrammon::Inputs where instances are synthesized based on branching
+    #| and flattening. The %dist-map parameter indicates which input(s) are to have
+    #| their total values distributed over the flattening/branching inputs; it is
+    #| expected to be a hash whose keys are the taxonomy of multi-module we are to
+    #| produce instances of, and the values are a list of fully-qualified inputs that
+    #| are to be distributed.
+    method to-inputs(%dist-map --> Agrammon::Inputs) {
         my $inputs = Agrammon::Inputs.new(:$!simulation-name, :$!dataset-id);
         for %!distributed-by-taxonomy.kv -> $taxonomy, %instances {
-            unless %dist-map{$taxonomy}:exists {
-                die X::Agrammon::Inputs::Distribution::MissingDistributionInput.new(:$taxonomy);
+            with %dist-map{$taxonomy} -> @distribute-over {
+                for %instances.kv -> $instance-id, @distribute {
+                    self!distribute($taxonomy, $instance-id, @distribute-over, @distribute, $inputs);
+                }
             }
-            for %instances.kv -> $instance-id, @distribute {
-                self!distribute($taxonomy, $instance-id, %dist-map{$taxonomy}, @distribute, $inputs);
+            else {
+                die X::Agrammon::Inputs::Distribution::MissingDistributionInput.new(:$taxonomy);
             }
         }
         for %!multi-input-lookup.kv -> $taxonomy, %instances {
@@ -294,7 +302,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         return $inputs;
     }
 
-    method !distribute(Str $taxonomy, Str $instance-id, Str $dist-over, @distribute,
+    method !distribute(Str $taxonomy, Str $instance-id, @distribute-over, @distribute,
             Agrammon::Inputs $target --> Nil) {
         # Get instance input data, and remove the instance we'll distribute.
         my $dist-instance = %!multi-input-lookup{$taxonomy}{$instance-id};
@@ -304,18 +312,27 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
             @filter .= grep(* !=== $dist-instance);
         }
 
-        # Get details of the field we distribute over, and remove it.
-        my $dist-name = $dist-over.substr($dist-over.rindex('::') + 2);
-        my $dist-taxonomy = $dist-over.substr(0, $dist-over.chars - ($dist-name.chars + 2));
-        my $dist-sub-taxonomy = $dist-taxonomy eq $taxonomy
-                ?? ''
-                !! $dist-taxonomy.substr($taxonomy.chars + 2);
-        my $dist-total = do with %instance-input{$dist-taxonomy}{$dist-name}:delete {
-            $_
+        # Get details of the inputs we distribute over, and remove them.
+        my class DistributableValue {
+            has Str $.dist-name is required;
+            has Str $.dist-sub-taxonomy is required;
+            has Int $.dist-total is required;
         }
-        else {
-            die X::Agrammon::Inputs::Distribution::MissingDistributionValue.new:
-                    taxonomy => $dist-taxonomy, input-name => $dist-name;
+        my @distributable-values;
+        for @distribute-over -> $dist-over {
+            my $dist-name = $dist-over.substr($dist-over.rindex('::') + 2);
+            my $dist-taxonomy = $dist-over.substr(0, $dist-over.chars - ($dist-name.chars + 2));
+            my $dist-sub-taxonomy = $dist-taxonomy eq $taxonomy
+                    ?? ''
+                    !! $dist-taxonomy.substr($taxonomy.chars + 2);
+            my $dist-total = do with %instance-input{$dist-taxonomy}{$dist-name}:delete {
+                $_
+            }
+            else {
+                die X::Agrammon::Inputs::Distribution::MissingDistributionValue.new:
+                        taxonomy => $dist-taxonomy, input-name => $dist-name;
+            }
+            @distributable-values.push: DistributableValue.new(:$dist-name, :$dist-sub-taxonomy, :$dist-total);
         }
 
         # Create distributed instances.
@@ -323,8 +340,10 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         for cross(@distribute.map(*.distribution-products)) -> $products {
             my $dist-instance-id = "$instance-id {$instance-number++}";
             my $comp-percentage = [*] $products.map(*.percentage / 100);
-            $target.add-multi-input($taxonomy, $dist-instance-id, $dist-sub-taxonomy, $dist-name,
-                    ($comp-percentage * $dist-total).narrow);
+            for @distributable-values {
+                $target.add-multi-input($taxonomy, $dist-instance-id, .dist-sub-taxonomy, .dist-name,
+                        ($comp-percentage * .dist-total).narrow);
+            }
             for flat $products.map(*.values) {
                 $target.add-multi-input($taxonomy, $dist-instance-id, .sub-taxonomy,
                         .input-name, .value);
