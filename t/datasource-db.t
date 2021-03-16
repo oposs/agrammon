@@ -4,7 +4,7 @@ use Agrammon::DataSource::DB;
 use DB::Pg;
 use Test;
 
-plan 29;
+plan 21;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -50,40 +50,69 @@ transactionally {
 transactionally {
     lives-ok { prepare-test-db-flattened-data($ag-user, $ag-dataset) }, 'Flattened test database prepared';
 
-    my $ds = Agrammon::DataSource::DB.new;
-    my $dataset = $ds.read($ag-user, $ag-dataset, { 'Test::Base' => 'Test::Base::Sub::dist-me' });
-    isa-ok $dataset, Agrammon::Inputs, 'Correct type';
-    is $dataset.simulation-name, 'DB', 'Correct simulation name';
-    is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
+        my $ds = Agrammon::DataSource::DB.new;
+        my $dataset = $ds.read($ag-user, $ag-dataset, {
+            'Test::Base' => ['Test::Base::Sub::dist-me'],
+            'Test::Base2' => ['Test::Base2::Sub::dist-meA', 'Test::Base2::Sub::dist-meB']
+        });
+        isa-ok $dataset, Agrammon::Inputs, 'Correct type';
+        is $dataset.simulation-name, 'DB', 'Correct simulation name';
+        is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
 
-    my @instances = $dataset.inputs-list-for('Test::Base');
-    is @instances.elems, 3, 'Produced 3 instances from the distribution loaded from DB';
-    @instances .= sort(*.input-hash-for('Test::Base::AnotherSub').<flat-a>);
-    is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
-            { dist-me => 300, simple => 42 }, 'Correct distribution value for first flattened input';
-    is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub'),
-            { flat-a => 'x', simple => 101 }, 'Correct enum value for first flattened input';
-    is-deeply @instances[0].input-hash-for('Test::Base::Retained'),
-            { simple => 13 }, 'Non-distributed instance data was correctly loaded';
-    is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
-            { dist-me => 200, simple => 42 }, 'Correct distribution value for second flattened input';
-    is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
-            { flat-a => 'y_y', simple => 101 }, 'Correct enum value for second flattened input with _ in enum';
-    is-deeply @instances[1].input-hash-for('Test::Base::Retained'),
-            { simple => 13 }, 'Non-distributed instance data was correctly loaded';
-    is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
-            { dist-me => 500, simple => 42 }, 'Correct distribution value for third flattened input';
-    is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
-            { flat-a => 'z_z', simple => 101 }, 'Correct enum value for third flattened input with space in enum';
-    is-deeply @instances[2].input-hash-for('Test::Base::Retained'),
-            { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+    subtest "Flattening, distributing one input" => {
+        my @instances = $dataset.inputs-list-for('Test::Base');
+        is @instances.elems, 3, 'Produced 3 instances from the distribution loaded from DB';
+        @instances .= sort(*.input-hash-for('Test::Base::AnotherSub').<flat-a>);
+        is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
+                { dist-me => 300, simple => 42 }, 'Correct distribution value for first flattened input';
+        is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'x', simple => 101 }, 'Correct enum value for first flattened input';
+        is-deeply @instances[0].input-hash-for('Test::Base::Retained'),
+                { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+        is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
+                { dist-me => 200, simple => 42 }, 'Correct distribution value for second flattened input';
+        is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'y_y', simple => 101 }, 'Correct enum value for second flattened input with _ in enum';
+        is-deeply @instances[1].input-hash-for('Test::Base::Retained'),
+                { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+        is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
+                { dist-me => 500, simple => 42 }, 'Correct distribution value for third flattened input';
+        is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'z_z', simple => 101 }, 'Correct enum value for third flattened input with space in enum';
+        is-deeply @instances[2].input-hash-for('Test::Base::Retained'),
+                { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+    }
+
+    subtest "Flattening, distributing two inputs" => {
+        my @instances = $dataset.inputs-list-for('Test::Base2');
+        is @instances.elems, 3, 'Produced 3 instances from the distribution loaded from DB';
+        @instances .= sort(*.input-hash-for('Test::Base2::AnotherSub').<flat-a>);
+        is-deeply @instances[0].input-hash-for('Test::Base2::Sub'),
+                { dist-meA => 300, :dist-meB(600), simple => 42 }, 'Correct distribution value for first flattened input';
+        is-deeply @instances[0].input-hash-for('Test::Base2::AnotherSub'),
+                { flat-a => 'x', :simple(101) }, 'Correct enum value for first flattened input';
+        is-deeply @instances[0].input-hash-for('Test::Base2::Retained'),
+                { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+        is-deeply @instances[1].input-hash-for('Test::Base2::Sub'),
+                { dist-meA => 200, :dist-meB(400), simple => 42 }, 'Correct distribution value for second flattened input';
+        is-deeply @instances[1].input-hash-for('Test::Base2::AnotherSub'),
+                { flat-a => 'y_y', :simple(101)}, 'Correct enum value for second flattened input with _ in enum';
+        is-deeply @instances[1].input-hash-for('Test::Base2::Retained'),
+                { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+        is-deeply @instances[2].input-hash-for('Test::Base2::Sub'),
+                { dist-meA => 500, :dist-meB(1000), simple => 42 }, 'Correct distribution value for third flattened input';
+        is-deeply @instances[2].input-hash-for('Test::Base2::AnotherSub'),
+                { flat-a => 'z_z', :simple(101) }, 'Correct enum value for third flattened input with space in enum';
+        is-deeply @instances[2].input-hash-for('Test::Base2::Retained'),
+                { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+    }
 }
 
 transactionally {
     lives-ok { prepare-test-db-branched-data($ag-user, $ag-dataset) }, 'Branched test database prepared';
 
     my $ds = Agrammon::DataSource::DB.new;
-    my $dataset = $ds.read($ag-user, $ag-dataset, { 'Test::Base' => 'Test::Base::Sub::dist-me' });
+    my $dataset = $ds.read($ag-user, $ag-dataset, { 'Test::Base' => ['Test::Base::Sub::dist-me'] });
     isa-ok $dataset, Agrammon::Inputs, 'Correct type';
     is $dataset.simulation-name, 'DB', 'Correct simulation name';
     is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
@@ -228,6 +257,16 @@ sub prepare-test-db-flattened-data($user, $dataset) {
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened02_z z', 50);
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::simple', 101);
     $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Retained::simple', 13);
+
+    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::Sub::dist-meA', 1000);
+    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::Sub::dist-meB', 2000);
+    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::Sub::simple', 42);
+    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::flat-a', 'flattened');
+    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::flat-a_flattened00_x', 30);
+    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::flat-a_flattened01_y_y', 20);
+    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::flat-a_flattened01_z z', 50);
+    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::simple', 101);
+    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::Retained::simple', 13);
 }
 
 sub prepare-test-db-branched-data($user, $dataset) {
