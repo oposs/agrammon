@@ -450,24 +450,29 @@ class Agrammon::Model {
     method distribution-map() {
         $!distribution-map-cache ||= do {
             my \distributables = gather {
+                my %seen{ModuleRunner};
                 sub walk-to-instance(ModuleRunner $current) {
                     if $current.module.is-multi {
                         walk-instance($current, $current.module.taxonomy);
                     }
                     else {
+                        return if %seen{$current}++;
                         for $current.dependencies {
                             walk-to-instance($_);
                         }
                     }
                 }
                 sub walk-instance(ModuleRunner $current, Str $base) {
+                    return if %seen{$current}++;
                     for $current.module.input {
                         if .is-distribute {
                             take $base => $current.module.taxonomy ~ '::' ~ .name;
                         }
                     }
                     for $current.dependencies {
-                        walk-instance($_, $base);
+                        if .module.taxonomy.starts-with($base) {
+                            walk-instance($_, $base);
+                        }
                     }
                 }
                 walk-to-instance($!entry-point);
@@ -477,5 +482,4 @@ class Agrammon::Model {
         };
         %$!distribution-map-cache
     }
-
 }
