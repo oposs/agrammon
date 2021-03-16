@@ -31,9 +31,7 @@ class Agrammon::Model::Input {
             $!default-gui = val($_);
         }
         with $distribute {
-            if .lc eq 'true' {
-                $!distribute = True;
-            }
+            $!distribute = .lc eq 'true';
         }
         if @enum {
             @!enum-order = @enum.map({ .key => parse-lang-values(.value, "input $!name") });
