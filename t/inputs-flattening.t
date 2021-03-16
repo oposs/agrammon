@@ -57,7 +57,7 @@ throws-like
             given Agrammon::Inputs::Distribution.new -> $dist {
                 $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-a',
                         {x => 30, y => 20, z => 50 });
-                $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+                $dist.to-inputs({ 'Test::Base' => ['Test::Base::Sub::dist-me'] });
                 CATCH { .note }
             }
         },
@@ -72,7 +72,7 @@ subtest '1 flattened input' => {
                 {x => 30, y => 20, z => 50 });
         $dist.add-multi-input('Test::Base', 'Instance A', 'AnotherSub', 'simple', 101);
         $dist.add-multi-input('Test::Base', 'Instance A', 'Retained', 'simple', 13);
-        my $inputs = $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+        my $inputs = $dist.to-inputs({ 'Test::Base' => ['Test::Base::Sub::dist-me'] });
         my @instances = $inputs.inputs-list-for('Test::Base');
         is @instances.elems, 3, 'Produced 3 instances from the distribution';
         @instances .= sort(*.input-hash-for('Test::Base::AnotherSub').<flat-a>);
@@ -106,7 +106,7 @@ subtest '2 flattened inputs' => {
         $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-b',
                 {a => 40, b => 60 });
         $dist.add-multi-input('Test::Base', 'Instance A', 'AnotherSub', 'simple', 101);
-        my $inputs = $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+        my $inputs = $dist.to-inputs({ 'Test::Base' => ['Test::Base::Sub::dist-me'] });
         my @instances = $inputs.inputs-list-for('Test::Base');
         is @instances.elems, 6, 'Produced 6 instances from the distribution';
         @instances .= sort({ .<flat-b>, .<flat-a> given .input-hash-for('Test::Base::AnotherSub') });
@@ -148,7 +148,7 @@ subtest '3 flattened inputs' => {
         $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-c',
                 {c => 70, d => 30 });
         $dist.add-multi-input('Test::Base', 'Instance A', 'AnotherSub', 'simple', 101);
-        my $inputs = $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+        my $inputs = $dist.to-inputs({ 'Test::Base' => ['Test::Base::Sub::dist-me'] });
         my @instances = $inputs.inputs-list-for('Test::Base');
         is @instances.elems, 8, 'Produced 8 instances from the distribution';
         @instances .= sort({ .<flat-a>, .<flat-b>, .<flat-c> given .input-hash-for('Test::Base::AnotherSub') });
@@ -206,7 +206,7 @@ subtest 'Non-flattened instances and non-instance data exist in produced model' 
         $dist.add-multi-input('Test::Base', 'Instance B', 'Sub', 'dist-me', 400);
         $dist.add-multi-input('Test::Base', 'Instance B', 'Sub', 'simple', 101);
         $dist.add-multi-input('Test::Base', 'Instance B', 'AnotherSub', 'flat-a', 'z');
-        my $inputs = $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+        my $inputs = $dist.to-inputs({ 'Test::Base' => ['Test::Base::Sub::dist-me'] });
         my @instances = $inputs.inputs-list-for('Test::Base');
         is @instances.elems, 3, 'Produced 2 instances from the distribution and retained 1 other';
         @instances .= sort(*.input-hash-for('Test::Base::AnotherSub').<flat-a>);

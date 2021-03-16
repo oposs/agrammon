@@ -111,7 +111,7 @@ subtest '1 branched input' => {
                 'AnotherSub', 'flat-b', <a b>,
                 [[12,18], [8,12], [20,30]]);
         $dist.add-multi-input('Test::Base', 'Instance A', 'AnotherSub', 'simple', 101);
-        my $inputs = $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+        my $inputs = $dist.to-inputs({ 'Test::Base' => ['Test::Base::Sub::dist-me'] });
         my @instances = $inputs.inputs-list-for('Test::Base');
         is @instances.elems, 6, 'Produced 6 instances from the distribution';
         @instances .= sort({ .<flat-b>, .<flat-a> given .input-hash-for('Test::Base::AnotherSub') });
@@ -152,7 +152,7 @@ subtest '1 branched input with inputs from different modules' => {
                 [[12,18], [8,12], [20,30]]);
         $dist.add-multi-input('Test::Base', 'Instance A', 'AnotherSubA', 'simple', 101);
         $dist.add-multi-input('Test::Base', 'Instance A', 'AnotherSubB', 'simple', 99);
-        my $inputs = $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+        my $inputs = $dist.to-inputs({ 'Test::Base' => ['Test::Base::Sub::dist-me'] });
         my @instances = $inputs.inputs-list-for('Test::Base');
         is @instances.elems, 6, 'Produced 6 instances from the distribution';
         @instances .= sort({ .input-hash-for('Test::Base::AnotherSubB')<flat-b>, .input-hash-for('Test::Base::AnotherSubA')<flat-a> });
@@ -206,7 +206,7 @@ subtest '1 branched input and 1 flattened input' => {
         $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-c',
                 {c => 70, d => 30 });
         $dist.add-multi-input('Test::Base', 'Instance A', 'AnotherSub', 'simple', 101);
-        my $inputs = $dist.to-inputs({ 'Test::Base' => 'Test::Base::Sub::dist-me' });
+        my $inputs = $dist.to-inputs({ 'Test::Base' => ['Test::Base::Sub::dist-me'] });
         my @instances = $inputs.inputs-list-for('Test::Base');
         is @instances.elems, 8, 'Produced 8 instances from the distribution';
         @instances .= sort({ .<flat-a>, .<flat-b>, .<flat-c> given .input-hash-for('Test::Base::AnotherSub') });

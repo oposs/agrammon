@@ -282,7 +282,7 @@ subtest 'Model calculates distribution map correctly' => {
     my $model = Agrammon::Model.new(:$path);
     $model.load('Test');
     is-deeply $model.distribution-map,
-            { 'Test::SubModule' => 'Test::SubModule::SubTest::kids' },
+            { 'Test::SubModule' => ['Test::SubModule::SubTest::kids'] },
             'Correct distribution map indicating what to branch over';
 }
 
