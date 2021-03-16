@@ -461,7 +461,7 @@ class Agrammon::Model {
             }
             sub walk-instance(ModuleRunner $current, Str $base) {
                 for $current.module.input {
-                    if .is-branch {
+                    if .is-distribute {
                         take $base => $current.module.taxonomy ~ '::' ~ .name;
                         return True;
                     }

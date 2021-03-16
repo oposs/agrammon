@@ -117,7 +117,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 +animals
   type = integer
   validator = ge(0)
-  branch = true
+  distribute = true
   ++labels
     en = Number of animals
     de = Anzahl Tiere

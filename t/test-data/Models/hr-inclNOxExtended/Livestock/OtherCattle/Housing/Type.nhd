@@ -268,7 +268,7 @@ taxonomy = Livestock::OtherCattle::Housing::Type
 
 +dimensioning_barn
   type = integer
-  adjustBranching = true
+  distribute = true
   ++labels 
     en = Number of available animal places
     de = Anzahl Tierplätze im Stall

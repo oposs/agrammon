@@ -26,7 +26,7 @@ taxonomy = Livestock::OtherCattle::Housing::KArea
 
 +dimensioning_barn
   type = integer
-  adjustBranching = true
+  distribute = true
   ++labels 
     en = Dimensioning of barn
     de = Stallkapazitaet (Anzahl Tierplaetze der Kategorie) 
