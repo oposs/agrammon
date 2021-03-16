@@ -253,4 +253,45 @@ subtest '1 branched input and 1 flattened input' => {
     }
 }
 
+subtest '1 branched input with two distributables' => {
+    given Agrammon::Inputs::Distribution.new -> $dist {
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'dist-me-a', 1000);
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'dist-me-b', 2000);
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'simple', 42);
+        $dist.add-multi-input-branched('Test::Base', 'Instance A',
+                'AnotherSub', 'flat-a', <x y z>,
+                'AnotherSub', 'flat-b', <a b>,
+                [[12,18], [8,12], [20,30]]);
+        $dist.add-multi-input('Test::Base', 'Instance A', 'AnotherSub', 'simple', 101);
+        my $inputs = $dist.to-inputs({ 'Test::Base' => ['Test::Base::Sub::dist-me-a', 'Test::Base::Sub::dist-me-b'] });
+        my @instances = $inputs.inputs-list-for('Test::Base');
+        is @instances.elems, 6, 'Produced 6 instances from the distribution';
+        @instances .= sort({ .<flat-b>, .<flat-a> given .input-hash-for('Test::Base::AnotherSub') });
+        is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
+                { dist-me-a => 120, dist-me-b => 240, simple => 42 }, 'Correct distribution value for first branched input';
+        is-deeply @instances[0].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'x', flat-b => 'a', simple => 101 }, 'Correct enum value for first branched input';
+        is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
+                { dist-me-a => 80, dist-me-b => 160, simple => 42 }, 'Correct distribution value for second branched input';
+        is-deeply @instances[1].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'y', flat-b => 'a', simple => 101 }, 'Correct enum value for second branched input';
+        is-deeply @instances[2].input-hash-for('Test::Base::Sub'),
+                { dist-me-a => 200, dist-me-b => 400, simple => 42 }, 'Correct distribution value for third branched input';
+        is-deeply @instances[2].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'z', flat-b => 'a', simple => 101 }, 'Correct enum value for third branched input';
+        is-deeply @instances[3].input-hash-for('Test::Base::Sub'),
+                { dist-me-a => 180, dist-me-b => 360, simple => 42 }, 'Correct distribution value for fourth branched input';
+        is-deeply @instances[3].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'x', flat-b => 'b', simple => 101 }, 'Correct enum value for fourth branched input';
+        is-deeply @instances[4].input-hash-for('Test::Base::Sub'),
+                { dist-me-a => 120, dist-me-b => 240, simple => 42 }, 'Correct distribution value for fifth branched input';
+        is-deeply @instances[4].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'y', flat-b => 'b', simple => 101 }, 'Correct enum value for fifth branched input';
+        is-deeply @instances[5].input-hash-for('Test::Base::Sub'),
+                { dist-me-a => 300, dist-me-b => 600, simple => 42 }, 'Correct distribution value for sixth branched input';
+        is-deeply @instances[5].input-hash-for('Test::Base::AnotherSub'),
+                { flat-a => 'z', flat-b => 'b', simple => 101 }, 'Correct enum value for sixth branched input';
+    }
+}
+
 done-testing;
