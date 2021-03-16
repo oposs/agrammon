@@ -32,7 +32,8 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                 FROM data_new LEFT JOIN branches ON (data_id=branches_var)
                 WHERE data_dataset=dataset_name2id($1,$2)
                     AND data_var not like '%ignore'
-                ORDER BY data_instance, branches_data, data_var, data_val
+                -- order is important to get col/rows of branching right (see load/store branch data)
+                ORDER BY data_instance, branches_data, data_id, data_var, data_val
             STATEMENT
             my @rows = $results.arrays;
             my $dist-input = Agrammon::Inputs::Distribution.new(
