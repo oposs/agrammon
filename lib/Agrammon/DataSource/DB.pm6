@@ -23,6 +23,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
         has @.matrix is rw;
     }
 
+    # TODO: remove ignore condition after DB cleanup
     method read($user, Str $dataset, %distribution-map) {
         self.with-db: -> $db {
             my $results = $db.query(q:to/STATEMENT/, $user, $dataset);
@@ -32,8 +33,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                 FROM data_new LEFT JOIN branches ON (data_id=branches_var)
                 WHERE data_dataset=dataset_name2id($1,$2)
                     AND data_var not like '%ignore'
-                -- order is important to get col/rows of branching right (see load/store branch data)
-                ORDER BY data_instance, branches_data, data_id, data_var, data_val
+                ORDER BY data_instance, branches_var, data_var, data_val
             STATEMENT
             my @rows = $results.arrays;
             my $dist-input = Agrammon::Inputs::Distribution.new(
