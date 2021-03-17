@@ -97,6 +97,10 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                     if (!agrammon.Info.getInstance().getUserName()) {
                         params.push( { msg: 'agrammon.main.logout', data: null} );
                     }
+                    // no results
+                    if (methodName == 'get_output_variables') {
+                        qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
+                    }
                     qx.event.message.Bus.dispatchByName('error', params);
                 }
                 else {

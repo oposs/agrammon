@@ -42,6 +42,8 @@ qx.Class.define('agrammon.module.output.Reports', {
                                        this.__enabled, this);
         qx.event.message.Bus.subscribe('agrammon.Info.setModelVariant',
                                        this.__setModelVariant, this);
+        qx.event.message.Bus.subscribe('agrammon.Output.invalidate',
+                                       this.__setInValid, this);
 
 
         this.busyIcon = new qx.ui.basic.Atom('','agrammon/nh3.png');
@@ -286,6 +288,13 @@ qx.Class.define('agrammon.module.output.Reports', {
         tcm:                null,
         __logAreaOutput:    null,
         __logAreaReference: null,
+
+        __setInValid: function() {
+            this.busyIcon.setIcon('agrammon/nh3.png');
+            this.selectMenu.setEnabled(false);
+            this.selectLabel.setEnabled(false);
+            this.__clearTable();
+         },
 
         __addTextInput: function(form, name, value) {
             var input = document.createElement("input");

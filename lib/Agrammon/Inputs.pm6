@@ -106,11 +106,12 @@ class X::Agrammon::Inputs::Distribution::AlreadyBranched is Exception {
 
 class X::Agrammon::Inputs::Distribution::BadSum is Exception {
     has Str $.what;
+    has $.sum;
     has Str $.taxonomy;
     has Str $.instance-id;
     has Str $.input-name;
     method message() {
-        "$!what.tclc() does not sum to 100 for instance $!instance-id of $!input-name in $!taxonomy"
+        "$!what.tclc() sums to $!sum instead of 100 for instance $!instance-id of $!input-name in $!taxonomy"
     }
 }
 
@@ -220,9 +221,11 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
     method add-multi-input-flattened(Str $taxonomy, Str $instance-id, Str $sub-taxonomy,
             Str $input-name, %value-percentages --> Nil) {
         self!ensure-no-dupe($taxonomy, $instance-id, $sub-taxonomy, $input-name);
-        unless %value-percentages.values.sum == 100 {
+        my $sum = %value-percentages.values.sum;
+        unless $sum == 100 {
             die X::Agrammon::Inputs::Distribution::BadSum.new:
                     :what('flattened values'),
+                    :$sum,
                     :taxonomy($taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy)),
                     :$instance-id, :$input-name;
         }
@@ -242,9 +245,11 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                 :expected-rows(@input-values-a.elems), :expected-cols(@input-values-b.elems),
                 :bad-matrix(@matrix);
         }
-        unless @matrix.map(*.sum).sum == 100 {
+        my $sum = @matrix.map(*.sum).sum;
+        unless $sum == 100 {
             die X::Agrammon::Inputs::Distribution::BadSum.new:
                     :what('branch matrix'),
+                    :$sum,
                     :taxonomy(
                         $taxonomy ~ ("::$sub-taxonomy-a" if $sub-taxonomy-a)
                         ~ '/' ~
