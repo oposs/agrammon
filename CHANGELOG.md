@@ -1,5 +1,13 @@
 # Agrammon Change Log
 
+-  6.0.0-rc3, 2021-03-16, fritz.zaucker@oetiker.ch
+   - Allow distribution of multiple inputs
+     (e.g., animals and barn size)
+   - More efficient/faster branching/flattening
+   - Fix branching row/col order
+   - Copy branching fractions on dataset clone
+   - Handle simulation errors in frontend
+
 -  6.0.0-rc2, 2021-03-05, fritz.zaucker@oetiker.ch
   - Fix branching over multiple sub modules
   - Fix flattening
