@@ -111,7 +111,7 @@ class X::Agrammon::Inputs::Distribution::BadSum is Exception {
     has Str $.instance-id;
     has Str $.input-name;
     method message() {
-        "$!what.tclc() does sum to $!sum instead of 100 for instance $!instance-id of $!input-name in $!taxonomy"
+        "$!what.tclc() sums to $!sum instead of 100 for instance $!instance-id of $!input-name in $!taxonomy"
     }
 }
 
