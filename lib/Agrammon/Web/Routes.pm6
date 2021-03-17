@@ -327,6 +327,9 @@ sub api-routes (Str $schema, $ws) {
         }
         operation 'exportPDF', -> LoggedIn $user {
             request-body -> %params {
+                note "*** senderName:";
+                dd %params<senderName>;
+
                 my $pdf = $ws.get-pdf-export($user, %params);
                 # prevent header injection
                 my $filename = cleanup-filename "%params<datasetName>.pdf";
