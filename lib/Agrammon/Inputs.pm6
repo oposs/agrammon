@@ -181,6 +181,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                 DistributionProductElement.new:
                         :values(DistributionProductKey.new(:$!sub-taxonomy, :$!input-name, :$value)),
                         :$percentage
+                if $percentage # don't add empty instances
             }
         }
     }
@@ -201,12 +202,14 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         method distribution-products(--> Iterable) {
             gather for @!input-values-a.kv -> $i, $value-a {
                 for @!input-values-b.kv -> $j, $value-b {
+                    my $percentage = @!matrix[$i;$j];
                     take DistributionProductElement.new:
                         values => (
                             DistributionProductKey.new(:sub-taxonomy($!sub-taxonomy-a), :input-name($!input-name-a), :value($value-a)),
                             DistributionProductKey.new(:sub-taxonomy($!sub-taxonomy-b), :input-name($!input-name-b), :value($value-b))
                         ),
-                        percentage => @!matrix[$i;$j];
+                        :$percentage
+                    if $percentage # don't add empty instances
                 }
             }
         }
