@@ -65,6 +65,7 @@ qx.Class.define('agrammon.module.output.Output', {
             else {
                 msg = 'output';
             }
+//            console.log('getOutputFunc done for', msg);
             qx.event.message.Bus.dispatchByName('agrammon.Output.dataReady', msg);
         };
 
@@ -102,8 +103,7 @@ qx.Class.define('agrammon.module.output.Output', {
     },
 
 
-    members :
-    {
+    members : {
         __running: false,
         __oldTimeout: null,
         getOutputFunc: null,
@@ -122,12 +122,11 @@ qx.Class.define('agrammon.module.output.Output', {
         },
 
         __setInValid: function() {
-          if (this.outputIsValid) {
-              this.outputIsValid = false;
-              qx.event.message.Bus.dispatchByName('agrammon.Graphs.clear');
-              qx.event.message.Bus.dispatchByName('agrammon.Reports.clear');
-              this.__outputLog = null;
-          }
+            this.__running = false;
+            this.outputIsValid = false;
+            qx.event.message.Bus.dispatchByName('agrammon.Graphs.clear');
+            qx.event.message.Bus.dispatchByName('agrammon.Reports.clear');
+            this.__outputLog = null;
         },
 
         getDataset: function() {
@@ -148,13 +147,11 @@ qx.Class.define('agrammon.module.output.Output', {
 
         __getOutput: function(msg) {
             if (this.__running) {
-                this.debug('__getOutput(): already running');
                 return;
             }
             this.__running = true;
             this.debug('__getOutput(): starting calculation');
             this.outputIsValid = false;
-//            var dataset = msg.getData();
             var datasetName;
             if (this.__reference) {
                 datasetName = this.__info.getRefDatasetName();
