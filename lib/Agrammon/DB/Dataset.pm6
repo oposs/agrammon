@@ -292,8 +292,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                 $db.query(q:to/SQL/, $tag-id, $ds-id);
                     INSERT INTO tagds (tagds_tag, tagds_dataset)
                          VALUES       ($1, $2)
-                    ON CONFLICT ON CONSTRAINT tagds_tagds_dataset_key
-                    DO NOTHING
+                    ON CONFLICT (tagds_tag, tagds_dataset) DO NOTHING
                 SQL
                 CATCH {
                     # other DB failure
