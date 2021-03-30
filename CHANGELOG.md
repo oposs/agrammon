@@ -1,5 +1,11 @@
 # Agrammon Change Log
 
+-  6.0.0-rc4, 2021-03-30, fritz.zaucker@oetiker.ch
+   - Fix dataset tagging
+   - Fix recalc and report enabling
+   - Enable report summary
+   - Fix model warnings
+
 -  6.0.0-rc3, 2021-03-16, fritz.zaucker@oetiker.ch
    - Allow distribution of multiple inputs
      (e.g., animals and barn size)
