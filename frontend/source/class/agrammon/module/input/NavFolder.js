@@ -505,14 +505,9 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         },
 
         setDataset: function(newData, handleIgnore, storeAll) {
-//            this.debug('setDataset(): folderName='+this.getName());
-//            for (i=0; i<newData.length; i++) {
-//                this.debug('setDataset: '+newData[i].getName());
-//            }
             var i;
             this.__propData = new Array;
             var len = newData.length;
-//            this.debug('setDataset(): len='+len);
             // FIX ME
             var noCheck = true;
             var data;
