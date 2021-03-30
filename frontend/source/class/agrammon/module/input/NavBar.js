@@ -715,7 +715,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             // FIX: this assumes no instances on top level!
             if (isToplevel) { // create top level entry
                 folderName  = guiNode;
-                navFolder = this.__createNavFolder(guiLabels, 'isPlain', null, folderName, instanceOrder);
+                navFolder = this.__createNavFolder(guiLabels, 'isTop', null, folderName, instanceOrder);
                 parentName = 'root';
                 parent = this.__navHash['root']['folder'];
                 this.__addFolder(folderName, navFolder, parent, instanceOrder);
