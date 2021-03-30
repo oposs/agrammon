@@ -159,9 +159,9 @@ qx.Class.define('agrammon.Application', {
                     // enable admin menu
                     mainMenu.showAdmin(role == 'admin' || role == 'support');
                     propEditor.setRole(role);
-                    if (results && role != 'admin') { // TODO: fix update
-                        results.exclude();
-                    }
+//                    if (results && role != 'admin') { // TODO: fix update
+//                        results.exclude();
+//                    }
                     qx.event.message.Bus.dispatchByName('agrammon.DatasetCache.refresh', username);
                 }
                 else {
