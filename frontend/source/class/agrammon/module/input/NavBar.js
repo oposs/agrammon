@@ -389,7 +389,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 // check if instance is there already, otherwise create it
                 if ( varName.match(/(.+\[(.+)\])/) ) { // is instance variable
                     folderName = RegExp.$1;
-//                    this.debug('varName=' + varName + ', folderName =' + folderName);
 
                     // this check is also done in __addEntry()
                     if (! this.__navHash[folderName]) {// not yet defined
@@ -438,8 +437,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 if (value == 'branched') {
                     branch_values = [];
                     branch_values = data[i][3];
-//                    this.debug('_loadDataset(): ' + varName + '=' + value);
-//                    this.debug('              branches: ' + branch_values);
                 }
                 else {
                     branch_values = undefined;
@@ -457,9 +454,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 }
                 var found = true;
                 while ( this.__navHash[folderName] == null ) { // try parent
-//                    if (varName.match(/Storage/)) {
-//                        this.debug('navHash['+folderName+'] is null');
-//                    }
                     found = false;
                     if (folderName.match(/(.+)::.+/)) {
                         folderName = RegExp.$1;
@@ -481,7 +475,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                         var v, vlen=ds.length;
                         for (v=0; v<vlen; v++) {
                             if (vname == ds[v].getName()) {
-                                folder.insertData(varName, value, noCheck, v+1);
+                                folder.insertData(varName, value, noCheck, v+1, fname);
                                 break;
                             }
                         }
@@ -715,7 +709,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             // FIX: this assumes no instances on top level!
             if (isToplevel) { // create top level entry
                 folderName  = guiNode;
-                navFolder = this.__createNavFolder(guiLabels, 'isPlain', null, folderName, instanceOrder);
+                navFolder = this.__createNavFolder(guiLabels, 'isTop', null, folderName, instanceOrder);
                 parentName = 'root';
                 parent = this.__navHash['root']['folder'];
                 this.__addFolder(folderName, navFolder, parent, instanceOrder);

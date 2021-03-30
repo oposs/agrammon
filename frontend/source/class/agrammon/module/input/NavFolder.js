@@ -150,12 +150,16 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         }, // isSingleton
 
         isPlain: function() {
-            return (this.__type == 'isPlain');
+            return (this.__type == 'isPlain' || this.__type == 'isTop');
         }, // isPlain
+
+        isTop: function() {
+            return (this.__type == 'isTop');
+        }, // isTop
 
         isRoot: function() {
             return (this.__type == 'isRoot');
-        }, // isPlain
+        }, // isRoot
 
         addChild: function(folder) {
             this.__childrenHash[folder.getName()] = folder;
@@ -263,6 +267,9 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             if (this.isPlain()) {
                 if (complete == undefined) {
                     this.setIcon('agrammon/grey-dot.png');
+                    if (this.isTop()) {
+                        complete = true;
+                    }
                 }
                 else if (complete) {
                     this.setIcon('agrammon/green-dot.png');
@@ -320,7 +327,6 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                 this.setIcon('agrammon/grey-dot.png');
                 return false;
             }
-//           this.debug('isComplete(): checking folderName=' + this.getName());
 
             // not empty
             var complete = true;
@@ -330,7 +336,6 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                 metaData = {};
                 if (!varName.match('ignore')) {
                     value = this.__propData[i].getValue();
-                    // this.debug('isComplete(): varName='+varName+', value='+value);
                     if ( value === undefined || value === null
                          || value === ''
                          || value === '*** Select ***') { // incomplete
@@ -500,14 +505,9 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         },
 
         setDataset: function(newData, handleIgnore, storeAll) {
-//            this.debug('setDataset(): folderName='+this.getName());
-//            for (i=0; i<newData.length; i++) {
-//                this.debug('setDataset: '+newData[i].getName());
-//            }
             var i;
             this.__propData = new Array;
             var len = newData.length;
-//            this.debug('setDataset(): len='+len);
             // FIX ME
             var noCheck = true;
             var data;
