@@ -145,6 +145,7 @@ taxonomy = Livestock::Pig::Housing
     # change n/tan into storage/application from air scrubber types? -> check with Thomas
     if ( Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling' ) {
       # 100% of n in biotrickling filter vanishes
+      Val(share_indoor, Housing::Type) * 
       # reduction efficiency of air scrubber
       Val(red_air_scrubber, Housing::AirScrubber) *
       # multiplied with indoor loss before air scrubber removal
