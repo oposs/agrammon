@@ -214,8 +214,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 *** external ***
 
++Excretion::CMilk
 ?if !Kantonal_LU
-  +Excretion::CMilk
   +Excretion::CFeed
 ?endif
 
@@ -249,7 +249,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual mean total N excreted per animal.
 ?if Kantonal_LU
   ++formula
-    Tech(standard_N_excretion);
+    Tech(standard_N_excretion) *
+    Val(cmilk_yield, Excretion::CMilk);
 ?else
   ++formula
     if ( (not defined In(inp_n_excretion)) or lc In(inp_n_excretion) eq 'standard' ) {
