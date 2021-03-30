@@ -255,21 +255,14 @@ class Agrammon::Web::Service {
     }
 
     method store-data(Agrammon::Web::SessionUser $user, $dataset-name, $variable, $value, @branches?, @options?, $row? --> Nil) {
-        # TODO: not sure where row is needed; implement branches
-
         my $ds = Agrammon::DB::Dataset.new(:$user, :name($dataset-name));
-        $ds.store-input($variable, $value);
+        $ds.store-input($variable, $value, @branches, @options);
 
         $!outputs-cache.invalidate($user.username, $dataset-name);
 
+        # TODO: get rid of row in frontend and backend if not needed
         if $row {
             warn "**** store-data(var=$variable, value=$value, row=$row): what is row used for?";
-            dd $row;
-        }
-        if @branches {
-            warn "**** store-data(var=$variable, value=$value): not yet completely implemented (branch data)";
-            dd @branches;
-            dd @options;
         }
     }
 

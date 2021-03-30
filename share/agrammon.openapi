@@ -778,7 +778,9 @@ components:
                     description: Branches
                     type: array
                     items:
-                        type: string
+                        oneOf:
+                            - type: integer
+                            - type: string
                 options:
                     description: Options
                     type: array
