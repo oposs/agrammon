@@ -310,17 +310,12 @@ qx.Class.define('agrammon.module.output.Results', {
 
         __dataReady: function(msg) {
             this.__outputPending--;
-//            var dataset = msg.getData();
-//            this.debug('Received: ' + dataset);
-//            this.debug('dataReady: Output pending: ' + this.__outputPending);
             this.__getOutputData();
         },
 
         __recalc: function() {
             if (this.getEnabled()) {
                 this.__outputPending++;
-//                this.debug('__recalc(): Getting output data');
-//                this.debug('recalc: Output pending: ' + this.__outputPending);
                 this.__clearTable();
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
             }
@@ -337,13 +332,10 @@ qx.Class.define('agrammon.module.output.Results', {
             if (enable) {
                 this.debug('enable');
                 this.__outputPending++;
-//                this.debug('__enabled(): Getting output data');
-//                this.debug('enabled: Output pending: ' + this.__outputPending);
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
                 this.__title.setValue(this.tr("<b>Result summary</b>"));
             }
             else {
-//                this.debug('disable');
                 this.__clearTable();
                 this.__title.setValue(this.tr("No results yet, incomplete input data"));
             }
