@@ -164,8 +164,8 @@ is applied.
    	            Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
     }
     else {
-        writeLog({en => "Please correct accordingly: the categories of \"share of solid manure applied June to August\" "
-		        . "and \"share of solid manure applied September to May\" do not add up to 100\%!",
+        writeLog({en => "Please correct accordingly: the categories of \"share of slurry application from June to August\" "
+		        . "and \"share of slurry application from September to May\" do not add up to 100\%!",
                   de => "Bitte korrigieren: die Summe der Kategorien Ausbringung von Gülle im Sommer und von "
                         . "September bis Mai ist nicht gleich 100\%\n",
                   fr => "Veuillez corriger: la somme des catégories «Part de lisier épandu en été» et «de "
