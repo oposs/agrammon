@@ -45,9 +45,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
 
         this.__searchTimer = new qx.event.Timer(this.__searchTimeout);
         this.__searchTimer.addListener('interval', function(e) {
-//            this.debug('timer fired, searchFilter='+ this.__searchFilter);
             this.__searchTimer.stop();
-//            this.__table.getTableModel().updateView(1);
             this.updateView();
         }, this);
 
@@ -320,7 +318,6 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                                         'info'
                                     ]
                                 );
-                                //                                that.__table.getTableModel().updateView(1);
                                 that.updateView();
 
                                 // change current dataset name if we renamed currently connected dataset
@@ -367,9 +364,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
         },
 
         setFilter: function(filter) {
-            console.log('setFilter(): filter=', filter);
             this.__filterHash = filter;
-//            this.__table.getTableModel().updateView(1);
             this.updateView();
         },
 
@@ -377,15 +372,10 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
             return this.__filterHash;
         },
 
-        clearFilterOld: function() {
-            this.__filterHash = {'*all*': true};
-            this.__searchFilter = '';
-            if (this.__table) {
-                this.__table.getTableModel().updateView(1);
-            }
-        },
-
         updateView: function() {
+            // no table yet, nothing to do
+            if (!this.__table) return;
+
             let tm = this.__table.getTableModel();
             let data = this.__datasetStore.getDatasets();
             if (data == null) return;
@@ -393,16 +383,22 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
             let filter = this.getFilter();
             let searchFilter = this.__searchFilter.toLowerCase();
 
+            let that = this;
             tm.setData(data.filter(function(row) {
-                    if ( !row[0] ) return false;
-                    return qx.lang.String.contains(row[0].toLowerCase(), searchFilter);
-                })
-            );
+                let name = row[0];
+                if (!name) return false;
+                let all = filter['*all*'] != undefined;
+                return ( // that.__showAlways[name] ||//            availableTagsTm.setView(1);
+                        (name.toLowerCase().indexOf(that.__searchFilter) != -1)
+                        && ( all || (filter[name]) )
+                );
+            }));
         },
 
         clearFilter: function() {
             this.__filterHash = {'*all*': true};
             this.__searchFilter = '';
+            this.updateView();
         },
 
         getToolBar: function() {
@@ -516,6 +512,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
 
         __createTable: function() {
             var tableModel = new qx.ui.table.model.Simple;
+            tableModel.sortByColumn(1, false);
             tableModel.setColumns([
                 this.tr("Dataset name"),
                 this.tr("Last change"),
@@ -627,6 +624,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 uploadProgress.resetValue();
                 uploadResponse.resetValue();
             }, this);
+
             uploader.addListener("addFile", function(evt) {
                 var file = evt.getData();
                 uploader.setParam('comment', comment.getValue());

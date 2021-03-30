@@ -202,7 +202,7 @@ msgstr "Verfügbare Marker"
 msgid "Ctrl-Click on selected table rows removes selection"
 msgstr "Strg-Klick auf ausgewählte Zeilen entfernt die Auswahl"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Datasets of"
 msgstr "Datensätze von"
 
@@ -953,3 +953,11 @@ msgstr "Sitzung abgelaufen: bitte neu anmelden"
 #: agrammon/io/remote/Rpc.js
 msgid "Error %1: %2 - please login again"
 msgstr "Fehler %1: %2 - bitte neu anmelden"
+
+#: agrammon/module/dataset/DatasetTool.js
+msgid "Datasets of %1"
+msgstr "Datensätze von %1"
+
+#: agrammon/module/dataset/DatasetTool.js
+msgid "Tag %1 already exists"
+msgstr ""
