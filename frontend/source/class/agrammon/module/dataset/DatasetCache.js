@@ -8,15 +8,12 @@
      * Fritz Zaucker
 
 ************************************************************************ */
-/* ************************************************************************
 
-************************************************************************ */
 /**
  * Store for the users' datasets.
  */
 
-qx.Class.define('agrammon.module.dataset.DatasetCache',
-{
+qx.Class.define('agrammon.module.dataset.DatasetCache', {
     extend: qx.core.Object,
     type: 'singleton',
 
@@ -26,19 +23,14 @@ qx.Class.define('agrammon.module.dataset.DatasetCache',
        * @return {var} TODOC
        * @lint ignoreDeprecated(alert)
        */
-    construct: function () {
+    construct: function() {
         this.base(arguments);
         var that = this;
         var rpc = agrammon.io.remote.Rpc.getInstance();
         this.__datasets = [];
 
-        // FIX:  abort pending async calls
-        //   if (this.__locationCalls != null) {
-        //       this._rpc.abort(this.__locationCalls);
-        //   }
         qx.event.message.Bus.subscribe('agrammon.DatasetCache.refresh', function(msg) {
             var user = msg.getData();
-            this.debug('Called DatasetCache.refresh: user='+user);
             qx.event.message.Bus.dispatchByName('Agrammon.datasetsLoading');
             rpc.callAsync( this.__getDatasets, 'get_datasets');
             rpc.callAsync( this.__getTags,     'get_tags');
@@ -52,8 +44,6 @@ qx.Class.define('agrammon.module.dataset.DatasetCache',
          */
         this.__getDatasets = function(data,exc,id){
             if (exc == null) {
-                that.debug('__getDatasetCache(): '+data.length+' datasets loaded.');
-//                console.log('data=', data);
                 var i, len = data.length;
                 let datasets = [];
                 for (i=0; i<len; i++) {
@@ -61,7 +51,6 @@ qx.Class.define('agrammon.module.dataset.DatasetCache',
                     // skip datasets without name
                     if (!data[i][0]) continue;
                     data[i][0] = '' + data[i][0];
-//                    console.log('   adding', data[i][0]);
                     datasets.push(data[i]);
                 }
                 that.__datasets = datasets;
@@ -80,7 +69,6 @@ qx.Class.define('agrammon.module.dataset.DatasetCache',
          */
         this.__getTags = function(data,exc,id){
             if (exc == null) {
-                // that.debug('DatasetCache(): '+data.length+' tags loaded.');
                 that.__tags = data;
                 qx.event.message.Bus.dispatchByName('Agrammon.tagsLoaded');
             }
@@ -93,8 +81,7 @@ qx.Class.define('agrammon.module.dataset.DatasetCache',
 
     },
 
-    members:
-    {
+    members: {
         __getDatasets: null,
         __datasets: null,
         __tags: null,
@@ -173,11 +160,9 @@ qx.Class.define('agrammon.module.dataset.DatasetCache',
         */
         delTag: function(tag){
             // FIX ME: handle tags in datasets
-//            this.debug('Datasets.delTag: tag=' + tag );
             var i, len = this.__tags.length;
             for (i=0; i<len; i++) {
                 if (this.__tags[i] == tag) {
-//                    this.debug('Datasets.delTag: i=' + i );
                     this.__tags.splice(i,1);
                     break;
                 }

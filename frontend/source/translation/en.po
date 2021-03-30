@@ -58,7 +58,7 @@ msgstr ""
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Ctrl-Click on selected table rows removes selection"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Datasets of"
 msgstr ""
 
@@ -952,4 +952,16 @@ msgstr ""
 
 #: agrammon/io/remote/Rpc.js
 msgid "Error %1: %2 - please login again"
+msgstr ""
+
+#. NO LONGER USED
+msgid "Datasets of %"
+msgstr ""
+
+#: agrammon/module/dataset/DatasetTool.js
+msgid "Datasets of %1"
+msgstr ""
+
+#: agrammon/module/dataset/DatasetTool.js
+msgid "Tag %1 already exists"
 msgstr ""
