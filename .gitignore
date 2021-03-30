@@ -5,6 +5,7 @@ frontend/cache
 Makefile
 Makefile.in
 /frontend/compiled/
+frontend/qx_packages/
 /configure
 /config.*
 frontend/node_modules/
