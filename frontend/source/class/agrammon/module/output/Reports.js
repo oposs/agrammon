@@ -24,8 +24,8 @@ qx.Class.define('agrammon.module.output.Reports', {
 
         var baseUrl = agrammon.io.remote.Rpc.getInstance().getBaseUrl();
         this.__info = agrammon.Info.getInstance();
-        this.outputData = outputData;
-        this.referenceData = referenceData;
+        this.__outputData = outputData;
+        this.__referenceData = referenceData;
 
         qx.locale.Manager.getInstance().addListener("changeLocale",
                                                     this.__changeLanguage,
@@ -273,7 +273,8 @@ qx.Class.define('agrammon.module.output.Reports', {
     {
         __outputPending:    null,
         __info:             null,
-        outputData:         null,
+        __referenceData:    null,
+        __outputData:       null,
         busyIcon:           null,
         selectLabel:        null,
         selectMenu:         null,
@@ -315,9 +316,9 @@ qx.Class.define('agrammon.module.output.Reports', {
         },
 
         __submit: function() {
-            var logText = agrammon.module.output.Output.formatLog(this.outputData.getLog());
+            var logText = agrammon.module.output.Output.formatLog(this.__outputData.getLog());
             var submitWindow = new agrammon.module.output.SubmitWindow(
-                this.outputData, this.reportIndex,
+                this.__outputData, this.reportIndex,
                 this.titleSelected, logText
             );
             submitWindow.open();
@@ -352,8 +353,8 @@ qx.Class.define('agrammon.module.output.Reports', {
                 return;
             }
 
-            if ( !(this.outputData.isValid()
-                   && this.referenceData.isValid) ) {
+            if ( !(this.__outputData.isValid()
+                   && this.__referenceData.isValid) ) {
                 return;
             }
 
@@ -383,8 +384,8 @@ qx.Class.define('agrammon.module.output.Reports', {
             showFilterGroups = this.resultData[this.reportIndex].type == 'reportDetailed' ? true : false;
             let reports = this.resultData[this.reportIndex].data;
 
-            let data    = this.outputData.getDataset();;
-            let refData = this.referenceData.getDataset();
+            let data    = this.__outputData.getDataset();;
+            let refData = this.__referenceData.getDataset();
             if (refData == null) {
                 this.__showReference(false);
             }
@@ -515,14 +516,14 @@ qx.Class.define('agrammon.module.output.Reports', {
         },
 
         __appear: function() {
-            if ( ! (this.referenceData.isValid() && this.outputData.isValid()) ) {
+            if ( ! (this.__referenceData.isValid() && this.__outputData.isValid()) ) {
                 this.selectMenu.setEnabled(false);
                 this.selectLabel.setEnabled(false);
                 this.__clearTable();
             }
             this.__outputPending = 0;
             qx.event.message.Bus.dispatchByName('agrammon.PropTable.stop');
-            if ( ! this.referenceData.isValid() ) {
+            if ( ! this.__referenceData.isValid() ) {
                 this.__logAreaReference.setLabel(null);
                 this.busyIcon.setIcon('agrammon/nh3-rotate.gif');
                 this.__outputPending++;
@@ -530,7 +531,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                 this.debug('Output pending: ' + this.__outputPending);
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getReference');
             }
-            if (! this.outputData.isValid()) {
+            if (! this.__outputData.isValid()) {
                 this.__logAreaOutput.setLabel(null);
                 this.busyIcon.setIcon('agrammon/nh3-rotate.gif');
                 this.__outputPending++;
@@ -545,17 +546,17 @@ qx.Class.define('agrammon.module.output.Reports', {
             var dataset = msg.getData();
             this.debug('Received: ' + dataset);
             this.debug('Output pending: ' + this.__outputPending);
-            if (this.__outputPending == 0) {
+            if (this.__outputPending <= 0) {
                 this.busyIcon.setIcon('agrammon/nh3.png');
                 this.selectMenu.setEnabled(true);
                 this.selectLabel.setEnabled(true);
             }
             var logText, log;
             if (dataset == 'output') {
-                log = this.outputData.getLog();
+                log = this.__outputData.getLog();
             }
             else {
-                log = this.referenceData.getLog();
+                log = this.__referenceData.getLog();
             }
             if (log != '' && log != null && log != undefined) {
                 logText = agrammon.module.output.Output.formatLog(log, 'html');

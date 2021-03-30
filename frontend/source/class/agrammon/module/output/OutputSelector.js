@@ -11,25 +11,17 @@ qx.Class.define('agrammon.module.output.OutputSelector', {
 
         this.set({width: 500, enabled: false});
 
-        qx.locale.Manager.getInstance().addListener("changeLocale",
-                                                    this.__changeLanguage,
-                                                    this);
-//        this.removeListener("changeSelection",
-//                         this.__changeSelectionHandler, this);
+        qx.locale.Manager.getInstance().addListener("changeLocale", this.__changeLanguage, this);
 
         this.setWidth(500);
-        this.__itemSelect =
-            new qx.ui.form.ListItem(this.tr("*** Select ***"),
-                                    null);
+        this.__itemSelect = new qx.ui.form.ListItem(this.tr("*** Select ***"), null);
         var enabled = this.isEnabled();
         this.setEnabled(true);
         this.add(this.__itemSelect);
         this.setEnabled(enabled);
         this.__reportData = new Array;
 
-        this.addListener("changeSelection",
-                         this.__changeSelectionHandler, this);
-        return;
+        this.addListener("changeSelection", this.__changeSelectionHandler, this);
     }, // construct
 
     members :
@@ -39,7 +31,6 @@ qx.Class.define('agrammon.module.output.OutputSelector', {
         __reportData: null,
 
         __changeLanguage: function() {
-            this.debug('__changeLanguage: __reportData='+this.__reportData);
             this.update(this.__reportData);
         },
 
@@ -53,9 +44,9 @@ qx.Class.define('agrammon.module.output.OutputSelector', {
         update: function(reportData) {
             this.__reportData = reportData; // save for changeLanguage
 
+            this.removeListener("changeSelection", this.__changeSelectionHandler, this);
+
             var item, enabled;
-            this.removeListener("changeSelection",
-                                this.__changeSelectionHandler, this);
             // save enable state and setEnabled(true) for adding of items
             enabled = this.isEnabled();
             this.setEnabled(true);
@@ -68,29 +59,27 @@ qx.Class.define('agrammon.module.output.OutputSelector', {
             locale = locale.replace(/_.+/,'');
 
             reports = reportData.length;
-            for (r=0; r<reports; r++) {
-                if (reportData[r].resultView) continue;
+            for (let report of reportData) {
+                if (report.resultView) continue;
 
-                if (reportData[r]['selector'][locale] != null) {
-                    label = reportData[r]['selector'][locale];
+                if (report.selector.[locale] != null) {
+                    label = report.selector[locale];
                 }
                 else {
-                    label = reportData[r]['selector']['en'];
+                    label = report.selector.en;
                 }
 
-                data = reportData[r]['name'];
+                data = report.name;
                 item = new qx.ui.form.ListItem(label, null);
                 item.setModel(data);
                 this.add(item);
             }
+
             this.setSelection([this.__itemSelect]);
-            this.addListener("changeSelection",
-                             this.__changeSelectionHandler, this);
+            this.addListener("changeSelection", this.__changeSelectionHandler, this);
 
             // return to previous enable state
             this.setEnabled(enabled);
-
-            return;
         }
 
     }
