@@ -271,8 +271,8 @@ msgstr "Pour déselectionner: ctrl-clic sur les lignes sélectionnées"
 
 #: Agrammon/ui/menu/FileMenu.js:34 Agrammon/module/dataset/DatasetTool.js:605
 #: Agrammon/module/dataset/DatasetTool.js:1159
-msgid "Datasets of"
-msgstr "Set de données de"
+msgid "Datasets of %1"
+msgstr "Set de données de %1"
 
 #: Agrammon/module/dataset/DatasetTool.js:685
 msgid "Set reference"
