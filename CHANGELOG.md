@@ -5,6 +5,7 @@
    - Fix recalc and report enabling
    - Enable report summary
    - Fix model warnings
+   - Store branch config on instance copy
 
 -  6.0.0-rc3, 2021-03-16, fritz.zaucker@oetiker.ch
    - Allow distribution of multiple inputs

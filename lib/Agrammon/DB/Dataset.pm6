@@ -120,6 +120,14 @@ class X::Agrammon::DB::Dataset::StoreDataFailed is Exception {
     }
 }
 
+#| Error when branching data was passed when storing a none-instance variable.
+class X::Agrammon::DB::Dataset::InvalidBranchData is Exception {
+    has Str $.variable is required;
+    method message {
+        "Unexpected branching data for none-instance variable '$!variable'."
+    }
+}
+
 #| Error when branching data couldn't be saved.
 class X::Agrammon::DB::Dataset::StoreBranchDataFailed is Exception {
     has Str $.variable is required;
@@ -472,7 +480,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method !store-instance-variable($variable, $instance, $value) {
+    method !store-instance-variable($variable, $instance, $value, @branches?, @options?) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
@@ -480,34 +488,48 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                 UPDATE data_new SET data_val = $1
                  WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
                                                            AND data_instance = $5
-                RETURNING data_comment
+                RETURNING data_id
             SQL
 
-            return $ret.rows if $ret.rows;
-
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable, $instance);
+            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable, $instance) unless $ret.rows;
                 INSERT INTO data_new (data_dataset, data_var, data_val, data_instance)
                      VALUES (dataset_name2id($2,$3), $4, $1, $5)
-                RETURNING data_comment
+                RETURNING data_id
             SQL
 
             # couldn't store variable
             die X::Agrammon::DB::Dataset::StoreDataFailed.new($variable) unless $ret.rows;
 
+            if @branches {
+                my $data-id = $ret.value;
+                $ret = $db.query(q:to/SQL/, $data-id, @branches[*;*], @options);
+                    INSERT INTO branches (branches_var, branches_data, branches_options)
+                         VALUES ($1, $2, $3)
+                    RETURNING branches_id
+                SQL
+
+                die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new($variable) unless $ret.rows;
+            }
+
             return $ret.rows;
         }
     }
 
-    method store-input($var-name, $value) {
+    method store-input($variable, $value, @branches?, @options?) {
         my $instance;
 
-        my $var = $var-name;
+        my $var = $variable;
         if $var ~~ s/\[(.+)\]/[]/ {
             $instance = $0;
         }
 
-        $instance ?? self!store-instance-variable($var, $instance, $value)
-                  !! self!store-variable($var, $value);
+        if $instance {
+            self!store-instance-variable($var, $instance, $value, @branches, @options);
+        }
+        else {
+            die X::Agrammon::DB::Dataset::InvalidBranchData.new(:$variable) if @branches or @options;
+            self!store-variable($var, $value);
+        }
     }
 
     method !delete-variable($var) {
@@ -574,7 +596,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $i = 0;
             for @instances.kv -> $i, $pattern {
                 $pattern     ~~ / (.+) '[' (.+) ']' /;
                 my $var      = $0;
