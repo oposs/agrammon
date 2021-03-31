@@ -199,7 +199,7 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
 
 +nh3_napplication
   format = %.0f
-  print = SummaryLivestock,LivestockNH3
+  print = SummaryLivestock,ResultsLivestock,LivestockNH3
   ++labels 
     sort = 070
     en = Application

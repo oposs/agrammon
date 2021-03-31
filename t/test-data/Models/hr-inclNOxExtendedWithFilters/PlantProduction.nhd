@@ -27,7 +27,7 @@ gui      = PlantProduction,Pflanzenbau,Production végétale,Plant production
 
 +nh3_nplantproduction
   format= %.0f
-  print = SummaryPlantProduction,PlantNH3
+  print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
   ++labels 
     sort = 199
     en = Total

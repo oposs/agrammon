@@ -452,7 +452,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 
 +nh3_nstorage
   format= %.0f
-  print = SummaryLivestock,LivestockNH3
+  print = SummaryLivestock,ResultsLivestock,LivestockNH3
   ++labels 
     sort = 050
     en = Storage
