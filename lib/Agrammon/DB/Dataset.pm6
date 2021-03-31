@@ -515,10 +515,10 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
     }
 
-    method store-input($var-name, $value, @branches?, @options?) {
+    method store-input($variable, $value, @branches?, @options?) {
         my $instance;
 
-        my $var = $var-name;
+        my $var = $variable;
         if $var ~~ s/\[(.+)\]/[]/ {
             $instance = $0;
         }
@@ -527,7 +527,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             self!store-instance-variable($var, $instance, $value, @branches, @options);
         }
         else {
-            die X::Agrammon::DB::Dataset::InvalidBranchData.new($variable) if @branches or @options;
+            die X::Agrammon::DB::Dataset::InvalidBranchData.new(:$variable) if @branches or @options;
             self!store-variable($var, $value);
         }
     }

@@ -9,7 +9,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 12;
+plan 13;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -114,11 +114,13 @@ transactionally {
     }
 
     subtest 'store-input()' => {
+        plan 2;
         is $dataset.store-input("my-variable", 42), 1, "Store single input";
         is $dataset.store-input("my-multi-variable[Branch]::test", 43), 1, "Store multi input";
-    }
+     }
 
-    subtest 'store-input-comment()' => {
+     subtest 'store-input-comment()' => {
+        plan 2;
         is $dataset.store-input-comment('my-variable', 'Single input comment'), 1, "Store single input comment";
         is $dataset.store-input-comment('my-multi-variable[Branch]::test', 'Multi input comment'), 1, "Store multi input comment";
     }
@@ -134,6 +136,26 @@ transactionally {
         is @row[0], 'my-variable', "Input has right name";
         is @row[1], 42, "Input has right value";
         is @row[4], 'Single input comment', "Input has right comment";
+    }
+
+    subtest 'store-input() with branches' => {
+        plan 2;
+        lives-ok {
+            $dataset.store-input(
+                    "my-multi-variable[Branch]::testB",
+                    'branched',
+                    [[0.2, 0.3], [0, 0.5]],
+                    [[< deep_pit deep_litter >], [< less_than_twice_a_month twice_a_month >]],
+                    )
+        }, "Store multi input with branches";
+        throws-like {
+            $dataset.store-input(
+                    "my-multi-variable::testB",
+                    1,
+                    [[0.2, 0.3], [0, 0.5]],
+                    [[< deep_pit deep_litter >], [< less_than_twice_a_month twice_a_month >]],
+                    )
+        }, X::Agrammon::DB::Dataset::InvalidBranchData, "None-instance variable cannot have branch data";
     }
 
     subtest 'Store and load branch data' => {
