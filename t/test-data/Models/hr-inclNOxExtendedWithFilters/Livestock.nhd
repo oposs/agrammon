@@ -742,7 +742,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 
 +nh3_ngrazing
   format= %.0f
-  print = SummaryLivestock,LivestockNH3
+  print = SummaryLivestock,ResultsLivestock,LivestockNH3
   ++labels
     sort = 010
     en = Grazing
@@ -810,7 +810,7 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 # is this variable really necessary?
 +nh3_nhousing_and_yard
   format= %.0f
-  print = SummaryLivestock,LivestockNH3
+  print = SummaryLivestock,ResultsLivestock,LivestockNH3
   ++labels
     sort = 020
     en = Housing and Yard

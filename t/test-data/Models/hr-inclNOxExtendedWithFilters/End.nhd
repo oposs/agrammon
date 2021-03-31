@@ -44,18 +44,26 @@ Dummy Module marking the startpoint for the Model Parser
       de = Total
       fr = Total
 
-+SummaryShort
++ResultsInput
   type = report
   results = true
   ++selector
-    en = Ammonia emissions (in kg N per year) - summary short
-    de = Ammoniak-Emissionen (in kg N pro Jahr) - Kurzzusammenfassung
-    fr = Emissions d'ammoniaque (en kg de N par année) - résumé minimal
+    en = Summary Results
+    de = Zusammenfassung Resultate
+    fr = Résumé des résultats
   ++data
-     +++SummaryTotal
-       en = Total
-       de = Total
-       fr = Total
+    +++ResultsLivestock
+      en = Livestock
+      de = Tierproduktion
+      fr = Production animale
+    +++ResultsPlantProduction
+      en = Plant production
+      de = Pflanzenbau
+      fr = Production végétale
+    +++ResultsTotal
+      en = Total
+      de = Total
+      fr = Total
 
 ?if !Kantonal_LU
   +DetailReport
