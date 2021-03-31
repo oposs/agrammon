@@ -120,6 +120,14 @@ class X::Agrammon::DB::Dataset::StoreDataFailed is Exception {
     }
 }
 
+#| Error when branching data was passed when storing a none-instance variable.
+class X::Agrammon::DB::Dataset::InvalidBranchData is Exception {
+    has Str $.variable is required;
+    method message {
+        "Unexpected branching data for none-instance variable '$!variable'."
+    }
+}
+
 #| Error when branching data couldn't be saved.
 class X::Agrammon::DB::Dataset::StoreBranchDataFailed is Exception {
     has Str $.variable is required;
@@ -519,6 +527,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             self!store-instance-variable($var, $instance, $value, @branches, @options);
         }
         else {
+            die X::Agrammon::DB::Dataset::InvalidBranchData.new($variable) if @branches or @options;
             self!store-variable($var, $value);
         }
     }
