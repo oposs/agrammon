@@ -134,7 +134,14 @@ class Agrammon::Model {
             );
             for $!module.output -> $output {
                 my $*AGRAMMON-OUTPUT = my $name = $output.name;
-                $outputs.add-output($tax, $name, $output.compiled-formula()($env));
+                my $result = $output.compiled-formula()($env);
+                if $result ~~ Rat && $result.denominator == 0 {
+                    warn "ERROR: division by zero";
+                    $outputs.add-output($tax, $name, 'ERROR: division by 0');
+                }
+                else {
+                    $outputs.add-output($tax, $name, $result);
+                }
                 CONTROL {
                     when CX::Warn {
                         note "Warning evaluating output '$name' in $tax: $_.message()";

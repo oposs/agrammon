@@ -1,5 +1,10 @@
 # Agrammon Change Log
 
+-  6.0.0-rc5, 2021-03-31, fritz.zaucker@oetiker.ch
+   - Small model fix
+   - SummaryReport
+   - Log division by 0 errors
+
 -  6.0.0-rc4, 2021-03-30, fritz.zaucker@oetiker.ch
    - Fix dataset tagging
    - Fix recalc and report enabling
