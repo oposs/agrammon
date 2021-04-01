@@ -107,7 +107,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                     switch (status) {
                     case 404:
                     case 401:
-                        new agrammon.module.user.Login(qx.locale.Manager.tr("Session expired: please login again")).open();
+                        new agrammon.module.user.Login(qx.locale.Manager.tr("%1: Session expired: please login again", status)).open();
                         break;
                     default:
                         new agrammon.module.user.Login(qx.locale.Manager.tr("Error %1: %2 - please login again", status, statusText)).open();
