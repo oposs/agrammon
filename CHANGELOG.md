@@ -1,5 +1,8 @@
 # Agrammon Change Log
 
+-  6.0.0-rc6, 2021-04-01, fritz.zaucker@oetiker.ch
+   - French GUI translations
+
 -  6.0.0-rc5, 2021-03-31, fritz.zaucker@oetiker.ch
    - Small model fix
    - SummaryReport
