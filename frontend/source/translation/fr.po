@@ -24,27 +24,27 @@ msgstr ""
 
 #: Agrammon/Application.js:112
 msgid "Implemented by OETIKER+PARTNER AG. Copyright 2010-"
-msgstr ""
+msgstr "Implementé par OETIKER+PARTNER AG. Copyright 2010-"
 
 #: Agrammon/Application.js:146
 msgid "Latest news"
-msgstr ""
+msgstr "Dernières nouvelles"
 
 #: Agrammon/Application.js:163
 msgid "Authentication error"
-msgstr ""
+msgstr "Erreur d'authentification"
 
 #: Agrammon/Application.js:164
 msgid "Invalid username or password"
-msgstr ""
+msgstr "Nom d'utilisateur ou mot de passe invalide"
 
 #: Agrammon/Application.js:234
 msgid "End change user"
-msgstr ""
+msgstr "Fin changer d'utilisateur"
 
 #: Agrammon/Application.js:235
 msgid "Returning from %1 to %2"
-msgstr ""
+msgstr "Retour de % 1 à% 2"
 
 #: Agrammon/Application.js:261
 msgid "Please authenticate yourself"
@@ -70,7 +70,7 @@ msgstr "Commentaire set de données"
 #: Agrammon/module/dataset/DatasetTableSimple.js:25
 #: Agrammon/module/dataset/DatasetTable.js:39
 msgid "Incremental filter on dataset name"
-msgstr ""
+msgstr "Filtre incrémentiel sur le nom de l'ensemble de données"
 
 #: Agrammon/module/dataset/DatasetCreate.js:47
 #: Agrammon/module/dataset/DatasetTableSimple.js:26
@@ -139,11 +139,11 @@ msgstr "Nom des données"
 
 #: Agrammon/module/dataset/DatasetTable.js:109
 msgid "Deleting datasets from database"
-msgstr ""
+msgstr "Suppression d'ensembles de données de la base de données"
 
 #: Agrammon/module/dataset/DatasetTable.js:110
 msgid "Really delete selected datasets from database?"
-msgstr ""
+msgstr "Supprimer vraiment les ensembles de données sélectionnés de la base de données?"
 
 #: Agrammon/module/dataset/DatasetTable.js:118
 #: Agrammon/module/dataset/DatasetTable.js:175
@@ -169,15 +169,15 @@ msgstr "effacée"
 
 #: Agrammon/module/dataset/DatasetTable.js:165
 msgid "Sending datasets"
-msgstr ""
+msgstr "Envoi d'ensembles de données"
 
 #: Agrammon/module/dataset/DatasetTable.js:166
 msgid "Recipient of selected datasets"
-msgstr ""
+msgstr Destinataire de l'ensemble de données sélectionné""
 
 #: Agrammon/module/dataset/DatasetTable.js:181
 msgid "sent"
-msgstr ""
+msgstr "envoyé(s)"
 
 #: Agrammon/module/dataset/DatasetTool.js:997
 #: Agrammon/module/dataset/DatasetTable.js:233
@@ -186,7 +186,7 @@ msgstr "Renommer"
 
 #: Agrammon/module/dataset/DatasetTable.js:235
 msgid "Rename selected dataset"
-msgstr ""
+msgstr "Renommer l'ensemble de données sélectionné"
 
 #: Agrammon/module/dataset/DatasetTable.js:237
 msgid "Send"
@@ -194,7 +194,7 @@ msgstr "Envoyer"
 
 #: Agrammon/module/dataset/DatasetTable.js:239
 msgid "Send selected dataset(s) to other Agrammon user"
-msgstr ""
+msgstr "Envoyer le ou les ensembles de données sélectionnés à un autre utilisateur Agrammon"
 
 #: Agrammon/module/dataset/DatasetTool.js:1000
 #: Agrammon/module/dataset/DatasetTable.js:242
@@ -212,7 +212,7 @@ msgstr "Effacer"
 
 #: Agrammon/module/dataset/DatasetTable.js:247
 msgid "Delete selected dataset(s)"
-msgstr ""
+msgstr "Supprimer les ensembles de données sélectionnés"
 
 #: Agrammon/ui/menu/FileMenu.js:48 Agrammon/module/dataset/DatasetTable.js:268
 #: Agrammon/module/dataset/DatasetTable.js:297
@@ -237,7 +237,7 @@ msgstr "Erreur"
 #: Agrammon/module/dataset/DatasetTool.js:1085
 #: Agrammon/module/dataset/DatasetTable.js:298
 msgid "already exists"
-msgstr ""
+msgstr "existe déjà"
 
 #: Agrammon/module/dataset/DatasetTable.js:313
 msgid "Rename dataset"
@@ -321,23 +321,23 @@ msgstr "Renommer marqueur"
 #: Agrammon/module/dataset/DatasetTool.js:1070
 #: Agrammon/module/dataset/DatasetTool.js:1101
 msgid "New tag name"
-msgstr ""
+msgstr "Nouveau nom de balise"
 
 #: Agrammon/module/dataset/DatasetTool.js:1100
 msgid "Creating new tag"
-msgstr ""
+msgstr "Créer une nouvelle balise"
 
 #: Agrammon/module/dataset/DatasetTool.js:1148
 msgid "Deleting tags from database"
-msgstr ""
+msgstr "Suppression de balises de la base de données"
 
 #: Agrammon/module/dataset/DatasetTool.js:1149
 msgid "Really delete selected available tags from database?"
-msgstr ""
+msgstr "Supprimer vraiment les balises disponibles sélectionnées de la base de données?"
 
 #: Agrammon/module/dataset/TagTable.js:22
 msgid "Incremental filter on tag name"
-msgstr ""
+msgstr Filtre incrémentiel sur le nom de la balise""
 
 #: Agrammon/module/dataset/TagTable.js:23
 msgid "Filter on tag name"
@@ -350,11 +350,11 @@ msgstr "Entrée"
 #: Agrammon/module/input/regional/ConfigInstance.js:83
 #: Agrammon/module/input/NavBar.js:329
 msgid "Instance name must not be empty."
-msgstr ""
+msgstr "Le nom de l'instance ne doit pas être vide."
 
 #: Agrammon/module/input/NavBar.js:350
 msgid "Duplicate instances not allowed"
-msgstr ""
+msgstr "Les instances en double ne sont pas autorisées"
 
 #: Agrammon/module/input/NavBar.js:936
 msgid "deleted."
@@ -459,7 +459,7 @@ msgstr "Enregistrer"
 
 #: Agrammon/module/input/regional/BranchEditor.js:316
 msgid "Total must be 100%. Now: "
-msgstr ""
+msgstr "Le total doit être de 100%. Maintenant:"
 
 #: Agrammon/module/input/regional/ConfigEditor.js:40
 msgid "Simple"
@@ -483,11 +483,11 @@ msgstr "Nom"
 
 #: Agrammon/module/input/regional/ConfigInstance.js:43
 msgid "Name of new instance"
-msgstr ""
+msgstr "Nom de la nouvelle instance"
 
 #: Agrammon/module/input/regional/ConfigInstance.js:44
 msgid "Instance name"
-msgstr ""
+msgstr "Nom de l'instance"
 
 #: Agrammon/module/input/regional/ConfigInstance.js:172
 msgid "Ok"
@@ -562,7 +562,7 @@ msgstr "<b>Résumé des résultats</b>"
 
 #: Agrammon/module/output/Results.js:356
 msgid "No results yet, incomplete input data"
-msgstr ""
+msgstr "Pas encore de résultats, données d'entrée incomplètes"
 
 #: Agrammon/module/output/SubmitWindow.js:49
 msgid "Agrammon Simulation"
@@ -570,7 +570,7 @@ msgstr ""
 
 #: Agrammon/module/output/SubmitWindow.js:60
 msgid "User:"
-msgstr ""
+msgstr "Utilisateur:"
 
 #: Agrammon/module/output/SubmitWindow.js:62
 msgid "Dataset:"
@@ -582,15 +582,15 @@ msgstr ""
 
 #: Agrammon/module/output/SubmitWindow.js:76
 msgid "Farm information"
-msgstr ""
+msgstr "Version du modèle"
 
 #: Agrammon/module/output/SubmitWindow.js:83
 msgid "Farm number:"
-msgstr ""
+msgstr "Numéro de ferme:"
 
 #: Agrammon/module/output/SubmitWindow.js:93
 msgid "Sender:"
-msgstr ""
+msgstr "Expéditeur:"
 
 #: Agrammon/module/output/SubmitWindow.js:106
 msgid "Variant:"
@@ -598,43 +598,43 @@ msgstr ""
 
 #: Agrammon/module/output/SubmitWindow.js:110
 msgid "Situation before building application"
-msgstr ""
+msgstr "Situation avant l'application du bâtiment"
 
 #: Agrammon/module/output/SubmitWindow.js:111
 msgid "Situation after building application"
-msgstr ""
+msgstr "Situation après application du bâtiment"
 
 #: Agrammon/module/output/SubmitWindow.js:119
 msgid "Comments:"
-msgstr ""
+msgstr "Commentaires"
 
 #: Agrammon/module/output/SubmitWindow.js:131
 msgid "Submit to:"
-msgstr ""
+msgstr "Soumettre à:"
 
 #: Agrammon/module/output/SubmitWindow.js:162
 msgid "Agrammon Report"
-msgstr ""
+msgstr "Rapport Agrammon"
 
 #: Agrammon/module/output/SubmitWindow.js:180
 msgid "Preview"
-msgstr ""
+msgstr "Aperçu"
 
 #: Agrammon/module/output/SubmitWindow.js:191
 msgid "Submit"
-msgstr ""
+msgstr "Soumettre"
 
 #: Agrammon/module/output/SubmitWindow.js:328
 msgid "Report submitted successfully."
-msgstr ""
+msgstr "Rapport soumis avec succès."
 
 #: Agrammon/module/output/SubmitWindow.js:332
 msgid "Report submission failed."
-msgstr ""
+msgstr "La soumission du rapport a échoué."
 
 #: Agrammon/module/user/Account.js:41
 msgid "Password must have at least 6 characters."
-msgstr ""
+msgstr "Le mot de passe doit comporter au moins 6 caractères."
 
 #: Agrammon/module/user/Account.js:51
 msgid "eMail (your username)"
@@ -642,7 +642,7 @@ msgstr "e-mail (votre nom d'utilisateur)"
 
 #: Agrammon/module/user/Account.js:55
 msgid "eMail (username) for reset"
-msgstr ""
+msgstr "eMail (nom d'utilisateur) pour réinitialisation"
 
 #: Agrammon/module/user/Account.js:60
 msgid "eMail (will be your username)"
@@ -678,7 +678,7 @@ msgstr "Changer de mot de passe"
 
 #: Agrammon/module/user/Account.js:116
 msgid "Passwords must be equal."
-msgstr ""
+msgstr "Les mots de passe doivent être égaux."
 
 #: Agrammon/module/user/Account.js:134
 msgid ""
@@ -701,11 +701,11 @@ msgstr "Compte créé"
 
 #: Agrammon/module/user/Account.js:197
 msgid "Login with new password"
-msgstr ""
+msgstr "Connectez-vous avec un nouveau mot de passe"
 
 #: Agrammon/module/user/Account.js:199
 msgid "Password reset."
-msgstr ""
+msgstr "Réinitialisation du mot de passe"
 
 #: Agrammon/module/user/Account.js:202
 msgid "Login"
@@ -774,15 +774,15 @@ msgstr ""
 msgid ""
 "For detailed information about the model please consult the Agrammon website"
 " at"
-msgstr ""
+msgstr "Pour des informations détaillées sur le modèle, veuillez consulter le site Web d'Agrammon à l'adresse"
 
 #: Agrammon/ui/About.js:56
 msgid "Implemented by"
-msgstr ""
+msgstr "Implementé par"
 
 #: Agrammon/ui/ViewerIframe.js:37
 msgid "ViewerIframe.__load(): could not load document %1"
-msgstr ""
+msgstr "ViewerIframe.__load(): impossible de charger le document% 1"
 
 #: Agrammon/ui/dialog/Comment.js:62
 msgid "Save comment"
@@ -790,7 +790,7 @@ msgstr "Enregistrer"
 
 #: Agrammon/ui/dialog/Help.js:81
 msgid "Help undefined"
-msgstr ""
+msgstr "Aide non définie"
 
 #: Agrammon/ui/dialog/Log.js:96
 msgid "No log messages."
@@ -798,7 +798,7 @@ msgstr "No messages."
 
 #: Agrammon/ui/dialog/MsgBox.js:81
 msgid "Apply"
-msgstr ""
+msgstr "Appliquer"
 
 #: Agrammon/ui/dialog/MsgBox.js:90
 msgid "OK"
@@ -806,19 +806,19 @@ msgstr ""
 
 #: Agrammon/ui/dialog/MsgBox.js:172 Agrammon/ui/dialog/MsgBox.js:189
 msgid "%1 (Error Code %2)"
-msgstr ""
+msgstr "% 1 (code d'erreur% 2)"
 
 #: Agrammon/ui/dialog/MsgBox.js:172 Agrammon/ui/dialog/MsgBox.js:189
 msgid "RPC Error %1"
-msgstr ""
+msgstr "Erreur RPC% 1"
 
 #: Agrammon/ui/dialog/MsgBox.js:224
 msgid "Coming soon ..."
-msgstr ""
+msgstr "Bientôt disponible ..."
 
 #: Agrammon/ui/dialog/News.js:43
 msgid "The following messages have been published since your last login on "
-msgstr ""
+msgstr "Les messages suivants ont été publiés depuis votre dernière connexion le"
 
 #: Agrammon/ui/menu/AdminMenu.js:20 Agrammon/ui/menu/AdminMenu.js:45
 msgid "Create account"
@@ -939,15 +939,15 @@ msgstr "*** Configurer Branching ***"
 
 #: Agrammon/util/Validators.js:35
 msgid "Farm number required!"
-msgstr ""
+msgstr "Numéro de ferme requis!"
 
 #: Agrammon/util/Validators.js:43
 msgid "Sender address required!"
-msgstr ""
+msgstr "Adresse de l'expéditeur requise"
 
 #: Agrammon/util/Validators.js:77
 msgid "Input value must greater than"
-msgstr ""
+msgstr "La valeur d'entrée doit être supérieure à"
 
 #: Agrammon/util/Validators.js:83
 msgid "Input value must equal or greater than"
@@ -955,11 +955,11 @@ msgstr "Introduisez un chiffre supérieur ou égal à 0"
 
 #: Agrammon/util/Validators.js:89
 msgid "Input value must less than"
-msgstr ""
+msgstr "La valeur d'entrée doit être inférieure à"
 
 #: Agrammon/util/Validators.js:95
 msgid "Input value must equal or less than"
-msgstr ""
+msgstr "La valeur d'entrée doit être inférieure à"
 
 #: Agrammon/util/Validators.js:101
 msgid "Enter a number between %1 and %2."
@@ -967,59 +967,59 @@ msgstr "Introduisez un chiffre entre %1 et %2."
 
 #: Agrammon/util/Validators.js:106
 msgid "Input value must match"
-msgstr ""
+msgstr "La valeur d'entrée doit correspondre"
 
 #: Agrammon/util/Validators.js:111 Agrammon/util/Validators.js:215
 msgid "Unknown validator function"
-msgstr ""
+msgstr "Fonction de validation inconnue"
 
 #: Agrammon/util/Validators.js:134
 msgid "not bigger than"
-msgstr ""
+msgstr "pas plus grand que"
 
 #: Agrammon/util/Validators.js:148
 msgid "not equal or bigger than"
-msgstr ""
+msgstr "pas égal ou supérieur à"
 
 #: Agrammon/util/Validators.js:162
 msgid "not less than"
-msgstr ""
+msgstr "pas moins que"
 
 #: Agrammon/util/Validators.js:176
 msgid "not equal or less than"
-msgstr ""
+msgstr "pas égal ou inférieur à"
 
 #: Agrammon/util/Validators.js:192
 msgid "not between"
-msgstr ""
+msgstr "pas entre"
 
 #: Agrammon/util/Validators.js:194
 msgid "and"
-msgstr ""
+msgstr "et"
 
 #: Agrammon/util/Validators.js:206
 msgid "doesn't match"
-msgstr ""
+msgstr "ne correspond pas"
 
 #: Agrammon/util/Validators.js:248 Agrammon/util/Validators.js:271
 msgid "Invalid input"
-msgstr ""
+msgstr "Entrée invalide"
 
 #: Agrammon/util/Validators.js:250
 msgid "is not a valid number for type "
-msgstr ""
+msgstr "n'est pas un nombre valide pour le type "
 
 #: Agrammon/util/Validators.js:294
 msgid "Type: integer"
-msgstr ""
+msgstr "Type: nombre entier"
 
 #: Agrammon/util/Validators.js:297
 msgid "Type: floating point number"
-msgstr ""
+msgstr "Type: nombre à virgule flottante"
 
 #: Agrammon/util/Validators.js:300
 msgid "Type: percentage"
-msgstr ""
+msgstr "Type: pourcentage"
 
 #: Agrammon/util/Validators.js:308
 msgid "Parameter validation"
@@ -1027,4 +1027,4 @@ msgstr "Validation des paramètres d’entrée"
 
 #: Agrammon/util/Validators.js:317
 msgid "Help text currently only available in German"
-msgstr ""
+msgstr "Texte d'aide actuellement disponible uniquement en allemand"

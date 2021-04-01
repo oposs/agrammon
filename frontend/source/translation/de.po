@@ -1,7 +1,3 @@
-# Automatically generated, 2007.
-#. NO LONGER USED
-msgstr ""
-
 #: agrammon/Application.js
 msgid "Agrammon is not supported on Internet Explorer below version 7"
 msgstr "Agrammon ist nicht unterstützt für Internet Explorer unter version 7"
@@ -946,7 +942,7 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
-#: agrammon/io/remote/Rpc.js
+#. NO LONGER USED
 msgid "Session expired: please login again"
 msgstr "Sitzung abgelaufen: bitte neu anmelden"
 
@@ -960,4 +956,8 @@ msgstr "Datensätze von %1"
 
 #: agrammon/module/dataset/DatasetTool.js
 msgid "Tag %1 already exists"
-msgstr ""
+msgstr "Tag %1 existiert bereits"
+
+#: agrammon/io/remote/Rpc.js
+msgid "%1: Session expired: please login again"
+msgstr "%1: Sitzung abgelaufen, bitte neu anmelden"
