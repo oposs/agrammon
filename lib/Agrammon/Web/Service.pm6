@@ -281,8 +281,9 @@ class Agrammon::Web::Service {
     }
 
     method store-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
-        return Agrammon::DB::Dataset.new(:$user, :$name).lookup
+         Agrammon::DB::Dataset.new(:$user, :$name).lookup
             .store-branch-data(%data<vars>, %data<instance>, %data<options>, %data<data>);
+        $!outputs-cache.invalidate($user.username, $name);
     }
 
     method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $variable-pattern --> Nil) {
