@@ -32,8 +32,7 @@
   "test-depends": [
     "App::Prove6",
     "Cro::HTTP::Test",
-    "Test::Mock",
-    "Test::NoTabs"
+    "Test::Mock"
   ],
   "provides": {
     "Agrammon::CommonParser": "lib/Agrammon/CommonParser.pm6",
