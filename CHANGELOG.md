@@ -1,5 +1,8 @@
 # Agrammon Change Log
 
+-  6.0.0-rc6, 2021-04-08, fritz.zaucker@oetiker.ch
+   - Invalidate output cache on branch config change
+
 -  6.0.0-rc6, 2021-04-01, fritz.zaucker@oetiker.ch
    - French GUI translations
 
