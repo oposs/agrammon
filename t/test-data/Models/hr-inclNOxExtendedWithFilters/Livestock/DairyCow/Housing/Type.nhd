@@ -53,11 +53,7 @@ Selects the emission rate and other correction factors for the specific housing 
     Type of housing.
   ++help
     +++en
-       <p>Standard values for Switzerland: </p>
-       <p>Tied Housing Slurry: 18%</p> 
-       <p>Tied Housing Slurry Plus Solid Manure: 35%</p> 
-       <p>Loose Housing Slurry: 35%</p> 
-       <p>Loose Housing Slurry Plus Solid Manure: 11%</p>
+       <p>Standard values for Switzerland: Loose Housing Slurry</p>
     +++de
        <dl>
                <dt>Laufstall mit Produktion von Vollgülle:</dt>
@@ -66,24 +62,22 @@ Selects the emission rate and other correction factors for the specific housing 
                <dd>Mehrraum-Laufstall, Liegefläche mit Liegeboxen (Gülle und bedeutende Mengen Mist)</dd>
                <dd>Mehrraum-Laufstall, Liegefläche als Tiefstreu/Tretmist</dd>
                <dt>Laufstall mit Tiefstreu/Tretmist:</dt>
-               <dd> Einraum-Laufstall mit Tiefstreu/Tretmist (ausschliesslich Mist)</dd>
-       </dl>
-       <p/>
-       <p>Vorschlag für Standardwerte: </p>
-       <p>Im Jahr 2010 war der Anteil der Aufstallungssysteme wie folgt: </p>
-       <p>Anbindestall mit Produktion von Vollgülle: 18%</p> 
-       <p>Anbindestall mit Produktion von Gülle und Mist: 35%</p> 
-       <p>Laufstall mit Produktion von Vollgülle: 35%</p> 
-       <p>Laufstall mit Produktion von Gülle und Mist: 11%</p>
-       <p>Laufstall mit Tiefstreue / Tretmist: 1%</p>
+               <dd>Einraum-Laufstall mit Tiefstreu/Tretmist (ausschliesslich Mist)</dd>
+      </dl>
+      <p/>
+      <p>Vorschlag für Standardwert: Laufstall mit Produktion von Vollgülle</p> 
     +++fr
-       <p>Proposition de valeurs standard: </p>
-       <p>En 2010, les différents systèmes de stabulation se répartissaient de la manière suivante: </p>
-       <p>Stabulation entravée avec production lisier complet: 18%</p> 
-       <p>Stabulation entravée avec production de lisier et de fumier: 35%</p> 
-       <p>Stabulation libre avec production de lisier complet: 35%</p> 
-       <p>Stabulation libre avec production de lisier et de fumier: 10%</p>
-       <p>Stabulation libre avec litière profonde ou litière sur plan incliné: 1%</p>
+       <dl>
+               <dt>Stabulation libre avec production de lisier complet:</dt>
+               <dd>Stabulation libre à aires multiples, stabulation libre équipée de logettes</dd>
+               <dt>Stabulation libre avec production de lisier et de fumier:</dt>
+               <dd>Stabulation libre à aires multiples, stabulation libre équipée de logettes avec production de lisier et de quantités importantes de fumier</dd>
+               <dd>Stabulation libre à aires multiples, aire de repos avec litière profonde ou litière sur plan incliné</dd>
+               <dt>Stabulation libre avec litière profonde ou litière sur plan incliné:</dt>
+               <dd>Stabulation libre à aire unique avec litière profonde ou litière sur plan incliné (uniquement du fumier)</dd>
+      </dl>
+      <p/>
+      <p>Proposition de valeurs standard: stabulation libre avec production de lisier complet</p>
 
 *** technical ***
 
