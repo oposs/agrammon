@@ -62,13 +62,22 @@ Selects the emission rate and other correction factors for the specific housing 
                <dd>Mehrraum-Laufstall, Liegefläche mit Liegeboxen (Gülle und bedeutende Mengen Mist)</dd>
                <dd>Mehrraum-Laufstall, Liegefläche als Tiefstreu/Tretmist</dd>
                <dt>Laufstall mit Tiefstreu/Tretmist:</dt>
-               <dd> Einraum-Laufstall mit Tiefstreu/Tretmist (ausschliesslich Mist)</dd>
-               <p>Vorschlag für Standardwert: Laufstall mit Produktion von Vollgülle</p> 
+               <dd>Einraum-Laufstall mit Tiefstreu/Tretmist (ausschliesslich Mist)</dd>
+      </dl>
+      <p/>
+      <p>Vorschlag für Standardwert: Laufstall mit Produktion von Vollgülle</p> 
     +++fr
-       <p>Stabulation libre avec production de lisier complet: stabulation libre à aires multiples, stabulation libre équipée de logettes</p> 
-       <p>Stabulation libre avec production de lisier et de fumier: stabulation libre à aires multiples, stabulation libre équipée de logettes avec production de lisier et de quantités importantes de fumier; stabulation libre à aires multiples,  aire de repos avec avec litière profonde ou litière sur plan incliné</p>
-       <p>Stabulation libre avec litière profonde ou litière sur plan incliné:  stabulation libre à une aire avec litière profonde ou litière sur plan incliné (uniquement du fumier)</p>
-       <p>Proposition de valeurs standard: stabulation libre avec production de lisier complet</p>
+       <dl>
+               <dt>Stabulation libre avec production de lisier complet:</dt>
+               <dd>Stabulation libre à aires multiples, stabulation libre équipée de logettes</dd>
+               <dt>Stabulation libre avec production de lisier et de fumier:</dt>
+               <dd>Stabulation libre à aires multiples, stabulation libre équipée de logettes avec production de lisier et de quantités importantes de fumier</dd>
+               <dd>Stabulation libre à aires multiples, aire de repos avec litière profonde ou litière sur plan incliné</dd>
+               <dt>Stabulation libre avec litière profonde ou litière sur plan incliné:</dt>
+               <dd>Stabulation libre à aire unique avec litière profonde ou litière sur plan incliné (uniquement du fumier)</dd>
+      </dl>
+      <p/>
+      <p>Proposition de valeurs standard: stabulation libre avec production de lisier complet</p>
 
 *** technical ***
 

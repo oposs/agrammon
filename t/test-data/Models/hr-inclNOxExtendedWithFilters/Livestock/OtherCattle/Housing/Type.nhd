@@ -52,215 +52,46 @@ taxonomy = Livestock::OtherCattle::Housing::Type
     Type of housing.
   ++help
     +++en
-       <p>Standard values for Switzerland: Loose Housing Deep Litter for for calves suckling cows and fattening calves and Loose Housing Slurry Plus Solid Manure for all other animal categories</p>
+       <p>Standard values for Switzerland: Loose Housing Deep Litter for fattening calves and Loose Housing Slurry Plus Solid Manure for all other animal categories</p>
     +++de 	
-	<dl>
-		<dt>Laufstall mit Produktion von Vollgülle:</dt>
-	 	<dd>Mehrraum-Laufstall, Liegefläche</dd>
-		<dd>Einraum-Laufstall mit perforiertem Boden</dd>
-		<dt>Laufstall mit Produktion von Gülle und Mist:</dt>
-		<dd>Mehrraum-Laufstall, Liegefläche mit Liegeboxen (Gülle und bedeutende Mengen Mist)</dd>
-		<dd>Mehrraum-Laufstall, Liegefläche als Tiefstreu/Tretmist</dd>
-		<dt>Laufstall mit Tiefstreu/Tretmist:</dt>
-		<dd>Einraum-Laufstall mit Tiefstreu/Tretmist (ausschliesslich Mist)</dd>
-	</dl>
-	<p/>
-       <p>Vorschlag für Standardwerte</p>
-       <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
-	 <tr>
-           <td>&#160;</td>
-	   <td align="center" >
-	      Anbindestall mit  <br/> Produktion von <br/> Vollgülle
-	   </td>
-	   <td align="center" >
-	      Anbindestall mit <br/> Produktion von <br/> Gülle und Mist
-	   </td>
-           <td align="center" >
-              Laufstall mit <br/> Produktion von  <br/> Vollgülle
-           </td>
-           <td align="center" >
-              Laufstall mit <br/> Produktion von  <br/>Gülle und Mist
-           </td>
-           <td align="center" >
-              Laufstall mit <br/> Tiefstreu / <br/>Tretmist
-           </td>
-	 </tr>
-	 <tr>
-	  <td>&#160; </td>
-          <td  align="center" colspan="5">
-    	     Stallsysteme in % des Bestandes
-          </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
- 	     Mutterkühe
-          </td>
-          <td align="center" >    </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-          <td align="center" >    </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-             Aufzuchtrinder  <br/> unter 1-jährig *
-          </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-          <td align="center" >   </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-		       Aufzuchtrinder  <br/> 1- bis 2-jährig
-          </td>
-          <td align="center" >    </td>
-          <td align="center" >    </td>
-          <td align="center" >    </td>
-          <td align="center" > x </td>
-          <td align="center" >   </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-		       Aufzuchtrinder  <br/> über 2-jährig
-          </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-          <td align="center" >   </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-            Mastkälber
-          </td>
-          <td align="center" >  - </td>
-          <td align="center" >  - </td>
-          <td align="center" >    </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-		       Mutterkuhkälber
-          </td>
-          <td align="center" >   - </td>
-          <td align="center" >   - </td>
-          <td align="center" >    </td>
-          <td align="center" >  x </td>
-          <td align="center" >    </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-		       Masttiere  <br/> Rindviehmast
-          </td>
-          <td align="center" >    </td>
-          <td align="center" >    </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-          <td align="center" >  </td>
-         </tr>
-        </table>
+    	<dl>
+    		<dt>Laufstall mit Produktion von Vollgülle:</dt>
+    	 	<dd>Mehrraum-Laufstall, Liegefläche mit Liegeboxen</dd>
+    		<dd>Einraum-Laufstall mit perforiertem Boden</dd>
+    		<dt>Laufstall mit Produktion von Gülle und Mist:</dt>
+    		<dd>Mehrraum-Laufstall, Liegefläche mit Liegeboxen (Gülle und bedeutende Mengen Mist)</dd>
+    		<dd>Mehrraum-Laufstall, Liegefläche als Tiefstreu/Tretmist</dd>
+    		<dt>Laufstall mit Tiefstreu/Tretmist:</dt>
+    		<dd>Einraum-Laufstall mit Tiefstreu/Tretmist (ausschliesslich Mist)</dd>
+    	</dl>
+    	<p/>
+      <p>Vorschlag für Standardwerte:</p>
+      <dl>
+        <dt>Alle Kategorien ausser Mastkälber:</dt>
+        <dd>Laufstall mit Produktion von Gülle und Mist</dd>
+        <dt>Mastkälber:</dt>
+        <dd>Laufstall mit Tiefstreu/Tretmist</dd>
+      </dl>
     +++fr
-       <p>Proposition de valeurs standard</p>
-       <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
-	 <tr>
-           <td>&#160;</td>
-	   <td align="center" >
-	      Stabulation  <br/> entravée avec  <br/> production de <br/>lisier complet  
-	   </td>
-	   <td align="center" >
-	      Stabulation <br/> entravée avec <br/> production de <br/> lisier et fumier
-	   </td>
-           <td align="center" >
-              Stabulation libre  <br/> avec production  <br/> de lisier complet
-           </td>
-           <td align="center" >
-              Stabulation libre <br/> avec production <br/>de lisier et <br/>fumier
-           </td>
-           <td align="center" >
-             Stabulation à  <br/>litière profonde  <br/>ou litière sur <br/>plan incliné 
-           </td>
-	 </tr>
-	 <tr>
-	  <td>&#160; </td>
-          <td  align="center" colspan="5">
-    	     Systèmes de stabulation en % du cheptel 
-          </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
- 	     Vâches <br/> allaitantes
-          </td>
-          <td align="center" >    </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-          <td align="center" >   </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-             Remontes de   <br/> moins d'un an*
-          </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-          <td align="center" >   </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-	     Remontes <br/> âgées entre 1 et <br/> 2 ans
-          </td>
-          <td align="center" >    </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-          <td align="center" >   </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-	     Remontes <br/> âgées des plus <br/> de 2 ans
-          </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-          <td align="center" >   </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-            Veaux à <br/> l'engrais
-          </td>
-          <td align="center" >  - </td>
-          <td align="center" >  - </td>
-          <td align="center" >   </td>
-          <td align="center" >   </td>
-          <td align="center" > x </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-	    Veaux de <br/> vâches <br/> allaitantes
-          </td>
-          <td align="center" >  - </td>
-          <td align="center" >  - </td>
-          <td align="center" >    </td>
-          <td align="center" > x </td>
-          <td align="center" >   </td>
-         </tr>
-         <tr>
-	  <td align="left" valign="top" cellspacing="0">
-	    Bovins à <br/> l'engrais
-          </td>
-          <td align="center" >  - </td>
-          <td align="center" >  5 </td>
-          <td align="center" > 15 </td>
-          <td align="center" > 70 </td>
-          <td align="center" > 10 </td>
-         </tr>
-        </table>
-        
+<dl>
+    		<dt>Stabulation libre avec production de lisier complet:</dt>
+    	 	<dd>Stabulation libre à aires multiples, stabulation libre équipée de logettes</dd>
+    		<dd>Stabulation libre à aire unique avec sol perforé</dd>
+    		<dt>Stabulation libre avec production de lisier et de fumier:</dt>
+    		<dd>Stabulation libre à aires multiples, stabulation libre équipée de logettes avec production de lisier et de quantités importantes de fumier</dd>
+    		<dd>Stabulation libre à aires multiples, aire de repos avec litière profonde ou litière sur plan incliné</dd>
+    		<dt>Stabulation libre avec litière profonde ou litière sur plan incliné:</dt>
+    		<dd>Stabulation libre à aire unique avec litière profonde ou litière sur plan incliné (uniquement du fumier)</dd>
+    	</dl>
+    	<p/>
+      <p>Proposition de valeurs standard:</p>
+      <dl>
+        <dt>Toutes les catégories sauf veaux à l'engrais:</dt>
+        <dd>Stabulation libre avec production de lisier et de fumier</dd>
+        <dt>Veaux à l'engrais:</dt>
+        <dd>Stabulation libre avec litière profonde ou litière sur plan incliné</dd>
+
+       
 
 *** technical ***
 
