@@ -321,9 +321,6 @@ taxonomy = Livestock::OtherCattle::Outdoor
        <dl>  
        <dt>Boden planbefestigt:</dt>
        <dd>Laufhöfe mit Betonboden oder Asphalt (wasserundurchlässig). Mit Verbundsteinen und Pflastersteinen ausgelegte Flächen (wasserdurchlässig) werden den planbefestigten Böden gleichgestellt.</dd>
-
-       <dt>Boden unbefestigt:</dt>
-       <dd> Laufhöfe mit unbefestigtem oder wasserdurchlässigem Boden wie Kies, Sand, Mergel, Holzschnitzel, Rasengittersteine etc.</dd>
        <dt>Boden perforiert:</dt>
        <dd> 
             Spalten oder Lochböden; mindestens ¾ der Laufhoffläche muss einen perforierten Boden aufweisen. 
@@ -332,20 +329,29 @@ taxonomy = Livestock::OtherCattle::Outdoor
             des Bodens sowie Lagerung eines wesentlichen Teils der Gülle des Betriebs in der Grube unterhalb 
             des perforierten Bodens.
        </dd>
+?if !Kantonal_LU       
+       <dt>Boden unbefestigt:</dt>
+       <dd> Laufhöfe mit unbefestigtem oder wasserdurchlässigem Boden wie Kies, Sand, Mergel, Holzschnitzel, Rasengittersteine etc.</dd>   
        </dl>
        <p>Laufhöfe mit unbefestigter Oberfläche dürfen nicht permanent zugänglich sein (max. 2 Stunden pro Tag).</p>
+?else
+       </dl>       
+?endif
        <p>Vorschlag für Standardwert: Boden planbefestigt</p>
     +++fr
        <dl>  
        <dt>Sol en dur: </dt>
        <dd>Parcours avec un sol bétonné ou asphalté (imperméable à l'eau). Les surfaces pavées (perméables à l'eau) sont considérées également comme des sols en dur. </dd>
-
-       <dt>Sol sans revêtement dur:</dt>
-       <dd> Parcours avec des sols non durs ou perméables à l'eau comme les sols recouverts de gravier, de sable, de marne, de copeaux de bois ou de dalles gazon, etc. </dd>
        <dt>Sol perforé:</dt>
        <dd> Caillebotis ou sols à trous; au moins ¾ de la surface du parcours doit être un sol perforé. Si moins de ¾ de la surface est perforée, alors introduire ‚Sol en dur'. </dd>
+?if !Kantonal_LU       
+       <dt>Sol sans revêtement dur:</dt>
+       <dd> Parcours avec des sols non durs ou perméables à l'eau comme les sols recouverts de gravier, de sable, de marne, de copeaux de bois ou de dalles gazon, etc. </dd>
   </dl>
        <p>Les parcours extérieurs avec des sols sans revêtement dur ne doivent pas être accessibles de manière permanente (max. 2 heures par jour). </p>
+?else
+       </dl>  
+?endif
        <p>Proposition de valeur standard: sol en dur</p>
 
 ?if !Kantonal_LU
