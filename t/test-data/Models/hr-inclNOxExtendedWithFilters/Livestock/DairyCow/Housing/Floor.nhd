@@ -52,20 +52,30 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        it = toothed_scrapper_running_over_a_grooved_floor
   ++labels 
     en = Mitigation options for loose housing systems
-    de = Emissionsmindernde Massnahme bei Laufställen
+    de = Emissionsmindernde Massnahmen bei Laufställen
     fr = Mesures limitant les émissions dans les stabulations pour vâches laitières
   ++units 
     en = -
   ++description
-    UNECE category 1 mitigation options for housing systems for other cattle (none, toothed scrapper running over a grooved floor).
+    Mitigation options for loose housing systems for cattle.
   ++help
     +++en
+       <p>Elevated feed stalls:<p>
+       <p>This system consists of an elevated feeding area and separations between the animals. The animals are controlled at the feeding barrier which minimizes the accumulation of excretions in the feeding area. Applicable for Tied Housing Slurry and Tied Housing Slurry Plus Solid Manure.<p>
+       <p>Double-sloped solid floor operating with urine gutter:<p>
+       <p>Double-sloped solid floor (slope of 3 %) operating with a longitudinal urine gutter. The floor and the urine gutter must be cleaned by a scraper at two-hour intervals (controlled by a timer). Applicable for Tied Housing Slurry.<p>
        <p>Standard value for Switzerland: “none”</p>
     +++de
-       <p>Ein gerillter Boden kombiniert mit einem gezahnten Kotschieber gehört zu den von der UNECE (Wirtschaftskommission der Vereinten Nationen für Europa) gut erforschten, als praktikabel betrachteten Massnahmen zur Emissionsminderung. Ihre Wirksamkeit wurde in Versuchen belegt. Diese Massnahme ist nur für Laufställe anwendbar.</p>
+       <p>Fressstand erhöht zum Laufgang:</p>
+       <p>Dieses System besteht aus einem erhöhten Fressbereich (Podest) und Fressplatzabtrennungen. Die Tiere werden am Fressgitter so gesteuert, dass möglichst wenig Exkremente auf den Standflächen des Fressbereichs anfallen. Anwendbar für Laufstall mit Produktion von Vollgülle und Laufstall mit Produktion von Gülle und Mist.</p>
+       <p>Boden mit Quergefälle und Harnsammelrinne:</p>
+       <p>Planbefestigte Laufflächen mit einem Quergefälle von 3 % und einer Längsrinne. Der Boden und die Harnabflussrinne müssen mittels Schieber und Rinnenräumer in zweistündigem Rhythmus gereinigt werden (Steuerung mit einer Zeitschaltuhr). Anwendbar für Laufstall mit Produktion von Vollgülle.</p>
        <p>Vorschlag für Standardwert: keine</p>
     +++fr
-       <p>Un sol rainuré combiné à un racleur denté fait partie des mesures limitant les émissions, bien étudiées par l'UNECE (Commission économique des Nations Unies pour l'Europe) et considérées comme praticables. L'efficacité  de cette mesure a été confirmée dans des essais. Cette mesure n'est utilisable que dans les stabulations libres. </p>
+       <p>Stalle d’affouragement surélevée :</p>
+       <p>Ce système se compose d'une aire d'alimentation surélevée et de places d’alimentation avec séparations. Les animaux sont contrôlés au niveau des cornadis ce-qui minimise l’accumulation des excréments dans l'aire d'alimentation. Applicable pour stabulation libre avec production de lisier complet et stabulation libre avec production de lisier et de fumier.</p>
+       <p>Sol non perforé avec pente transversale :</p>
+       <p>Sol non perforé, inclinées à 3 % vers une rigole longitudinale. Le sol et la rigole d’écoulement doivent être nettoyés au moyen d’un dispositif spécial toutes les deux heures (commande munie d’une minuterie). Applicable pour stabulation libre avec production de lisier complet.</p>
        <p>Proposition de valeur standard: aucune</p>
 
 *** technical ***
