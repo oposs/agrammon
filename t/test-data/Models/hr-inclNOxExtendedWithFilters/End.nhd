@@ -21,9 +21,9 @@ Dummy Module marking the startpoint for the Model Parser
 ?if Kantonal_LU
   submit = true
    ++selector
-     en = Berechnung Baugesuch Kanton Luzern - Ammonia emissions (in kg N per year)
-     de = Berechnung Baugesuch Kanton Luzern - Ammoniak-Emissionen (in kg N pro Jahr)
-     fr = Baugesuch Kanton Luzern - Emissions d'ammoniaque (en kg de N par année)
+     en = Berechnung Baugesuch Ammoniak-Emissionen (in kg N pro Jahr) - Zusammenfassung
+     de = Berechnung Baugesuch Ammoniak-Emissionen (in kg N pro Jahr) - Zusammenfassung
+     fr = Calcul pour demande de permis de construire émissions d’ammoniaque (en kg de N par année) - résumé
 ?else
   ++selector
     en = Ammonia emissions (in kg N per year) - summary
@@ -44,34 +44,13 @@ Dummy Module marking the startpoint for the Model Parser
       de = Total
       fr = Total
 
-+ResultsInput
-  type = report
-  results = true
-  ++selector
-    en = Summary Results
-    de = Zusammenfassung Resultate
-    fr = Résumé des résultats
-  ++data
-    +++ResultsLivestock
-      en = Livestock
-      de = Tierproduktion
-      fr = Production animale
-    +++ResultsPlantProduction
-      en = Plant production
-      de = Pflanzenbau
-      fr = Production végétale
-    +++ResultsTotal
-      en = Total
-      de = Total
-      fr = Total
-
 ?if !Kantonal_LU
   +DetailReport
     type = reportDetailed
     ++selector
       en = Emissions and fluxes (in kg N per year) - detailed report
       de = Emissionen und Flüsse (in kg N pro Jahr) - Detailreport
-      fr = Emissions et flux d'azote (en kg de N par année) - résumé detaillé
+      fr = Emissions et flux (en kg de N par année) - détails
     ++data
        +++LivestockNH3
          en = Livestock production NH3-Emissions
@@ -105,33 +84,35 @@ Dummy Module marking the startpoint for the Model Parser
         en = TAN flux livestock production
         de = TAN Fluss Tierproduktion
         fr = Flux de TAN production animale
+?endif
 
-  +DetailReportNH3
-    type = reportDetailed
-    ++selector
-      en = NH3 Emissions (in kg N per year) - detailed report
-      de = NH3 Emissionen (in kg N pro Jahr) - Detailreport
-      fr = Emissions de NH3 (en kg de N par année) - résumé detaillé
-    ++data
-       +++LivestockNH3
-         en = Livestock production NH3-Emissions
-         de = Tierproduktion NH3-Emissionen
-         fr = Production animale Emissions de NH3
-       +++PlantNH3
-         en = Plant production NH3-Emissions
-         de = Pflanzenbau NH3-Emissionen
-         fr = Production végétale Emissions de NH3
-      +++SummaryTotal
-        en = Total NH3-Emissions
-        de = Total NH3-Emissionen
-        fr = Totales Emissions de NH3
++DetailReportNH3
+  type = reportDetailed
+  ++selector
+    en = NH3 Emissions (in kg N per year) - detailed report
+    de = NH3 Emissionen (in kg N pro Jahr) - Detailreport
+    fr = Emissions d’ammoniaque (en kg de N par année) - détails
+  ++data
+     +++LivestockNH3
+       en = Livestock production NH3-Emissions
+       de = Tierproduktion NH3-Emissionen
+       fr = Production animale Emissions de NH3
+     +++PlantNH3
+       en = Plant production NH3-Emissions
+       de = Pflanzenbau NH3-Emissionen
+       fr = Production végétale Emissions de NH3
+    +++SummaryTotal
+      en = Total NH3-Emissions
+      de = Total NH3-Emissionen
+      fr = Totales Emissions de NH3
 
+?if !Kantonal_LU
   +DetailReportTAN
     type = reportDetailed
     ++selector
-      en = TAN fluxes (in kg N per year) - detailed report
-      de = TAN Flüsse (in kg N pro Jahr) - Detailreport
-      fr = Flux de TAN (en kg de N par année) - résumé detaillé
+      en = TAN fluxes (in kg TAN per year) - detailed report
+      de = TAN Flüsse (in kg TAN pro Jahr) - Detailreport
+      fr = Flux de TAN (en kg de TAN par année) - détails
     ++data
       +++LivestockTAN
         en = TAN flux livestock production
@@ -143,7 +124,7 @@ Dummy Module marking the startpoint for the Model Parser
     ++selector
       en = N2O, NO, N2 emissions and N fluxes (in kg N per year) - detailed report
       de = N2O, NO, N2 Emissionen und N Flüsse (in kg N pro Jahr) - Detailreport
-      fr = Emissions de N2O, NO, N2 et flux d'azote (en kg de N par année) - résumé detaillé
+      fr = Emissions de N2O, NO, N2 et flux d'azoté (en kg de N par année) - détails
     ++data
       +++LivestockN2O
         en = Livestock production N2O-Emissions
@@ -164,3 +145,23 @@ Dummy Module marking the startpoint for the Model Parser
 ?endif
 
 
++ResultsInput
+  type = report
+  results = true
+  ++selector
+    en = Summary Results
+    de = Zusammenfassung Resultate
+    fr = Résumé des résultats
+  ++data
+    +++ResultsLivestock
+      en = Livestock
+      de = Tierproduktion
+      fr = Production animale
+    +++ResultsPlantProduction
+      en = Plant production
+      de = Pflanzenbau
+      fr = Production végétale
+    +++ResultsTotal
+      en = Total
+      de = Total
+      fr = Total
