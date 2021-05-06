@@ -246,9 +246,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = Ausscheidung
     fr = Excrétion
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Total annual N excreted by all animals.
   ++formula
@@ -270,9 +270,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = __Stall
     fr = __Stabulation
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Total annual N excreted by all animals.
   ++formula
@@ -294,9 +294,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = __Laufhof
     fr = __Parcours extérieur
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Total annual N excreted by all animals.
   ++formula
@@ -331,9 +331,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = In Weide
     fr = Dans le pâturage
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Total annual N excreted by all animals.
   ++formula
@@ -602,9 +602,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +tan_out_housing_liquid
   print = 3a
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual N flux (liquid share) out of housing.
   ++formula
@@ -616,9 +616,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +tan_out_housing_solid
   print = 4a
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual N flux (solid share) as TAN from housing and yard into
     the storage from all animals besides poultry.
@@ -642,9 +642,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +tan_out_yard_liquid
   print = 3a
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual N flux (liquid share) out of yard.
   ++formula
@@ -654,9 +654,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +tan_out_yard_solid
   print = 4a
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual N flux (solid share) as TAN from yard and yard into
     the storage from all animals besides poultry.
@@ -673,9 +673,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +tan_out_livestock_liquid
   print = 6
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual N flux (liquid share) as TAN from housing and yard into
     the storage from all animals besides poultry.
@@ -704,9 +704,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
 +tan_out_livestock_solid
   print = 4a
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual N flux (solid share) as TAN from housing and yard into
     the storage from all animals besides poultry.
@@ -1131,9 +1131,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = In Boden von Weide
     fr = Dans le sol suite au pâturage
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual N remaining on pasture from all grazing areas.
   ++formula
@@ -1162,9 +1162,9 @@ gui      = Livestock,Tierhaltung,Production animale,Livestock
     de = Abbau im Luftwäscher
     fr = Dégradation dans les épuratuers d'air
   ++units
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual N remaining on pasture from all grazing areas.
   ++formula

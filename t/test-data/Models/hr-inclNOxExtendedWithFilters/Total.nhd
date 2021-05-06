@@ -88,9 +88,9 @@ taxonomy = Total
     de = In Boden Total
     fr = Total dans le sol
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual total TAN remaining in soil.
   ++formula
