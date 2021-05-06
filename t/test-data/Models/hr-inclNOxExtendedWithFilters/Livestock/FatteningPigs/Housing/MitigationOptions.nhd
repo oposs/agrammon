@@ -80,63 +80,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** technical ***
 
-+red_PSF_with_scraper_concrete_slats
-  value = 0.40
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-
-+red_PSF_with_flush_channels_no_areation
-  value = 0.50
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_flush_channels_areation
-  value = 0.60
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_flush_gutters_tubes_no_areation
-  value = 0.60
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_flush_gutters_tubes_areation
-  value = 0.60
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_channels_slanted_walls_concrete_slats
-  value = 0.60
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_channel_slanted_walls_metal_slats
-  value = 0.65
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_scraper_metal_slats
-  value = 0.50
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
 +red_low_impuls_air_supply
   value = 0.2
   ++units 
@@ -156,30 +99,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     Reduction factor for the emission due to UNECE housing systems tasks for fully and partly slatted floors.
   ++formula
     given ( In(mitigation_housing_floor) ) {
-      when "with_scraper_concrete_slats" {
-        Tech(red_PSF_with_scraper_concrete_slats);
-      }  
-      when "with_flush_channels_no_areation" {
-        Tech(red_PSF_with_flush_channels_no_areation);
-      } 
-      when "with_flush_channels_areation" {
-        Tech(red_PSF_with_flush_channels_areation);
-      } 
-      when "with_flush_gutters_tubes_no_areation" {
-        Tech(red_PSF_with_flush_gutters_tubes_no_areation);
-      } 
-      when "with_flush_gutters_tubes_areation" {
-        Tech(red_PSF_with_flush_gutters_tubes_areation);
-      } 
-      when "with_channels_slanted_walls_concrete_slats" {
-        Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
-      } 
-      when "with_channel_slanted_walls_metal_slats" {
-        Tech(red_PSF_with_channel_slanted_walls_metal_slats);
-      } 
-      when "with_scraper_metal_slats" {
-        Tech(red_PSF_with_scraper_metal_slats);
-      } 
       when "none" {
         0;
       }
