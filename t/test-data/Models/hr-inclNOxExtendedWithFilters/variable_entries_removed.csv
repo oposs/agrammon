@@ -15,3 +15,4 @@ Livestock::Pig::Housing::MitigationOptions,mitigation_housing_floor,with_channel
 Livestock::Pig::Housing::MitigationOptions,mitigation_housing_floor,with_flush_channels_areation
 Livestock::Pig::Housing::MitigationOptions,mitigation_housing_floor,with_flush_gutters_tubes_areation
 Livestock::DairyCow::Housing::Floor,mitigation_housing_floor,toothed_scrapper_running_over_a_grooved_floor
+Livestock::OtherCattle::Housing::Floor,mitigation_housing_floor,toothed_scrapper_running_over_a_grooved_floor

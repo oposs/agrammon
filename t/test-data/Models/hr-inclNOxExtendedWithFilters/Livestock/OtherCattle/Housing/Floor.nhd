@@ -44,11 +44,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        de = Boden mit Quergefälle und Harnsammelrinne und erhöhte Fressstände
        fr = Sol non perforé avec pente transv. + stalle d'affouragement
        it = floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands
-   +++toothed_scrapper_running_over_a_grooved_floor
-       en = toothed scrapper running over a grooved_floor
-       de = Gerillter Boden und gezahnter Kotschieber
-       fr = Sol rainuré et racleur denté
-       it = toothed_scrapper_running_over_a_grooved_floor
   ++labels 
     en = Mitigation option for loose housing systems
     de = Emissionsmindernde Massnahme bei Laufställen
@@ -101,13 +96,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++description
     Reduction efficiency as compared to cubicle house (UNECE 2007, paragraph 57, table 4).
 
-+red_toothed_scrapper_running_over_a_grooved_floor
-  value = 0.25
-  ++units
-    en = -
-  ++description
-    Reduction efficiency for LU Model version (Workshop SHL Zollikofen, 08.02.2010)
-
 *** output ***
 
 +c_housing_floor
@@ -137,14 +125,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
       when 'floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands' {
         if ( Val(housing_type, Type) eq 'Loose_Housing_Slurry' ) {
           1 - Tech(red_floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands);
-        } else {
-          1;
-        }
-      }
-      when 'toothed_scrapper_running_over_a_grooved_floor' {
-        if ( (Val(housing_type, Type) eq 'Loose_Housing_Slurry') or 
-            (Val(housing_type, Type) eq 'Loose_Housing_Slurry_Plus_Solid_Manure') ) {
-          1 - Tech(red_toothed_scrapper_running_over_a_grooved_floor);
         } else {
           1;
         }
