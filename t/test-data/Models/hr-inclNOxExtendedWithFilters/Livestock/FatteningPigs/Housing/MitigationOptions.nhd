@@ -27,48 +27,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        de = keine
        fr = aucune
        it = none
-    +++with_scraper_concrete_slats
-       en = with_scraper_concrete_slats
-       de = mit_Kotschieber_Betonspaltenboden
-       fr = avec_racleur_caillebotis_en_béton
-       it = with_scraper_concrete_slats
-    +++with_scraper_metal_slats
-       en = with_scraper_metal_slats
-       de = mit_Kotschieber_Metallspaltenboden
-       fr = avec_racleur_caillebotis_en_métal
-       it = with_scraper_metal_slats
-    +++with_flush_channels_no_areation
-       en = with_flush_channels_no_areation
-       de = mit_Spülkanälen_keine_Belüftung
-       fr = avec_canaux_de_rinçage_sans_ventilation
-       it = with_flush_channels_no_areation
-    +++with_flush_gutters_tubes_no_areation
-       en = with_flush_gutters_tubes_no_areation
-       de = mit_Spülrinnen_/_-_rohren_keine_Belüftung
-       fr = avec_rigoles_de_rinçage_tuyaux_sans_ventilation
-       it = with_flush_gutters_tubes_no_areation
-    +++with_channels_slanted_walls_concrete_slats
-       en = with_channels_slanted_walls_concrete_slats
-       de = mit_Güllekanal_geneigten_Seitenwänden_Betonspaltenboden
-       fr = avec_canal_à_lisier_parois_latérales_inclinées_caillebotis_en_béton
-       it = with_channels_slanted_walls_concrete_slats
-    +++with_channel_slanted_walls_metal_slats
-       en = with_channel_slanted_walls_metal_slats
-       de = mit_Güllekanal_geneigten_Seitenwänden_Metallspaltenboden
-       fr = avec_canal_à_lisier_parois_latérales_inclinées_caillebotis_en_métal
-       it = with_channel_slanted_walls_metal_slats
-?if !Kantonal_LU
-    +++with_flush_channels_areation
-       en = with_flush_channels_areation
-       de = mit_Spülkanälen_Belüftung
-       fr = avec_canaux_de_rinçage_avec_ventilation
-       it = with_flush_channels_areation
-    +++with_flush_gutters_tubes_areation
-       en = with_flush_gutters_tubes_areation
-       de = mit_Spülrinnen_/_-_rohren_Belüftung
-       fr = avec_rigoles_de_rinçage_tuyaux_avec_ventilation
-       it = with_flush_gutters_tubes_areation
-?endif
   ++labels 
     en = Mitigation options for housing systems: floors, slurry removal
     de = Emissionsmindernde Massnahmen Stall, Güllekanal
@@ -76,43 +34,14 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++units 
     en = -
   ++description
-    UNECE housing tasks for partly slatted floor: with scraper (concrete_slats), with flush channels(no areation), with flush channels(areation), with flush gutters/tubes (no areation), with flush gutters/tubes (areation), with channels slanted walls(concrete slats), with channel slanted walls (metal slats), with scraper (metal slats).
+    No selection available at the moment.
   ++help
     +++en
        <p>Standard value for Switzerland: „none“</p>
     +++de
-       <p>Die aufgeführten Massnahmen gehören zu den von der UNECE (Wirtschaftskommission der Vereinten Nationen für Europa) gut erforschten, als praktikabel betrachteten Massnahmen zur Emissionsminderung. Ihre Wirksamkeit wurde in Versuchen belegt. Bisher wurden in der Schweiz solche Systeme höchstens in Einzelfällen installiert. Erfahrungen im Betrieb liegen für unsere Verhältnisse noch kaum vor.</p>
-       <dl>
-       <dt>Mit Kotschieber; Betonspaltenboden oder Metallspaltenboden:</dt>
-       <dd>Die Bucht besteht aus einen Bereich mit perforiertem (Kotbereich) und einen Bereich mit planbefestigtem Boden (Liegebereich), der zu den Spalten hin geneigt ist. Die Exkremente werden in einem Kanal unter den Spalten gesammelt. Von da wird der feste Anteil durch einen Kotschieber zu einem aussen liegenden Lager befördert. Der Urin läuft durch eine Rinne am Boden des Kanals direkt in einen Sammelbehälter; vgl. Dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", Kap. 4.6.1.9, S. 199, verfügbar unter http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf</dd>
-       <dt>Mit Güllekanal/geneigten Seitenwänden/Betonspaltenboden oder Metallspaltenboden:</dt>
-       <dd>Eine Seitenwand oder beide Seitenwände des Güllekanals sind geneigt. Dies verkleinert die Gülleoberfläche, was eine Minderung der Ammoniakemissionen bewirkt. Der praktische Einsatz ist in Buchten mit konvexem Stallboden möglich. Die anfallende Gülle wird häufig aus dem Stall entfernt. Die Oberfläche der geneigten Wände sollte glatt sein, um zu verhindern, dass Kot haften bleibt. Der Neigungswinkel der Rückwand sollte zwischen 60 und 90° liegen. Die Begrenzungswand zum planbefestigten Betonboden hin sollte zwischen 45 und 90° geneigt sein; vgl. Dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", Kap. 4.6.4.2, S. 225, verfügbar unter http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf</dd>
-?if Kantonal_LU
-       <dt>Mit Spülkanälen:</dt>
-       <dd>Spalten mit darunter liegenden Güllekanälen mit einer 10 cm dicken Gülleflüssigkeitsschicht. Die Kanäle werden mindestens einmal täglich mit der frischen Gülle gespült. Der Trockensubstanzgehalt der Spülflüssigkeit soll 5 % nicht übersteigen. Die Kanäle weisen eine leichte Neigung auf, um die Gülleabführung zu erleichtern. Die Spülflüssigkeit wird von der einen Seite des Stallabteils oder des Stalls zur anderen gepumpt und gelangt dort in einen Sammelkanal, von wo sie in ein ausserhalb des Stall liegendes Güllelager abgeführt wird; vgl. Dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", Kap. 4.6.1.7, S. 197, verfügbar unter http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf</dd>
-       <dt>Mit Spülrinnen/-rohren:</dt>
-       <dd>Kleine Kunststoff- oder Metallrinnen werden unterhalb einer perforierten Teilfläche verlegt. Diese Rinnen sind mit leichtem Gefälle verlegt, so dass der Urin kontinuierlich abläuft. Die Gülle wird ein oder zweimal täglich durch Spülung mit Gülle entleert. Der Trockensubstanzgehalt der Spülflüssigkeit soll 5 % nicht übersteigen. Der Urin läuft ständig über ein Abflussrohr zum Güllelager ab; vgl. Dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", Kap. 4.6.1.8, S. 198, verfügbar unter http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf</dd>
-?else
-       <dt>Mit Spülkanälen; keine Belüftung oder mit Belüftung der Gülle:</dt>
-       <dd>Spalten mit darunter liegenden Güllekanälen mit einer 10 cm dicken Gülleflüssigkeitsschicht. Die Kanäle werden mindestens einmal täglich mit der frischen bzw. mit der belüfteten Gülle gespült. Der Trockensubstanzgehalt der Spülflüssigkeit soll 5 % nicht übersteigen. Die Kanäle weisen eine leichte Neigung auf, um die Gülleabführung zu erleichtern. Die Spülflüssigkeit wird von der einen Seite des Stallabteils oder des Stalls zur anderen gepumpt und gelangt dort in einen Sammelkanal, von wo sie in ein ausserhalb des Stall liegendes Güllelager abgeführt wird; vgl. Dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", Kap. 4.6.1.7, S. 197, verfügbar unter http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf</dd>
-       <dt>Mit Spülrinnen/-rohren; keine Belüftung oder mit Belüftung der Gülle:</dt>
-       <dd>Kleine Kunststoff- oder Metallrinnen werden unterhalb einer perforierten Teilfläche verlegt. Diese Rinnen sind mit leichtem Gefälle verlegt, so dass der Urin kontinuierlich abläuft. Die Gülle wird ein oder zweimal täglich durch Spülung mit Gülle entleert. Der Trockensubstanzgehalt der Spülflüssigkeit soll 5 % nicht übersteigen. Der Urin läuft ständig über ein Abflussrohr zum Güllelager ab; vgl. Dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", Kap. 4.6.1.8, S. 198, verfügbar unter http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf</dd>
-?endif
-</dl>
-       <p>Vorschlag für Standardwert: keine</p>
+       <p>Standardwert: keine</p>
     +++fr
-       <p>Les mesures citées font partie des mesures bien étudiées et considérées comme praticables par l'UNECE (Commission économique des Nations Unies pour l'Europe) pour réduire les émissions. Leurs effets ont été confirmés dans des essais scientifiques. En Suisse, ces systèmes n'ont été installés que dans des cas isolés. Il n'y a donc pratiquement pas d'expériences en exploitation dans nos conditions.</p>
-       <dl>
-       <dt>Avec racleur, caillebotis en béton ou caillebotis en métal:</dt>
-       <dd>Le système est composé d'une aire avec un sol perforé (zone de défécation) et d'une aire avec un sol non perforé (zone de repos) incliné vers les caillebotis. Les excréments sont rassemblés dans un canal situé sous les caillebotis. La partie solide est ensuite poussée par un racleur jusqu'à l'extérieur. L'urine coule par une rigole située sur le fond du canal directement dans une fosse; voir dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", chap. 4.6.1.9, p. 199, disponible sous http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf (en allemand).</dd>
-       <dt>Avec canaux de rinçage; avec ou sans aération du lisier: </dt>
-       <dd>Caillebotis recouvrant des canaux à lisier remplis d'une couche de 10 cm de lisier liquide. Ces canaux sont rincés au moins une fois par jour avec du lisier frais, resp. avec du lisier aéré. La teneur en matière sèche du liquide de rinçage ne doit pas dépasser 5%. Les canaux sont légèrement en pente afin de faciliter l'écoulement. Le liquide de rinçage est pompé d'un côté de la stabulation jusqu'à l'autre, puis arrive dans un canal de récupération d'où il s'écoule dans une fosse située à l'extérieur de la stabulation; voir dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", chap. 4.6.1.7, p. 197, disponible sous http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf (en allemand).</dd>
-       <dt>Avec rigoles / tuyaux de rinçage; avec ou sans aération du lisier:</dt>
-       <dd>De petites rigoles en plastique ou en métal sont montées sous une partie perforée du sol. Ces rigoles sont légèrement en pente, pour permettre à l'urine de s'écouler continuellement. Le lisier est évacué une ou deux fois par jour en rinçant avec du lisier. La teneur en matière sèche du liquide de rinçage ne doit pas dépasser 5%. L'urine s'écoule continuellement dans un tuyau d'évacuation jusque dans la fosse; voir dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", chap. 4.6.4.1, p. 223, disponible sous http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf (en allemand).</dd>
-       <dt>Avec canal à lisier / parois latérales inclinées / caillebotis en béton ou en métal: </dt>
-       <dd>Une seule paroi latérale du canal à lisier ou les deux sont inclinées. Cela permet de réduire la surface du lisier et donc de diminuer les émissions d'ammoniaque. Ce système est possible dans les boxes avec un sol convexe. Le lisier produit est évacué fréquemment. La surface des parois devrait être lisse, afin d'éviter que des excréments ne restent collés. L'angle d'inclinaison de la paroi arrière devrait se situer entre 60 et 90°. La paroi de séparation entre le sol perforé et le sol non perforé en béton devrait être incliné de 45 à 90°; voir dokument BVT-Merkblatt "Beste verfügbare Techniken der Intensivhaltung von Geflügel und Schweinen", chap. 4.6.4.2, p. 225, disponible sous http://www.bvt.umweltbundesamt.de/archiv/bvt_intensivtierhaltung_vv.pdf (en allemand).</dd>
-</dl>
-       <p>Proposition de valeur standard: aucune</p>
+       <p>Valeur standard: aucune</p>
 
 
 +mitigation_housing_air
@@ -151,63 +80,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** technical ***
 
-+red_PSF_with_scraper_concrete_slats
-  value = 0.40
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-
-+red_PSF_with_flush_channels_no_areation
-  value = 0.50
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_flush_channels_areation
-  value = 0.60
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_flush_gutters_tubes_no_areation
-  value = 0.60
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_flush_gutters_tubes_areation
-  value = 0.60
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_channels_slanted_walls_concrete_slats
-  value = 0.60
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_channel_slanted_walls_metal_slats
-  value = 0.65
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
-+red_PSF_with_scraper_metal_slats
-  value = 0.50
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to group-housed on partly slatted floors (UNECE 2007, paragraph 71, table 5).
-
 +red_low_impuls_air_supply
   value = 0.2
   ++units 
@@ -227,35 +99,11 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     Reduction factor for the emission due to UNECE housing systems tasks for fully and partly slatted floors.
   ++formula
     given ( In(mitigation_housing_floor) ) {
-      when "with_scraper_concrete_slats" {
-        Tech(red_PSF_with_scraper_concrete_slats);
-      }  
-      when "with_flush_channels_no_areation" {
-        Tech(red_PSF_with_flush_channels_no_areation);
-      } 
-      when "with_flush_channels_areation" {
-        Tech(red_PSF_with_flush_channels_areation);
-      } 
-      when "with_flush_gutters_tubes_no_areation" {
-        Tech(red_PSF_with_flush_gutters_tubes_no_areation);
-      } 
-      when "with_flush_gutters_tubes_areation" {
-        Tech(red_PSF_with_flush_gutters_tubes_areation);
-      } 
-      when "with_channels_slanted_walls_concrete_slats" {
-        Tech(red_PSF_with_channels_slanted_walls_concrete_slats);
-      } 
-      when "with_channel_slanted_walls_metal_slats" {
-        Tech(red_PSF_with_channel_slanted_walls_metal_slats);
-      } 
-      when "with_scraper_metal_slats" {
-        Tech(red_PSF_with_scraper_metal_slats);
-      } 
       when "none" {
         0;
       }
       default {
-        # Warning falls not defined mitigation_housing_floor_LU
+        # TODO: Warning not defined mitigation_housing_floor! (Same with red_housing_air below)
         0;
       }
     }

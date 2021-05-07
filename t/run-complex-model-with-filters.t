@@ -15,11 +15,11 @@ my $temp-dir = $*TMPDIR.add('agrammon_testing');
 #| Expected results
 my %expected-results =
     'hr-inclNOxExtendedWithFilters' => {
-        'nh3_ntotal' => 3166.926,
-        'nh3_nanimalproduction' => 3144.726,
-        'nh3_napplication' => 1337.747,
-        'n_into_application' => 7458.216,
-        'tan_into_application' => 3184.383
+        'nh3_ntotal' => 3162.557,
+        'nh3_nanimalproduction' => 3140.357,
+        'nh3_napplication' => 1332.185,
+        'n_into_application' => 7441.241,
+        'tan_into_application' => 3171.557
     },
     'hr-inclNOxExtended' => {
         'nh3_ntotal' => 3157.775,

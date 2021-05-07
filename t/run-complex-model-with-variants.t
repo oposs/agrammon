@@ -35,25 +35,25 @@ my %expected-results =
         'tan_into_application' => 3336.359
     },
     'Single_default' => {
-        'nh3_ntotal' => 3166.926,
-        'nh3_nanimalproduction' => 3144.726,
-        'nh3_napplication' => 1337.747,
-        'n_into_application' => 7458.216,
-        'tan_into_application' => 3184.383
+        'nh3_ntotal' => 3162.557,
+        'nh3_nanimalproduction' => 3140.357,
+        'nh3_napplication' => 1332.185,
+        'n_into_application' => 7441.241,
+        'tan_into_application' => 3171.557
     },
     'Single_extendedOutput' => {
-        'nh3_ntotal' => 3166.926,
-        'nh3_nanimalproduction' => 3144.726,
-        'nh3_napplication' => 1337.747,
-        'n_into_application' => 7458.216,
-        'tan_into_application' => 3184.383
+        'nh3_ntotal' => 3162.557,
+        'nh3_nanimalproduction' => 3140.357,
+        'nh3_napplication' => 1332.185,
+        'n_into_application' => 7441.241,
+        'tan_into_application' => 3171.557
     },
     'Single_old' => {
-        'nh3_ntotal' => 3166.926,
-        'nh3_nanimalproduction' => 3144.726,
-        'nh3_napplication' => 1337.747,
-        'n_into_application' => 7458.216,
-        'tan_into_application' => 3184.383
+        'nh3_ntotal' => 3162.557,
+        'nh3_nanimalproduction' => 3140.357,
+        'nh3_napplication' => 1332.185,
+        'n_into_application' => 7441.241,
+        'tan_into_application' => 3171.557
     };
 
 my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
