@@ -96,11 +96,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     de = Mineralisierung (flüssig)
     fr = Minéralisation (liquide)
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
-    Annual TAN mineralized from not TAN fraction in liquid storage.
+    Annual TAN mineralized from not-TAN fraction in liquid storage.
   ++formula
     (
       Val(n_out_livestock_liquid, ::Livestock) P-  
@@ -208,11 +208,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     de = __Flüssig
     fr = __Liquides
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
-    Annual N flux into liquid storage.
+    Annual TAN flux into liquid storage.
   ++formula
     Val(tan_out_livestock_liquid, ::Livestock);
 
@@ -225,11 +225,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     de = __Fest
     fr = __Solides
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
-    Annual N flux into solid storage.
+    Annual TAN flux into solid storage.
   ++formula
     Val(tan_out_livestock_solid, ::Livestock) P*
     (
@@ -246,9 +246,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     de = Ohne Lagerung (direkt ausgebracht)
     fr = Sans stockage (épandage directe)
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual TAN flux directly applied.
   ++formula
@@ -264,11 +264,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     de = In Hofdüngerlager
     fr = Dans le stockage
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
-    Annual N flux into liquid storage.
+    Annual TAN flux into liquid storage.
   ++formula
     Out(tan_into_storage_liquid) P+
     Out(tan_into_storage_solid);
@@ -276,11 +276,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 +tan_into_storage_liquid_pigs
   print = newStorage
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
-    Annual N flux into liquid storage.
+    Annual TAN flux into liquid storage.
   ++formula
     multiplyPairwise(
       Val(has_pigs, ::Livestock),
@@ -290,11 +290,11 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 +tan_into_storage_liquid_cattle
   print = newStorage
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
-    Annual N flux into liquid storage.
+    Annual TAN flux into liquid storage.
   ++formula
     multiplyPairwise(
       Val(has_cattle, ::Livestock),
@@ -486,9 +486,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
     de = Immobilisierung (fest)
     fr = Immobilisation (solide)
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual TAN immobilized from TAN fraction in solid manure storage.
   ++formula
@@ -526,9 +526,9 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 +tan_into_application_liquid
   print = newStorage
   ++units  
-    en = kg N/year
-    de = kg N/Jahr
-    fr = kg N/an
+    en = kg TAN/year
+    de = kg TAN/Jahr
+    fr = kg TAN/an
   ++description
     Annual N flux as TAN out of storage for application.
   ++formula
