@@ -1,6 +1,9 @@
 # Agrammon Change Log
 
--  6.0.0-rc6, 2021-04-08, fritz.zaucker@oetiker.ch
+-  6.0.0-rc8, 2021-05-10, fritz.zaucker@oetiker.ch
+   - Model changes
+
+-  6.0.0-rc7, 2021-04-08, fritz.zaucker@oetiker.ch
    - Invalidate output cache on branch config change
 
 -  6.0.0-rc6, 2021-04-01, fritz.zaucker@oetiker.ch
