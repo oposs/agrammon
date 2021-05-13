@@ -4,7 +4,6 @@ use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
 use Cro::Uri :decode-percents;
 
-use Agrammon::Web::APIRoutes;
 use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
 use Agrammon::Timestamp;
