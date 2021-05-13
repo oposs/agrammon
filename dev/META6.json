@@ -75,6 +75,7 @@
     "Agrammon::Preprocessor": "lib/Agrammon/Preprocessor.pm6",
     "Agrammon::UI::CommandLine": "lib/Agrammon/UI/CommandLine.pm6",
     "Agrammon::UI::Web": "lib/Agrammon/UI/Web.pm6",
+    "Agrammon::Web::APIRoutes": "lib/Agrammon/Web/APIRoutes.pm6",
     "Agrammon::Web::APITokenManager": "lib/Agrammon/Web/APITokenManager.pm6",
     "Agrammon::Web::Routes": "lib/Agrammon/Web/Routes.pm6",
     "Agrammon::Web::Service": "lib/Agrammon/Web/Service.pm6",
