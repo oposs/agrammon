@@ -16,7 +16,7 @@
     "Cro::WebApp::Template",
     "Cro::APIToken",
     "Cro::APIToken::Store::Pg",
-     "Data::Dump::Tree",
+    "Data::Dump::Tree",
     "DB::Pg",
     "Digest::SHA1::Native",
     "Email::MIME",
