@@ -26,7 +26,9 @@
     "Shell::Command",
     "Spreadsheet::XLSX:ver<0.2.2+>",
     "Text::CSV",
-    "YAMLish"
+    "YAMLish",
+    "Cro::APIToken",
+    "Cro::APIToken::Store::Pg"
   ],
   "build-depends": [],
   "test-depends": [
@@ -75,6 +77,8 @@
     "Agrammon::Preprocessor": "lib/Agrammon/Preprocessor.pm6",
     "Agrammon::UI::CommandLine": "lib/Agrammon/UI/CommandLine.pm6",
     "Agrammon::UI::Web": "lib/Agrammon/UI/Web.pm6",
+    "Agrammon::Web::APIRoutes": "lib/Agrammon/Web/APIRoutes.pm6",
+    "Agrammon::Web::APITokenManager": "lib/Agrammon/Web/APITokenManager.pm6",
     "Agrammon::Web::Routes": "lib/Agrammon/Web/Routes.pm6",
     "Agrammon::Web::Service": "lib/Agrammon/Web/Service.pm6",
     "Agrammon::Web::SessionStore": "lib/Agrammon/Web/SessionStore.pm6"

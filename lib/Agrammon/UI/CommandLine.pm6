@@ -1,5 +1,6 @@
 use v6;
 use Cro::HTTP::Log::File;
+use Cro::HTTP::Router;
 use Cro::HTTP::Server;
 use Cro::HTTP::Session::InMemory;
 use DB::Pg;
@@ -15,6 +16,8 @@ use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
 use Agrammon::ResultCollector;
 use Agrammon::TechnicalParser;
+use Agrammon::Web::APIRoutes;
+use Agrammon::Web::APITokenManager;
 use Agrammon::Web::Routes;
 use Agrammon::Web::SessionStore;
 use Agrammon::Web::SessionUser;
@@ -117,6 +120,11 @@ multi sub MAIN('set-password', ExistingFile $cfg-filename, Str $username, Str $p
     set-password($cfg-filename, $username, $password);
 }
 
+#| Create an API token for the specified username.
+multi sub MAIN('issue-api-token', ExistingFile $cfg-filename, Str $username) is export {
+    issue-api-token($cfg-filename, $username);
+}
+
 sub USAGE() is export {
     say "$*USAGE\n" ~ chomp q:to/USAGE/;
         See https://www.agrammon.ch for more information about Agrammon.
@@ -142,6 +150,17 @@ sub set-password($cfg-filename, $username, $password) {
     get-cfg-and-db-handle($cfg-filename);
     Agrammon::DB::User.new(:$username).set-password($username, $password);
     say "New password set for user $username";
+}
+
+sub issue-api-token($cfg-filename, $username) {
+    get-cfg-and-db-handle($cfg-filename);
+    my $user = Agrammon::DB::User.new(:$username);
+    unless $user.exists {
+        note "No such user '$username'";
+        exit 1;
+    }
+    my $token = get-api-token-manager().create-token(:metadata{ :$username });
+    note "Issued token $token.token()";
 }
 
 sub dump-model (IO::Path $path, $variants, $sort) is export {
@@ -269,14 +288,19 @@ sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export 
     # setup and start web server
     my $host = %*ENV<AGRAMMON_HOST> || '0.0.0.0';
     my $port = %*ENV<AGRAMMON_PORT> || 20000;
+    my $application = route {
+        # API routes don't need an ongoing session, but do token auth.
+        delegate <api v1 *> => api-routes($ws);
+        # Everything else gets the standard session mechanism.
+        delegate <*> => route {
+            before Agrammon::Web::SessionStore.new(:$db);
+            delegate <*> => routes($ws);
+        }
+    }
     my Cro::Service $http = Cro::HTTP::Server.new(
-        :$host, :$port,
-        application => routes($ws),
+        :$host, :$port, :$application,
         after => [
             Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
-        ],
-        before => [
-            Agrammon::Web::SessionStore.new(:$db)
         ]
     );
     $http.start;

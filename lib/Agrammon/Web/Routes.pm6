@@ -32,7 +32,7 @@ sub routes(Agrammon::Web::Service $ws) is export {
             }
         }
         include static-content($root);
-        include api-routes($schema, $ws);
+        include frontend-api-routes($schema, $ws);
         include dataset-routes($ws);
         include application-routes($ws);
         after {
@@ -113,7 +113,7 @@ sub static-content($root) {
     }
 }
 
-sub api-routes (Str $schema, $ws) {
+sub frontend-api-routes (Str $schema, $ws) {
     openapi $schema.IO, {
         # working
         operation 'createAccount', -> LoggedIn $user {

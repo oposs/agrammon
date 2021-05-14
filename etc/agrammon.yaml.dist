@@ -3,6 +3,7 @@ General:
     log_file:   /tmp/agrammon.log
     log_level:  warn
     mojo_secret: MyCookieSecret
+    translationDir: share/translations
 
 Database:
     name:     agrammon_test
