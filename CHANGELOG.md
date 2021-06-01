@@ -1,5 +1,9 @@
 # Agrammon Change Log
 
+- 6.0.0, 2021-06-01, fritz.zaucker@oetiker.ch
+   - Adapt to dataset changes
+   - first official release
+
 -  6.0.0-rc8, 2021-05-10, fritz.zaucker@oetiker.ch
    - Model changes
 
