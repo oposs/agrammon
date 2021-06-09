@@ -491,6 +491,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Excretion;crude_protein;145
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Excretion;energy_content;11.9
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Excretion;pigs;10
+2010v2.1_20120425;2648;Livestock::Pig[Boars]::Excretion;animals;10
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Excretion;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::AirScrubber;air_scrubber;acid
 2010v2.1_20120425;2648;Livestock::Pig[Boars]::Housing::CFreeFactor;free_correction_factor;5
@@ -503,6 +504,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;crude_protein;145
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;energy_content;11.9
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;pigs;8
+2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;animals;8
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Excretion;dimensioning_barn;8
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::AirScrubber;air_scrubber;none
 2010v2.1_20120425;2648;Livestock::Pig[DrySows]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_air;none
@@ -514,6 +516,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;crude_protein;165
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;energy_content;13.5
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;pigs;15
+2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;animals;15
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Excretion;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::AirScrubber;air_scrubber;none
 2010v2.1_20120425;2648;Livestock::Pig[NursingSows]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_air;none
@@ -525,6 +528,7 @@
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;crude_protein;180
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;energy_content;13.5
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;pigs;12
+2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;animals;12
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Excretion;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::AirScrubber;air_scrubber;none
 2010v2.1_20120425;2648;Livestock::Pig[Piglets]::Housing::MitigationOptions;mitigation_options_for_housing_systems_for_pigs_air;none
