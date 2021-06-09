@@ -62,7 +62,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   +++fr
      <p><Für Mastschweine sind keine Unterkategorien vorgesehen./p>
 
-+fattening_pigs
++animals
   type = integer
   validator = ge(0)
   distribute = true
@@ -576,7 +576,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Number of fattening pigs of a specific category.
   ++formula
-    In(fattening_pigs);
+    In(animals);
 
 +animalcategory
   print = FatteningPigs
