@@ -39,8 +39,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 ###+NIntoGrazing (old)
 
 +Excretion
-+GrazingInput
-+Yard
++Outdoor
 
 *** technical ***
 
@@ -87,15 +86,15 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
     Share of annual N excretion into grazing.
   ++formula
     # access to grazing only - days with grazing only
-    (Val(grazing_days, GrazingInput) - Val(days_with_grazing_and_yard, Yard)) / 365 * 
-    Val(grazing_hours, GrazingInput) / 24 +
+    (Val(grazing_days, Outdoor) - Val(days_with_grazing_and_yard, Outdoor)) / 365 * 
+    Val(grazing_hours, Outdoor) / 24 +
     # access to grazing only - days with yard and grazing
-    Val(days_with_grazing_and_yard, Yard) / 365 *
-    (Val(grazing_hours, GrazingInput) - Val(hours_with_grazing_and_yard, Yard)) / 24 +
+    Val(days_with_grazing_and_yard, Outdoor) / 365 *
+    (Val(grazing_hours, Outdoor) - Val(hours_with_grazing_and_yard, Outdoor)) / 24 +
     # access to yard and grazing (shared 50/50)
     0.5 *
-    Val(days_with_grazing_and_yard, Yard) / 365 * 
-    Val(hours_with_grazing_and_yard, Yard) / 24;
+    Val(days_with_grazing_and_yard, Outdoor) / 365 * 
+    Val(hours_with_grazing_and_yard, Outdoor) / 24;
 
 +n_into_grazing
   print = Equides
