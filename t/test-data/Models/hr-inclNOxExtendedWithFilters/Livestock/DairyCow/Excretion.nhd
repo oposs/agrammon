@@ -66,7 +66,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   +++fr
      <p><Für Milchkühe sind keine Unterkategorien vorgesehen./p>
 
-+dairy_cows
++animals
   type = integer
   validator = ge(0)
   distribute = true
@@ -228,7 +228,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Number of dairy cows in barn.
   ++formula
-    In(dairy_cows);
+    In(animals);
 
 +animalcategory
   print = DairyCow

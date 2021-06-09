@@ -22,6 +22,7 @@
 2010v2.1_20120425;2648;Application::SolidManure::Cseason;appl_summer;30
 2010v2.1_20120425;2648;Application::SolidManure::CfreeFactor;free_correction_factor;-5
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion;animalcategory;dairy_cow
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion;animals;10
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion;dairy_cows;10
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion;dimensioning_barn;12
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Excretion::CConcentrates;amount_summer;1.5
@@ -50,6 +51,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Yard;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Standard]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion;animalcategory;dairy_cow
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion;animals;10
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion;dairy_cows;10
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion;dimensioning_barn;0
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Excretion::CConcentrates;amount_summer;0
@@ -78,6 +80,7 @@
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Yard;exercise_yard;not_available
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex1]::Outdoor;exercise_yard;not_available
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion;animalcategory;dairy_cow
+2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion;animals;10
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion;dairy_cows;10
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion;dimensioning_barn;50
 2010v2.1_20120425;2648;Livestock::DairyCow[DC_Ex2]::Excretion::CConcentrates;amount_summer;6
