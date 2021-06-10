@@ -22,6 +22,9 @@
 \renewcommand{\sfdefault}{phv} % Arial
 \usepackage[scaled]{helvet}
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
+\newcommand\gt{>}
+\newcommand\lt{<&HTML('<')>}
+\newcommand\amp{\&}
 
 \addtolength{\topmargin}{-2cm}
 \addtolength{\textheight}{2cm}

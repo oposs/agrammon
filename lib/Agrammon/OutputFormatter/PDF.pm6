@@ -96,12 +96,17 @@ sub create-pdf($temp-dir-name, $pdf-prog, $timeout, $username, $dataset-name, %d
 sub latex-escape(Str $in) is export {
     my $out = $in // '';
     $out ~~ s:g/<[\\]>/\\backslash/;
-    $out ~~ s:g/(<[%#{}&$|]>)/\\$0/;
+    $out ~~ s:g/(<[%#{}$|]>)/\\$0/;
     $out ~~ s:g/(<[~^]>)/\\$0\{\}/;
     # this is a special case for Agrammon as we use __ in
     # the frontend at the moment for indentation in the table
     $out ~~ s:g/__/\\hspace\{2em\}/;
     $out ~~ s:g/_/\\_/;
+    # the next ones are converted to HTML by Cro::WebApp::Template
+    # macros must be defined in template
+    $out ~~ s:g/<[>]>/\\gt\{\}/;
+    $out ~~ s:g/<[<]>/\\lt\{\}/;
+    $out ~~ s:g/<[&]>/\\amp\{\}/;
     return $out;
 }
 
@@ -254,7 +259,7 @@ sub input-output-as-pdf(
 
     # setup template data
     %data<titles>     = %titles;
-    %data<dataset>    = $dataset-name // 'NO DATASET';
+    %data<dataset>    = latex-escape($dataset-name // 'NO DATASET');
     %data<username>   = $user.username // 'NO USER';
     %data<model>      = $cfg.gui-variant // 'NO MODEL';
     %data<timestamp>  = timestamp;
