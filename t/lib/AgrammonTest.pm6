@@ -42,11 +42,15 @@ sub prepare-test-db($uid) is export {
     CREATE TABLE IF NOT EXISTS dataset (
         dataset_id       SERIAL NOT NULL PRIMARY KEY,                 -- Unique ID
         dataset_name     TEXT NOT NULL,                               -- dataset name
-        dataset_pers     INTEGERT NOT NULL REFERENCES pers(pers_id),  -- owner
-        dataset_version  TEXT DEFAULT '2.0',                          -- Version
+        dataset_pers     INTEGER NOT NULL REFERENCES pers(pers_id),  -- owner
+        dataset_version  TEXT NOT NULL DEFAULT '6.0',
+        dataset_guivariant TEXT NOT NULL,
+        dataset_modelvariant TEXT NOT NULL,
         dataset_comment  TEXT,
-        dataset_model    TEXT,
-        dataset_readonly BOOLEAN DEFAULT False
+        dataset_readonly BOOLEAN DEFAULT False,
+        dataset_created TIMESTAMP DEFAULT now(),
+        dataset_mod_date TIMESTAMP DEFAULT now(),
+        dataset_readonly BOOLEAN DEFAULT false
     )
     SQL
 
@@ -74,24 +78,24 @@ sub prepare-test-db($uid) is export {
 
     $db.query(q:to/SQL/);
     INSERT INTO pers (pers_id, pers_email, pers_password)
-              VALUES (42000, 'foo@agrammon.ch', 'XXX')
+              VALUES (-42000, 'foo@agrammon.ch', 'XXX')
     SQL
 
     $db.query(q:to/SQL/, $uid);
-    INSERT INTO dataset (dataset_id, dataset_name, dataset_pers)
-                 VALUES (42000, 'BranchTest', $1)
+    INSERT INTO dataset (dataset_id, dataset_name, dataset_pers, dataset_version, dataset_guivariant, dataset_modelvariant)
+                 VALUES (-42000, 'BranchTest', $1, '6.0', 'Regional', 'Base')
     SQL
 
     $db.query(q:to/SQL/);
     INSERT INTO data_new (data_id, data_dataset, data_var, data_instance, data_val)
-                 VALUES (76315980, 42000, 'Livestock::Poultry[]::Housing::Type::housing_type',             'Branched', 'branched'),
-                        (76315982, 42000, 'Livestock::Poultry[]::Housing::Type::manure_removal_interval',  'Branched', 'branched')
+                 VALUES (-76315980, -42000, 'Livestock::Poultry[]::Housing::Type::housing_type',             'Branched', 'branched'),
+                        (-76315982, -42000, 'Livestock::Poultry[]::Housing::Type::manure_removal_interval',  'Branched', 'branched')
     SQL
 
     $db.query(q:to/SQL/);
     INSERT INTO branches
-         VALUES (30949, 76315980, '{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}', '{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}'),
-                (30950, 76315982, '{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}', '{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}')
+         VALUES (-30950, -76315980, '{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}', '{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}'),
+                (-30949, -76315982, '{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}', '{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}')
     SQL
 
     return 1;

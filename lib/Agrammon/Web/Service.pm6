@@ -40,12 +40,14 @@ class Agrammon::Web::Service {
     }
 
     # return list of datasets as expected by Web GUI
-    method get-datasets(Agrammon::Web::SessionUser $user, Str $version) {
-        return Agrammon::DB::Datasets.new(:$user, :$version).load.list;
+    method get-datasets(Agrammon::Web::SessionUser $user, $type) {
+        return Agrammon::DB::Datasets.new(
+            :$user, :agrammon-variant($!cfg.agrammon-variant)
+        ).load.list;
     }
 
     method delete-datasets(Agrammon::Web::SessionUser $user, @datasets) {
-        return Agrammon::DB::Datasets.new(:$user).delete(@datasets);
+        return Agrammon::DB::Datasets.new(:$user, :agrammon-variant($!cfg.agrammon-variant)).delete(@datasets);
     }
 
     # return list of datasets as expected by Web GUI
@@ -54,8 +56,9 @@ class Agrammon::Web::Service {
         die X::Agrammon::DB::User::UnknownUser.new(:username($recipient)) unless Agrammon::DB::User.new(:username($recipient)).exists;
 
         my %lx      = $!cfg.translations{$language};
-        my $model   = $!cfg.app-variant; # model 'SingleSHL';
-        my $sent    = Agrammon::DB::Datasets.new(:$user).send(@datasets, $model, $recipient)<sent>;
+        my $sent    = Agrammon::DB::Datasets.new(
+            :$user, :agrammon-variant($!cfg.agrammon-variant)
+        ).send(@datasets, $recipient)<sent>;
         my $sender  = $user.username;
         my $subject = $sent == 1 ?? %lx{'new dataset'}[0]  !! %lx{'new dataset'}[1];
         my $format  = $sent == 1 ?? %lx{'dataset sent'}[0] !! %lx{'dataset sent'}[1];
@@ -70,25 +73,37 @@ class Agrammon::Web::Service {
     }
 
     method load-dataset(Agrammon::Web::SessionUser $user, Str $name) {
-        warn "***** load-dataset($name) not yet completely implemented (branching)";
-        my @data = Agrammon::DB::Dataset.new(:$user, :$name).load.data;
+        my @data = Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :$name
+        ).load.data;
         return @data;
     }
 
     method create-dataset(Agrammon::Web::SessionUser $user, Str $name) {
-        my $model = self.cfg.app-variant; # model 'SingleSHL';
-        return Agrammon::DB::Dataset.new(:$user, :$name, :$model).create.name;
+        return Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :$name
+        ).create.name;
     }
 
     method clone-dataset(Agrammon::Web::SessionUser $user,
                          Str $new-username,
                          Str $old-dataset, Str $new-dataset --> Nil) {
-        my $model = self.cfg.app-variant; # model 'SingleSHL';
-        Agrammon::DB::Dataset.new(:$user, :$model).clone(:$new-username, :$old-dataset, :$new-dataset);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant)
+        ).clone(:$new-username, :$old-dataset, :$new-dataset);
     }
 
     method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new --> Nil) {
-        Agrammon::DB::Dataset.new(:$user, :name($old)).rename($new);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :name($old)
+        ).rename($new);
     }
 
     method submit-dataset(Agrammon::Web::SessionUser $user, %params) {
@@ -120,7 +135,11 @@ class Agrammon::Web::Service {
     }
 
     method store-dataset-comment(Agrammon::Web::SessionUser $user, Str $name, $comment) {
-        return Agrammon::DB::Dataset.new(:$user, :$name).store-comment($comment);
+        return Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :$name
+        ).store-comment($comment);
     }
 
     method get-tags(Agrammon::Web::SessionUser $user) {
@@ -140,11 +159,17 @@ class Agrammon::Web::Service {
     }
 
     method set-tag(Agrammon::Web::SessionUser $user, @datasets, Str $tag-name --> Nil) {
-        Agrammon::DB::Dataset.new(:$user).set-tag(@datasets, $tag-name);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+        ).set-tag(@datasets, $tag-name);
     }
 
     method remove-tag(Agrammon::Web::SessionUser $user, @datasets, Str $tag-name --> Nil) {
-        Agrammon::DB::Dataset.new(:$user).remove-tag(@datasets, $tag-name);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+        ).remove-tag(@datasets, $tag-name);
     }
 
     method get-input-variables {
@@ -152,7 +177,7 @@ class Agrammon::Web::Service {
     }
 
     method !get-inputs($user, $dataset-name) {
-        Agrammon::DataSource::DB.new.read($user.username, $dataset-name, $!model.distribution-map);
+        Agrammon::DataSource::DB.new.read($user.username, $dataset-name, $!cfg.agrammon-variant, $!model.distribution-map);
     }
 
     method !get-outputs(Agrammon::Web::SessionUser $user, Str $dataset-name) {
@@ -255,47 +280,73 @@ class Agrammon::Web::Service {
     }
 
     method store-data(Agrammon::Web::SessionUser $user, $dataset-name, $variable, $value, @branches?, @options?, $row? --> Nil) {
-        my $ds = Agrammon::DB::Dataset.new(:$user, :name($dataset-name));
+        my $ds = Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :name($dataset-name)
+        );
         $ds.store-input($variable, $value, @branches, @options);
 
         $!outputs-cache.invalidate($user.username, $dataset-name);
-
-        # TODO: get rid of row in frontend and backend if not needed
-        if $row {
-            warn "**** store-data(var=$variable, value=$value, row=$row): what is row used for?";
-        }
     }
 
     method store-input-comment(Agrammon::Web::SessionUser $user, $dataset, $variable, $comment --> Nil) {
-        Agrammon::DB::Dataset.new(:$user, :name($dataset)).store-input-comment($variable, $comment);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :name($dataset)
+        ).store-input-comment($variable, $comment);
     }
 
     method delete-instance(Agrammon::Web::SessionUser $user, $dataset-name, $variable-pattern, $instance --> Nil) {
-        Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).delete-instance($variable-pattern, $instance);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :name($dataset-name)
+        ).delete-instance($variable-pattern, $instance);
         $!outputs-cache.invalidate($user.username, $dataset-name);
     }
 
     method load-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
-        return Agrammon::DB::Dataset.new(:$user, :$name).lookup
-            .load-branch-data(%data<vars>, %data<instance>);
+        return Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :$name
+        ).lookup.load-branch-data(%data<vars>, %data<instance>);
     }
 
     method store-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
-         Agrammon::DB::Dataset.new(:$user, :$name).lookup
-            .store-branch-data(%data<vars>, %data<instance>, %data<options>, %data<data>);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :$name
+        ).lookup.store-branch-data(%data<vars>, %data<instance>, %data<options>, %data<data>);
         $!outputs-cache.invalidate($user.username, $name);
     }
 
     method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $variable-pattern --> Nil) {
-        Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).rename-instance($old-instance, $new-instance, $variable-pattern);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :name($dataset-name)
+        ).rename-instance($old-instance, $new-instance, $variable-pattern);
     }
 
     method order-instances(Agrammon::Web::SessionUser $user, Str $dataset-name, @instances) {
-        Agrammon::DB::Dataset.new(:$user, :name($dataset-name)).order-instances(@instances);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :name($dataset-name)
+        ).order-instances(@instances);
     }
 
     method upload-dataset(Agrammon::Web::SessionUser $user, Str $dataset-name, $content, $comment) {
-        Agrammon::DB::Dataset.new(:$user, :name($dataset-name), :$comment).create.upload-data($content);
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :name($dataset-name),
+            :$comment
+        ).create.upload-data($content);
     }
 
     sub submission-dataset(%params --> Str) {

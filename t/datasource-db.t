@@ -34,27 +34,41 @@ subtest 'Connect to database' => {
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 }
 
+my %single   := { version => '6.0', gui => 'Single',   model => 'Base', };
+my %regional := { version => '6.0', gui => 'Regional', model => 'Base', };
+
 transactionally {
-    lives-ok { prepare-test-db-single-data($ag-user, $ag-dataset) }, 'Test database prepared';
+    lives-ok { prepare-test-db-single-data($ag-user, $ag-dataset, %single) }, 'Test database prepared';
 
     my $ds = Agrammon::DataSource::DB.new;
     isa-ok $ds, Agrammon::DataSource::DB, 'Is a DataSource::DB';
 
     ### TODO: check actual data
-    my $dataset = $ds.read($ag-user, $ag-dataset, {});
+    my $dataset = $ds.read(
+        $ag-user,
+        $ag-dataset,
+        %single,
+        {}
+    );
     isa-ok $dataset, Agrammon::Inputs, 'Correct type';
     is $dataset.simulation-name, 'DB', 'Correct simulation name';
     is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
 }
 
 transactionally {
-    lives-ok { prepare-test-db-flattened-data($ag-user, $ag-dataset) }, 'Flattened test database prepared';
+
+    lives-ok { prepare-test-db-flattened-data($ag-user, $ag-dataset, %regional) }, 'Flattened test database prepared';
 
         my $ds = Agrammon::DataSource::DB.new;
-        my $dataset = $ds.read($ag-user, $ag-dataset, {
-            'Test::Base' => ['Test::Base::Sub::dist-me'],
-            'Test::Base2' => ['Test::Base2::Sub::dist-meA', 'Test::Base2::Sub::dist-meB']
-        });
+        my $dataset = $ds.read(
+            $ag-user,
+            $ag-dataset,
+            %regional,
+            {
+                'Test::Base' => ['Test::Base::Sub::dist-me'],
+                'Test::Base2' => ['Test::Base2::Sub::dist-meA', 'Test::Base2::Sub::dist-meB']
+            }
+        );
         isa-ok $dataset, Agrammon::Inputs, 'Correct type';
         is $dataset.simulation-name, 'DB', 'Correct simulation name';
         is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
@@ -109,10 +123,15 @@ transactionally {
 }
 
 transactionally {
-    lives-ok { prepare-test-db-branched-data($ag-user, $ag-dataset) }, 'Branched test database prepared';
+    lives-ok { prepare-test-db-branched-data($ag-user, $ag-dataset, %regional) }, 'Branched test database prepared';
 
     my $ds = Agrammon::DataSource::DB.new;
-    my $dataset = $ds.read($ag-user, $ag-dataset, { 'Test::Base' => ['Test::Base::Sub::dist-me'] });
+    my $dataset = $ds.read(
+        $ag-user,
+        $ag-dataset,
+        %regional,
+        { 'Test::Base' => ['Test::Base::Sub::dist-me'] }
+    );
     isa-ok $dataset, Agrammon::Inputs, 'Correct type';
     is $dataset.simulation-name, 'DB', 'Correct simulation name';
     is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
@@ -193,7 +212,7 @@ transactionally {
     }
 };
 
-sub prepare-test-db-single-data($user, $dataset) {
+sub prepare-test-db-single-data($user, $dataset, %variant) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
     prepare-test-db-schema($db, $user);
@@ -202,13 +221,13 @@ sub prepare-test-db-single-data($user, $dataset) {
     SELECT pers_email2id($1)
     STATEMENT
 
-    $db.query(q:to/STATEMENT/, $dataset, $userId);
-    INSERT INTO dataset (dataset_name, dataset_pers)
-    VALUES ($1, $2);
+    $db.query(q:to/STATEMENT/, $dataset, $userId, %variant<version>, %variant<gui>, %variant<model>);
+    INSERT INTO dataset (dataset_name, dataset_pers, dataset_version, dataset_guivariant, dataset_modelvariant)
+    VALUES ($1, $2, $3, $4, $5);
     STATEMENT
 
-    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
-    SELECT dataset_name2id($1, $2)
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset, '6.0', 'Single', 'Base').value;
+    SELECT dataset_name2id($1, $2, $3, $4, $5)
     STATEMENT
 
     my $sth = $db.prepare(q:to/STATEMENT/);
@@ -224,7 +243,7 @@ sub prepare-test-db-single-data($user, $dataset) {
     $sth.execute($datasetId, 'PlantProduction::RecyclingFertiliser::liquid_digestate', 0);
 }
 
-sub prepare-test-db-flattened-data($user, $dataset) {
+sub prepare-test-db-flattened-data($user, $dataset, %variant) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
     prepare-test-db-schema($db, $user);
@@ -233,13 +252,13 @@ sub prepare-test-db-flattened-data($user, $dataset) {
     SELECT pers_email2id($1)
     STATEMENT
 
-    $db.query(q:to/STATEMENT/, $dataset, $userId);
-    INSERT INTO dataset (dataset_name, dataset_pers)
-    VALUES ($1, $2);
+    $db.query(q:to/STATEMENT/, $dataset, $userId, %variant<version>, %variant<gui>, %variant<model>);
+    INSERT INTO dataset (dataset_name, dataset_pers, dataset_version, dataset_guivariant, dataset_modelvariant)
+    VALUES ($1, $2, $3, $4, $5);
     STATEMENT
 
-    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
-    SELECT dataset_name2id($1, $2)
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset, %variant<version>, %variant<gui>, %variant<model>).value;
+    SELECT dataset_name2id($1, $2, $3, $4, $5)
     STATEMENT
 
     my $sth = $db.prepare(q:to/STATEMENT/);
@@ -269,7 +288,7 @@ sub prepare-test-db-flattened-data($user, $dataset) {
     $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::Retained::simple', 13);
 }
 
-sub prepare-test-db-branched-data($user, $dataset) {
+sub prepare-test-db-branched-data($user, $dataset, %variant) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
     prepare-test-db-schema($db, $user);
@@ -278,13 +297,13 @@ sub prepare-test-db-branched-data($user, $dataset) {
     SELECT pers_email2id($1)
     STATEMENT
 
-    $db.query(q:to/STATEMENT/, $dataset, $userId);
-    INSERT INTO dataset (dataset_name, dataset_pers)
-    VALUES ($1, $2);
+    $db.query(q:to/STATEMENT/, $dataset, $userId, %variant<version>, %variant<gui>, %variant<model>);
+    INSERT INTO dataset (dataset_name, dataset_pers, dataset_version, dataset_guivariant, dataset_modelvariant)
+    VALUES ($1, $2, $3, $4, $5);
     STATEMENT
 
-    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset).value;
-    SELECT dataset_name2id($1, $2)
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset,  %variant<version>, %variant<gui>, %variant<model>).value;
+    SELECT dataset_name2id($1, $2, $3, $4, $5)
     STATEMENT
 
     my $sth-data = $db.prepare(q:to/STATEMENT/);

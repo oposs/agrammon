@@ -44,7 +44,7 @@ subtest 'Create user' => {
 }
 
 subtest 'Create dataset' => {
-    plan 10;
+    plan 12;
     my $date = DateTime.new('2020-04-01T00:00:00Z');
     ok my $dataset = Agrammon::DB::Dataset.new(
         :id<42>,
@@ -52,22 +52,24 @@ subtest 'Create dataset' => {
         :read-only,
         :model<TestModel>,
         :comment('Test comment'),
-        :version('6.0-test'),
+        :agrammon-variant(version => '6.0', gui => 'Single', model => 'Base'),
         :records(42),
         :mod-date($date),
         :data(),
         :tags()
         :$user
     ), 'Create new dataset';
-    is $dataset.name,     'agtest', 'User has correct username';
-    is $dataset.read-only, True,     'Dataset is read-only';
-    is $dataset.model,     'TestModel',     'User has correct model';
-    is $dataset.comment,   'Test comment',     'User has correct comment';
-    is $dataset.version,     '6.0-test',     'User has correct version';
-    is $dataset.records,     42,     'User has correct records';
-    is $dataset.mod-date,    $date,     'User has correct mod-date';
-    is $dataset.data.elems,  0,     'User has 0 data';
-    is $dataset.tags.elems,  0,     'User has 0 tags';
+    is $dataset.name,     'agtest',        'User has correct username';
+    is $dataset.read-only, True,           'Dataset is read-only';
+    is $dataset.model,     'TestModel',    'User has correct model';
+    is $dataset.comment,   'Test comment', 'User has correct comment';
+    is $dataset.agrammon-variant<version>, '6.0',     'User has correct version';
+    is $dataset.agrammon-variant<gui>,     'Single',     'Single GUI variant';
+    is $dataset.agrammon-variant<model>,   'Base',     'Base Model variant';
+    is $dataset.records,     42,           'User has correct records';
+    is $dataset.mod-date,    $date,        'User has correct mod-date';
+    is $dataset.data.elems,  0,            'User has 0 data';
+    is $dataset.tags.elems,  0,            'User has 0 tags';
 }
 
 
@@ -96,7 +98,8 @@ transactionally {
         plan 2;
         ok $dataset = Agrammon::DB::Dataset.new(
                 :name<agtest>,
-                :$user
+                :$user,
+                :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')
                 ), "Create dataset object";
         ok $dataset-id = $dataset.create().id, "Create dataset, id=$dataset-id";
     }
@@ -202,8 +205,8 @@ transactionally {
             ])
         );
         my $name = $data<dataset_name>;
-        ok $dataset = Agrammon::DB::Dataset.new(:$name, :$user), "Create dataset object";
-        ok $dataset.load, "Dataset id=$dataset-id loaded";
+        ok $dataset = Agrammon::DB::Dataset.new(:$name, :$user, :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')), "Create dataset object for $name";
+        ok $dataset.load, "Dataset id=$dataset-id/$name loaded";
 
         lives-ok { $dataset.store-branch-data(
             $data<vars>, $data<instance>, $data<options>, $data<data>
@@ -214,7 +217,7 @@ transactionally {
 
         my @fractions-expected = (
             0e0, 5e0, 0e0, 0e0, 0e0, 0e0,     0e0, 0e0, 10e0, 7e0, 0e0, 0e0,
-            13e0, 20e0, 0e0, 0e0, 0e0, 22e0,  0e0, 15e0, 0e0, 8e0,    0e0,    0e0,
+            13e0, 20e0, 0e0, 0e0, 0e0, 22e0,  0e0, 15e0, 0e0, 8e0, 0e0, 0e0,
         );
         my @options-expected = (
             [<
