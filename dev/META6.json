@@ -26,7 +26,7 @@
     "POFile",
     "OO::Monitors",
     "Shell::Command",
-    "Spreadsheet::XLSX:ver<0.2.2+>",
+    "Spreadsheet::XLSX:ver<0.2.3+>",
     "Text::CSV",
     "YAMLish",
     "Cro::APIToken",
