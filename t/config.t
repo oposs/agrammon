@@ -19,6 +19,7 @@ my %config-expected = (
         host     => 'localhost',
         user     => 'agrammon',
         password => "agrammonATwork",
+        version  => '6.0',
     },
     GUI => {
         variant => "Single",
@@ -30,12 +31,8 @@ my %config-expected = (
     },
     Model => {
         debugLevel => 0,
-        home       => "/home/zaucker/Agrammon",
-        path       => "Models/branches/hr-inclNOxExtendedWithFilters",
-        root       => "End.nhd",
-        technical  => "technical.cfg",
-        variant    => "SHL",
-        version    => "6.0 - #REV#",
+        variant    => 'Base',
+        version    => '6.0',
     },
 );
 
