@@ -1,11 +1,8 @@
 use v6;
 use Test;
-use Data::Dump::Tree;
-use Agrammon::DataSource::CSV;
 use Agrammon::Documentation;
 use Agrammon::Model;
 use Agrammon::Model::Parameters;
-use Agrammon::OutputFormatter::CSV;
 use Agrammon::TechnicalParser;
 
 my $model-version = 'hr-inclNOxExtendedWithFilters';
@@ -25,6 +22,7 @@ lives-ok { $latex = create-latex-source(
         'Model name',
         $model,
         'model', # sort order
+        'description',
         technical => %($params.technical.map(-> %module {
             %module.keys[0] => %(%module.values[0].map({ .name => .value }))
         }))
