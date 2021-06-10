@@ -104,8 +104,8 @@ sub latex-escape(Str $in) is export {
     $out ~~ s:g/_/\\_/;
     # the next ones are converted to HTML by Cro::WebApp::Template
     # macros must be defined in template
-    $out ~~ s:g/<[\>]>/\\gt\{\}/;
-    $out ~~ s:g/<[\<]>/\\lt\{\}/;
+    $out ~~ s:g/<[>]>/\\gt\{\}/;
+    $out ~~ s:g/<[<]>/\\lt\{\}/;
     $out ~~ s:g/<[&]>/\\amp\{\}/;
     return $out;
 }
