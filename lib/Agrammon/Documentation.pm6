@@ -28,7 +28,7 @@ sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, $doc-se
 
     my $last-section = '';
     for @sections -> %section {
-        next unless @(%section<inputs>).elems or @(%section<outputs>).elems;
+        next unless any %section<inputs outputs>;
 
         my $module  = %section<module>;
         my $section = $module;
@@ -46,7 +46,7 @@ sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, $doc-se
             @latex.push(latex-escape(%section{$doc-section})) if %section{$doc-section};
         }
 
-        if @(%section<inputs>).elems {
+        if %section<inputs> {
             @latex.push('\subsubsection*{Inputs}');
 
             @latex.push('\begin{description}');
@@ -58,7 +58,7 @@ sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, $doc-se
             @latex.push('\end{description}');
         }
 
-        if @(%section<outputs>).elems {
+        if %section<outputs> {
             @latex.push('\subsubsection*{Outputs}');
 
             @latex.push('\begin{description}');
@@ -78,7 +78,7 @@ sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, $doc-se
             @latex.push('\end{description}');
         }
 
-        if @(%section<technicals>).elems {
+        if %section<technicals> {
             @latex.push('\subsubsection*{Technical Parameters}');
 
             @latex.push('\begin{description}');
