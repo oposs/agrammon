@@ -79,12 +79,13 @@ multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'SHL', SortOrder
     say chomp dump-model $filename.IO, $variants, $sort;
 }
 
-multi sub MAIN('latex', ExistingFile $filename, Str $technical-file?, Str :$variants = 'SHL', SortOrder :$sort = 'model') is export {
-    latex $filename.IO, $technical-file, $variants, $sort;
+#| Create documentation
+multi sub MAIN('latex', ExistingFile $filename, Str $technical-file?, Str :$sections = 'description', Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
+    latex $filename.IO, $technical-file, $variants, $sort, $sections;
 }
 
 #| Create LaTeX docu
-sub latex (IO::Path $path, $technical-file, $variants, $sort) is export {
+sub latex (IO::Path $path, $technical-file, $variants, $sort, $sections) is export {
     die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
@@ -103,6 +104,7 @@ sub latex (IO::Path $path, $technical-file, $variants, $sort) is export {
         $model-name,
         $model,
         $sort,
+        $sections,
         technical => %($params.technical.map(-> %module {
             %module.keys[0] => %(%module.values[0].map({ .name => .value }))
         }))

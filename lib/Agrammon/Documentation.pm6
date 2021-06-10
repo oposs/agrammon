@@ -9,6 +9,7 @@ sub get-model-data( Agrammon::Model $model, $sort, :%technical! ) {
         @sections.push( %(
             :module($module.taxonomy),
             :description($module.description),
+            :short($module.short),
             :inputs($module.input),
             :outputs($module.output),
             :technicals($module.technical)
@@ -18,7 +19,7 @@ sub get-model-data( Agrammon::Model $model, $sort, :%technical! ) {
 }
 
 #| Create a LaTeX source of the model
-sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, :%technical! ) is export {
+sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, $doc-sections, :%technical! ) is export {
     my @sections = get-model-data( $model, $sort, :%technical );
 
     my @latex;
@@ -27,13 +28,12 @@ sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, :%techn
 
     my $last-section = '';
     for @sections -> %section {
+        next unless @(%section<inputs>).elems or @(%section<outputs>).elems;
+
         my $module  = %section<module>;
         my $section = $module;
         $section    = ~$0 if $module ~~ / (.+?) '::' /;
         my $title   = latex-escape($module);
-        my $desc    = latex-escape(%section<description>);
-
-        next unless @(%section<inputs>).elems or @(%section<outputs>).elems;
 
         if $section ne $last-section {
             @latex.push(Q:s"\section{Stage $title}");
@@ -42,7 +42,9 @@ sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, :%techn
 
         @latex.push(Q:s"\subsection{$title}");
 
-        @latex.push($desc);
+        for $doc-sections.split(',') -> $doc-section {
+            @latex.push(latex-escape(%section{$doc-section})) if %section{$doc-section};
+        }
 
         if @(%section<inputs>).elems {
             @latex.push('\subsubsection*{Inputs}');
