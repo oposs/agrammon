@@ -81,7 +81,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   +++fr
      <p>Les porcelets non sevrés sont compris dans la catégorie ‘Truies allaitantes' et ne doivent pas être mentionnés séparément. </p>
 
-+pigs
++animals
   type = float
   distribute = true
   validator = ge(0);
@@ -648,7 +648,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++units
     en = -
   ++formula
-    In(pigs);
+    In(animals);
 
 +animalcategory
   print = Pig
