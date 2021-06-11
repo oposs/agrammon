@@ -16,7 +16,7 @@ class NoSuchModule does Problem {
     method message() {
         "Input for module '$!module'" ~
                 ($!instance ?? " of instance $!instance" !! "") ~
-                ", but not such module exists in the model"
+                ", but no such module exists in the model"
     }
 }
 
