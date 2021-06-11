@@ -1,0 +1,41 @@
+*** general ***
+
+author   = Jonathan Worthington
+date     = 2021-06-09
+taxonomy = Test::SubModule::SubTest
+
++short
+
+  For testing validation
+
++description
+
+  2nd level multi instance test sub module.
+
+*** input ***
+
++an_enum
+  type = enum
+  ++labels
+    en = An enum
+  ++units
+    en = -
+  ++enum
+    +++ipa
+       en = Indian Pale Ale
+    +++neipa
+       en = North East Indian Pale Ale
+    +++apa
+       en = American Pale Ale
+
+
+*** output ***
+
++an_enum
+  print = 7
+  ++units
+    en = monkeys
+  ++formula
+    In(an_enum)
+  ++description
+    Blah

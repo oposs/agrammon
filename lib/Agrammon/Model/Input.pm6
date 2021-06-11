@@ -46,6 +46,8 @@ class Agrammon::Model::Input {
 
     method enum-ordered(--> Array) { @!enum-order }
 
+    method is-valid-enum-value($value) { %!enum-lookup{$value}:exists }
+
     method is-distribute(--> Bool) { $!distribute }
 
     method is-filter(--> Bool) { $!filter }
