@@ -1,0 +1,66 @@
+ValidationTest;1;Test;an_int;42
+ValidationTest;1;Test;an_optional_int;2
+ValidationTest;1;Test;a_float;4.1
+ValidationTest;1;Test;a_percentage;100
+ValidationTest;1;Test;a_string;hovinko
+ValidationTest;1;Test;an_enum;second
+ValidationTest;1;Test;with_between;10000
+ValidationTest;1;Test;with_ge;0
+ValidationTest;1;Test;with_gt;12.5
+ValidationTest;1;Test;with_le;2
+ValidationTest;1;Test;with_lt;2.5
+ValidationTest;2;Test;an_int;42
+ValidationTest;2;Test;a_percentage;0
+ValidationTest;3;Test;an_int;42
+ValidationTest;3;Test;a_float;4.1
+ValidationTest;3;Test;a_percentage;100
+ValidationTest;3;Test;a_string;hovinko
+ValidationTest;3;Test;a_bogus_input;mrkev
+ValidationTest;3;Wat;bogosity;blbost
+ValidationTest;4;Test;an_int;4.1
+ValidationTest;4;Test;a_float;nope
+ValidationTest;4;Test;a_percentage;102
+ValidationTest;4;Test;a_string;all strings are ok
+ValidationTest;5;Test;an_int;42
+ValidationTest;5;Test;a_float;4
+ValidationTest;5;Test;a_percentage;9.99
+ValidationTest;5;Test;a_string;hovinko
+ValidationTest;5;Test;an_enum;sixth
+ValidationTest;6;Test;an_int;42
+ValidationTest;6;Test;a_float;4.1
+ValidationTest;6;Test;a_percentage;100
+ValidationTest;6;Test;a_string;hovinko
+ValidationTest;6;Test;with_between;16000
+ValidationTest;6;Test;with_ge;-1
+ValidationTest;6;Test;with_gt;5.5
+ValidationTest;6;Test;with_le;101
+ValidationTest;6;Test;with_lt;5.5
+ValidationTest;7;Test[Instance 1];an_int;42
+ValidationTest;7;Test[Instance 1];a_float;4.1
+ValidationTest;7;Test[Instance 1];a_percentage;100
+ValidationTest;7;Test[Instance 1];a_string;hovinko
+ValidationTest;8;Test;an_int;42
+ValidationTest;8;Test;a_float;4.1
+ValidationTest;8;Test;a_percentage;100
+ValidationTest;8;Test;a_string;hovinko
+ValidationTest;8;Test::SubModule::SubTest;an_enum;ipa
+ValidationTest;8;Test::SubModule;a_natural;1
+ValidationTest;9;Test;an_int;42
+ValidationTest;9;Test;a_float;4.1
+ValidationTest;9;Test;a_percentage;100
+ValidationTest;9;Test;a_string;hovinko
+ValidationTest;9;Test::SubModule[Instance 1]::SubTest;an_enum;ipa
+ValidationTest;9;Test::SubModule[Instance 1];a_natural;1
+ValidationTest;9;Test::SubModule[Instance 2]::SubTest;an_enum;lager
+ValidationTest;9;Test::SubModule[Instance 2];a_natural;42
+ValidationTest;9;Test::SubModule[Instance 3]::SubTest;an_enum;neipa
+ValidationTest;9;Test::SubModule[Instance 3];a_natural;0
+ValidationTest;9;Test::SubModule[Instance 4]::SubTest;an_enum;neipa
+ValidationTest;9;Test::SubModule[Instance 4];a_natural;string
+ValidationTest;9;Test::SubModule[Instance 5];a_natural;9
+ValidationTest;9;Test::SubModule[Instance 6]::SubTest;an_enum;ipa
+ValidationTest;9;Test::SubModule[Instance 6];a_natural;1
+ValidationTest;9;Test::SubModule[Instance 6];a_non_existing;99
+ValidationTest;9;Test::SubModule[Instance 7]::SubTest;an_enum;ipa
+ValidationTest;9;Test::SubModule[Instance 7];a_natural;1
+ValidationTest;9;Test::SubModule[Instance 7]::Who;am_i;spartacus

@@ -1,0 +1,125 @@
+*** general ***
+
+author   = Jonathan Worthington
+date     = 2021-06-09
+taxonomy = Test
+
++short
+
+  For testing validation
+
++description
+
+  Top-level module
+
+*** input ***
+
++an_int
+  type = integer
+  ++labels
+    en = An int
+  ++units
+    en = -
+
++an_optional_int
+  type = integer
+  default_calc = 0
+  ++labels
+    en = An int
+  ++units
+    en = -
+
++a_float
+  type = float
+  ++labels
+    en = A float
+  ++units
+    en = -
+
++a_percentage
+  type = percent
+  ++labels
+    en = A percentage
+  ++units
+    en = -
+
++a_string
+  type = text
+  ++labels
+    en = A text string
+  ++units
+    en = -
+
++an_enum
+  type = enum
+  default_calc = third
+  ++enum
+    +++first
+       en = The worst
+    +++second
+       en = The best
+    +++third
+       en = The turd
+
++with_between
+  type = integer
+  validator = between(4000,15000);
+  default_calc = 5000
+  ++labels
+    en = With between
+  ++units
+    en = -
+
++with_ge
+  type = integer
+  validator = ge(0);
+  default_calc = 5
+  ++labels
+    en = With ge
+  ++units
+    en = -
+
++with_gt
+  type = float
+  validator = gt(5.5);
+  default_calc = 6.5
+  ++labels
+    en = With gt
+  ++units
+    en = -
+
++with_le
+  type = integer
+  validator = le(100);
+  default_calc = 6
+  ++labels
+    en = With le
+  ++units
+    en = -
+
++with_lt
+  type = float
+  validator = lt(5.5);
+  default_calc = 2.5
+  ++labels
+    en = With lt
+  ++units
+    en = -
+
+*** external ***
+
++Test::SubModule
+  aggregate=SUM
+
+*** output ***
+
++result
+  print = 7
+  ++units
+    en = monkeys/hour
+    de = affen/Stunde
+  ++formula
+    Sum(a_natural, Test::SubModule) *
+    (In(an_int) * In(a_float) * In(a_percentage))
+  ++description
+    Final result

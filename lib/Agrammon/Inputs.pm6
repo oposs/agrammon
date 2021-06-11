@@ -84,6 +84,13 @@ class Agrammon::Inputs does Agrammon::Inputs::Storage {
         }
         @(%!multi-input-lists{$taxonomy} // [])
     }
+
+    #| Get a hash mapping single instance modules to a hash of their inputs,
+    #| and multi-instance modules to a list of pairs, where the key is the
+    #| instance ID and the value is the inputs for that instance.
+    method all-inputs() {
+        %(flat %!single-inputs, %!multi-input-lists.map({ .key => [.value.map({ .instance-id => .all-inputs })] }))
+    }
 }
 
 class X::Agrammon::Inputs::Distribution::AlreadyFlattened is Exception {
