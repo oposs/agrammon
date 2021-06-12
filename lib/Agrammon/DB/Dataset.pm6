@@ -139,8 +139,9 @@ class X::Agrammon::DB::Dataset::StoreBranchDataFailed is Exception {
 #| Error when tag couldn't be set.
 class X::Agrammon::DB::Dataset::SetTagFailed is Exception {
     has Str $.tag-name is required;
+    has Str $.dataset-name is required;
     method message {
-        "Tag '$!tag-name' couldn't be set."
+        "Tag '$!tag-name' couldn't be set on dataset '$!dataset-name'."
     }
 }
 
@@ -297,7 +298,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         self.with-db: -> $db {
             my $tag-id = Agrammon::DB::Tag.new( :name($tag-name), :$!user).lookup.id;
             die X::Agrammon::DB::Tag::UnknownTag($tag-name) unless $tag-id;
-
             for @datasets -> $dataset-name {
                 my $ds-id = Agrammon::DB::Dataset.new(
                     :$!user,
@@ -311,7 +311,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                 SQL
                 CATCH {
                     # other DB failure
-                    die X::Agrammon::DB::Dataset::SetTagFailed.new(:$tag-name);
+                    die X::Agrammon::DB::Dataset::SetTagFailed.new(:$dataset-name, :$tag-name);
                 }
             }
         }
@@ -612,7 +612,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             # new instance name already exists
             CATCH {
                 when /unique/ {
-                    die X::Agrammon::DB::Dataset::InstanceAlreadyExists.new(:$old-name, :$new-name);
+                    die X::Agrammon::DB::Dataset::InstanceAlreadyExists.new(:name($new-name));
                 }
             }
 
