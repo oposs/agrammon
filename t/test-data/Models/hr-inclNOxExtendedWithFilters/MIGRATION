@@ -1,0 +1,81 @@
+-- not needed
+DELETE FROM dataset WHERE dataset_id = 35106;
+DELETE FROM dataset WHERE dataset_name LIKE '%expanded';
+
+
+-- make dataset names unique
+UPDATE dataset SET dataset_name='Ausbringemissionen Geflügel 2' WHERE dataset_id=9424;
+UPDATE dataset SET dataset_name='Kleiner 3' WHERE dataset_id=8549;
+UPDATE dataset SET dataset_name='Kleiner 2' WHERE dataset_id=8299;
+UPDATE dataset SET dataset_version='2.0';
+
+
+
+-- check uniqueness
+SELECT d1.dataset_id, d1.dataset_name, d1.dataset_model, d2.dataset_id, d2.dataset_name, d2.dataset_model FROM dataset d1 CROSS JOIN dataset d2 WHERE d1.dataset_id!=d2.dataset_id AND d1.dataset_name=d2.dataset_name AND d1.dataset_pers=d2.dataset_pers AND (d1.dataset_model = 'UNKNOWN' OR d1.dataset_model IS NULL OR d2.dataset_model = 'UNKNOWN' OR d2.dataset_model IS NULL);
+
+-- set undefined dataset_model
+UPDATE dataset SET dataset_model='UNKNOWN' WHERE dataset_model IS NULL;
+
+-- extend database table and lookup function
+ALTER TABLE dataset ADD COLUMN dataset_guivariant TEXT;
+ALTER TABLE dataset ADD COLUMN dataset_modelvariant TEXT;
+ALTER TABLE dataset ADD CONSTRAINT UNIQUE(dataset_name, dataset_pers, dataset_version, dataset_modelvariant, dataset_guivariant);
+CREATE UNIQUE INDEX ON dataset(dataset_name, dataset_pers, dataset_version, dataset_modelvariant, dataset_guivariant);
+
+CREATE FUNCTION public.dataset_name2id(username text, name text, version text, guivariant text, modelvariant text) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $_$
+      SELECT dataset_id FROM dataset WHERE dataset_pers         = pers_email2id($1)
+                                       AND dataset_name         = $2
+                                       AND dataset_version      = $3
+                                       AND dataset_guivariant   = $4
+                                       AND dataset_modelvariant = $5
+    $_$;
+
+-- set variant columns
+UPDATE dataset SET dataset_guivariant = 'Regional', dataset_modelvariant='Base' WHERE dataset_model='RegionalSHL';
+UPDATE dataset SET dataset_guivariant = 'Single', dataset_modelvariant='Base' WHERE dataset_model='SingleSHL';
+UPDATE dataset SET dataset_guivariant = 'Single', dataset_modelvariant='Kantonal_LU' WHERE dataset_model='SingleLU';
+UPDATE dataset SET dataset_guivariant = 'UNKNOWN', dataset_modelvariant='UNKNOWN' WHERE dataset_model='UNKNOWN';
+
+-- prevent unknown variants
+ALTER TABLE dataset ALTER COLUMN dataset_modelvariant SET NOT NULL;
+ALTER TABLE dataset ALTER COLUMN dataset_guivariant SET NOT NULL;
+ALTER TABLE dataset ALTER COLUMN dataset_version SET NOT NULL;
+ALTER TABLE dataset ALTER COLUMN dataset_model SET NOT NULL;
+
+-- NOTE: delete dataset_version after migration
+-- ALTER TABLE dataset DROP COLUMN dataset_model;
+
+
+
+-- run clone script and check
+SELECT COUNT(*), dataset_version, dataset_guivariant, dataset_modelvariant FROM dataset WHERE dataset_name NOT LIKE '%_expanded' GROUP BY dataset_version, dataset_modelvariant, dataset_guivariant ORDER BY dataset_guivariant, dataset_modelvariant, dataset_version;
+SELECT COUNT(*), dataset_version FROM dataset GROUP BY dataset_version;
+
+-- reset dataset_model
+update dataset set dataset_model='SingleLU'    where dataset_modelvariant='Kantonal_LU' and dataset_guivariant='Single' and dataset_version='6.0';
+update dataset set dataset_model='SingleSHL'   where dataset_modelvariant='Base' and dataset_guivariant='Single' and dataset_version='6.0';
+update dataset set dataset_model='RegionalSHL' where dataset_modelvariant='Base' and dataset_guivariant='Regional' and dataset_version='6.0';
+update dataset set dataset_model='UNKNOWN'     where dataset_modelvariant='UNKNOWN' and dataset_guivariant='UNKNOWN' and dataset_version='6.0';
+
+run input_variables_delete.sql
+run input_variables_rename.sql
+
+
+-- encrypt passwords
+update pers set pers_password = crypt(pers_password, gen_salt('bf'));
+update pers set pers_old_password = translate( pers_old_password, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm' );
+
+
+
+apt install texlive-science
+
+
+-- cleanup tags
+select t1.tagds_id from tagds t1 cross join tagds t2 where t1.tagds_tag=t2.tagds_tag and t1.tagds_dataset=t2.tagds_dataset and t1.tagds_id != t2.tagds_id and t1.tagds_id < t2.tagds_id;
+agrammon_test=# select * from tagds t1 cross join tagds t2 where t1.tagds_tag=t2.tagds_tag and t1.tagds_dataset=t2.tagds_dataset and t1.tagds_id != t2.tagds_id and t1.tagds_id < t2.tagds_id;
+select * from tagds t1 cross join tagds t2 where t1.tagds_tag=t2.tagds_tag and t1.tagds_dataset=t2.tagds_dataset and t1.tagds_id != t2.tagds_id;
+begin;
+delete from tagds where tagds_id in (select t1.tagds_id from tagds t1 cross join tagds t2 where t1.tagds_tag=t2.tagds_tag and t1.tagds_dataset=t2.tagds_dataset and t1.tagds_id != t2.tagds_id and t1.tagds_id < t2.tagds_id);

@@ -72,6 +72,12 @@ UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOpt
        AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL') );
 DELETE FROM data_new WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel'
        AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL') );
+  UPDATE data_new SET data_val='none' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_floor' AND data_val='flattened'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('RegionalSHL') );
+  DELETE FROM data_new WHERE data_var LIKE 'Livestock::FatteningPigs[]::Housing::MitigationOptions::UNECE_category_1_mitigation_options_for_housing_systems_for_fatteningpigs_flattened%'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('RegionalSHL') );
+  DELETE FROM data_new WHERE data_var LIKE 'Livestock::FatteningPigs[]::Housing::MitigationOptions::UNECE_category_1_mitigation_options_for_housing_systems_for_fatteningpigs_flattened%'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('Agrammon6') AND dataset_guivariant='Regional' );
 
 UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_floor' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_fattening_pigs_slurry_channel'
        AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model = 'SingleLU' );
@@ -80,6 +86,10 @@ DELETE FROM data_new WHERE data_var='Livestock::FatteningPigs[]::Housing::Mitiga
 
 UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_air' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_fattening_pigs_air'
        AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL', 'SingleLU') );
+  UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_air_flattened00_none' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_fattening_pigs_air_flattened00_none'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL') );
+  UPDATE data_new SET data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_housing_air_flattened01_low impuls air supply' WHERE data_var='Livestock::FatteningPigs[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_fattening_pigs_air_flattened01_low impuls air supply'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL') );
 
 -- Pig
 -- 0 data
@@ -89,6 +99,12 @@ UPDATE data_new SET data_var='Livestock::Pig[]::Housing::MitigationOptions::miti
        AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL') );
 DELETE FROM data_new WHERE data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_pigs_slurry_channel'
        AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL' ));
+  UPDATE data_new SET data_val='none' WHERE data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_housing_floor' AND data_val='flattened'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('RegionalSHL') );
+  DELETE FROM data_new WHERE data_var LIKE 'Livestock::Pig[]::Housing::MitigationOptions::UNECE_category_1_mitigation_options_for_housing_systems_for_pigs_flattened%'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('RegionalSHL') );
+  DELETE FROM data_new WHERE data_var LIKE 'Livestock::Pig[]::Housing::MitigationOptions::UNECE_category_1_mitigation_options_for_housing_systems_for_pigs_flattened%'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('Agrammon6') AND dataset_guivariant='Regional' );
 
 UPDATE data_new SET data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_housing_floor' WHERE data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_pigs_slurry_channel'
        AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model = 'SingleLU' );
@@ -99,6 +115,10 @@ UPDATE data_new SET data_var='Livestock::Pig[]::Housing::MitigationOptions::miti
        AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL') );
 UPDATE data_new SET data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_housing_air' WHERE data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_pigs_air'
        AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleLU') and dataset_mod_date <='2021-06-01');
+  UPDATE data_new SET data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_housing_air_flattened00_none' WHERE data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_pigs_air_flattened00_none'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL') );
+  UPDATE data_new SET data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_housing_air_flattened01_low impuls air supply' WHERE data_var='Livestock::Pig[]::Housing::MitigationOptions::mitigation_options_for_housing_systems_for_pigs_air_flattened01_low impuls air supply'
+       AND data_dataset in (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0' AND dataset_model IN ('SingleSHL', 'RegionalSHL') );
 
 -- Equides
 UPDATE data_new SET data_var='Livestock::Equides[]::Housing::CFreeFactor::free_correction_factor' WHERE data_var='Livestock::Equides[]::Housing::free_correction_factor'
