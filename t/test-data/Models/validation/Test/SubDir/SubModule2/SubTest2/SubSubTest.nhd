@@ -1,0 +1,33 @@
+*** general ***
+
+author   = Fritz Zaucker
+date     = 2021-06-13
+taxonomy = Test::SubDir::SubModule2::SubTest2::SubSubTest
+
++short
+
+  For testing validation
+
++description
+
+  2nd level multi instance test sub module.
+
+*** input ***
+
++yetanother_input
+  type = integer
+  ++labels
+    en = An integer
+  ++units
+    en = -
+
+*** output ***
+
++yetanother_input
+  print = 7
+  ++units
+    en = monkeys
+  ++formula
+    In(yetanother_integer)
+  ++description
+    Blah

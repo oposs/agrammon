@@ -110,6 +110,8 @@ taxonomy = Test
 
 +Test::SubModule
   aggregate=SUM
++Test::SubDir::SubModule2
+  aggregate=SUM
 
 *** output ***
 
