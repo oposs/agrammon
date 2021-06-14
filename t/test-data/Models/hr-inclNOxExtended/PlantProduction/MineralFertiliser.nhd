@@ -110,7 +110,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_ammoniumNitrate_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 27
   default_gui  = 27
   ++labels 
@@ -172,7 +172,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_calciumAmmoniumNitrate_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 20
   default_gui  = 20
   ++labels 
@@ -218,7 +218,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_ammoniumSulphate_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 21
   default_gui  = 21
   ++labels 
@@ -265,7 +265,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_urea_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 46
   default_gui  = 46
   ++labels 
@@ -312,7 +312,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_sulfamid_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 30
   default_gui  = 30
   ++labels 
@@ -358,7 +358,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_calciumNitrate_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 15.5
   default_gui  = 15.5
   ++labels 
@@ -404,7 +404,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_calciumCyanamid_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 20
   default_gui  = 20
   ++labels 
@@ -450,7 +450,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_entec_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 26
   default_gui  = 26
   ++labels 
@@ -496,7 +496,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_np_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 15
   default_gui  = 15
   ++labels 
@@ -542,7 +542,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_nk_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 11.5
   default_gui  = 11.5
   ++labels 
@@ -588,7 +588,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_npk_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 12.5
   default_gui  = 12.5
   ++labels 
@@ -634,7 +634,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_entec2_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 18.5
   default_gui  = 18.5
   ++labels 
@@ -680,7 +680,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +mineral_fertiliser_other_N_content
   type         = float
-  validator    = ge(0,100)
+  validator    = between(0,100)
   default_calc = 0
   default_gui  = 0
   ++labels 
