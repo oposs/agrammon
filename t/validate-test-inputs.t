@@ -13,13 +13,9 @@ use Agrammon::Validation;
 
 my $temp-dir = $*TMPDIR.add('agrammon_testing');
 
-#for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
-#for <hr-inclNOxExtended> -> $model-version {
-
 for <hr-inclNOxExtendedWithFilters> -> $model-version {
     subtest "Model $model-version" => {
 
-#        my $filename = $model-version ~ '-model-input.csv';
         my $filename = $model-version ~ '-model-input-DairyCows.csv';
         note "filename=$filename";
         my $fh = open $*PROGRAM.parent.add("test-data/$filename");
@@ -29,20 +25,15 @@ for <hr-inclNOxExtendedWithFilters> -> $model-version {
         $fh.close;
 
         my $path = $*PROGRAM.parent.add("test-data/Models/$model-version/");
-        my ($model, $params, $output);
-
+        my $model;
         lives-ok { $model = load-model-using-cache($temp-dir, $path, 'Total') },
                 "Load module Total from $path";
 
         my @validation-errors;
         lives-ok { @validation-errors = validation-errors($model, $dataset) },
                 'Performed validation of the inputs against the model';
-        my $errors = @validation-errors.elems;
-        for @validation-errors -> $error {
-            note $error.message;
-        }
         is @validation-errors.elems, 0, 'There are no validation errors';
-
     }
 }
+
 done-testing;
