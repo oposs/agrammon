@@ -19,15 +19,6 @@ taxonomy = Livestock::FatteningPigs::Housing::Type::Outdoor
   \end{todo}
 
 *** input ***
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-    de = ignorieren
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
 
 *** technical ***
 

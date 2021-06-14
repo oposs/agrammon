@@ -13,7 +13,7 @@ use Agrammon::Validation;
 
 my $temp-dir = $*TMPDIR.add('agrammon_testing');
 
-for <hr-inclNOxExtendedWithFilters> -> $model-version {
+for <hr-inclNOxExtendedWithFilters hr-inclNOxExtended> -> $model-version {
     subtest "Model $model-version" => {
         my $filename = $model-version ~ '-model-input.csv';
         my $fh = open $*PROGRAM.parent.add("test-data/$filename");
