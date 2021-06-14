@@ -28,6 +28,6 @@ taxonomy = Test::SubDir::SubModule2::SubTest2::SubSubTest
   ++units
     en = monkeys
   ++formula
-    In(yetanother_integer)
+    In(yetanother_input)
   ++description
     Blah
