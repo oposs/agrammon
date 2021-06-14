@@ -145,7 +145,6 @@ subtest 'Problems in multiple-instance modules with instances from one submodule
         lives-ok { @validation-errors = validation-errors($model, $dataset) },
                 'Performed validation of the inputs against the model';
         is @validation-errors.elems, 6, 'Got six validation error as expected';
-        dd @validation-errors;
         @validation-errors .= sort(*.instance);
         given @validation-errors[0] {
             isa-ok $_, Agrammon::Validation::InvalidEnumValue,

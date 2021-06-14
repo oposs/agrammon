@@ -1,9 +1,9 @@
 use v6;
 
 use Text::CSV;
-use Agrammon::DB;
 use Agrammon::DB::Tag;
 use Agrammon::DB::User;
+use Agrammon::DB::Variant;
 
 #| Error when a dataset already exists for the user.
 class X::Agrammon::DB::Dataset::AlreadyExists is Exception {
@@ -153,13 +153,12 @@ class X::Agrammon::DB::Dataset::RemoveTagFailed is Exception {
     }
 }
 
-class Agrammon::DB::Dataset does Agrammon::DB {
+class Agrammon::DB::Dataset does Agrammon::DB::Variant {
     has Int  $.id;
     has Str  $.name;
     has Bool $.read-only;
     has Str  $.model;
     has Str  $.comment;
-    has      %.agrammon-variant;
     has Int  $.records; # this is set in Agrammon::DB::Datasets.load
     has DateTime $.mod-date;
     has DateTime $.created;
@@ -714,10 +713,6 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             };
         }
         return $data;
-    }
-
-    method !variant {
-        return %!agrammon-variant<version>, %!agrammon-variant<gui>, %!agrammon-variant<model>;
     }
 
 }

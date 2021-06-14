@@ -1,18 +1,17 @@
 use v6;
-use Agrammon::DB;
 use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
+use Agrammon::DB::Variant;
 use Agrammon::Timestamp;
 
-class Agrammon::DB::Datasets does Agrammon::DB {
-    has %.agrammon-variant;
+class Agrammon::DB::Datasets does Agrammon::DB::Variant {
     has Agrammon::DB::User    $.user;
     has Agrammon::DB::Dataset @.collection;
 
     method load {
         self.with-db: -> $db {
             my $username = $!user.username;
-            my $results = $db.query(q:to/DATASETS/, ~$username, %!agrammon-variant<version>, %!agrammon-variant<gui>, %!agrammon-variant<model>);
+            my $results = $db.query(q:to/DATASETS/, ~$username, |self!variant);
                 SELECT dataset_id AS id,
                        dataset_name AS name,
                        date_trunc('seconds', dataset_mod_date) AS "mod-date",
@@ -20,8 +19,8 @@ class Agrammon::DB::Datasets does Agrammon::DB {
                         FROM data_new WHERE data_dataset=dataset_id) AS records,
                        dataset_readonly AS "read-only",
                        dataset_version AS version,
-                       dataset_guivariant AS "gui-variant",
-                       dataset_modelvariant AS "model-variant",
+                       dataset_guivariant AS "guivariant",
+                       dataset_modelvariant AS "modelvariant",
                        '' AS tag,  -- tag attribute is set below
                        dataset_comment AS comment,
                        dataset_model   AS model,
@@ -38,7 +37,12 @@ class Agrammon::DB::Datasets does Agrammon::DB {
             DATASETS
 
             for $results.hashes -> %dh {
-                my $ds = Agrammon::DB::Dataset.new(|%dh);
+                my %agrammon-variant := {
+                    version => %dh<version>:delete,
+                    gui     => %dh<guivariant>:delete,
+                    model   => %dh<modelvariant>:delete,
+                };
+                my $ds = Agrammon::DB::Dataset.new(:%agrammon-variant, |%dh);
                 @!collection.push($ds);
             }
 
