@@ -21,16 +21,6 @@ Describes correction factors for the loose housing slurry system for dairy cows.
 
 *** input ***
 
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-    de = ignorieren
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
-
 *** technical ***
 
 +er

@@ -15,16 +15,6 @@ gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production ani
   from housing, yard and grazing. Further it summarizes the annual N flux from housing and yard to the storage for cattle.
 *** input ***
 
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
-
-
 *** technical ***
 
 +er_n2_solid_Slurry

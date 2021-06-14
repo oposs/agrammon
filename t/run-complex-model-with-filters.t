@@ -15,27 +15,41 @@ my $temp-dir = $*TMPDIR.add('agrammon_testing');
 #| Expected results
 my %expected-results =
     'hr-inclNOxExtendedWithFilters' => {
-        'nh3_ntotal' => 3162.557,
-        'nh3_nanimalproduction' => 3140.357,
-        'nh3_napplication' => 1332.185,
-        'n_into_application' => 7441.241,
-        'tan_into_application' => 3171.557
+        'nh3_ntotal' => 3161.555,
+        'nh3_nanimalproduction' => 3139.355,
+        'nh3_napplication' => 1332.862,
+        'n_into_application' => 7442.92,
+        'tan_into_application' => 3173.235
     },
     'hr-inclNOxExtended' => {
-        'nh3_ntotal' => 3157.775,
-        'nh3_nanimalproduction' => 3135.575,
-        'nh3_napplication' => 1351.033,
-        'n_into_application' => 7480.652,
-        'tan_into_application' => 3202.854
+        'nh3_ntotal' => 3156.761,
+        'nh3_nanimalproduction' => 3134.561,
+        'nh3_napplication' => 1351.698,
+        'n_into_application' => 7482.331,
+        'tan_into_application' => 3204.533
     };
-
-my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
-my $fh = open $*PROGRAM.parent.add("test-data/$filename");
-my @datasets = Agrammon::DataSource::CSV.new().read($fh);
-is @datasets.elems, 1, "Got the one expected data set from $filename to run";
-$fh.close;
+    # 'hr-inclNOxExtendedWithFilters' => {
+    #     'nh3_ntotal' => 3162.557,
+    #     'nh3_nanimalproduction' => 3140.357,
+    #     'nh3_napplication' => 1332.185,
+    #     'n_into_application' => 7441.241,
+    #     'tan_into_application' => 3171.557
+    # },
+    # 'hr-inclNOxExtended' => {
+    #     'nh3_ntotal' => 3157.775,
+    #     'nh3_nanimalproduction' => 3135.575,
+    #     'nh3_napplication' => 1351.033,
+    #     'n_into_application' => 7480.652,
+    #     'tan_into_application' => 3202.854
+    # };
 
 for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
+    my $filename = "$model-version" ~ '-model-input.csv';
+    my $fh = open $*PROGRAM.parent.add("test-data/$filename");
+    my @datasets = Agrammon::DataSource::CSV.new().read($fh);
+    is @datasets.elems, 1, "Got the one expected data set from $filename to run";
+    $fh.close;
+
     subtest "Model $model-version" => {
         my $path = $*PROGRAM.parent.add("test-data/Models/$model-version/");
         my ($model, $params, $output);

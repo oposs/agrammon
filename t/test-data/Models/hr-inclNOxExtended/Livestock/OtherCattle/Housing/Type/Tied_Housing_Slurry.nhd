@@ -16,16 +16,6 @@ Describes correction factors for the tide housing slurry system.
 
 *** input ***
 
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-    de = ignorieren
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
-
 *** technical ***
 
 +er

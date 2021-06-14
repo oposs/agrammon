@@ -16,15 +16,6 @@ and grazing. Further it summarizes the annual N flux from the housing to the sto
 
 *** input ***
 
-+ignore
-  type  = enum{ignore}
-  ++labels 
-    en = ignore
-  ++units  
-    en = -
-  ++description
-    Just a work around for modules without input parameters.
-
 *** technical ***
 
 +er_n2_nsolid
