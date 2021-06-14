@@ -126,7 +126,7 @@ sub validation-errors(Agrammon::Model $model, Agrammon::Inputs $inputs --> List)
         when Pair {
             # Multi-instance module
             my $entrypoint = .key;
-            my @modules = .value;
+            my @modules = @(.value);
             my $instances = %inputs-to-check{$entrypoint};
             if $instances ~~ List {
                 # Go over the instances and check them.

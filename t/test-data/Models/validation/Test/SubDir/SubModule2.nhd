@@ -1,0 +1,39 @@
+*** general ***
+
+author   = Fritz Zaucker
+date     = 2021-06-13
+taxonomy = Test::SubDir::SubModule2
+instances = multi
+
++short
+
+  For testing validation
+
++description
+
+  Multi instance test sub module.
+
+*** input ***
+
++b_natural
+  type = integer
+  validator = gt(0)
+  ++labels
+    en = Natural
+  ++units
+    en = -
+
+*** external ***
+
++SubModule2::SubTest2
+
+*** output ***
+
++b_natural
+  print = 7
+  ++units
+    en = monkeys/hour
+  ++formula
+    In(b_natural)
+  ++description
+    Final result

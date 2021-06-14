@@ -12,7 +12,7 @@ my $fh = open $filename, :r;
 my $ds = Agrammon::DataSource::CSV.new;
 my @datasets = $ds.read($fh);
 $fh.close;
-is @datasets.elems, 9, 'Loaded datasets to validate';
+is @datasets.elems, 10, 'Loaded datasets to validate';
 
 subtest 'Single instance inputs with no problems' => {
     given @datasets[0] -> $dataset {
@@ -139,7 +139,7 @@ subtest 'Single-instance data for multi-instance module' => {
     }
 }
 
-subtest 'Problems in multiple-instance modules' => {
+subtest 'Problems in multiple-instance modules with instances from one submodule' => {
     given @datasets[8] -> $dataset {
         my @validation-errors;
         lives-ok { @validation-errors = validation-errors($model, $dataset) },
@@ -184,6 +184,17 @@ subtest 'Problems in multiple-instance modules' => {
                     'Got a no such module error';
             is .module, 'Test::SubModule::Who', 'It is on the correct module';
         }
+    }
+}
+
+subtest 'No problems in multiple-instance modules with instances from two submodules' => {
+    given @datasets[9] -> $dataset {
+        my @validation-errors;
+        lives-ok { @validation-errors = validation-errors($model, $dataset) },
+                'Performed validation of the inputs against the model';
+        
+        is @validation-errors.elems, 0, 'Got no validation errors as expected'
+           or diag dd @validation-errors;
     }
 }
 

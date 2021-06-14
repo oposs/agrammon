@@ -1,0 +1,44 @@
+*** general ***
+
+author   = Fritz Zaucker
+date     = 2021-06-13
+taxonomy = Test::SubDir::SubModule2::SubTest2
+
++short
+
+  For testing validation
+
++description
+
+  2nd level multi instance test sub module.
+
+*** input ***
+
++another_enum
+  type = enum
+  ++labels
+    en = An enum
+  ++units
+    en = -
+  ++enum
+    +++gla
+       en = German Lager
+    +++cla
+       en = Czech Lager
+    +++pi
+       en = Pilsner
+
+*** external ***
+
++SubTest2::SubSubTest
+
+*** output ***
+
++another_enum
+  print = 7
+  ++units
+    en = monkeys
+  ++formula
+    In(another_enum)
+  ++description
+    Blah

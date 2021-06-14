@@ -64,3 +64,17 @@ ValidationTest;9;Test::SubModule[Instance 6];a_non_existing;99
 ValidationTest;9;Test::SubModule[Instance 7]::SubTest;an_enum;ipa
 ValidationTest;9;Test::SubModule[Instance 7];a_natural;1
 ValidationTest;9;Test::SubModule[Instance 7]::Who;am_i;spartacus
+ValidationTest;10;Test;an_int;42
+ValidationTest;10;Test;a_float;4.1
+ValidationTest;10;Test;a_percentage;100
+ValidationTest;10;Test;a_string;hovinko
+ValidationTest;10;Test::SubModule[Instance 1]::SubTest;an_enum;ipa
+ValidationTest;10;Test::SubModule[Instance 1];a_natural;1
+ValidationTest;10;Test::SubModule[Instance 2]::SubTest;an_enum;ipa
+ValidationTest;10;Test::SubModule[Instance 2];a_natural;2
+ValidationTest;10;Test::SubDir::SubModule2[Instance A]::SubTest2;another_enum;pi
+ValidationTest;10;Test::SubDir::SubModule2[Instance A];b_natural;1
+ValidationTest;10;Test::SubDir::SubModule2[Instance A]::SubTest2::SubSubTest;yetanother_input;4242
+ValidationTest;10;Test::SubDir::SubModule2[Instance B]::SubTest2;another_enum;gla
+ValidationTest;10;Test::SubDir::SubModule2[Instance B];b_natural;2
+ValidationTest;10;Test::SubDir::SubModule2[Instance B]::SubTest2::SubSubTest;yetanother_input;4343
