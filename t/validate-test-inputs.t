@@ -37,10 +37,10 @@ for <hr-inclNOxExtendedWithFilters> -> $model-version {
         lives-ok { @validation-errors = validation-errors($model, $dataset) },
                 'Performed validation of the inputs against the model';
         my $errors = @validation-errors.elems;
-        is @validation-errors.elems, 0, 'There are no validation errors'; # or diag "$errors validation errors for $model-version";
         for @validation-errors -> $error {
             note $error.message;
         }
+        is @validation-errors.elems, 0, 'There are no validation errors';
 
     }
 }
