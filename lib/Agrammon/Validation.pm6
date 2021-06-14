@@ -121,7 +121,7 @@ sub validation-errors(Agrammon::Model $model, Agrammon::Inputs $inputs --> List)
             # Single instance module
             my $input = %inputs-to-check{$_}:delete;
             if $input ~~ Hash {
-                check-module-inputs($model.get-module($_), $input, @problems, %checked-already, %input-checked-already);
+                check-module-inputs($model.get-module($_), $input, @problems, %input-checked-already);
             }
             elsif $input ~~ List {
                 @problems.push: MultiInputForSingleModule.new(:module($_));
@@ -145,7 +145,7 @@ sub validation-errors(Agrammon::Model $model, Agrammon::Inputs $inputs --> List)
                       %checked-already{"$module$instance"} = True;
                       next if %checked-already{"$module"};
                        my %input := %instance-input{$module}:delete // {};
-                       check-module-inputs($model.get-module($module), %input, @problems, %checked-already, %input-checked-already, :$instance);
+                       check-module-inputs($model.get-module($module), %input, @problems, %input-checked-already, :$instance);
                    }
                    @problems.append: %instance-input.keys.map: { NoSuchModule.new(:$^module, :$instance) }
                 }
@@ -175,20 +175,20 @@ sub validation-errors(Agrammon::Model $model, Agrammon::Inputs $inputs --> List)
     return @problems;
 }
 
-sub check-module-inputs(Agrammon::Model::Module $module, %inputs is copy, @problems, %module-checked-already, %input-checked-already, Str :$instance --> Nil) {
+sub check-module-inputs(Agrammon::Model::Module $module, %inputs is copy, @problems, %input-checked-already, Str :$instance --> Nil) {
     # Check the inputs we have.
     if $instance {
-        say "    checking " ~ $module.name ~ "[$instance]";
+        say "    checking " ~ $module.taxonomy ~ "[$instance]";
     }
     else {
-        say "    checking " ~ $module.name;
+        say "    checking " ~ $module.taxonomy;
     }
     for $module.input -> $input {
         if $instance {
-            next if %input-checked-already{$module.name}{$instance}{$input.name};
+            next if %input-checked-already{$module.taxonomy}{$instance}{$input.name};
         }
         else {
-            next if %input-checked-already{$module.name}{$input.name};
+            next if %input-checked-already{$module.taxonomy}{$input.name};
         }
         say "        " ~ $input.name ~ " = " ~ (%inputs{$input.name} // 'EMPTY');
         with %inputs{$input.name}:delete -> $value {
@@ -237,10 +237,10 @@ sub check-module-inputs(Agrammon::Model::Module $module, %inputs is copy, @probl
             }
         }
         if $instance {
-            %input-checked-already{$module.name}{$instance}{$input.name} = True;
+            %input-checked-already{$module.taxonomy}{$instance}{$input.name} = True;
         }
         else {
-            %input-checked-already{$module.name}{$input.name} = True;
+            %input-checked-already{$module.taxonomy}{$input.name} = True;
         }
     }
 
