@@ -91,29 +91,6 @@ class Agrammon::Model {
             }
         }
 
-        method extract-structure() {
-            my @top-level;
-            self!place-structure-into(@top-level);
-            @top-level
-        }
-
-        method !place-structure-into(@output, :$in-multi = False) {
-            if !$in-multi && $!module.is-multi {
-                my @children;
-                for @!dependencies -> $dep {
-                    $dep!place-structure-into(@children, :in-multi);
-                }
-                @children.push($!module.taxonomy);
-                @output.push(($!module.taxonomy => @children));
-            }
-            else {
-                @output.push($!module.taxonomy);
-                for @!dependencies -> $dep {
-                    $dep!place-structure-into(@output, :$in-multi);
-                }
-            }
-        }
-
         method run(:$input!, :%technical!) {
             my $outputs = Agrammon::Outputs.new();
             my $*AGRAMMON-LOG = $outputs.log-collector;
@@ -398,7 +375,17 @@ class Agrammon::Model {
     #| where the key is the taxonomy name of the root of the multi-instance module
     #| and the value is an array of the modules within that instance.
     method extract-structure() {
-        $!entry-point.extract-structure
+        my @singles;
+        my %multis;
+        for @!evaluation-order -> Agrammon::Model::Module $module {
+            if $module.instance-root -> $root {
+                %multis{$root}.push($module.taxonomy);
+            }
+            else {
+                @singles.push($module.taxonomy);
+            }
+        }
+        [flat @singles, %multis.pairs]
     }
 
     method run(Agrammon::Inputs :$input!, :%technical --> Agrammon::Outputs) {
