@@ -41,6 +41,7 @@
   "provides": {
     "Agrammon::CommonParser": "lib/Agrammon/CommonParser.pm6",
     "Agrammon::Config": "lib/Agrammon/Config.pm6",
+    "Agrammon::DB": "lib/Agrammon/DB.pm6",
     "Agrammon::DB::Dataset": "lib/Agrammon/DB/Dataset.pm6",
     "Agrammon::DB::Datasets": "lib/Agrammon/DB/Datasets.pm6",
     "Agrammon::DB::Role": "lib/Agrammon/DB/Role.pm6",
@@ -77,6 +78,7 @@
     "Agrammon::OutputsCache": "lib/Agrammon/OutputsCache.pm6",
     "Agrammon::Performance": "lib/Agrammon/Performance.pm6",
     "Agrammon::Preprocessor": "lib/Agrammon/Preprocessor.pm6",
+    "Agrammon::Timestamp": "lib/Agrammon/Timestamp.pm6",
     "Agrammon::UI::CommandLine": "lib/Agrammon/UI/CommandLine.pm6",
     "Agrammon::UI::Web": "lib/Agrammon/UI/Web.pm6",
     "Agrammon::Validation": "lib/Agrammon/Validation.pm6",
