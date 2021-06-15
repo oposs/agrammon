@@ -203,7 +203,7 @@ class Agrammon::Web::Service {
         my $validation-errors = self!get-outputs($user, $dataset-name)<validation-errors>;
         warn '**** Got ' ~  $validation-errors.elems ~ ' input validation errors';
         # TODO: get with-filters from frontend
-        # TODO: deal with validation errors in front end
+        # TODO: deal with validation errors in frontend; needs translations
         my %gui-output = output-for-gui($!model, $results, :include-filters);
         note '**** with-filters for get-output-variables() not yet completely implemented';
         return %gui-output;

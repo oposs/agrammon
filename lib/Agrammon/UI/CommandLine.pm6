@@ -54,8 +54,8 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technica
     my $data = run $filename.IO, $input.IO, $technical-file, $variants, $format, $language, $prints,
             ($include-filters or $include-all-filters),
             $batch, $degree, $max-runs, :all-filters($include-all-filters);
-    my %results = $data.results;
-    my %validation-errors = $data.validation-errors;
+    my %results := $data.results;
+    my %validation-errors := $data.validation-errors;
 
     my $output;
     if $format eq 'json' {
@@ -72,6 +72,7 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technica
                 for %sim-errors.keys.sort -> $dataset {
                     @output.push("#   Dataset $dataset");
                     for @(%sim-errors{$dataset}) -> $error {
+                        # TODO: add translations
                         @output.push('#   ' ~ $error.message);
                     }
                 }
@@ -93,7 +94,7 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technica
 }
 
 #| Validate inputs
-multi sub MAIN('validate', ExistingFile $filename, ExistingFile $input, Str :$variants = 'Base',
+multi sub MAIN('validate', ExistingFile $filename, ExistingFile $input, SupportedLanguage :$language = 'de', Str :$variants = 'Base',
                Int :$batch=1, Int :$degree=4, Int :$max-runs
               ) is export {
     my %validation-errors = validate $filename.IO, $input.IO, $variants,
@@ -106,6 +107,7 @@ multi sub MAIN('validate', ExistingFile $filename, ExistingFile $input, Str :$va
             @output.push("### Simulation $simulation");
             for %sim-errors.keys.sort -> $dataset {
                 @output.push("#   Dataset $dataset");
+                # TODO: add translations
                 @output.push(%sim-errors{$dataset}.message);
             }
         }
@@ -252,7 +254,6 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
         my @validation-errors = validation-errors($model, $dataset);
         if @validation-errors.elems {
             $rc.add-validation-errors($dataset.simulation-name, $dataset.dataset-id, @validation-errors);
-#            dd @validation-errors;
         }
         else {
             my $outputs = timed "$my-n: Run $filename", {
