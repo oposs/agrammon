@@ -251,8 +251,7 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
     my class X::EarlyFinish is Exception {}
     race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
         my $my-n = ++⚛$n;
-        my @validation-errors = validation-errors($model, $dataset);
-        if @validation-errors.elems {
+        if validation-errors($model, $dataset) -> @validation-errors {
             $rc.add-validation-errors($dataset.simulation-name, $dataset.dataset-id, @validation-errors);
         }
         else {
@@ -319,8 +318,7 @@ sub validate (IO::Path $path, IO::Path $input-path, $variants, $batch, $degree, 
     my class X::EarlyFinish is Exception {}
     race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
         my $my-n = ++⚛$n;
-        my @validation-errors = validation-errors($model, $dataset);
-        if @validation-errors.elems {
+        if validation-errors($model, $dataset) -> @validation-errors {
             $rc.add-validation-errors($dataset.simulation-name, $dataset.dataset-id, @validation-errors);
         }
 
