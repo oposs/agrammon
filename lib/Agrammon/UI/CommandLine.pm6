@@ -240,10 +240,7 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     };
 
-    my $filename = $input-path;
-    my $fh = $filename eq '-' ?? $*IN
-                              !! open $filename, :r
-                                  or die "Couldn't open file $filename for reading";
+    my $fh = get-input-filehandle($input-path);
     LEAVE $fh.?close;
     my $ds = Agrammon::DataSource::CSV.new;
 
@@ -256,7 +253,7 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
             $rc.add-validation-errors($dataset.simulation-name, $dataset.dataset-id, @validation-errors);
         }
         else {
-            my $outputs = timed "$my-n: Run $filename", {
+            my $outputs = timed "$my-n: Run $input-path", {
                 $model.run(
                         input => $dataset,
                         technical => %technical-parameters,
@@ -308,10 +305,7 @@ sub validate (IO::Path $path, IO::Path $input-path, $variants, $batch, $degree, 
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     };
 
-    my $filename = $input-path;
-    my $fh = $filename eq '-' ?? $*IN
-                              !! open $filename, :r
-                                  or die "Couldn't open file $filename for reading";
+    my $fh = get-input-filehandle($input-path);
     LEAVE $fh.?close;
     my $ds = Agrammon::DataSource::CSV.new;
 
@@ -395,4 +389,10 @@ sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export 
 
 sub preprocessor-options(Str $variants) {
     set($variants.split(","));
+}
+
+sub get-input-filehandle(IO::Path $path) {
+    $path eq '-' ?? $*IN
+                 !! open $path, :r
+                        or die "Couldn't open file $path for reading";
 }
