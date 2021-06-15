@@ -14,8 +14,9 @@ use Agrammon::OutputFormatter::PDF;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
 use Agrammon::Timestamp;
-use Agrammon::Web::SessionUser;
 use Agrammon::UI::Web;
+use Agrammon::Validation;
+use Agrammon::Web::SessionUser;
 
 class Agrammon::Web::Service {
     has Agrammon::Config $.cfg;
@@ -181,20 +182,29 @@ class Agrammon::Web::Service {
     }
 
     method !get-outputs(Agrammon::Web::SessionUser $user, Str $dataset-name) {
-        return $!outputs-cache.get-or-calculate: $user.username, $dataset-name, -> {
+        my $input = self!get-inputs($user, $dataset-name);
+        my @validation-errors = validation-errors($!model, $input);
+        my $results = $!outputs-cache.get-or-calculate: $user.username, $dataset-name, -> {
             timed "$dataset-name", {
                 $!model.run:
-                        :input(self!get-inputs($user, $dataset-name)),
+                        :$input,
                         technical => %!technical-parameters;
             }
-        }
+        };
+
+         return {
+             :$results,
+             :@validation-errors,
+        };
     }
 
     method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
-        my $outputs = self!get-outputs($user, $dataset-name);
-
+        my $results = self!get-outputs($user, $dataset-name)<results>;
+        my $validation-errors = self!get-outputs($user, $dataset-name)<validation-errors>;
+        warn '**** Got ' ~  $validation-errors.elems ~ ' input validation errors';
         # TODO: get with-filters from frontend
-        my %gui-output = output-for-gui($!model, $outputs, :include-filters);
+        # TODO: deal with validation errors in frontend; needs translations
+        my %gui-output = output-for-gui($!model, $results, :include-filters);
         note '**** with-filters for get-output-variables() not yet completely implemented';
         return %gui-output;
     }
@@ -205,7 +215,7 @@ class Agrammon::Web::Service {
         my $report-selected = %params<reportSelected>.Int;
 
         my $inputs  = self!get-inputs($user, $dataset-name);
-        my $outputs = self!get-outputs($user, $dataset-name);
+        my $outputs = self!get-outputs($user, $dataset-name)<results>;
         my $reports = self.get-input-variables<reports>;
 
         my $type = $reports[$report-selected]<type> // '';
@@ -246,7 +256,7 @@ class Agrammon::Web::Service {
         }
 
         my $inputs  = self!get-inputs($user, $dataset-name);
-        my $outputs = self!get-outputs($user, $dataset-name);
+        my $outputs = self!get-outputs($user, $dataset-name)<results>;
         my $reports = self.get-input-variables<reports>;
 
         my $type = $reports[$report-selected]<type> // '';
