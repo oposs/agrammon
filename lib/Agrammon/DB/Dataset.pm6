@@ -1,9 +1,9 @@
 use v6;
 
 use Text::CSV;
-use Agrammon::DB;
 use Agrammon::DB::Tag;
 use Agrammon::DB::User;
+use Agrammon::DB::Variant;
 
 #| Error when a dataset already exists for the user.
 class X::Agrammon::DB::Dataset::AlreadyExists is Exception {
@@ -139,8 +139,9 @@ class X::Agrammon::DB::Dataset::StoreBranchDataFailed is Exception {
 #| Error when tag couldn't be set.
 class X::Agrammon::DB::Dataset::SetTagFailed is Exception {
     has Str $.tag-name is required;
+    has Str $.dataset-name is required;
     method message {
-        "Tag '$!tag-name' couldn't be set."
+        "Tag '$!tag-name' couldn't be set on dataset '$!dataset-name'."
     }
 }
 
@@ -152,29 +153,32 @@ class X::Agrammon::DB::Dataset::RemoveTagFailed is Exception {
     }
 }
 
-class Agrammon::DB::Dataset does Agrammon::DB {
+class Agrammon::DB::Dataset does Agrammon::DB::Variant {
     has Int  $.id;
     has Str  $.name;
     has Bool $.read-only;
     has Str  $.model;
     has Str  $.comment;
-    has Str  $.version is default('2.0-stage'); # TODO: get from config
-    has Int  $.records; # TODO: is this needed?
+    has Int  $.records; # this is set in Agrammon::DB::Datasets.load
     has DateTime $.mod-date;
+    has DateTime $.created;
     has $.data;
     has Agrammon::DB::Tag  @.tags;
     has Agrammon::DB::User $.user;
 
-    method !create-dataset( $dataset-name, $username, $version, $model, $comment? ) {
+    method !create-dataset( $dataset-name, $username, $comment? ) {
         my @ret;
         self.with-db: -> $db {
-            @ret = $db.query(q:to/SQL/, $dataset-name, $version, $model, $comment, $username).array;
+            @ret = $db.query(q:to/SQL/, $username, $dataset-name, |self!variant, $comment).array;
                 INSERT INTO dataset (dataset_name, dataset_pers,
-                                     dataset_version, dataset_model, dataset_comment)
-                  SELECT $1, pers_id, $2, $3, $4
+                                     dataset_version, dataset_guivariant, dataset_modelvariant,
+                                     dataset_comment)
+                  SELECT $2, pers_id,
+                         $3, $4, $5,
+                         $6
                     FROM pers
-                   WHERE pers_email = $5
-                RETURNING dataset_id, dataset_mod_date
+                   WHERE pers_email = $1
+                RETURNING dataset_id, dataset_name, dataset_mod_date, dataset_created
             SQL
             CATCH {
                 # new dataset name already exists
@@ -183,13 +187,14 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                 }
             }
         }
-        return { :id(@ret[0]), :mod-date(@ret[1]) };
+        return { :id(@ret[0]), :name(@ret[1]), :mod-date(@ret[2]), :created(@ret[3]) };
     }
 
     method create {
-        my $ds = self!create-dataset( $!name, $!user.username, $!version, $!model, $!comment );
+        my $ds = self!create-dataset( $!name, $!user.username, $!comment );
         $!id = $ds<id>;
         $!mod-date = $ds<mod-date>;
+        $!created = $ds<created>;
         return self;
     }
 
@@ -200,14 +205,14 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         die X::Agrammon::DB::Dataset::AlreadyExists.new(:dataset-name($new-dataset))
             if $old-dataset eq $new-dataset and $old-username eq $new-username;
 
-        my $ds = self!create-dataset( $new-dataset, $new-username, $!version, $!model);
+        my $ds = self!create-dataset( $new-dataset, $new-username);
         self.with-db: -> $db {
             # clone inputs
-            $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset);
+            $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset, |self!variant);
                 INSERT INTO data_new (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
                      SELECT $1, data_var, data_instance, data_val, data_instance_order, data_comment
                        FROM data_new
-                      WHERE data_dataset = dataset_name2id($2, $3)
+                      WHERE data_dataset = dataset_name2id($2, $3, $4, $5, $6)
             SQL
 
             # get branched inputs from new dataset
@@ -220,10 +225,10 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             SQL
 
             # get branch data from old dataset
-            my @data = $db.query(q:to/SQL/, $old-username, $old-dataset).arrays;
+            my @data = $db.query(q:to/SQL/, $old-username, $old-dataset, |self!variant).arrays;
                 SELECT branches_data, branches_options, data_var
                   FROM data_new LEFT JOIN branches ON (branches_var=data_id)
-                 WHERE data_dataset = dataset_name2id($1, $2) AND branches_data is not null
+                 WHERE data_dataset = dataset_name2id($1,$2,$3,$4,$5) AND branches_data is not null
               ORDER BY data_instance, data_id -- don't change sort order!!!
             SQL
 
@@ -240,6 +245,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                 die X::Agrammon::DB::Dataset::CloneFailed.new(:$old-username, :$new-username, :$old-dataset, :$new-dataset);
             }
         }
+        return $ds;
     }
 
     method rename(Str $new) {
@@ -275,15 +281,12 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         return $new-dataset;
     }
 
-    method lookup() {
+    method lookup {
         self.with-db: -> $db {
             my $username = $!user.username;
-            my $results = $db.query(q:to/DATASET/, $!user.id, $!name);
-            SELECT dataset_id
-              FROM dataset LEFT JOIN pers ON dataset_pers=pers_id
-             WHERE dataset_pers = $1
-               AND dataset_name = $2
-            DATASET
+            my $results = $db.query(q:to/SQL/, $username, $!name, |self!variant);
+                SELECT dataset_name2id($1,$2,$3,$4,$5)
+            SQL
             $!id = $results.value;
         }
         return self;
@@ -294,9 +297,12 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         self.with-db: -> $db {
             my $tag-id = Agrammon::DB::Tag.new( :name($tag-name), :$!user).lookup.id;
             die X::Agrammon::DB::Tag::UnknownTag($tag-name) unless $tag-id;
-
             for @datasets -> $dataset-name {
-                my $ds-id = Agrammon::DB::Dataset.new(:$!user, :name($dataset-name)).lookup.id;
+                my $ds-id = Agrammon::DB::Dataset.new(
+                    :$!user,
+                    :%!agrammon-variant,
+                    :name($dataset-name)
+                ).lookup.id;
                 $db.query(q:to/SQL/, $tag-id, $ds-id);
                     INSERT INTO tagds (tagds_tag, tagds_dataset)
                          VALUES       ($1, $2)
@@ -304,7 +310,7 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                 SQL
                 CATCH {
                     # other DB failure
-                    die X::Agrammon::DB::Dataset::SetTagFailed.new(:$tag-name);
+                    die X::Agrammon::DB::Dataset::SetTagFailed.new(:$dataset-name, :$tag-name);
                 }
             }
         }
@@ -337,10 +343,10 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     method load {
         self.with-db: -> $db {
             my $username = $!user.username;
-            my $results = $db.query(q:to/DATASET/, $username, $!name);
+            my $results = $db.query(q:to/DATASET/, $username, $!name,  |self!variant);
             SELECT data_var, data_val, data_instance_order, branches_data, data_comment
               FROM data_view LEFT JOIN branches ON (branches_var=data_id)
-             WHERE data_dataset=dataset_name2id($1,$2)
+             WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
                AND data_var not like '%::ignore'
              ORDER BY data_instance_order ASC, data_var
             DATASET
@@ -380,9 +386,9 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $comment, $username, $!name);
-            UPDATE dataset SET dataset_comment = $1
-             WHERE dataset_id=dataset_name2id($2,$3)
+            my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant);
+            UPDATE dataset SET dataset_comment = $1, dataset_mod_date = CURRENT_TIMESTAMP
+             WHERE dataset_id=dataset_name2id($2,$3,$4,$5,$6)
             RETURNING dataset_comment
             SQL
             $!comment = $comment || Nil;
@@ -397,23 +403,27 @@ class Agrammon::DB::Dataset does Agrammon::DB {
     method !store-variable-comment($variable, $comment) {
         my $username = $!user.username;
         self.with-db: -> $db {
-                my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable);
+                my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable);
                 UPDATE data_new SET data_comment = $1
-                 WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
-                                                           AND data_instance IS NULL
+                 WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6) AND data_var = $7
+                                                                    AND data_instance IS NULL
                 RETURNING data_comment
             SQL
             return $ret.rows if $ret.rows;
 
-            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable);
+            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable);
                 INSERT INTO data_new (data_dataset, data_var, data_comment)
-                     VALUES          (dataset_name2id($2,$3), $4, $1)
+                     VALUES          (dataset_name2id($2,$3,$4,$5,$6), $7, $1)
                 RETURNING data_comment
                 SQL
 
             # couldn't save comment
             die X::Agrammon::DB::Dataset::StoreInputCommentFailed.new(:$comment, :$variable) unless $ret.rows;
 
+            $db.query(q:to/SQL/, $!user.username, $!name, |self!variant);
+                    UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                     WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
+            SQL
             return $ret.rows;
         }
     }
@@ -422,24 +432,28 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable, $instance);
+            my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable, $instance);
                 UPDATE data_new SET data_comment = $1
-                 WHERE data_dataset=dataset_name2id($2,$3)
-                   AND data_var      = $4
-                   AND data_instance = $5
+                 WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6)
+                   AND data_var      = $7
+                   AND data_instance = $8
                 RETURNING data_comment
             SQL
             return $ret.rows if $ret.rows;
 
-            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, $variable, $instance);
+            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable, $instance);
                 INSERT INTO data_new (data_dataset, data_var, data_comment, data_instance)
-                              VALUES (dataset_name2id($2,$3), $4, $1, $5)
+                              VALUES (dataset_name2id($2,$3,$4,$5,$6), $7, $1, $8)
                 RETURNING data_comment
             SQL
 
             # couldn't save comment
             die X::Agrammon::DB::Dataset::StoreInputCommentFailed.new(:$comment, :$variable) unless $ret.rows;
 
+            $db.query(q:to/SQL/, $!user.username, $!name, |self!variant);
+                    UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                     WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
+            SQL
             return $ret.rows;
         }
     }
@@ -453,23 +467,30 @@ class Agrammon::DB::Dataset does Agrammon::DB {
 
         $instance ?? self!store-instance-variable-comment($var, $instance, $comment)
                   !! self!store-variable-comment($var, $comment);
+
+        self.with-db: -> $db {
+            $db.query(q:to/SQL/, $!user.username, $!name, |self!variant);
+                    UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                     WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
+            SQL
+        }
     }
 
     method !store-variable($variable, $value) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable);
+            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable);
                 UPDATE data_new SET data_val = $1
-                 WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
-                                                           AND data_instance IS NULL
+                 WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6) AND data_var = $7
+                                                                    AND data_instance IS NULL
                 RETURNING data_val
             SQL
             return $ret.rows if $ret.rows;
 
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable);
+            $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable);
                 INSERT INTO data_new (data_dataset, data_var, data_val)
-                     VALUES          (dataset_name2id($2,$3), $4, $1)
+                     VALUES          (dataset_name2id($2,$3,$4,$5,$6), $7, $1)
                 RETURNING data_val
             SQL
 
@@ -484,16 +505,16 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable, $instance);
+            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable, $instance);
                 UPDATE data_new SET data_val = $1
-                 WHERE data_dataset=dataset_name2id($2,$3) AND data_var = $4
-                                                           AND data_instance = $5
+                 WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6) AND data_var = $7
+                                                                    AND data_instance = $8
                 RETURNING data_id
             SQL
 
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, $variable, $instance) unless $ret.rows;
+            $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable, $instance) unless $ret.rows;
                 INSERT INTO data_new (data_dataset, data_var, data_val, data_instance)
-                     VALUES (dataset_name2id($2,$3), $4, $1, $5)
+                     VALUES (dataset_name2id($2,$3,$4,$5,$6), $7, $1, $8)
                 RETURNING data_id
             SQL
 
@@ -530,6 +551,13 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             die X::Agrammon::DB::Dataset::InvalidBranchData.new(:$variable) if @branches or @options;
             self!store-variable($var, $value);
         }
+
+        self.with-db: -> $db {
+            $db.query(q:to/SQL/, $!user.username, $!name, |self!variant);
+                    UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                     WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
+            SQL
+        }
     }
 
     method !delete-variable($var) {
@@ -538,10 +566,10 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $username, $!name, $var);
+            my $ret = $db.query(q:to/SQL/, $username, $!name, |self!variant, $var);
             DELETE FROM data_new
-             WHERE data_dataset=dataset_name2id($1,$2) AND data_var=$3
-                                                       AND data_instance IS NULL
+             WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5) AND data_var=$6
+                                                                AND data_instance IS NULL
             RETURNING data_val
             SQL
 
@@ -553,10 +581,10 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $username, $!name, $variable-pattern ~ '%', $instance);
+            my $ret = $db.query(q:to/SQL/, $username, $!name, |self!variant, $variable-pattern ~ '%', $instance);
                 DELETE FROM data_new
-                 WHERE data_dataset=dataset_name2id($1,$2) AND data_var LIKE $3
-                                                           AND data_instance = $4
+                 WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5) AND data_var LIKE $6
+                                                                    AND data_instance = $7
                 RETURNING data_val
             SQL
 
@@ -572,18 +600,18 @@ class Agrammon::DB::Dataset does Agrammon::DB {
             # old and new name are identical
             die X::Agrammon::DB::Dataset::InstanceRenameFailed.new(:$old-name, :$new-name) if $old-name eq $new-name;
 
-            my $ret = $db.query(q:to/SQL/, $new-name, $username, $!name, "$pattern\%", $old-name);
+            my $ret = $db.query(q:to/SQL/, $new-name, $username, $!name, |self!variant, "$pattern\%", $old-name);
                 UPDATE data_new set data_instance = $1
-                 WHERE data_dataset = dataset_name2id($2,$3)
-                   AND data_var LIKE $4
-                   AND data_instance = $5
+                 WHERE data_dataset = dataset_name2id($2,$3,$4,$5,$6)
+                   AND data_var LIKE $7
+                   AND data_instance = $8
                 RETURNING data_val
             SQL
 
             # new instance name already exists
             CATCH {
                 when /unique/ {
-                    die X::Agrammon::DB::Dataset::InstanceAlreadyExists.new(:$old-name, :$new-name);
+                    die X::Agrammon::DB::Dataset::InstanceAlreadyExists.new(:name($new-name));
                 }
             }
 
@@ -601,11 +629,11 @@ class Agrammon::DB::Dataset does Agrammon::DB {
                 my $var      = $0;
                 my $instance = $1;
                 $var         = "$var\[\]%";
-                $db.query(q:to/SQL/, $i, $username, $!name, $var, $instance);
+                $db.query(q:to/SQL/, $i, $username, $!name, |self!variant, $var, $instance);
                 UPDATE data_new SET data_instance_order = $1
-                 WHERE data_dataset = dataset_name2id($2,$3)
-                   AND data_var     LIKE $4
-                   AND data_instance = $5
+                 WHERE data_dataset = dataset_name2id($2,$3,$4,$5,$6)
+                   AND data_var     LIKE $7
+                   AND data_instance = $8
                 RETURNING data_instance_order
                 SQL
             }
@@ -624,12 +652,12 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         # Get variable ids and names
         self.with-db: -> $db {
             my $username = $!user.username;
-            @branch-variables = $db.query(q:to/SQL/, $username, $dataset-name, |@vars, $instance).hashes;
+            @branch-variables = $db.query(q:to/SQL/, $username, $dataset-name, |self!variant, |@vars, $instance).hashes;
             SELECT data_id, data_var
                   FROM data_new
-                 WHERE data_dataset=dataset_name2id($1,$2)
-                   AND data_var IN ($3,$4)
-                   AND data_instance = $5
+                 WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
+                   AND data_var IN ($6,$7)
+                   AND data_instance = $8
                    ORDER BY data_instance, data_id
             SQL
         }
@@ -653,9 +681,9 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         }
 
         self.with-db: -> $db {
-            $db.query(q:to/SQL/, $!user.username, $dataset-name);
+            $db.query(q:to/SQL/, $!user.username, $dataset-name, |self!variant);
                     UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
-                     WHERE dataset_id=dataset_name2id($1,$2)
+                     WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
                 SQL
         }
     }
@@ -664,12 +692,12 @@ class Agrammon::DB::Dataset does Agrammon::DB {
         my $data;
         self.with-db: -> $db {
             my $username = $!user.username;
-            my @vars = $db.query(q:to/SQL/, $username, $!name, |@var-names, $instance).arrays;
+            my @vars = $db.query(q:to/SQL/, $username, $!name, |self!variant, |@var-names, $instance).arrays;
                 SELECT data_id
                   FROM data_new
-                 WHERE data_dataset=dataset_name2id($1,$2)
-                   AND data_var IN ($3,$4)
-                   AND data_instance = $5
+                 WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
+                   AND data_var IN ($6,$7)
+                   AND data_instance = $8
                  ORDER BY data_id
             SQL
 

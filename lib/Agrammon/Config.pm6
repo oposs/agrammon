@@ -21,19 +21,23 @@ class Agrammon::Config {
     }
 
     method gui-variant {
-        %!gui<variant> ;
+        %!gui<variant>;
     }
 
     method gui-title {
-        %!gui<title> ;
+        %!gui<title>;
     }
 
     method model-variant {
         %!model<variant>;
     }
 
-    method app-variant {
-        %!gui<variant> ~ %!model<variant>;
+    method agrammon-variant {
+        %(
+            version => %!database<version>,
+            gui     => %!gui<variant>,
+            model   => %!model<variant>,
+        );
     }
 
     method db-conninfo {

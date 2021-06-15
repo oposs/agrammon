@@ -372,8 +372,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
                 {
                     datasetName: datasetName,
                     variable:    varname,
-                    value:       value,
-                    row:         fR
+                    value:       value
                 }
             );
             qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');

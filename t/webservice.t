@@ -15,7 +15,7 @@ use AgrammonTest;
 
 # FIX ME: use separate test database
 
-plan 37;
+plan 39;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -52,14 +52,14 @@ subtest "Setup" => {
 subtest "get-cfg()" => {
     my %cfg-expected = (
         guiVariant => "Single",
-        modelVariant => "SHL",
+        modelVariant => "Base",
         submission => Any,
         title => {de => "AGRAMMON 6.0 Einzelbetriebsmodell",
                   en => "AGRAMMON 6.0 Single Farm Model",
                   fr => "AGRAMMON 6.0 modèle Exploitation individuelle"
                  },
-        variant => "SHL",
-        version => "6.0 - #REV#"
+        variant => "Base",
+        version => "6.0"
     );
     is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
 }
@@ -67,16 +67,18 @@ subtest "get-cfg()" => {
 transactionally {
 
     subtest "create-dataset" => {
-        ok my $dataset-name = $ws.create-dataset($user, "MyTestDataset"), "Create dataset";
+        ok my $dataset-name = $ws.create-dataset($user, "MyTestDataset"), "Create dataset MyTestDataset";
         is $dataset-name, "MyTestDataset", "Dataset has correct name";
+        ok $dataset-name = $ws.create-dataset($user, "MyTestDataset2"), "Create dataset MyTestDataset2";
+        is $dataset-name, "MyTestDataset2", "Dataset has correct name";
     }
 
     subtest "get-datasets()" => {
-        my $model-version = 'SingleSHL';
+        my $model-version = 'Agrammon6';
         ok my $datasets = $ws.get-datasets($user, $model-version), "Get $model-version datasets";
         isa-ok $datasets, 'Array', 'Got datasets Array';
 
-        ok $datasets.elems >= 8, "Found right number of datasets";
+        is $datasets.elems, 4, "Found right number of datasets";
         isa-ok $datasets[0], 'List', 'Got dataset List';
 
         my $found;
@@ -88,7 +90,7 @@ transactionally {
             }
         }
         ok $found, 'Found dataset MyTestDataset';
-        is $dataset[7], 'SingleSHL', 'First dataset has model variant SingleSHL';
+        is $dataset[7], 'Agrammon6', 'First dataset has model variant Agrammon6';
     }
 
     subtest "clone-dataset" => {
@@ -147,7 +149,7 @@ transactionally {
     }
 
     subtest "create-tag" => {
-        lives-ok { $ws.create-tag($user, "00MyTestTag") }, "Create tag";
+        lives-ok { $ws.create-tag($user, "00MyTestTag") },    "Create tag";
     }
 
     subtest "rename-tag" => {
@@ -156,7 +158,7 @@ transactionally {
 
     subtest "get-tags()" => {
         ok my $tags = $ws.get-tags($user), "Get tags";
-        ok $tags.elems >= 12, "Found 12+ tags";
+        ok $tags.elems, "Found tags";
         is $tags[0], '00MyNewTestTag', 'First tag has name 00MyNewTestTag';
     }
 
@@ -192,7 +194,7 @@ transactionally {
         lives-ok {
             $ws.rename-instance(
                 $user, 'TestSingle',
-                'Stall Milchkühe', 'MKühe',
+                'Stall Milchkühe', 'MKüheX',
                 'Livestock::DairyCow[]'
             )
         }, "Rename instance";
@@ -284,12 +286,9 @@ transactionally {
         is $ws.delete-datasets($user, @('MyNewTestDataset')), 1, 'One dataset deleted';
     }
 
-}
-
-transactionally {
-    throws-like { $ws.rename-dataset($user, 'TestSingle', 'Agrammon6Testing') },
+    throws-like { $ws.rename-dataset($user, 'TestSingle', 'MyTestDataset2') },
         X::Agrammon::DB::Dataset::AlreadyExists,
-        "Rename dataset fails for existing new dataset name";
+        "Rename dataset TestSingle fails for existing new dataset name MyTestDataset2";
 }
 
 transactionally {
@@ -317,6 +316,13 @@ transactionally {
     throws-like { $ws.rename-tag($user, '01MyTestTag', '01MyTestTag') },
         X::Agrammon::DB::Tag::RenameFailed,
         "Rename tag fails if old and new name are identical";
+}
+
+transactionally {
+    $ws.create-dataset($user, "MyTestDataset");
+    $ws.create-tag($user,     "01MyTestTag");
+    lives-ok { $ws.set-tag($user, ['MyTestDataset'], '01MyTestTag') }, "Set tag";
+    lives-ok { $ws.set-tag($user, ['MyTestDataset'], '01MyTestTag') }, "Setting same tag twice doesn't die";
 }
 
 transactionally {
@@ -392,7 +398,7 @@ subtest "Get model data" => {
         }
     }
 
-    subtest "get-output-variables" => {
+    subtest "get-output-variables($dataset-name)" => {
         ok my $output-hash = $ws.get-output-variables($user, $dataset-name), "Get outputs";
         is-deeply $output-hash.keys.sort, qw|data log| , "Output hash has expected keys";
         is-deeply $output-hash<data>.[0].keys.sort, qw|filters format fullValue labels order print units value var| , "Output data value hash has expected keys";

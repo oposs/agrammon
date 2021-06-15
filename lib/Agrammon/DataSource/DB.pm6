@@ -24,14 +24,14 @@ class Agrammon::DataSource::DB does Agrammon::DB {
     }
 
     # TODO: remove ignore condition after DB cleanup
-    method read($user, Str $dataset, %distribution-map) {
+    method read($user, Str $dataset, %variant, %distribution-map) {
         self.with-db: -> $db {
-            my $results = $db.query(q:to/STATEMENT/, $user, $dataset);
+            my $results = $db.query(q:to/STATEMENT/, $user, $dataset, %variant<version>, %variant<gui>, %variant<model>);
                 SELECT data_var, data_val, data_instance,
                        branches_data, branches_options,
                        data_comment
                 FROM data_new LEFT JOIN branches ON (data_id=branches_var)
-                WHERE data_dataset=dataset_name2id($1,$2)
+                WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
                     AND data_var not like '%ignore'
                 ORDER BY data_instance, branches_var, data_var, data_val
             STATEMENT
