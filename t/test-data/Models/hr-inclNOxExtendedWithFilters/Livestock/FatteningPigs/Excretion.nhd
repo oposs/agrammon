@@ -596,17 +596,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Crude protein content of feed ration - for 1-, 2- or 3-phase-feeding.
   ++formula
-    if ( In(feeding_phase_3_crude_protein) == 0 or 
-         In(feeding_phase_2_crude_protein) == In(feeding_phase_3_crude_protein) ) {
-      if ( In(feeding_phase_2_crude_protein) == 0 ) {
-        In(feeding_phase_1_crude_protein);
-      }
-      else {
+    if ( In(feeding_phase_2_crude_protein) == In(feeding_phase_3_crude_protein) and
+         In(feeding_phase_2_crude_protein) != In(feeding_phase_1_crude_protein) ) {
         In(feeding_phase_1_crude_protein) * Tech(phase_1_2_duration) +
         In(feeding_phase_2_crude_protein) * Tech(phase_2_2_duration);
-      }
-    }
-    else {
+    } else {
       In(feeding_phase_1_crude_protein) * Tech(phase_1_3_duration) +
       In(feeding_phase_2_crude_protein) * Tech(phase_2_3_duration) +
       In(feeding_phase_3_crude_protein) * Tech(phase_3_3_duration)
