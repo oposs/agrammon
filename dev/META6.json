@@ -48,6 +48,7 @@
     "Agrammon::DB::Tag": "lib/Agrammon/DB/Tag.pm6",
     "Agrammon::DB::Tags": "lib/Agrammon/DB/Tags.pm6",
     "Agrammon::DB::User": "lib/Agrammon/DB/User.pm6",
+    "Agrammon::DB::Variant": "lib/Agrammon/DB/Variant.pm6",
     "Agrammon::DataSource::CSV": "lib/Agrammon/DataSource/CSV.pm6",
     "Agrammon::DataSource::DB": "lib/Agrammon/DataSource/DB.pm6",
     "Agrammon::Environment": "lib/Agrammon/Environment.pm6",
