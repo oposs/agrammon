@@ -16,6 +16,7 @@ use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
 use Agrammon::ResultCollector;
 use Agrammon::TechnicalParser;
+use Agrammon::Validation;
 use Agrammon::Web::APIRoutes;
 use Agrammon::Web::APITokenManager;
 use Agrammon::Web::Routes;
@@ -46,33 +47,75 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 
 #| Run the model
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technical-file?,
-               SupportedLanguage :$language = 'de', Str :$prints, Str :$variants = 'SHL',
+               SupportedLanguage :$language = 'de', Str :$prints, Str :$variants = 'Base',
                Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
                OutputFormat :$format = 'text'
               ) is export {
-    my %results = run $filename.IO, $input.IO, $technical-file, $variants, $format, $language, $prints,
+    my $data = run $filename.IO, $input.IO, $technical-file, $variants, $format, $language, $prints,
             ($include-filters or $include-all-filters),
             $batch, $degree, $max-runs, :all-filters($include-all-filters);
+    my %results = $data.results;
+    my %validation-errors = $data.validation-errors;
+
     my $output;
     if $format eq 'json' {
-        $output = to-json %results;
+        $output = to-json $data;
     }
     else {
         my @output;
         @output.push("##  Model: $filename");
         @output.push("##  Variants: $variants");
-        for %results.kv -> $simulation, %sim-results {
-            @output.push("### Simulation $simulation");
-            @output.push("##  Print filter: $prints") if $prints;
-            for %sim-results.keys.sort -> $dataset {
-                @output.push("#   Dataset $dataset");
-                @output.push(%sim-results{$dataset});
+
+        if %validation-errors {
+            for %validation-errors.kv -> $simulation, %sim-errors {
+                @output.push("### Simulation $simulation");
+                for %sim-errors.keys.sort -> $dataset {
+                    @output.push("#   Dataset $dataset");
+                    for @(%sim-errors{$dataset}) -> $error {
+                        @output.push('#   ' ~ $error.message);
+                    }
+                }
+            }
+        }
+        else {
+            for %results.kv -> $simulation, %sim-results {
+                @output.push("### Simulation $simulation");
+                @output.push("##  Print filter: $prints") if $prints;
+                for %sim-results.keys.sort -> $dataset {
+                    @output.push("#   Dataset $dataset");
+                    @output.push(%sim-results{$dataset});
+                }
             }
         }
         $output = @output.join("\n");
     }
     say $output;
 }
+
+#| Validate inputs
+multi sub MAIN('validate', ExistingFile $filename, ExistingFile $input, Str :$variants = 'Base',
+               Int :$batch=1, Int :$degree=4, Int :$max-runs
+              ) is export {
+    my %validation-errors = validate $filename.IO, $input.IO, $variants,
+            $batch, $degree, $max-runs;
+    my @output;
+    @output.push("##  Model: $filename");
+    @output.push("##  Variants: $variants");
+    if %validation-errors {
+        for %validation-errors.kv -> $simulation, %sim-errors {
+            @output.push("### Simulation $simulation");
+            for %sim-errors.keys.sort -> $dataset {
+                @output.push("#   Dataset $dataset");
+                @output.push(%sim-errors{$dataset}.message);
+            }
+        }
+    }
+    else {
+        @output.push('##  No validation errors');
+    }
+    say @output.join("\n");
+}
+
 
 #| Dump model
 multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'SHL', SortOrder :$sort = 'model') is export {
@@ -89,7 +132,6 @@ sub latex (IO::Path $path, $technical-file, $variants, $sort, $sections) is expo
     die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
-    my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
     my $tech-input = $technical-file // $module-path.add('technical.cfg');
@@ -169,7 +211,6 @@ sub dump-model (IO::Path $path, $variants, $sort) is export {
     die "ERROR: dump expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
-    my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
     my $model = timed "load $module", {
@@ -183,7 +224,6 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
     die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
 
     my $module-path = $path.parent;
-    my $module-file = $path.basename;
     my $module      = $path.extension('').basename;
 
     my $tech-input = $technical-file // $module-path.add('technical.cfg');
@@ -206,49 +246,91 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
 
     my $rc = Agrammon::ResultCollector.new;
     my atomicint $n = 0;
-    my %results;
     my class X::EarlyFinish is Exception {}
     race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
         my $my-n = ++⚛$n;
-
-        my $outputs = timed "$my-n: Run $filename", {
-            $model.run(
-                input     => $dataset,
-                technical => %technical-parameters,
-            );
+        my @validation-errors = validation-errors($model, $dataset);
+        if @validation-errors.elems {
+            $rc.add-validation-errors($dataset.simulation-name, $dataset.dataset-id, @validation-errors);
+#            dd @validation-errors;
         }
-
-        timed "Create output", {
-            my $result;
-            given $format {
-                when 'csv' {
-                    die "CSV output including filters is not yet supported" if $include-filters;
-                    $result = output-as-csv(
-                        $dataset.simulation-name, $dataset.dataset-id, $model,
-                        $outputs, $language, :$all-filters
-                    );
-                }
-                when 'json' {
-                    $result = output-as-json(
-                        $model, $outputs, $language, $prints, $include-filters, :$all-filters
-                    );
-                }
-                when 'text' {
-                    $result = output-as-text(
-                        $model, $outputs, $language, $prints, $include-filters, :$all-filters
-                    );
-                }
+        else {
+            my $outputs = timed "$my-n: Run $filename", {
+                $model.run(
+                        input => $dataset,
+                        technical => %technical-parameters,
+                        );
             }
-            $rc.add-result($dataset.simulation-name, $dataset.dataset-id, $result);
+
+            timed "Create output", {
+                my $result;
+                given $format {
+                    when 'csv' {
+                        die "CSV output including filters is not yet supported" if $include-filters;
+                        $result = output-as-csv(
+                                $dataset.simulation-name, $dataset.dataset-id, $model,
+                                $outputs, $language, :$all-filters
+                                                                             );
+                    }
+                    when 'json' {
+                        $result = output-as-json(
+                                $model, $outputs, $language, $prints, $include-filters, :$all-filters
+                                                                              );
+                    }
+                    when 'text' {
+                        $result = output-as-text(
+                                $model, $outputs, $language, $prints, $include-filters, :$all-filters
+                                                                              );
+                    }
+                }
+                $rc.add-result($dataset.simulation-name, $dataset.dataset-id, $result);
+            };
         }
         if $max-runs and $my-n == $max-runs {
             note "Finished after $my-n datasets";
             die X::EarlyFinish.new;
         };
     }
-    return $rc.results;
+    return $rc;
     CATCH {
-        when X::EarlyFinish { return $rc.results }
+        when X::EarlyFinish { return $rc }
+    }
+}
+
+sub validate (IO::Path $path, IO::Path $input-path, $variants, $batch, $degree, $max-runs) is export {
+    die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
+
+    my $module-path = $path.parent;
+    my $module      = $path.extension('').basename;
+
+    my $model = timed "Load $module", {
+        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
+    };
+
+    my $filename = $input-path;
+    my $fh = open $filename, :r
+            or die "Couldn't open file $filename for reading";
+    LEAVE $fh.?close;
+    my $ds = Agrammon::DataSource::CSV.new;
+
+    my $rc = Agrammon::ResultCollector.new;
+    my atomicint $n = 0;
+    my class X::EarlyFinish is Exception {}
+    race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
+        my $my-n = ++⚛$n;
+        my @validation-errors = validation-errors($model, $dataset);
+        if @validation-errors.elems {
+            $rc.add-validation-errors($dataset.simulation-name, $dataset.dataset-id, @validation-errors);
+        }
+
+        if $max-runs and $my-n == $max-runs {
+            note "Finished after $my-n datasets";
+            die X::EarlyFinish.new;
+        };
+    }
+    return $rc.validation-errors;
+    CATCH {
+        when X::EarlyFinish { return $rc.validation-errors }
     }
 }
 
