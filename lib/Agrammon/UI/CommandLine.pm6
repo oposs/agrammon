@@ -28,7 +28,7 @@ my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location
 ;
 
-subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
+subset ExistingFile of Str where { .IO.e or '-' or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
 subset OutputFormat of Str where { $_ ~~ /^ csv|json|text $/ or note("ERROR: --format=[csv|json|text]") && exit 1 };
@@ -241,8 +241,9 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
     };
 
     my $filename = $input-path;
-    my $fh = open $filename, :r
-          or die "Couldn't open file $filename for reading";
+    my $fh = $filename eq '-' ?? $*IN
+                              !! open $filename, :r
+                                  or die "Couldn't open file $filename for reading";
     LEAVE $fh.?close;
     my $ds = Agrammon::DataSource::CSV.new;
 
@@ -308,8 +309,9 @@ sub validate (IO::Path $path, IO::Path $input-path, $variants, $batch, $degree, 
     };
 
     my $filename = $input-path;
-    my $fh = open $filename, :r
-            or die "Couldn't open file $filename for reading";
+    my $fh = $filename eq '-' ?? $*IN
+                              !! open $filename, :r
+                                  or die "Couldn't open file $filename for reading";
     LEAVE $fh.?close;
     my $ds = Agrammon::DataSource::CSV.new;
 
