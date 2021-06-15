@@ -119,7 +119,7 @@ CREATE TABLE public.dataset (
     dataset_name text NOT NULL,
     dataset_pers integer NOT NULL,
     dataset_mod_date timestamp without time zone DEFAULT now(),
-    dataset_version text DEFAULT '2.0'::text NOT NULL,
+    dataset_version text DEFAULT '6.0'::text,
     dataset_comment text,
     dataset_model text DEFAULT 'Agrammon6'::text NOT NULL,
     dataset_readonly boolean DEFAULT false,
