@@ -1,6 +1,7 @@
 use v6;
 use Agrammon::Config;
 use Agrammon::DataSource::DB;
+use Agrammon::DataSource::CSV;
 use Agrammon::DB::Dataset;
 use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
@@ -8,6 +9,7 @@ use Agrammon::DB::Tags;
 use Agrammon::Email;
 use Agrammon::Model;
 use Agrammon::OutputsCache;
+use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::Excel;
 use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::PDF;
@@ -196,6 +198,37 @@ class Agrammon::Web::Service {
              :$results,
              :@validation-errors,
         };
+    }
+
+    method get-outputs-from-csv(Agrammon::DB::User $user, Str $simulation-name, Str $dataset-name, $csv-data, $include-filters, :$language, :$format, :$prints, :$all-filters) {
+        my $input = Agrammon::DataSource::CSV.new.from-csv($simulation-name, $dataset-name, $csv-data);
+        my $outputs = $!model.run(
+            :$input,
+            technical => %!technical-parameters
+        );
+
+        my $result;
+        given $format {
+            when 'text/csv' {
+                die "CSV output including filters is not yet supported" if $include-filters;
+                $result = output-as-csv(
+                    $simulation-name, $dataset-name, $!model,
+                    $outputs, ~$language, :$all-filters
+                );
+            }
+            when 'application/json' {
+                $result = output-as-json(
+                    $!model, $outputs, ~$language, ~$prints, $include-filters, :$all-filters
+                );
+            }
+            when 'text/plain' {
+                $result = output-as-text(
+                    $!model, $outputs, ~$language, ~$prints, $include-filters, :$all-filters
+                ) ~ "\n";
+            }
+        }
+
+        return $result;
     }
 
     method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {

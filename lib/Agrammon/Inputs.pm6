@@ -91,6 +91,11 @@ class Agrammon::Inputs does Agrammon::Inputs::Storage {
     method all-inputs() {
         %(flat %!single-inputs, %!multi-input-lists.map({ .key => [.value.map({ .instance-id => .all-inputs })] }))
     }
+
+#    method tojson {
+#        self!input-hash
+#    }
+
 }
 
 class X::Agrammon::Inputs::Distribution::AlreadyFlattened is Exception {
@@ -377,6 +382,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
             }
         }
     }
+
 
     method !input-hash() {
         %!single-inputs

@@ -1,0 +1,467 @@
+#;2010v2.1_20120425;2648
+Application::Slurry::Applrate;appl_rate;20
+Application::Slurry::Applrate;dilution_parts_water;1
+Application::Slurry::Cfermented;fermented_slurry;20
+Application::Slurry::Cseason;appl_autumn_winter_spring;70
+Application::Slurry::Cseason;appl_summer;30
+Application::Slurry::Csoft;appl_evening;20
+Application::Slurry::Csoft;appl_hotdays;frequently
+Application::Slurry::Ctech;share_deep_injection;10
+Application::Slurry::Ctech;share_shallow_injection;10
+Application::Slurry::Ctech;share_splash_plate;40
+Application::Slurry::Ctech;share_trailing_hose;20
+Application::Slurry::Ctech;share_trailing_shoe;20
+Application::Slurry::CfreeFactor;free_correction_factor;5
+Application::SolidManure::CincorpTime;incorp_gt3d;10
+Application::SolidManure::CincorpTime;incorp_lw1d;10
+Application::SolidManure::CincorpTime;incorp_lw1h;10
+Application::SolidManure::CincorpTime;incorp_lw3d;10
+Application::SolidManure::CincorpTime;incorp_lw4h;10
+Application::SolidManure::CincorpTime;incorp_lw8h;10
+Application::SolidManure::CincorpTime;incorp_none;40
+Application::SolidManure::Cseason;appl_autumn_winter_spring;70
+Application::SolidManure::Cseason;appl_summer;30
+Application::SolidManure::CfreeFactor;free_correction_factor;-5
+Livestock::DairyCow[DC_Standard]::Excretion;animalcategory;dairy_cows
+Livestock::DairyCow[DC_Standard]::Excretion;animals;10
+Livestock::DairyCow[DC_Standard]::Excretion;dimensioning_barn;12
+Livestock::DairyCow[DC_Standard]::Excretion::CConcentrates;amount_summer;1.5
+Livestock::DairyCow[DC_Standard]::Excretion::CConcentrates;amount_winter;2.5
+Livestock::DairyCow[DC_Standard]::Excretion::CFeedSummerRatio;share_hay_summer;0
+Livestock::DairyCow[DC_Standard]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;0
+Livestock::DairyCow[DC_Standard]::Excretion::CFeedSummerRatio;share_maize_silage_summer;0
+Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_beets_winter;0
+Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_grass_silage_winter;0
+Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;0
+Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_maize_silage_winter;0
+Livestock::DairyCow[DC_Standard]::Excretion::CFeedWinterRatio;share_potatoes_winter;0
+Livestock::DairyCow[DC_Standard]::Excretion::CMilk;milk_yield;7500
+Livestock::DairyCow[DC_Standard]::Outdoor;grazing_days;180
+Livestock::DairyCow[DC_Standard]::Outdoor;grazing_hours;8.5
+Livestock::DairyCow[DC_Standard]::Housing::Floor;mitigation_housing_floor;none
+Livestock::DairyCow[DC_Standard]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::DairyCow[DC_Standard]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::DairyCow[DC_Standard]::Outdoor;yard_days;270
+Livestock::DairyCow[DC_Standard]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::DairyCow[DC_Ex1]::Excretion;animalcategory;dairy_cows
+Livestock::DairyCow[DC_Ex1]::Excretion;animals;10
+Livestock::DairyCow[DC_Ex1]::Excretion;dimensioning_barn;0
+Livestock::DairyCow[DC_Ex1]::Excretion::CConcentrates;amount_summer;0
+Livestock::DairyCow[DC_Ex1]::Excretion::CConcentrates;amount_winter;0
+Livestock::DairyCow[DC_Ex1]::Excretion::CFeedSummerRatio;share_hay_summer;100
+Livestock::DairyCow[DC_Ex1]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;100
+Livestock::DairyCow[DC_Ex1]::Excretion::CFeedSummerRatio;share_maize_silage_summer;100
+Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_beets_winter;100
+Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_grass_silage_winter;100
+Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;100
+Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_maize_silage_winter;100
+Livestock::DairyCow[DC_Ex1]::Excretion::CFeedWinterRatio;share_potatoes_winter;100
+Livestock::DairyCow[DC_Ex1]::Excretion::CMilk;milk_yield;1000
+Livestock::DairyCow[DC_Ex1]::Outdoor;grazing_days;0
+Livestock::DairyCow[DC_Ex1]::Outdoor;grazing_hours;0
+Livestock::DairyCow[DC_Ex1]::Housing::Floor;mitigation_housing_floor;raised_feeding_stands
+Livestock::DairyCow[DC_Ex1]::Housing::Type;housing_type;Loose_Housing_Slurry
+Livestock::DairyCow[DC_Ex1]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::DairyCow[DC_Ex1]::Outdoor;yard_days;270
+Livestock::DairyCow[DC_Ex1]::Outdoor;exercise_yard;not_available
+Livestock::DairyCow[DC_Ex2]::Excretion;animalcategory;dairy_cows
+Livestock::DairyCow[DC_Ex2]::Excretion;animals;10
+Livestock::DairyCow[DC_Ex2]::Excretion;dimensioning_barn;50
+Livestock::DairyCow[DC_Ex2]::Excretion::CConcentrates;amount_summer;6
+Livestock::DairyCow[DC_Ex2]::Excretion::CConcentrates;amount_winter;6
+Livestock::DairyCow[DC_Ex2]::Excretion::CFeedSummerRatio;share_hay_summer;50
+Livestock::DairyCow[DC_Ex2]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;40
+Livestock::DairyCow[DC_Ex2]::Excretion::CFeedSummerRatio;share_maize_silage_summer;30
+Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_beets_winter;50
+Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_grass_silage_winter;40
+Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;30
+Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_maize_silage_winter;20
+Livestock::DairyCow[DC_Ex2]::Excretion::CFeedWinterRatio;share_potatoes_winter;10
+Livestock::DairyCow[DC_Ex2]::Excretion::CMilk;milk_yield;15000
+Livestock::DairyCow[DC_Ex2]::Outdoor;grazing_days;270
+Livestock::DairyCow[DC_Ex2]::Outdoor;grazing_hours;24
+Livestock::DairyCow[DC_Ex2]::Housing::Floor;mitigation_housing_floor;none
+Livestock::DairyCow[DC_Ex2]::Housing::Type;housing_type;Loose_Housing_Deep_Litter
+Livestock::DairyCow[DC_Ex2]::Housing::CFreeFactor;free_correction_factor;5
+Livestock::DairyCow[DC_Ex2]::Outdoor;floor_properties_exercise_yard;paddock_or_pasture_used_as_exercise_yard
+Livestock::DairyCow[DC_Ex2]::Outdoor;yard_days;270
+Livestock::DairyCow[DC_Ex2]::Outdoor;exercise_yard;available_roughage_is_exclusively_supplied_in_the_exercise_yard
+Livestock::DairyCow[DC_Ex2]::Outdoor;free_correction_factor;5
+Livestock::Equides[Asses]::Excretion;animalcategory;ponies_and_asses
+Livestock::Equides[Asses]::Excretion;animals;5
+Livestock::Equides[Asses]::Outdoor;grazing_days;220
+Livestock::Equides[Asses]::Outdoor;grazing_hours;8
+Livestock::Equides[Asses]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::Equides[Asses]::Outdoor;yard_days;220
+Livestock::Equides[Asses]::Outdoor;yard_hours;12
+Livestock::Equides[HorsesLw3yr]::Excretion;animalcategory;horses_younger_than_3yr
+Livestock::Equides[HorsesLw3yr]::Excretion;animals;5
+Livestock::Equides[HorsesLw3yr]::Outdoor;grazing_days;365
+Livestock::Equides[HorsesLw3yr]::Outdoor;grazing_hours;24
+Livestock::Equides[HorsesLw3yr]::Outdoor;floor_properties_exercise_yard;unpaved_floor
+Livestock::Equides[HorsesLw3yr]::Outdoor;yard_days;365
+Livestock::Equides[HorsesLw3yr]::Outdoor;yard_hours;24
+Livestock::Equides[HorsesLw3yr]::Outdoor;free_correction_factor;5
+Livestock::Equides[HorsesUp3yr]::Excretion;animalcategory;horses_older_than_3yr
+Livestock::Equides[HorsesUp3yr]::Excretion;animals;5
+Livestock::Equides[HorsesUp3yr]::Outdoor;grazing_days;165
+Livestock::Equides[HorsesUp3yr]::Outdoor;grazing_hours;0
+Livestock::Equides[HorsesUp3yr]::Outdoor;floor_properties_exercise_yard;paddock_or_pasture_used_as_exercise_yard
+Livestock::Equides[HorsesUp3yr]::Housing::CFreeFactor;free_correction_factor;5
+Livestock::Equides[HorsesUp3yr]::Outdoor;yard_days;115
+Livestock::Equides[HorsesUp3yr]::Outdoor;yard_hours;0
+Livestock::Equides[Mules]::Excretion;animalcategory;mules
+Livestock::Equides[Mules]::Excretion;animals;5
+Livestock::Equides[Mules]::Outdoor;grazing_days;0
+Livestock::Equides[Mules]::Outdoor;grazing_hours;0
+Livestock::Equides[Mules]::Outdoor;floor_properties_exercise_yard;paddock_or_pasture_used_as_exercise_yard
+Livestock::Equides[Mules]::Outdoor;yard_days;0
+Livestock::Equides[Mules]::Outdoor;yard_hours;0
+Livestock::FatteningPigs[FP_1]::Excretion;energy_content;13.5
+Livestock::FatteningPigs[FP_1]::Excretion;animals;10
+Livestock::FatteningPigs[FP_1]::Excretion;dimensioning_barn;0
+Livestock::FatteningPigs[FP_1]::Excretion;animalcategory;fattening_pigs
+Livestock::FatteningPigs[FP_1]::Excretion;feeding_phase_1_crude_protein;170
+Livestock::FatteningPigs[FP_1]::Excretion;feeding_phase_2_crude_protein;170
+Livestock::FatteningPigs[FP_1]::Excretion;feeding_phase_3_crude_protein;170
+Livestock::FatteningPigs[FP_1]::Housing::AirScrubber;air_scrubber;none
+Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_housing_air;none
+Livestock::FatteningPigs[FP_1]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::FatteningPigs[FP_1]::Housing::Type;housing_type;Slurry_Label
+Livestock::FatteningPigs[FP_2]::Excretion;energy_content;10
+Livestock::FatteningPigs[FP_2]::Excretion;animals;10
+Livestock::FatteningPigs[FP_2]::Excretion;dimensioning_barn;10
+Livestock::FatteningPigs[FP_2]::Excretion;animalcategory;fattening_pigs
+Livestock::FatteningPigs[FP_2]::Excretion;feeding_phase_1_crude_protein;140
+Livestock::FatteningPigs[FP_2]::Excretion;feeding_phase_2_crude_protein;145
+Livestock::FatteningPigs[FP_2]::Excretion;feeding_phase_3_crude_protein;145
+Livestock::FatteningPigs[FP_2]::Housing::AirScrubber;air_scrubber;acid
+Livestock::FatteningPigs[FP_2]::Housing::CFreeFactor;free_correction_factor;5
+Livestock::FatteningPigs[FP_2]::Housing::MitigationOptions;mitigation_housing_air;low_impuls_air_supply
+Livestock::FatteningPigs[FP_2]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::FatteningPigs[FP_2]::Housing::Type;housing_type;Slurry_Conventional
+Livestock::FatteningPigs[FP_3]::Excretion;energy_content;10
+Livestock::FatteningPigs[FP_3]::Excretion;dimensioning_barn;0
+Livestock::FatteningPigs[FP_3]::Excretion;animals;10
+Livestock::FatteningPigs[FP_3]::Excretion;animalcategory;fattening_pigs
+Livestock::FatteningPigs[FP_3]::Excretion;feeding_phase_1_crude_protein;140
+Livestock::FatteningPigs[FP_3]::Excretion;feeding_phase_2_crude_protein;145
+Livestock::FatteningPigs[FP_3]::Excretion;feeding_phase_3_crude_protein;145
+Livestock::FatteningPigs[FP_3]::Housing::AirScrubber;air_scrubber;biotrickling
+Livestock::FatteningPigs[FP_3]::Housing::MitigationOptions;mitigation_housing_air;low_impuls_air_supply
+Livestock::FatteningPigs[FP_3]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::FatteningPigs[FP_3]::Housing::Type;housing_type;Deep_Litter
+Livestock::FatteningPigs[FP_4]::Excretion;energy_content;16
+Livestock::FatteningPigs[FP_4]::Excretion;animals;10
+Livestock::FatteningPigs[FP_4]::Excretion;dimensioning_barn;15
+Livestock::FatteningPigs[FP_4]::Excretion;animalcategory;fattening_pigs
+Livestock::FatteningPigs[FP_4]::Excretion;feeding_phase_1_crude_protein;140
+Livestock::FatteningPigs[FP_4]::Excretion;feeding_phase_2_crude_protein;145
+Livestock::FatteningPigs[FP_4]::Excretion;feeding_phase_3_crude_protein;150
+Livestock::FatteningPigs[FP_4]::Housing::AirScrubber;air_scrubber;acid
+Livestock::FatteningPigs[FP_4]::Housing::CFreeFactor;free_correction_factor;5
+Livestock::FatteningPigs[FP_4]::Housing::MitigationOptions;mitigation_housing_air;low_impuls_air_supply
+Livestock::FatteningPigs[FP_4]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::FatteningPigs[FP_4]::Housing::Type;housing_type;Outdoor
+Livestock::OtherCattle[Beefcattle 1]::Excretion;animalcategory;beef_cattle
+Livestock::OtherCattle[Beefcattle 1]::Excretion;animals;20
+Livestock::OtherCattle[Beefcattle 1]::Excretion;dimensioning_barn;0
+Livestock::OtherCattle[Beefcattle 1]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Beefcattle 1]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Beefcattle 1]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Beefcattle 1]::Housing::Type;housing_type;Loose_Housing_Slurry
+Livestock::OtherCattle[Beefcattle 1]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Beefcattle 1]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Beefcattle 1]::Outdoor;yard_days;0
+Livestock::OtherCattle[Beefcattle 2]::Excretion;animalcategory;beef_cattle
+Livestock::OtherCattle[Beefcattle 2]::Excretion;animals;10
+Livestock::OtherCattle[Beefcattle 2]::Excretion;dimensioning_barn;0
+Livestock::OtherCattle[Beefcattle 2]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Beefcattle 2]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Beefcattle 2]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Beefcattle 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Beefcattle 2]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Beefcattle 2]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Beefcattle 2]::Outdoor;yard_days;0
+Livestock::OtherCattle[Calves Suckling Cows 1]::Excretion;animalcategory;calves_suckling_cows
+Livestock::OtherCattle[Calves Suckling Cows 1]::Excretion;animals;5
+Livestock::OtherCattle[Calves Suckling Cows 1]::Excretion;dimensioning_barn;0
+Livestock::OtherCattle[Calves Suckling Cows 1]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Calves Suckling Cows 1]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Calves Suckling Cows 1]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Calves Suckling Cows 1]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Calves Suckling Cows 1]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Calves Suckling Cows 1]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Calves Suckling Cows 1]::Outdoor;yard_days;60
+Livestock::OtherCattle[Calves Suckling Cows 2]::Excretion;animalcategory;calves_suckling_cows
+Livestock::OtherCattle[Calves Suckling Cows 2]::Excretion;animals;10
+Livestock::OtherCattle[Calves Suckling Cows 2]::Excretion;dimensioning_barn;0
+Livestock::OtherCattle[Calves Suckling Cows 2]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Calves Suckling Cows 2]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Calves Suckling Cows 2]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Calves Suckling Cows 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Calves Suckling Cows 2]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Calves Suckling Cows 2]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Calves Suckling Cows 2]::Outdoor;yard_days;60
+Livestock::OtherCattle[FatteningCalves 1]::Excretion;animalcategory;fattening_calves
+Livestock::OtherCattle[FatteningCalves 1]::Excretion;animals;10
+Livestock::OtherCattle[FatteningCalves 1]::Excretion;dimensioning_barn;0
+Livestock::OtherCattle[FatteningCalves 1]::Outdoor;grazing_days;0
+Livestock::OtherCattle[FatteningCalves 1]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[FatteningCalves 1]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[FatteningCalves 1]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[FatteningCalves 1]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[FatteningCalves 1]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[FatteningCalves 1]::Outdoor;yard_days;0
+Livestock::OtherCattle[FatteningCalves 2]::Excretion;animalcategory;fattening_calves
+Livestock::OtherCattle[FatteningCalves 2]::Excretion;animals;15
+Livestock::OtherCattle[FatteningCalves 2]::Excretion;dimensioning_barn;0
+Livestock::OtherCattle[FatteningCalves 2]::Outdoor;grazing_days;0
+Livestock::OtherCattle[FatteningCalves 2]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[FatteningCalves 2]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[FatteningCalves 2]::Housing::Type;housing_type;Loose_Housing_Deep_Litter
+Livestock::OtherCattle[FatteningCalves 2]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[FatteningCalves 2]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[FatteningCalves 2]::Outdoor;yard_days;0
+Livestock::OtherCattle[Heifers1yr 1]::Excretion;animalcategory;heifers_1st_yr
+Livestock::OtherCattle[Heifers1yr 1]::Excretion;animals;3
+Livestock::OtherCattle[Heifers1yr 1]::Excretion;dimensioning_barn;3
+Livestock::OtherCattle[Heifers1yr 1]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Heifers1yr 1]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Heifers1yr 1]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Heifers1yr 1]::Housing::Type;housing_type;Loose_Housing_Slurry
+Livestock::OtherCattle[Heifers1yr 1]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Heifers1yr 1]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Heifers1yr 1]::Outdoor;yard_days;300
+Livestock::OtherCattle[Heifers1yr 2]::Excretion;animalcategory;heifers_1st_yr
+Livestock::OtherCattle[Heifers1yr 2]::Excretion;animals;5
+Livestock::OtherCattle[Heifers1yr 2]::Excretion;dimensioning_barn;5
+Livestock::OtherCattle[Heifers1yr 2]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Heifers1yr 2]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Heifers1yr 2]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Heifers1yr 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Heifers1yr 2]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Heifers1yr 2]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Heifers1yr 2]::Outdoor;yard_days;300
+Livestock::OtherCattle[Heifers2yr 1]::Excretion;animalcategory;heifers_2nd_yr
+Livestock::OtherCattle[Heifers2yr 1]::Excretion;animals;5
+Livestock::OtherCattle[Heifers2yr 1]::Excretion;dimensioning_barn;5
+Livestock::OtherCattle[Heifers2yr 1]::Outdoor;grazing_days;250
+Livestock::OtherCattle[Heifers2yr 1]::Outdoor;grazing_hours;24
+Livestock::OtherCattle[Heifers2yr 1]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Heifers2yr 1]::Housing::Type;housing_type;Tied_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Heifers2yr 1]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Heifers2yr 1]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Heifers2yr 1]::Outdoor;yard_days;115
+Livestock::OtherCattle[Heifers2yr 2]::Excretion;animalcategory;heifers_2nd_yr
+Livestock::OtherCattle[Heifers2yr 2]::Excretion;animals;10
+Livestock::OtherCattle[Heifers2yr 2]::Excretion;dimensioning_barn;0
+Livestock::OtherCattle[Heifers2yr 2]::Outdoor;grazing_days;250
+Livestock::OtherCattle[Heifers2yr 2]::Outdoor;grazing_hours;24
+Livestock::OtherCattle[Heifers2yr 2]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Heifers2yr 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Heifers2yr 2]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Heifers2yr 2]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Heifers2yr 2]::Outdoor;yard_days;200
+Livestock::OtherCattle[Heifers3yr 1]::Excretion;animalcategory;heifers_3rd_yr
+Livestock::OtherCattle[Heifers3yr 1]::Excretion;animals;4
+Livestock::OtherCattle[Heifers3yr 1]::Excretion;dimensioning_barn;4
+Livestock::OtherCattle[Heifers3yr 1]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Heifers3yr 1]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Heifers3yr 1]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Heifers3yr 1]::Housing::Type;housing_type;Loose_Housing_Slurry
+Livestock::OtherCattle[Heifers3yr 1]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Heifers3yr 1]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Heifers3yr 1]::Outdoor;yard_days;300
+Livestock::OtherCattle[Heifers3yr 2]::Excretion;animalcategory;heifers_3rd_yr
+Livestock::OtherCattle[Heifers3yr 2]::Excretion;animals;6
+Livestock::OtherCattle[Heifers3yr 2]::Excretion;dimensioning_barn;6
+Livestock::OtherCattle[Heifers3yr 2]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Heifers3yr 2]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Heifers3yr 2]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Heifers3yr 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Heifers3yr 2]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Heifers3yr 2]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Heifers3yr 2]::Outdoor;yard_days;300
+Livestock::OtherCattle[Suckling Cows 1]::Excretion;animalcategory;suckling_cows
+Livestock::OtherCattle[Suckling Cows 1]::Excretion;animals;15
+Livestock::OtherCattle[Suckling Cows 1]::Excretion;dimensioning_barn;0
+Livestock::OtherCattle[Suckling Cows 1]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Suckling Cows 1]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Suckling Cows 1]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Suckling Cows 1]::Housing::Type;housing_type;Tied_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Suckling Cows 1]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Suckling Cows 1]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Suckling Cows 1]::Outdoor;yard_days;60
+Livestock::OtherCattle[Suckling Cows 2]::Excretion;animalcategory;suckling_cows
+Livestock::OtherCattle[Suckling Cows 2]::Excretion;animals;0
+Livestock::OtherCattle[Suckling Cows 2]::Excretion;dimensioning_barn;0
+Livestock::OtherCattle[Suckling Cows 2]::Outdoor;grazing_days;0
+Livestock::OtherCattle[Suckling Cows 2]::Outdoor;grazing_hours;0
+Livestock::OtherCattle[Suckling Cows 2]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Suckling Cows 2]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Suckling Cows 2]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Suckling Cows 2]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Suckling Cows 2]::Outdoor;yard_days;60
+Livestock::OtherCattle[SC_lt]::Excretion;animalcategory;suckling_cows_lt600
+Livestock::OtherCattle[SC_lt]::Excretion;animals;5
+Livestock::OtherCattle[SC_lt]::Excretion;dimensioning_barn;10
+Livestock::OtherCattle[SC_lt]::Outdoor;grazing_days;180
+Livestock::OtherCattle[SC_lt]::Outdoor;grazing_hours;22
+Livestock::OtherCattle[SC_lt]::Housing::Floor;mitigation_housing_floor;floor_with_cross_slope_and_collection_gutter
+Livestock::OtherCattle[SC_lt]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[SC_lt]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[SC_lt]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[SC_lt]::Outdoor;yard_days;160
+Livestock::OtherCattle[SC_gt]::Excretion;animalcategory;suckling_cows_gt700
+Livestock::OtherCattle[SC_gt]::Excretion;animals;5
+Livestock::OtherCattle[SC_gt]::Excretion;dimensioning_barn;10
+Livestock::OtherCattle[SC_gt]::Outdoor;grazing_days;180
+Livestock::OtherCattle[SC_gt]::Outdoor;grazing_hours;22
+Livestock::OtherCattle[SC_gt]::Housing::CFreeFactor;free_correction_factor;5
+Livestock::OtherCattle[SC_gt]::Housing::Floor;mitigation_housing_floor;floor_with_cross_slope_and_collection_gutter
+Livestock::OtherCattle[SC_gt]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[SC_gt]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[SC_gt]::Outdoor;exercise_yard;available_roughage_is_partly_supplied_in_the_exercise_yard
+Livestock::OtherCattle[SC_gt]::Outdoor;yard_days;160
+Livestock::OtherCattle[SC_gt]::Outdoor;free_correction_factor;5
+Livestock::Pig[Boars]::Excretion;animalcategory;boars
+Livestock::Pig[Boars]::Excretion;crude_protein;145
+Livestock::Pig[Boars]::Excretion;energy_content;11.9
+Livestock::Pig[Boars]::Excretion;animals;10
+Livestock::Pig[Boars]::Excretion;dimensioning_barn;0
+Livestock::Pig[Boars]::Housing::AirScrubber;air_scrubber;acid
+Livestock::Pig[Boars]::Housing::CFreeFactor;free_correction_factor;5
+Livestock::Pig[Boars]::Housing::MitigationOptions;mitigation_housing_air;low_impuls_air_supply
+Livestock::Pig[Boars]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::Pig[Boars]::Housing::Type;housing_type;Slurry_Label
+Livestock::Pig[DrySows]::Excretion;animalcategory;dry_sows
+Livestock::Pig[DrySows]::Excretion;crude_protein;145
+Livestock::Pig[DrySows]::Excretion;energy_content;11.9
+Livestock::Pig[DrySows]::Excretion;animals;8
+Livestock::Pig[DrySows]::Excretion;dimensioning_barn;8
+Livestock::Pig[DrySows]::Housing::AirScrubber;air_scrubber;none
+Livestock::Pig[DrySows]::Housing::MitigationOptions;mitigation_housing_air;none
+Livestock::Pig[DrySows]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::Pig[DrySows]::Housing::Type;housing_type;Deep_Litter
+Livestock::Pig[NursingSows]::Excretion;animalcategory;nursing_sows
+Livestock::Pig[NursingSows]::Excretion;crude_protein;165
+Livestock::Pig[NursingSows]::Excretion;energy_content;13.5
+Livestock::Pig[NursingSows]::Excretion;animals;15
+Livestock::Pig[NursingSows]::Excretion;dimensioning_barn;0
+Livestock::Pig[NursingSows]::Housing::AirScrubber;air_scrubber;none
+Livestock::Pig[NursingSows]::Housing::MitigationOptions;mitigation_housing_air;none
+Livestock::Pig[NursingSows]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::Pig[NursingSows]::Housing::Type;housing_type;Slurry_Conventional
+Livestock::Pig[Piglets]::Excretion;animalcategory;weaned_piglets_up_to_25kg
+Livestock::Pig[Piglets]::Excretion;crude_protein;180
+Livestock::Pig[Piglets]::Excretion;energy_content;13.5
+Livestock::Pig[Piglets]::Excretion;animals;12
+Livestock::Pig[Piglets]::Excretion;dimensioning_barn;0
+Livestock::Pig[Piglets]::Housing::AirScrubber;air_scrubber;none
+Livestock::Pig[Piglets]::Housing::MitigationOptions;mitigation_housing_air;none
+Livestock::Pig[Piglets]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::Pig[Piglets]::Housing::Type;housing_type;Slurry_Conventional
+Livestock::Poultry[Broilers]::Excretion;animalcategory;broilers
+Livestock::Poultry[Broilers]::Excretion;animals;50
+Livestock::Poultry[Broilers]::Excretion;dimensioning_barn;0
+Livestock::Poultry[Broilers]::Housing::AirScrubber;air_scrubber;none
+Livestock::Poultry[Broilers]::Housing::Type;drinking_system;bell_drinkers
+Livestock::Poultry[Broilers]::Housing::Type;housing_type;deep_litter
+Livestock::Poultry[Broilers]::Housing::Type;manure_removal_interval;no_manure_belt
+Livestock::Poultry[Broilers]::Grazing;free_range;yes
+Livestock::Poultry[Growers]::Excretion;animalcategory;growers
+Livestock::Poultry[Growers]::Excretion;animals;30
+Livestock::Poultry[Growers]::Excretion;dimensioning_barn;0
+Livestock::Poultry[Growers]::Housing::AirScrubber;air_scrubber;none
+Livestock::Poultry[Growers]::Housing::Type;drinking_system;bell_drinkers
+Livestock::Poultry[Growers]::Housing::Type;housing_type;manure_belt_with_manure_belt_drying_system
+Livestock::Poultry[Growers]::Housing::Type;manure_removal_interval;twice_a_month
+Livestock::Poultry[Growers]::Grazing;free_range;yes
+Livestock::Poultry[Layers]::Excretion;animalcategory;layers
+Livestock::Poultry[Layers]::Excretion;animals;20
+Livestock::Poultry[Layers]::Excretion;dimensioning_barn;0
+Livestock::Poultry[Layers]::Housing::AirScrubber;air_scrubber;none
+Livestock::Poultry[Layers]::Housing::Type;drinking_system;bell_drinkers
+Livestock::Poultry[Layers]::Housing::Type;housing_type;manure_belt_without_manure_belt_drying_system
+Livestock::Poultry[Layers]::Housing::Type;manure_removal_interval;more_than_4_times_a_month
+Livestock::Poultry[Layers]::Grazing;free_range;yes
+Livestock::Poultry[OtherPoultry]::Excretion;animalcategory;other_poultry
+Livestock::Poultry[OtherPoultry]::Excretion;animals;20
+Livestock::Poultry[OtherPoultry]::Excretion;dimensioning_barn;0
+Livestock::Poultry[OtherPoultry]::Housing::AirScrubber;air_scrubber;biotrickling
+Livestock::Poultry[OtherPoultry]::Housing::Type;drinking_system;bell_drinkers
+Livestock::Poultry[OtherPoultry]::Housing::Type;housing_type;deep_pit
+Livestock::Poultry[OtherPoultry]::Housing::Type;manure_removal_interval;no_manure_belt
+Livestock::Poultry[OtherPoultry]::Grazing;free_range;no
+Livestock::Poultry[Turkeys]::Excretion;animalcategory;turkeys
+Livestock::Poultry[Turkeys]::Excretion;animals;25
+Livestock::Poultry[Turkeys]::Excretion;dimensioning_barn;0
+Livestock::Poultry[Turkeys]::Housing::AirScrubber;air_scrubber;acid
+Livestock::Poultry[Turkeys]::Housing::Type;drinking_system;drinking_nipples
+Livestock::Poultry[Turkeys]::Housing::Type;housing_type;deep_litter
+Livestock::Poultry[Turkeys]::Housing::Type;manure_removal_interval;no_manure_belt
+Livestock::Poultry[Turkeys]::Housing::CFreeFactor;free_correction_factor;5
+Livestock::Poultry[Turkeys]::Grazing;free_range;no
+Livestock::SmallRuminants[Goats]::Excretion;animalcategory;goats
+Livestock::SmallRuminants[Goats]::Excretion;animals;10
+Livestock::SmallRuminants[Goats]::Grazing;grazing_days;165
+Livestock::SmallRuminants[Goats]::Grazing;grazing_hours;0
+Livestock::SmallRuminants[Goats]::Housing::CFreeFactor;free_correction_factor;5
+Livestock::SmallRuminants[Milksheep]::Excretion;animalcategory;milksheep
+Livestock::SmallRuminants[Milksheep]::Excretion;animals;0
+Livestock::SmallRuminants[Milksheep]::Grazing;grazing_days;165
+Livestock::SmallRuminants[Milksheep]::Grazing;grazing_hours;10
+Livestock::SmallRuminants[Sheep]::Excretion;animalcategory;fattening_sheep
+Livestock::SmallRuminants[Sheep]::Excretion;animals;20
+Livestock::SmallRuminants[Sheep]::Grazing;grazing_days;365
+Livestock::SmallRuminants[Sheep]::Grazing;grazing_hours;24
+Livestock::RoughageConsuming[Deer]::Excretion;animalcategory;fallow_deer
+Livestock::RoughageConsuming[Deer]::Excretion;animals;10
+Livestock::RoughageConsuming[Deer]::Grazing;grazing_days;165
+Livestock::RoughageConsuming[Deer]::Grazing;grazing_hours;0
+Livestock::RoughageConsuming[Deer]::Housing::CFreeFactor;free_correction_factor;5
+Livestock::RoughageConsuming[Bisons]::Excretion;animalcategory;bison_younger_than_3yr
+Livestock::RoughageConsuming[Bisons]::Excretion;animals;10
+Livestock::RoughageConsuming[Bisons]::Grazing;grazing_days;165
+Livestock::RoughageConsuming[Bisons]::Grazing;grazing_hours;10
+Livestock::RoughageConsuming[Rabbits]::Excretion;animalcategory;rabbit_young
+Livestock::RoughageConsuming[Rabbits]::Excretion;animals;20
+Livestock::RoughageConsuming[Rabbits]::Grazing;grazing_days;365
+Livestock::RoughageConsuming[Rabbits]::Grazing;grazing_hours;24
+PlantProduction::MineralFertiliser;soil_ph;low
+PlantProduction::MineralFertiliser;mineral_fertiliser_ammoniumNitrate_amount;1500
+PlantProduction::MineralFertiliser;mineral_fertiliser_ammoniumNitrate_N_content;50
+PlantProduction::RecyclingFertiliser;compost;10
+PlantProduction::RecyclingFertiliser;liquid_digestate;10
+PlantProduction::RecyclingFertiliser;solid_digestate;10
+Storage::Slurry[Store Liquid 1]::EFLiquid;contains_cattle_manure;yes
+Storage::Slurry[Store Liquid 1]::EFLiquid;contains_pig_manure;no
+Storage::Slurry[Store Liquid 1]::EFLiquid;cover_type;solid_cover
+Storage::Slurry[Store Liquid 1];depth;4
+Storage::Slurry[Store Liquid 1];mixing_frequency;7_to_12_times_per_year
+Storage::Slurry[Store Liquid 1];volume;100
+Storage::Slurry[Store Liquid 2]::EFLiquid;contains_cattle_manure;yes
+Storage::Slurry[Store Liquid 2]::EFLiquid;contains_pig_manure;yes
+Storage::Slurry[Store Liquid 2]::EFLiquid;cover_type;solid_cover
+Storage::Slurry[Store Liquid 2];depth;4
+Storage::Slurry[Store Liquid 2];mixing_frequency;7_to_12_times_per_year
+Storage::Slurry[Store Liquid 2];volume;60
+Storage::Slurry[Store Liquid 3]::EFLiquid;contains_cattle_manure;no
+Storage::Slurry[Store Liquid 3]::EFLiquid;contains_pig_manure;yes
+Storage::Slurry[Store Liquid 3]::EFLiquid;cover_type;uncovered
+Storage::Slurry[Store Liquid 3];depth;2.5
+Storage::Slurry[Store Liquid 3];mixing_frequency;7_to_12_times_per_year
+Storage::Slurry[Store Liquid 3];volume;60
+Storage::Slurry[Store Liquid 4]::EFLiquid;contains_cattle_manure;yes
+Storage::Slurry[Store Liquid 4]::EFLiquid;contains_pig_manure;yes
+Storage::Slurry[Store Liquid 4]::EFLiquid;cover_type;uncovered
+Storage::Slurry[Store Liquid 4];depth;2.5
+Storage::Slurry[Store Liquid 4];mixing_frequency;7_to_12_times_per_year
+Storage::Slurry[Store Liquid 4];volume;100
+Storage::SolidManure::Poultry;share_applied_direct_poultry_manure;20
+Storage::SolidManure::Poultry;share_covered_basin;20
+Storage::SolidManure::Solid;share_applied_direct_cattle_other_manure;20
+Storage::SolidManure::Solid;share_applied_direct_pig_manure;20
+Storage::SolidManure::Solid;share_covered_basin_cattle_manure;20
+Storage::SolidManure::Solid;share_covered_basin_pig_manure;20

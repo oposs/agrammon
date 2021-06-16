@@ -1,5 +1,8 @@
 # Agrammon Change Log
 
+- 6.0.0, 2021-06-16, fritz.zaucker@oetiker.ch
+   - Add REST run
+
 - 6.0.0, 2021-06-01, fritz.zaucker@oetiker.ch
    - Adapt to dataset changes
    - first official release
