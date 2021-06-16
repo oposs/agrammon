@@ -34,6 +34,23 @@ sub api-routes(Agrammon::Web::Service $ws) is export {
         get -> APIUser $user, 'greet' {
             content 'application/json', { message => "Hello $user.firstname()" }
         }
+
+        post -> APIUser $user, 'run' {
+            request-body 'multipart/form-data' => -> (:$dataset!, :$inputs!) {
+                my $type = $inputs.content-type;
+                if $type ne 'text/csv' {
+                    my $error = "Content type is '$type', must be 'text/csv'";
+                    note $error;
+                    bad-request 'application/json', %( error => $error );
+                }
+                else {
+                    my $data = $inputs.body-text;
+                    content 'text/csv', supply {
+                        emit $data.encode('utf8');
+                    };
+                }
+            }
+        }
     }
 }
 
