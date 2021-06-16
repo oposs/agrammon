@@ -28,7 +28,7 @@ my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location
 ;
 
-subset ExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
+subset ExistingFile of Str where { .IO.e or $_ eq '-' or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
 subset OutputFormat of Str where { $_ ~~ /^ csv|json|text $/ or note("ERROR: --format=[csv|json|text]") && exit 1 };
@@ -240,9 +240,7 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     };
 
-    my $filename = $input-path;
-    my $fh = open $filename, :r
-          or die "Couldn't open file $filename for reading";
+    my $fh = get-input-filehandle($input-path);
     LEAVE $fh.?close;
     my $ds = Agrammon::DataSource::CSV.new;
 
@@ -255,7 +253,7 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
             $rc.add-validation-errors($dataset.simulation-name, $dataset.dataset-id, @validation-errors);
         }
         else {
-            my $outputs = timed "$my-n: Run $filename", {
+            my $outputs = timed "$my-n: Run $input-path", {
                 $model.run(
                         input => $dataset,
                         technical => %technical-parameters,
@@ -307,9 +305,7 @@ sub validate (IO::Path $path, IO::Path $input-path, $variants, $batch, $degree, 
         load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
     };
 
-    my $filename = $input-path;
-    my $fh = open $filename, :r
-            or die "Couldn't open file $filename for reading";
+    my $fh = get-input-filehandle($input-path);
     LEAVE $fh.?close;
     my $ds = Agrammon::DataSource::CSV.new;
 
@@ -393,4 +389,10 @@ sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export 
 
 sub preprocessor-options(Str $variants) {
     set($variants.split(","));
+}
+
+sub get-input-filehandle(IO::Path $path) {
+    $path eq '-' ?? $*IN
+                 !! open $path, :r
+                        or die "Couldn't open file $path for reading";
 }
