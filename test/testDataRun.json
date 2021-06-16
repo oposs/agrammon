@@ -1,0 +1,23 @@
+{
+  "dataset":"Hochrechnung 2020",
+  "inputs": {
+    "DairyCows": {
+      "Stall 1": { 
+        "animals":20
+      },
+      "Stall 2": { 
+        "animals":25
+      }
+    },
+    "Storage::Slurry": {
+      "Gülle 1": {
+        "volume":10.5,
+        "depth": 2
+      },
+      "Gülle 2": {
+        "volume":7.5,
+        "depth": 1.5
+      }
+    }
+  }
+}
