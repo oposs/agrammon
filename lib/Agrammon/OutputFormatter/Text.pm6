@@ -36,12 +36,15 @@ sub output-as-text(
                     }
                 }
             }
+            @lines.append: |@title-lines, |@output-lines if @output-lines;
         }
         when Array {
+            my @subtitle-lines;
+            @output-lines = [];
             for sorted-kv($_) -> $instance-id, %instance-outputs {
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
-                    push @title-lines, "    $q-name";
+                    push @subtitle-lines, "    $q-name";
                     for sorted-kv(%values) -> $output, $value {
                         next unless $model.should-print($fq-name, $output, @print-set);
 
@@ -59,11 +62,12 @@ sub output-as-text(
                             }
                         }
                     }
+                    NEXT {
+                        @lines.append: |@title-lines, |@subtitle-lines, |@output-lines if @output-lines;
+                        @title-lines =  @subtitle-lines = @output-lines = [];
+                    }
                 }
-            }
-        }
-        NEXT {
-            @lines.append: |@title-lines, |@output-lines if @output-lines;
+           }
         }
     }
     return @lines.join("\n");
