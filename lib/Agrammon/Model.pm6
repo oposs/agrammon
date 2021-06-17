@@ -455,7 +455,7 @@ class Agrammon::Model {
 
     method should-print(Str $module, Str $output, @print-set) {
         %!output-print-cache ||= @!evaluation-order.map({
-            .taxonomy => %(.output.map({ .name => (.print//'').split(',').List }))
+            .taxonomy => %(.output.map({ .name => (.split(',').List with .print) }))
         });
         !@print-set or ( %!output-print-cache{$module}{$output} // () ) ∩ @print-set
     }
