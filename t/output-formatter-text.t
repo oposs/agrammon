@@ -1,10 +1,7 @@
 use v6;
 use Agrammon::Model;
-use Agrammon::OutputFormatter::CSV;
+use Agrammon::OutputFormatter::Text;
 use Test;
-
-my $test-simulation-name = '2010v2.1_20120425';
-my $test-dataset-id = '2648';
 
 my $path = $*PROGRAM.parent.add('test-data/Models/run-test-multi-deep');
 my $model = Agrammon::Model.new(:$path);
@@ -28,17 +25,25 @@ given $outputs.new-instance('Test::SubModule', 'Monkey C') {
 
 my $with-filters = False;
 my @print-set = <All>;
-my $csv = output-as-csv($test-simulation-name, $test-dataset-id, $model, $outputs, "en", @print-set, $with-filters) ~ "\n";
-$csv = $csv.split(/^^/).sort.join;
-is $csv, q:to/OUTPUT/, 'Correctly formed CSV output';
-    2010v2.1_20120425;2648;Test::SubModule[Monkey A]::SubTest;kids;;5;monkey kids
-    2010v2.1_20120425;2648;Test::SubModule[Monkey A];sub_result;;20;monkeys/hour
-    2010v2.1_20120425;2648;Test::SubModule[Monkey B]::SubTest;kids;;10;monkey kids
-    2010v2.1_20120425;2648;Test::SubModule[Monkey B];sub_result;;30;monkeys/hour
-    2010v2.1_20120425;2648;Test::SubModule[Monkey C]::SubTest;kids;;15;monkey kids
-    2010v2.1_20120425;2648;Test::SubModule[Monkey C];sub_result;;40;monkeys/hour
-    2010v2.1_20120425;2648;Test;result;;142;monkeys/hour
-    OUTPUT
+my $text = output-as-text($model, $outputs, "en", @print-set, $with-filters) ~ "\n";
+
+is $text, q:to/OUTPUT/, 'Correctly formed text output';
+Test
+    result = 142 monkeys/hour
+Test::SubModule
+    Test::SubModule[Monkey A]
+        sub_result = 20 monkeys/hour
+    Test::SubModule[Monkey A]::SubTest
+        kids = 5
+    Test::SubModule[Monkey B]
+        sub_result = 30 monkeys/hour
+    Test::SubModule[Monkey B]::SubTest
+        kids = 10
+    Test::SubModule[Monkey C]
+        sub_result = 40 monkeys/hour
+    Test::SubModule[Monkey C]::SubTest
+        kids = 15
+OUTPUT
 
 # see model-with-filters.t for tests using $with-filters = True
 done-testing;
