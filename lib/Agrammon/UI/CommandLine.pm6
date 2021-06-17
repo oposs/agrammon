@@ -47,11 +47,11 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 
 #| Run the model
 multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technical-file?,
-               SupportedLanguage :$language = 'de', Str :$prints = 'All', Str :$variants = 'Base',
+               SupportedLanguage :$language = 'de', Str :$print-only, Str :$variants = 'Base',
                Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
                OutputFormat :$format = 'text'
               ) is export {
-    my @print-set = $prints.split(',');
+    my @print-set = $print-only.split(',') if $print-only;
     my $data = run $filename.IO, $input.IO, $technical-file, $variants, $format, $language, @print-set,
             ($include-filters or $include-all-filters),
             $batch, $degree, $max-runs, :all-filters($include-all-filters);

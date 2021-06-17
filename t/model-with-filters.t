@@ -148,7 +148,7 @@ subtest 'Running the model produces output instances with filters' => {
         my @print-set = <LivestockTotal OtherPigFlux>;
 
         my $csv = output-as-csv('Demo', 'Test', $model, $output, "en", @print-set, $include-filters) ~ "\n";
-        is $csv, q:to/OUTPUT/, 'Correctly formed CSV output';
+        is $csv, q:to/OUTPUT/, 'Correct CSV output';
             Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;;141.003688;kg N/year
             Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;nursing_sows;88.156444;kg N/year
             Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;dry_sows;0;kg N/year
@@ -158,7 +158,7 @@ subtest 'Running the model produces output instances with filters' => {
             OUTPUT
 
         my $text = output-as-text($model, $output, "en", @print-set, $include-filters) ~ "\n";
-        is $text, q:to/OUTPUT/, 'Correctly formed text output';
+        is $text, q:to/OUTPUT/, 'Correct text output';
             SummaryByAnimalCategory
                 n_excretion_otherpig = 141.003688 kg N/year
                   * Livestock::Pig::Excretion::animalcategory=nursing_sows                 88.156444 kg N/year
@@ -179,7 +179,7 @@ subtest 'Running the model produces output instances with filters' => {
                 "fullValue": 141.003688,
                 "label": null,
                 "order": -1,
-                "print": "OtherPigFlux,All",
+                "print": "OtherPigFlux",
                 "unit": "kg N/year",
                 "value": "141",
                 "var": "SummaryByAnimalCategory::n_excretion_otherpig"
@@ -205,7 +205,7 @@ subtest 'Running the model produces output instances with filters' => {
                 "labels": {
                 },
                 "order": -1,
-                "print": "OtherPigFlux,All",
+                "print": "OtherPigFlux",
                 "units": {
                   "de": "kg N/Jahr",
                   "en": "kg N/year",
@@ -235,7 +235,7 @@ subtest 'Running the model produces output instances with filters' => {
                 "labels": {
                 },
                 "order": -1,
-                "print": "OtherPigFlux,All",
+                "print": "OtherPigFlux",
                 "units": {
                   "de": "kg N/Jahr",
                   "en": "kg N/year",
@@ -265,7 +265,7 @@ subtest 'Running the model produces output instances with filters' => {
                 "labels": {
                 },
                 "order": -1,
-                "print": "OtherPigFlux,All",
+                "print": "OtherPigFlux",
                 "units": {
                   "de": "kg N/Jahr",
                   "en": "kg N/year",
@@ -295,7 +295,7 @@ subtest 'Running the model produces output instances with filters' => {
                 "labels": {
                 },
                 "order": -1,
-                "print": "OtherPigFlux,All",
+                "print": "OtherPigFlux",
                 "units": {
                   "de": "kg N/Jahr",
                   "en": "kg N/year",
@@ -311,7 +311,7 @@ subtest 'Running the model produces output instances with filters' => {
                 "fullValue": 352.7111423399035e0,
                 "label": "Total Animalproduction NH3-Emissions",
                 "order": "890",
-                "print": "LivestockTotal,All",
+                "print": "LivestockTotal",
                 "unit": "kg N/year",
                 "value": "353",
                 "var": "Total::nh3_nanimalproduction"
@@ -331,7 +331,7 @@ subtest 'Running the model produces output instances with filters' => {
                 "fullValue": 961.003688,
                 "label": "Total N excretion",
                 "order": "101",
-                "print": "FluxSummaryLivestock,All",
+                "print": "FluxSummaryLivestock",
                 "unit": "kg N/year",
                 "value": "961",
                 "var": "Livestock::n_excretion"
@@ -343,7 +343,7 @@ subtest 'Running the model produces output instances with filters' => {
                 "fullValue": 590.702582,
                 "label": "Total soluble N excretion",
                 "order": "101",
-                "print": "TANFlux,All",
+                "print": "TANFlux",
                 "unit": "kg TAN/year",
                 "value": "591",
                 "var": "Livestock::tan_excretion"
@@ -373,7 +373,7 @@ subtest 'Running the model produces output instances with filters' => {
                   "sort": "101"
                 },
                 "order": "101",
-                "print": "TANFlux,All",
+                "print": "TANFlux",
                 "units": {
                   "de": "kg TAN/Jahr",
                   "en": "kg TAN/year",

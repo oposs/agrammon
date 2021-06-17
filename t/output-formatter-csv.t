@@ -27,7 +27,7 @@ given $outputs.new-instance('Test::SubModule', 'Monkey C') {
 }
 
 my $with-filters = False;
-my @print-set = <All>;
+my @print-set;
 my $csv = output-as-csv($test-simulation-name, $test-dataset-id, $model, $outputs, "en", @print-set, $with-filters) ~ "\n";
 $csv = $csv.split(/^^/).sort.join;
 is $csv, q:to/OUTPUT/, 'Correctly formed CSV output';

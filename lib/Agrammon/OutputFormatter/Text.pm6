@@ -1,6 +1,8 @@
 use v6;
 use Agrammon::Model;
 use Agrammon::Outputs;
+use Agrammon::Outputs::FilterGroupCollection;
+use Agrammon::OutputFormatter::Util;
 
 sub output-as-text(
     Agrammon::Model $model,
@@ -8,31 +10,29 @@ sub output-as-text(
     Str $language,
     @print-set,
     Bool $include-filters,
-    Bool :$all-filters = False, --> Str
+    Bool :$all-filters = False --> Str
 ) is export {
     my @lines;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
-        my $n = 0;
-        my @module-lines;
+        my @output-lines;
+        my @title-lines;
         my $indent = '    ';
-        push @module-lines, $module;
+        push @title-lines, $module;
         when Hash {
             for sorted-kv($_) -> $output, $value {
-                my $var-print = $model.output-print($module, $output) ~ ',All';
-                next unless $var-print.split(',') ∩ @print-set;
+                next unless $model.should-print($module, $output, @print-set);
 
-                $n++;
                 my $val = flat-value($value // 'UNDEFINED');
                 my $unit = $model.output-unit($module, $output, $language);
                 if $unit {
-                    push @module-lines, "    $output = $val $unit";
+                    push @output-lines, "    $output = $val $unit";
                 }
                 else {
-                    push @module-lines, "    $output = $val";
+                    push @output-lines, "    $output = $val";
                 }
                 if $include-filters {
                     if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
-                        add-filters(@module-lines, $value, $unit, $indent, :$all-filters);
+                        add-filters(@output-lines, $value, $unit, $indent, :$all-filters);
                     }
                 }
             }
@@ -41,23 +41,21 @@ sub output-as-text(
             for sorted-kv($_) -> $instance-id, %instance-outputs {
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
-                    push @module-lines, "    $q-name";
+                    push @title-lines, "    $q-name";
                     for sorted-kv(%values) -> $output, $value {
-                        my $var-print = $model.output-print($fq-name, $output) ~ ',All';
-                        next unless $var-print.split(',') ∩ @print-set;
+                        next unless $model.should-print($fq-name, $output, @print-set);
 
-                        $n++;
                         my $val = flat-value($value // 'UNDEFINED');
                         my $unit = $model.output-unit($module, $output, $language);
                         if $unit {
-                            push @module-lines, "        $output = $val $unit";
+                            push @output-lines, "        $output = $val $unit";
                         }
                         else {
-                            push @module-lines, "        $output = $val";
+                            push @output-lines, "        $output = $val";
                         }
                         if $include-filters {
                             if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
-                                add-filters(@module-lines, $value, $unit, $indent, :$all-filters);
+                                add-filters(@output-lines, $value, $unit, $indent, :$all-filters);
                             }
                         }
                     }
@@ -65,7 +63,7 @@ sub output-as-text(
             }
         }
         NEXT {
-            @lines.append: @module-lines if $n;
+            @lines.append: |@title-lines, |@output-lines if @output-lines;
         }
     }
     return @lines.join("\n");
@@ -86,15 +84,4 @@ sub add-filters(@module-lines, Agrammon::Outputs::FilterGroupCollection $collect
                     !! "$prefix    $filter-id";
         }
     }
-}
-
-multi sub flat-value($value) {
-    $value
-}
-multi sub flat-value(Agrammon::Outputs::FilterGroupCollection $collection) {
-    +$collection
-}
-
-sub sorted-kv($_) {
-    .sort(*.key).map({ |.kv })
 }

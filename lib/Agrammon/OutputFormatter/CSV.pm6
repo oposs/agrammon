@@ -2,6 +2,7 @@ use v6;
 use Agrammon::Model;
 use Agrammon::Outputs;
 use Agrammon::Outputs::FilterGroupCollection;
+use Agrammon::OutputFormatter::Util;
 
 sub output-as-csv(
     $simulation-name,
@@ -17,21 +18,20 @@ sub output-as-csv(
         my $prefix = "$simulation-name;$dataset-id" if $simulation-name;
         when Hash {
             for sorted-kv($_) -> $output, $value {
-                my $var-print = $model.output-print($module, $output) ~ ',All';
-                next unless $var-print.split(',') ∩ @print-set;
+                next unless $model.should-print($module, $output, @print-set);
 
                 my $filters = '';
                 my $raw-value = $value;
                 my $var = $output;
                 my $unit = $model.output-unit($module, $output, $language);
                 my @data = (
+                    |($prefix if $prefix),
                     $module,
                     $var,
                     $filters,
                     flat-value($raw-value) // '',
                     $unit
                 );
-                @data.unshift($prefix) if $prefix;
                 take @data.join(';');
                 if $include-filters {
                     if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
@@ -46,19 +46,18 @@ sub output-as-csv(
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
                     for sorted-kv(%values) -> $output, $value {
-                        my $var-print = $model.output-print($fq-name, $output) ~ ',All';
-                        next unless $var-print.split(',') ∩ @print-set;
+                        next unless $model.should-print($module, $output, @print-set);
 
                         my $raw-value = $value;
                         my $unit = $model.output-unit($module, $output, $language);
                         my @data = (
+                            |($prefix if $prefix),
                             $q-name,
                             $output,
                             $filters,
                             flat-value($raw-value) // '',
                             $unit
                         );
-                        @data.unshift($prefix) if $prefix;
                         take @data.join(';');
                         if $include-filters {
                             if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
@@ -80,27 +79,16 @@ sub add-filters(Agrammon::Outputs::FilterGroupCollection $collection,
         my $raw-value := .value;
         my $filters = %filters.values.join(',');
         my @filters = %filters.map: { .key ~ '=' ~ .value };
-        for (@filters || '(Uncategorized)').kv -> $idx, $filter-id {
+        for (@filters || '(Uncategorized)') {
             my @data = (
+                |($prefix if $prefix),
                 $q-name,
                 $fq-name,
                 $filters,
                 flat-value($raw-value) // '',
                 $unit
             );
-            @data.unshift($prefix) if $prefix;
             take @data.join(';');
         }
     }
-}
-
-multi sub flat-value($value) {
-    $value
-}
-multi sub flat-value(Agrammon::Outputs::FilterGroupCollection $collection) {
-    +$collection
-}
-
-sub sorted-kv($_) {
-    .sort(*.key).map({ |.kv })
 }

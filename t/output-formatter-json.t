@@ -25,7 +25,7 @@ given $outputs.new-instance('Test::SubModule', 'Monkey C') {
 }
 
 my $include-filters = False;
-my @print-set = <All>;
+my @print-set;
 my $json= output-as-json($model, $outputs, "en", @print-set, $include-filters);
 my $gui= output-for-gui($model, $outputs, :language("en"), :$include-filters);
 is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
@@ -37,7 +37,7 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "fullValue": 142,
     "label": null,
     "order": -1,
-    "print": "7,All",
+    "print": "7",
     "unit": "monkeys/hour",
     "value": 142,
     "var": "Test::result"
@@ -50,7 +50,7 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "instance": "Monkey A",
     "label": null,
     "order": -1,
-    "print": "7,All",
+    "print": "7",
     "unit": "monkeys/hour",
     "value": 20,
     "var": "Test::SubModule[Monkey A]::sub_result"
@@ -63,7 +63,7 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "instance": "Monkey A",
     "label": null,
     "order": -1,
-    "print": "7,All",
+    "print": "7",
     "unit": "monkey kids",
     "value": 5,
     "var": "Test::SubModule[Monkey A]::SubTest::kids"
@@ -76,7 +76,7 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "instance": "Monkey B",
     "label": null,
     "order": -1,
-    "print": "7,All",
+    "print": "7",
     "unit": "monkeys/hour",
     "value": 30,
     "var": "Test::SubModule[Monkey B]::sub_result"
@@ -89,7 +89,7 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "instance": "Monkey B",
     "label": null,
     "order": -1,
-    "print": "7,All",
+    "print": "7",
     "unit": "monkey kids",
     "value": 10,
     "var": "Test::SubModule[Monkey B]::SubTest::kids"
@@ -102,7 +102,7 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "instance": "Monkey C",
     "label": null,
     "order": -1,
-    "print": "7,All",
+    "print": "7",
     "unit": "monkeys/hour",
     "value": 40,
     "var": "Test::SubModule[Monkey C]::sub_result"
@@ -115,7 +115,7 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "instance": "Monkey C",
     "label": null,
     "order": -1,
-    "print": "7,All",
+    "print": "7",
     "unit": "monkey kids",
     "value": 15,
     "var": "Test::SubModule[Monkey C]::SubTest::kids"
@@ -133,7 +133,7 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "fullValue": 142,
       "label": null,
       "order": -1,
-      "print": "7,All",
+      "print": "7",
       "unit": "monkeys/hour",
       "value": 142,
       "var": "Test::result"
@@ -146,7 +146,7 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "instance": "Monkey A",
       "label": null,
       "order": -1,
-      "print": "7,All",
+      "print": "7",
       "unit": "monkeys/hour",
       "value": 20,
       "var": "Test::SubModule[Monkey A]::sub_result"
@@ -159,7 +159,7 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "instance": "Monkey A",
       "label": null,
       "order": -1,
-      "print": "7,All",
+      "print": "7",
       "unit": "monkey kids",
       "value": 5,
       "var": "Test::SubModule[Monkey A]::SubTest::kids"
@@ -172,7 +172,7 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "instance": "Monkey B",
       "label": null,
       "order": -1,
-      "print": "7,All",
+      "print": "7",
       "unit": "monkeys/hour",
       "value": 30,
       "var": "Test::SubModule[Monkey B]::sub_result"
@@ -185,7 +185,7 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "instance": "Monkey B",
       "label": null,
       "order": -1,
-      "print": "7,All",
+      "print": "7",
       "unit": "monkey kids",
       "value": 10,
       "var": "Test::SubModule[Monkey B]::SubTest::kids"
@@ -198,7 +198,7 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "instance": "Monkey C",
       "label": null,
       "order": -1,
-      "print": "7,All",
+      "print": "7",
       "unit": "monkeys/hour",
       "value": 40,
       "var": "Test::SubModule[Monkey C]::sub_result"
@@ -211,7 +211,7 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "instance": "Monkey C",
       "label": null,
       "order": -1,
-      "print": "7,All",
+      "print": "7",
       "unit": "monkey kids",
       "value": 15,
       "var": "Test::SubModule[Monkey C]::SubTest::kids"

@@ -2,6 +2,7 @@ use v6;
 use Agrammon::Model;
 use Agrammon::Outputs;
 use Agrammon::Outputs::FilterGroupCollection;
+use Agrammon::OutputFormatter::Util;
 
 sub collect-data(
     Agrammon::Model $model,
@@ -45,25 +46,25 @@ sub collect-data(
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         when Hash {
             for sorted-kv($_) -> $output, $raw-value {
+                next unless $model.should-print($module, $output, @print-set);
+
                 my $value = flat-value($raw-value // 'UNDEFINED');
-                my $var-print = $model.output-print($module, $output) ~ ',All';
-                if not defined $report-selected or $var-print.split(',') ∩ @print-set {
-                    my $print = ($var-print.split(',') ∩ @print-set).keys[0];
-                    my $order = $model.output-labels($module, $output)<sort> || $last-order;
-                    my $unit  = $model.output-unit($module, $output, $language);
-                    my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
-                    my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
-                    @outputs.push(%( :module(''), :label($output-label), :$value, :unit($unit-label), :$order, :$print));
-                    if $include-filters {
-                        if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
-                            push-filters(
-                                @outputs, $module, $model, $raw-value, $unit, $language, $order,
-                                :$all-filters
-                            );
-                        }
+                my $var-print = $model.output-print($module, $output);
+                my $print = ($var-print.split(',') ∩ @print-set).keys[0];
+                my $order = $model.output-labels($module, $output)<sort> || $last-order;
+                my $unit  = $model.output-unit($module, $output, $language);
+                my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
+                my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
+                @outputs.push(%( :module(''), :label($output-label), :$value, :unit($unit-label), :$order, :$print));
+                if $include-filters {
+                    if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
+                        add-filters(
+                            @outputs, $module, $model, $raw-value, $unit, $language, $order,
+                            :$all-filters
+                        );
                     }
-                    $last-order = $order;
                 }
+                $last-order = $order;
             }
         }
         when Array {
@@ -71,26 +72,25 @@ sub collect-data(
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
                     for sorted-kv(%values) -> $output, $raw-value {
+                        next unless $model.should-print($module, $output, @print-set);
+
                         my $value = flat-value($raw-value // 'UNDEFINED');
-                        my $var-print = $model.output-print($module, $output) ~ ',All';
-                        if not defined $report-selected or $var-print.split(',') ∩ @print-set {
-                            my $print = ($var-print.split(',') ∩ @print-set).keys[0];
-                            my $order = $model.output-labels($module, $output)<sort> || $last-order;
-                            my $unit  = $model.output-unit($module, $output, $language);
-                            my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
-                            my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
-                            @outputs.push(%( :module(''), :label($output-label), :$value, :unit($unit-label), :$order, :$print));
-                            if $include-filters {
-                                if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value
-                                .has-filters {
-                                    push-filters(
-                                        @outputs, $q-name, $model, $raw-value, $unit-label, $language, $order,
-                                       :$all-filters
-                                    );
-                                }
+                        my $var-print = $model.output-print($module, $output);
+                        my $print = ($var-print.split(',') ∩ @print-set).keys[0];
+                        my $order = $model.output-labels($module, $output)<sort> || $last-order;
+                        my $unit  = $model.output-unit($module, $output, $language);
+                        my $output-label = $language ?? $model.output-labels($module, $output){$language} !! $output;
+                        my $unit-label   = $language ?? $model.output-units($module, $output){$language}  !! $unit;
+                        @outputs.push(%( :module(''), :label($output-label), :$value, :unit($unit-label), :$order, :$print));
+                        if $include-filters {
+                            if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
+                                add-filters(
+                                    @outputs, $q-name, $model, $raw-value, $unit-label, $language, $order,
+                                   :$all-filters
+                                );
                             }
-                            $last-order = $order;
                         }
+                        $last-order = $order;
                     }
                 }
             }
@@ -99,7 +99,7 @@ sub collect-data(
     return %( :@inputs, :@outputs, :%print-labels );
 }
 
-sub push-filters(@records, $module, $model, Agrammon::Outputs::FilterGroupCollection $collection,
+sub add-filters(@records, $module, $model, Agrammon::Outputs::FilterGroupCollection $collection,
                    $unit, $language, $order, Bool :$all-filters) {
     my @results = $collection.results-by-filter-group(:all($all-filters));
     for @results {
@@ -113,16 +113,4 @@ sub push-filters(@records, $module, $model, Agrammon::Outputs::FilterGroupCollec
             @records.push( %( :$module, :label('....' ~ $label), :$value, :$unit, :$order) );
         }
     }
-}
-
-sub sorted-kv($_) {
-    .sort(*.key).map({ |.kv })
-}
-
-multi sub flat-value($value) {
-    $value
-}
-
-multi sub flat-value(Agrammon::Outputs::FilterGroupCollection $collection) {
-    +$collection
 }

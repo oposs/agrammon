@@ -24,7 +24,7 @@ given $outputs.new-instance('Test::SubModule', 'Monkey C') {
 }
 
 my $with-filters = False;
-my @print-set = <All>;
+my @print-set;
 my $text = output-as-text($model, $outputs, "en", @print-set, $with-filters) ~ "\n";
 
 is $text, q:to/OUTPUT/, 'Correctly formed text output';

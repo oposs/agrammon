@@ -2,6 +2,7 @@ use v6;
 use Agrammon::Model;
 use Agrammon::Outputs;
 use Agrammon::Outputs::FilterGroupCollection;
+use Agrammon::OutputFormatter::Util;
 
 sub output-as-json(
     Agrammon::Model $model,
@@ -19,7 +20,7 @@ sub output-for-gui(Agrammon::Model $model,
                    :$include-filters,
                    :$language
                    ) is export {
-    my @print-set = ('All');
+    my @print-set; # no filter
     return %(
         data => get-data($model, $outputs, $include-filters, @print-set, $language),
         log  => $outputs.log-collector.entries.map( *.to-json ),
@@ -66,8 +67,8 @@ sub get-data($model, $outputs, $include-filters, @print-set, $language?) {
 }
 
 sub make-record($fq-name, $output, $model, $raw-value, $var, $order, $instance-id?, :$language, :@filters, :@print-set) {
-    my $var-print = $model.output-print($fq-name, $output) ~ ',All';
-    next unless $var-print.split(',') ∩ @print-set;
+    my $var-print = $model.output-print($fq-name, $output);
+    next unless $model.should-print($fq-name, $output, @print-set);
 
     my $format = $model.output-format($fq-name, $output);
     my $full-value = flat-value($raw-value);
@@ -108,16 +109,4 @@ sub add-filters(@records, $fq-name, $output, $model,
         my $value := .value;
         push @records, make-record($fq-name, $output, $model, $value, $var, $order, :@print-set, :@filters);
     }
-}
-
-
-multi sub flat-value($value) {
-    $value
-}
-multi sub flat-value(Agrammon::Outputs::FilterGroupCollection $collection) {
-    +$collection
-}
-
-sub sorted-kv($_) {
-    .sort(*.key).map({ |.kv })
 }
