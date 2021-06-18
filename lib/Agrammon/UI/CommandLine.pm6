@@ -122,8 +122,9 @@ multi sub MAIN('validate', Str $filename, ExistingFile $input, Str :$cfg,
 }
 
 #| Dump model
-multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
-    say chomp dump-model $filename.IO, $variants, $sort;
+multi sub MAIN('dump', Str $filename, Str :$variants = 'Base', SortOrder :$sort = 'model', Str :$cfg,) is export {
+    my ($model) = load-model($cfg, $filename, $variants);
+    say chomp $model.dump($sort);
 }
 
 #| Create documentation
@@ -209,18 +210,6 @@ sub issue-api-token($cfg-filename, $username) {
     }
     my $token = get-api-token-manager().create-token(:metadata{ :$username });
     note "Issued token $token.token()";
-}
-
-sub dump-model (IO::Path $path, $variants, $sort) is export {
-    die "ERROR: dump expects a .nhd file" unless $path.extension eq 'nhd';
-
-    my $module-path = $path.parent;
-    my $module      = $path.extension('').basename;
-
-    my $model = timed "load $module", {
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
-    };
-    return $model.dump($sort);
 }
 
 sub load-model($cfg-filename, $model-filename, $variants? is copy ) {
@@ -337,7 +326,7 @@ sub validate (Str $model-filename, IO::Path $input-path, $variants, $batch, $deg
     }
 }
 
-sub get-cfg-and-db-handle(Str $cfg-filename is copy) {
+sub get-cfg-and-db-handle($cfg-filename is copy) {
     my $cfg = Agrammon::Config.new;
     $cfg-filename //= %*ENV<AGRAMMON_CFG> || 'etc/agrammon.cfg.yaml';
     die "Config file $cfg-filename not found" unless $cfg-filename.IO.e;
