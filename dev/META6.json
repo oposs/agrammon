@@ -73,6 +73,7 @@
     "Agrammon::OutputFormatter::Excel": "lib/Agrammon/OutputFormatter/Excel.pm6",
     "Agrammon::OutputFormatter::JSON": "lib/Agrammon/OutputFormatter/JSON.pm6",
     "Agrammon::OutputFormatter::Text": "lib/Agrammon/OutputFormatter/Text.pm6",
+    "Agrammon::OutputFormatter::Util": "lib/Agrammon/OutputFormatter/Util.pm6",
     "Agrammon::OutputReference": "lib/Agrammon/OutputReference.pm6",
     "Agrammon::Outputs": "lib/Agrammon/Outputs.pm6",
     "Agrammon::Outputs::FilterGroupCollection": "lib/Agrammon/Outputs/FilterGroupCollection.pm6",
