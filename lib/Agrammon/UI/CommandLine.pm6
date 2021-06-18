@@ -15,6 +15,7 @@ use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
 use Agrammon::ResultCollector;
+use Agrammon::SubSets;
 use Agrammon::TechnicalParser;
 use Agrammon::Validation;
 use Agrammon::Web::APIRoutes;
@@ -132,14 +133,14 @@ multi sub MAIN('latex', Str $filename, Str $technical-file?, Str :$sections = 'd
                Str :$variants = 'Base', SortOrder :$sort = 'model', Str :$cfg) is export {
     my $model-name = ~$filename.IO.parent;
     my ($model, $module-path) = load-model($cfg, $filename, $variants);
-    my %technical-parameters = load-technical($module-path, $technical-file);
+    my %technical = load-technical($module-path, $technical-file);
 
     say create-latex-source(
         $model-name,
         $model,
         $sort,
         $sections,
-        technical => %technical-parameters
+        :%technical
     );
 }
 
@@ -210,16 +211,6 @@ sub load-model($cfg-filename, $model-filename, $variants? is copy ) {
         load-model-using-cache($*HOME.add('.agrammon'), $model-path, $module, preprocessor-options($variants));
     };
     return ($model, $module-path, $cfg, $db);
-}
-
-sub load-technical(IO::Path $module-path, Str $technical-file) {
-    my $tech-input = $technical-file // $module-path.parent.add('technical.cfg');
-    timed "Load parameters from $tech-input", {
-        my $params = parse-technical( $tech-input.IO.slurp );
-        %($params.technical.map(-> %module {
-            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-        }));
-    }
 }
 
 sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, $format, $language, @print-set,
@@ -321,8 +312,8 @@ sub get-cfg-and-db-handle($cfg-filename is copy) {
 sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export {
 
     # initialization
-    my ($model, $module-path, $cfg, $db) = load-model($cfg-filename, $model-filename);
-    my %technical-parameters = load-technical($module-path, $technical-file);
+    my ($model, $model-path, $cfg, $db) = load-model($cfg-filename, $model-filename);
+    my %technical-parameters = load-technical($model-path.IO.parent, $technical-file);
     my $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters);
 
     # setup and start web server
