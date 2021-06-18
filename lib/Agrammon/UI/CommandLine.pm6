@@ -127,36 +127,20 @@ multi sub MAIN('dump', Str $filename, Str :$variants = 'Base', SortOrder :$sort 
     say chomp $model.dump($sort);
 }
 
-#| Create documentation
-multi sub MAIN('latex', ExistingFile $filename, Str $technical-file?, Str :$sections = 'description', Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
-    latex $filename.IO, $technical-file, $variants, $sort, $sections;
-}
-
-#| Create LaTeX docu
-sub latex (IO::Path $path, $technical-file, $variants, $sort, $sections) is export {
-    die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
-
-    my $module-path = $path.parent;
-    my $module      = $path.extension('').basename;
-
-    my $tech-input = $technical-file // $module-path.add('technical.cfg');
-    my $params = parse-technical( $tech-input.IO.slurp );
-    $path.dirname ~~ / .* '/' (.+) /;
-    my $model-name = ~$0;
-    my $model = timed "Load $module of $module-path from cache", {
-        load-model-using-cache( $*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
-    };
+#| Create LaTeX documentation
+multi sub MAIN('latex', Str $filename, Str $technical-file?, Str :$sections = 'description',
+               Str :$variants = 'Base', SortOrder :$sort = 'model', Str :$cfg) is export {
+    my $model-name = ~$filename.IO.parent;
+    my ($model, $module-path) = load-model($cfg, $filename, $variants);
+    my %technical-parameters = load-technical($module-path, $technical-file);
 
     say create-latex-source(
         $model-name,
         $model,
         $sort,
         $sections,
-        technical => %($params.technical.map(-> %module {
-            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-        }))
+        technical => %technical-parameters
     );
-
 }
 
 #| Create Agrammon user
