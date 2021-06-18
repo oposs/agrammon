@@ -67,9 +67,9 @@ sub get-data($model, $outputs, $include-filters, @print-set, $language?) {
 }
 
 sub make-record($fq-name, $output, $model, $raw-value, $var, $order, $instance-id?, :$language, :@filters, :@print-set) {
-    my $var-print = $model.output-print($fq-name, $output);
     next unless $model.should-print($fq-name, $output, @print-set);
 
+    my $var-print = $model.output-print($fq-name, $output);
     my $format = $model.output-format($fq-name, $output);
     my $full-value = flat-value($raw-value);
     my $value = ($format  && $full-value.defined) ?? sprintf($format, $full-value)
