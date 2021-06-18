@@ -15,7 +15,6 @@ use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
 use Agrammon::ResultCollector;
-use Agrammon::SubSets;
 use Agrammon::TechnicalParser;
 use Agrammon::Validation;
 use Agrammon::Web::APIRoutes;
