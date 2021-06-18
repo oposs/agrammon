@@ -75,16 +75,16 @@ sub add-filters(Agrammon::Outputs::FilterGroupCollection $collection,
         $q-name, $fq-name, $unit, Str $prefix, Bool :$all-filters) {
     my @results = $collection.results-by-filter-group(:all($all-filters));
     for @results {
-        my %filters := .key;
+        my %filters   := .key;
         my $raw-value := .value;
-        my $filters = %filters.values.join(',');
-        my @filters = %filters.map: { .key ~ '=' ~ .value };
-        for (@filters || '(Uncategorized)') {
+        my @filters = %filters.map: { %(:filter(.key), :value(.value)) };
+        warn "CSV formatter must be extended for multiple filter groups" if @filters.elems > 1;
+        for (@filters || ( :value('Uncategorized') ) ) {
             my @data = (
                 |($prefix if $prefix),
                 $q-name,
                 $fq-name,
-                $filters,
+                .<value>,
                 flat-value($raw-value) // '',
                 $unit
             );
