@@ -1,4 +1,5 @@
 curl  \
+     -F "technical=technical2010.cfg" \
      -F "simulation=FritzTest" \
      -F "dataset=Hochrechung2021" \
      -F "format=text/plain" \

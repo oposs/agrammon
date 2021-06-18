@@ -34,8 +34,19 @@ sub api-routes(Agrammon::Web::Service $ws) is export {
             content 'application/json', { message => "Hello $user.firstname()" }
         }
 
+        get -> APIUser $user, 'model', 'technical', $filename {
+            content 'text/plain', $ws.get-technical($filename)
+        }
+
+        get -> APIUser $user, 'model', 'latex', :$technical, :$sort {
+            content 'text/plain', $ws.get-latex(:$technical, :$sort)
+        }
+
         post -> APIUser $user, 'run' {
-            request-body 'multipart/form-data' => -> (:$simulation!, :$dataset!, :$inputs!, :$language = 'de', :$format = 'text/plain', :$prints, :$all-filters = False, :$include-filters = False ) {
+            request-body 'multipart/form-data' => -> (
+                :$simulation!, :$technical='', :$dataset!, :$inputs!, :$language = 'de', :$format = 'text/plain',
+                :$prints, :$all-filters = False, :$include-filters = False
+            ) {
                 my $type = $inputs.content-type;
                 if $type ne 'text/csv' {
                     my $error = "Content type is '$type', must be 'text/csv'";
@@ -43,10 +54,11 @@ sub api-routes(Agrammon::Web::Service $ws) is export {
                     bad-request 'application/json', %( error => $error );
                 }
                 else {
-                    note "simulation=$simulation, dataset=$dataset, format=$format, prints=$prints";
                     my $data = $inputs.body-text;
-                    my $results = $ws.get-outputs-from-csv($user, ~$simulation, ~$dataset, $data, $include-filters, :$language, :$format, :$prints, :$all-filters);
-#                    dd $results;
+                    my $results = $ws.get-outputs-from-csv(
+                        $user, ~$simulation, ~$dataset, $data, $include-filters,
+                        :technical-file(~$technical), :$language, :$format, :$prints, :$all-filters
+                    );
                     content ~$format, supply {
                         emit $results.encode('utf8');
                     };
