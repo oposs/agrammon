@@ -82,7 +82,7 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technica
         else {
             for %results.kv -> $simulation, %sim-results {
                 @output.push("### Simulation $simulation");
-                @output.push("##  Print filter: $prints") if $prints;
+                @output.push("##  Print filter: $print-only") if $print-only;
                 for %sim-results.keys.sort -> $dataset {
                     @output.push("#   Dataset $dataset");
                     @output.push(%sim-results{$dataset});
