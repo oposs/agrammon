@@ -227,7 +227,7 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
 
     my ($model, $module-path) = load-model($cfg-filename, $model-filename, $variants);
 
-    my %technical-parameters = load-technical($module-path, $technical-file);
+    my %technical = load-technical($module-path, $technical-file);
 
     my $fh = get-input-filehandle($input-path);
     LEAVE $fh.?close;
@@ -236,17 +236,14 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
     my $rc = Agrammon::ResultCollector.new;
     my atomicint $n = 0;
     my class X::EarlyFinish is Exception {}
-    race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
+    race for $ds.read($fh).race(:$batch, :$degree) -> $input {
         my $my-n = ++⚛$n;
-        if validation-errors($model, $dataset) -> @validation-errors {
-            $rc.add-validation-errors($dataset.simulation-name, $dataset.dataset-id, @validation-errors);
+        if validation-errors($model, $input) -> @validation-errors {
+            $rc.add-validation-errors($input.simulation-name, $input.dataset-id, @validation-errors);
         }
         else {
             my $outputs = timed "$my-n: Run $input-path", {
-                $model.run(
-                        input => $dataset,
-                        technical => %technical-parameters,
-                        );
+                $model.run(:$input, :%technical);
             }
 
             timed "Create output", {
@@ -254,7 +251,7 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
                 given $format {
                     when 'csv' {
                         $result = output-as-csv(
-                            $dataset.simulation-name, $dataset.dataset-id, $model,
+                            $input.simulation-name, $input.dataset-id, $model,
                             $outputs, $language, @print-set, $include-filters, :$all-filters
                         );
                     }
@@ -269,7 +266,7 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
                         );
                     }
                 }
-                $rc.add-result($dataset.simulation-name, $dataset.dataset-id, $result);
+                $rc.add-result($input.simulation-name, $input.dataset-id, $result);
             };
         }
         if $max-runs and $my-n == $max-runs {
