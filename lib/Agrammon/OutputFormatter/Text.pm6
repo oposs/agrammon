@@ -1,73 +1,79 @@
 use v6;
 use Agrammon::Model;
 use Agrammon::Outputs;
+use Agrammon::Outputs::FilterGroupCollection;
+use Agrammon::OutputFormatter::Util;
 
 sub output-as-text(
     Agrammon::Model $model,
     Agrammon::Outputs $outputs,
-    Str $language, Str $reports-selected,
-    Bool $include-filters, Bool :$all-filters = False, --> Str
+    Str $language,
+    @print-set,
+    Bool $include-filters,
+    Bool :$all-filters = False --> Str
 ) is export {
     my @lines;
-    my @print-set = $reports-selected.split(',') if defined $reports-selected;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
-        my $n = 0;
-        my @module-lines;
+        my @output-lines;
+        my @title-lines;
         my $indent = '    ';
-        push @module-lines, $module;
+        push @title-lines, $module;
         when Hash {
             for sorted-kv($_) -> $output, $value {
+                next unless $model.should-print($module, $output, @print-set);
+
                 my $val = flat-value($value // 'UNDEFINED');
-                my $var-print = $model.output-print($module, $output) ~ ',All';
-                if not defined $reports-selected or $var-print.split(',') ∩ @print-set {
-                    $n++;
-                    my $unit = $model.output-unit($module, $output, $language);
-                    push @module-lines, "    $output = $val $unit";
-                    if $include-filters {
-                        if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
-                            render-filters(@module-lines, $value, $unit, $indent, :$all-filters);
-                        }
+                my $unit = $model.output-unit($module, $output, $language);
+                if $unit {
+                    push @output-lines, "    $output = $val $unit";
+                }
+                else {
+                    push @output-lines, "    $output = $val";
+                }
+                if $include-filters {
+                    if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
+                        add-filters(@output-lines, $value, $unit, $indent, :$all-filters);
                     }
                 }
             }
+            @lines.append: |@title-lines, |@output-lines if @output-lines;
         }
         when Array {
+            my @subtitle-lines;
+            @output-lines = [];
             for sorted-kv($_) -> $instance-id, %instance-outputs {
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
                     my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
-                    push @module-lines, "    $q-name";
+                    push @subtitle-lines, "    $q-name";
                     for sorted-kv(%values) -> $output, $value {
+                        next unless $model.should-print($fq-name, $output, @print-set);
+
                         my $val = flat-value($value // 'UNDEFINED');
-                        my $var-print = $model.output-print($module, $output) ~ ',All';
-                        if not defined $reports-selected or $var-print.split(',') ∩ @print-set {
-                            $n++;
-                            my $unit = $model.output-unit($module, $output, $language);
-                            push @module-lines, "        $output = $val $unit";
-                            if $include-filters {
-                                if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
-                                    render-filters(@module-lines, $value, $unit, $indent, :$all-filters);
-                                }
+                        my $unit = $model.output-unit($module, $output, $language);
+                        if $unit {
+                            push @output-lines, "        $output = $val $unit";
+                        }
+                        else {
+                            push @output-lines, "        $output = $val";
+                        }
+                        if $include-filters {
+                            if $value ~~ Agrammon::Outputs::FilterGroupCollection && $value.has-filters {
+                                add-filters(@output-lines, $value, $unit, $indent, :$all-filters);
                             }
                         }
                     }
+                    NEXT {
+                        @lines.append: |@title-lines, |@subtitle-lines, |@output-lines if @output-lines;
+                        @title-lines =  @subtitle-lines = @output-lines = [];
+                    }
                 }
-            }
-        }
-        NEXT {
-            @lines.append: @module-lines if $n;
+           }
         }
     }
     return @lines.join("\n");
 }
 
-multi sub flat-value($value) {
-    $value
-}
-multi sub flat-value(Agrammon::Outputs::FilterGroupCollection $collection) {
-    +$collection
-}
-
-sub render-filters(@module-lines, Agrammon::Outputs::FilterGroupCollection $collection,
+sub add-filters(@module-lines, Agrammon::Outputs::FilterGroupCollection $collection,
         $unit, Str $prefix, Bool :$all-filters) {
     my @results = $collection.results-by-filter-group(:all($all-filters));
     my $longest-filter = @results.map({ .key.map({ .key.chars + .value.chars }) }).flat.max + 1;
@@ -82,8 +88,4 @@ sub render-filters(@module-lines, Agrammon::Outputs::FilterGroupCollection $coll
                     !! "$prefix    $filter-id";
         }
     }
-}
-
-sub sorted-kv($_) {
-    .sort(*.key).map({ |.kv })
 }

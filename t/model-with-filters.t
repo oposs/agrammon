@@ -4,6 +4,10 @@ use Agrammon::Model;
 use Agrammon::Model::Parameters;
 use Agrammon::Outputs::FilterGroupCollection;
 use Agrammon::TechnicalParser;
+use Agrammon::OutputFormatter::CSV;
+use Agrammon::OutputFormatter::JSON;
+use Agrammon::OutputFormatter::Text;
+use JSON::Fast;
 
 use Test;
 
@@ -138,6 +142,251 @@ subtest 'Running the model produces output instances with filters' => {
                 352.7111423399035e0,
                 'Correct nh3_nanimalproduction result';
     }
+
+    subtest 'Output formatters with filter groups' => {
+        my $include-filters = True;
+        my @print-set = <LivestockTotal OtherPigFlux>;
+
+        my $csv = output-as-csv('Demo', 'Test', $model, $output, "en", @print-set, $include-filters) ~ "\n";
+        is $csv, q:to/OUTPUT/, 'Correct CSV output';
+            Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;;141.003688;kg N/year
+            Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;nursing_sows;88.156444;kg N/year
+            Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;dry_sows;0;kg N/year
+            Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;weaned_piglets_up_to_25kg;20.826;kg N/year
+            Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;boars;32.021244;kg N/year
+            Demo;Test;Total;nh3_nanimalproduction;;352.7111423399035;kg N/year
+            OUTPUT
+
+        my $text = output-as-text($model, $output, "en", @print-set, $include-filters) ~ "\n";
+        is $text, q:to/OUTPUT/, 'Correct text output';
+            SummaryByAnimalCategory
+                n_excretion_otherpig = 141.003688 kg N/year
+                  * Livestock::Pig::Excretion::animalcategory=nursing_sows                 88.156444 kg N/year
+                  * Livestock::Pig::Excretion::animalcategory=dry_sows                     0 kg N/year
+                  * Livestock::Pig::Excretion::animalcategory=weaned_piglets_up_to_25kg    20.826 kg N/year
+                  * Livestock::Pig::Excretion::animalcategory=boars                        32.021244 kg N/year
+            Total
+                nh3_nanimalproduction = 352.7111423399035 kg N/year
+            OUTPUT
+
+        my $json = output-as-json($model, $output, "en", @print-set, $include-filters);
+        is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
+            [
+              {
+                "filters": [
+                ],
+                "format": "%.0f",
+                "fullValue": 141.003688,
+                "label": null,
+                "order": -1,
+                "print": "OtherPigFlux",
+                "unit": "kg N/year",
+                "value": "141",
+                "var": "SummaryByAnimalCategory::n_excretion_otherpig"
+              },
+              {
+                "filters": [
+                  {
+                    "enum": {
+                      "de": "Säugende Sauen",
+                      "en": "nursing sows",
+                      "fr": "Truies allaitantes",
+                      "it": "nursing sows"
+                    },
+                    "label": {
+                      "de": "Tierkategorie",
+                      "en": "Animal category",
+                      "fr": "Catégorie d'animaux"
+                    }
+                  }
+                ],
+                "format": "%.0f",
+                "fullValue": 88.156444,
+                "labels": {
+                },
+                "order": -1,
+                "print": "OtherPigFlux",
+                "units": {
+                  "de": "kg N/Jahr",
+                  "en": "kg N/year",
+                  "fr": "kg N/an"
+                },
+                "value": "88",
+                "var": "SummaryByAnimalCategory::n_excretion_otherpig"
+              },
+              {
+                "filters": [
+                  {
+                    "enum": {
+                      "de": "Galtsauen",
+                      "en": "dry sows",
+                      "fr": "Truies gestantes",
+                      "it": "dry sows"
+                    },
+                    "label": {
+                      "de": "Tierkategorie",
+                      "en": "Animal category",
+                      "fr": "Catégorie d'animaux"
+                    }
+                  }
+                ],
+                "format": "%.0f",
+                "fullValue": 0.0,
+                "labels": {
+                },
+                "order": -1,
+                "print": "OtherPigFlux",
+                "units": {
+                  "de": "kg N/Jahr",
+                  "en": "kg N/year",
+                  "fr": "kg N/an"
+                },
+                "value": "0",
+                "var": "SummaryByAnimalCategory::n_excretion_otherpig"
+              },
+              {
+                "filters": [
+                  {
+                    "enum": {
+                      "de": "Ferkel abgesetzt bis 25 kg",
+                      "en": "weaned piglets up to 25kg",
+                      "fr": "Porcelets sevrés jusqu' à 25 kg",
+                      "it": "weaned piglets up to 25kg"
+                    },
+                    "label": {
+                      "de": "Tierkategorie",
+                      "en": "Animal category",
+                      "fr": "Catégorie d'animaux"
+                    }
+                  }
+                ],
+                "format": "%.0f",
+                "fullValue": 20.826,
+                "labels": {
+                },
+                "order": -1,
+                "print": "OtherPigFlux",
+                "units": {
+                  "de": "kg N/Jahr",
+                  "en": "kg N/year",
+                  "fr": "kg N/an"
+                },
+                "value": "21",
+                "var": "SummaryByAnimalCategory::n_excretion_otherpig"
+              },
+              {
+                "filters": [
+                  {
+                    "enum": {
+                      "de": "Eber",
+                      "en": "boars",
+                      "fr": "Verrats",
+                      "it": "boars"
+                    },
+                    "label": {
+                      "de": "Tierkategorie",
+                      "en": "Animal category",
+                      "fr": "Catégorie d'animaux"
+                    }
+                  }
+                ],
+                "format": "%.0f",
+                "fullValue": 32.021244,
+                "labels": {
+                },
+                "order": -1,
+                "print": "OtherPigFlux",
+                "units": {
+                  "de": "kg N/Jahr",
+                  "en": "kg N/year",
+                  "fr": "kg N/an"
+                },
+                "value": "32",
+                "var": "SummaryByAnimalCategory::n_excretion_otherpig"
+              },
+              {
+                "filters": [
+                ],
+                "format": "%.0f",
+                "fullValue": 352.7111423399035e0,
+                "label": "Total Animalproduction NH3-Emissions",
+                "order": "890",
+                "print": "LivestockTotal",
+                "unit": "kg N/year",
+                "value": "353",
+                "var": "Total::nh3_nanimalproduction"
+              }
+            ]
+            OUTPUT
+
+        # output-for-gui is not filtered by @print-set and thus gets all outputs
+        # we just compare a few to cover filters and no filters
+        my $gui = output-for-gui($model, $output, :language("en"), :$include-filters);
+        is to-json($gui<data>[^3], :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct GUI output";
+            [
+              {
+                "filters": [
+                ],
+                "format": "%.0f",
+                "fullValue": 961.003688,
+                "label": "Total N excretion",
+                "order": "101",
+                "print": "FluxSummaryLivestock",
+                "unit": "kg N/year",
+                "value": "961",
+                "var": "Livestock::n_excretion"
+              },
+              {
+                "filters": [
+                ],
+                "format": "%.0f",
+                "fullValue": 590.702582,
+                "label": "Total soluble N excretion",
+                "order": "101",
+                "print": "TANFlux",
+                "unit": "kg TAN/year",
+                "value": "591",
+                "var": "Livestock::tan_excretion"
+              },
+              {
+                "filters": [
+                  {
+                    "enum": {
+                      "de": "Säugende Sauen",
+                      "en": "nursing sows",
+                      "fr": "Truies allaitantes",
+                      "it": "nursing sows"
+                    },
+                    "label": {
+                      "de": "Tierkategorie",
+                      "en": "Animal category",
+                      "fr": "Catégorie d'animaux"
+                    }
+                  }
+                ],
+                "format": "%.0f",
+                "fullValue": 61.709511,
+                "labels": {
+                  "de": "Total Nlös Ausscheidung",
+                  "en": "Total soluble N excretion",
+                  "fr": "Excrétion de TAN totale",
+                  "sort": "101"
+                },
+                "order": "101",
+                "print": "TANFlux",
+                "units": {
+                  "de": "kg TAN/Jahr",
+                  "en": "kg TAN/year",
+                  "fr": "kg TAN/an"
+                },
+                "value": "62",
+                "var": "Livestock::tan_excretion"
+              }
+            ]
+            OUTPUT
+
+    }
+
 }
 
 done-testing;

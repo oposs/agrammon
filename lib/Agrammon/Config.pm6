@@ -20,6 +20,10 @@ class Agrammon::Config {
         %!translations = self!get-translations;
     }
 
+    method model-path {
+        %!model<path>
+    }
+
     method gui-variant {
         %!gui<variant>;
     }

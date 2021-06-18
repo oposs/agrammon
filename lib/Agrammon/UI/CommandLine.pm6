@@ -34,7 +34,7 @@ subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --
 subset OutputFormat of Str where { $_ ~~ /^ csv|json|text $/ or note("ERROR: --format=[csv|json|text]") && exit 1 };
 
 #| Start the web interface
-multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, Str $technical-file?) is export {
+multi sub MAIN('web', ExistingFile $cfg-filename, Str $model-filename, Str $technical-file?) is export {
     my $http = web($cfg-filename, $model-filename, $technical-file);
     react {
         whenever signal(SIGINT) {
@@ -46,20 +46,22 @@ multi sub MAIN('web', ExistingFile $cfg-filename, ExistingFile $model-filename, 
 }
 
 #| Run the model
-multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technical-file?,
-               SupportedLanguage :$language = 'de', Str :$prints, Str :$variants = 'Base',
+multi sub MAIN('run', Str $filename, ExistingFile $input, Str $technical-file?,
+               Str :$cfg,
+               SupportedLanguage :$language = 'de', Str :$print-only, Str :$variants = 'Base',
                Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
                OutputFormat :$format = 'text'
               ) is export {
-    my $data = run $filename.IO, $input.IO, $technical-file, $variants, $format, $language, $prints,
+    my @print-set = $print-only.split(',') if $print-only;
+    my $data = run $filename, $input.IO, $technical-file, $variants, $format, $language, @print-set,
             ($include-filters or $include-all-filters),
-            $batch, $degree, $max-runs, :all-filters($include-all-filters);
+            $batch, $degree, $max-runs, :all-filters($include-all-filters), :cfg-filename($cfg);
     my %results := $data.results;
     my %validation-errors := $data.validation-errors;
 
     my $output;
     if $format eq 'json' {
-        $output = to-json $data;
+        $output = to-json $data.results;
     }
     else {
         my @output;
@@ -81,7 +83,7 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technica
         else {
             for %results.kv -> $simulation, %sim-results {
                 @output.push("### Simulation $simulation");
-                @output.push("##  Print filter: $prints") if $prints;
+                @output.push("##  Print filter: $print-only") if $print-only;
                 for %sim-results.keys.sort -> $dataset {
                     @output.push("#   Dataset $dataset");
                     @output.push(%sim-results{$dataset});
@@ -94,11 +96,12 @@ multi sub MAIN('run', ExistingFile $filename, ExistingFile $input, Str $technica
 }
 
 #| Validate inputs
-multi sub MAIN('validate', ExistingFile $filename, ExistingFile $input, SupportedLanguage :$language = 'de', Str :$variants = 'Base',
+multi sub MAIN('validate', Str $filename, ExistingFile $input, Str :$cfg,
+               SupportedLanguage :$language = 'de', Str :$variants = 'Base',
                Int :$batch=1, Int :$degree=4, Int :$max-runs
               ) is export {
-    my %validation-errors = validate $filename.IO, $input.IO, $variants,
-            $batch, $degree, $max-runs;
+    my %validation-errors = validate $filename, $input.IO, $variants,
+            $batch, $degree, $max-runs, :cfg-filename($cfg);
     my @output;
     @output.push("##  Model: $filename");
     @output.push("##  Variants: $variants");
@@ -118,42 +121,26 @@ multi sub MAIN('validate', ExistingFile $filename, ExistingFile $input, Supporte
     say @output.join("\n");
 }
 
-
 #| Dump model
-multi sub MAIN('dump', ExistingFile $filename, Str :$variants = 'SHL', SortOrder :$sort = 'model') is export {
-    say chomp dump-model $filename.IO, $variants, $sort;
+multi sub MAIN('dump', Str $filename, Str :$variants = 'Base', SortOrder :$sort = 'model', Str :$cfg,) is export {
+    my ($model) = load-model($cfg, $filename, $variants);
+    say chomp $model.dump($sort);
 }
 
-#| Create documentation
-multi sub MAIN('latex', ExistingFile $filename, Str $technical-file?, Str :$sections = 'description', Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
-    latex $filename.IO, $technical-file, $variants, $sort, $sections;
-}
-
-#| Create LaTeX docu
-sub latex (IO::Path $path, $technical-file, $variants, $sort, $sections) is export {
-    die "ERROR: latex expects a .nhd file" unless $path.extension eq 'nhd';
-
-    my $module-path = $path.parent;
-    my $module      = $path.extension('').basename;
-
-    my $tech-input = $technical-file // $module-path.add('technical.cfg');
-    my $params = parse-technical( $tech-input.IO.slurp );
-    $path.dirname ~~ / .* '/' (.+) /;
-    my $model-name = ~$0;
-    my $model = timed "Load $module of $module-path from cache", {
-        load-model-using-cache( $*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
-    };
+#| Create LaTeX documentation
+multi sub MAIN('latex', Str $filename, Str $technical-file?, Str :$sections = 'description',
+               Str :$variants = 'Base', SortOrder :$sort = 'model', Str :$cfg) is export {
+    my $model-name = ~$filename.IO.parent;
+    my ($model, $module-path) = load-model($cfg, $filename, $variants);
+    my %technical-parameters = load-technical($module-path, $technical-file);
 
     say create-latex-source(
         $model-name,
         $model,
         $sort,
         $sections,
-        technical => %($params.technical.map(-> %module {
-            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-        }))
+        technical => %technical-parameters
     );
-
 }
 
 #| Create Agrammon user
@@ -209,36 +196,38 @@ sub issue-api-token($cfg-filename, $username) {
     note "Issued token $token.token()";
 }
 
-sub dump-model (IO::Path $path, $variants, $sort) is export {
-    die "ERROR: dump expects a .nhd file" unless $path.extension eq 'nhd';
+sub load-model($cfg-filename, $model-filename, $variants? is copy ) {
+    die "ERROR: run expects a .nhd file" unless $model-filename.IO.extension eq 'nhd';
+    my ($cfg, $db) = get-cfg-and-db-handle($cfg-filename);
+    $variants //= $cfg.model-variant;
 
-    my $module-path = $path.parent;
-    my $module      = $path.extension('').basename;
+    my $module-path = $cfg.model-path.IO.add($model-filename);
+    die "Model not found at $module-path" unless $module-path.e;
 
-    my $model = timed "load $module", {
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
+    my $model = timed "Load model variant $variants from $module-path", {
+        my $module     = $module-path.extension('').basename;
+        my $model-path = $module-path.parent;
+        load-model-using-cache($*HOME.add('.agrammon'), $model-path, $module, preprocessor-options($variants));
     };
-    return $model.dump($sort);
+    return ($model, $module-path, $cfg, $db);
 }
 
-sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $format, $language, $prints,
-         Bool $include-filters, $batch, $degree, $max-runs, :$all-filters) is export {
-    die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
-
-    my $module-path = $path.parent;
-    my $module      = $path.extension('').basename;
-
-    my $tech-input = $technical-file // $module-path.add('technical.cfg');
-    my %technical-parameters = timed "Load parameters from $tech-input", {
+sub load-technical(IO::Path $module-path, Str $technical-file) {
+    my $tech-input = $technical-file // $module-path.parent.add('technical.cfg');
+    timed "Load parameters from $tech-input", {
         my $params = parse-technical( $tech-input.IO.slurp );
         %($params.technical.map(-> %module {
-                %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
         }));
     }
+}
 
-    my $model = timed "Load $module", {
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
-    };
+sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, $format, $language, @print-set,
+         Bool $include-filters, $batch, $degree, $max-runs, :$all-filters, Str :$cfg-filename) {
+
+    my ($model, $module-path) = load-model($cfg-filename, $model-filename, $variants);
+
+    my %technical = load-technical($module-path, $technical-file);
 
     my $fh = get-input-filehandle($input-path);
     LEAVE $fh.?close;
@@ -247,41 +236,37 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
     my $rc = Agrammon::ResultCollector.new;
     my atomicint $n = 0;
     my class X::EarlyFinish is Exception {}
-    race for $ds.read($fh).race(:$batch, :$degree) -> $dataset {
+    race for $ds.read($fh).race(:$batch, :$degree) -> $input {
         my $my-n = ++⚛$n;
-        if validation-errors($model, $dataset) -> @validation-errors {
-            $rc.add-validation-errors($dataset.simulation-name, $dataset.dataset-id, @validation-errors);
+        if validation-errors($model, $input) -> @validation-errors {
+            $rc.add-validation-errors($input.simulation-name, $input.dataset-id, @validation-errors);
         }
         else {
             my $outputs = timed "$my-n: Run $input-path", {
-                $model.run(
-                        input => $dataset,
-                        technical => %technical-parameters,
-                        );
+                $model.run(:$input, :%technical);
             }
 
             timed "Create output", {
                 my $result;
                 given $format {
                     when 'csv' {
-                        die "CSV output including filters is not yet supported" if $include-filters;
                         $result = output-as-csv(
-                                $dataset.simulation-name, $dataset.dataset-id, $model,
-                                $outputs, $language, :$all-filters
-                                                                             );
+                            $input.simulation-name, $input.dataset-id, $model,
+                            $outputs, $language, @print-set, $include-filters, :$all-filters
+                        );
                     }
                     when 'json' {
                         $result = output-as-json(
-                                $model, $outputs, $language, $prints, $include-filters, :$all-filters
-                                                                              );
+                            $model, $outputs, $language, @print-set, $include-filters, :$all-filters
+                        );
                     }
                     when 'text' {
                         $result = output-as-text(
-                                $model, $outputs, $language, $prints, $include-filters, :$all-filters
-                                                                              );
+                            $model, $outputs, $language, @print-set, $include-filters, :$all-filters
+                        );
                     }
                 }
-                $rc.add-result($dataset.simulation-name, $dataset.dataset-id, $result);
+                $rc.add-result($input.simulation-name, $input.dataset-id, $result);
             };
         }
         if $max-runs and $my-n == $max-runs {
@@ -295,15 +280,8 @@ sub run (IO::Path $path, IO::Path $input-path, $technical-file, $variants, $form
     }
 }
 
-sub validate (IO::Path $path, IO::Path $input-path, $variants, $batch, $degree, $max-runs) is export {
-    die "ERROR: run expects a .nhd file" unless $path.extension eq 'nhd';
-
-    my $module-path = $path.parent;
-    my $module      = $path.extension('').basename;
-
-    my $model = timed "Load $module", {
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
-    };
+sub validate (Str $model-filename, IO::Path $input-path, $variants, $batch, $degree, $max-runs, Str :$cfg-filename) is export {
+    my ($model) = load-model($cfg-filename, $model-filename, $variants);
 
     my $fh = get-input-filehandle($input-path);
     LEAVE $fh.?close;
@@ -329,8 +307,11 @@ sub validate (IO::Path $path, IO::Path $input-path, $variants, $batch, $degree, 
     }
 }
 
-sub get-cfg-and-db-handle(Str $cfg-filename) {
+sub get-cfg-and-db-handle($cfg-filename is copy) {
     my $cfg = Agrammon::Config.new;
+    $cfg-filename //= %*ENV<AGRAMMON_CFG> || 'etc/agrammon.cfg.yaml';
+    die "Config file $cfg-filename not found" unless $cfg-filename.IO.e;
+    note "Loading config from $cfg-filename";
     $cfg.load($cfg-filename);
     my $db = DB::Pg.new(conninfo => $cfg.db-conninfo);
     PROCESS::<$AGRAMMON-DB-CONNECTION> = $db;
@@ -340,28 +321,8 @@ sub get-cfg-and-db-handle(Str $cfg-filename) {
 sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export {
 
     # initialization
-    note "Loading config from $cfg-filename";
-    my ($cfg, $db) = get-cfg-and-db-handle($cfg-filename);
-    my $variants = $cfg.model-variant;
-
-    my $model-path = $model-filename.IO;
-    die "ERROR: web expects a .nhd file" unless $model-path.extension eq 'nhd';
-
-    note "Running model variant $variants from $model-path";
-    my $module-path = $model-path.parent;
-    my $module = $model-path.IO.extension('').basename;
-    my $tech-input = $technical-file // $module-path.add('technical.cfg');
-    my %technical-parameters = timed "Load parameters from $tech-input", {
-        my $params = parse-technical($tech-input.IO.slurp);
-        %($params.technical.map(-> %module {
-            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-        }));
-    }
-
-    my $model = timed "Load model from $module-path/$module.nhd", {
-        load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module, preprocessor-options($variants));
-    }
-
+    my ($model, $module-path, $cfg, $db) = load-model($cfg-filename, $model-filename);
+    my %technical-parameters = load-technical($module-path, $technical-file);
     my $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters);
 
     # setup and start web server

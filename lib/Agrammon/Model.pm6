@@ -216,6 +216,7 @@ class Agrammon::Model {
     has ModuleRunner $!entry-point;
     has %!output-unit-cache;
     has %!output-print-cache;
+    has %!output-print-str-cache;
     has %!output-format-cache;
     has %!output-labels-cache;
     has %!output-order-cache;
@@ -446,10 +447,17 @@ class Agrammon::Model {
     }
 
     method output-print(Str $module, Str $output) {
-        %!output-print-cache ||= @!evaluation-order.map({
+        %!output-print-str-cache ||= @!evaluation-order.map({
             .taxonomy => %(.output.map({ .name => .print }))
         });
-        return %!output-print-cache{$module}{$output} // ''
+        return %!output-print-str-cache{$module}{$output} // ''
+    }
+
+    method should-print(Str $module, Str $output, @print-set) {
+        %!output-print-cache ||= @!evaluation-order.map({
+            .taxonomy => %(.output.map({ .name => (.split(',').List with .print) }))
+        });
+        !@print-set or ( %!output-print-cache{$module}{$output} ) ∩ @print-set
     }
 
     method output-format(Str $module, Str $output) {
