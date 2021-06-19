@@ -9,6 +9,7 @@ use Agrammon::DB::Tags;
 use Agrammon::Documentation;
 use Agrammon::Email;
 use Agrammon::Model;
+use Agrammon::ModelCache;
 use Agrammon::OutputsCache;
 use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::Excel;
@@ -225,14 +226,26 @@ class Agrammon::Web::Service {
 
     method get-outputs-from-csv(
         Agrammon::DB::User $user, Str $simulation-name, Str $dataset-name, $csv-data, $include-filters,
-        :$language, :$format, :$prints, :$all-filters, :$technical-file
+        :$language, :$format, :$prints, :$all-filters, :$technical-file, :$model-version, :$variants = 'Base'
     ) {
         my $input = Agrammon::DataSource::CSV.new.from-csv($simulation-name, $dataset-name, $csv-data);
 
+        my $model;
+        if $model-version {
+            my $model-top   = $!cfg.model-top;
+            my $model-path  = self.model.path.IO.parent.add($model-version).add($model-top);
+            my $module      = $model-path.extension('').basename;
+            my $module-path = $model-path.parent;
+            $model = timed "Load model variant $variants from $model-path", {
+                load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module);
+            };
+        }
+        else {
+            $model = $!model;
+        }
         my %technical;
         if $technical-file {
-            my $model-path = self.model.path;
-            %technical = load-technical($model-path, $technical-file);
+            %technical = load-technical(self.model.-path, $technical-file);
         }
         else {
             %technical = %!technical-parameters;

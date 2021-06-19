@@ -204,9 +204,9 @@ sub load-model($cfg-filename, $model-filename, $variants? is copy ) {
     my $module-path = $cfg.model-path.IO.add($model-filename);
     die "Model not found at $module-path" unless $module-path.e;
 
+    my $module     = $module-path.extension('').basename;
+    my $model-path = $module-path.parent;
     my $model = timed "Load model variant $variants from $module-path", {
-        my $module     = $module-path.extension('').basename;
-        my $model-path = $module-path.parent;
         load-model-using-cache($*HOME.add('.agrammon'), $model-path, $module, preprocessor-options($variants));
     };
     return ($model, $module-path, $cfg, $db);
@@ -309,7 +309,6 @@ sub get-cfg-and-db-handle($cfg-filename is copy) {
 }
 
 sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export {
-
     # initialization
     my ($model, $model-path, $cfg, $db) = load-model($cfg-filename, $model-filename);
     my %technical-parameters = load-technical($model-path.IO.parent, $technical-file);

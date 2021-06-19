@@ -44,7 +44,7 @@ sub api-routes(Agrammon::Web::Service $ws) is export {
 
         post -> APIUser $user, 'run' {
             request-body 'multipart/form-data' => -> (
-                :$simulation!, :$technical='', :$dataset!, :$inputs!, :$language = 'de', :$format = 'text/plain',
+                :$simulation!, :$technical='', :$model, :$variants, :$dataset!, :$inputs!, :$language = 'de', :$format = 'text/plain',
                 :$prints, :$all-filters = False, :$include-filters = False
             ) {
                 my $type = $inputs.content-type;
@@ -57,7 +57,8 @@ sub api-routes(Agrammon::Web::Service $ws) is export {
                     my $data = $inputs.body-text;
                     my $results = $ws.get-outputs-from-csv(
                         $user, ~$simulation, ~$dataset, $data, $include-filters,
-                        :technical-file(~$technical), :$language, :$format, :$prints, :$all-filters
+                        :technical-file(~$technical), :model-version($model), :$variants,
+                        :$language, :$format, :$prints, :$all-filters
                     );
                     content ~$format, supply {
                         emit $results.encode('utf8');

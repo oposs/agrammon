@@ -1,4 +1,5 @@
 curl  \
+     -F "model=version6" \
      -F "technical=technical2010.cfg" \
      -F "simulation=FritzTest" \
      -F "dataset=Hochrechung2021" \
