@@ -245,7 +245,7 @@ class Agrammon::Web::Service {
         }
         my %technical;
         if $technical-file {
-            %technical = load-technical(self.model.-path, $technical-file);
+            %technical = load-technical(self.model.path, $technical-file);
         }
         else {
             %technical = %!technical-parameters;
