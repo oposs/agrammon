@@ -27,42 +27,56 @@ my class AgrammonAPITokenMiddleware does Cro::APIToken::Middleware {
 }
 
 sub api-routes(Agrammon::Web::Service $ws) is export {
+    my $schema = 'share/agrammon-rest.openapi';
     route {
+        if %*ENV<AGRAMMON_DEBUG> {
+            before {
+                # Consume and re-instate request.
+                my $blob = await request.body-blob;
+                request.set-body($blob);
+                # Dump.
+                my $req = ~request;
+                try $req ~= $blob.decode('utf-8');
+                note "request=$req";
+            }
+        }
         before AgrammonAPITokenMiddleware.new(manager => get-api-token-manager());
 
-        get -> APIUser $user, 'greet' {
-            content 'application/json', { message => "Hello $user.firstname()" }
-        }
+        openapi $schema.IO, {
+            operation 'greetUser', -> APIUser $user {
+                note 'greetUser';
+                content 'application/json', { message => "Hello $user.firstname()" }
+            }
+            operation 'getLatex', -> APIUser $user, :$technical, :$sort {
+                content 'text/plain', $ws.get-latex(:$technical, :$sort)
+            }
 
-        get -> APIUser $user, 'model', 'technical', $filename {
-            content 'text/plain', $ws.get-technical($filename)
-        }
+            operation 'getTechnical', -> APIUser $user, :$technical {
+                content 'text/plain', $ws.get-technical($technical)
+            }
 
-        get -> APIUser $user, 'model', 'latex', :$technical, :$sort {
-            content 'text/plain', $ws.get-latex(:$technical, :$sort)
-        }
-
-        post -> APIUser $user, 'run' {
-            request-body 'multipart/form-data' => -> (
-                :$simulation!, :$technical='', :$model, :$variants, :$dataset!, :$inputs!, :$language = 'de', :$format = 'text/plain',
-                :$prints, :$all-filters = False, :$include-filters = False
-            ) {
-                my $type = $inputs.content-type;
-                if $type ne 'text/csv' {
-                    my $error = "Content type is '$type', must be 'text/csv'";
-                    note $error;
-                    bad-request 'application/json', %( error => $error );
-                }
-                else {
-                    my $data = $inputs.body-text;
-                    my $results = $ws.get-outputs-from-csv(
-                        $user, ~$simulation, ~$dataset, $data, $include-filters,
-                        :technical-file(~$technical), :model-version($model), :$variants,
-                        :$language, :$format, :$prints, :$all-filters
-                    );
-                    content ~$format, supply {
-                        emit $results.encode('utf8');
-                    };
+            operation 'runSimulation', -> APIUser $user {
+                request-body 'multipart/form-data' => -> (
+                    :$simulation!, :$technical='', :$model, :$variants, :$dataset!, :$inputs!, :$language = 'de', :$format = 'text/plain',
+                    :$prints, :$all-filters = False, :$include-filters = False
+                ) {
+                    my $type = $inputs.content-type;
+                    if $type ne 'text/csv' {
+                        my $error = "Content type is '$type', must be 'text/csv'";
+                        note $error;
+                        bad-request 'application/json', %( error => $error );
+                    }
+                    else {
+                        my $data = $inputs.body-text;
+                        my $results = $ws.get-outputs-from-csv(
+                            $user, ~$simulation, ~$dataset, $data, $include-filters,
+                            :technical-file(~$technical), :model-version($model), :$variants,
+                            :$language, :$format, :$prints, :$all-filters
+                        );
+                        content ~$format, supply {
+                            emit $results.encode('utf8');
+                        };
+                    }
                 }
             }
         }

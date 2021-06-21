@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+    version: 1.0.0,
+    title: OpenApi Agrammon REST,
+paths:
+    /greet:
+        get:
+            summary: Greet REST user
+            operationId: greetUser
+            responses:
+                '200':
+                    description: Greet user.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required:
+                                    - message
+                                properties:
+                                    message:
+                                        type: string
+                '401':
+                    description: Not authorized.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Unauthorized"
+    /api/v1/greet2:
+        get:
+            summary: Greet REST user
+            operationId: greetUser
+            responses:
+                '200':
+                    description: Greet user.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required:
+                                    - message
+                                properties:
+                                    message:
+                                        type: string
+                '401':
+                    description: Not authorized.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Unauthorized"
+    /model/technical:
+        get:
+            summary: Get technical file
+            operationId: getTechnical
+            parameters:
+                - in: query
+                  name: technical
+                  schema:
+                      type: string
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+                      enum:
+                          - 'model'
+                          - 'calculation'
+            responses:
+                '200':
+                    description: Technical file
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                '401':
+                    description: Not authorized.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Unauthorized"
+    /model/latex:
+        post:
+            summary: Get LaTeX model documentation
+            operationId: getLatex
+            parameters:
+                - in: query
+                  name: technical
+                  schema:
+                      type: string
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+                      enum:
+                          - 'model'
+                          - 'calculation'
+            responses:
+                '200':
+                    description: LaTeX file
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                '401':
+                    description: Not authorized.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Unauthorized"
+    /run:
+        post:
+            summary: Run simulation
+            operationId: runSimulation
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: "#/components/schemas/Run"
+                        encoding:
+                            inputs:
+                                contentType: text/csv
+            responses:
+                '200':
+                    description: Simulation results
+                    content:
+                        application/json:
+                            schema:
+                                description: JSON formatted
+                        text/csv:
+                            schema:
+                                description: CSV formatted
+                        text/plain:
+                            schema:
+                                description: text formatted
+                '401':
+                    description: Not authorized.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Unauthorized"
+components:
+    schemas:
+        Run:
+            type: object
+            required:
+                - simulation
+                - dataset
+                - inputs
+            properties:
+                simulation:
+                    type: string
+                dataset:
+                    type: string
+                inputs:
+                    type: string
+                technical:
+                    type: string
+                model:
+                    type: string
+                variants:
+                    type: string
+                prints:
+                    type: string
+                language:
+                    type: string
+                format:
+                    type: string
+                include-filters:
+                    type: string
+                    enum:
+                        - 'true'
+                        - 'false'
+                all-filters:
+                    type: string
+                    enum:
+                        - 'true'
+                        - 'false'
+        Unauthorized:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
+        Error:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
+        Unknown:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
