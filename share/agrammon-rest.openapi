@@ -118,8 +118,6 @@ components:
                     type: string
                 language:
                     type: string
-                format:
-                    type: string
                 include-filters:
                     type: string
                     enum:
