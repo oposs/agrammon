@@ -203,7 +203,7 @@ class Agrammon::Web::Service {
         };
     }
 
-    method get-latex(:$technical-file = 'technical.cfg', :$sort = 'model') {
+    method get-latex(Str $technical-file, Str $sort) {
         my $model      = self.model;
         my $model-path = $model.path;
         my $filename   = 'End.nhd';
@@ -219,14 +219,17 @@ class Agrammon::Web::Service {
         ) ~ "\n"
     }
 
-    method get-technical(Str $filename) {
+    method get-technical(Str $technical) {
         my $model-path = self.model.path;
-        $model-path.IO.add($filename).slurp
+        $model-path.IO.add($technical).slurp
     }
 
     method get-outputs-from-csv(
-        Agrammon::DB::User $user, Str $simulation-name, Str $dataset-name, $csv-data, $include-filters,
-        :$language, :$format, :$prints, :$all-filters, :$technical-file, :$model-version, :$variants = 'Base'
+        Agrammon::DB::User $user,
+        Str $simulation-name, Str $dataset-name, $csv-data,
+        :$model-version, :$variants, :$technical-file,
+        :$language, :$format, :$print-only,
+        :$include-filters, :$all-filters
     ) {
         my $input = Agrammon::DataSource::CSV.new.from-csv($simulation-name, $dataset-name, $csv-data);
 
@@ -253,24 +256,24 @@ class Agrammon::Web::Service {
 
         my $outputs = $!model.run(:$input, :%technical);
 
-        my @print-set = (~$prints).split(',') if ~$prints;
+        my @print-set = ($print-only).split(',') if $print-only;
         my $result;
         given $format {
             when 'text/csv' {
                 die "CSV output including filters is not yet supported" if $include-filters;
                 $result = output-as-csv(
                     $simulation-name, $dataset-name, $!model,
-                    $outputs, ~$language, @print-set, $include-filters, :$all-filters
+                    $outputs, $language, @print-set, $include-filters, :$all-filters
                 ) ~ "\n";
             }
             when 'application/json' {
                 $result = output-as-json(
-                    $!model, $outputs, ~$language, @print-set, $include-filters, :$all-filters
+                    $!model, $outputs, $language, @print-set, $include-filters, :$all-filters
                 );
             }
             when 'text/plain' {
                 $result = output-as-text(
-                    $!model, $outputs, ~$language, @print-set, $include-filters, :$all-filters
+                    $!model, $outputs, $language, @print-set, $include-filters, :$all-filters
                 ) ~ "\n";
             }
         }

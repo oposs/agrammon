@@ -55,7 +55,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/Unauthorized"
     /model/latex:
-        post:
+        get:
             summary: Get LaTeX model documentation
             operationId: getLatex
             parameters:
@@ -136,7 +136,7 @@ components:
                     type: string
                 variants:
                     type: string
-                prints:
+                print-only:
                     type: string
                 language:
                     type: string
