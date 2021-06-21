@@ -1,4 +1,6 @@
 use v6;
+use IO::Path::ChildSecure;
+
 use Agrammon::Config;
 use Agrammon::DataSource::DB;
 use Agrammon::DataSource::CSV;
@@ -221,7 +223,7 @@ class Agrammon::Web::Service {
 
     method get-technical(Str $technical) {
         my $model-path = self.model.path;
-        $model-path.IO.add($technical).slurp
+        $model-path.IO.&child-secure($technical).slurp
     }
 
     method get-outputs-from-csv(
@@ -236,7 +238,7 @@ class Agrammon::Web::Service {
         my $model;
         if $model-version {
             my $model-top   = $!cfg.model-top;
-            my $model-path  = self.model.path.IO.parent.add($model-version).add($model-top);
+            my $model-path  = self.model.path.IO.parent.&child-secure($model-version).&child-secure($model-top);
             my $module      = $model-path.extension('').basename;
             my $module-path = $model-path.parent;
             $model = timed "Load model variant $variants from $model-path", {

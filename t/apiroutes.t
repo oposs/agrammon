@@ -10,10 +10,7 @@ use Test;
 # routing tests related to REST API
 
 sub make-fake-auth {
-    mocked(
-        APIUser,
-        returning => { :username('agrammon-tester'), :firstname('Erika'), :id(42), :logged-in, }
-    )
+    mocked(APIUser)
 }
 my $schema = 'share/agrammon-rest.openapi';
 
@@ -30,15 +27,6 @@ my $fake-store = mocked(Agrammon::Web::Service,
         },
     }
 );
-
-subtest 'greet' => {
-    test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
-        test-given '/greet', {
-            test get,
-                status => 200,
-        };
-    }
-}
 
 subtest 'Get technical file' => {
     test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
@@ -77,7 +65,6 @@ subtest 'Run simulation' => {
                         )],
                         :name('inputs'),
                         :filename('test.csv'),
-#                        :body-text('some;test;data'.encode)
                         :body-blob('some;test;data'.encode)
                     )
                 ]

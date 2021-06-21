@@ -1,6 +1,7 @@
 use Cro::APIToken::Middleware;
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
+use IO::Path::ChildSecure;
 
 use Agrammon::Web::APITokenManager;
 use Agrammon::Web::Service;
@@ -47,9 +48,6 @@ sub api-routes(Agrammon::Web::Service $ws) is export {
 
 sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
     openapi $schema.IO, {
-        operation 'greetUser', -> APIUser $user {
-            content 'application/json', { message => "Hello $user.firstname()" }
-        }
         operation 'getLatex', -> APIUser $user, :$technical = 'technical.cfg', :$sort = 'model' {
             content 'text/plain', $ws.get-latex($technical, $sort)
         }
@@ -61,14 +59,13 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
         operation 'runSimulation', -> APIUser $user {
             request-body 'multipart/form-data' => -> (
                 :$simulation!,  :$dataset!, :$inputs!, :$technical='',
-                :$model = 'version6', :$variants = 'Base', :$language = 'de', :$format = 'text/plain',
+                :$model = 'version6', :$variants = 'Base', :$language = 'de', :$accept is header = 'text/plain',
                 :$print-only = '', :$include-filters = 'false', :$all-filters = 'false'
             ) {
                 my $type = $inputs.content-type;
                 if $type ne 'text/csv' {
                     my $error = "Content type is '$type', must be 'text/csv'";
-                    note $error;
-                    bad-request 'application/json', %( error => $error );
+                    bad-request 'application/json', %( :$error );
                 }
                 else {
                     my $input-data = $inputs.body-text;
@@ -76,10 +73,10 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
                         $user,
                         ~$simulation, ~$dataset, ~$input-data,
                         :model-version(~$model), :variants(~$variants), :technical-file(~$technical),
-                        :language(~$language), :format(~$format), :print-only(~$print-only),
+                        :language(~$language), :format(~$accept), :print-only(~$print-only),
                         :include-filters($include-filters eq 'true'), :all-filters($all-filters eq 'true')
                     );
-                    content ~$format, supply {
+                    content ~$accept, supply {
                         emit $results.encode('utf8');
                     };
                 }

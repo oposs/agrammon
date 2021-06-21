@@ -20,6 +20,7 @@
     "DB::Pg",
     "Digest::SHA1::Native",
     "Email::MIME",
+    "IO::Path::ChildSecure",
     "IO::String",
     "LibXML:ver<0.5.12+>",
     "Net::SMTP::Client::Async",

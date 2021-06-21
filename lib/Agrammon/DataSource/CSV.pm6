@@ -45,9 +45,8 @@ class Agrammon::DataSource::CSV {
     }
 
     method from-csv($simulation-name, $dataset-id, $csv-data) {
-        my @group = $csv-data.split("\n");
         my $input = Agrammon::Inputs.new(:$simulation-name, :$dataset-id);
-        for @group.map(*.split(';')) {
+        for $csv-data.split("\n").map(*.split(';')) {
             next unless .[0];
             next if .[0] ~~ /^ '#' /;
             my $full-tax = .[0];

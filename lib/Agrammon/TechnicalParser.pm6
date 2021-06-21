@@ -1,4 +1,6 @@
 use v6;
+use IO::Path::ChildSecure;
+
 use Agrammon::CommonParser;
 use Agrammon::Performance;
 use Agrammon::TechnicalBuilder;
@@ -29,7 +31,7 @@ sub parse-technical(Str $to-parse) is export {
 }
 
 sub load-technical(IO::Path $model-path, Str $technical-file) is export {
-    my $tech-input = $model-path.IO.add($technical-file // 'technical.cfg');
+    my $tech-input = $model-path.IO.&child-secure($technical-file // 'technical.cfg');
     timed "Load parameters from $tech-input", {
         my $params = parse-technical( $tech-input.IO.slurp );
         %($params.technical.map(-> %module {
