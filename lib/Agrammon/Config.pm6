@@ -36,6 +36,14 @@ class Agrammon::Config {
         %!model<variant>;
     }
 
+    method model-top {
+        %!model<top>;
+    }
+
+    method model-version {
+        %!model<version>;
+    }
+
     method agrammon-variant {
         %(
             version => %!database<version>,

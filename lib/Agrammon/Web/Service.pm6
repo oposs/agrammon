@@ -1,18 +1,25 @@
 use v6;
+use IO::Path::ChildSecure;
+
 use Agrammon::Config;
 use Agrammon::DataSource::DB;
+use Agrammon::DataSource::CSV;
 use Agrammon::DB::Dataset;
 use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
 use Agrammon::DB::Tags;
+use Agrammon::Documentation;
 use Agrammon::Email;
 use Agrammon::Model;
+use Agrammon::ModelCache;
 use Agrammon::OutputsCache;
+use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::Excel;
 use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::PDF;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::Performance;
+use Agrammon::TechnicalParser;
 use Agrammon::Timestamp;
 use Agrammon::UI::Web;
 use Agrammon::Validation;
@@ -198,10 +205,88 @@ class Agrammon::Web::Service {
         };
     }
 
+    method get-latex(Str $technical-file, Str $sort) {
+        my $model      = self.model;
+        my $model-path = $model.path;
+        my $filename   = 'End.nhd';
+        my $sections   = 'description';
+        my $model-name = 'Agrammon version6';
+        my %technical  = load-technical($model-path, $technical-file);
+        create-latex-source(
+            $model-name,
+            $model,
+            $sort,
+            $sections,
+            :%technical
+        ) ~ "\n"
+    }
+
+    method get-technical(Str $technical) {
+        my $model-path = self.model.path;
+        $model-path.IO.&child-secure($technical).slurp
+    }
+
+    method get-outputs-from-csv(
+        Agrammon::DB::User $user,
+        Str $simulation-name, Str $dataset-name, $csv-data,
+        :$model-version, :$variants, :$technical-file,
+        :$language, :$format, :$print-only,
+        :$include-filters, :$all-filters
+    ) {
+        my $input = Agrammon::DataSource::CSV.new.from-csv($simulation-name, $dataset-name, $csv-data);
+
+        my $model;
+        if $model-version {
+            my $model-top   = $!cfg.model-top;
+            my $model-path  = self.model.path.IO.parent.&child-secure($model-version).&child-secure($model-top);
+            my $module      = $model-path.extension('').basename;
+            my $module-path = $model-path.parent;
+            $model = timed "Load model variant $variants from $model-path", {
+                load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module);
+            };
+        }
+        else {
+            $model = $!model;
+        }
+        my %technical;
+        if $technical-file {
+            %technical = load-technical(self.model.path, $technical-file);
+        }
+        else {
+            %technical = %!technical-parameters;
+        }
+
+        my $outputs = $!model.run(:$input, :%technical);
+
+        my @print-set = ($print-only).split(',') if $print-only;
+        my $result;
+        given $format {
+            when 'text/csv' {
+                die "CSV output including filters is not yet supported" if $include-filters;
+                $result = output-as-csv(
+                    $simulation-name, $dataset-name, $!model,
+                    $outputs, $language, @print-set, $include-filters, :$all-filters
+                ) ~ "\n";
+            }
+            when 'application/json' {
+                $result = output-as-json(
+                    $!model, $outputs, $language, @print-set, $include-filters, :$all-filters
+                );
+            }
+            when 'text/plain' {
+                $result = output-as-text(
+                    $!model, $outputs, $language, @print-set, $include-filters, :$all-filters
+                ) ~ "\n";
+            }
+        }
+
+        return $result;
+    }
+
     method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
         my $results = self!get-outputs($user, $dataset-name)<results>;
         my $validation-errors = self!get-outputs($user, $dataset-name)<validation-errors>;
-        warn '**** Got ' ~  $validation-errors.elems ~ ' input validation errors';
+        warn '**** Got ' ~  $validation-errors.elems ~ ' input validation errors' if $validation-errors;
         # TODO: get with-filters from frontend
         # TODO: deal with validation errors in frontend; needs translations
         my %gui-output = output-for-gui($!model, $results, :include-filters);

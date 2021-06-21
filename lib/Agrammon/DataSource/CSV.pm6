@@ -44,6 +44,26 @@ class Agrammon::DataSource::CSV {
         }
     }
 
+    method from-csv($simulation-name, $dataset-id, $csv-data) {
+        my $input = Agrammon::Inputs.new(:$simulation-name, :$dataset-id);
+        for $csv-data.split("\n").map(*.split(';')) {
+            next unless .[0];
+            next if .[0] ~~ /^ '#' /;
+            my $full-tax = .[0];
+            if $full-tax.index('[') -> $sub-start {
+                my $tax = $full-tax.substr(0, $sub-start);
+                my $sub-end = $full-tax.index(']');
+                my $instance = $full-tax.substr($sub-start + 1, ($sub-end - $sub-start) - 1);
+                my $sub-tax = $full-tax.substr($sub-end + 1);
+                $input.add-multi-input($tax, $instance, $sub-tax ?? $sub-tax.substr(2) !! '', .[1], maybe-numify(.[2]))
+            }
+            else {
+                $input.add-single-input(.[0], .[1], maybe-numify(.[2]));
+            }
+        }
+        return $input;
+    }
+
     sub maybe-numify($value) {
         +$value // $value
     }
