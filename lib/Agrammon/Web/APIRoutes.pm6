@@ -42,7 +42,7 @@ sub api-routes(Agrammon::Web::Service $ws) is export {
         }
         before AgrammonAPITokenMiddleware.new(manager => get-api-token-manager());
 
-        openapi $schema.IO, {
+        include openapi $schema.IO, {
             operation 'greetUser', -> APIUser $user {
                 note 'greetUser';
                 content 'application/json', { message => "Hello $user.firstname()" }

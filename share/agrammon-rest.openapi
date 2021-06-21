@@ -3,7 +3,7 @@ info:
     version: 1.0.0,
     title: OpenApi Agrammon REST,
 paths:
-    /greet:
+    /api/v1/greet:
         get:
             summary: Greet REST user
             operationId: greetUser
