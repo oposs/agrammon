@@ -375,10 +375,11 @@ class Agrammon::Model {
     #| string names of their taxonomies. A multi-instance module root is a pair,
     #| where the key is the taxonomy name of the root of the multi-instance module
     #| and the value is an array of the modules within that instance.
-    method extract-structure() {
+    method extract-structure($sort? = 'calculation') {
+        my \order = $sort eq 'calculation' ?? @!evaluation-order.reverse !! @!load-order;
         my @singles;
         my %multis;
-        for @!evaluation-order -> Agrammon::Model::Module $module {
+        for order -> Agrammon::Model::Module $module {
             if $module.instance-root -> $root {
                 %multis{$root}.push($module.taxonomy);
             }
@@ -515,5 +516,46 @@ class Agrammon::Model {
             distributables.categorize(*.key, :as(*.value), :into(%result))
         };
         %$!distribution-map-cache
+    }
+
+    #| Get a CSV formatted template of all model inputs
+    #| with one demo instance for all multi-instance modules.
+    method get-input-template($sort) {
+        # Obtain model structure in specified order.
+        my @model-structure := self.extract-structure($sort);
+        # Go through the model structure.
+        my Str @inputs;
+        for @model-structure {
+            when Str {
+                # Single instance module
+                my $module = self.get-module($_);
+                add-module-inputs(@inputs, $module);
+            }
+            when Pair {
+                # Multi-instance module
+                my @modules = @(.value);
+                my $instance-name = 'Demo';
+                for @modules -> $module-name is copy {
+                    my $module = self.get-module($module-name);
+                    add-module-inputs(@inputs, $module, :$instance-name);
+                }
+            }
+        }
+        @inputs
+    }
+
+    sub add-module-inputs(Str @inputs, Agrammon::Model::Module $module, Str :$instance-name --> Nil) {
+        my @input :=  $module.input;
+        return unless @input;
+
+        my $module-name = $module.taxonomy;
+        if $instance-name {
+            my $root   = $module.instance-root;
+            my $instance = $root ~ "[$instance-name]";
+            $module-name ~~ s/$root/$instance/;
+        }
+        for @input -> $input {
+            @inputs.push("$module-name;" ~ $input.name ~ ';');
+        }
     }
 }

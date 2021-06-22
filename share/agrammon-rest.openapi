@@ -61,6 +61,31 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Unauthorized"
+    /inputTemplate:
+        get:
+            summary: Get model input template CSV file
+            operationId: getInputTemplate
+            parameters:
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+                      enum:
+                          - 'model'
+                          - 'calculation'
+            responses:
+                '200':
+                    description: Input template CSV file
+                    content:
+                        text/csv:
+                            schema:
+                                type: string
+                '401':
+                    description: Not authorized.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Unauthorized"
     /run:
         post:
             summary: Run simulation

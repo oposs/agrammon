@@ -20,10 +20,13 @@ my $fake-store = mocked(Agrammon::Web::Service,
     },
     overriding => {
         get-outputs-from-csv => -> $user, Str $simulation-name, Str $dataset-name, Str $csv-data,
-        :$model-version, :$variants, :$technical-file,
-        :$language, :$format, :$print-only,
-        :$include-filters, :$all-filters {
+                :$model-version, :$variants, :$technical-file,
+                :$language, :$format, :$print-only,
+                :$include-filters, :$all-filters {
             "Test results"
+        },
+        get-input-template => -> $user, :$sort {
+            "module;variable;"
         },
     }
 );
@@ -47,6 +50,17 @@ subtest 'Get LaTeX' => {
         };
         check-mock $fake-store,
             *.called('get-latex', times => 1);
+    }
+}
+
+subtest 'Get input template' => {
+    test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+        test-given '/inputTemplate', {
+            test get,
+                status => 200,
+        };
+        check-mock $fake-store,
+            *.called('get-input-template', times => 1);
     }
 }
 

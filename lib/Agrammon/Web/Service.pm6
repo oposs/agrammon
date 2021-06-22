@@ -205,6 +205,10 @@ class Agrammon::Web::Service {
         };
     }
 
+    method get-input-template($sort) {
+        self.model.get-input-template($sort);
+    }
+
     method get-latex(Str $technical-file, Str $sort) {
         my $model      = self.model;
         my $model-path = $model.path;
@@ -255,6 +259,9 @@ class Agrammon::Web::Service {
         else {
             %technical = %!technical-parameters;
         }
+
+        my @validation-errors = validation-errors($model, $input);
+        warn '**** Got ' ~  @validation-errors.elems ~ ' input validation errors' if @validation-errors;
 
         my $outputs = $!model.run(:$input, :%technical);
 
