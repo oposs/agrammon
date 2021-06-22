@@ -205,6 +205,41 @@ class Agrammon::Web::Service {
         };
     }
 
+    # used in method below
+    sub add-module-inputs(Str @inputs, Agrammon::Model::Module $module, Str :$instance-name --> Nil) {
+        my @input :=  $module.input;
+        return unless @input;
+
+        my $module-name = $module.taxonomy;
+        if $instance-name {
+            my $root   = $module.instance-root;
+            my $instance = $root ~ "[$instance-name]";
+            $module-name ~~ s/$root/$instance/;
+        }
+        for @input -> $input {
+            @inputs.push( "$module-name;" ~ $input.name ~ ';');
+        }
+    }
+
+    #| Get a CSV formatted template of all model inputs
+    #| with one demo instance for all multi-instance modules.
+    method get-input-template($sort) {
+        my @modules := $sort eq 'model' ?? $!model.load-order !! $!model.evaluation-order;
+        my Str @inputs;
+        for @modules -> $module {
+            if $module.instance-root -> $root {
+                # Multi-instance module
+                my $instance-name = 'Demo';
+                add-module-inputs(@inputs, $module, :$instance-name);
+            }
+            else {
+                # Single instance module
+                add-module-inputs(@inputs, $module);
+            }
+        }
+        @inputs
+    }
+
     method get-latex(Str $technical-file, Str $sort) {
         my $model      = self.model;
         my $model-path = $model.path;
@@ -255,6 +290,9 @@ class Agrammon::Web::Service {
         else {
             %technical = %!technical-parameters;
         }
+
+        my @validation-errors = validation-errors($model, $input);
+        warn '**** Got ' ~  @validation-errors.elems ~ ' input validation errors' if @validation-errors;
 
         my $outputs = $!model.run(:$input, :%technical);
 
