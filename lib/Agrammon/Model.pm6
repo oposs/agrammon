@@ -375,8 +375,27 @@ class Agrammon::Model {
     #| string names of their taxonomies. A multi-instance module root is a pair,
     #| where the key is the taxonomy name of the root of the multi-instance module
     #| and the value is an array of the modules within that instance.
-    method extract-structure($sort? = 'calculation') {
-        my \order = $sort eq 'calculation' ?? @!evaluation-order.reverse !! @!load-order;
+    method extract-structure {
+        my @singles;
+        my %multis;
+        for @!evaluation-order.reverse -> Agrammon::Model::Module $module {
+            if $module.instance-root -> $root {
+                %multis{$root}.push($module.taxonomy);
+            }
+            else {
+                @singles.push($module.taxonomy);
+            }
+        }
+        [flat @singles, %multis.pairs]
+    }
+
+    #| Obtains a sorted description of the structure of the model, accounting for multiple
+    #| instance modules. The list returned contains single-instance modules as
+    #| string names of their taxonomies. A multi-instance module root is a pair,
+    #| where the key is the taxonomy name of the root of the multi-instance module
+    #| and the value is an array of the modules within that instance.
+    method extract-structure-sorted($sort? = 'model') {
+        my \order = $sort eq 'calculation' ?? @!evaluation-order !! @!load-order;
         my @modules;
         for order -> Agrammon::Model::Module $module {
             if $module.instance-root -> $root {
@@ -521,7 +540,7 @@ class Agrammon::Model {
     #| with one demo instance for all multi-instance modules.
     method get-input-template($sort) {
         # Obtain model structure in specified order.
-        my @model-structure := self.extract-structure($sort);
+        my @model-structure := self.extract-structure-sorted($sort);
         # Go through the model structure.
         my Str @inputs;
         for @model-structure {
