@@ -375,7 +375,7 @@ class Agrammon::Model {
     #| string names of their taxonomies. A multi-instance module root is a pair,
     #| where the key is the taxonomy name of the root of the multi-instance module
     #| and the value is an array of the modules within that instance.
-    method extract-structure {
+    method extract-structure() {
         my @singles;
         my %multis;
         for @!evaluation-order -> Agrammon::Model::Module $module {
@@ -516,5 +516,4 @@ class Agrammon::Model {
         };
         %$!distribution-map-cache
     }
-
 }
