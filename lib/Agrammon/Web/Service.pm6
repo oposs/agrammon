@@ -217,7 +217,9 @@ class Agrammon::Web::Service {
             $module-name ~~ s/$root/$instance/;
         }
         for @input -> $input {
-            @inputs.push( "$module-name;" ~ $input.name ~ ';');
+            my $line = "$module-name," ~ $input.name;
+            $line ~= ',' ~ $input.enum.keys.join('; ') if $input.enum;
+            @inputs.push($line ~ ',');
         }
     }
 
