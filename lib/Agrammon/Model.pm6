@@ -377,17 +377,16 @@ class Agrammon::Model {
     #| and the value is an array of the modules within that instance.
     method extract-structure($sort? = 'calculation') {
         my \order = $sort eq 'calculation' ?? @!evaluation-order.reverse !! @!load-order;
-        my @singles;
-        my %multis;
+        my @modules;
         for order -> Agrammon::Model::Module $module {
             if $module.instance-root -> $root {
-                %multis{$root}.push($module.taxonomy);
+                @modules.push( $root => $module.taxonomy );
             }
             else {
-                @singles.push($module.taxonomy);
+                @modules.push($module.taxonomy);
             }
         }
-        [flat @singles, %multis.pairs]
+        @modules
     }
 
     method run(Agrammon::Inputs :$input!, :%technical --> Agrammon::Outputs) {
