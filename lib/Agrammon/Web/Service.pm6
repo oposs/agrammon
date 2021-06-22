@@ -205,7 +205,7 @@ class Agrammon::Web::Service {
         };
     }
 
-    # used in method below below
+    # used in method below
     sub add-module-inputs(Str @inputs, Agrammon::Model::Module $module, Str :$instance-name --> Nil) {
         my @input :=  $module.input;
         return unless @input;
