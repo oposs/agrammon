@@ -378,7 +378,7 @@ class Agrammon::Model {
     method extract-structure {
         my @singles;
         my %multis;
-        for @!evaluation-order.reverse -> Agrammon::Model::Module $module {
+        for @!evaluation-order -> Agrammon::Model::Module $module {
             if $module.instance-root -> $root {
                 %multis{$root}.push($module.taxonomy);
             }
@@ -387,25 +387,6 @@ class Agrammon::Model {
             }
         }
         [flat @singles, %multis.pairs]
-    }
-
-    #| Obtains a sorted description of the structure of the model, accounting for multiple
-    #| instance modules. The list returned contains single-instance modules as
-    #| string names of their taxonomies. A multi-instance module root is a pair,
-    #| where the key is the taxonomy name of the root of the multi-instance module
-    #| and the value is an array of the modules within that instance.
-    method extract-structure-sorted($sort? = 'model') {
-        my \order = $sort eq 'calculation' ?? @!evaluation-order !! @!load-order;
-        my @modules;
-        for order -> Agrammon::Model::Module $module {
-            if $module.instance-root -> $root {
-                @modules.push( $root => $module.taxonomy );
-            }
-            else {
-                @modules.push($module.taxonomy);
-            }
-        }
-        @modules
     }
 
     method run(Agrammon::Inputs :$input!, :%technical --> Agrammon::Outputs) {
@@ -536,44 +517,4 @@ class Agrammon::Model {
         %$!distribution-map-cache
     }
 
-    #| Get a CSV formatted template of all model inputs
-    #| with one demo instance for all multi-instance modules.
-    method get-input-template($sort) {
-        # Obtain model structure in specified order.
-        my @model-structure := self.extract-structure-sorted($sort);
-        # Go through the model structure.
-        my Str @inputs;
-        for @model-structure {
-            when Str {
-                # Single instance module
-                my $module = self.get-module($_);
-                add-module-inputs(@inputs, $module);
-            }
-            when Pair {
-                # Multi-instance module
-                my @modules = @(.value);
-                my $instance-name = 'Demo';
-                for @modules -> $module-name is copy {
-                    my $module = self.get-module($module-name);
-                    add-module-inputs(@inputs, $module, :$instance-name);
-                }
-            }
-        }
-        @inputs
-    }
-
-    sub add-module-inputs(Str @inputs, Agrammon::Model::Module $module, Str :$instance-name --> Nil) {
-        my @input :=  $module.input;
-        return unless @input;
-
-        my $module-name = $module.taxonomy;
-        if $instance-name {
-            my $root   = $module.instance-root;
-            my $instance = $root ~ "[$instance-name]";
-            $module-name ~~ s/$root/$instance/;
-        }
-        for @input -> $input {
-            @inputs.push("$module-name;" ~ $input.name ~ ';');
-        }
-    }
 }
