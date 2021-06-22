@@ -56,10 +56,10 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
             content 'text/plain', $ws.get-technical($technical);
         }
 
-        operation 'runSimulation', -> APIUser $user {
+        operation 'runSimulation', -> APIUser $user, :$accept is header = 'text/plain' {
             request-body 'multipart/form-data' => -> (
                 :$simulation!,  :$dataset!, :$inputs!, :$technical='',
-                :$model = 'version6', :$variants = 'Base', :$language = 'de', :$accept is header = 'text/plain',
+                :$model = 'version6', :$variants = 'Base', :$language = 'de',
                 :$print-only = '', :$include-filters = 'false', :$all-filters = 'false'
             ) {
                 my $type = $inputs.content-type;
