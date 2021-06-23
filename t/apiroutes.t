@@ -64,29 +64,125 @@ subtest 'Get input template' => {
     }
 }
 
+sub make-body(%fields?) {
+    [
+        :simulation('Test'),
+        :dataset('Hochrechnung'),
+        Cro::HTTP::Body::MultiPartFormData::Part.new(
+            headers => [
+                Cro::HTTP::Header.new(
+                    :name('Content-type'),
+                    :value('text/csv')
+                )
+            ],
+            :name('inputs'),
+            :filename('test.csv'),
+            :body-blob('some;test;data'.encode)
+        ),
+        |%fields
+    ]
+}
+
 subtest 'Run simulation' => {
-    test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
-        test-given '/run', {
-            test post(
-                content-type => 'multipart/form-data',
-                body => [
-                    :simulation('Test'),
-                    :dataset('Hochrechnung'),
-                    Cro::HTTP::Body::MultiPartFormData::Part.new(
-                        headers => [Cro::HTTP::Header.new(
-                            :name('Content-type'),
-                            :value('text/csv')
-                        )],
-                        :name('inputs'),
-                        :filename('test.csv'),
-                        :body-blob('some;test;data'.encode)
-                    )
-                ]
-            ),
-            status => 200,
-        };
-        check-mock $fake-store,
+
+    subtest 'Required parameters' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/run', {
+                test post(:content-type('multipart/form-data'), :body(make-body(%{})) ),
+                status => 200,
+            };
+            check-mock $fake-store,
             *.called('get-outputs-from-csv', times => 1);
+        }
+    }
+
+    subtest 'Correct optional parameters' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/run', {
+                test post(:content-type('multipart/form-data'),
+                          :body(make-body(%{
+                                                 :language('de'),
+                                                 :model('version6'),
+                                                 :variants('Base'),
+                                             }
+                                         )
+                               )
+                         ),
+                status => 200,
+            };
+            check-mock $fake-store,
+                *.called('get-outputs-from-csv', times => 2);
+        }
+    }
+
+    subtest 'Invalid optional parameters' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/run', {
+                test post(:content-type('multipart/form-data'),
+                          :body(make-body(%{
+                                                 :model('version3'),
+                                                 :variants('Base'),
+                                                 :invalid('Testing'),
+                                             }
+                                         )
+                               )
+                         ),
+                status => 400,
+            };
+            check-mock $fake-store,
+                *.called('get-outputs-from-csv', times => 2);
+        }
+    }
+
+    subtest 'Invalid language' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/run', {
+                test post(:content-type('multipart/form-data'),
+                          :body(make-body(%{
+                                                 :language('invalid'),
+                                           }
+                                         )
+                               )
+                         ),
+                status => 400,
+            };
+            check-mock $fake-store,
+                *.called('get-outputs-from-csv', times => 2);
+        }
+    }
+
+    subtest 'Invalid model' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/run', {
+                test post(:content-type('multipart/form-data'),
+                          :body(make-body(%{
+                                                 :model('invalid'),
+                                             }
+                                         )
+                               )
+                         ),
+                status => 400,
+            };
+            check-mock $fake-store,
+                *.called('get-outputs-from-csv', times => 2);
+        }
+    }
+
+    subtest 'Invalid variant' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/run', {
+                test post(:content-type('multipart/form-data'),
+                          :body(make-body(%{
+                                                 :variant('invalid'),
+                                             }
+                                         )
+                               )
+                         ),
+                status => 400,
+            };
+            check-mock $fake-store,
+                *.called('get-outputs-from-csv', times => 2);
+        }
     }
 }
 
