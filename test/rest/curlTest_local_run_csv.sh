@@ -4,6 +4,7 @@ curl  \
      -H 'Authorization: Bearer agm_N2SR5yjT4ydTnjAw/9yd+vnd/BxLD8/wr5TMcgEwATnHzr+4V7mLkxxwYYM=' \
      -F "variants=Base" \
      -F "model=version6" \
+     -F "print-only=SummaryTotal" \
      -F "technical=technical2010.cfg" \
      -F "simulation=FritzTest" \
      -F "dataset=Hochrechung2021" \
