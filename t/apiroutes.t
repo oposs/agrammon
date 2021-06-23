@@ -190,7 +190,7 @@ done-testing;
 
 =begin pod
 
-=COPYRIGHT Copyright (c) 2020 by OETIKER+PARTNER AG. All rights reserved.
+=COPYRIGHT Copyright (c) 2021 by OETIKER+PARTNER AG. All rights reserved.
 
 =AUTHOR S<Fritz Zaucker E<lt>fritz.zaucker@oetiker.chE<gt>>
 
