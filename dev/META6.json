@@ -12,7 +12,7 @@
     "Cro::Core",
     "Cro::HTTP",
     "Cro::HTTP::Session::Pg",
-    "Cro::OpenAPI::RoutesFromDefinition:ver<1.0.2+>",
+    "Cro::OpenAPI::RoutesFromDefinition:ver<1.0.4+>",
     "Cro::WebApp::Template",
     "Cro::APIToken",
     "Cro::APIToken::Store::Pg",

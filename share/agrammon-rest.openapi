@@ -31,7 +31,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Unauthorized"
+                                $ref: "#/components/schemas/Error"
     /model/latex:
         get:
             summary: Get LaTeX model documentation
@@ -55,12 +55,18 @@ paths:
                         text/plain:
                             schema:
                                 type: string
+                '400':
+                    description: Invalid input
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
                 '401':
                     description: Not authorized.
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Unauthorized"
+                                $ref: "#/components/schemas/Error"
     /inputTemplate:
         get:
             summary: Get model input template CSV file
@@ -80,12 +86,18 @@ paths:
                         text/csv:
                             schema:
                                 type: string
+                '400':
+                    description: Invalid request.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
                 '401':
                     description: Not authorized.
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Unauthorized"
+                                $ref: "#/components/schemas/Error"
     /run:
         post:
             summary: Run simulation
@@ -112,12 +124,18 @@ paths:
                         text/plain:
                             schema:
                                 description: text formatted
+                '400':
+                    description: Invalid request.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
                 '401':
                     description: Not authorized.
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Unauthorized"
+                                $ref: "#/components/schemas/Error"
 components:
     schemas:
         Run:
@@ -166,19 +184,7 @@ components:
                     enum:
                         - 'true'
                         - 'false'
-        Unauthorized:
-            required:
-                - error
-            properties:
-                error:
-                    type: string
         Error:
-            required:
-                - error
-            properties:
-                error:
-                    type: string
-        Unknown:
             required:
                 - error
             properties:
