@@ -80,7 +80,7 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
                         :language(~$language), :format($accept), :print-only(~$print-only),
                         :include-filters($include-filters eq 'true'), :all-filters($all-filters eq 'true')
                     );
-                    if ~$accept eq 'application/json' {
+                    if $accept eq 'application/json' {
                         content $accept, @($results)
                     }
                     else {
