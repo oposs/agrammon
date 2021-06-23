@@ -137,12 +137,25 @@ components:
                     type: string
                 model:
                     type: string
+                    enum:
+                        - 'version4'
+                        - 'version5'
+                        - 'version6'
                 variants:
                     type: string
+                    enum:
+                        - 'Base'
+                        - 'Kantonal_LU'
+                        - 'SHL'
+                        - 'LU'
                 print-only:
                     type: string
                 language:
                     type: string
+                    enum:
+                        - 'de'
+                        - 'en'
+                        - 'fr'
                 include-filters:
                     type: string
                     enum:
