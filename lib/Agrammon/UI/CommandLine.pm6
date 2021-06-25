@@ -181,7 +181,7 @@ sub create-user($cfg-filename, $username, $firstname, $lastname, $password, $rol
 
 sub set-password($cfg-filename, $username, $password) {
     get-cfg-and-db-handle($cfg-filename);
-    Agrammon::DB::User.new(:$username).set-password($username, $password);
+    Agrammon::DB::User.new(:$username).reset-password($username, $password);
     say "New password set for user $username";
 }
 

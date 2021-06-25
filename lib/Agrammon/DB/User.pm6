@@ -1,4 +1,8 @@
 use v6;
+
+use Crypt::Random;
+use Digest::SHA1::Native;
+
 use Agrammon::DB;
 use Agrammon::DB::Role;
 
@@ -15,10 +19,28 @@ class X::Agrammon::DB::User::NoUsername is Exception {
     }
 }
 
+class X::Agrammon::DB::User::CannotSetRole is Exception {
+    method message() {
+        "Only admin users can create accounts with roles!";
+    }
+}
+
+class X::Agrammon::DB::User::CannotResetPassword is Exception {
+    method message() {
+        "Only admin users can reset other users' password!";
+    }
+}
+
 class X::Agrammon::DB::User::CreateFailed is Exception {
     has Str $.username is required;
     method message {
         "Couldn't create user $!username";
+    }
+}
+
+class X::Agrammon::DB::User::NoPassword is Exception {
+    method message() {
+        "Need password to create an account!";
     }
 }
 
@@ -74,6 +96,25 @@ class Agrammon::DB::User does Agrammon::DB {
 
     method set-username(Str $username) {
         $!username = $username;
+    }
+
+    method is-admin {
+        $!role.is-admin
+    }
+
+    my $secret = crypt_random(Int(64/8));
+
+    sub get-password-key($username, $password) {
+        my $digest = sha1-hex($username ~ $password ~ $secret);
+        # only easily human readable characters
+        return substr($digest ~~ tr/1/x/, 5, 6);
+    }
+
+    method get-account-key() {
+        die X::Agrammon::DB::User::NoUsername.new(:$!username) unless $!username;
+        die X::Agrammon::DB::User::NoPassword.new unless $!password;
+
+        get-password-key($!username, $!password)
     }
 
     method create-account($role-name) {
@@ -183,36 +224,23 @@ class Agrammon::DB::User does Agrammon::DB {
         }
     }
 
-    method set-password($username, $password) {
-        self.with-db: -> $db {
-            $db.query(q:to/SQL/, $username, $password);
-                UPDATE pers
-                    SET pers_password = crypt($2, gen_salt('bf'))
-                    WHERE pers_email  = $1
-                RETURNING pers_email
-            SQL
-            die X::Agrammon::DB::User::InvalidPassword.new unless self.password-is-valid($!username, $password);
+    sub password-key-is-valid(Str $username, Str $password, Str $key) {
+        get-password-key($username, $password) eq $key
+    }
+
+    method reset-password($email, $password, $key?) {
+        # self reset, anonymous user
+        if $key and not password-key-is-valid($email, $password, $key) {
+            die X::Agrammon::DB::User::CannotResetPassword.new;
         }
-    }
-
-    method password-key-is-valid(Str $password, Str $key) {
-        note "***** TODO: Password hash check missing";
-        return $key;
-    }
-
-
-    method reset-password($username, $password, $key) {
         self.with-db: -> $db {
-
-            if self.password-key-is-valid($password, $key) {
-                my $ret = $db.query(q:to/SQL/, $username, $password);
-                    UPDATE pers
-                       SET pers_password = crypt($2, gen_salt('bf'))
-                     WHERE pers_email    = $1
-                    RETURNING pers_email
+            $db.query(q:to/SQL/, $email, $password);
+                UPDATE pers
+                   SET pers_password = crypt($2, gen_salt('bf'))
+                 WHERE pers_email = $1
+                RETURNING pers_email
                 SQL
-            }
-            die X::Agrammon::DB::User::PasswordResetFailed.new unless self.password-is-valid($username, $password);
+            die X::Agrammon::DB::User::PasswordResetFailed.new unless self.password-is-valid($email, $password);
         }
     }
 

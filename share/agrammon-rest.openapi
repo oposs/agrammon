@@ -17,8 +17,8 @@ paths:
                   schema:
                       type: string
                       enum:
-                          - 'model'
-                          - 'calculation'
+                          - model
+                          - calculation
             responses:
                 '200':
                     description: Technical file
@@ -46,8 +46,8 @@ paths:
                   schema:
                       type: string
                       enum:
-                          - 'model'
-                          - 'calculation'
+                          - model
+                          - calculation
             responses:
                 '200':
                     description: LaTeX file
@@ -77,8 +77,8 @@ paths:
                   schema:
                       type: string
                       enum:
-                          - 'model'
-                          - 'calculation'
+                          - model
+                          - calculation
             responses:
                 '200':
                     description: Input template CSV file
@@ -156,24 +156,24 @@ components:
                 model:
                     type: string
                     enum:
-                        - 'version4'
-                        - 'version5'
-                        - 'version6'
+                        - version4
+                        - version5
+                        - version6
                 variants:
                     type: string
                     enum:
-                        - 'Base'
-                        - 'Kantonal_LU'
-                        - 'SHL'
-                        - 'LU'
+                        - Base
+                        - Kantonal_LU
+                        - SHL
+                        - LU
                 print-only:
                     type: string
                 language:
                     type: string
                     enum:
-                        - 'de'
-                        - 'en'
-                        - 'fr'
+                        - de
+                        - en
+                        - fr
                 include-filters:
                     type: string
                     enum:

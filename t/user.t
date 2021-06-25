@@ -42,6 +42,9 @@ subtest 'Create user' => {
     is $user.lastname,     'XL',     'User has correct lastname';
     is $user.organisation, 'XO',     'User has correct organisation';
     is $user.password,     'XP',     'User has correct password';
+
+    lives-ok { $user.get-account-key } , 'User gets account key';
+
 }
 
 transactionally {

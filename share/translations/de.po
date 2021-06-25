@@ -62,3 +62,8 @@ msgstr "Mitteilungen zu den Resultaten"
 msgid "inputs"
 msgstr "Eingaben Datensatz"
 
+msgid "Agrammon account key"
+msgstr "Schlüssel für Agrammon Konto"
+
+msgid "enter account key"
+msgstr "Bitte geben Sie den folgenden Schlüssel im Web-Formular ein:"

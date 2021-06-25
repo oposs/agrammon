@@ -171,7 +171,6 @@ qx.Class.define('agrammon.module.user.Account', {
         }, this);
 
         var createAccountHandler = function(data,exc,id) {
-            console.log('createAccountHandler(): data=', data)
             if (exc == null) {
                 that.debug('createAccountHandler(): '+data);
                 if (adminCreate) {
@@ -252,27 +251,31 @@ qx.Class.define('agrammon.module.user.Account', {
             }
 
             var action;
-            if (passwordReset || adminReset) {
-                 action = 'reset_password';
-            }
-            else {
+            if (adminCreate) {
                  action = 'create_account';
             }
-            this.debug('rpc call '+action);
-            var firstName   = this.firstName.getValue();
-            var lastName    = this.lastName.getValue();
-            var org         = this.organisation.getValue();
+            else {
+                 action = 'get_account_key';
+            }
+            var firstName, lastName, org;
+            // not for self password reset
+            if (this.firstName) {
+                firstName = this.firstName.getValue();
+                lastName  = this.lastName.getValue();
+                org       = this.organisation.getValue();
+            }
+            var locale = qx.locale.Manager.getInstance().getLocale().replace(/_.+/,'');
             this.__rpc.callAsync(
                 createAccountHandler,
                 action,
                 {
-                    email:    username,
-                    password: password,
-                    key:      '',
+                    email:     username,
+                    password:  password,
                     firstname: firstName,
                     lastname:  lastName,
-                    org:       org
-            }
+                    org:       org,
+                    language:  locale
+                }
             );
             if (!passwordReset) {
                 this.firstName.exclude();
@@ -299,13 +302,15 @@ qx.Class.define('agrammon.module.user.Account', {
             var key         = this.key.getValue();
 
             if (passwordReset || adminReset) {
-                this.__rpc.callAsync( activateAccountHandler,
-                                    'reset_password',
-                                    { email:     username,
-                                      password:  password,
-                                      key:       key
-                                    }
-                                  );
+                this.__rpc.callAsync(
+                    activateAccountHandler,
+                    'reset_password',
+                    {
+                        email:     username,
+                        password:  password,
+                        key:       key
+                    }
+                );
             }
             else {
                 var firstName   = this.firstName.getValue();
@@ -314,7 +319,8 @@ qx.Class.define('agrammon.module.user.Account', {
                 this.__rpc.callAsync(
                     activateAccountHandler,
                     'create_account',
-                    { email:     username,
+                    {
+                        email:     username,
                         password:  password,
                         key:       key,
                         firstname: firstName,
@@ -322,11 +328,7 @@ qx.Class.define('agrammon.module.user.Account', {
                         org:       org
                     }
                 );
-                // this.firstName.destroy();
-                // this.lastName.destroy();
-                // this.organisation.destroy();
             }
-//            this.password2.destroy();
             this.key.destroy();
 
             this.btnOK.removeListener("execute",
@@ -352,13 +354,10 @@ qx.Class.define('agrammon.module.user.Account', {
              btnOK.addListener("execute", activateAccount, this);
         }
 
-//        bbox.add(new qx.ui.core.Spacer(5));
         bbox.add(btnCancel);
         bbox.add(btnOK);
-//        bbox.add(new qx.ui.core.Spacer(5));
 
         this.center();
-//        this.open();
         return this;
     }, // construct
 

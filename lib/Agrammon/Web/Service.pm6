@@ -1,4 +1,5 @@
 use v6;
+
 use IO::Path::ChildSecure;
 
 use Agrammon::Config;
@@ -67,16 +68,20 @@ class Agrammon::Web::Service {
         my $sent    = Agrammon::DB::Datasets.new(
             :$user, :agrammon-variant($!cfg.agrammon-variant)
         ).send(@datasets, $recipient)<sent>;
-        my $sender  = $user.username;
-        my $subject = $sent == 1 ?? %lx{'new dataset'}[0]  !! %lx{'new dataset'}[1];
-        my $format  = $sent == 1 ?? %lx{'dataset sent'}[0] !! %lx{'dataset sent'}[1];
-        my $msg     = sprintf $format, @datasets.join(', '), $sender;
-        Agrammon::Email.new(
-            :to($recipient),
-            :from('support@agrammon.ch'),
-            :$subject,
-            :$msg,
-        ).send;
+
+        # set in t/webservice.t to avoid sending email
+        if not %*ENV<AGRAMMON_TESTING> {
+            my $sender  = $user.username;
+            my $subject = $sent == 1 ?? %lx{'new dataset'}[0]  !! %lx{'new dataset'}[1];
+            my $format  = $sent == 1 ?? %lx{'dataset sent'}[0] !! %lx{'dataset sent'}[1];
+            my $msg     = sprintf $format, @datasets.join(', '), $sender;
+            Agrammon::Email.new(
+                :to($recipient),
+                :from('support@agrammon.ch'),
+                :$subject,
+                :$msg,
+            ).send;
+        }
         return %(:$sent);
     }
 
@@ -127,19 +132,22 @@ class Agrammon::Web::Service {
         my $old-dataset  = %params<oldDataset>;
         my $new-dataset  = submission-dataset(%params);
         self.clone-dataset($user, $recipientMail, $old-dataset, $new-dataset);
-        my $attachment = self.get-pdf-export($user, %params);
-        my $subject = %lx<dataset> ~ ": $new-dataset";
-        my $format = %lx{'dataset sent'}[0];
-        my $msg = sprintf $format, $new-dataset, %params<username>;
 
-        Agrammon::Email.new(
-            :to($recipientMail),
-            :from('support@agrammon.ch'),
-            :$subject,
-            :$msg,
-            :$attachment,
-            :filename($new-dataset.subst(/<-[\w_.-]>/, '', :g) ~ '.pdf')
-        ).send;
+        # set in t/webservice.t to avoid sending email
+        if not %*ENV<AGRAMMON_TESTING> {
+            my $attachment = self.get-pdf-export($user, %params);
+            my $subject = %lx<dataset> ~ ": $new-dataset";
+            my $format = %lx{'dataset sent'}[0];
+            my $msg = sprintf $format, $new-dataset, %params<username>;
+            Agrammon::Email.new(
+                :to($recipientMail),
+                :from('support@agrammon.ch'),
+                :$subject,
+                :$msg,
+                :$attachment,
+                :filename($new-dataset.subst(/<-[\w_.-]>/, '', :g) ~ '.pdf')
+            ).send;
+        }
     }
 
     method store-dataset-comment(Agrammon::Web::SessionUser $user, Str $name, $comment) {
@@ -398,7 +406,7 @@ class Agrammon::Web::Service {
        );
     }
 
-    method create-account(Agrammon::Web::SessionUser $user, $email, $password, $key, $firstname, $lastname, $org, $role?) {
+    method create-account($user, $email, $password, $firstname, $lastname, $org, $role?) {
         return Agrammon::DB::User.new(
             :username($email), :$password,
             :$firstname, :$lastname,
@@ -406,11 +414,29 @@ class Agrammon::Web::Service {
         ).create-account($role).username;
     }
 
+    method get-account-key($email, $password, $language) {
+        my $key = Agrammon::DB::User.new(:username($email), :$password).get-account-key;
+
+        # set in t/webservice.t to avoid sending email
+        if not %*ENV<AGRAMMON_TESTING> {
+            my %params;
+            my %lx = $!cfg.translations{$language // 'de'};
+            my $subject = %lx{'Agrammon account key'};
+            my $msg = %lx{'enter account key'} ~ " $key";
+            Agrammon::Email.new(
+                :to($email),
+                :from('support@agrammon.ch'),
+                :$subject,
+                :$msg
+            ).send;
+        }
+    }
+
     method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password --> Nil) {
         $user.change-password($old-password, $new-password);
     }
 
-    method reset-password(Agrammon::Web::SessionUser $user, Str $email, Str $password, Str $key) {
+    method reset-password($user, Str $email, Str $password, $key?) {
         return $user.reset-password($email, $password, $key);
     }
 
