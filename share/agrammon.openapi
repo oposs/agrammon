@@ -715,8 +715,8 @@ components:
                 branch:
                     type: string
                     enum:
-                        - true
-                        - false
+                        - 'true'
+                        - 'false'
                 defaults:
                     type: object
                     properties:

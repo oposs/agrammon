@@ -17,8 +17,8 @@ paths:
                   schema:
                       type: string
                       enum:
-                          - 'model'
-                          - 'calculation'
+                          - model
+                          - calculation
             responses:
                 '200':
                     description: Technical file
@@ -46,8 +46,8 @@ paths:
                   schema:
                       type: string
                       enum:
-                          - 'model'
-                          - 'calculation'
+                          - model
+                          - calculation
             responses:
                 '200':
                     description: LaTeX file
@@ -77,8 +77,8 @@ paths:
                   schema:
                       type: string
                       enum:
-                          - 'model'
-                          - 'calculation'
+                          - model
+                          - calculation
             responses:
                 '200':
                     description: Input template CSV file
@@ -177,8 +177,8 @@ components:
                 include-filters:
                     type: string
                     enum:
-                        - true
-                        - false
+                        - 'true'
+                        - 'false'
                 all-filters:
                     type: string
                     enum:
