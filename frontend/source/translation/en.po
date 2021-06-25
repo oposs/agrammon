@@ -58,7 +58,7 @@ msgstr ""
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr ""
 

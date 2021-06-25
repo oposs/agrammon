@@ -354,7 +354,7 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/user/Account.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -602,7 +602,7 @@ msgstr "Passwort zurück setzen"
 msgid "Login"
 msgstr "Anmelden"
 
-#: agrammon/ui/menu/AdminMenu.js
+#: agrammon/module/user/Account.js
 msgid "Reset password"
 msgstr "Passwort zurücksetzen"
 

@@ -171,7 +171,6 @@ qx.Class.define('agrammon.module.user.Account', {
         }, this);
 
         var createAccountHandler = function(data,exc,id) {
-            console.log('createAccountHandler(): data=', data)
             if (exc == null) {
                 that.debug('createAccountHandler(): '+data);
                 if (adminCreate) {
@@ -258,7 +257,6 @@ qx.Class.define('agrammon.module.user.Account', {
             else {
                  action = 'get_account_key';
             }
-            console.log('rpc call '+action);
             var firstName, lastName, org;
             // not for self password reset
             if (this.firstName) {
@@ -266,6 +264,7 @@ qx.Class.define('agrammon.module.user.Account', {
                 lastName  = this.lastName.getValue();
                 org       = this.organisation.getValue();
             }
+            var locale = qx.locale.Manager.getInstance().getLocale().replace(/_.+/,'');
             this.__rpc.callAsync(
                 createAccountHandler,
                 action,
@@ -274,7 +273,8 @@ qx.Class.define('agrammon.module.user.Account', {
                     password:  password,
                     firstname: firstName,
                     lastname:  lastName,
-                    org:       org
+                    org:       org,
+                    language:  locale
                 }
             );
             if (!passwordReset) {
@@ -300,7 +300,6 @@ qx.Class.define('agrammon.module.user.Account', {
             var username    = this.user.getValue();
             var password    = this.password1.getValue();
             var key         = this.key.getValue();
-            var locale      = qx.locale.Manager.getInstance().getLocale().replace(/_.+/,'');
 
             if (passwordReset || adminReset) {
                 this.__rpc.callAsync(
@@ -309,8 +308,7 @@ qx.Class.define('agrammon.module.user.Account', {
                     {
                         email:     username,
                         password:  password,
-                        key:       key,
-                        language:  locale
+                        key:       key
                     }
                 );
             }
@@ -327,8 +325,7 @@ qx.Class.define('agrammon.module.user.Account', {
                         key:       key,
                         firstname: firstName,
                         lastname:  lastName,
-                        org:       org,
-                        language:  locale
+                        org:       org
                     }
                 );
             }
@@ -357,13 +354,10 @@ qx.Class.define('agrammon.module.user.Account', {
              btnOK.addListener("execute", activateAccount, this);
         }
 
-//        bbox.add(new qx.ui.core.Spacer(5));
         bbox.add(btnCancel);
         bbox.add(btnOK);
-//        bbox.add(new qx.ui.core.Spacer(5));
 
         this.center();
-//        this.open();
         return this;
     }, // construct
 
