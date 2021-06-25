@@ -316,6 +316,7 @@ qx.Class.define('agrammon.module.user.Account', {
                 var firstName   = this.firstName.getValue();
                 var lastName    = this.lastName.getValue();
                 var org         = this.organisation.getValue();
+                var locale      = qx.locale.Manager.getInstance().getLocale().replace(/_.+/,'');
                 this.__rpc.callAsync(
                     activateAccountHandler,
                     'create_account',
@@ -325,7 +326,8 @@ qx.Class.define('agrammon.module.user.Account', {
                         key:       key,
                         firstname: firstName,
                         lastname:  lastName,
-                        org:       org
+                        org:       org,
+                        language:  locale
                     }
                 );
             }

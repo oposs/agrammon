@@ -62,3 +62,9 @@ msgstr "Messages concernant les résultats"
 
 msgid "inputs"
 msgstr "Paramétres d’entrée du set de données"
+
+msgid "Agrammon account key"
+msgstr "Clé du compte Agrammon"
+
+msgid "enter account key"
+msgstr "Veuillez saisir la clé suivante dans le formulaire Web : "

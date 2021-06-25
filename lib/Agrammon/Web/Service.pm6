@@ -414,14 +414,15 @@ class Agrammon::Web::Service {
         ).create-account($role).username;
     }
 
-    method get-account-key($email, $password) {
+    method get-account-key($email, $password, $language) {
         my $key = Agrammon::DB::User.new(:username($email), :$password).get-account-key;
 
         # set in t/webservice.t to avoid sending email
         if not %*ENV<AGRAMMON_TESTING> {
-            note "Sending key to $email";
-            my $subject = "Agrammon account key";
-            my $msg = "Please enter the following key into the web form: $key";
+            my %params;
+            my %lx = $!cfg.translations{$language // 'de'};
+            my $subject = %lx{'Agrammon account key'};
+            my $msg = %lx{'enter account key'} ~ " $key";
             Agrammon::Email.new(
                 :to($email),
                 :from('support@agrammon.ch'),

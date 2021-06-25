@@ -118,8 +118,8 @@ sub frontend-api-routes (Str $schema, $ws) {
     openapi $schema.IO, {
         # get key for self account creation or password reset
         operation 'getAccountKey', -> {
-            request-body -> (:$email!, :$password!, :$firstname, :$lastname, :$org) {
-                $ws.get-account-key($email, $password);
+            request-body -> (:$email!, :$password!, :$firstname, :$lastname, :$org, :$language) {
+                $ws.get-account-key($email, $password, $language);
                 CATCH {
                     note "$_";
                     when X::Agrammon::DB::User::Exists

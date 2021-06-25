@@ -35,6 +35,12 @@ paths:
                                     description: Organization
                                     type: string
                                     nullable: true
+                                language:
+                                    type: string
+                                    enum:
+                                        - de
+                                        - en
+                                        - fr
             responses:
                 '204':
                     description: Key created and mailed

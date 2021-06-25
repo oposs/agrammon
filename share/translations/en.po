@@ -61,3 +61,9 @@ msgstr "Notes on the results"
 
 msgid "inputs"
 msgstr "Input parameters of the dataset"
+
+msgid "Agrammon account key"
+msgstr "Agrammon account key"
+
+msgid "enter account key"
+msgstr "Please enter the following key in the web form:"

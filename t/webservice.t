@@ -68,7 +68,7 @@ subtest "get-cfg()" => {
 }
 
 subtest "get-account-key" => {
-    lives-ok { $ws.get-account-key('foo@bar42.ch', 'mypassword') }, "Get account key";
+    lives-ok { $ws.get-account-key('foo@bar42.ch', 'mypassword', 'de') }, "Get account key";
 }
 
 transactionally {
