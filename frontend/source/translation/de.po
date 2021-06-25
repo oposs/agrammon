@@ -50,7 +50,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -178,7 +178,7 @@ msgstr "Datensatz umbenennen"
 msgid "New name"
 msgstr "Neuer Name"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/PropTable.js
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -294,11 +294,11 @@ msgstr "Duplizieren Kategorie "
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/input/PropTable.js
 msgid "Variable"
 msgstr "Variable"
 
-#: agrammon/module/input/regional/ConfigEditor.js
+#: agrammon/module/input/PropTable.js
 msgid "Input Parameter"
 msgstr "Eingabe-Parameter"
 
@@ -314,11 +314,11 @@ msgstr ""
 msgid "Click to edit"
 msgstr "Zum Editieren anklicken"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/input/PropTable.js
 msgid "Unit"
 msgstr "Einheit"
 
-#: agrammon/ui/menu/MainMenu.js
+#: agrammon/module/input/PropTable.js
 msgid "Help"
 msgstr "Hilfe"
 
@@ -338,7 +338,7 @@ msgstr "Einheit Deutsch"
 msgid "Unit French"
 msgstr "Einheit Französisch"
 
-#: agrammon/module/output/Reports.js
+#: agrammon/module/input/PropTable.js
 msgid "Order"
 msgstr "Sortierung"
 
@@ -354,7 +354,7 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/user/Account.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -602,7 +602,7 @@ msgstr "Passwort zurück setzen"
 msgid "Login"
 msgstr "Anmelden"
 
-#: agrammon/ui/menu/AdminMenu.js
+#: agrammon/module/user/Account.js
 msgid "Reset password"
 msgstr "Passwort zurücksetzen"
 
