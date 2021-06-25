@@ -197,7 +197,7 @@ sub issue-api-token($cfg-filename, $username) {
 }
 
 sub load-model($cfg-filename, $model-filename, $variants? is copy ) {
-    die "ERROR: run expects a .nhd file" unless $model-filename.IO.extension eq 'nhd';
+    die "ERROR: load-model expects a .nhd file" unless $model-filename.IO.extension eq 'nhd';
     my ($cfg, $db) = get-cfg-and-db-handle($cfg-filename);
     $variants //= $cfg.model-variant;
 
@@ -216,8 +216,7 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
          Bool $include-filters, $batch, $degree, $max-runs, :$all-filters, Str :$cfg-filename) {
 
     my ($model, $module-path) = load-model($cfg-filename, $model-filename, $variants);
-
-    my %technical = load-technical($module-path, $technical-file);
+    my %technical = load-technical($module-path.IO.parent, $technical-file);
 
     my $fh = get-input-filehandle($input-path);
     LEAVE $fh.?close;
