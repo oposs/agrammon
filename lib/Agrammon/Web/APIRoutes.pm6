@@ -77,12 +77,15 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
                         $user,
                         ~$simulation, ~$dataset, ~$input-data,
                         :model-version(~$model), :variants(~$variants), :technical-file(~$technical),
-                        :language(~$language), :format(~$accept), :print-only(~$print-only),
+                        :language(~$language), :format($accept), :print-only(~$print-only),
                         :include-filters($include-filters eq 'true'), :all-filters($all-filters eq 'true')
                     );
-                    content ~$accept, supply {
-                        emit $results.encode('utf8');
-                    };
+                    if $accept eq 'application/json' {
+                        content $accept, @($results)
+                    }
+                    else {
+                        content $accept, $results
+                    }
                 }
             }
         }
