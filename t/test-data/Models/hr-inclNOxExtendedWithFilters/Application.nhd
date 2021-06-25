@@ -451,11 +451,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual TAN flux out of liquid manure application. 
   ++formula
-    Out(tan_into_application_liquid) P-
-    Out(nh3_napplication_liquid) P-
-    Out(n2_napplication_liquid)  P-
-    Out(no_napplication_liquid)  P-
-    Out(n2o_napplication_liquid);
+    my $remain = Out(tan_into_application_liquid) P-
+        Out(nh3_napplication_liquid) P-
+        Out(n2_napplication_liquid)  P-
+        Out(no_napplication_liquid)  P-
+        Out(n2o_napplication_liquid);
+    selectAll($remain, $remain);
 
 +tan_remain_application_solid
   format = %.0f
@@ -472,11 +473,12 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual TAN flux out of solid manure application. 
   ++formula
-    Out(tan_into_application_solid) P-
-    Out(nh3_napplication_solid) P-
-    Out(n2_napplication_solid)  P-
-    Out(no_napplication_solid)  P-
-    Out(n2o_napplication_solid);
+    my $remain = Out(tan_into_application_solid) P-
+        Out(nh3_napplication_solid) P-
+        Out(n2_napplication_solid)  P-
+        Out(no_napplication_solid)  P-
+        Out(n2o_napplication_solid);
+    selectAll($remain, $remain);
 
 +tan_remain_application
   format = %.0f
