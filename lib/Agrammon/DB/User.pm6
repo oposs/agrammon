@@ -1,5 +1,6 @@
 use v6;
 
+use Crypt::Random;
 use Digest::SHA1::Native;
 
 use Agrammon::DB;
@@ -101,8 +102,9 @@ class Agrammon::DB::User does Agrammon::DB {
         $!role.is-admin
     }
 
+    my $secret = crypt_random(Int(64/8));
+
     sub get-password-key($username, $password) {
-        my $secret = '987ew9d%skjh/fH;K,JHKH';
         my $digest = sha1-hex($username ~ $password ~ $secret);
         # only easily human readable characters
         return substr($digest ~~ tr/1/x/, 5, 6);
