@@ -482,7 +482,9 @@ qx.Class.define('agrammon.module.input.PropTable', {
                     break;
                 }
                 row += dir;
-                this.__propertyEditor.setFocusedCell(col,row,true);
+                if (row >= 0 && col >= 0) {
+                    this.__propertyEditor.setFocusedCell(col,row,true);
+                }
                 val   = tm.getValue(col,row);
             }
         },
@@ -566,7 +568,9 @@ qx.Class.define('agrammon.module.input.PropTable', {
             }
             // END Regional Model
 
-            this.__propertyEditor.setFocusedCell(this.__valueColumn, row, true);
+            if (row >= 0 && this.__valueColumn >= 0) {
+                this.__propertyEditor.setFocusedCell(this.__valueColumn, row, true);
+            }
             this.__propertyEditor.startEditing();
         } // click_func
 
