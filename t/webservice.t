@@ -2,6 +2,7 @@ use v6;
 use Agrammon::DB::User;
 use Agrammon::Config;
 use Agrammon::Model;
+use Agrammon::ModelCache;
 use Agrammon::Performance;
 use Agrammon::TechnicalParser;
 use Agrammon::UI::Web;
@@ -15,12 +16,13 @@ use AgrammonTest;
 
 # FIX ME: use separate test database
 
-plan 39;
+plan 40;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
     exit;
 }
+%*ENV<AGRAMMON_TESTING> = True;
 
 my $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
 my $username = 'fritz.zaucker@oetiker.ch';
@@ -36,8 +38,9 @@ subtest "Setup" => {
 
     my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOxExtendedWithFilters/');
     my $top = 'End';
-    ok my $model = Agrammon::Model.new(:$path), "Load model";
-    lives-ok { $model.load($top) }, "Load module from $top";
+    my $model;
+    lives-ok { $model = load-model-using-cache($*HOME.add('.agrammon'), $path, $top) },
+        "Load model from $top";
 
     my $tech-input = $path.add('technical.cfg');
     ok my %technical-parameters = timed "Load parameters from $tech-input", {
@@ -62,6 +65,10 @@ subtest "get-cfg()" => {
         version => "6.0"
     );
     is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
+}
+
+subtest "get-account-key" => {
+    lives-ok { $ws.get-account-key('foo@bar42.ch', 'mypassword') }, "Get account key";
 }
 
 transactionally {
@@ -114,21 +121,21 @@ transactionally {
     subtest "create-account" => {
         ok $username = $ws.create-account(
             $user,
-            'foo@bar.com', 'myPassword', 'myKey',
+            'foo@bar.com', 'myPassword',
             'Erika', 'Mustermann', 'MyOrg', 'user'
         ), "Create new user account with all data";
         is $username, 'foo@bar.com', "User has expected username";
 
         ok $username = $ws.create-account(
             $user,
-            'foo2@bar.com', 'myPassword', Any,
+            'foo2@bar.com', 'myPassword',
             Any, Any, Any, 'user'
         ), "Create new user account with only required data";
         is $username, 'foo2@bar.com', "User has expected username";
 
         ok $username = $ws.create-account(
             $user,
-            'foo3@bar.com', 'myPassword', Any,
+            'foo3@bar.com', 'myPassword',
             Any, Any, Any, Any
         ), "Create new user account with only required data with default role";
         is $username, 'foo3@bar.com', "User has expected username";
@@ -143,9 +150,9 @@ transactionally {
     }
 
     subtest "reset-password" => {
-        lives-ok  { $ws.reset-password($user, 'foo@bar.com', "test12", "hash") }, 'Password reset sucessful';
-        throws-like { $ws.reset-password($user, 'foo@bar.com', "test34", "") },
-            X::Agrammon::DB::User::PasswordResetFailed, 'Passwords reset without key fails';
+        lives-ok  { $ws.reset-password($user, 'foo@bar.com', "test12", 'e5f429') }, 'Password reset sucessful';
+        throws-like { $ws.reset-password($user, 'foo@bar.com', "test34", "invalidKey") },
+            X::Agrammon::DB::User::CannotResetPassword, 'Passwords reset with invalid key fails';
     }
 
     subtest "create-tag" => {
@@ -351,13 +358,13 @@ transactionally {
 transactionally {
     $ws.create-account(
         $user,
-        'foo2@bar.com', 'myPassword', Any,
+        'foo2@bar.com', 'myPassword',
         Any, Any, Any
     );
     throws-like {
         $ws.create-account(
             $user,
-            'foo2@bar.com', 'myPassword', Any,
+            'foo2@bar.com', 'myPassword',
             Any, Any, Any
         ) },
         X::Agrammon::DB::User::Exists,
@@ -368,7 +375,7 @@ transactionally {
     throws-like {
         $ws.create-account(
             $user,
-            'foo3@bar.ch', 'myPassword', Any,
+            'foo3@bar.ch', 'myPassword',
             Any, Any, Any, 'NoRole'
         ) },
         X::Agrammon::DB::User::UnknownRole,

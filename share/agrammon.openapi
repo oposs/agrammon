@@ -3,6 +3,65 @@ info:
     version: 1.0.0,
     title: OpenApi Agrammon,
 paths:
+    /get_account_key:
+        post:
+            summary: Get a key for account creation
+            operationId: getAccountKey
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - email
+                                - password
+                            properties:
+                                email:
+                                    description: User's email used as username
+                                    type: string
+                                password:
+                                    description: Inital password
+                                    type: string
+                                firstname:
+                                    description: Firstname
+                                    type: string
+                                    nullable: true
+                                lastname:
+                                    description: Lastname
+                                    type: string
+                                    nullable: true
+                                org:
+                                    description: Organization
+                                    type: string
+                                    nullable: true
+            responses:
+                '204':
+                    description: Key created and mailed
+                '400':
+                    description: No username
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/BadRequest"
+                '404':
+                    description: Couldn't create account
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/CreationFailed"
+                '409':
+                    description: User already exists
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                '422':
+                    description: Role doesn't exist
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Unknown"
     /create_account:
         post:
             summary: Create new user account
@@ -29,17 +88,21 @@ paths:
                                 firstname:
                                     description: Firstname
                                     type: string
+                                    nullable: true
                                 lastname:
                                     description: Lastname
                                     type: string
+                                    nullable: true
                                 org:
                                     description: Organization
                                     type: string
+                                    nullable: true
                                 role:
                                     description: User role
                                     type: string
                                     enum:
                                         - admin
+                                        - support
                                         - user
             responses:
                 '200':
@@ -573,6 +636,7 @@ components:
                 key:
                     description: Secret
                     type: string
+                    nullable: true
         CloneDataset:
             type: object
             required:
@@ -645,8 +709,8 @@ components:
                 branch:
                     type: string
                     enum:
-                        - 'true'
-                        - 'false'
+                        - true
+                        - false
                 defaults:
                     type: object
                     properties:
@@ -697,12 +761,12 @@ components:
                     description: Data type
                     type: string
                     enum:
-                        - 'float'
-                        - 'integer'
-                        - 'percent'
-                        - 'text'
-                        - 'enum'
-                        - 'enum{ignore}'
+                        - float
+                        - integer
+                        - percent
+                        - text
+                        - enum
+                        - enum{ignore}
                 units:
                     description: Input labels
                     $ref: '#/components/schemas/LanguageLabels'
@@ -724,8 +788,8 @@ components:
                     description: Operation name
                     type: string
                     enum:
-                        - 'ge'
-                        - 'between'
+                        - ge
+                        - between
                 args:
                     description: Arguments
                     type: array
