@@ -150,8 +150,9 @@ transactionally {
     }
 
     subtest "reset-password" => {
-        lives-ok  { $ws.reset-password($user, 'foo@bar.com', "test12", 'e5f429') }, 'Password reset sucessful';
-        throws-like { $ws.reset-password($user, 'foo@bar.com', "test34", "invalidKey") },
+        my $key = $ws.get-account-key( 'foo@bar.com', 'test12', 'de');
+        lives-ok  { $ws.reset-password($user, 'foo@bar.com', 'test12', $key) }, 'Password reset sucessful';
+        throws-like { $ws.reset-password($user, 'foo@bar.com', 'test34', "invalidKey") },
             X::Agrammon::DB::User::CannotResetPassword, 'Passwords reset with invalid key fails';
     }
 
