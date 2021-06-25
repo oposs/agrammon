@@ -430,7 +430,6 @@ class Agrammon::Web::Service {
                 :$msg
             ).send;
         }
-        return;
     }
 
     method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password --> Nil) {
