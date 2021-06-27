@@ -16,17 +16,12 @@ sub MAIN(Str $filename) {
                 note "    $instance";
                 for $instance-inputs.kv -> $var, $value {
                     note "        $var = $value";
-                    # $inputs.add-multi-input(
-                    #     $tax, $instance, $sub-tax,
-                    #     .key, maybe-numify(.value)
-                    # );
                 }
             }
         }
         else {
             for $module-data.kv -> $var, $value {
                 note "   $var = $value"; 
-                # $inputs.add-single-input($full-tax, .key, maybe-numify(.value));
             }
 
         }
