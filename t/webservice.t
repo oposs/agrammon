@@ -126,6 +126,9 @@ transactionally {
         ), "Create new user account with all data";
         is $username, 'foo@bar.com', "User has expected username";
 
+        $newUser = Agrammon::Web::SessionUser.new(:$username).load;
+        is $newUser.username, $username, "New user has right username";
+
         ok $username = $ws.create-account(
             $user,
             'foo2@bar.com', 'myPassword',
@@ -142,10 +145,10 @@ transactionally {
     }
 
     subtest "change-password" => {
-        lives-ok    { $ws.change-password($user, "test12", "test34") }, 'Password update sucessful';
-        throws-like { $ws.change-password($user, "test12", "test34") },
+        lives-ok    { $ws.change-password($newUser, "myPassword", "test34") }, 'Password update sucessful';
+        throws-like { $ws.change-password($newUser, "myPassword", "test34") },
             X::Agrammon::DB::User::InvalidPassword, 'Password invalid';
-        throws-like { $ws.change-password($user, "test34", "test34") },
+        throws-like { $ws.change-password($newUser, "test34", "test34") },
             X::Agrammon::DB::User::PasswordsIdentical, 'Passwords identical';
     }
 
