@@ -5,6 +5,7 @@ use IO::Path::ChildSecure;
 use Agrammon::Config;
 use Agrammon::DataSource::DB;
 use Agrammon::DataSource::CSV;
+use Agrammon::DataSource::JSON;
 use Agrammon::DB::Dataset;
 use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
@@ -33,7 +34,7 @@ class Agrammon::Web::Service {
     has Agrammon::UI::Web $.ui-web .= new(:$!model);
     has Agrammon::OutputsCache $!outputs-cache .= new;
 
-    # return config hash as expected by Web GUI
+    #| return config hash as expected by Web GUI
     method get-cfg() {
         my %gui   = $!cfg.gui;
         my %model = $!cfg.model;
@@ -48,7 +49,7 @@ class Agrammon::Web::Service {
         return %cfg;
     }
 
-    # return list of datasets as expected by Web GUI
+    #| return list of datasets as expected by Web GUI
     method get-datasets(Agrammon::Web::SessionUser $user, $type) {
         return Agrammon::DB::Datasets.new(
             :$user, :agrammon-variant($!cfg.agrammon-variant)
@@ -59,7 +60,7 @@ class Agrammon::Web::Service {
         return Agrammon::DB::Datasets.new(:$user, :agrammon-variant($!cfg.agrammon-variant)).delete(@datasets);
     }
 
-    # return list of datasets as expected by Web GUI
+    #| return list of datasets as expected by Web GUI
     method send-datasets(Agrammon::Web::SessionUser $user, @datasets, $recipient, $language) {
         # prevent SPAMing
         die X::Agrammon::DB::User::UnknownUser.new(:username($recipient)) unless Agrammon::DB::User.new(:username($recipient)).exists;
@@ -271,14 +272,27 @@ class Agrammon::Web::Service {
         $model-path.IO.&child-secure($technical).slurp
     }
 
-    method get-outputs-from-csv(
-        Agrammon::DB::User $user,
-        Str $simulation-name, Str $dataset-name, $csv-data,
+    subset InputFormats of Str where  { $_ eq 'application/json' or $_ eq 'text/csv' };
+    subset OutputFormats of Str where { $_ eq 'application/json' or $_ eq 'text/csv' or $_ eq 'text/plain' };
+
+    #| Run model from input data as CSV or JSON
+    #| and return output formatted as CSV, JSON, or TEXT
+    method get-outputs-for-rest(
+        Str $simulation-name, Str $dataset-name, $input-data, InputFormats $type,
         :$model-version, :$variants, :$technical-file,
-        :$language, :$format, :$print-only,
+        :$language, OutputFormats :$format!, :$print-only,
         :$include-filters, :$all-filters
     ) {
-        my $input = Agrammon::DataSource::CSV.new.from-csv($simulation-name, $dataset-name, $csv-data);
+        my $data-source;
+        given $type {
+            when 'text/csv' {
+                $data-source = Agrammon::DataSource::CSV.new;
+            }
+            when 'application/json' {
+                $data-source = Agrammon::DataSource::JSON.new;
+            }
+        }
+        my $input = $data-source.load($simulation-name, $dataset-name, $input-data);
 
         my $model;
         if $model-version {
@@ -293,16 +307,17 @@ class Agrammon::Web::Service {
         else {
             $model = $!model;
         }
-        my %technical;
-        if $technical-file {
-            %technical = load-technical(self.model.path, $technical-file);
-        }
-        else {
-            %technical = %!technical-parameters;
-        }
+        my %technical = $technical-file
+            ?? load-technical(self.model.path, $technical-file)
+            !! %!technical-parameters;
 
         my @validation-errors = validation-errors($model, $input);
-        warn '**** Got ' ~  @validation-errors.elems ~ ' input validation errors' if @validation-errors;
+        if @validation-errors {
+            warn '**** Got ' ~  @validation-errors.elems ~ ' input validation errors' if @validation-errors;
+            for @validation-errors {
+                note .message;
+            }
+        }
 
         my $outputs = $!model.run(:$input, :%technical);
 
@@ -512,10 +527,10 @@ class Agrammon::Web::Service {
 
     sub submission-dataset(%params --> Str) {
         %params<farmNumber>    ~ ', ' ~
-                %params<farmSituation> ~ ', ' ~
-                %params<username>      ~ ', ' ~
-                %params<datasetName>   ~ ', ' ~
-                timestamp
+        %params<farmSituation> ~ ', ' ~
+        %params<username>      ~ ', ' ~
+        %params<datasetName>   ~ ', ' ~
+        timestamp
     }
 
 }

@@ -1,6 +1,7 @@
 use v6;
 use Agrammon::DB;
 use Agrammon::Inputs;
+use Agrammon::DataSource::Util;
 
 class Agrammon::DataSource::DB does Agrammon::DB {
     my class Flattened {
@@ -134,9 +135,5 @@ class Agrammon::DataSource::DB does Agrammon::DB {
             }
             return $dist-input.to-inputs(%distribution-map);
         }
-    }
-
-    sub maybe-numify($value) {
-        +$value // $value
     }
 }

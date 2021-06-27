@@ -1,0 +1,928 @@
+{
+    "Storage::SolidManure::Poultry": {
+      "share_covered_basin": "20",
+      "share_applied_direct_poultry_manure": "20"
+    },
+    "Livestock::Equides[]::Outdoor": {
+      "HorsesUp3yr": {
+        "yard_days": "115",
+        "grazing_days": "165",
+        "grazing_hours": "0",
+        "yard_hours": "0",
+        "floor_properties_exercise_yard": "paddock_or_pasture_used_as_exercise_yard"
+      },
+      "Asses": {
+        "grazing_days": "220",
+        "floor_properties_exercise_yard": "solid_floor",
+        "yard_days": "220",
+        "yard_hours": "12",
+        "grazing_hours": "8"
+      },
+      "HorsesLw3yr": {
+        "grazing_days": "365",
+        "yard_hours": "24",
+        "floor_properties_exercise_yard": "unpaved_floor",
+        "grazing_hours": "24",
+        "free_correction_factor": "5",
+        "yard_days": "365"
+      },
+      "Mules": {
+        "grazing_days": "0",
+        "floor_properties_exercise_yard": "paddock_or_pasture_used_as_exercise_yard",
+        "yard_days": "0",
+        "yard_hours": "0",
+        "grazing_hours": "0"
+      }
+    },
+    "Application::Slurry::Cseason": {
+      "appl_autumn_winter_spring": "70",
+      "appl_summer": "30"
+    },
+    "Livestock::OtherCattle[]::Excretion": {
+      "Heifers2yr 2": {
+        "dimensioning_barn": "0",
+        "animals": "10",
+        "animalcategory": "heifers_2nd_yr"
+      },
+      "Beefcattle 1": {
+        "dimensioning_barn": "0",
+        "animals": "20",
+        "animalcategory": "beef_cattle"
+      },
+      "SC_gt": {
+        "dimensioning_barn": "10",
+        "animals": "5",
+        "animalcategory": "suckling_cows_gt700"
+      },
+      "Suckling Cows 1": {
+        "dimensioning_barn": "0",
+        "animals": "15",
+        "animalcategory": "suckling_cows"
+      },
+      "FatteningCalves 2": {
+        "animals": "15",
+        "animalcategory": "fattening_calves",
+        "dimensioning_barn": "0"
+      },
+      "Heifers1yr 2": {
+        "animals": "5",
+        "animalcategory": "heifers_1st_yr",
+        "dimensioning_barn": "5"
+      },
+      "Suckling Cows 2": {
+        "animals": "0",
+        "dimensioning_barn": "0",
+        "animalcategory": "suckling_cows"
+      },
+      "Calves Suckling Cows 2": {
+        "dimensioning_barn": "0",
+        "animalcategory": "calves_suckling_cows",
+        "animals": "10"
+      },
+      "Heifers3yr 2": {
+        "animalcategory": "heifers_3rd_yr",
+        "animals": "6",
+        "dimensioning_barn": "6"
+      },
+      "Heifers3yr 1": {
+        "animalcategory": "heifers_3rd_yr",
+        "animals": "4",
+        "dimensioning_barn": "4"
+      },
+      "Heifers1yr 1": {
+        "animals": "3",
+        "animalcategory": "heifers_1st_yr",
+        "dimensioning_barn": "3"
+      },
+      "SC_lt": {
+        "animalcategory": "suckling_cows_lt600",
+        "animals": "5",
+        "dimensioning_barn": "10"
+      },
+      "Beefcattle 2": {
+        "animals": "10",
+        "dimensioning_barn": "0",
+        "animalcategory": "beef_cattle"
+      },
+      "Calves Suckling Cows 1": {
+        "dimensioning_barn": "0",
+        "animalcategory": "calves_suckling_cows",
+        "animals": "5"
+      },
+      "FatteningCalves 1": {
+        "animals": "10",
+        "animalcategory": "fattening_calves",
+        "dimensioning_barn": "0"
+      },
+      "Heifers2yr 1": {
+        "animalcategory": "heifers_2nd_yr",
+        "animals": "5",
+        "dimensioning_barn": "5"
+      }
+    },
+    "Livestock::FatteningPigs[]::Housing::Type": {
+      "FP_3": {
+        "housing_type": "Deep_Litter"
+      },
+      "FP_2": {
+        "housing_type": "Slurry_Conventional"
+      },
+      "FP_4": {
+        "housing_type": "Outdoor"
+      },
+      "FP_1": {
+        "housing_type": "Slurry_Label"
+      }
+    },
+    "Application::Slurry::Csoft": {
+      "appl_evening": "20",
+      "appl_hotdays": "frequently"
+    },
+    "Application::SolidManure::CincorpTime": {
+      "incorp_lw8h": "10",
+      "incorp_lw1h": "10",
+      "incorp_gt3d": "10",
+      "incorp_lw1d": "10",
+      "incorp_none": "40",
+      "incorp_lw4h": "10",
+      "incorp_lw3d": "10"
+    },
+    "Livestock::OtherCattle[]::Housing::Floor": {
+      "Beefcattle 1": {
+        "mitigation_housing_floor": "none"
+      },
+      "SC_lt": {
+        "mitigation_housing_floor": "floor_with_cross_slope_and_collection_gutter"
+      },
+      "FatteningCalves 1": {
+        "mitigation_housing_floor": "none"
+      },
+      "Heifers1yr 2": {
+        "mitigation_housing_floor": "none"
+      },
+      "Beefcattle 2": {
+        "mitigation_housing_floor": "none"
+      },
+      "Heifers2yr 2": {
+        "mitigation_housing_floor": "none"
+      },
+      "Suckling Cows 2": {
+        "mitigation_housing_floor": "none"
+      },
+      "Heifers3yr 2": {
+        "mitigation_housing_floor": "none"
+      },
+      "SC_gt": {
+        "mitigation_housing_floor": "floor_with_cross_slope_and_collection_gutter"
+      },
+      "FatteningCalves 2": {
+        "mitigation_housing_floor": "none"
+      },
+      "Suckling Cows 1": {
+        "mitigation_housing_floor": "none"
+      },
+      "Heifers2yr 1": {
+        "mitigation_housing_floor": "none"
+      },
+      "Heifers3yr 1": {
+        "mitigation_housing_floor": "none"
+      },
+      "Calves Suckling Cows 2": {
+        "mitigation_housing_floor": "none"
+      },
+      "Calves Suckling Cows 1": {
+        "mitigation_housing_floor": "none"
+      },
+      "Heifers1yr 1": {
+        "mitigation_housing_floor": "none"
+      }
+    },
+    "Livestock::DairyCow[]::Housing::Floor": {
+      "DC_Ex2": {
+        "mitigation_housing_floor": "none"
+      },
+      "DC_Ex1": {
+        "mitigation_housing_floor": "raised_feeding_stands"
+      },
+      "DC_Standard": {
+        "mitigation_housing_floor": "none"
+      }
+    },
+    "Livestock::Poultry[]::Grazing": {
+      "Growers": {
+        "free_range": "yes"
+      },
+      "OtherPoultry": {
+        "free_range": "no"
+      },
+      "Broilers": {
+        "free_range": "yes"
+      },
+      "Layers": {
+        "free_range": "yes"
+      },
+      "Turkeys": {
+        "free_range": "no"
+      }
+    },
+    "Livestock::DairyCow[]::Excretion::CConcentrates": {
+      "DC_Ex2": {
+        "amount_summer": "6",
+        "amount_winter": "6"
+      },
+      "DC_Standard": {
+        "amount_summer": "1.5",
+        "amount_winter": "2.5"
+      },
+      "DC_Ex1": {
+        "amount_winter": "0",
+        "amount_summer": "0"
+      }
+    },
+    "Livestock::FatteningPigs[]::Housing::AirScrubber": {
+      "FP_4": {
+        "air_scrubber": "acid"
+      },
+      "FP_1": {
+        "air_scrubber": "none"
+      },
+      "FP_2": {
+        "air_scrubber": "acid"
+      },
+      "FP_3": {
+        "air_scrubber": "biotrickling"
+      }
+    },
+    "Livestock::FatteningPigs[]::Housing::MitigationOptions": {
+      "FP_3": {
+        "mitigation_housing_air": "low_impuls_air_supply",
+        "mitigation_housing_floor": "none"
+      },
+      "FP_1": {
+        "mitigation_housing_air": "none",
+        "mitigation_housing_floor": "none"
+      },
+      "FP_2": {
+        "mitigation_housing_air": "low_impuls_air_supply",
+        "mitigation_housing_floor": "none"
+      },
+      "FP_4": {
+        "mitigation_housing_floor": "none",
+        "mitigation_housing_air": "low_impuls_air_supply"
+      }
+    },
+    "Livestock::DairyCow[]::Excretion": {
+      "DC_Ex2": {
+        "dimensioning_barn": "50",
+        "animals": "10",
+        "animalcategory": "dairy_cows"
+      },
+      "DC_Standard": {
+        "dimensioning_barn": "12",
+        "animalcategory": "dairy_cows",
+        "animals": "10"
+      },
+      "DC_Ex1": {
+        "dimensioning_barn": "0",
+        "animals": "10",
+        "animalcategory": "dairy_cows"
+      }
+    },
+    "PlantProduction::MineralFertiliser": {
+      "mineral_fertiliser_ammoniumNitrate_N_content": "50",
+      "soil_ph": "low",
+      "mineral_fertiliser_ammoniumNitrate_amount": "1500"
+    },
+    "Livestock::OtherCattle[]::Housing::Type": {
+      "Heifers2yr 2": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "FatteningCalves 1": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "SC_gt": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "Suckling Cows 2": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "Beefcattle 1": {
+        "housing_type": "Loose_Housing_Slurry"
+      },
+      "Heifers2yr 1": {
+        "housing_type": "Tied_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "Heifers3yr 1": {
+        "housing_type": "Loose_Housing_Slurry"
+      },
+      "SC_lt": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "Beefcattle 2": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "Heifers3yr 2": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "Calves Suckling Cows 2": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "FatteningCalves 2": {
+        "housing_type": "Loose_Housing_Deep_Litter"
+      },
+      "Calves Suckling Cows 1": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "Heifers1yr 2": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      },
+      "Heifers1yr 1": {
+        "housing_type": "Loose_Housing_Slurry"
+      },
+      "Suckling Cows 1": {
+        "housing_type": "Tied_Housing_Slurry_Plus_Solid_Manure"
+      }
+    },
+    "Livestock::OtherCattle[]::Housing::CFreeFactor": {
+      "SC_gt": {
+        "free_correction_factor": "5"
+      }
+    },
+    "Application::SolidManure::Cseason": {
+      "appl_autumn_winter_spring": "70",
+      "appl_summer": "30"
+    },
+    "Livestock::RoughageConsuming[]::Excretion": {
+      "Bisons": {
+        "animals": "10",
+        "animalcategory": "bison_younger_than_3yr"
+      },
+      "Rabbits": {
+        "animalcategory": "rabbit_young",
+        "animals": "20"
+      },
+      "Deer": {
+        "animalcategory": "fallow_deer",
+        "animals": "10"
+      }
+    },
+    "Livestock::Equides[]::Housing::CFreeFactor": {
+      "HorsesUp3yr": {
+        "free_correction_factor": "5"
+      }
+    },
+    "Livestock::Pig[]::Excretion": {
+      "Piglets": {
+        "animalcategory": "weaned_piglets_up_to_25kg",
+        "crude_protein": "180",
+        "energy_content": "13.5",
+        "dimensioning_barn": "0",
+        "animals": "12"
+      },
+      "DrySows": {
+        "animalcategory": "dry_sows",
+        "energy_content": "11.9",
+        "dimensioning_barn": "8",
+        "animals": "8",
+        "crude_protein": "145"
+      },
+      "Boars": {
+        "energy_content": "11.9",
+        "dimensioning_barn": "0",
+        "animals": "10",
+        "animalcategory": "boars",
+        "crude_protein": "145"
+      },
+      "NursingSows": {
+        "energy_content": "13.5",
+        "dimensioning_barn": "0",
+        "crude_protein": "165",
+        "animalcategory": "nursing_sows",
+        "animals": "15"
+      }
+    },
+    "PlantProduction::RecyclingFertiliser": {
+      "compost": "10",
+      "solid_digestate": "10",
+      "liquid_digestate": "10"
+    },
+    "Application::Slurry::CfreeFactor": {
+      "free_correction_factor": "5"
+    },
+    "Livestock::Poultry[]::Housing::AirScrubber": {
+      "OtherPoultry": {
+        "air_scrubber": "biotrickling"
+      },
+      "Broilers": {
+        "air_scrubber": "none"
+      },
+      "Growers": {
+        "air_scrubber": "none"
+      },
+      "Layers": {
+        "air_scrubber": "none"
+      },
+      "Turkeys": {
+        "air_scrubber": "acid"
+      }
+    },
+    "Storage::SolidManure::Solid": {
+      "share_applied_direct_pig_manure": "20",
+      "share_covered_basin_pig_manure": "20",
+      "share_applied_direct_cattle_other_manure": "20",
+      "share_covered_basin_cattle_manure": "20"
+    },
+    "Livestock::SmallRuminants[]::Grazing": {
+      "Milksheep": {
+        "grazing_hours": "10",
+        "grazing_days": "165"
+      },
+      "Sheep": {
+        "grazing_days": "365",
+        "grazing_hours": "24"
+      },
+      "Goats": {
+        "grazing_days": "165",
+        "grazing_hours": "0"
+      }
+    },
+    "Livestock::Poultry[]::Housing::CFreeFactor": {
+      "Turkeys": {
+        "free_correction_factor": "5"
+      }
+    },
+    "Livestock::FatteningPigs[]::Housing::CFreeFactor": {
+      "FP_4": {
+        "free_correction_factor": "5"
+      },
+      "FP_2": {
+        "free_correction_factor": "5"
+      }
+    },
+    "Application::SolidManure::CfreeFactor": {
+      "free_correction_factor": "-5"
+    },
+    "Livestock::DairyCow[]::Excretion::CFeedWinterRatio": {
+      "DC_Ex2": {
+        "share_maize_pellets_winter": "30",
+        "share_beets_winter": "50",
+        "share_potatoes_winter": "10",
+        "share_maize_silage_winter": "20",
+        "share_grass_silage_winter": "40"
+      },
+      "DC_Ex1": {
+        "share_beets_winter": "100",
+        "share_grass_silage_winter": "100",
+        "share_maize_pellets_winter": "100",
+        "share_potatoes_winter": "100",
+        "share_maize_silage_winter": "100"
+      },
+      "DC_Standard": {
+        "share_maize_pellets_winter": "0",
+        "share_maize_silage_winter": "0",
+        "share_beets_winter": "0",
+        "share_potatoes_winter": "0",
+        "share_grass_silage_winter": "0"
+      }
+    },
+    "Application::Slurry::Ctech": {
+      "share_trailing_shoe": "20",
+      "share_trailing_hose": "20",
+      "share_splash_plate": "40",
+      "share_shallow_injection": "10",
+      "share_deep_injection": "10"
+    },
+    "Livestock::DairyCow[]::Housing::Type": {
+      "DC_Ex1": {
+        "housing_type": "Loose_Housing_Slurry"
+      },
+      "DC_Ex2": {
+        "housing_type": "Loose_Housing_Deep_Litter"
+      },
+      "DC_Standard": {
+        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+      }
+    },
+    "Application::Slurry::Cfermented": {
+      "fermented_slurry": "20"
+    },
+    "Livestock::DairyCow[]::Outdoor": {
+      "DC_Ex2": {
+        "yard_days": "270",
+        "grazing_hours": "24",
+        "exercise_yard": "available_roughage_is_exclusively_supplied_in_the_exercise_yard",
+        "free_correction_factor": "5",
+        "grazing_days": "270",
+        "floor_properties_exercise_yard": "paddock_or_pasture_used_as_exercise_yard"
+      },
+      "DC_Standard": {
+        "floor_properties_exercise_yard": "solid_floor",
+        "exercise_yard": "available_roughage_is_not_supplied_in_the_exercise_yard",
+        "yard_days": "270",
+        "grazing_days": "180",
+        "grazing_hours": "8.5"
+      },
+      "DC_Ex1": {
+        "grazing_days": "0",
+        "exercise_yard": "not_available",
+        "grazing_hours": "0",
+        "yard_days": "270",
+        "floor_properties_exercise_yard": "solid_floor"
+      }
+    },
+    "Livestock::Pig[]::Housing::CFreeFactor": {
+      "Boars": {
+        "free_correction_factor": "5"
+      }
+    },
+    "Livestock::SmallRuminants[]::Excretion": {
+      "Sheep": {
+        "animalcategory": "fattening_sheep",
+        "animals": "20"
+      },
+      "Milksheep": {
+        "animalcategory": "milksheep",
+        "animals": "0"
+      },
+      "Goats": {
+        "animalcategory": "goats",
+        "animals": "10"
+      }
+    },
+    "Livestock::SmallRuminants[]::Housing::CFreeFactor": {
+      "Goats": {
+        "free_correction_factor": "5"
+      }
+    },
+    "Livestock::FatteningPigs[]::Excretion": {
+      "FP_4": {
+        "feeding_phase_3_crude_protein": "150",
+        "feeding_phase_2_crude_protein": "145",
+        "dimensioning_barn": "15",
+        "energy_content": "16",
+        "animalcategory": "fattening_pigs",
+        "animals": "10",
+        "feeding_phase_1_crude_protein": "140"
+      },
+      "FP_3": {
+        "animalcategory": "fattening_pigs",
+        "energy_content": "10",
+        "animals": "10",
+        "feeding_phase_1_crude_protein": "140",
+        "feeding_phase_3_crude_protein": "145",
+        "feeding_phase_2_crude_protein": "145",
+        "dimensioning_barn": "0"
+      },
+      "FP_1": {
+        "energy_content": "13.5",
+        "dimensioning_barn": "0",
+        "animalcategory": "fattening_pigs",
+        "animals": "10",
+        "feeding_phase_2_crude_protein": "170",
+        "feeding_phase_3_crude_protein": "170",
+        "feeding_phase_1_crude_protein": "170"
+      },
+      "FP_2": {
+        "feeding_phase_3_crude_protein": "145",
+        "animalcategory": "fattening_pigs",
+        "feeding_phase_2_crude_protein": "145",
+        "energy_content": "10",
+        "feeding_phase_1_crude_protein": "140",
+        "dimensioning_barn": "10",
+        "animals": "10"
+      }
+    },
+    "Livestock::DairyCow[]::Excretion::CFeedSummerRatio": {
+      "DC_Ex2": {
+        "share_maize_silage_summer": "30",
+        "share_hay_summer": "50",
+        "share_maize_pellets_summer": "40"
+      },
+      "DC_Standard": {
+        "share_maize_pellets_summer": "0",
+        "share_hay_summer": "0",
+        "share_maize_silage_summer": "0"
+      },
+      "DC_Ex1": {
+        "share_maize_pellets_summer": "100",
+        "share_maize_silage_summer": "100",
+        "share_hay_summer": "100"
+      }
+    },
+    "Livestock::DairyCow[]::Housing::CFreeFactor": {
+      "DC_Ex2": {
+        "free_correction_factor": "5"
+      }
+    },
+    "Livestock::Equides[]::Excretion": {
+      "Mules": {
+        "animals": "5",
+        "animalcategory": "mules"
+      },
+      "Asses": {
+        "animalcategory": "ponies_and_asses",
+        "animals": "5"
+      },
+      "HorsesLw3yr": {
+        "animals": "5",
+        "animalcategory": "horses_younger_than_3yr"
+      },
+      "HorsesUp3yr": {
+        "animals": "5",
+        "animalcategory": "horses_older_than_3yr"
+      }
+    },
+    "Livestock::DairyCow[]::Excretion::CMilk": {
+      "DC_Standard": {
+        "milk_yield": "7500"
+      },
+      "DC_Ex1": {
+        "milk_yield": "1000"
+      },
+      "DC_Ex2": {
+        "milk_yield": "15000"
+      }
+    },
+    "Livestock::RoughageConsuming[]::Grazing": {
+      "Rabbits": {
+        "grazing_days": "365",
+        "grazing_hours": "24"
+      },
+      "Deer": {
+        "grazing_days": "165",
+        "grazing_hours": "0"
+      },
+      "Bisons": {
+        "grazing_hours": "10",
+        "grazing_days": "165"
+      }
+    },
+    "Livestock::Pig[]::Housing::Type": {
+      "Piglets": {
+        "housing_type": "Slurry_Conventional"
+      },
+      "DrySows": {
+        "housing_type": "Deep_Litter"
+      },
+      "NursingSows": {
+        "housing_type": "Slurry_Conventional"
+      },
+      "Boars": {
+        "housing_type": "Slurry_Label"
+      }
+    },
+    "Livestock::Poultry[]::Housing::Type": {
+      "Turkeys": {
+        "drinking_system": "drinking_nipples",
+        "housing_type": "deep_litter",
+        "manure_removal_interval": "no_manure_belt"
+      },
+      "OtherPoultry": {
+        "drinking_system": "bell_drinkers",
+        "housing_type": "deep_pit",
+        "manure_removal_interval": "no_manure_belt"
+      },
+      "Layers": {
+        "drinking_system": "bell_drinkers",
+        "housing_type": "manure_belt_without_manure_belt_drying_system",
+        "manure_removal_interval": "more_than_4_times_a_month"
+      },
+      "Broilers": {
+        "housing_type": "deep_litter",
+        "drinking_system": "bell_drinkers",
+        "manure_removal_interval": "no_manure_belt"
+      },
+      "Growers": {
+        "housing_type": "manure_belt_with_manure_belt_drying_system",
+        "manure_removal_interval": "twice_a_month",
+        "drinking_system": "bell_drinkers"
+      }
+    },
+    "Livestock::Poultry[]::Excretion": {
+      "Broilers": {
+        "dimensioning_barn": "0",
+        "animals": "50",
+        "animalcategory": "broilers"
+      },
+      "Turkeys": {
+        "dimensioning_barn": "0",
+        "animals": "25",
+        "animalcategory": "turkeys"
+      },
+      "Layers": {
+        "animals": "20",
+        "animalcategory": "layers",
+        "dimensioning_barn": "0"
+      },
+      "Growers": {
+        "dimensioning_barn": "0",
+        "animals": "30",
+        "animalcategory": "growers"
+      },
+      "OtherPoultry": {
+        "animalcategory": "other_poultry",
+        "animals": "20",
+        "dimensioning_barn": "0"
+      }
+    },
+    "Livestock::RoughageConsuming[]::Housing::CFreeFactor": {
+      "Deer": {
+        "free_correction_factor": "5"
+      }
+    },
+    "Application::Slurry::Applrate": {
+      "dilution_parts_water": "1.0000",
+      "appl_rate": "20"
+    },
+    "Livestock::Pig[]::Housing::AirScrubber": {
+      "Boars": {
+        "air_scrubber": "acid"
+      },
+      "DrySows": {
+        "air_scrubber": "none"
+      },
+      "Piglets": {
+        "air_scrubber": "none"
+      },
+      "NursingSows": {
+        "air_scrubber": "none"
+      }
+    },
+    "Storage::Slurry[]::EFLiquid": {
+      "Store Liquid 3": {
+        "contains_cattle_manure": "no",
+        "cover_type": "uncovered",
+        "contains_pig_manure": "yes"
+      },
+      "Store Liquid 1": {
+        "contains_cattle_manure": "yes",
+        "contains_pig_manure": "no",
+        "cover_type": "solid_cover"
+      },
+      "Store Liquid 2": {
+        "cover_type": "solid_cover",
+        "contains_pig_manure": "yes",
+        "contains_cattle_manure": "yes"
+      },
+      "Store Liquid 4": {
+        "contains_pig_manure": "yes",
+        "cover_type": "uncovered",
+        "contains_cattle_manure": "yes"
+      }
+    },
+    "Livestock::OtherCattle[]::Outdoor": {
+      "Beefcattle 1": {
+        "floor_properties_exercise_yard": "solid_floor",
+        "yard_days": "0",
+        "grazing_days": "0",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "grazing_hours": "0"
+      },
+      "Heifers1yr 1": {
+        "floor_properties_exercise_yard": "solid_floor",
+        "yard_days": "300",
+        "grazing_days": "0",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "grazing_hours": "0"
+      },
+      "Beefcattle 2": {
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "grazing_hours": "0",
+        "yard_days": "0",
+        "grazing_days": "0",
+        "floor_properties_exercise_yard": "solid_floor"
+      },
+      "FatteningCalves 2": {
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "grazing_days": "0",
+        "yard_days": "0",
+        "grazing_hours": "0",
+        "floor_properties_exercise_yard": "solid_floor"
+      },
+      "SC_gt": {
+        "free_correction_factor": "5",
+        "grazing_hours": "22",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "yard_days": "160",
+        "grazing_days": "180",
+        "floor_properties_exercise_yard": "solid_floor"
+      },
+      "Heifers2yr 2": {
+        "exercise_yard": "available_roughage_is_not_supplied_in_the_exercise_yard",
+        "grazing_days": "250",
+        "yard_days": "200",
+        "floor_properties_exercise_yard": "solid_floor",
+        "grazing_hours": "24"
+      },
+      "Suckling Cows 1": {
+        "grazing_hours": "0",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "yard_days": "60",
+        "floor_properties_exercise_yard": "solid_floor",
+        "grazing_days": "0"
+      },
+      "Heifers1yr 2": {
+        "floor_properties_exercise_yard": "solid_floor",
+        "grazing_hours": "0",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "grazing_days": "0",
+        "yard_days": "300"
+      },
+      "Heifers3yr 1": {
+        "floor_properties_exercise_yard": "solid_floor",
+        "grazing_hours": "0",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "grazing_days": "0",
+        "yard_days": "300"
+      },
+      "FatteningCalves 1": {
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "grazing_hours": "0",
+        "grazing_days": "0",
+        "floor_properties_exercise_yard": "solid_floor",
+        "yard_days": "0"
+      },
+      "Calves Suckling Cows 1": {
+        "grazing_hours": "0",
+        "grazing_days": "0",
+        "floor_properties_exercise_yard": "solid_floor",
+        "yard_days": "60",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard"
+      },
+      "Suckling Cows 2": {
+        "grazing_hours": "0",
+        "grazing_days": "0",
+        "floor_properties_exercise_yard": "solid_floor",
+        "yard_days": "60",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard"
+      },
+      "Calves Suckling Cows 2": {
+        "grazing_hours": "0",
+        "grazing_days": "0",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "floor_properties_exercise_yard": "solid_floor",
+        "yard_days": "60"
+      },
+      "Heifers2yr 1": {
+        "floor_properties_exercise_yard": "solid_floor",
+        "grazing_hours": "24",
+        "grazing_days": "250",
+        "exercise_yard": "available_roughage_is_not_supplied_in_the_exercise_yard",
+        "yard_days": "115"
+      },
+      "SC_lt": {
+        "grazing_hours": "22",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "floor_properties_exercise_yard": "solid_floor",
+        "grazing_days": "180",
+        "yard_days": "160"
+      },
+      "Heifers3yr 2": {
+        "yard_days": "300",
+        "floor_properties_exercise_yard": "solid_floor",
+        "exercise_yard": "available_roughage_is_partly_supplied_in_the_exercise_yard",
+        "grazing_hours": "0",
+        "grazing_days": "0"
+      }
+    },
+    "Storage::Slurry[]": {
+      "Store Liquid 1": {
+        "mixing_frequency": "7_to_12_times_per_year",
+        "volume": "100",
+        "depth": "4"
+      },
+      "Store Liquid 2": {
+        "mixing_frequency": "7_to_12_times_per_year",
+        "volume": "60",
+        "depth": "4"
+      },
+      "Store Liquid 3": {
+        "depth": "2.5",
+        "volume": "60",
+        "mixing_frequency": "7_to_12_times_per_year"
+      },
+      "Store Liquid 4": {
+        "volume": "100",
+        "depth": "2.5",
+        "mixing_frequency": "7_to_12_times_per_year"
+      }
+    },
+    "Livestock::Pig[]::Housing::MitigationOptions": {
+      "NursingSows": {
+        "mitigation_housing_floor": "none",
+        "mitigation_housing_air": "none"
+      },
+      "Boars": {
+        "mitigation_housing_floor": "none",
+        "mitigation_housing_air": "low_impuls_air_supply"
+      },
+      "DrySows": {
+        "mitigation_housing_air": "none",
+        "mitigation_housing_floor": "none"
+      },
+      "Piglets": {
+        "mitigation_housing_floor": "none",
+        "mitigation_housing_air": "none"
+      }
+    }
+}

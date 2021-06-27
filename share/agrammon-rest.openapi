@@ -130,12 +130,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+                        text/plain:
+                            schema:
+                                description: text formatted
                 '401':
                     description: Not authorized.
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+                        text/plain:
+                            schema:
+                                description: text formatted
 components:
     schemas:
         Run:
@@ -150,7 +156,7 @@ components:
                 dataset:
                     type: string
                 inputs:
-                    type: string
+                    description: Input data as CSV string or JSON
                 technical:
                     type: string
                 model:
