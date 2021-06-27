@@ -28,13 +28,14 @@ my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location
 ;
 
+subset OptionalExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
 subset ExistingFile of Str where { .IO.e or $_ eq '-' or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
 subset OutputFormat of Str where { $_ ~~ /^ csv|json|text $/ or note("ERROR: --format=[csv|json|text]") && exit 1 };
 
 #| Start the web interface
-multi sub MAIN('web', ExistingFile $cfg-filename, Str $model-filename, Str $technical-file?) is export {
+multi sub MAIN('web', Str $model-filename, Str :$cfg-filename, Str :$technical-file) is export {
     my $http = web($cfg-filename, $model-filename, $technical-file);
     react {
         whenever signal(SIGINT) {
@@ -46,16 +47,15 @@ multi sub MAIN('web', ExistingFile $cfg-filename, Str $model-filename, Str $tech
 }
 
 #| Run the model
-multi sub MAIN('run', Str $filename, ExistingFile $input, Str $technical-file?,
-               Str :$cfg,
-               SupportedLanguage :$language = 'de', Str :$print-only, Str :$variants = 'Base',
-               Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
-               OutputFormat :$format = 'text'
-              ) is export {
+multi sub MAIN('run', Str $filename, ExistingFile $input, Str :$cfg-filename, Str :$technical-file,
+        SupportedLanguage :$language = 'de', Str :$print-only, Str :$variants = 'Base',
+        Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
+        OutputFormat :$format = 'text'
+    ) is export {
     my @print-set = $print-only.split(',') if $print-only;
     my $data = run $filename, $input.IO, $technical-file, $variants, $format, $language, @print-set,
             ($include-filters or $include-all-filters),
-            $batch, $degree, $max-runs, :all-filters($include-all-filters), :cfg-filename($cfg);
+            $batch, $degree, $max-runs, :$cfg-filename, :all-filters($include-all-filters);
     my %results := $data.results;
     my %validation-errors := $data.validation-errors;
 
@@ -96,12 +96,13 @@ multi sub MAIN('run', Str $filename, ExistingFile $input, Str $technical-file?,
 }
 
 #| Validate inputs
-multi sub MAIN('validate', Str $filename, ExistingFile $input, Str :$cfg,
-               SupportedLanguage :$language = 'de', Str :$variants = 'Base',
-               Int :$batch=1, Int :$degree=4, Int :$max-runs
-              ) is export {
+multi sub MAIN(
+        'validate', Str $filename, ExistingFile $input, Str :$cfg-filename,
+        SupportedLanguage :$language = 'de', Str :$variants = 'Base',
+        Int :$batch=1, Int :$degree=4, Int :$max-runs
+    ) is export {
     my %validation-errors = validate $filename, $input.IO, $variants,
-            $batch, $degree, $max-runs, :cfg-filename($cfg);
+            $batch, $degree, $max-runs, :$cfg-filename;
     my @output;
     @output.push("##  Model: $filename");
     @output.push("##  Variants: $variants");
@@ -122,16 +123,18 @@ multi sub MAIN('validate', Str $filename, ExistingFile $input, Str :$cfg,
 }
 
 #| Dump model
-multi sub MAIN('dump', Str $filename, Str :$variants = 'Base', SortOrder :$sort = 'model', Str :$cfg,) is export {
-    my ($model) = load-model($cfg, $filename, $variants);
+multi sub MAIN('dump', Str $filename, Str :$cfg-filename, Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
+    my ($model) = load-model($cfg-filename, $filename, $variants);
     say chomp $model.dump($sort);
 }
 
 #| Create LaTeX documentation
-multi sub MAIN('latex', Str $filename, Str $technical-file?, Str :$sections = 'description',
-               Str :$variants = 'Base', SortOrder :$sort = 'model', Str :$cfg) is export {
+multi sub MAIN(
+        'latex', Str $filename, Str :$cfg-filename, Str :$technical-file, Str :$sections = 'description',
+        Str :$variants = 'Base', SortOrder :$sort = 'model'
+    ) is export {
     my $model-name = ~$filename.IO.parent;
-    my ($model, $module-path) = load-model($cfg, $filename, $variants);
+    my ($model, $module-path) = load-model($cfg-filename, $filename, $variants);
     my %technical = load-technical($module-path, $technical-file);
 
     say create-latex-source(
@@ -144,17 +147,20 @@ multi sub MAIN('latex', Str $filename, Str $technical-file?, Str :$sections = 'd
 }
 
 #| Create Agrammon user
-multi sub MAIN('create-user', ExistingFile $cfg-filename, Str $username, Str $firstname, Str $lastname, Str $password, Str $role?) is export {
+multi sub MAIN(
+        'create-user', Str $username,
+        Str $firstname, Str $lastname, Str $password, Str $role?, Str :$cfg-filename
+    ) is export {
     create-user($cfg-filename, $username, $firstname, $lastname, $password, $role);
 }
 
 #| Set Agrammon user password
-multi sub MAIN('set-password', ExistingFile $cfg-filename, Str $username, Str $password) is export {
+multi sub MAIN('set-password', Str $username, Str $password, Str :$cfg-filename) is export {
     set-password($cfg-filename, $username, $password);
 }
 
 #| Create an API token for the specified username.
-multi sub MAIN('issue-api-token', ExistingFile $cfg-filename, Str $username) is export {
+multi sub MAIN('issue-api-token', Str $username, Str :$cfg-filename) is export {
     issue-api-token($cfg-filename, $username);
 }
 
