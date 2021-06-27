@@ -20,5 +20,5 @@ sub MAIN(Str $filename) {
         }
     }
 
-    say to-json %(:$run, :$simulation, :%inputs) :!pretty;
+    say to-json %inputs, :!pretty;
  }
