@@ -19,7 +19,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
     },
     overriding => {
-        get-outputs-from-csv => -> $user, Str $simulation-name, Str $dataset-name, Str $csv-data,
+        get-outputs-for-rest => -> Str $simulation-name, Str $dataset-name, Str $csv-data, $type,
                 :$model-version, :$variants, :$technical-file,
                 :$language, :$format, :$print-only,
                 :$include-filters, :$all-filters {
@@ -92,7 +92,7 @@ subtest 'Run simulation' => {
                 status => 200,
             };
             check-mock $fake-store,
-            *.called('get-outputs-from-csv', times => 1);
+            *.called('get-outputs-for-rest', times => 1);
         }
     }
 
@@ -111,7 +111,7 @@ subtest 'Run simulation' => {
                 status => 200,
             };
             check-mock $fake-store,
-                *.called('get-outputs-from-csv', times => 2);
+                *.called('get-outputs-for-rest', times => 2);
         }
     }
 
@@ -130,7 +130,7 @@ subtest 'Run simulation' => {
                 status => 400,
             };
             check-mock $fake-store,
-                *.called('get-outputs-from-csv', times => 2);
+                *.called('get-outputs-for-rest', times => 2);
         }
     }
 
@@ -147,7 +147,7 @@ subtest 'Run simulation' => {
                 status => 400,
             };
             check-mock $fake-store,
-                *.called('get-outputs-from-csv', times => 2);
+                *.called('get-outputs-for-rest', times => 2);
         }
     }
 
@@ -164,7 +164,7 @@ subtest 'Run simulation' => {
                 status => 400,
             };
             check-mock $fake-store,
-                *.called('get-outputs-from-csv', times => 2);
+                *.called('get-outputs-for-rest', times => 2);
         }
     }
 
@@ -181,7 +181,7 @@ subtest 'Run simulation' => {
                 status => 400,
             };
             check-mock $fake-store,
-                *.called('get-outputs-from-csv', times => 2);
+                *.called('get-outputs-for-rest', times => 2);
         }
     }
 }
