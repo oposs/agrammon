@@ -28,14 +28,14 @@ my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location
 ;
 
-subset OptionalExistingFile of Str where { !.defined or .IO.e or note("No such file $_") && exit 1 }
-subset ExistingFile of Str where { $_ ~~ Any or .IO.e or $_ eq '-' or note("No such file $_") && exit 1 }
+subset ExistingFile        of Str where { !.defined or .IO.e or note("No such file $_") && exit 1 }
+subset ExistingFileOrStdin of Str where { !.define or .IO.e or $_ eq '-' or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
 subset OutputFormat of Str where { $_ ~~ /^ csv|json|text $/ or note("ERROR: --format=[csv|json|text]") && exit 1 };
 
 #| Start the web interface
-multi sub MAIN('web', Str $model-filename, OptionalExistingFile :$cfg-file, Str :$technical-file) is export {
+multi sub MAIN('web', Str $model-filename, ExistingFile :$cfg-file, Str :$technical-file) is export {
     my $http = web($cfg-file, $model-filename, $technical-file);
     react {
         whenever signal(SIGINT) {
@@ -47,7 +47,7 @@ multi sub MAIN('web', Str $model-filename, OptionalExistingFile :$cfg-file, Str 
 }
 
 #| Run the model
-multi sub MAIN('run', Str $filename, ExistingFile $input, OptionalExistingFile :$cfg-file, Str :$technical-file,
+multi sub MAIN('run', Str $filename, ExistingFileOrStdin $input, ExistingFile :$cfg-file, Str :$technical-file,
         SupportedLanguage :$language = 'de', Str :$print-only, Str :$variants = 'Base',
         Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
         OutputFormat :$format = 'text'
@@ -97,7 +97,7 @@ multi sub MAIN('run', Str $filename, ExistingFile $input, OptionalExistingFile :
 
 #| Validate inputs
 multi sub MAIN(
-        'validate', Str $filename, ExistingFile $input, OptionalExistingFile :$cfg-file,
+        'validate', Str $filename, ExistingFileOrStdin $input, ExistingFile :$cfg-file,
         SupportedLanguage :$language = 'de', Str :$variants = 'Base',
         Int :$batch=1, Int :$degree=4, Int :$max-runs
     ) is export {
@@ -123,14 +123,14 @@ multi sub MAIN(
 }
 
 #| Dump model
-multi sub MAIN('dump', Str $filename, OptionalExistingFile :$cfg-file, Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
+multi sub MAIN('dump', Str $filename, ExistingFile :$cfg-file, Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
     my ($model) = load-model($cfg-file, $filename, $variants);
     say chomp $model.dump($sort);
 }
 
 #| Create LaTeX documentation
 multi sub MAIN(
-        'latex', Str $filename, OptionalExistingFile :$cfg-file, Str :$technical-file, Str :$sections = 'description',
+        'latex', Str $filename, ExistingFile :$cfg-file, Str :$technical-file, Str :$sections = 'description',
         Str :$variants = 'Base', SortOrder :$sort = 'model'
     ) is export {
     my $model-name = ~$filename.IO.parent;
@@ -149,18 +149,18 @@ multi sub MAIN(
 #| Create Agrammon user
 multi sub MAIN(
         'create-user', Str $username,
-        Str $firstname, Str $lastname, Str $password, Str $role?, OptionalExistingFile :$cfg-file
+        Str $firstname, Str $lastname, Str $password, Str $role?, ExistingFile :$cfg-file
     ) is export {
     create-user($cfg-file, $username, $firstname, $lastname, $password, $role);
 }
 
 #| Set Agrammon user password
-multi sub MAIN('set-password', Str $username, Str $password, OptionalExistingFile :$cfg-file) is export {
+multi sub MAIN('set-password', Str $username, Str $password, ExistingFile :$cfg-file) is export {
     set-password($cfg-file, $username, $password);
 }
 
 #| Create an API token for the specified username.
-multi sub MAIN('issue-api-token', Str $username, OptionalExistingFile :$cfg-file) is export {
+multi sub MAIN('issue-api-token', Str $username, ExistingFile :$cfg-file) is export {
     issue-api-token($cfg-file, $username);
 }
 
