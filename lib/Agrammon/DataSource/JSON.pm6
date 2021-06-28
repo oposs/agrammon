@@ -12,11 +12,8 @@ class Agrammon::DataSource::JSON {
                 for @($module-data) {
                     my $instance = $_<name>;
                     my $values = $_<values>;
-#                    note "    $instance";
                     for $values.kv -> $sub-tax, $instance-inputs {
-#                        note "        $sub-tax";
                         for $instance-inputs.kv -> $var, $value {
-#                            note "            $var : $value";
                             $inputs.add-multi-input(
                                 $full-tax, $instance, $sub-tax,
                                 $var, $value
@@ -28,7 +25,6 @@ class Agrammon::DataSource::JSON {
             else {
                 for $module-data -> $input-hash {
                     for $input-hash.kv -> $var, $value {
-#                        note "                $var : $value";
                         $inputs.add-single-input($full-tax, $var, $value);
                     }
                 }
@@ -55,14 +51,14 @@ class Agrammon::DataSource::JSON {
 #                    "Excretion": {
 #                        "animalcategory": "dairy_cows",
 #                        "animals": "10"
+#                    },
+#                    "Excretion::CFeedWinterRatio": {
+#                        "share_beets_winter": 0,
+#                        "share_grass_silage_winter": 0
+#                    },
+#                    "Housing::Type": {
+#                        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
 #                    }
-#                },
-#                "Excretion::CFeedWinterRatio": {
-#                    "share_beets_winter": 0,
-#                    "share_grass_silage_winter": 0
-#                },
-#                "Housing::Type": {
-#                    "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
 #                }
 #            },
 #            {
