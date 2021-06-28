@@ -31,6 +31,10 @@ my %config-expected = (
     },
     Model => {
         debugLevel => 0,
+        path       => 'share/Models',
+        model      => 'version6',
+        top        =>  'End.nhd',
+        technical  =>  'technical.cfg',
         variant    => 'Base',
         version    => '6.0',
     },
