@@ -28,15 +28,14 @@ my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location
 ;
 
-subset OptionalExistingFile of Str where { .IO.e or note("No such file $_") && exit 1 }
-subset ExistingFile of Str where { .IO.e or $_ eq '-' or note("No such file $_") && exit 1 }
+subset ExistingFile of Str where { $_ ~~ Any or .IO.e or $_ eq '-' or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
 subset OutputFormat of Str where { $_ ~~ /^ csv|json|text $/ or note("ERROR: --format=[csv|json|text]") && exit 1 };
 
 #| Start the web interface
-multi sub MAIN('web', Str $model-filename, Str :$cfg-filename, Str :$technical-file) is export {
-    my $http = web($cfg-filename, $model-filename, $technical-file);
+multi sub MAIN('web', Str $model-filename, ExistingFile :$cfg-file, Str :$technical-file) is export {
+    my $http = web($cfg-file, $model-filename, $technical-file);
     react {
         whenever signal(SIGINT) {
             say "Shutting down...";
@@ -47,7 +46,7 @@ multi sub MAIN('web', Str $model-filename, Str :$cfg-filename, Str :$technical-f
 }
 
 #| Run the model
-multi sub MAIN('run', Str $filename, ExistingFile $input, Str :$cfg-filename, Str :$technical-file,
+multi sub MAIN('run', Str $filename, ExistingFile $input, ExistingFile :$cfg-file, Str :$technical-file,
         SupportedLanguage :$language = 'de', Str :$print-only, Str :$variants = 'Base',
         Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
         OutputFormat :$format = 'text'
@@ -55,7 +54,7 @@ multi sub MAIN('run', Str $filename, ExistingFile $input, Str :$cfg-filename, St
     my @print-set = $print-only.split(',') if $print-only;
     my $data = run $filename, $input.IO, $technical-file, $variants, $format, $language, @print-set,
             ($include-filters or $include-all-filters),
-            $batch, $degree, $max-runs, :$cfg-filename, :all-filters($include-all-filters);
+            $batch, $degree, $max-runs, :$cfg-file, :all-filters($include-all-filters);
     my %results := $data.results;
     my %validation-errors := $data.validation-errors;
 
@@ -97,12 +96,12 @@ multi sub MAIN('run', Str $filename, ExistingFile $input, Str :$cfg-filename, St
 
 #| Validate inputs
 multi sub MAIN(
-        'validate', Str $filename, ExistingFile $input, Str :$cfg-filename,
+        'validate', Str $filename, ExistingFile $input, ExistingFile :$cfg-file,
         SupportedLanguage :$language = 'de', Str :$variants = 'Base',
         Int :$batch=1, Int :$degree=4, Int :$max-runs
     ) is export {
     my %validation-errors = validate $filename, $input.IO, $variants,
-            $batch, $degree, $max-runs, :$cfg-filename;
+            $batch, $degree, $max-runs, :$cfg-file;
     my @output;
     @output.push("##  Model: $filename");
     @output.push("##  Variants: $variants");
@@ -123,18 +122,18 @@ multi sub MAIN(
 }
 
 #| Dump model
-multi sub MAIN('dump', Str $filename, Str :$cfg-filename, Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
-    my ($model) = load-model($cfg-filename, $filename, $variants);
+multi sub MAIN('dump', Str $filename, ExistingFile :$cfg-file, Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
+    my ($model) = load-model($cfg-file, $filename, $variants);
     say chomp $model.dump($sort);
 }
 
 #| Create LaTeX documentation
 multi sub MAIN(
-        'latex', Str $filename, Str :$cfg-filename, Str :$technical-file, Str :$sections = 'description',
+        'latex', Str $filename, ExistingFile :$cfg-file, Str :$technical-file, Str :$sections = 'description',
         Str :$variants = 'Base', SortOrder :$sort = 'model'
     ) is export {
     my $model-name = ~$filename.IO.parent;
-    my ($model, $module-path) = load-model($cfg-filename, $filename, $variants);
+    my ($model, $module-path) = load-model($cfg-file, $filename, $variants);
     my %technical = load-technical($module-path, $technical-file);
 
     say create-latex-source(
@@ -149,19 +148,19 @@ multi sub MAIN(
 #| Create Agrammon user
 multi sub MAIN(
         'create-user', Str $username,
-        Str $firstname, Str $lastname, Str $password, Str $role?, Str :$cfg-filename
+        Str $firstname, Str $lastname, Str $password, Str $role?, ExistingFile :$cfg-file
     ) is export {
-    create-user($cfg-filename, $username, $firstname, $lastname, $password, $role);
+    create-user($cfg-file, $username, $firstname, $lastname, $password, $role);
 }
 
 #| Set Agrammon user password
-multi sub MAIN('set-password', Str $username, Str $password, Str :$cfg-filename) is export {
-    set-password($cfg-filename, $username, $password);
+multi sub MAIN('set-password', Str $username, Str $password, ExistingFile :$cfg-file) is export {
+    set-password($cfg-file, $username, $password);
 }
 
 #| Create an API token for the specified username.
-multi sub MAIN('issue-api-token', Str $username, Str :$cfg-filename) is export {
-    issue-api-token($cfg-filename, $username);
+multi sub MAIN('issue-api-token', Str $username, ExistingFile :$cfg-file) is export {
+    issue-api-token($cfg-file, $username);
 }
 
 sub USAGE() is export {
@@ -170,8 +169,8 @@ sub USAGE() is export {
     USAGE
 }
 
-sub create-user($cfg-filename, $username, $firstname, $lastname, $password, $role?) {
-    get-cfg-and-db-handle($cfg-filename);
+sub create-user($cfg-file, $username, $firstname, $lastname, $password, $role?) {
+    get-cfg-and-db-handle($cfg-file);
     my $user = Agrammon::DB::User.new(
         :$username, :$firstname, :$lastname, :$password
     );
@@ -185,14 +184,14 @@ sub create-user($cfg-filename, $username, $firstname, $lastname, $password, $rol
     say "User $username created";
 }
 
-sub set-password($cfg-filename, $username, $password) {
-    get-cfg-and-db-handle($cfg-filename);
+sub set-password($cfg-file, $username, $password) {
+    get-cfg-and-db-handle($cfg-file);
     Agrammon::DB::User.new(:$username).reset-password($username, $password);
     say "New password set for user $username";
 }
 
-sub issue-api-token($cfg-filename, $username) {
-    get-cfg-and-db-handle($cfg-filename);
+sub issue-api-token($cfg-file, $username) {
+    get-cfg-and-db-handle($cfg-file);
     my $user = Agrammon::DB::User.new(:$username);
     unless $user.exists {
         note "No such user '$username'";
@@ -202,9 +201,9 @@ sub issue-api-token($cfg-filename, $username) {
     note "Issued token $token.token()";
 }
 
-sub load-model($cfg-filename, $model-filename, $variants? is copy ) {
+sub load-model($cfg-file, $model-filename, $variants? is copy ) {
     die "ERROR: load-model expects a .nhd file" unless $model-filename.IO.extension eq 'nhd';
-    my ($cfg, $db) = get-cfg-and-db-handle($cfg-filename);
+    my ($cfg, $db) = get-cfg-and-db-handle($cfg-file);
     $variants //= $cfg.model-variant;
 
     my $module-path = $cfg.model-path.IO.add($model-filename);
@@ -219,9 +218,9 @@ sub load-model($cfg-filename, $model-filename, $variants? is copy ) {
 }
 
 sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, $format, $language, @print-set,
-         Bool $include-filters, $batch, $degree, $max-runs, :$all-filters, Str :$cfg-filename) {
+         Bool $include-filters, $batch, $degree, $max-runs, :$all-filters, Str :$cfg-file) {
 
-    my ($model, $module-path) = load-model($cfg-filename, $model-filename, $variants);
+    my ($model, $module-path) = load-model($cfg-file, $model-filename, $variants);
     my %technical = load-technical($module-path.IO.parent, $technical-file);
 
     my $fh = get-input-filehandle($input-path);
@@ -275,8 +274,8 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
     }
 }
 
-sub validate (Str $model-filename, IO::Path $input-path, $variants, $batch, $degree, $max-runs, Str :$cfg-filename) is export {
-    my ($model) = load-model($cfg-filename, $model-filename, $variants);
+sub validate (Str $model-filename, IO::Path $input-path, $variants, $batch, $degree, $max-runs, Str :$cfg-file) is export {
+    my ($model) = load-model($cfg-file, $model-filename, $variants);
 
     my $fh = get-input-filehandle($input-path);
     LEAVE $fh.?close;
@@ -302,20 +301,20 @@ sub validate (Str $model-filename, IO::Path $input-path, $variants, $batch, $deg
     }
 }
 
-sub get-cfg-and-db-handle($cfg-filename is copy) {
+sub get-cfg-and-db-handle($cfg-file is copy) {
     my $cfg = Agrammon::Config.new;
-    $cfg-filename //= %*ENV<AGRAMMON_CFG> || 'etc/agrammon.cfg.yaml';
-    die "Config file $cfg-filename not found" unless $cfg-filename.IO.e;
-    note "Loading config from $cfg-filename";
-    $cfg.load($cfg-filename);
+    $cfg-file //= %*ENV<AGRAMMON_CFG> || 'etc/agrammon.cfg.yaml';
+    die "Config file $cfg-file not found" unless $cfg-file.IO.e;
+    note "Loading config from $cfg-file";
+    $cfg.load($cfg-file);
     my $db = DB::Pg.new(conninfo => $cfg.db-conninfo);
     PROCESS::<$AGRAMMON-DB-CONNECTION> = $db;
     return ($cfg, $db);
 }
 
-sub web(Str $cfg-filename, Str $model-filename, Str $technical-file?) is export {
+sub web(Str $cfg-file, Str $model-filename, Str $technical-file?) is export {
     # initialization
-    my ($model, $model-path, $cfg, $db) = load-model($cfg-filename, $model-filename);
+    my ($model, $model-path, $cfg, $db) = load-model($cfg-file, $model-filename);
     my %technical-parameters = load-technical($model-path.IO.parent, $technical-file);
     my $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters);
 
