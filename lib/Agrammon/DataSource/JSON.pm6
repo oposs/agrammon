@@ -8,22 +8,27 @@ class Agrammon::DataSource::JSON {
         my %input-data = from-json $json-data;
         my $inputs = Agrammon::Inputs.new(:$simulation-name, :$dataset-id);
         for %input-data.kv -> $full-tax, $module-data {
-            if $full-tax.index('[]') -> $sub-start {
-                my $tax = $full-tax.substr(0, $sub-start);
-                my $sub-tax = $full-tax.substr($sub-start + 2);
-                $sub-tax = $sub-tax ?? $sub-tax.substr(2) !! '';
-                for $module-data.kv -> $instance, $instance-inputs {
-                    for $instance-inputs.kv -> $var, $value {
-                        $inputs.add-multi-input(
-                            $tax, $instance, $sub-tax,
-                            $var, $value
-                        );
+            if $module-data ~~ Array {
+                for @($module-data) {
+                    my $instance = $_<name>;
+                    my $values = $_<values>;
+#                    note "    $instance";
+                    for $values.kv -> $sub-tax, $instance-inputs {
+#                        note "        $sub-tax";
+                        for $instance-inputs.kv -> $var, $value {
+#                            note "            $var : $value";
+                            $inputs.add-multi-input(
+                                $full-tax, $instance, $sub-tax,
+                                $var, $value
+                            );
+                        }
                     }
                 }
             }
             else {
                 for $module-data -> $input-hash {
                     for $input-hash.kv -> $var, $value {
+#                        note "                $var : $value";
                         $inputs.add-single-input($full-tax, $var, $value);
                     }
                 }
@@ -35,18 +40,47 @@ class Agrammon::DataSource::JSON {
 }
 
 # JSON input expected
-# {
-#     "Storage::SolidManure::Poultry": {
-#         "share_covered_basin": "20",
-#         "share_applied_direct_poultry_manure": "20"
-#     },
-#     "Livestock::Equides[]::Outdoor": {
-#         "HorsesUp3yr": {
-#             "yard_days": "115",
-#             "grazing_days": "165",
-#             "grazing_hours": "0",
-#             "yard_hours": "0",
-#             "floor_properties_exercise_yard": "paddock_or_pasture_used_as_exercise_yard"
-#         }
-#     }
-# }
+#{
+#    "simulation": "2010v2.1_20120425",
+#    "run": "2648",
+#    "inputs": {
+#        "Application::Slurry::Applrate": {
+#            "appl_rate": "20",
+#            "dilution_parts_water": "1.0000"
+#        },
+#        "Livestock::DairyCow": [
+#            {
+#                "name": "DC_Ex1",
+#                "values": {
+#                    "Excretion": {
+#                        "animalcategory": "dairy_cows",
+#                        "animals": "10"
+#                    }
+#                },
+#                "Excretion::CFeedWinterRatio": {
+#                    "share_beets_winter": 0,
+#                    "share_grass_silage_winter": 0
+#                },
+#                "Housing::Type": {
+#                    "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+#                }
+#            },
+#            {
+#                "name": "DC_Standard",
+#                "values": {
+#                    "Excretion": {
+#                        "animalcategory": "dairy_cows",
+#                        "animals": "10"
+#                    },
+#                    "Excretion::CFeedWinterRatio": {
+#                        "share_beets_winter": 0,
+#                        "share_grass_silage_winter": 0
+#                    },
+#                    "Housing::Type": {
+#                        "housing_type": "Loose_Housing_Slurry_Plus_Solid_Manure"
+#                    }
+#                }
+#            }
+#        ]
+#    }
+#}
