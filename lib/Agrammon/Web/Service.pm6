@@ -286,6 +286,7 @@ class Agrammon::Web::Service {
         my $data-source = do given $type {
             when 'text/csv'         { Agrammon::DataSource::CSV.new }
             when 'application/json' { Agrammon::DataSource::JSON.new }
+            default { die "Output format '$type' not supported"; }
         }
         my $input = $data-source.load($simulation-name, $dataset-name, $input-data);
 
