@@ -28,7 +28,7 @@ my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location
 ;
 
-subset OptionalExistingFile of Str where { $_ ~~ Any or .IO.e or note("No such file $_") && exit 1 }
+subset OptionalExistingFile of Str where { !.defined or .IO.e or note("No such file $_") && exit 1 }
 subset ExistingFile of Str where { $_ ~~ Any or .IO.e or $_ eq '-' or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
