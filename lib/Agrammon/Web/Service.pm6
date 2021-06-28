@@ -283,14 +283,9 @@ class Agrammon::Web::Service {
         :$language, OutputFormats :$format!, :$print-only,
         :$include-filters, :$all-filters
     ) {
-        my $data-source;
-        given $type {
-            when 'text/csv' {
-                $data-source = Agrammon::DataSource::CSV.new;
-            }
-            when 'application/json' {
-                $data-source = Agrammon::DataSource::JSON.new;
-            }
+        my $data-source = do given $type {
+            when 'text/csv'         { Agrammon::DataSource::CSV.new }
+            when 'application/json' { Agrammon::DataSource::JSON.new }
         }
         my $input = $data-source.load($simulation-name, $dataset-name, $input-data);
 

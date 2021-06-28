@@ -2,23 +2,21 @@ use v6;
 use JSON::Fast;
 
 use Agrammon::Inputs;
-use Agrammon::DataSource::Util;
 
 class Agrammon::DataSource::JSON {
     method load($simulation-name, $dataset-id, $json-data) {
         my %input-data = from-json $json-data;
         my $inputs = Agrammon::Inputs.new(:$simulation-name, :$dataset-id);
         for %input-data.kv -> $full-tax, $module-data {
-            if $full-tax.index('[') -> $sub-start {
+            if $full-tax.index('[]') -> $sub-start {
                 my $tax = $full-tax.substr(0, $sub-start);
-                my $sub-end = $full-tax.index(']');
-                my $sub-tax = $full-tax.substr($sub-end + 1);
+                my $sub-tax = $full-tax.substr($sub-start + 2);
                 $sub-tax = $sub-tax ?? $sub-tax.substr(2) !! '';
                 for $module-data.kv -> $instance, $instance-inputs {
                     for $instance-inputs.kv -> $var, $value {
                         $inputs.add-multi-input(
-                                $tax, $instance, $sub-tax,
-                                $var, maybe-numify($value)
+                            $tax, $instance, $sub-tax,
+                            $var, $value
                         );
                     }
                 }
@@ -26,7 +24,7 @@ class Agrammon::DataSource::JSON {
             else {
                 for $module-data -> $input-hash {
                     for $input-hash.kv -> $var, $value {
-                        $inputs.add-single-input($full-tax, $var, maybe-numify($value));
+                        $inputs.add-single-input($full-tax, $var, $value);
                     }
                 }
 
