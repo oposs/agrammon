@@ -280,8 +280,8 @@ class Agrammon::Web::Service {
     method get-outputs-for-rest(
         Str $simulation-name, Str $dataset-name, $input-data, InputFormats $type,
         :$model-version, :$variants, :$technical-file,
-        :$language, OutputFormats :$format!, :$print-only,
-        :$include-filters, :$all-filters
+        :$language = 'de', OutputFormats :$format!, :$print-only,
+        :$include-filters = False, :$all-filters = False
     ) {
         my $data-source = do given $type {
             when 'text/csv'         { Agrammon::DataSource::CSV.new }

@@ -16,7 +16,7 @@ use AgrammonTest;
 
 # FIX ME: use separate test database
 
-plan 40;
+plan 41;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -429,6 +429,21 @@ subtest "Get model data" => {
         is %report<type>, 'report', "Report has correct type";
     }
 
+}
+
+subtest "get-outputs-for-rest" => {
+    my $filename = 't/test-data/inputs-version6.json';
+    ok my $input-data = $filename.IO.slurp, "Read JSON file";
+    my $format = 'application/json';
+    ok my $result = $ws.get-outputs-for-rest(
+            'Agrammon Test', 'Version6',
+            $input-data,
+            'application/json',
+            :$format,
+            :print-only('SummaryTotal')
+    );
+    is $result[0]<label>, 'Total', "Got expected label";
+    is $result[0]<value>, 220, "Got expected amount";
 }
 
 subtest "get-excel-export" => {
