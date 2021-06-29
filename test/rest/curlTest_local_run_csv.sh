@@ -9,7 +9,7 @@ curl  \
      -F "simulation=FritzTest" \
      -F "dataset=Hochrechung2021" \
      -F "language=de" \
-     -F 'inputs=@restDataFull.csv;type=text/csv' \
+     -F 'inputs=@../../t/test-data/inputs-version6.csv;type=text/csv' \
    http://localhost:20000/api/v1/run
 
 #    | json_pp

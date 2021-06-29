@@ -10,8 +10,8 @@ class Agrammon::DataSource::JSON {
         for %input-data.kv -> $full-tax, $module-data {
             if $module-data ~~ Array {
                 for @($module-data) {
-                    my $instance = $_<name>;
-                    my $values = $_<values>;
+                    my $instance = .<name>;
+                    my $values   = .<values>;
                     for $values.kv -> $sub-tax, $instance-inputs {
                         for $instance-inputs.kv -> $var, $value {
                             $inputs.add-multi-input(
@@ -23,12 +23,9 @@ class Agrammon::DataSource::JSON {
                 }
             }
             else {
-                for $module-data -> $input-hash {
-                    for $input-hash.kv -> $var, $value {
-                        $inputs.add-single-input($full-tax, $var, $value);
-                    }
+                for $module-data.kv -> $var, $value {
+                    $inputs.add-single-input($full-tax, $var, $value);
                 }
-
             }
         }
         return $inputs;
