@@ -434,13 +434,13 @@ subtest "Get model data" => {
 subtest "get-outputs-for-rest" => {
     my $filename = 't/test-data/inputs-version6.json';
     ok my $input-data = $filename.IO.slurp, "Read JSON file";
-    my $format = 'application/json';
+    my $input-format  = 'application/json';
+    my $output-format = 'application/json';
     ok my $result = $ws.get-outputs-for-rest(
-            'Agrammon Test', 'Version6',
-            $input-data,
-            'application/json',
-            :$format,
-            :print-only('SummaryTotal')
+        'Agrammon Test', 'Version6',
+        $input-data, $input-format,
+        :format($output-format),
+        :print-only('SummaryTotal')
     );
     is $result[0]<label>, 'Total', "Got expected label";
     is $result[0]<value>, 220, "Got expected amount";
