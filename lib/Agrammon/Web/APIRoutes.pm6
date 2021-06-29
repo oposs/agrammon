@@ -26,7 +26,7 @@ my class AgrammonAPITokenMiddleware does Cro::APIToken::Middleware {
     }
 
     method on-invalid(Cro::HTTP::Request $request, Cro::APIToken::Token $token) {
-        $request.target eq '/openapi.json'
+        $request.target eq '/openapi.' ~ any(<yaml json>)
                 ?? $request
                 !! self.Cro::APIToken::Middleware::on-invalid($request, $token)
     }
