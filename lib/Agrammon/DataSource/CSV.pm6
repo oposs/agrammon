@@ -1,5 +1,6 @@
 use v6;
 use Agrammon::Inputs;
+use Agrammon::DataSource::Util;
 
 class Agrammon::DataSource::CSV {
     method read($fh) {
@@ -44,7 +45,7 @@ class Agrammon::DataSource::CSV {
         }
     }
 
-    method from-csv($simulation-name, $dataset-id, $csv-data) {
+    method load($simulation-name, $dataset-id, $csv-data) {
         my $input = Agrammon::Inputs.new(:$simulation-name, :$dataset-id);
         for $csv-data.split("\n").map(*.split(';')) {
             next unless .[0];
@@ -63,8 +64,16 @@ class Agrammon::DataSource::CSV {
         }
         return $input;
     }
-
-    sub maybe-numify($value) {
-        +$value // $value
-    }
 }
+
+# CSV input expected
+# 2010v2.1_20120425;2648;Storage::SolidManure::Poultry;share_applied_direct_poultry_manure;20
+# 2010v2.1_20120425;2648;Storage::SolidManure::Poultry;share_covered_basin;20
+# 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Excretion;animalcategory;horses_older_than_3yr
+# 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Excretion;animals;5
+# 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Outdoor;grazing_days;165
+# 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Outdoor;grazing_hours;0
+# 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Outdoor;floor_properties_exercise_yard;paddock_or_pasture_used_as_exercise_yard
+# 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Housing::CFreeFactor;free_correction_factor;5
+# 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Outdoor;yard_days;115
+# 2010v2.1_20120425;2648;Livestock::Equides[HorsesUp3yr]::Outdoor;yard_hours;0

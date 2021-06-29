@@ -5,6 +5,7 @@ use IO::Path::ChildSecure;
 
 use Agrammon::Web::APITokenManager;
 use Agrammon::Web::Service;
+use Agrammon::DataSource::JSON;
 
 #| API session object, which is just a subclass of the Agrammon user object.
 #| Since API requests are stateless, no further details are needed.
@@ -73,15 +74,16 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
                 :$print-only = '', :$include-filters = 'false', :$all-filters = 'false'
             ) {
                 my $type = $inputs.content-type;
-                if $type ne 'text/csv' {
-                    my $error = "Content type is '$type', must be 'text/csv'";
-                    bad-request 'application/json', %( :$error );
+                if not ($type eq 'application/json' or $type eq 'text/csv') {
+                    my $error = "Content type is '$type', must be 'application/json' or 'text/csv'";
+                    $accept eq 'application/json'
+                        ?? bad-request 'application/json', %( :$error)
+                        !! bad-request 'text/plain', $error ~ "\n";
                 }
                 else {
                     my $input-data = $inputs.body-text;
-                    my $results = $ws.get-outputs-from-csv(
-                        $user,
-                        ~$simulation, ~$dataset, ~$input-data,
+                    my $results = $ws.get-outputs-for-rest(
+                        ~$simulation, ~$dataset, $input-data, ~$type,
                         :model-version(~$model), :variants(~$variants), :technical-file(~$technical),
                         :language(~$language), :format($accept), :print-only(~$print-only),
                         :include-filters($include-filters eq 'true'), :all-filters($all-filters eq 'true')
