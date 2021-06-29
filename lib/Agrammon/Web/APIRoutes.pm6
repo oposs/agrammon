@@ -24,6 +24,12 @@ my class AgrammonAPITokenMiddleware does Cro::APIToken::Middleware {
         }
         return $request;
     }
+
+    method on-invalid(Cro::HTTP::Request $request, Cro::APIToken::Token $token) {
+        $request.target eq '/openapi.json'
+                ?? $request
+                !! self.Cro::APIToken::Middleware::on-invalid($request, $token)
+    }
 }
 
 sub api-routes(Agrammon::Web::Service $ws) is export {
