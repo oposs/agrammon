@@ -13,7 +13,6 @@ subtest "Load inputs from JSON" => {
     isa-ok my $data-source = Agrammon::DataSource::JSON.new, Agrammon::DataSource::JSON,
     'Is a Agrammon::DataSource::JSON';
     ok $inputs = $data-source.load('Agrammon Test', 'Version6', $input-data), "Load inputs";
-    note $inputs.all-inputs.keys.join("\n");
     is $inputs.all-inputs.keys.elems, 15, "Found 15 modules";
 }
 

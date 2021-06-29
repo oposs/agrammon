@@ -272,8 +272,8 @@ class Agrammon::Web::Service {
         $model-path.IO.&child-secure($technical).slurp
     }
 
-    subset InputFormats of Str where  { $_ eq 'application/json' or $_ eq 'text/csv' };
-    subset OutputFormats of Str where { $_ eq 'application/json' or $_ eq 'text/csv' or $_ eq 'text/plain' };
+    subset InputFormats  of Str where 'application/json' | 'text/csv';
+    subset OutputFormats of Str where 'application/json' | 'text/csv' | 'text/plain';
 
     #| Run model from input data as CSV or JSON
     #| and return output formatted as CSV, JSON, or TEXT
