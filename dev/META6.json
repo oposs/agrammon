@@ -61,6 +61,7 @@
     "Agrammon::Formula::ControlFlow": "lib/Agrammon/Formula/ControlFlow.pm6",
     "Agrammon::Formula::LogCollector": "lib/Agrammon/Formula/LogCollector.pm6",
     "Agrammon::Formula::Parser": "lib/Agrammon/Formula/Parser.pm6",
+    "Agrammon::Inputs": "lib/Agrammon/Inputs.pm6",
     "Agrammon::Model::FilterSet": "lib/Agrammon/Model/FilterSet.pm6",
     "Agrammon::Model::Input": "lib/Agrammon/Model/Input.pm6",
     "Agrammon::Model::Module": "lib/Agrammon/Model/Module.pm6",
