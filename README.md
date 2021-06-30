@@ -31,7 +31,7 @@ To only run unit tests, set `AGRAMMON_UNIT_TEST=1` in the environment.  The
 integration tests currently have quite some setup dependencies; this should
 be addressed in the future.
 
-## Database setup (PostgreSQL):
+## Database setup (PostgreSQL)
 
 Install or use existing PostgreSQL database server:
 
@@ -57,3 +57,8 @@ Adapt runWeb.sh to point to your config file and model.
 ./runWeb.sh
 
 and point your browser to the shown URL (defaults to localhost:20000)
+
+## REST Api
+
+The Agrammon model can be accessed via a REST interface, for details see the
+[online documentation](https://redocly.github.io/redoc/?url=https://model.agrammon.ch/single/api/v1/openapi.yaml)
