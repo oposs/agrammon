@@ -1,24 +1,22 @@
 openapi: 3.0.0
 info:
-    version: 1.0.0,
-    title: OpenApi Agrammon REST,
+    version: 1.0.0
+    title: OpenApi Agrammon REST
+    description: |
+       This API allows to programmatically access the [simulation model Agrammon](https://agrammon.ch/en).
 paths:
     /model/technical:
         get:
             summary: Get technical file
+            description: |
+                The technical file defines parameters used in the model simulation model.
             operationId: getTechnical
             parameters:
                 - in: query
                   name: technical
+                  description: filename of the technical file to download
                   schema:
                       type: string
-                - in: query
-                  name: sort
-                  schema:
-                      type: string
-                      enum:
-                          - model
-                          - calculation
             responses:
                 '200':
                     description: Technical file
@@ -39,18 +37,20 @@ paths:
             parameters:
                 - in: query
                   name: technical
+                  description: filename of the technical file to include; defaults to `technical.cfg`
                   schema:
                       type: string
                 - in: query
                   name: sort
+                  description: sort order of the model modules; defaults to `model`
                   schema:
                       type: string
                       enum:
                           - model
-                          - calculation
+                          - calculation`
             responses:
                 '200':
-                    description: LaTeX file
+                    description: LaTeX file, can be translated with `lualatex`.
                     content:
                         text/plain:
                             schema:
@@ -70,10 +70,16 @@ paths:
     /inputTemplate:
         get:
             summary: Get model input template CSV file
+            description: |
+                The template contains a line for each input value to the Agrammon model.
+                There is one instance for each multi-module.
+                The file can be used to either run a model simulation with this REST interface
+                or be uploaded to the database of the Agrammon web application.
             operationId: getInputTemplate
             parameters:
                 - in: query
                   name: sort
+                  description: sort order of the model modules; defaults to `model`
                   schema:
                       type: string
                       enum:
@@ -113,7 +119,7 @@ paths:
                                 contentType: text/csv
             responses:
                 '200':
-                    description: Simulation results
+                    description: Simulation results; format depends on request accept header.
                     content:
                         application/json:
                             schema:
@@ -123,7 +129,7 @@ paths:
                                 description: CSV formatted
                         text/plain:
                             schema:
-                                description: text formatted
+                                description: human readable text formatted
                 '400':
                     description: Invalid request.
                     content:
@@ -152,40 +158,49 @@ components:
                 - inputs
             properties:
                 simulation:
+                    description: Comment to be included in the output.
                     type: string
                 dataset:
+                    description: Another comment to be included in the output.
                     type: string
                 inputs:
                     description: Input data as CSV string or JSON
                 technical:
+                    description: filename of the technical file to use in simulation; defaults to `technical.cfg`
                     type: string
                 model:
                     type: string
+                    description: Model version to use; defaults to `version6`
                     enum:
                         - version4
                         - version5
                         - version6
                 variants:
                     type: string
+                    description: Model variant to use; defaults to `Base`
                     enum:
                         - Base
                         - Kantonal_LU
                         - SHL
                         - LU
                 print-only:
+                    description: limit the output to results marked in the model with the specified label.
                     type: string
                 language:
                     type: string
+                    description: output labels; defaults to `de`
                     enum:
                         - de
                         - en
                         - fr
                 include-filters:
+                    description: whether to include detailed outputs; defaults to `false`
                     type: string
                     enum:
                         - 'true'
                         - 'false'
                 all-filters:
+                    description: whether to include empty detailed outputs; defaults to `false`
                     type: string
                     enum:
                         - 'true'

@@ -1,7 +1,10 @@
 openapi: 3.0.0
 info:
-    version: 1.0.0,
-    title: OpenApi Agrammon,
+    version: 1.0.0
+    title: OpenApi Agrammon
+    description: |
+        REST api for the [Agrammon web application](https://agrammon.ch/en/agrammon-model/).
+        NOTE: some routes are not yet OpenApi based
 paths:
     /get_account_key:
         post:
