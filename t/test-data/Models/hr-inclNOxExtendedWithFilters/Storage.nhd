@@ -307,7 +307,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 ####################################################
 ##### nh3 loss
 
-+maxlimit_of_nh3_nstorage_liquid_pigs
++tan_available_nh3_nstorage_liquid_pigs
   print = newStorage
   ++units  
     en = kg N/year
@@ -340,7 +340,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       when $_ eq 0 {
         scale(Out(tan_into_storage_liquid_pigs), 0);
       }
-      when $_ > scalar(Out(maxlimit_of_nh3_nstorage_liquid_pigs)) {
+      when $_ > scalar(Out(tan_available_nh3_nstorage_liquid_pigs)) {
         writeLog(
             {
                 en => "The size of the slurry store induces an NH3 loss which is larger than the TAN flow into the store. NH3 loss from storage liquid is corrected accordingly!\n",
@@ -348,7 +348,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
                 fr => "La dimension de la fosse à lisier induit une perte de NH3 plus élevée que le flux de TAN dans la fosse. La perte de NH3 issue du stockage des engrais de ferme liquide sera ainsi corrigée!\n"
             }
         );  
-        Out(maxlimit_of_nh3_nstorage_liquid_pigs);         
+        Out(tan_available_nh3_nstorage_liquid_pigs);         
       }
       default {
         scale( 
@@ -359,7 +359,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       }
     }
 
-+maxlimit_of_nh3_nstorage_liquid_cattle
++tan_available_nh3_nstorage_liquid_cattle
   print = newStorage
   ++units  
     en = kg N/year
@@ -392,7 +392,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
       when $_ eq 0 {
         scale(Out(tan_into_storage_liquid_cattle), 0);
       }
-      when $_ > scalar(Out(maxlimit_of_nh3_nstorage_liquid_cattle)) {
+      when $_ > scalar(Out(tan_available_nh3_nstorage_liquid_cattle)) {
         writeLog(
             {
                 en => "The size of the slurry store induces an NH3 loss which is larger than the TAN flow into the store. NH3 loss from storage liquid is corrected accordingly!\n",
@@ -400,7 +400,7 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
                 fr => "La dimension de la fosse à lisier induit une perte de NH3 plus élevée que le flux de TAN dans la fosse. La perte de NH3 issue du stockage des engrais de ferme liquide sera ainsi corrigée!\n"
             }
         );  
-        Out(maxlimit_of_nh3_nstorage_liquid_cattle);         
+        Out(tan_available_nh3_nstorage_liquid_cattle);         
       }
       default {
         scale( 
