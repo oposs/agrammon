@@ -142,7 +142,7 @@ qx.Class.define('agrammon.ui.table.rowrenderer.Fancy', {
       }
 
       style.color = this._colors.colNormal;
-	  if ( rowInfo.rowData != undefined && (
+	  if (rowInfo.rowData != undefined && (
               rowInfo.rowData[5] === undefined
            || rowInfo.rowData[5] === '*** Select ***'
            || rowInfo.rowData[5] === null
@@ -190,7 +190,7 @@ qx.Class.define('agrammon.ui.table.rowrenderer.Fancy', {
       }
 
       rowStyle.push(';color:');
-	  if (    rowInfo.rowData[5] === undefined
+	  if (rowInfo.rowData[5] === undefined
            || rowInfo.rowData[5] === '*** Select ***'
            || rowInfo.rowData[5] === null
            || rowInfo.rowData[5] === ''

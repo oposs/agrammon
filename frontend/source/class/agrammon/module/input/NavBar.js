@@ -601,14 +601,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 default:
                     if ( rec.type.match(/enum/) ) { // combobox
                         var olen = rec.options.length;
-// TODO: remove unless needed
-//                        for (var o=0; o<olen; o++) {
-//                            if (rec.options[o] != undefined && rec.options[o][0] == 'ignore') {
-//                                rec.options.splice(o,1);
-//                                rec.optionsLang.splice(o,1);
-//                                this.debug('Removed ignore options:', rec.options[o]);
-//                            }
-//                        }
                         metaData.options     = rec.options;
                         metaData.optionsLang = rec.optionsLang;
                     }
@@ -634,7 +626,8 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     units:        rec.units,
                     helpFunction: helpFunction,
                     show:         rec.show,
-                    order:        rec.order
+                    order:        rec.order,
+                    filter:       rec.filter
                 });
                 navFolder.addData(variable);
 
