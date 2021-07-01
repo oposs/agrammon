@@ -43,6 +43,7 @@ qx.Class.define('agrammon.module.input.Variable', {
         type:         { init: null},
         units:        { init: null, nullable: true},
         order:        { init: null, nullable: true},
+        filter:       { init: null, nullable: true},
         desc:         { init: null, nullable: true},
         helpIcon:     { init: 'agrammon/info_s.png', nullable: true},
         helpFunction: { init: null, nullable: true}

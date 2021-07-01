@@ -82,6 +82,7 @@ class Agrammon::Model::Input {
                 gui  => $.default-gui,
             )),
             :enum(%!enum-lookup),
+            :$!filter,
             :%!help,
             :%!labels,
             :models(@!models || @("all")),

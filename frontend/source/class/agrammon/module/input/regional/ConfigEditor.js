@@ -53,9 +53,8 @@ qx.Class.define('agrammon.module.input.regional.ConfigEditor', {
                 newData.push(rec);
                 if (! data[i].getName().match(/::ignore$/)
                     && data[i].getMetaData()['options']
-                    // Flattening/branching with only one option doesn't make sense.
-                    // This eliminates dummy select boxes used for filtering like animalcategory.
-                    && data[i].getMetaData()['options'].length > 1
+                    // Flattening/branching on the filter input (only animalcategory right now) doesn't make sense.
+                    && ! data[i].getFilter()
                     // TODO: remove
                     && data[i].getShow()
                    ) {
@@ -115,7 +114,8 @@ qx.Class.define('agrammon.module.input.regional.ConfigEditor', {
 
         },
 
-	    __storeData: function(msg) {
+        // TODO: remove? fz 2021-07-01
+	__storeData: function(msg) {
             var data = msg.getData();
             var varName = data['var'];
             var value   = data['value'];
@@ -134,7 +134,7 @@ qx.Class.define('agrammon.module.input.regional.ConfigEditor', {
                     row:         -1
                 }
             );
-	    },
+	},
 
         __update: function() {
             if (this.currentFolder != null) {

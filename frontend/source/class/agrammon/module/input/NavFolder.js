@@ -408,7 +408,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                     if (value == undefined) {
                         value = this.__propData[i].getDefaultValue();
                     }
-                    if (value == 'branched' || value == 'branchedX') {
+                    if (value == 'branched') {
                         metaData['branches'] = branch_values;
                         this.__propData[i].setMetaParameter('branches', branch_values);
                     }
@@ -422,7 +422,6 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                         value = '' + value;
                         value = value.replace(/\s+/g, '');
                         value = value.replace(/\'/g,'');
-
                         // TODO: remove if statement
                         if (value != '***Select***' && value != 'ignore') {
                             options = new Array();
@@ -518,7 +517,10 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                 var comment = data.getComment();
                 var meta = data.getMetaData();
                 this.__propData.push(data);
-
+                // prevent default value (*** Select ***) on instance creation
+                if (name.match(/_flattened/) && value === null) {
+                    value = '';
+                }
                 if (storeAll) {
                     if (handleIgnore && name.match(/::ignore/)) { // FIX ME
                         this.setData(name, 'ignore', null, noCheck, null);
