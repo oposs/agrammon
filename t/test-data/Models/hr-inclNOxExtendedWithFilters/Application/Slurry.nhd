@@ -145,7 +145,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
       Tech(er_App_cattle_liquid);
 ?endif
 
-+nh3_napplication_liquid
++nh3_napplication_slurry
   print = nh3,application,liquid,all
   ++units  
     en = kg N/year
@@ -224,7 +224,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     NH3 Emission factor slurry application.
   ++formula
-    Out(nh3_napplication_liquid) P/
+    Out(nh3_napplication_slurry) P/
       (
         Val(tan_into_application_liquid, ::Storage) P+
         add(
