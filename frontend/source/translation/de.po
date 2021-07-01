@@ -102,7 +102,7 @@ msgstr "Datensatz"
 msgid "datasets"
 msgstr "Datensätze"
 
-#: agrammon/ui/menu/OptionMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Info"
 msgstr "Info"
 
@@ -162,7 +162,7 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/input/NavBar.js
 msgid "Error"
 msgstr "Fehler"
 
@@ -174,7 +174,7 @@ msgstr "existiert bereits."
 msgid "Rename dataset"
 msgstr "Datensatz umbenennen"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/NavBar.js
 msgid "New name"
 msgstr "Neuer Name"
 
@@ -270,7 +270,7 @@ msgstr "Filter auf Marker Name"
 msgid "Input"
 msgstr "Eingabe"
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/input/NavBar.js
 msgid "Instance name must not be empty."
 msgstr "Der Kategorie-Name darf nicht leer sein."
 
@@ -290,7 +290,7 @@ msgstr "Umbenennen Kategorie "
 msgid "Duplicate instance "
 msgstr "Duplizieren Kategorie "
 
-#: agrammon/ui/menu/NavMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
@@ -354,7 +354,7 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/module/user/Account.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -602,7 +602,7 @@ msgstr "Passwort zurück setzen"
 msgid "Login"
 msgstr "Anmelden"
 
-#: agrammon/module/user/Account.js
+#: agrammon/ui/menu/AdminMenu.js
 msgid "Reset password"
 msgstr "Passwort zurücksetzen"
 

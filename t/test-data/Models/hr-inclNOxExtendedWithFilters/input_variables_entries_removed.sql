@@ -10,3 +10,8 @@ AND data_dataset IN (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0
 DELETE FROM data_new WHERE (data_var LIKE 'Livestock::DairyCow[]::Housing::Floor%' OR data_var LIKE 'Livestock::OtherCattle[]::Housing::Floor%')
 AND data_val = 'toothed_scrapper_running_over_a_grooved_floor'
 AND data_dataset IN (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0');
+
+
+-- flattened
+DELETE FROM data_new WHERE (data_var LIKE 'Livestock::DairyCow[]::Housing::Floor%_toothed scrapper running over a grooved floor' OR data_var LIKE 'Livestock::OtherCattle[]::Housing::Floor%_toothed scrapper running over a grooved floor')
+AND data_dataset IN (SELECT dataset_id FROM dataset WHERE dataset_version = '6.0');

@@ -22,7 +22,7 @@ qx.Class.define('agrammon.module.input.regional.ConfigInstance', {
         this.setLayout(new qx.ui.layout.VBox());
         this.__navTree = tree;
 
-            var height = qx.bom.Document.getHeight() - 20;
+        var height = qx.bom.Document.getHeight() - 20;
         this.set({ maxHeight: height, modal: true,
                   showClose: true, showMinimize: false, showMaximize: false,
 		          caption: this.tr("Configure instance")
