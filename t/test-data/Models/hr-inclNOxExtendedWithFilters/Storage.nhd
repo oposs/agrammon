@@ -552,11 +552,15 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual N flux out of storage for manure application.
   ++formula
-    Val(n_out_livestock_solid, ::Livestock) P- 
-    Val(n2_nsolid_housing_and_storage, ::Livestock) P-
-    Val(no_nsolid_housing_and_storage, ::Livestock) P-
-    Val(n2o_nsolid_housing_and_storage, ::Livestock) P-
-    Out(nh3_nstorage_solid);
+    my $out = Val(n2_nsolid_housing_and_storage, ::Livestock) P+
+        Val(no_nsolid_housing_and_storage, ::Livestock) P+
+        Val(n2o_nsolid_housing_and_storage, ::Livestock) P+
+        Out(nh3_nstorage_solid);
+    if ($out > Val(n_out_livestock_solid, ::Livestock)) {
+        0.0;
+    } else {
+        Val(n_out_livestock_solid, ::Livestock) P- $out;
+    }
  
 
 +tan_into_application_solid
@@ -568,12 +572,16 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
   ++description
     Annual TAN flux out of storage for manure application.
   ++formula
-    Val(tan_out_livestock_solid, ::Livestock) P-
-    Val(n2_nsolid_housing_and_storage, ::Livestock) P-
-    Val(no_nsolid_housing_and_storage, ::Livestock) P-
-    Val(n2o_nsolid_housing_and_storage, ::Livestock) P-
-    Out(nh3_nstorage_solid) P-
-    Out(immobilization);
+    my $out = Val(n2_nsolid_housing_and_storage, ::Livestock) P+
+        Val(no_nsolid_housing_and_storage, ::Livestock) P+
+        Val(n2o_nsolid_housing_and_storage, ::Livestock) P+
+        Out(nh3_nstorage_solid) P+
+        Out(immobilization);
+    if ($out > Val(tan_out_livestock_solid, ::Livestock)) {
+        0.0;
+    } else {
+        Val(tan_out_livestock_solid, ::Livestock) P- $out;
+    }
 
 ####################################################
 
