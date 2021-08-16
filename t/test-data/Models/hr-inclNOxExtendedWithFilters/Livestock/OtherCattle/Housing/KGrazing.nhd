@@ -50,8 +50,20 @@ taxonomy = Livestock::OtherCattle::Housing::KGrazing
     The correction factor for the reduction of the housing emission
     depending on the number of grazing hours per day and the grazing days per year.
   ++formula
-    # calculate correction factor per 'grazing event' i.e. per day
-    my $k_grazing = Tech(k_grazing_a) * exp(Tech(k_grazing_b) * Val(grazing_hours, ..::Outdoor));
-    # scale with ratio grazing_days per year
-    ($k_grazing - 1) * Val(grazing_days, ..::Outdoor) / 365 + 1;
-
+    my $grazing_total = Val(grazing_days, ..::Outdoor) * Val(grazing_hours, ..::Outdoor);
+    my $grazing_max = 365.0 * 24.0;
+    if ($grazing_total < $grazing_max) {
+        # calculate correction factor 
+        my $k_grazing = exp(Tech(k_grazing_b) * Val(grazing_hours, ..::Outdoor));
+        # increase emission of TAN fraction which is excreted into housing on a grazing day
+        (
+            # TAN fraction into housing uncorrected
+            (365.0 - Val(grazing_days, ..::Outdoor)) * 24.0 + 
+            # TAN fraction into housing corrected
+            Val(grazing_days, ..::Outdoor) * (24.0 - Val(grazing_hours, ..::Outdoor)) * $k_grazing
+        ) /
+        # divided by total amount of TAN into housing 
+        ($grazing_max - Val(grazing_hours, ..::Outdoor) * Val(grazing_days, ..::Outdoor));
+    } else {
+        1.0;
+    }
