@@ -27,33 +27,33 @@ my $model-variants = (
 
 #| Expected results
 my %expected-results =
-    'Kantonal_LU' => {
-        'nh3_ntotal' => 3246.747,
-        'nh3_nanimalproduction' => 3224.547,
-        'nh3_napplication' => 1438.344,
-        'n_into_application' => 7692.974,
-        'tan_into_application' => 3336.359
-    },
+    # 'Kantonal_LU' => {
+    #     'nh3_ntotal' => 3246.747,
+    #     'nh3_nanimalproduction' => 3224.547,
+    #     'nh3_napplication' => 1438.344,
+    #     'n_into_application' => 7692.974,
+    #     'tan_into_application' => 3336.359
+    # },
     'Single_default' => {
-        'nh3_ntotal' => 3162.557,
-        'nh3_nanimalproduction' => 3140.357,
-        'nh3_napplication' => 1332.185,
-        'n_into_application' => 7441.241,
-        'tan_into_application' => 3171.557
+        'nh3_ntotal' => 3125.686,
+        'nh3_nanimalproduction' => 3103.486,
+        'nh3_napplication' => 1358.309,
+        'n_into_application' => 7504.237,
+        'tan_into_application' => 3224.344
     },
     'Single_extendedOutput' => {
-        'nh3_ntotal' => 3162.557,
-        'nh3_nanimalproduction' => 3140.357,
-        'nh3_napplication' => 1332.185,
-        'n_into_application' => 7441.241,
-        'tan_into_application' => 3171.557
+        'nh3_ntotal' => 3125.686,
+        'nh3_nanimalproduction' => 3103.486,
+        'nh3_napplication' => 1358.309,
+        'n_into_application' => 7504.237,
+        'tan_into_application' => 3224.344
     },
     'Single_old' => {
-        'nh3_ntotal' => 3162.557,
-        'nh3_nanimalproduction' => 3140.357,
-        'nh3_napplication' => 1332.185,
-        'n_into_application' => 7441.241,
-        'tan_into_application' => 3171.557
+        'nh3_ntotal' => 3125.686,
+        'nh3_nanimalproduction' => 3103.486,
+        'nh3_napplication' => 1358.309,
+        'n_into_application' => 7504.237,
+        'tan_into_application' => 3224.344
     };
 
 my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
