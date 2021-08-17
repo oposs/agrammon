@@ -73,7 +73,7 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 *** input ***
 
 +grazing_days
-  type  = integer
+  type  = float
   validator = between(0,365);
   ++labels 
     en = Grazing days per year
