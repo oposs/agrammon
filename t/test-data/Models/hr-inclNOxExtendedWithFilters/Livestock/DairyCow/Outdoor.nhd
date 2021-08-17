@@ -18,7 +18,7 @@ taxonomy = Livestock::DairyCow::Outdoor
 
 
 +yard_days
-  type  = integer
+  type  = float
   validator = between(0,365);
   ++labels
     en = Duration of access to exercise yard over the year
@@ -217,7 +217,7 @@ taxonomy = Livestock::DairyCow::Outdoor
 #### Grazing
 
 +grazing_days
-  type  = integer
+  type  = float
   validator = between(0,270);
   ++labels 
     en = Grazing days per year

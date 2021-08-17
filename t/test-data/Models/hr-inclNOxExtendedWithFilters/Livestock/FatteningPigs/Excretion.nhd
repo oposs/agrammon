@@ -83,7 +83,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
         <p>Porcs à l'engrais: animaux pesant de 25 kg jusqu'à l'abattage </p>
 
 +dimensioning_barn
-  type = integer
+  type = float
   distribute = true
   ++labels 
     en = Number of available animal places

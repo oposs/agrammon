@@ -17,7 +17,7 @@ taxonomy = Livestock::Equides::Outdoor
 # Grazing
 
 +grazing_days
-  type  = integer
+  type  = float
   validator = between(0,365);
   ++labels 
     en = Grazing days per year
