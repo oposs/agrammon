@@ -116,7 +116,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
          compris dans les animaux en lactation. </p>
 
 +animals
-  type = integer
+  type = float
   validator = ge(0)
   distribute = true
   ++labels
