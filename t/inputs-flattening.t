@@ -40,6 +40,18 @@ given Agrammon::Inputs::Distribution.new -> $dist {
             },
             X::Agrammon::Inputs::Distribution::BadSum,
             'Flattened input must sum to 100 (2)';
+    lives-ok
+            {
+                $dist.add-multi-input-flattened('Foo::Bar', 'Instance C', 'Baz',
+                        'something', { quiet => 30, medium => 30, loud => 40.000001 })
+            },
+            'Flattened input tolerates small deviation from sum==100 (1)';
+    lives-ok
+            {
+                $dist.add-multi-input-flattened('Foo::Bar', 'Instance D', 'Baz',
+                        'something', { quiet => 30, medium => 30, loud => 39.999999 })
+            },
+            'Flattened input tolerates small deviation from sum==100 (2)';
 }
 
 throws-like

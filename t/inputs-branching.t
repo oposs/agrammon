@@ -60,6 +60,22 @@ given Agrammon::Inputs::Distribution.new -> $dist {
             },
             X::Agrammon::Inputs::Distribution::BadSum,
             'Branch matrix must sum to 100 (2)';
+    lives-ok
+            {
+                $dist.add-multi-input-branched('Foo::Bar', 'Instance D',
+                        'Baz', 'aaa', <x y>,
+                        'Baz', 'bbb', <x y z>,
+                        [[10, 5, 10],[10, 20, 45.000001]])
+            },
+            'Branch matrix tolerates small deviation from sum==100 (1)';
+    lives-ok
+            {
+                $dist.add-multi-input-branched('Foo::Bar', 'Instance E',
+                        'Baz', 'aaa', <x y>,
+                        'Baz', 'bbb', <x y z>,
+                        [[10, 5, 10],[10, 20, 44.999999]])
+            },
+            'Branch matrix tolerates small deviation from sum==100 (2)';
     throws-like
             {
                 $dist.add-multi-input-branched('Foo::Bar', 'Instance C',
@@ -70,6 +86,7 @@ given Agrammon::Inputs::Distribution.new -> $dist {
             X::Agrammon::Inputs::Distribution::BadBranchMatrix,
             expected-rows => 2, expected-cols => 3,
             'Wrong number of rows is reported (1)';
+
     throws-like
             {
                 $dist.add-multi-input-branched('Foo::Bar', 'Instance C',
