@@ -225,13 +225,17 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
 
     has %!distributed-by-taxonomy;
 
+    sub validate-percentage-sum($sum) {
+        # "fuzzy test" as users sometimes add distributions
+        # calculated with other tools that don't sum exactly to 100
+        abs($sum - 100) < 0.0001
+    }
+
     method add-multi-input-flattened(Str $taxonomy, Str $instance-id, Str $sub-taxonomy,
             Str $input-name, %value-percentages --> Nil) {
         self!ensure-no-dupe($taxonomy, $instance-id, $sub-taxonomy, $input-name);
         my $sum = %value-percentages.values.sum;
-        # "fuzzy test" as users sometimes add distributions
-        # calculated with other tools that don't sum exactly to 100
-        unless ($sum - 100) < 0.0001 {
+        unless validate-percentage-sum($sum) {
             die X::Agrammon::Inputs::Distribution::BadSum.new:
                     :what('flattened values'),
                     :$sum,
@@ -255,9 +259,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                 :bad-matrix(@matrix);
         }
         my $sum = @matrix.map(*.sum).sum;
-        # "fuzzy test" as users sometimes add distributions
-        # calculated with other tools that don't sum exactly to 100
-        unless ($sum - 100) < 0.0001 {
+        unless validate-percentage-sum($sum) {
             die X::Agrammon::Inputs::Distribution::BadSum.new:
                     :what('branch matrix'),
                     :$sum,
