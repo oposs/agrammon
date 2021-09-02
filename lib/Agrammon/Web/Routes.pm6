@@ -121,7 +121,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> (:$email!, :$password!, :$firstname, :$lastname, :$org, :$language) {
                 $ws.get-account-key($email, $password, $language);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::User::Exists
                        | X::Agrammon::DB::User::CreateFailed  {
                         conflict 'application/json', %( error => .message );
@@ -144,7 +144,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                 my $username = $ws.create-account($maybe-user, $email, $password, $firstname, $lastname, $org, $role);
                 content 'application/json', { :$username };
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::User::CreateFailed  {
                         not-found 'application/json', %( error => .message );
                     }
@@ -167,7 +167,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                               :oldDataset($old-dataset), :newDataset($new-dataset)  ) {
                 $ws.clone-dataset($user, $new-username, $old-dataset, $new-dataset);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::AlreadyExists {
                         conflict 'application/json', %( error => .message );
                     }
@@ -182,7 +182,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> ( :oldName($old-name), :newName($new-name) ) {
                 $ws.rename-dataset($user, $old-name, $new-name);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::AlreadyExists | X::Agrammon::DB::Dataset::RenameFailed {
                         conflict 'application/json', %( error => .message );
                     }
@@ -193,7 +193,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> ( :$name ) {
                 $ws.create-tag($user, $name);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Tag::AlreadyExists | X::Agrammon::DB::Tag::CreateFailed {
                         conflict 'application/json', %( error => .message );
                     }
@@ -204,7 +204,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> ( :$name ) {
                 $ws.delete-tag($user, $name);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Tag::DeleteFailed {
                         conflict 'application/json', %( error => .message );
                     }
@@ -215,7 +215,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> ( :oldName($old-name), :newName($new-name) ) {
                 $ws.rename-tag($user, $old-name, $new-name);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Tag::AlreadyExists | X::Agrammon::DB::Tag::RenameFailed {
                         conflict 'application/json', %( error => .message );
                     }
@@ -226,7 +226,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> ( :datasetName($dataset-name), :oldName($old-name), :newName($new-name), :variablePattern($variable-pattern)! ) {
                 $ws.rename-instance($user, $dataset-name, $old-name, $new-name, $variable-pattern);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::InstanceAlreadyExists | X::Agrammon::DB::Dataset::InstanceRenameFailed {
                         conflict 'application/json', %( error => .message );
                     }
@@ -237,7 +237,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> (:datasetName($dataset-name)!, :@instances!) {
                 $ws.order-instances($user, $dataset-name, @instances);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::InstanceReorderFailed {
                         conflict 'application/json', %( error => .message );
                     }
@@ -248,7 +248,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> ( :datasetName($dataset-name), :$instance, :variablePattern($variable-pattern) ) {
                 $ws.delete-instance($user, $dataset-name, $variable-pattern, $instance);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::InstanceDeleteFailed {
                         conflict 'application/json', %( error => .message );
                     }
@@ -259,7 +259,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> (:oldPassword($old-password)!, :newPassword($new-password)!) {
                 $ws.change-password($user, $old-password, $new-password);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::User::PasswordsIdentical {
                         conflict 'application/json', %( error => .message );
                     }
@@ -289,7 +289,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                 }
 
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::User::PasswordResetFailed {
                         conflict 'application/json', %( error => .message );
                     }
@@ -300,7 +300,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> ( :datasetName($dataset-name), :$variable, :$comment ) {
                 $ws.store-input-comment($user, $dataset-name, $variable, $comment);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::StoreInputCommentFailed {
                         response.status = 500;
                         content 'application/json', %( error => .message )
@@ -314,7 +314,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                     $user, $dataset-name, $variable, $value, @branches, @options, $row
                 );
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::StoreDataFailed {
                         response.status = 500;
                         content 'application/json', %( error => .message )
@@ -326,7 +326,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> ( :@datasets!, :tagName($tag-name)! ) {
                 $ws.set-tag($user, @datasets, $tag-name);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::SetTagFailed {
                         response.status = 500;
                         content 'application/json', %( error => .message )
@@ -338,7 +338,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> ( :@datasets!, :tagName($tag-name)! ) {
                 $ws.remove-tag($user, @datasets, $tag-name);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::RemoveTagFailed {
                         response.status = 500;
                         content 'application/json', %( error => .message )
@@ -355,7 +355,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                 content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $excel;
                 CATCH {
                     default {
-                        note "$_";
+                        .note;
                         response.status = 500;
                         content 'text/html', html-error( %( :error(.message), :$filename ) );
                     }
@@ -371,7 +371,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                 content 'application/pdf', $pdf;
                 CATCH {
                     default {
-                        note "$_";
+                        .note;
                         response.status = 500;
                         content 'text/html', html-error( %( :error(.message), :$filename ) );
                     }
@@ -384,7 +384,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                 content 'application/json', { %output };
                 CATCH {
                     default {
-                        note "$_";
+                        .note;
                         response.status = 500;
                         content 'application/json', %( error => .message )
                     }
@@ -398,7 +398,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                 content 'application/json', %data;
                 CATCH {
                     default {
-                        note "$_";
+                        .note;
                         response.status = 500;
                         content 'application/json', %( error => .message )
                     }
@@ -460,12 +460,9 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
                 my $data = $ws.send-datasets($user, @datasets, $recipient, $language);
                 content 'application/json', $data;
                 CATCH {
-                    note "Routes: $_";
+                    .note;
                     when X::Agrammon::DB::User::UnknownUser {
                         conflict 'application/json', %( error => .message );
-                    }
-                    default {
-                        note "send_datasets route: $_";
                     }
                 }
             }
@@ -503,7 +500,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
                     );
                 }
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::User::InvalidPassword  {
                         forbidden 'application/json', %( error => .message );
                     }
@@ -533,7 +530,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
             request-body -> (:datasetName($dataset-name)!, :%data!) {
                 $ws.store-branch-data($user, $dataset-name, %data);
                 CATCH {
-                    note "$_";
+                    .note;
                     when X::Agrammon::DB::Dataset::StoreBranchDataFailed {
                         conflict 'application/json', %( error => .message );
                     }
@@ -553,7 +550,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
                 );
                 content 'application/json', { :$lines };
                 CATCH {
-                    note "$_";
+                    .note;
                     bad-request 'application/json', %( error => .message );
                 }
             }
