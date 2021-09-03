@@ -61,13 +61,17 @@ for <hr-inclNOxExtended hr-inclNOxExtendedWithFilters> -> $model-version {
                 .slurp) },
                 'Parsed technical file';
         isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
+
+        my %technical = $params.technical.map: -> %module {
+            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+        }
+        @datasets[0].apply-defaults($model, %technical);
+
         lives-ok
                 {
                     $output = $model.run(
                             input => @datasets[0],
-                            technical => %($params.technical.map(-> %module {
-                                %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-                            }))
+                            technical => %technical
                     )
                 },
                 'Successfully executed model';

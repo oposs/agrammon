@@ -22,14 +22,18 @@ lives-ok
     'Parsed technical file';
 isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
 
+my %technical = $params.technical.map: -> %module {
+    %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+}
+lives-ok { @datasets>>.apply-defaults($model, %technical) },
+    'Can apply default values to inputs for all datasets';
+
 my %output;
 lives-ok
     {
         %output = $model.run(
             input => @datasets[0],
-            technical => %($params.technical.map(-> %module {
-                %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-            }))
+            technical => %technical
         ).get-outputs-hash()
     },
     'Successfully executed model';

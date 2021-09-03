@@ -4,14 +4,13 @@ use Agrammon::Outputs;
 
 class Agrammon::Environment {
     has $.input;
-    has $.input-defaults;
     has $.technical;
     has $.technical-override;
     has Agrammon::Outputs::SingleOutputStorage $.output;
     has %.builtins;
 
     method get-input($name) {
-        $!input{$name} // $!input-defaults{$name}
+        $!input{$name}
     }
 
     method get-technical($name) {

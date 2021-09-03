@@ -59,15 +59,19 @@ subtest 'Running the model produces output instances with filters' => {
     note sprintf "Parameters loaded in %.3f seconds", $end-$start;
     isa-ok $params, Agrammon::Model::Parameters, 'Correct type for technical data';
 
+    my %technical = $params.technical.map: -> %module {
+        %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+    }
+    lives-ok { @datasets>>.apply-defaults($model, %technical) },
+        'Could apply defaults to inputs';
+
     my Agrammon::Outputs $output;
     $start = now;
     lives-ok
             {
-                $output = $model.run(
+                $output = $model.run:
                         input => @datasets[0],
-                        technical => %($params.technical.map(-> %module {
-                            %module.keys[0] => %(%module.values[0].map({ .name => .value }))
-                        })))
+                        technical => %technical
             },
             'Successfully executed model';
     $end   = now;

@@ -257,6 +257,7 @@ grammar Agrammon::Formula::Parser {
     }
 }
 
-sub parse-formula(Str $formula, Str $*CURRENT-MODULE) is export {
-    Agrammon::Formula::Parser.parse($formula, actions => Agrammon::Formula::Builder).ast
+sub parse-formula(Str $formula, Str $*CURRENT-MODULE, Bool :$on-input = False) is export {
+    my $actions = Agrammon::Formula::Builder.new(:$on-input);
+    Agrammon::Formula::Parser.parse($formula, :$actions).ast
 }

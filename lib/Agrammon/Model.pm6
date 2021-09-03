@@ -127,7 +127,6 @@ class Agrammon::Model {
             my $*AGRAMMON-TAXONOMY = my $tax = $!module.taxonomy;
             my $env = Agrammon::Environment.new(
                 input => $input.input-hash-for($tax),
-                input-defaults => $!module.input-defaults,
                 technical => $!module.technical-hash,
                 technical-override => %technical{$tax},
                 output => $outputs
@@ -192,10 +191,9 @@ class Agrammon::Model {
                 $dep!annotate-inputs-internal($input-data, %run-already, @result, $instance-id);
             }
             my %input-data := $input-data.input-hash-for($!module.taxonomy);
-            my %input-defaults := $!module.input-defaults;
             for $!module.input -> Agrammon::Model::Input $input {
                 my $key   = $input.name;
-                my $value = %input-data{$key} // %input-defaults{$key};
+                my $value = %input-data{$key};
                 @result.push: AnnotatedInput.new: :$!module, :$input, :$instance-id, :$value, :%gui-root;
             }
         }

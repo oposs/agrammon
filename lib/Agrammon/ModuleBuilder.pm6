@@ -35,7 +35,22 @@ class Agrammon::ModuleBuilder {
 
     method section:sym<input>($/) {
         make 'input' => $<input>.map({
-            Agrammon::Model::Input.new(|.ast)
+            my %input-props := .ast;
+            with %input-props<default_formula> <-> $formula {
+                with $*TAXONOMY -> $taxonomy {
+                    $formula = parse-formula($formula, $taxonomy, :on-input);
+                    CATCH {
+                        default {
+                            die "Error compiling default_formula for input '%input-props<name>' " ~
+                                    "in $taxonomy: $_";
+                        }
+                    }
+                }
+                else {
+                    die "Missing taxonomy in general section, or general section too late";
+                }
+            }
+            Agrammon::Model::Input.new(|%input-props)
         });
     }
 

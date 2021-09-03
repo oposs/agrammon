@@ -47,10 +47,8 @@ transactionally {
     my $dataset = $ds.read(
         $ag-user,
         $ag-dataset,
-        %single,
-        {}
-    );
-    isa-ok $dataset, Agrammon::Inputs, 'Correct type';
+        %single);
+    isa-ok $dataset, Agrammon::Inputs::Distribution, 'Correct type';
     is $dataset.simulation-name, 'DB', 'Correct simulation name';
     is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
 }
@@ -60,15 +58,10 @@ transactionally {
     lives-ok { prepare-test-db-flattened-data($ag-user, $ag-dataset, %regional) }, 'Flattened test database prepared';
 
         my $ds = Agrammon::DataSource::DB.new;
-        my $dataset = $ds.read(
-            $ag-user,
-            $ag-dataset,
-            %regional,
-            {
-                'Test::Base' => ['Test::Base::Sub::dist-me'],
-                'Test::Base2' => ['Test::Base2::Sub::dist-meA', 'Test::Base2::Sub::dist-meB']
-            }
-        );
+        my $dataset = $ds.read($ag-user, $ag-dataset, %regional).to-inputs({
+            'Test::Base' => ['Test::Base::Sub::dist-me'],
+            'Test::Base2' => ['Test::Base2::Sub::dist-meA', 'Test::Base2::Sub::dist-meB']
+        });
         isa-ok $dataset, Agrammon::Inputs, 'Correct type';
         is $dataset.simulation-name, 'DB', 'Correct simulation name';
         is $dataset.dataset-id, $ag-dataset, 'Correct data set ID';
@@ -126,10 +119,7 @@ transactionally {
     lives-ok { prepare-test-db-branched-data($ag-user, $ag-dataset, %regional) }, 'Branched test database prepared';
 
     my $ds = Agrammon::DataSource::DB.new;
-    my $dataset = $ds.read(
-        $ag-user,
-        $ag-dataset,
-        %regional,
+    my $dataset = $ds.read($ag-user, $ag-dataset, %regional).to-inputs(
         { 'Test::Base' => ['Test::Base::Sub::dist-me'] }
     );
     isa-ok $dataset, Agrammon::Inputs, 'Correct type';
