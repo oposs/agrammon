@@ -22,7 +22,6 @@ class Agrammon::Model::Module {
     has Agrammon::Model::Result @.results;
     has Str $.name;
     has Str $.parent;
-    has %.input-defaults; # for calculations
     has %.gui-defaults;   # for display in GUI
     has %.technical-hash;
     has $.instance-root;
@@ -39,7 +38,6 @@ class Agrammon::Model::Module {
             $!parent = '';
             $!name   = ~$tax;
         }
-        %!input-defaults = @!input.grep(*.default-calc.defined).map({ .name => .default-calc });
         %!gui-defaults   = @!input.grep(*.default-gui.defined).map({ .name => .default-gui });
         %!technical-hash = @!technical.map({ .name => .value });
     }
@@ -51,7 +49,4 @@ class Agrammon::Model::Module {
     method set-instance-root(Str $!instance-root) {}
 
     method set-gui-root(Agrammon::Model::Module $!gui-root-module) {}
-
 }
-
-

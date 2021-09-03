@@ -194,7 +194,10 @@ class Agrammon::Web::Service {
     }
 
     method !get-inputs($user, $dataset-name) {
-        Agrammon::DataSource::DB.new.read($user.username, $dataset-name, $!cfg.agrammon-variant, $!model.distribution-map);
+        my $input-dist = Agrammon::DataSource::DB.new.read($user.username, $dataset-name,
+                $!cfg.agrammon-variant);
+        $input-dist.apply-defaults($!model, %!technical-parameters);
+        $input-dist.to-inputs($!model.distribution-map)
     }
 
     method !get-outputs(Agrammon::Web::SessionUser $user, Str $dataset-name) {
@@ -315,6 +318,7 @@ class Agrammon::Web::Service {
             }
         }
 
+        $input.apply-defaults($model, %technical);
         my $outputs = $!model.run(:$input, :%technical);
 
         my @print-set = ($print-only).split(',') if $print-only;

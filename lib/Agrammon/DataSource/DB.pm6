@@ -25,7 +25,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
     }
 
     # TODO: remove ignore condition after DB cleanup
-    method read($user, Str $dataset, %variant, %distribution-map) {
+    method read($user, Str $dataset, %variant) {
         self.with-db: -> $db {
             my $results = $db.query(q:to/STATEMENT/, $user, $dataset, %variant<version>, %variant<gui>, %variant<model>);
                 SELECT data_var, data_val, data_instance,
@@ -133,7 +133,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                          .sub-taxonomy-b, .input-name-b, .input-values-b,
                          .matrix);
             }
-            return $dist-input.to-inputs(%distribution-map);
+            return $dist-input;
         }
     }
 }

@@ -238,6 +238,7 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
         }
         else {
             my $outputs = timed "$my-n: Run $input-path", {
+                $input.apply-defaults($model, %technical);
                 $model.run(:$input, :%technical);
             }
 

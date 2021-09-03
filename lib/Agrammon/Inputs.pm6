@@ -63,6 +63,28 @@ role Agrammon::Inputs::Storage {
         my $qualified = $taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy);
         $input.add-single-input($qualified, $input-name, $value);
     }
+
+    #| Applies default values for the model.
+    method apply-defaults($model, %technical, @structure = $model.extract-structure()) {
+        for @structure {
+            when Str {
+                my $taxonomy = $_;
+                my $module = $model.get-module($taxonomy);
+                my %values := (%!single-inputs{$taxonomy} //= {});
+                for $module.input -> $input {
+                    with $input.default-calc {
+                        %values{$input.name} //= $_;
+                    }
+                }
+            }
+            when Pair {
+                my @multi-structure := .value;
+                with %!multi-input-lookup{.key} -> %instance-map {
+                    %instance-map.values>>.apply-defaults($model, %technical, @multi-structure)
+                }
+            }
+        }
+    }
 }
 
 #| A set of inputs ready for evaluation.
