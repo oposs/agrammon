@@ -1,0 +1,68 @@
+*** general ***
+
+author   = Jonathan Worthington
+date     = 2021-00-03
+taxonomy = Sub
+instances = multi
+
++short
+
+  For testing.
+
++description
+
+  Test description.
+
+*** input ***
+
++input1
+  type = integer
+  ++labels
+    en = Input1
+    de = Eingabe1
+  ++units
+    en = -
+  ++description
+    Test input1
+  ++help
+    +++en
+       <p>Test input1</p>
+    +++de
+       <p>Test Eingabe1</p>
+
++input2
+  type = integer
+  ++default_formula
+    In(input1) * 5
+  ++labels
+    en = Input2
+    de = Eingabe2
+  ++units
+    en = -
+  ++description
+    Test input2
+  ++help
+    +++en
+       <p>Test input2</p>
+    +++de
+       <p>Test Eingabe2</p>
+
+*** output ***
+
++output1
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+  ++formula
+    In(input1);
+  ++description
+    output1
+
++output2
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+  ++formula
+    In(input2);
+  ++description
+    output2

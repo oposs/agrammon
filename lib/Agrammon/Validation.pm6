@@ -203,7 +203,7 @@ sub check-module-inputs(Agrammon::Model::Module $module, %inputs is copy, @probl
             }
         }
         else {
-            without $input.default-calc {
+            without $input.default-calc orelse $input.default-formula {
                 @problems.push: MissingInput.new(:module($module.taxonomy), :$instance, :input($input.name));
             }
         }

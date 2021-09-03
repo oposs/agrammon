@@ -3,6 +3,8 @@ use Agrammon::Formula;
 use Agrammon::OutputReference;
 
 class Agrammon::Formula::Builder {
+    has Bool $.on-input;
+
     method TOP($/) {
         make Agrammon::Formula::Routine.new(
             statements => $<statementlist>.ast
@@ -164,6 +166,7 @@ class Agrammon::Formula::Builder {
     }
 
     method term:sym<Val>($/) {
+        self!no-input('Val');
         make Agrammon::Formula::Val.new(
             reference => Agrammon::OutputReference.new(
                 symbol => ~$<symbol>,
@@ -173,6 +176,7 @@ class Agrammon::Formula::Builder {
     }
 
     method term:sym<Out>($/) {
+        self!no-input('Out');
         make Agrammon::Formula::Val.new(
             reference => Agrammon::OutputReference.new(
                 symbol => ~$<symbol>,
@@ -182,12 +186,19 @@ class Agrammon::Formula::Builder {
     }
 
     method term:sym<Sum>($/) {
+        self!no-input('Sum');
         make Agrammon::Formula::Sum.new(
             reference => Agrammon::OutputReference.new(
                 symbol => ~$<symbol>,
                 module => $<module>.ast
             )
         );
+    }
+
+    method !no-input(Str $what) {
+        if $!on-input {
+            $/.panic("Cannot use $what on an input formula");
+        }
     }
 
     method term:sym<$TE>($/) {

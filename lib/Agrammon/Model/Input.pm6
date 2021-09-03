@@ -1,11 +1,15 @@
 use v6;
 
+use Agrammon::Formula;
+use Agrammon::Formula::Compiler;
 use Agrammon::LanguageParser;
 
 class Agrammon::Model::Input {
     has Str $.name;
     has Str $.description;
     has     $.default-calc;
+    has Agrammon::Formula $.default-formula;
+    has     &.compiled-default-formula;
     has     $.default-gui;
     has Str $.type;         # XXX Should be something richer than Str
     has Str $.validator;    # XXX Should be something richer than Str
@@ -23,9 +27,14 @@ class Agrammon::Model::Input {
     has Bool $!distribute = False;
     has Bool $!filter = False;
 
-    submethod TWEAK(:$default_calc, :$default_gui, :$distribute, :$filter, :@enum --> Nil) {
+    submethod TWEAK(:$default_calc, :$default_gui, :$default_formula, :$default_formula_code,
+                    :$distribute, :$filter, :@enum --> Nil) {
         with $default_calc {
             $!default-calc = val($_);
+        }
+        with $default_formula {
+            $!default-formula = $default_formula;
+            &!compiled-default-formula = compile-formula($default_formula);
         }
         with $default_gui {
             $!default-gui = val($_);

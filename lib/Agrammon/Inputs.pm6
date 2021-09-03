@@ -1,5 +1,7 @@
 use v6;
 
+use Agrammon::Environment;
+
 class X::Agrammon::Inputs::AlreadySingle is Exception {
     has Str $.taxonomy;
     method message() {
@@ -74,6 +76,12 @@ role Agrammon::Inputs::Storage {
                 for $module.input -> $input {
                     with $input.default-calc {
                         %values{$input.name} //= $_;
+                    }
+                    orwith $input.compiled-default-formula -> &default {
+                        %values{$input.name} //= default(Agrammon::Environment.new(
+                                input => %values,
+                                technical => $module.technical-hash,
+                                technical-override => %technical{$taxonomy}))
                     }
                 }
             }
