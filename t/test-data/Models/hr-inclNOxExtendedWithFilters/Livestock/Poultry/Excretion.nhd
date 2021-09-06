@@ -96,8 +96,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        <p> </p>
 
 +dimensioning_barn
-  type = float
+  type = text
   distribute = true
+  default_calc = Standard
+  default_gui  = Standard
+  default_formula = In(animals);
   ++labels 
     en = Number of available animal places
     de = Anzahl Tierplätze im Stall
@@ -106,6 +109,13 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = -
   ++description
     Number of available animal places.
+    ++help
+      +++en
+         <p>If "Standard" is selected the number of available animal places is equal to the number of animals.</p>
+      +++de
+         <p>Bei Auswahl "Standard" wird die Anzahl Tierplätze im Stall der eingegebenen Anzahl Tiere gleichgesetzt.</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur du nombre d'animaux est utilisée.</p>
 
 ?if !Kantonal_LU
   +inp_n_excretion
@@ -408,14 +418,19 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       }
     }
 
-# +dimensioning_barn
-#   print = DairyCow
-#   ++units 
-#     en = -
-#   ++description
-#     Number of anymal places (needed in other modules).
-#   ++formula
-#     In(dimensioning_barn);
++dimensioning_barn
+  print = Poultry
+  ++units
+    en = -
+  ++description
+    barn size (number of animal places)
+  ++formula
+    if ( (not defined In(dimensioning_barn)) or lc In(dimensioning_barn) eq 'standard' ) {
+        Out(animals);
+    } else {
+        In(dimensioning_barn);
+    }
+    
 
 +area_increase
   print = Poultry
@@ -424,12 +439,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     Factor on what barn size does increase the regularized minimal, limited to 0.5
   ++formula 
-    if ( (Out(animals) < In(dimensioning_barn) ) and (Out(animals) != 0) ) { 
-      if ( In(dimensioning_barn) >= (Out(animals) * 1.5) ) {   
+    if ( (Out(animals) < Out(dimensioning_barn) ) and (Out(animals) != 0) ) { 
+      if ( Out(dimensioning_barn) >= (Out(animals) * 1.5) ) {   
         0.5; 
       }
       else {
-        In(dimensioning_barn) / Out(animals) - 1;
+        Out(dimensioning_barn) / Out(animals) - 1;
       }
     }
     else {
@@ -443,7 +458,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
    Check if number of animals <= number of animal places.
   ++formula
-    if ( In(dimensioning_barn) < Out(animals) ) {
+    if ( Out(dimensioning_barn) < Out(animals) ) {
       writeLog({
         en => "The number of available animal places must be equal or higher than the number of animals.",
         de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
