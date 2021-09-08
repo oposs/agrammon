@@ -129,7 +129,6 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 +dimensioning_barn
   type = text
   distribute = true
-  default_calc = Standard
   default_gui  = Standard
   default_formula = In(animals);
   ++labels 
