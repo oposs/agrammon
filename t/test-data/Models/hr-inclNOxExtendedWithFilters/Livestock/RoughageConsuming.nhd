@@ -4,7 +4,7 @@ author    = Agrammon Group
 date      = 2017-07-12
 taxonomy  = Livestock::RoughageConsuming
 instances = multi
-gui       = Livestock::RoughageConsuming,Tierhaltung::Andere Raufutterverzehrer,Production animale::Autre animaux consommant des fourrages grossiers,Livestock::Other roughage consuming
+gui       = Livestock::RoughageConsuming,Tierhaltung::Andere Raufutterverzehrer,Production animale::Autres animaux consommant des fourrages grossiers,Livestock::Other roughage consuming
 
 +short
  Collects the annual emission of NH3 and the N flux for .
