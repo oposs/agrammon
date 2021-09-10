@@ -87,7 +87,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        <p>Nombre effectif d'animaux dans la stabulation.</p>
 
 +dimensioning_barn
-  type = text
+  type = float
   distribute = true
   default_gui  = Standard
   default_formula = In(animals);
@@ -338,11 +338,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     barn size (number of animal places)
   ++formula
-    if ( (not defined In(dimensioning_barn)) or lc In(dimensioning_barn) eq 'standard' ) {
-        Out(animals);
-    } else {
-        In(dimensioning_barn);
-    }
+    In(dimensioning_barn);
 
 +area_increase
   print = DairyCow
