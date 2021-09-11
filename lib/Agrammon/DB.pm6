@@ -9,8 +9,12 @@ role Agrammon::DB {
         }
         else {
             my $handle = self.connection.db;
-            operation($handle); return;
-            LEAVE $handle.finish;
+            my \result := operation($handle);
+            $handle.finish;
+            return result;
+            CATCH {
+                .finish with $handle;
+            }
         }
     }
 }
