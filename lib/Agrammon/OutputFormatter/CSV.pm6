@@ -44,7 +44,7 @@ sub output-as-csv(
             for sorted-kv($_) -> $instance-id, %instance-outputs {
                 my $filters = '';
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
-                    my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
+                    my $q-name = module-with-instance($module, $instance-id, $fq-name);
                     for sorted-kv(%values) -> $output, $value {
                         next unless $model.should-print($module, $output, @print-set);
 

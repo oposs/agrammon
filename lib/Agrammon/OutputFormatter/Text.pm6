@@ -43,7 +43,7 @@ sub output-as-text(
             @output-lines = [];
             for sorted-kv($_) -> $instance-id, %instance-outputs {
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
-                    my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
+                    my $q-name = module-with-instance($module, $instance-id, $fq-name);
                     push @subtitle-lines, "    $q-name";
                     for sorted-kv(%values) -> $output, $value {
                         next unless $model.should-print($fq-name, $output, @print-set);
