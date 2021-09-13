@@ -36,8 +36,8 @@ sub create-pdf($temp-dir-name, $pdf-prog, $timeout, $username, $dataset-name, %d
     }
 
     my $filename = "agrammon_export_" ~ $username ~ "_$dataset-name";
-    # cannot have / in filenames
-    $filename ~~ s:g/ \/ / - /;
+    # sanitize internally used filename
+    $filename ~~ s:g/<-[\w\s_-]>/-/;
     my $source-file = "$temp-dir/$filename.tex".IO;
     my $pdf-file    = "$temp-dir/$filename.pdf".IO;
     my $aux-file    = "$temp-dir/$filename.aux".IO;
