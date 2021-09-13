@@ -124,7 +124,7 @@ multi sub MAIN(
         when Array {
             for sorted-kv($_) -> $instance-id, %instance-inputs {
                 for sorted-kv(%instance-inputs) -> $fq-name, %values {
-                    my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
+                    my $q-name = module-with-instance($module, $instance-id, $fq-name);
                     for sorted-kv(%values) -> $input, $value {
                         @output.push("$q-name;$input;$value");
                     }
