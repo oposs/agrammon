@@ -36,6 +36,8 @@ sub create-pdf($temp-dir-name, $pdf-prog, $timeout, $username, $dataset-name, %d
     }
 
     my $filename = "agrammon_export_" ~ $username ~ "_$dataset-name";
+    # sanitize internally used filename
+    $filename ~~ s:g/<-[\w\s_-]>/-/;
     my $source-file = "$temp-dir/$filename.tex".IO;
     my $pdf-file    = "$temp-dir/$filename.pdf".IO;
     my $aux-file    = "$temp-dir/$filename.aux".IO;
@@ -161,6 +163,17 @@ sub input-output-as-pdf(
         $language, $report-selected,
         $include-filters, $all-filters,
     );
+
+    my @log;
+    %data<log> = @log;
+    my @entries := $outputs.log-collector.entries;
+    for @entries -> $_ {
+        @log.push(%(
+            message  => latex-escape(.messages{$language}),
+            gui      => .gui{$language},
+            instance => latex-escape(.instance),
+        ));
+    }
 
     # strings used in template
     my %lx = $cfg.translations{$language};

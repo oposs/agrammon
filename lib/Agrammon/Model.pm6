@@ -108,6 +108,7 @@ class Agrammon::Model {
                 $outputs.declare-multi-instance($tax);
                 for $input.inputs-list-for($tax) -> $multi-input {
                     my %filters := $!filter-set.filters-for($multi-input);
+                    my $*AGRAMMON-INSTANCE = $multi-input.instance-id;
                     my $multi-output = $outputs.new-instance($tax, $multi-input.instance-id, :%filters, :$!filter-set);
                     self!run-as-single($multi-input, %technical, $multi-output, %run-already.clone);
                 }
@@ -123,8 +124,9 @@ class Agrammon::Model {
             for @!dependencies -> $dep {
                 $dep!run-internal($input, %technical, $outputs, %run-already);
             }
-
+            my @gui = $!module.gui-root-module.gui.split(',') if $!module.gui-root-module;
             my $*AGRAMMON-TAXONOMY = my $tax = $!module.taxonomy;
+            my %*AGRAMMON-GUI = %(:de(@gui[1]), :fr(@gui[2]), :en(@gui[3])) if @gui;
             my $env = Agrammon::Environment.new(
                 input => $input.input-hash-for($tax),
                 technical => $!module.technical-hash,
