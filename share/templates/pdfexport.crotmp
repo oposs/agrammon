@@ -90,11 +90,11 @@
 <?.log>
 \subsection*{<.titles.outputLog>}
 \begin{small}
-\begin{itemize}
+\begin{description}
 <@log>
-\item <$_>
+\item[{<.gui>[<.instance>]}] <.message>
 </@>
-\end{itemize}
+\end{description}
 \end{small}
 </?>
 
