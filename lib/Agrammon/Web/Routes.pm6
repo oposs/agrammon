@@ -19,7 +19,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
     # Fix for Agrammon
     # my $root = $app ~~ Agrammon::Application::Development ?? 'frontend/source-output' !! 'qx-build';
     my $schema = 'share/agrammon.openapi';
-    my $root = '';
     route {
         if %*ENV<AGRAMMON_DEBUG> {
             before {
@@ -32,7 +31,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
                 note $req;
             }
         }
-        include static-content($root);
         include frontend-api-routes($schema, $ws);
         include dataset-routes($ws);
         include application-routes($ws);
@@ -43,14 +41,9 @@ sub routes(Agrammon::Web::Service $ws) is export {
     }
 }
 
-sub static-content($root) {
+sub static-content($root) is export {
     route {
-        my $root = %*ENV<SOURCE_MODE> ?? 'frontend/compiled/source' !! 'public';
-
         if %*ENV<SOURCE_MODE> { # Qooxdoo source mode (development)
-            get -> {
-                static "$root/agrammon/index.html"
-            }
             get -> 'index.html' {
                 static "$root/agrammon/index.html"
             }
