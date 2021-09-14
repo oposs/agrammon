@@ -1,5 +1,11 @@
 # Agrammon Change Log
 
+- 6.1.1, 2021-09-13, fritz.zaucker@oetiker.ch
+
+  - getDataset command
+  - LEAVE bug workaround
+  - fix PDF log output
+
 - 6.0.1, 2021-08-19, fritz.zaucker@oetiker.ch
 
    Fix some model errors
