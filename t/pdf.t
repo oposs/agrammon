@@ -88,8 +88,8 @@ my %data = %(
         %( :label('Stall und Laufhof NH3-Emission'), :value(50), :unit('kg\,N\,/\,Jahr') ),
     ],
     log => [
-        'comment 1',
-        'comment 2',
+        %( :gui('Module'), :instance(), :message('comment 1') ),
+        %( :gui('Module'), :instance(), :message('comment 2') ),
     ],
 );
 my $pdf-program  = $cfg.general<pdflatex>;
@@ -111,7 +111,7 @@ else {
     skip "PDF size check not working on GitHub Actions for unknown reason", 1;
 }
 
-%data<log>.push('\invalidLatex');
+%data<log>.push(%( :gui('Module'), :instance(), :message('\invalidLatex')));
 throws-like {create-pdf($temp-dir, $pdf-program, $cfg.general<latexTimeout>, $username, $dataset-name ~ '_broken', %data)},
         X::Agrammon::OutputFormatter::PDF::Failed, "Create PDF from invalid LaTeX file dies";
 
