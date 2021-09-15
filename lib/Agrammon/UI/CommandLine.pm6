@@ -383,9 +383,19 @@ sub web(Str $cfg-file, Str $model-filename, Str $technical-file?) is export {
     # setup and start web server
     my $host = %*ENV<AGRAMMON_HOST> || '0.0.0.0';
     my $port = %*ENV<AGRAMMON_PORT> || 20000;
+    my $static-root = %*ENV<SOURCE_MODE> ?? 'frontend/compiled/source' !! 'public';
+
     my $application = route {
+        # TODO: add prefix and delegate for frontend routes and then
+        #       move get block and include to Routes.pm6
+        include static-content($static-root);
+        get -> {
+            static "$static-root/index.html"
+        }
+
         # API routes don't need an ongoing session, but do token auth.
         delegate <api v1 *> => api-routes($ws);
+
         # Everything else gets the standard session mechanism.
         delegate <*> => route {
             before Agrammon::Web::SessionStore.new(:$db);

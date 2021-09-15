@@ -8,13 +8,14 @@ role Agrammon::DB {
             operation($*AGRAMMON-DB-HANDLE);
         }
         else {
-            my $handle = self.connection.db;
-            my \result := operation($handle);
-            $handle.finish;
-            return result;
-            CATCH {
-                .finish with $handle;
-            }
+            self!with-fresh-handle(&operation);
         }
+    }
+
+    method !with-fresh-handle(&operation) {
+        my $handle = self.connection.db;
+        my $*AGRAMMON-DB-HANDLE = $handle;
+        LEAVE $handle.finish;
+        operation($handle)
     }
 }
