@@ -350,6 +350,7 @@ class Agrammon::Web::Service {
         my $results = self!get-outputs($user, $dataset-name)<results>;
         my $validation-errors = self!get-outputs($user, $dataset-name)<validation-errors>;
         warn '**** Got ' ~  $validation-errors.elems ~ ' input validation errors' if $validation-errors;
+        dd 'Validation errors:', $validation-errors if $validation-errors;
         # TODO: get with-filters from frontend
         # TODO: deal with validation errors in frontend; needs translations
         my %gui-output = output-for-gui($!model, $results, :include-filters);
