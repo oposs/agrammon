@@ -20,7 +20,7 @@
     }
   ],
   "defaultTarget": "source",
-  "locales": ["en","de"],
+  "locales": ["en","de","fr"],
   "environment": {
       "qx.icontheme": "Tango"
   },

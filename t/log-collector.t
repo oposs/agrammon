@@ -27,6 +27,7 @@ my $f = parse-formula(q:to/FORMULA/, 'PlantProduction');
 {
     my $*AGRAMMON-LOG = Agrammon::Formula::LogCollector.new;
     my $*AGRAMMON-TAXONOMY = 'Test::Taxonomy';
+    my %*AGRAMMON-GUI = :en('My test'), :de('Mein Test'), :fr('mon test');
     my $*AGRAMMON-OUTPUT = 'SomeOutput';
     lives-ok { compile-formula($f)(Agrammon::Environment.new()) },
         'Can evaluate formula using the log collector';

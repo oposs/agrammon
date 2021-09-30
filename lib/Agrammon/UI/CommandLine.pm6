@@ -7,12 +7,14 @@ use DB::Pg;
 use JSON::Fast;
 
 use Agrammon::Config;
+use Agrammon::DataSource::DB;
 use Agrammon::DataSource::CSV;
 use Agrammon::Documentation;
 use Agrammon::ModelCache;
 use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
+use Agrammon::OutputFormatter::Util;
 use Agrammon::Performance;
 use Agrammon::ResultCollector;
 use Agrammon::TechnicalParser;
@@ -93,6 +95,44 @@ multi sub MAIN('run', Str $filename, ExistingFileOrStdin $input, ExistingFile :$
         $output = @output.join("\n");
     }
     say $output;
+}
+
+#| Get inputs from dataset
+multi sub MAIN(
+        'getDataset', Str $model-filename, Str $username, Str $dataset-name,
+        Str $version, Str $gui, Str $variant, ExistingFile :$cfg-file
+    ) is export {
+    my %data := get-dataset $model-filename, $username, $dataset-name, $version, $gui, $variant, :$cfg-file;
+    my @output;
+    @output.push("## User: %data<username>");
+    @output.push("## Dataset: %data<dataset>");
+    if %data<validation-errors> {
+        note "WARNING: validation errors";
+        @output.push('## Validation errors');
+        for @(%data<validation-errors>) -> $error {
+            @output.push($error.message);
+        }
+        @output.push('##');
+    }
+    my $inputs = %data<inputs>;
+    for $inputs.kv -> $module, $_ {
+        when Hash {
+            for sorted-kv($_) -> $input, $value {
+                @output.push("$module;$input;$value");
+            }
+        }
+        when Array {
+            for sorted-kv($_) -> $instance-id, %instance-inputs {
+                for sorted-kv(%instance-inputs) -> $fq-name, %values {
+                    my $q-name = module-with-instance($module, $instance-id, $fq-name);
+                    for sorted-kv(%values) -> $input, $value {
+                        @output.push("$q-name;$input;$value");
+                    }
+                }
+            }
+        }
+    }
+    say @output.join("\n");
 }
 
 #| Validate inputs
@@ -218,6 +258,26 @@ sub load-model($cfg-file, $model-filename, $variants? is copy ) {
     return ($model, $module-path, $cfg, $db);
 }
 
+sub get-dataset (
+        Str $model-filename, Str $username, Str $name,
+        Str $version, Str $gui, Str $variants,
+        Str $technical-file = 'technical.cfg', Str :$cfg-file
+    ) {
+    my ($model, $module-path, $cfg, $db) = load-model($cfg-file, $model-filename, $variants);
+    my %technical-parameters = load-technical($module-path.IO.parent, $technical-file);
+
+    my $input-dist = Agrammon::DataSource::DB.new.read($username, $name, $cfg.agrammon-variant);
+    $input-dist.apply-defaults($model, %technical-parameters);
+    my $inputs = $input-dist.to-inputs($model.distribution-map);
+    my @validation-errors = validation-errors($model, $inputs);
+    return %(
+        :$username,
+        :dataset("$name, version $version, variant $variants"),
+        :validation-errors(@validation-errors),
+        :inputs($inputs.all-inputs),
+    );
+}
+
 sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, $format, $language, @print-set,
          Bool $include-filters, $batch, $degree, $max-runs, :$all-filters, Str :$cfg-file) {
 
@@ -323,9 +383,19 @@ sub web(Str $cfg-file, Str $model-filename, Str $technical-file?) is export {
     # setup and start web server
     my $host = %*ENV<AGRAMMON_HOST> || '0.0.0.0';
     my $port = %*ENV<AGRAMMON_PORT> || 20000;
+    my $static-root = %*ENV<SOURCE_MODE> ?? 'frontend/compiled/source' !! 'public';
+
     my $application = route {
+        # TODO: add prefix and delegate for frontend routes and then
+        #       move get block and include to Routes.pm6
+        include static-content($static-root);
+        get -> {
+            static "$static-root/index.html"
+        }
+
         # API routes don't need an ongoing session, but do token auth.
         delegate <api v1 *> => api-routes($ws);
+
         # Everything else gets the standard session mechanism.
         delegate <*> => route {
             before Agrammon::Web::SessionStore.new(:$db);

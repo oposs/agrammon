@@ -50,7 +50,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -102,7 +102,7 @@ msgstr "Datensatz"
 msgid "datasets"
 msgstr "Datensätze"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Info"
 msgstr "Info"
 
@@ -162,7 +162,7 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Error"
 msgstr "Fehler"
 
@@ -174,7 +174,7 @@ msgstr "existiert bereits."
 msgid "Rename dataset"
 msgstr "Datensatz umbenennen"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "New name"
 msgstr "Neuer Name"
 
@@ -270,7 +270,7 @@ msgstr "Filter auf Marker Name"
 msgid "Input"
 msgstr "Eingabe"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Instance name must not be empty."
 msgstr "Der Kategorie-Name darf nicht leer sein."
 
@@ -290,7 +290,7 @@ msgstr "Umbenennen Kategorie "
 msgid "Duplicate instance "
 msgstr "Duplizieren Kategorie "
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 

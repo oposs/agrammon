@@ -47,7 +47,7 @@ sub get-data($model, $outputs, $include-filters, @print-set, $language?) {
         when Array {
             for sorted-kv($_) -> $instance-id, %instance-outputs {
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
-                    my $q-name = $module ~ '[' ~ $instance-id ~ ']' ~ $fq-name.substr($module.chars);
+                    my $q-name = module-with-instance($module, $instance-id, $fq-name);
                     for sorted-kv(%values) -> $output, $raw-value {
                         my $order = $model.output-labels($fq-name, $output)<sort> || $last-order;
                         my $var = $q-name ~ '::' ~ $output;
