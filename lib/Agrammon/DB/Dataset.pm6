@@ -368,7 +368,6 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             next unless $var-name;
             # skip comments
             next if $var-name ~~ /^\#/;
-            note "$var-name = $value";
             self.store-input($var-name, $value);
             $i++;
         }
