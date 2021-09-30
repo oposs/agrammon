@@ -265,6 +265,11 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 icon : "icon/16/actions/insert-text.png",
                 toolTip : new qx.ui.tooltip.ToolTip(this.tr("Upload dataset"))
             });
+            // only for admin at this point (needs user docu of upload format and better error handling)
+            // Fritz, 2021-09-24
+            this.__btnUpload.addListener('appear', function() {
+                this.__btnUpload.setEnabled(this.__info.isAdmin());
+            }, this);
 
             this.__toolBar.add(this.__btnRename);
             this.__toolBar.add(this.__btnNew);
@@ -597,7 +602,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
 
             var uploader = new com.zenesis.qx.upload.UploadMgr(uploadBtn, "/upload");
             var cancelBtn = new qx.ui.form.Button(this.tr('Cancel'));
-             var okBtn = new qx.ui.form.Button(this.tr('OK'));
+            var okBtn = new qx.ui.form.Button(this.tr('OK'));
             okBtn.addListener('execute', function() {
                 popup.close();
             }, this);
@@ -632,7 +637,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 cancelBtn.setEnabled(true);
                 uploadBtn.setEnabled(false);
                 var filename = file.getFilename();
-                var username = this.__info.getUserName()
+                var username = this.__info.getUserName();
 
                 var cancelListenerId = cancelBtn.addListener('execute', function(e) {
                     if (file.getState() == "uploading" || file.getState() == "not-started") {
@@ -642,7 +647,17 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
 
                 var responseListenerId = file.addListener("changeResponse", function(e) {
                     var response = qx.lang.Json.parse(e.getData());
-                    uploadResponse.setValue(this.tr('Uploaded %1 lines', response.lines));
+                    if (response.error) {
+                        qx.event.message.Bus.dispatchByName('error', [this.tr("Error"), response.error]);
+                        popup.close();
+                        return;
+                    }
+                    if (response && response.lines) {
+                        uploadResponse.setValue(this.tr('Uploaded %1 lines', response.lines));
+                    }
+                    else {
+                        uploadResponse.setValue(this.tr('No valid lines found in uploaded file.'));
+                    }
                     if (progressListenerId) {
                         file.removeListenerById(progressListenerId);
                     }
