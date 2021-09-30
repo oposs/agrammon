@@ -59,7 +59,7 @@ msgstr "Filtre incrémentiel sur le nom de l'ensemble de données"
 msgid "Filter on dataset name"
 msgstr "Filtrage du nom des sets de données"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr "Fermer"
 
@@ -363,7 +363,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr "Configuration branch"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/ui/dialog/Comment.js
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -973,4 +973,8 @@ msgstr ""
 
 #: agrammon/Changelog.js
 msgid "Changelog"
+msgstr ""
+
+#. NO LONGER USED
+msgid "Standard"
 msgstr ""
