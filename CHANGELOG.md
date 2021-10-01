@@ -8,9 +8,13 @@
   - fix PDF log output
   - Write input validation errors to log
 
+  Frontend
+  - Disable upload button for none-admin users.
+  - Improve upload error handling
+
 - 6.0.1, 2021-08-19, fritz.zaucker@oetiker.ch
 
-   Fix some model errors
+   - Fix some model errors
 
 - 6.0.0, 2021-06-18, fritz.zaucker@oetiker.ch
 
