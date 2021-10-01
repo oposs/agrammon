@@ -974,7 +974,3 @@ msgstr ""
 #: agrammon/Changelog.js
 msgid "Changelog"
 msgstr ""
-
-#. NO LONGER USED
-msgid "Standard"
-msgstr ""
