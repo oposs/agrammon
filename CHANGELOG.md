@@ -1,5 +1,13 @@
 # Agrammon Change Log
 
+- 6.1.1, 2021-09-13, fritz.zaucker@oetiker.ch
+
+  - add web gui handling of default_formula
+  - add getDataset command
+  - LEAVE bug workaround
+  - fix PDF log output
+  - Write input validation errors to log
+
   Frontend
   - Disable upload button for none-admin users.
   - Improve upload error handling

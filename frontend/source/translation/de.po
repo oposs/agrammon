@@ -50,7 +50,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -961,3 +961,7 @@ msgstr "Tag %1 existiert bereits"
 #: agrammon/io/remote/Rpc.js
 msgid "%1: Session expired: please login again"
 msgstr "%1: Sitzung abgelaufen, bitte neu anmelden"
+
+#. NO LONGER USED
+msgid "Standard"
+msgstr ""

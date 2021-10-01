@@ -330,16 +330,17 @@ qx.Class.define('agrammon.module.input.NavFolder', {
 
             // not empty
             var complete = true;
-            var i, varName, value, metaData;
+            var i, varName, value, metaData, defaultValue;
             for (i=0; i<len; i++) {
                 varName = this.__propData[i].getName();
                 metaData = {};
                 if (!varName.match('ignore')) {
                     value = this.__propData[i].getValue();
-                    if ( value === undefined || value === null
+                    if (    (value === undefined || value === null
                          || value === ''
-                         || value === '*** Select ***') { // incomplete
-                        // this.debug('isComplete(): false1 for varName=' + varName);
+                         || value === '*** Select ***')
+                         && this.__propData[i].getDefaultValue() == null
+                    ) { // incomplete
                         complete = false;
                         break; // one false is enough
                     }
@@ -350,7 +351,6 @@ qx.Class.define('agrammon.module.input.NavFolder', {
 //                        this.debug('isComplete(): branches='+metaData.branches);
                         if (!metaData.branches) {
                             complete = false;
-//                            this.debug('isComplete(): false2 for varName='+ varName);
                         }
                         else {
                             var total = 0;
@@ -361,7 +361,6 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                             // this.debug('isComplete(): total='+total);
                             if (total == 0) {
                                 complete = false;
-//                                this.debug('isComplete(): false3 for varName='+ varName);
                             }
                         }
                     } // value === branched

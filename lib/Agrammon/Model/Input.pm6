@@ -87,8 +87,9 @@ class Agrammon::Model::Input {
 
         return %(
             :defaults( %(
-                calc => $.default-calc,
-                gui  => $.default-gui,
+                calc       => $.default-calc,
+                gui        => $.default-gui,
+                hasFormula => $.default-formula.defined,
             )),
             :enum(%!enum-lookup),
             :$!filter,

@@ -170,12 +170,10 @@ qx.Class.define('agrammon.module.input.PropTable', {
             }
         };
         var propertyEditor =
-            new qx.ui.table.Table(propertyEditor_tableModel,
-                                  resizeBehaviour);
+            new qx.ui.table.Table(propertyEditor_tableModel, resizeBehaviour);
 
         this.__propertyEditor = propertyEditor;
-        propertyEditor_tableModel.addListener("dataChanged",
-                                              this.__dataChanged_func, this);
+        propertyEditor_tableModel.addListener("dataChanged", this.__dataChanged_func, this);
         propertyEditor.addListener("keypress", this.__keypressed, this);
 
         propertyEditor.setDataRowRenderer(new agrammon.ui.table.rowrenderer.Fancy());
@@ -357,7 +355,6 @@ qx.Class.define('agrammon.module.input.PropTable', {
                 }
             }
             var datasetName = this.__info.getDatasetName() + '';
-
             // update navFolder data
             this.__currentFolder.setData(varname, value, comment);
 

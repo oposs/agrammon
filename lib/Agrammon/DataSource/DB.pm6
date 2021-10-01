@@ -47,7 +47,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
 
             for @rows -> @row {
                 my $module-var = @row[0];
-                my $value      = maybe-numify(@row[1]) // '';
+                my $value      = maybe-numify(@row[1]);
                 my $instance   = @row[2] // '';
                 state $flattend-prefix = '';
                 state Flattened $current-flattened;
@@ -72,7 +72,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             die "Missing second step of branched input";
                         }
 
-                        if $value eq 'flattened' {
+                        if $value and $value eq 'flattened' {
                             $flattend-prefix = $var;
                             $current-flattened = Flattened.new:
                                     taxonomy => $tax,
@@ -87,7 +87,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $key ~~ s:g/ ' ' /_/;
                             $current-flattened.value-percentages{$key} = $value;
                         }
-                        elsif $value eq 'branched' {
+                        elsif $value and $value eq 'branched' {
                             with $current-branched {
                                 .sub-taxonomy-b = $sub-tax;
                                 .input-name-b = $var;
