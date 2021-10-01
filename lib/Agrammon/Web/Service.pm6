@@ -349,9 +349,14 @@ class Agrammon::Web::Service {
     method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
         my $results = self!get-outputs($user, $dataset-name)<results>;
         my $validation-errors = self!get-outputs($user, $dataset-name)<validation-errors>;
-        warn '**** Got ' ~  $validation-errors.elems ~ ' input validation errors' if $validation-errors;
+        # Write validation errors to log file for the moment to help debug
+        # broken production datasets.
+	if $validation-errors {
+	    note '**** Got ' ~  $validation-errors.elems ~ ' input validation errors';
+            dd 'Validation errors:', $validation-errors;
+	    # TODO: deal with validation errors in frontend; needs translations
+        }
         # TODO: get with-filters from frontend
-        # TODO: deal with validation errors in frontend; needs translations
         my %gui-output = output-for-gui($!model, $results, :include-filters);
         note '**** with-filters for get-output-variables() not yet completely implemented';
         return %gui-output;

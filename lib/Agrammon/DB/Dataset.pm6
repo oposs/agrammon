@@ -181,6 +181,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                 RETURNING dataset_id, dataset_name, dataset_mod_date, dataset_created
             SQL
             CATCH {
+                .note;
                 # new dataset name already exists
                 when /unique/ {
                     die X::Agrammon::DB::Dataset::AlreadyExists.new(:$dataset-name);
@@ -241,7 +242,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             }
 
             CATCH {
-                note $_;
+                .note;
                 die X::Agrammon::DB::Dataset::CloneFailed.new(:$old-username, :$new-username, :$old-dataset, :$new-dataset);
             }
         }
@@ -260,6 +261,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             SQL
             # new dataset name already exists
             CATCH {
+                .note;
                 when /unique/ {
                     die X::Agrammon::DB::Dataset::AlreadyExists.new(:dataset-name($new));
                 }
@@ -310,6 +312,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                 SQL
                 CATCH {
                     # other DB failure
+                    .note;
                     die X::Agrammon::DB::Dataset::SetTagFailed.new(:$dataset-name, :$tag-name);
                 }
             }
@@ -334,6 +337,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                 SQL
                 CATCH {
                     # other DB failure
+                    .note;    
                     die X::Agrammon::DB::Dataset::RemoveTagFailed.new(:$tag-name);
                 }
             }
@@ -368,6 +372,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             $i++;
         }
         CATCH {
+            .note;
             when CSV::Diag {
                 die X::Agrammon::DB::Dataset::UploadCSVError.new(:dataset-name($!name), :msg(.message));
             }
@@ -610,6 +615,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
 
             # new instance name already exists
             CATCH {
+                .note;
                 when /unique/ {
                     die X::Agrammon::DB::Dataset::InstanceAlreadyExists.new(:name($new-name));
                 }
@@ -641,6 +647,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
 
         # reordering failed
         CATCH {
+            .note;
             die X::Agrammon::DB::Dataset::InstanceReorderFailed.new(:$!name);
         }
     }

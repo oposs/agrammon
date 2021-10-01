@@ -65,7 +65,6 @@ qx.Class.define('agrammon.module.output.Output', {
             else {
                 msg = 'output';
             }
-//            console.log('getOutputFunc done for', msg);
             qx.event.message.Bus.dispatchByName('agrammon.Output.dataReady', msg);
         };
 
@@ -85,7 +84,7 @@ qx.Class.define('agrammon.module.output.Output', {
             }
             for (i=0; i<len; i++) {
                 if (format == 'html') {
-                    logText += '<li>'+logData[i].messages[locale]+'</li>';
+                    logText += '<li><i>'+logData[i].gui[locale]+':</i> '+logData[i].messages[locale]+'</li>';
                 }
                 else { // FIX ME: remove this (but fix in submit() first (Kantonalmodell)
                     logText += '\\verbdef\\varTitle{' + logData[i].messages[locale]+ '}';

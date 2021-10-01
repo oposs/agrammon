@@ -612,8 +612,11 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     break;
                 }
                 helpFunction = agrammon.util.Validators.getHelpFunction(rec.validator, rec.type, rec.help);
-                if (rec.value == undefined) {
+                if (rec.value == undefined && ! rec.defaults.hasFormula) {
                     rec.value = defaultValue;
+                }
+                else {
+                    rec.value = null;
                 }
                 // fill propData array
                 var variable = new agrammon.module.input.Variable().set({

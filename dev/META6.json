@@ -1,7 +1,7 @@
 {
   "name": "Agrammon",
   "description": "Simulation model for calculating ammonia and Nx/NOx emissions from agriculture.",
-  "version": "6.0.1",
+  "version": "6.1.1",
   "perl": "6.*",
   "authors": [
     "Fritz Zaucker <fritz.zaucker@oetiker.ch>",

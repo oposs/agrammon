@@ -58,7 +58,7 @@ msgstr ""
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Close"
 msgstr ""
 
@@ -968,4 +968,8 @@ msgstr ""
 
 #: agrammon/io/remote/Rpc.js
 msgid "%1: Session expired: please login again"
+msgstr ""
+
+#. NO LONGER USED
+msgid "Standard"
 msgstr ""
