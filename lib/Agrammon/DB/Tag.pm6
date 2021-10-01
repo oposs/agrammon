@@ -57,8 +57,9 @@ class Agrammon::DB::Tag does Agrammon::DB {
                 RETURNING tag_id
             SQL
 
-            # new dataset name already exists
+            # new tag name already exists
             CATCH {
+                .note;
                 when /unique/ {
                     die X::Agrammon::DB::Tag::AlreadyExists.new(:$!name);
                 }
@@ -84,8 +85,9 @@ class Agrammon::DB::Tag does Agrammon::DB {
                 RETURNING tag_name
             SQL
 
-            # new dataset name already exists
+            # new tag name already exists
             CATCH {
+                .note;
                 when /unique/ {
                     die X::Agrammon::DB::Tag::AlreadyExists.new(:$!name);
                 }
