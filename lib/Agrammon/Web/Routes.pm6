@@ -41,7 +41,27 @@ sub routes(Agrammon::Web::Service $ws) is export {
     }
 }
 
+sub testing-routes($root) {
+    route {
+        get -> 'resource', *@path {
+            static 'frontend/compiled/source/resource', @path
+        }
+        get -> 'testtapper', *@path {
+            static 'frontend/compiled/source/testtapper', @path
+        }
+
+        get -> 'testtapper', 'resource', 'agrammon', *@path {
+            static 'frontend/compiled/source/resource/agrammon', @path
+        }
+        get -> 'transpiled', *@path {
+            static 'frontend/compiled/source/transpiled', @path
+        }
+    }
+}
+
 sub static-content($root) is export {
+#    note "static: root=$root";
+    include testing-routes($root);
     route {
         if %*ENV<SOURCE_MODE> { # Qooxdoo source mode (development)
             get -> 'index.html' {

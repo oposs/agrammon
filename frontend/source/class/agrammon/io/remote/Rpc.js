@@ -10,7 +10,7 @@
 
 /**
  * The Rpc class inherits from {@link qx.io.remote.Rpc}. It knows a bunch about
- * the way we like Rpc to happen in Agrammon conntext.
+ * the way we like Rpc to happen in Agrammon context.
  *
  * Derived from Tobi's Nequal Rpc.js
  */

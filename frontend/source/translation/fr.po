@@ -974,3 +974,11 @@ msgstr ""
 #: agrammon/Changelog.js
 msgid "Changelog"
 msgstr ""
+
+#. NO LONGER USED
+msgid "No valid lines found in uploaded files"
+msgstr ""
+
+#: agrammon/module/dataset/DatasetTable.js
+msgid "No valid lines found in uploaded file."
+msgstr ""
