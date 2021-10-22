@@ -1,3 +1,5 @@
+use v6;
+
 role Agrammon::DB {
     method connection() { $*AGRAMMON-DB-CONNECTION }
 
