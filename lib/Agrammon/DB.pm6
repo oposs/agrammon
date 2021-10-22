@@ -1,5 +1,3 @@
-use v6;
-
 role Agrammon::DB {
     method connection() { $*AGRAMMON-DB-CONNECTION }
 
@@ -15,7 +13,11 @@ role Agrammon::DB {
     method !with-fresh-handle(&operation) {
         my $handle = self.connection.db;
         my $*AGRAMMON-DB-HANDLE = $handle;
-        LEAVE $handle.finish;
-        operation($handle)
+        my \result := operation($handle);
+        $handle.finish;
+        return result;
+        CATCH {
+            .finish with $handle;
+        }
     }
 }
