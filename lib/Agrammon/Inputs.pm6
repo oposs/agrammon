@@ -367,7 +367,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         my class DistributableValue {
             has Str $.dist-name is required;
             has Str $.dist-sub-taxonomy is required;
-            has Int $.dist-total is required;
+            has Numeric $.dist-total is required;
         }
         my @distributable-values;
         for @distribute-over -> $dist-over {
