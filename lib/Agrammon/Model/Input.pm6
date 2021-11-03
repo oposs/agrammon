@@ -9,7 +9,7 @@ class Agrammon::Model::Input {
     has Str $.description;
     has     $.default-calc;
     has Agrammon::Formula $.default-formula;
-    has     &.compiled-default-formula;
+    has     &.compiled-default-formula is rw;
     has     $.default-gui;
     has Str $.type;         # XXX Should be something richer than Str
     has Str $.validator;    # XXX Should be something richer than Str
@@ -34,7 +34,6 @@ class Agrammon::Model::Input {
         }
         with $default_formula {
             $!default-formula = $default_formula;
-            &!compiled-default-formula = compile-formula($default_formula);
         }
         with $default_gui {
             $!default-gui = val($_);

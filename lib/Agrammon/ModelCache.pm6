@@ -57,6 +57,12 @@ sub hash-model($base, %preprocessor-options) {
 sub set-formulas-code(Agrammon::Model $model) {
     my @formula-set-lines;
     for $model.evaluation-order.kv -> $midx, $module {
+        for $module.input.kv -> $iidx, Agrammon::Model::Input $input {
+            with $input.default-formula {
+                my $source = compile-formula-to-source($_);
+                push @formula-set-lines, q:c'@modules[{$midx}].input[{$iidx}].compiled-default-formula = {$source}';
+            }
+        }
         for $module.output.kv -> $oidx, $output {
             my $source = compile-formula-to-source($output.formula);
             push @formula-set-lines, q:c'@modules[{$midx}].output[{$oidx}].compiled-formula = {$source}';
