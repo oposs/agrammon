@@ -354,15 +354,28 @@ class Agrammon::Model {
     }
 
     method !compile-formulas() {
-        my @output-order;
+        my @targets;
         my @formula-sources;
-        for @!evaluation-order.map(*.output).flat -> $output {
-            push @output-order, $output;
-            push @formula-sources, compile-formula-to-source($output.formula);
+        for @!evaluation-order -> $module {
+            for $module.input -> $input {
+                with $input.default-formula {
+                    push @targets, $input;
+                    push @formula-sources, compile-formula-to-source($input.default-formula);
+                }
+            }
+            for $module.output -> $output {
+                push @targets, $output;
+                push @formula-sources, compile-formula-to-source($output.formula);
+            }
         }
         use MONKEY-SEE-NO-EVAL;
-        for flat @output-order Z EVAL(@formula-sources.join(',')) -> $output, $compiled {
-            $output.compiled-formula = $compiled;
+        for flat @targets Z EVAL(@formula-sources.join(',')) -> $_, $compiled {
+            when Agrammon::Model::Output {
+                .compiled-formula = $compiled;
+            }
+            when Agrammon::Model::Input {
+                .compiled-default-formula = $compiled;
+            }
         }
     }
 
