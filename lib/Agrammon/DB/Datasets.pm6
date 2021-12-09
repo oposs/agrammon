@@ -98,7 +98,7 @@ class Agrammon::DB::Datasets does Agrammon::DB::Variant {
     }
 
     method list {
-        return [@!collection.map: {.name, .mod-date, .records, .read-only, .agrammon-variant<version>, .tags.map(*.name), .comment, .model, 0}];
+        return [@!collection.map: {.name, .mod-date, .records, .read-only, .agrammon-variant<version>, .tags.map(*.name), .comment, .model, .is-demo}];
     }
 
 }

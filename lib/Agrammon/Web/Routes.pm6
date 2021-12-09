@@ -3,6 +3,7 @@ use v6;
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
 use Cro::Uri :decode-percents;
+use Linux::Proc::Statm;
 
 use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
@@ -42,13 +43,17 @@ sub routes(Agrammon::Web::Service $ws) is export {
 }
 
 sub static-content($root) is export {
+<<<<<<< Updated upstream
+=======
+    include testing-routes($root);
+>>>>>>> Stashed changes
     route {
         if %*ENV<SOURCE_MODE> { # Qooxdoo source mode (development)
             get -> 'index.html' {
                 static "$root/agrammon/index.html"
             }
-            get -> 'index.js' {
-                static "$root/agrammon/index.js"
+            get -> 'agrammon', *@path {
+                static "$root/agrammon", @path
             }
             get -> 'favicon.ico' {
                 static "$root/resource/agrammon/favicon.ico"
@@ -95,7 +100,6 @@ sub static-content($root) is export {
         }
 
         get -> 'doc', *$path {
-            dd $path;
             static "share/doc/$path"
         }
 
@@ -405,8 +409,8 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
     route {
         # working
         post -> LoggedIn $user, 'get_datasets' {
-            my $data = $ws.get-datasets($user, $ws.cfg.agrammon-variant);
-            content 'application/json', $data;
+            my @data := $ws.get-datasets($user, $ws.cfg.agrammon-variant);
+            content 'application/json', @data;
         }
 
         # working
