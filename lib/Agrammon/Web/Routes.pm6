@@ -3,7 +3,6 @@ use v6;
 use Cro::HTTP::Router;
 use Cro::OpenAPI::RoutesFromDefinition;
 use Cro::Uri :decode-percents;
-use Linux::Proc::Statm;
 
 use Agrammon::DB::Dataset;
 use Agrammon::DB::User;
