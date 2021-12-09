@@ -28,8 +28,11 @@ qx.Class.define('agrammon.module.dataset.DatasetCache', {
         var that = this;
         var rpc = agrammon.io.remote.Rpc.getInstance();
         this.__datasets = [];
+        this.__loading = false;
 
         qx.event.message.Bus.subscribe('agrammon.DatasetCache.refresh', function(msg) {
+            if (this.__loading) return;
+            this.__loading = true;
             var user = msg.getData();
             qx.event.message.Bus.dispatchByName('Agrammon.datasetsLoading');
             rpc.callAsync( this.__getDatasets, 'get_datasets');
@@ -44,16 +47,8 @@ qx.Class.define('agrammon.module.dataset.DatasetCache', {
          */
         this.__getDatasets = function(data,exc,id){
             if (exc == null) {
-                var i, len = data.length;
-                let datasets = [];
-                for (i=0; i<len; i++) {
-                    // TODO: why is this necessary???
-                    // skip datasets without name
-                    if (!data[i][0]) continue;
-                    data[i][0] = '' + data[i][0];
-                    datasets.push(data[i]);
-                }
-                that.__datasets = datasets;
+                that.__datasets = data;
+                this.__loading = false;
                 qx.event.message.Bus.dispatchByName('Agrammon.datasetsLoaded');
             }
             else {
@@ -86,6 +81,7 @@ qx.Class.define('agrammon.module.dataset.DatasetCache', {
         __datasets: null,
         __tags: null,
         __getTags: null,
+        __loading: null,
 
         /**
         * Is the current selection valid.

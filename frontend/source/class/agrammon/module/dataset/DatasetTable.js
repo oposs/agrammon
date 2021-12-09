@@ -57,6 +57,16 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
         this.add(this.__table, {flex: 1});
         this.__createToolbarButtons();
 
+        this.addListener('appear', () => {
+            // make sure we have the value when reopening this widget
+            this.__searchFilter = datasetFilter.getValue() || '';
+        }, this);
+
+        this.addListenerOnce('appear', () => {
+            this.addOwnedQxObject(this.__btnDel, "DeleteButton");
+            this.debug('datasetTableDeleteButtonID=', qx.core.Id.getAbsoluteIdOf(this.__btnDel));
+        }, this);
+
         // add handlers to buttons
         this.__btnDel.addListener("execute", function(e) {
             var data = this.__table.getSelectionModel().getSelectedRanges();
@@ -108,6 +118,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 new agrammon.ui.dialog.Confirm(this.tr("Deleting datasets from database"),
                                                this.tr("Really delete selected datasets from database?"),
                                                okFunction, this);
+//            this.addOwnedQxObject(this.__btnDel, "ConfirmDeletion");
         }, this);
 
         var delete_datasets_func = function(data,exc,id) {
@@ -382,20 +393,18 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
             if (!this.__table) return;
 
             let tm = this.__table.getTableModel();
-            let data = this.__datasetStore.getDatasets();
-            if (data == null) return;
+            let datasets = this.__datasetStore.getDatasets();
+            if (!datasets) return;
 
             let filter = this.getFilter();
             let searchFilter = this.__searchFilter.toLowerCase();
-
             let that = this;
-            tm.setData(data.filter(function(row) {
+            tm.setData(datasets.filter(function(row) {
                 let name = row[0];
-                if (!name) return false;
                 let all = filter['*all*'] != undefined;
-                return ( // that.__showAlways[name] ||//            availableTagsTm.setView(1);
-                        (name.toLowerCase().indexOf(that.__searchFilter) != -1)
-                        && ( all || (filter[name]) )
+                return (
+                       (name.toLowerCase().indexOf(searchFilter) != -1)
+                    && ( all || (filter[name]) )
                 );
             }));
         },

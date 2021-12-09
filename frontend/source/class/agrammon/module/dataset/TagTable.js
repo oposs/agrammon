@@ -9,7 +9,7 @@
 qx.Class.define('agrammon.module.dataset.TagTable', {
     extend:  qx.ui.container.Composite,
 
-  construct: function(title) {
+    construct: function(title) {
         this.base(arguments);
         this.setLayout(new qx.ui.layout.VBox(5));
 
@@ -17,13 +17,15 @@ qx.Class.define('agrammon.module.dataset.TagTable', {
         this.__showAlways = {};
 
         var datasetFilter =
-            new agrammon.ui.form.VarInput(null, null,null,
-                                     this.tr("Incremental filter on tag name"),
-                                     this.tr("Filter on tag name"), false);
+            new agrammon.ui.form.VarInput(
+                null, null,null,
+                this.tr("Incremental filter on tag name"),
+                this.tr("Filter on tag name"), false
+            );
         datasetFilter.addListener('input', function(e) {
-              this.__searchFilter = e.getData().toLowerCase();
-              this.__searchTimer.restart();
-          }, this);
+            this.__searchFilter = e.getData().toLowerCase();
+            this.__searchTimer.restart();
+        }, this);
 
         datasetFilter.setMargin(0,10,0,10);
         this.__searchTimer = new qx.event.Timer(this.__searchTimeout);
@@ -34,7 +36,15 @@ qx.Class.define('agrammon.module.dataset.TagTable', {
 
         this.add(datasetFilter);
 
-        this.__table.setMinWidth(150);
+        this.addListener('appear', () => {
+            // make sure we have the value when reopening this widget
+            this.__searchFilter = datasetFilter.getValue() || '';
+            if (this.__searchFilter != '') {
+                this.updateView();
+            }
+        }, this);
+
+      this.__table.setMinWidth(150);
         this.__table.setAllowGrowX(true);
         this.setPadding(0);
         this.add(this.__table, {flex: 1});
@@ -99,16 +109,12 @@ qx.Class.define('agrammon.module.dataset.TagTable', {
         updateView: function() {
             let tm = this.__table.getTableModel();
             let data = agrammon.module.dataset.DatasetCache.getInstance().getTags();
-            if (data == null) return;
+            if (!data) return;
 
             let searchFilter = this.__searchFilter.toLowerCase();
-
             let that = this;
             let filteredData = data.filter(function(name) {
-                if ( !name ) return false;
-                return ( that.__showAlways[name] ||
-                        (name.toLowerCase().indexOf(that.__searchFilter) != -1)
-                );
+                return (name.toLowerCase().indexOf(searchFilter) != -1);
             });
             let tableData = [];
             for (let tag of filteredData) {
