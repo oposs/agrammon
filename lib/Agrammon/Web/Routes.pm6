@@ -43,10 +43,6 @@ sub routes(Agrammon::Web::Service $ws) is export {
 }
 
 sub static-content($root) is export {
-<<<<<<< Updated upstream
-=======
-    include testing-routes($root);
->>>>>>> Stashed changes
     route {
         if %*ENV<SOURCE_MODE> { # Qooxdoo source mode (development)
             get -> 'index.html' {
