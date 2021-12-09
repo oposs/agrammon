@@ -11,11 +11,13 @@
 qx.Class.define('agrammon.module.user.Login', {
     extend: qx.ui.window.Window,
 
-    construct: function (title, sudo) {
+    construct: function (title, sudo, retry) {
         this.base(arguments);
         this.__rpc  = agrammon.io.remote.Rpc.getInstance();
         this.__baseUrl = this.__rpc.getBaseUrl();
         this.setLayout(new qx.ui.layout.HBox(10));
+        qx.core.Id.getInstance().register(this, "Login");
+        this.setQxObjectId("Login");
 
         var that = this;
         this.set({
@@ -39,11 +41,13 @@ qx.Class.define('agrammon.module.user.Login', {
         qx.locale.Manager.getInstance().addListener("changeLocale", this.__changeLanguage, this);
 
         var user = this.__user = new agrammon.ui.form.VarInput(this.tr("Username"), '', '', '', 'Enter username');
+        this.addOwnedQxObject(user, "Username");
         leftBox.add(user);
         user.setPadding(5);
         user.setPaddingBottom(0);
 
         var password = this.__password = new agrammon.ui.form.VarPassword(this.tr("Password"));
+        this.addOwnedQxObject(password, "Password");
         password.setPadding(5);
         password.setPaddingTop(0);
         if (!sudo) {
@@ -62,25 +66,28 @@ qx.Class.define('agrammon.module.user.Login', {
         bbox.setPaddingLeft(5);
         bbox.setPaddingRight(5);
         leftBox.add(bbox);
+
         var btnOK =
             new qx.ui.form.Button("Login", "icon/16/actions/dialog-ok.png");
+        this.addOwnedQxObject(btnOK, "LoginButton");
 
         var btnNew =
-            new qx.ui.form.Button(this.tr("Create New Account"),
-                                  "icon/16/actions/dialog-ok.png");
+            new qx.ui.form.Button(this.tr("Create New Account"), "icon/16/actions/dialog-ok.png");
+        this.addOwnedQxObject(btnNew, "NewButton");
         this.btnNew = btnNew;
 
         var btnPassword =
-            new qx.ui.form.Button(this.tr("Reset Password"),
-                                  "icon/16/actions/dialog-ok.png");
+            new qx.ui.form.Button(this.tr("Reset Password"), "icon/16/actions/dialog-ok.png");
+        this.addOwnedQxObject(btnPassword, "PasswordButton");
         this.btnPassword = btnPassword;
 
         var btnHelp =
-            new qx.ui.form.Button(this.tr("Help"),
-                                  "agrammon/help-about.png");
+            new qx.ui.form.Button(this.tr("Help"), "agrammon/help-about.png");
+        this.addOwnedQxObject(btnHelp, "HelpButton");
+
         var btnCancel =
-            new qx.ui.form.Button(this.tr("Cancel"),
-                                  "icon/16/actions/dialog-cancel.png");
+            new qx.ui.form.Button(this.tr("Cancel"), "icon/16/actions/dialog-cancel.png");
+        this.addOwnedQxObject(btnCancel, "CancelButton");
 
         btnCancel.addListener("execute", function(e) {
             this.__user.clearValue();
@@ -95,8 +102,10 @@ qx.Class.define('agrammon.module.user.Login', {
         locale = locale.replace(/_.+/,'');
         var help = this.__help = new agrammon.ui.dialog.DocWindow(
             this.tr("Help"),
-            this.__baseUrl + 'doc/login.' + locale + '.html'
+            this.__baseUrl + 'doc/login.' + locale + '.html',
+            this.getQxObjectId()
         );
+        this.addOwnedQxObject(help, "HelpWindow");
         btnHelp.addListener("execute", function(e) {
             this.__user.clearValue();
             this.__password.clearValue();
@@ -116,7 +125,7 @@ qx.Class.define('agrammon.module.user.Login', {
                 'agrammon.main.login',
                 {
                     username : username, password : password,
-                    remember : remember, sudo : sudo
+                    remember : remember, sudo : sudo, retry : retry
                 }
             );
             this.close();
@@ -190,8 +199,9 @@ qx.Class.define('agrammon.module.user.Login', {
             else {
                 btnOK.focus();
             }
-
         }, this);
+
+        this.addListener('disappear', () => this.destroy(), this);
 
     }, // construct
 
