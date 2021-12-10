@@ -19,23 +19,13 @@ qx.Class.define('agrammon.module.output.Results', {
 
         this.outputData = outputData;
 
-        // qx.locale.Manager.getInstance().addListener("changeLocale",
-        //                                             this.__changeLanguage,
-        //                                             this);
-        // qx.event.message.Bus.subscribe('agrammon.Reports.showReference',
-        //                                this.__showReferenceColumn, this);
-        // qx.event.message.Bus.subscribe('agrammon.Reports.clear',
-        //                                this.__clearTable, this);
-        qx.event.message.Bus.subscribe('agrammon.Output.invalidate',
-                                        this.__clearTable, this);
-        qx.event.message.Bus.subscribe('agrammon.Output.reCalc',
-                                       this.__recalc, this);
-        qx.event.message.Bus.subscribe('agrammon.Reports.createMenu',
-                                       this.__updateMenu, this);
-        qx.event.message.Bus.subscribe('agrammon.Output.dataReady',
-                                       this.__dataReady, this);
-        qx.event.message.Bus.subscribe('agrammon.outputEnabled',
-                                       this.__enabled, this);
+        // qx.event.message.Bus.subscribe('agrammon.Reports.showReference', this.__showReferenceColumn, this);
+        // qx.event.message.Bus.subscribe('agrammon.Reports.clear',         this.__clearTable, this);
+        qx.event.message.Bus.subscribe('agrammon.Output.invalidate',  this.__clearTable, this);
+        qx.event.message.Bus.subscribe('agrammon.Output.reCalc',      this.__recalc, this);
+        qx.event.message.Bus.subscribe('agrammon.Output.dataReady',   this.__dataReady, this);
+        qx.event.message.Bus.subscribe('agrammon.Reports.createMenu', this.__updateMenu, this);
+        qx.event.message.Bus.subscribe('agrammon.outputEnabled',      this.__enabled, this);
         this.resultData = new Array;
 
         var title = new qx.ui.basic.Label();
@@ -45,15 +35,16 @@ qx.Class.define('agrammon.module.output.Results', {
         // table model
         var tableModel = new qx.ui.table.model.Simple();
         this.tableModel = tableModel;
-        tableModel.setColumns([ this.tr("Module"),    // 0
-		 		                this.tr("Variable"),
-				                this.tr("Reference"),
-				                this.tr("Value"),
-				                this.tr("Change"),
-                                this.tr("Unit"),
-                                this.tr("Print"),
-                                this.tr("Order")      // 7
-                              ]);
+        tableModel.setColumns([
+            this.tr("Module"),    // 0
+            this.tr("Variable"),
+            this.tr("Reference"),
+            this.tr("Value"),
+            this.tr("Change"),
+            this.tr("Unit"),
+            this.tr("Print"),
+            this.tr("Order")      // 7
+        ]);
         // Customize the table column model.  We want one that automatically
         // resizes columns.
         var custom =  {
@@ -148,31 +139,24 @@ qx.Class.define('agrammon.module.output.Results', {
             return x - y;
         },
 
-	/**
-	  * @ignore(TAGS)
-	  */
+        /**
+          * @ignore(TAGS)
+          */
 
         __getOutputData:  function() {
 
             if ( !(this.outputData.isValid()
 //                   && this.referenceData.isValid())
-                   )) {
+                  )) {
                 return;
             }
 
-            // FIX ME: why is this needed ?
-//            if (! this.selectMenu.getSelection()[0]) {
-//                return;
-//            }
-
-//            let reportName = this.selectMenu.getSelection()[0].getModel();
             let dataSet = new Array;
 
             let rdlen = this.resultData.length;
             let found = false;
             let showFilterGroups;
             for (let ri=0; ri<rdlen; ri++) {
-//                if (this.resultData[ri].name == reportName) {
                 if (this.resultData[ri].resultView) {
                     found = true;
                     this.reportIndex = ri;
@@ -230,12 +214,6 @@ qx.Class.define('agrammon.module.output.Results', {
                 for (let i=0; i<len; i++) { // variables
                     let varName, rec, refRec, value, refValue, refDiff, printMe;
                     rec = data[i];
-//                    if (refData != null) {
-//                        refRec = refData[i];
-//                    }
-//                    else {
-//                        refRec = null;
-//                    }
                     printMe = false;
                     printTag = String(rec.print);
                     let tags = printTag.split(',');
@@ -332,6 +310,7 @@ qx.Class.define('agrammon.module.output.Results', {
             if (enable) {
                 this.debug('enable');
                 this.__outputPending++;
+                console.log('__enabled(): calling getOutput');
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
                 this.__title.setValue(this.tr("<b>Result summary</b>"));
             }
