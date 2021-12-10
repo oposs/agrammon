@@ -7,15 +7,14 @@
   */
 
 qx.Class.define('agrammon.module.input.NavBar', {
-//    type : "abstract",
     extend: qx.ui.container.Composite,
 
-/**
-  * TODOC
-  *
-  * @return {var} TODOC
-  * @lint ignoreDeprecated(alert)
-  */
+    /**
+     * TODOC
+     *
+     * @return {var} TODOC
+     * @lint ignoreDeprecated(alert)
+     */
     construct: function (propEditor) {
         qx.Class.include(qx.ui.core.Widget, qx.ui.core.MPlacement);
         this.base(arguments);
@@ -25,24 +24,15 @@ qx.Class.define('agrammon.module.input.NavBar', {
         this.__rpc  = agrammon.io.remote.Rpc.getInstance();
         this.__info = agrammon.Info.getInstance();
 
-        qx.event.message.Bus.subscribe('agrammon.NavBar.loadDataset',
-                                       this.__loadDataset, this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.getInput',
-                                       this.__getInput, this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.addFolder',
-                                       this.__addFolderHandler, this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.renameInstanceData',
-                                        this.__renameInstanceData,this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.deleteInstanceData',
-                                        this.__deleteInstanceData,this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.deleteInstance',
-                                        this.__deleteInstance,this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.destroyFolder',
-                                        this.__destroyFolder, this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.clearTree',
-                                        this.__clearTree,this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.isComplete',
-                                       this.__isComplete,this);
+        qx.event.message.Bus.subscribe('agrammon.NavBar.loadDataset',        this.__loadDataset, this);
+        qx.event.message.Bus.subscribe('agrammon.NavBar.getInput',           this.__getInput, this);
+        qx.event.message.Bus.subscribe('agrammon.NavBar.addFolder',          this.__addFolderHandler, this);
+        qx.event.message.Bus.subscribe('agrammon.NavBar.renameInstanceData', this.__renameInstanceData,this);
+        qx.event.message.Bus.subscribe('agrammon.NavBar.deleteInstanceData', this.__deleteInstanceData,this);
+        qx.event.message.Bus.subscribe('agrammon.NavBar.deleteInstance',     this.__deleteInstance,this);
+        qx.event.message.Bus.subscribe('agrammon.NavBar.destroyFolder',      this.__destroyFolder, this);
+        qx.event.message.Bus.subscribe('agrammon.NavBar.clearTree',          this.__clearTree,this);
+        qx.event.message.Bus.subscribe('agrammon.NavBar.isComplete',         this.__isComplete,this);
 
         this.__rootFolder = new Object; // set in _getInputVariables()
         this.__propEditor = propEditor;
@@ -54,11 +44,13 @@ qx.Class.define('agrammon.module.input.NavBar', {
         this.setQxObjectId("NavBar");
         this.addOwnedQxObject(this.__navTree, "Tree");
 
-        this.__navTree.set({backgroundColor:'white',
-                          padding:0,
-                          width:200,
-                          hideRoot:false //true
-                          });
+        this.__navTree.set(
+            {backgroundColor:'white',
+             padding:0,
+             width:200,
+             hideRoot:false //true
+            }
+        );
         this.add(this.__navTree, {flex : 1});
 
         this.__navTree.setDraggable(true);
@@ -66,9 +58,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
 
         // Create drag indicator
         var indicator = new qx.ui.core.Widget;
-        indicator.setDecorator(new qx.ui.decoration.Decorator().set({
-              top : [ 2, "solid", "red" ]
-        }));
+        indicator.setDecorator(new qx.ui.decoration.Decorator().set({ top : [ 2, "solid", "red" ] }));
         indicator.setHeight(0);
         indicator.setOpacity(0.5);
         indicator.setZIndex(100);
@@ -217,16 +207,17 @@ qx.Class.define('agrammon.module.input.NavBar', {
 
 
         // make root folder
-        var _rootFolder = this.__createNavFolder({en: 'Agrammon',
-                                                    de: 'Agrammon',
-                                                    fr: 'Agrammon',
-                                                    it: 'Agrammon'
-                                                    },
-                                                    'isRoot', // type
-                                                    null,     // data
-                                                    'root',   // name
-                                                    null      // instanceOrder
-                                                   );
+        var _rootFolder = this.__createNavFolder(
+            {en: 'Agrammon',
+             de: 'Agrammon',
+             fr: 'Agrammon',
+             it: 'Agrammon'
+            },
+            'isRoot', // type
+            null,     // data
+            'root',   // name
+            null      // instanceOrder
+        );
         _rootFolder.setIcon('agrammon/nh3.png');
         this.__rootFolder = _rootFolder;
         this.__navTree.setRoot(_rootFolder);
@@ -280,12 +271,10 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 this.debug('getInputVariablesHandler(): dataset='+dataset);
                 // create select menus for results
                 if (data['reports'] != null) {
-                    qx.event.message.Bus.dispatchByName('agrammon.Reports.createMenu',
-                                                        data['reports']);
+                    qx.event.message.Bus.dispatchByName('agrammon.Reports.createMenu', data['reports']);
                 }
                 if (data['graphs'] != null) {
-                    qx.event.message.Bus.dispatchByName('agrammon.Graphs.createMenu',
-                                                        data['graphs']);
+                    qx.event.message.Bus.dispatchByName('agrammon.Graphs.createMenu',  data['graphs']);
                 }
                 this.__getInputVariables(data['inputs']); // build NavTree structur
 
@@ -324,8 +313,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
       * @return {var} TODOC
       * @ignore(SIBBLING)
       */
-    statics :
-    {
+    statics : {
         validInstanceName: function(child, parent) {
             if (child == undefined || child == '' || child == null) {
                 qx.event.message.Bus.dispatchByName('error',
@@ -349,9 +337,11 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     sname = RegExp.$1;
                 }
                 if (child == sname) {
-                    qx.event.message.Bus.dispatchByName('error',
-                            [ qx.locale.Manager.tr("Error"),
-                              qx.locale.Manager.tr("Duplicate instances not allowed")]);
+                    qx.event.message.Bus.dispatchByName(
+                        'error',
+                        [ qx.locale.Manager.tr("Error"),
+                          qx.locale.Manager.tr("Duplicate instances not allowed")]
+                    );
                     return false;
                 }
             }
@@ -359,28 +349,28 @@ qx.Class.define('agrammon.module.input.NavBar', {
         }
     },
 
-    properties :
-    {
-        variant: { init: null,
-                   check: "String"
-                 }
+    properties : {
+        variant: {
+            init: null,
+            check: "String"
+        }
     },
 
-    members :
-    {
-         __rpc:        null,
-         __info:       null,
-         __navTree:    null,
-         __navHash:    null,
-         __propEditor: null,
-         __rootFolder: null,
+    members : {
+        __initialized: false,
+        __rpc:        null,
+        __info:       null,
+        __navTree:    null,
+        __navHash:    null,
+        __propEditor: null,
+        __rootFolder: null,
         __sibblings:   null,
         __navFolders:  null,
 
-     /**
-       * TODOC
-       * @lint ignoreDeprecated(alert)
-       */
+        /**
+         * TODOC
+         * @lint ignoreDeprecated(alert)
+         */
         __loadDatasetFunction:  function(data) {
             var i, len = data.length;
             var varName, value, branch_values;
@@ -518,7 +508,12 @@ qx.Class.define('agrammon.module.input.NavBar', {
             this.__rootFolder.isComplete(nset);
             // FIX ME: where should this really be
             qx.event.message.Bus.dispatchByName('agrammon.PropTable.clear');
-            qx.event.message.Bus.dispatchByName('agrammon.Output.reCalc');
+            if (! this.__initialized) {
+                this.__initialized = true;
+            }
+            else {
+                qx.event.message.Bus.dispatchByName('agrammon.Output.reCalc');
+            }
         },
 
         __loadDataset: function(msg) { // FIX ME: merge with next function
@@ -1116,8 +1111,8 @@ qx.Class.define('agrammon.module.input.NavBar', {
             var configEditor = new agrammon.module.input.regional.ConfigEditor();
             var branchWindow = new agrammon.module.input.regional.ConfigInstance(
                 configEditor, tree,
-               parentName, parentFolder,
-               this.__rootFolder
+                parentName, parentFolder,
+                this.__rootFolder
             );
             branchWindow.open();
             configEditor.setData(parentFolder);
