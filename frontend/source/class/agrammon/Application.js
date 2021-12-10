@@ -68,14 +68,14 @@ qx.Class.define('agrammon.Application', {
             // Dto for log messages.
             root.add(new agrammon.ui.dialog.Log());
 
-            this.__loginDialog =
+            let loginDialog =
                 new agrammon.module.user.Login(this.tr("Please authenticate yourself"));
 
             for (var id in qx.core.Id.getInstance().getRegisteredObjects()) {
                 this.debug('Id=', id);
             }
 
-            for (let o of this.__loginDialog.getOwnedQxObjects()) {
+            for (let o of loginDialog.getOwnedQxObjects()) {
                 this.debug('Id=', qx.core.Id.getAbsoluteIdOf(o));
             }
 
@@ -135,7 +135,7 @@ qx.Class.define('agrammon.Application', {
                 else {
                     alert(exc);
                 }
-                this.__loginDialog.open();
+                loginDialog.open();
             }, this);
 
             this.__rpc.callAsync( getCfgFunc, 'get_cfg');
@@ -194,7 +194,6 @@ qx.Class.define('agrammon.Application', {
         __authenticate: null,
         __retry:        null,
         __rpc:          null,
-        __loginDialog:  null,
 
         __supports_html5_storage: function() {
             try {
@@ -271,7 +270,7 @@ qx.Class.define('agrammon.Application', {
             else {
                 alert(exc);
             }
-            this.__loginDialog.open();
+            new agrammon.module.user.Login(this.tr("Please authenticate yourself")).open();
         }
     }
 });

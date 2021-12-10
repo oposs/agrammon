@@ -56,7 +56,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                 req.setRequestData(data);
                 req.setRequestHeader("Content-Type", "application/json");
             }
-            if (methodName != 'auth' && methodName != 'get_cfg') {
+            if (methodName != 'auth' && methodName != 'get_cfg' && methodName != 'logout') {
                 this.__pending = { methodName : methodName, data : data, handler : handler };
             }
             req.addListener("statusError", function(e) {
