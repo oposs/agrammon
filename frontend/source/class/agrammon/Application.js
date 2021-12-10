@@ -11,7 +11,7 @@ qx.Class.define('agrammon.Application', {
           * TODOC
           *
           * @return {var} TODOC
-	      * @lint ignoreDeprecated(alert)
+              * @lint ignoreDeprecated(alert)
           */
         main: function() {
             this.base(arguments);
@@ -37,14 +37,14 @@ qx.Class.define('agrammon.Application', {
                 qx.log.appender.Console;
             }
 
-	        var param, params = this.__getParams();
-	        for (var i=0; i<params.length; i++) {
+                var param, params = this.__getParams();
+                for (var i=0; i<params.length; i++) {
                 if (params[i] != null) {
                     param = params[i].split("=");
                 }
-		        if (param[0] == 'lang') {
+                        if (param[0] == 'lang') {
                     qx.locale.Manager.getInstance().setLocale(param[1]);
-		        }
+                        }
             }
 
             var that = this;
@@ -52,7 +52,7 @@ qx.Class.define('agrammon.Application', {
             this.__rpc = agrammon.io.remote.Rpc.getInstance();
 
             qx.event.message.Bus.subscribe('agrammon.main.logout', this.__logout, this);
-            qx.event.message.Bus.subscribe('agrammon.main.login',  this.__login, this);
+            qx.event.message.Bus.subscribe('agrammon.main.login',  this.__login,  this);
 
             var root = this.getRoot();
             root.setBlockerColor("#bfbfbf");
@@ -68,8 +68,16 @@ qx.Class.define('agrammon.Application', {
             // Dto for log messages.
             root.add(new agrammon.ui.dialog.Log());
 
-            this.__loginDialog =
+            let loginDialog =
                 new agrammon.module.user.Login(this.tr("Please authenticate yourself"));
+
+            for (var id in qx.core.Id.getInstance().getRegisteredObjects()) {
+                this.debug('Id=', id);
+            }
+
+            for (let o of loginDialog.getOwnedQxObjects()) {
+                this.debug('Id=', qx.core.Id.getAbsoluteIdOf(o));
+            }
 
             // the base layout of the page.
             var main = new qx.ui.container.Composite(new qx.ui.layout.VBox());
@@ -86,10 +94,10 @@ qx.Class.define('agrammon.Application', {
             var output     = new agrammon.module.output.Output(false);
             var reference  = new agrammon.module.output.Output(true);
 
-            var propEditor = new agrammon.module.input.PropTable();
+            var propEditor = new agrammon.module.input.PropTable('InputTable');
             var navbar     = new agrammon.module.input.NavBar(propEditor);
 
-	        var mainMenu;
+            var mainMenu;
 
             var results;
             var getCfgFunc = qx.lang.Function.bind(function(data, exc, id) {
@@ -100,17 +108,17 @@ qx.Class.define('agrammon.Application', {
                     this.debug('getCfgFunc(): guiVariant=' +data.guiVariant);
                     this.debug('getCfgFunc(): modelVariant=' +data.modelVariant);
 
-		            if (data.guiVariant != 'Regional') {
- 	                    results = new agrammon.module.output.Results(output);
+                    if (data.guiVariant != 'Regional') {
+                        results = new agrammon.module.output.Results(output);
                     }
-            	    var input      = new agrammon.module.input.Input(propEditor, navbar, results);
-            	    var tabview    = new agrammon.module.Main(input, output, reference);
-            	    var editMenu   = new agrammon.ui.menu.NavMenu(navbar);
-            	    mainMenu       = new agrammon.ui.menu.MainMenu(tabview, title, editMenu);
+                    var input      = new agrammon.module.input.Input(propEditor, navbar, results);
+                    var tabview    = new agrammon.module.Main(input, output, reference);
+                    var editMenu   = new agrammon.ui.menu.NavMenu(navbar);
+                    mainMenu       = new agrammon.ui.menu.MainMenu(tabview, title, editMenu);
 
-            	    main.add(mainMenu);
-            	    main.add(tabview, { flex : 1 });
-            	    main.add(new agrammon.Footer(this.tr("Implemented by OETIKER+PARTNER AG. Copyright 2010-"), 'http://www.oetiker.ch/'));
+                    main.add(mainMenu);
+                    main.add(tabview, { flex : 1 });
+                    main.add(new agrammon.Footer(this.tr("Implemented by OETIKER+PARTNER AG. Copyright 2010-"), 'http://www.oetiker.ch/'));
 
                     navbar.setVariant(data.modelVariant);
                     agrammon.module.dataset.DatasetTable.getInstance().setVariant(data.variant);
@@ -122,12 +130,12 @@ qx.Class.define('agrammon.Application', {
                     info.setModelVariant(data.modelVariant);
                     info.setTitle(data.title);
                     info.setSubmissionAddresses(data.submission);
-		            qx.event.message.Bus.dispatchByName('agrammon.Info.setModelVariant', data.modelVariant);
+                            qx.event.message.Bus.dispatchByName('agrammon.Info.setModelVariant', data.modelVariant);
                 }
                 else {
                     alert(exc);
                 }
-                this.__loginDialog.open();
+                loginDialog.open();
             }, this);
 
             this.__rpc.callAsync( getCfgFunc, 'get_cfg');
@@ -142,19 +150,21 @@ qx.Class.define('agrammon.Application', {
                         'agrammon.info.setUser',
                         { username : username, role : role }
                     );
-                    if (news && news != '') {
-                        var dialog = new agrammon.ui.dialog.News(
-                            that.tr("Latest news"),
-                            news,
-                            function () {
-                                dialog.close();
-                                qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openConnect');
-                            },
-                            lastLogin
-                        );
-                    }
-                    else {
-                        qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openConnect');
+                    if (!that.__retry) {
+                        if (news && news != '') {
+                            var dialog = new agrammon.ui.dialog.News(
+                                that.tr("Latest news"),
+                                news,
+                                function () {
+                                    dialog.close();
+                                    qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openConnect');
+                                },
+                                lastLogin
+                            );
+                        }
+                        else {
+                            qx.event.message.Bus.dispatchByName('agrammon.FileMenu.openConnect');
+                        }
                     }
                     // enable admin menu
                     mainMenu.showAdmin(role == 'admin' || role == 'support');
@@ -182,8 +192,8 @@ qx.Class.define('agrammon.Application', {
  ********************************************************************/
 
         __authenticate: null,
+        __retry:        null,
         __rpc:          null,
-        __loginDialog:  null,
 
         __supports_html5_storage: function() {
             try {
@@ -219,7 +229,8 @@ qx.Class.define('agrammon.Application', {
 
         __login: function(msg) {
             var userData     = msg.getData();
-            this.debug('__login(' + userData.user + ')');
+            this.__retry = userData.retry;
+            this.debug('__login(' + userData.username + ')');
             if (this.__supports_html5_storage() && userData.remember) {
                 localStorage.setItem('agrammonUsername', userData.username);
                 localStorage.setItem('agrammonPassword', userData.password);
@@ -228,7 +239,7 @@ qx.Class.define('agrammon.Application', {
             if (userData.sudoUsername === undefined) {
                 userData.sudoUsername = null;
             }
-            this.__rpc.callAsync( this.__authenticate, 'auth', userData);
+            this.__rpc.callAsync(this.__authenticate, 'auth', userData);
         },
 
         __logout: function() {
@@ -259,7 +270,7 @@ qx.Class.define('agrammon.Application', {
             else {
                 alert(exc);
             }
-            this.__loginDialog.open();
+            new agrammon.module.user.Login(this.tr("Please authenticate yourself")).open();
         }
     }
 });

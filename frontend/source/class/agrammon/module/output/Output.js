@@ -152,7 +152,6 @@ qx.Class.define('agrammon.module.output.Output', {
                 return;
             }
             this.__running = true;
-            this.debug('__getOutput(): starting calculation');
             this.outputIsValid = false;
             var datasetName;
             if (this.__reference) {

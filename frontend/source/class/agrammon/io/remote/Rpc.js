@@ -29,12 +29,12 @@ qx.Class.define('agrammon.io.remote.Rpc', {
             url         : 'jsonrpc/',
             serviceName : 'Agrammon'
         });
-
     },
 
     members : {
 
         __baseUrl:  '',
+        __pending: null,
 
         // FIX ME: why is this needed anywhere?
         getBaseUrl : function() {
@@ -48,84 +48,78 @@ qx.Class.define('agrammon.io.remote.Rpc', {
          *
          * @param handler {Function} the callback function.
          * @param methodName {String} the name of the method to call.
-         * @return {var} the method call reference.
+         * @param data {Map} the data to send.
          */
-        callAsyncOld : function(handler, methodName) {
-            var origArguments = arguments;
-            var origThis = this;
-            var origHandler = handler;
-
-            var superHandler = function(ret, exc, id) {
-                if (exc && exc.code == 6) {
-                    var login = new agrammon.module.user.Login();
-                    login.addListenerOnce('login', function(e) {
-                        origArguments.callee.base.apply(origThis, origArguments);
-                    });
-                    login.open();
-                    return;
-                }
-
-                origHandler(ret, exc, id);
-            };
-
-            if (methodName != 'auth') {
-                arguments[0] = superHandler;
-            }
-
-            arguments.callee.base.apply(this, arguments);
-        },
-
-
         callAsync : function(handler, methodName, data) {
             var req = new qx.io.request.Xhr(methodName, "POST");
             if (data != null) {
                 req.setRequestData(data);
                 req.setRequestHeader("Content-Type", "application/json");
             }
+            if (methodName != 'auth' && methodName != 'get_cfg' && methodName != 'logout') {
+                this.__pending = { methodName : methodName, data : data, handler : handler };
+            }
             req.addListener("statusError", function(e) {
                 var req = e.getTarget();
-                var response = req.getResponse();
-                var status = req.getStatus();
-                var statusText = req.getStatusText();
-                console.error('Rpc.callAsync('+methodName+'): status=', status, ':', statusText, ', response=', response);
-                if (response && response.error) {
-                    var params = [
-                        qx.locale.Manager.tr("Error") + ' ' + status,
-                        response.error,
-                        'error',
-                    ];
-                    if (!agrammon.Info.getInstance().getUserName()) {
-                        params.push( { msg: 'agrammon.main.logout', data: null} );
-                    }
-                    // no results
-                    if (methodName == 'get_output_variables') {
-                        qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
-                    }
-                    qx.event.message.Bus.dispatchByName('error', params);
-                }
-                else {
-                    switch (status) {
-                    case 404:
-                    case 401:
-                        new agrammon.module.user.Login(qx.locale.Manager.tr("%1: Session expired: please login again", status)).open();
-                        break;
-                    default:
-                        new agrammon.module.user.Login(qx.locale.Manager.tr("Error %1: %2 - please login again", status, statusText)).open();
-                        break;
-                    }
-                }
+                this.handleStatusError(req, methodName);
             }, this);
+            let that = this;
             req.addListener("success", function(e) {
-                var req = e.getTarget();
-                var response = req.getResponse();
-                var status = req.getStatus();
-                var statusText = req.getStatusText();
-                handler(response);
+                let p = that.__pending;
+                if (methodName == 'auth' && p) {
+                    this.debug('retrying', p.methodName);
+                    that.callAsync(p.handler, p.methodName, p.data);
+                    p = null;
+                }
+                let response = e.getTarget().getResponse();
+                try {
+                    handler(response);
+                }
+                catch(e) {
+                    if (window.console){
+                        window.console.error("Error while running CallAsync Handler: response=", response, ", method=", methodName,", e=", e);
+                    }
+                }
             }, this);
             req.send();
         },
 
-
+        handleStatusError : function(req, methodName) {
+            var response = req.getResponse();
+            var status = req.getStatus();
+            var statusText = req.getStatusText();
+            console.error('Rpc.callAsync('+methodName+'): status=', status, ':', statusText, ', response=', response);
+            if (response && response.error) {
+                var params = [
+                    qx.locale.Manager.tr("Error") + ' ' + status,
+                    response.error,
+                    'error',
+                ];
+                if (!agrammon.Info.getInstance().getUserName()) {
+                    params.push( { msg: 'agrammon.main.logout', data: null} );
+                }
+                // no results
+                if (methodName == 'get_output_variables') {
+                    qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
+                }
+                qx.event.message.Bus.dispatchByName('error', params);
+            }
+            else {
+                let retry = true;
+                let sudo  = null;
+                let title;
+                switch (status) {
+                case 404:
+                case 401:
+                    title = qx.locale.Manager.tr("%1: Session expired: please login again", status);
+                    break;
+                default:
+                    title = qx.locale.Manager.tr("Error %1: %2 - please login again", status, statusText);
+                    break;
+                }
+                new agrammon.module.user.Login(title, sudo, retry).open();
+            }
+        },
 
         /* A variant of the asyncCall method which pops up error messages
          * generated by the server automatically.

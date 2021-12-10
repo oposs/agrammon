@@ -451,8 +451,11 @@ qx.Class.define('agrammon.module.input.PropTable', {
             var row   = this.__propertyEditor.getFocusedRow();
             var col   = this.__propertyEditor.getFocusedColumn();
             var tm    = this.__propertyEditor.getTableModel();
-            var val   = tm.getValue(col,row);
             var nrows = tm.getRowCount();
+            if (row >= nrows) {
+                return;
+            }
+            var val = tm.getValue(col,row);
             // jump over flattened and branched variables, handling table ends
             var dir;
             while (val == 'flattened' || val == 'branched') {

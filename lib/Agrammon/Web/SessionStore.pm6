@@ -12,7 +12,7 @@ class Agrammon::Web::SessionStore does Cro::HTTP::Session::Pg[Agrammon::Web::Ses
                 id-column => 'session_id',
                 state-column => 'session_state',
                 expiration-column => 'session_expiration',
-                :duration(Duration.new(60 #`(minutes) * 60)),
+                :duration(Duration.new(120 #`(minutes) * 60)),
     }
 
     method serialize(Agrammon::Web::SessionUser $s) {
