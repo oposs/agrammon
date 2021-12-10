@@ -20,6 +20,9 @@ qx.Class.define('agrammon.module.output.Output', {
         this.__rpc  = agrammon.io.remote.Rpc.getInstance();
         this.__reference = reference;
 
+        qx.core.Id.getInstance().register(this, "Output");
+        this.setQxObjectId("Output");
+
         this.outputIsValid = false;
 
         if (reference) {

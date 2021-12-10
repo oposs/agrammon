@@ -31,16 +31,15 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
 
         var datasetTool =
             new agrammon.module.dataset.DatasetTool(this.tr("Datasets of")
-                                          + ' ' + username);
+                                                    + ' ' + username);
         // new
         var newCommand = new qx.ui.command.Command();
         newCommand.addListener("execute", function(e) {
-//            this.debug('newcommand: this='+this+', that='+ that +', self='+self+', e='+e.getData());
             var datasetTable = e.getData();
             var dialog;
             var okFunction = qx.lang.Function.bind(function(self) {
                 var newDatasetName = ''+self.nameField.getValue();
-//                this.debug('newcommand/okFunction: this='+this+', self='+self);
+                this.debug('newcommand/okFunction: this='+this+', self='+self);
                 if (self.getDatasetCache().datasetExists(newDatasetName)) {
                     qx.event.message.Bus.dispatchByName('error',
                             [ this.tr("Error"),
@@ -71,26 +70,28 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
                     //         or via msg bus from datasettool(s)
                     var connect = this.getCommand != undefined;
                     this.debug('connect='+connect);
-                    qx.event.message.Bus.dispatchByName('agrammon.FileMenu.createDataset',
-                                                  { dataset: newDatasetName,
-                                                    connect: connect});
+                    qx.event.message.Bus.dispatchByName(
+                        'agrammon.FileMenu.createDataset',
+                        { dataset: newDatasetName, connect: connect }
+                    );
                 }
                 self.close();
                 return;
             }, datasetTable);
 
-            dialog =
-                new agrammon.module.dataset.DatasetCreate(this.tr("Creating new dataset"),
-                                                          this.tr("New dataset name"),
-                                                          okFunction);
+            dialog = new agrammon.module.dataset.DatasetCreate(
+                this.tr("Creating new dataset"),
+                this.tr("New dataset name"),
+                okFunction
+            );
+//            this.addOwnedQxObject(dialog, "CreateDatasetWindow");
             dialog.open();
             return;
         }, this);
         this.__newCommand = newCommand;
 
         var newButton =
-            new qx.ui.menu.Button(this.tr("Create new dataset"),
-                                  null, newCommand);
+            new qx.ui.menu.Button(this.tr("Create new dataset"), null, newCommand);
 
         // connect
         var connectCommand = new qx.ui.command.Command();
@@ -170,13 +171,27 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
 
         // logout
         var logoutCommand = new qx.ui.command.Command();
-        logoutCommand.addListener("execute",
-            function(e) {
-                qx.event.message.Bus.dispatchByName('agrammon.main.logout');
-         }, this);
+        logoutCommand.addListener("execute", function(e) {
+            qx.event.message.Bus.dispatchByName('agrammon.main.logout');
+        }, this);
         var logoutButton =
-            new qx.ui.menu.Button(this.tr("Logout"),
-                                  null, logoutCommand);
+            new qx.ui.menu.Button(this.tr("Logout"), null, logoutCommand);
+        logoutButton.addListener("execute", function(e) {
+            qx.event.message.Bus.dispatchByName('agrammon.main.logout');
+        }, this);
+
+        // qxObjectIds for testing
+        this.addListenerOnce('appear', () => {
+            this.addOwnedQxObject(newButton, "NewDatasetButton");
+            this.addOwnedQxObject(cloneButton, "CloneDatasetButton");
+            this.addOwnedQxObject(setReferenceButton, "SetReferenceButton");
+            this.addOwnedQxObject(clearReferenceButton, "ClearReferenceButton");
+            this.addOwnedQxObject(manageButton, "ManageDatasetsButton");
+            this.addOwnedQxObject(logoutButton, "LogoutButton");
+            this.debug('fileMenuID=', qx.core.Id.getAbsoluteIdOf(this));
+            this.debug('logoutButtonID=', qx.core.Id.getAbsoluteIdOf(newButton));
+            this.debug('logoutButtonID=', qx.core.Id.getAbsoluteIdOf(logoutButton));
+        }, this);
 
         this.add(newButton);
         this.add(connectButton);
@@ -205,7 +220,7 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
         },
 
         __openNew: function(msg) {
-//            this.debug('__openNew(): msg='+msg.getData());
+            this.debug('__openNew(): msg='+msg.getData());
             this.__newCommand.execute(msg.getData());
         },
 

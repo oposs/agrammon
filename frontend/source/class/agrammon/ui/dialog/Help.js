@@ -44,7 +44,6 @@ qx.Class.define('agrammon.ui.dialog.Help', {
         help.setAllowStretchX(true);
         help.setAllowGrowY(true);
 
-//        scrollBox.add(help, {flex: 1});
         scrollBox.add(help);
         this.add(scrollBox, {flex: 1});
 
@@ -86,7 +85,6 @@ qx.Class.define('agrammon.ui.dialog.Help', {
         });
     },
 
-    members :
-    {
+    members : {
     }
 });

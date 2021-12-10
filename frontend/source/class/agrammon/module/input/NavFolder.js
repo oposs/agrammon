@@ -67,6 +67,12 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         __childrenHash: null,
         __instanceOrder: null,
 
+        destruct : function() {
+            this.__propData = null;
+            this._disposeMap(this.__childrenHash);
+            this.__childrenHash = null;
+        },
+
         addData: function(newData) {
             this.__propData.push(newData);
             this.isComplete();

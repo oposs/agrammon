@@ -25,6 +25,9 @@
     "@qooxdoo/framework": "^6.0.0",
     "@qooxdoo/compiler": "^1.0.0",
     "johnspackman/UploadMgr": "^1.0.5",
-    "maettu/qx-showdown": "^1.8.7"
+    "maettu/qx-showdown": "^1.8.7",
+    "qooxdoo/qxl.testtapper": "^0.5.4",
+    "ITISFoundation/qx-iconfont-material": "^0.1.7",
+    "ITISFoundation/qx-iconfont-fontawesome5": "^0.2.2"
   }
 }

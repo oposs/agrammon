@@ -16,6 +16,8 @@ qx.Class.define('agrammon.ui.dialog.Confirm', {
     construct: function (title, label, execFunc, context, infoOnly) {
         this.base(arguments);
         this.setLayout(new qx.ui.layout.VBox(10));
+        qx.core.Id.getInstance().register(this, "Confirm");
+        this.setQxObjectId("Confirm");
 
         // qx.locale.Manager.getInstance().addListener("changeLocale",
         //                                                 this._update, this);
@@ -56,6 +58,10 @@ qx.Class.define('agrammon.ui.dialog.Confirm', {
         buttonRow.add(btnOK);
         this.add(buttonRow);
 
+        this.addListener('disappear', () => {
+            this.destroy();
+        }, this);
+
         this.addListener('appear', function() {
             if (!infoOnly) {
                 btnCancel.focus();
@@ -65,7 +71,18 @@ qx.Class.define('agrammon.ui.dialog.Confirm', {
             }
         }, this);
 
-        this.addListenerOnce("resize", this.center, this);
+        this.addListenerOnce("appear", () => {
+            this.addOwnedQxObject(btnOK, "OkButton");
+            this.addOwnedQxObject(btnCancel, "CancelButton");
+            this.debug('ConfirmDialogID=', qx.core.Id.getAbsoluteIdOf(this));
+            this.debug('ConfirmOkButtonID=', qx.core.Id.getAbsoluteIdOf(btnOK));
+            this.debug('ConfirmCancelButtonID=', qx.core.Id.getAbsoluteIdOf(btnCancel));
+        }, this);
+
+        this.addListenerOnce("resize", () => {
+            this.center();
+        }, this);
+
         this.open();
     }, // construct
 

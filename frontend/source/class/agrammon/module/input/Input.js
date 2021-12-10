@@ -12,6 +12,9 @@ qx.Class.define('agrammon.module.input.Input', {
                   backgroundColor: 'white',
                   padding: 0
                  });
+        qx.core.Id.getInstance().register(this, "Input");
+        this.setQxObjectId("Input");
+        this.addOwnedQxObject(propEditor, "PropEditor");
 
         qx.event.message.Bus.subscribe('agrammon.inputEnabled',
                                         this.__Enabled, this);

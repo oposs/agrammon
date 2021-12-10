@@ -10,6 +10,8 @@ qx.Class.define( 'agrammon.Info',
 
     construct: function () {
         this.base(arguments);
+        qx.core.Id.getInstance().register(this, "Info");
+        this.setQxObjectId("Info");
         this.setLayout(new qx.ui.layout.VBox());
         // qx.locale.Manager.getInstance().addListener("changeLocale",
         //                                                 this._update, this);
@@ -28,10 +30,13 @@ qx.Class.define( 'agrammon.Info',
 
         this.__datasetLabel =
             new agrammon.ui.form.LabelValue(this.tr("Dataset"+': '),'-');
+        this.addOwnedQxObject(this.__datasetLabel, "Dataset");
         this.__userLabel =
             new agrammon.ui.form.LabelValue(this.tr("User"+': '),'-');
+        this.addOwnedQxObject(this.__userLabel, "User");
         this.__refDatasetLabel =
             new agrammon.ui.form.LabelValue(this.tr("Reference"+': '),'-');
+        this.addOwnedQxObject(this.__refDatasetLabel, "Reference");
         var labelBox      =
             new qx.ui.container.Composite(new qx.ui.layout.VBox());
         var datasetRow    =

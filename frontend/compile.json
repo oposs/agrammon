@@ -25,12 +25,56 @@
       "qx.icontheme": "Tango"
   },
   "applications": [
+//     {
+//       "class": "qxl.testtapper.Application",
+//       "name": "testtapper",
+//       "theme": "qx.theme.Indigo",
+//       "title": "Qooxdoo TestTAPper",
+//       "environment": {
+//         "qx.icontheme": "Tango",
+// //        "qx.test.delay.scale" : 1000,
+//         "testtapper.testNameSpace": "agrammon.test"
+//       },
+//       "include": [
+//         "agrammon.test.*",
+//         "qx.*",
+//         "iconfont.fontawesome5.Load",
+//         "iconfont.material.Load"
+//       ],
+//       "exclude": [
+//         "qx.test.*",
+//         "qx.module.Blocker",
+//         "qx.module.Placement"
+//       ]
+//     },
     {
       "name": "agrammon",
       "title": "Agrammon",
       "class": "agrammon.Application",
-       "theme": "qx.theme.Indigo",
+      "theme": "qx.theme.Indigo",
       "bootPath": "source/boot"
-    }
+    },
+    {
+      "class": "qxl.testtapper.Application",
+      "name": "testtapper",
+      "theme": "qx.theme.Indigo",
+      "title": "Qooxdoo TestTAPper",
+      "environment": {
+        "qx.icontheme": "Tango",
+//        "qx.test.delay.scale" : 1000,
+        "testtapper.testNameSpace": "agrammon.test"
+      },
+      "include": [
+        "agrammon.test.*",
+        "qx.*",
+        "iconfont.fontawesome5.Load",
+        "iconfont.material.Load"
+      ],
+      "exclude": [
+        "qx.test.*",
+        "qx.module.Blocker",
+        "qx.module.Placement"
+      ]
+    }    
   ]
 }

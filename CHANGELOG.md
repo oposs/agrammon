@@ -1,5 +1,11 @@
 # Agrammon Change Log
 
+- 6.1.2, 2021-12-09, fritz.zaucker@oetiker.ch
+
+  - fix handling of demo datasets
+  - fix re-login on expired session
+  - instrument frontend for GUI testing
+
 - 6.1.1, 2021-09-13, fritz.zaucker@oetiker.ch
 
   - add web gui handling of default_formula
