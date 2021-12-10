@@ -157,6 +157,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
     has Int  $.id;
     has Str  $.name;
     has Bool $.read-only;
+    has Bool $.is-demo;
     has Str  $.model;
     has Str  $.comment;
     has Int  $.records; # this is set in Agrammon::DB::Datasets.load

@@ -21,6 +21,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
       */
     construct: function (title) {
         this.base(arguments);
+        qx.core.Id.getInstance().register(this, "Datasets");
+        this.setQxObjectId("Datasets");
         this.__info = agrammon.Info.getInstance();
         this.__rpc  = agrammon.io.remote.Rpc.getInstance();
 
@@ -44,6 +46,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
         this.__datasetCache = agrammon.module.dataset.DatasetCache.getInstance();
 
         var datasetTable = this.__datasetTable = agrammon.module.dataset.DatasetTable.getInstance();
+        this.addOwnedQxObject(datasetTable, "DatasetTable");
 
         // might not work in manage dataset mode because updateView
         // is called on datasetTable from availableTagsSelected handler
@@ -52,12 +55,14 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
         var datasetTm = datasetTable.getTableModel();
         var activeTagsTable = this.__activeTagsTable =
             new agrammon.module.dataset.TagTable(this.tr("Active tags"));
+        this.addOwnedQxObject(datasetTable, "ActiveTagsTable");
         var activeTagsTm  = activeTagsTable.getTableModel();
         this.__activeTags = [];
         activeTagsTm.setData(this.__activeTags);
 
         var availableTagsTable = this.__availableTagsTable =
             new agrammon.module.dataset.TagTable(this.tr("Available tags"));
+        this.addOwnedQxObject(datasetTable, "AvailableTagsTable");
         var availableTagsTm  = availableTagsTable.getTableModel();
         this.__availableTags = [];
         availableTagsTm.setData(this.__availableTags);
@@ -108,12 +113,12 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
 
                         // collect all tags of the selected datasets into the tag hash and count them
                         for (t=0; t<nDatasetTags; t++) {
-			                if (tags[datasetTags[t]]) {
-			                    tags[datasetTags[t]]++;
-			                }
-			                else {
- 			                    tags[datasetTags[t]]=1;
-			                }
+                                        if (tags[datasetTags[t]]) {
+                                            tags[datasetTags[t]]++;
+                                        }
+                                        else {
+                                            tags[datasetTags[t]]=1;
+                                        }
                         } // t loop
                     } // if (datasetTags)
                 }     // s loop
@@ -122,21 +127,21 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
             // tags hash now holds the number of occurrences of each tag
             var filter = {};
             var nActiveTags = 0;
-	        for (t in tags) {
- 	            if (tags[t] == nDatasets) { // tag is assigned to each selected dataset
-		            that.__activeTags.push([ t ]);
+                for (t in tags) {
+                    if (tags[t] == nDatasets) { // tag is assigned to each selected dataset
+                            that.__activeTags.push([ t ]);
                     filter[t] = true;
                     nActiveTags++;
                     delete tags[t]; // remove this element from hash
-	            }
-	        }
+                    }
+                }
 
             this.enableButtons(nDatasets, nReadonlyDatasets);
 
             if (this.__mode != 'all') {
                 return;
             }
-	        activeTagsTm.setData([]);
+                activeTagsTm.setData([]);
             availableTagsTable.setFilter(filter);
             if (nActiveTags > 0) {
                 activeTagsTm.addRows(that.__activeTags);
@@ -178,12 +183,12 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                 this.__btnRename.setEnabled(false);
             }
 
-	        if (this.__mode == 'all') { // no dataset filtering in manage mode
+                if (this.__mode == 'all') { // no dataset filtering in manage mode
                 availableTagsTable.getSelectionModel().addListener(
                     "changeSelection", availableTagsSelected_func, this
                 );
-	            return;
-	        }
+                    return;
+                }
 
             var n = 0;
             var i, ii, min, max;
@@ -307,30 +312,30 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
         this.__remove_tag_func = remove_tag_func;
 
         var tagAdd_func = function() {
-	        var datasetSelections = datasetTable.getSelectionModel().getSelectedRanges();
-	        var slen = datasetSelections.length;
-  	        if (slen<1) { // no datasets selected
-	            return;
-	        }
- 	        var i, ii, min, max, ds;
+                var datasetSelections = datasetTable.getSelectionModel().getSelectedRanges();
+                var slen = datasetSelections.length;
+                if (slen<1) { // no datasets selected
+                    return;
+                }
+                var i, ii, min, max, ds;
 
             // find datasets selected
-	        var datasets = [];
+            var datasets = [];
             for (i=0; i<slen; i++) {
                 min = datasetSelections[i]['minIndex'];
                 max = datasetSelections[i]['maxIndex'];
                 for (ii = min; ii<=max; ii++) {
                     ds = datasetTm.getValue(0,ii, 1) ;
-		            datasets.push(ds);
+                    datasets.push(ds);
                 }
             }
-  	        if (datasets.length < 1) { // nothing to do
-	            return;
-	        }
+            if (datasets.length < 1) { // nothing to do
+                return;
+            }
 
             var tag;
-	        var tagSelections = availableTagsTable.getSelectionModel().getSelectedRanges();
-	        var tlen = tagSelections.length;
+            var tagSelections = availableTagsTable.getSelectionModel().getSelectedRanges();
+            var tlen = tagSelections.length;
 
             for (i=tlen-1; i>=0; i--) {
                 min = tagSelections[i]['minIndex'];
@@ -343,7 +348,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         { datasets: datasets, tagName: tag }
                     );
                     availableTagsTable.addToFilter(tag, true);
-  	                activeTagsTm.addRows([[ tag ]]);
+                        activeTagsTm.addRows([[ tag ]]);
                     datasetTable.addTag(datasets, tag);
                 }
             }
@@ -353,30 +358,30 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
 
 
         var tagRemove_func = function() {
-	        var datasetSelections = datasetTable.getSelectionModel().getSelectedRanges();
-	        var slen = datasetSelections.length;
-  	        if (slen<1) { // no datasets selected
-	            return;
-	        }
- 	        var i, ii, min, max, ds;
+            var datasetSelections = datasetTable.getSelectionModel().getSelectedRanges();
+            var slen = datasetSelections.length;
+            if (slen<1) { // no datasets selected
+                return;
+            }
+            var i, ii, min, max, ds;
 
             // find datasets selected
-	        var datasets = [];
+            var datasets = [];
             for (i=0; i<slen; i++) {
                 min = datasetSelections[i]['minIndex'];
                 max = datasetSelections[i]['maxIndex'];
                 for (ii = min; ii<=max; ii++) {
                     ds = datasetTm.getValue(0,ii, 1) ;
-		            datasets.push(ds);
+                            datasets.push(ds);
                 }
             }
-  	        if (datasets.length < 1) { // nothing to do
-	            return;
-	        }
+            if (datasets.length < 1) { // nothing to do
+                return;
+            }
 
             var tag;
-	        var tagSelections = activeTagsTable.getSelectionModel().getSelectedRanges();
-	        var tlen = tagSelections.length;
+            var tagSelections = activeTagsTable.getSelectionModel().getSelectedRanges();
+            var tlen = tagSelections.length;
 
             // move backwards through selection to remove correct rows
             for (i=tlen-1; i>=0; i--) {
@@ -390,7 +395,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         { datasets: datasets, tagName: tag }
                     );
                     availableTagsTable.removeFromFilter(tag);
- 	                activeTagsTm.removeRows(ii,1);
+                        activeTagsTm.removeRows(ii,1);
                     datasetTable.removeTag(datasets, tag);
                 }
             }
@@ -420,6 +425,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
 
         var btnCancel = new qx.ui.form.Button(this.tr("Close"),
                                               "icon/16/actions/window-close.png");
+        this.addOwnedQxObject(btnCancel, "CloseButton");
         btnCancel.addListener("execute", function(e) {
             this.__lastDatasetFilter = {'*all*' : true};
             this.close();
@@ -471,13 +477,20 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
         this.__btnRemove.addListener("execute", tagRemove_func, this);
         this.__btnRemove.setEnabled(false);
 
+        this.addOwnedQxObject(this.__btnAdd, "NewButton");
+        this.addOwnedQxObject(this.__btnRemove, "DeleteButton");
+        this.addOwnedQxObject(this.__btnCopy, "CopyButton");
+        this.addOwnedQxObject(this.__btnOpen, "OpenButton");
+        this.addOwnedQxObject(this.__btnSetReference, "SetReferenceButton");
+        this.addOwnedQxObject(this.__btnClearReference, "ClearReferenceButton");
+
         btnBox.add(new qx.ui.core.Spacer(1,60));
         btnBox.add(this.__btnAdd, {flex:1});
         btnBox.add(this.__btnRemove, {flex:1});
         btnBox.add(new qx.ui.core.Spacer(1,10));
         btnBox.exclude();
 
-	    splitpane.add(tagColumn, 1);
+        splitpane.add(tagColumn, 1);
         if (this.__advancedMode) {
             if (this.__mode == 'all') {
                 this.setWidth(this.__ALLWITHTAGS); // larger
@@ -497,18 +510,17 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
             tagColumn.exclude();
         }
 
-	    splitpane.add(datasetColumn, 3);
+        splitpane.add(datasetColumn, 3);
         this.add(splitpane, {flex: 1});
         this.add(this.__buttonRow);
 
         this.__setDatasets = function() {
             // used for datasetFilter
             that.__datasets = this.__datasetCache.getDatasets();
-		    var len = that.__datasets.length;
-		    if (len<1) return;
+            var len = that.__datasets.length;
+            if (len<1) return;
 
-            this.__clearDatasets();
-            datasetTm.addRows(that.__datasets);
+            datasetTm.setData(that.__datasets);
             datasetTable.getSelectionModel().resetSelection();
             datasetTable.updateView();
         };
@@ -521,16 +533,16 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
 
         this.__setTags = function() {
             var data = this.__datasetCache.getTags();
-	        var len = data.length;
-    		if (len<1) {
-		        return;
-		    }
-  	        var i, rec;
-  	        that.__availableTags = [];
-  	        for (i=0; i<len; i++) {
-		        rec = [ data[i] ];
-  		        that.__availableTags.push(rec);
-	        }
+                var len = data.length;
+                if (len<1) {
+                        return;
+                    }
+                var i, rec;
+                that.__availableTags = [];
+                for (i=0; i<len; i++) {
+                        rec = [ data[i] ];
+                        that.__availableTags.push(rec);
+                }
             availableTagsTm.setData(that.__availableTags);
             availableTagsTable.updateView();
         }; // this.__setTags()
@@ -568,6 +580,10 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                 this.setMaxHeight(height);
         }, this);
 
+        this.addListenerOnce('appear', () => {
+            this.debug('datasetToolWindowID=', qx.core.Id.getAbsoluteIdOf(this));
+            this.debug('datasetTableID=', qx.core.Id.getAbsoluteIdOf(datasetTable));
+        }, this);
 
     }, // construct
 
@@ -885,7 +901,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
           * TODOC
           *
           * @return {var} TODOC
-	  * @lint ignoreDeprecated(alert)
+          * @lint ignoreDeprecated(alert)
           */
          __delete_tag_func: function(data,exc,id) {
             if (exc) {
@@ -897,7 +913,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
           * TODOC
           *
           * @return {var} TODOC
-	      * @lint ignoreDeprecated(alert)
+              * @lint ignoreDeprecated(alert)
           */
          __rename_tag_func: function(data,exc,id) {
             if (exc) {
@@ -953,7 +969,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                             oldName: tag_old,
                             newName: tag_new
                         }
-    			    );
+                            );
                     self.close();
                 }, this);
                 dialog = new agrammon.ui.dialog.Dialog(
@@ -979,9 +995,9 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                     }
                     // FIX ME: should be added by async handler
                     this.__datasetCache.newTag(tag);
-      	            tm.addRows([[ tag ]]);
+                    tm.addRows([[ tag ]]);
                     this.__availableTagsTable.updateView();
-        		    tm.sortByColumn(0, true);
+                            tm.sortByColumn(0, true);
                     this.__rpc.callAsync(
                         qx.lang.Function.bind(function(data, exc, id) {
                             if (exc != null) {
@@ -990,7 +1006,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         }, this),
                         'create_tag',
                         { name : tag }
-    			    );
+                            );
                     self.close();
                 }, this);
                 var dialog = new agrammon.ui.dialog.Dialog(
@@ -1022,7 +1038,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                             this.__datasetCache.delTag(tag);
                             this.debug('Going to remove line ' + ii);
                             this.__availableTagsTable.getSelectionModel().resetSelection();
-  	                        availableTagsTm.removeRows(ii,1,1);
+                                availableTagsTm.removeRows(ii,1,1);
                             this.debug('Line ' + ii +' removed');
                         }
                     }
@@ -1033,8 +1049,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         this.__activeTagsTable.delTag(tags[tag]);
                         this.__rpc.callAsync( qx.lang.Function.bind(this.__delete_tag_func,this),
                                               'delete_tag', { name : tags[tag] }
-   			                                );
-     	            }
+                                                        );
+                    }
                     self.close();
                 }, this);
                 if (slen>0) {
@@ -1050,8 +1066,8 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
         },
 
         __changeLanguage: function() {
-	        var username = agrammon.Info.getInstance().getUserName();
-	        this.setCaption( this.tr("Datasets of %1", username));
+                var username = agrammon.Info.getInstance().getUserName();
+                this.setCaption( this.tr("Datasets of %1", username));
         } // __changeLanguage
     }
 });

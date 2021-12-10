@@ -16,6 +16,8 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
 
     construct: function (title, prompt, callBack) {
         this.base(arguments);
+        qx.core.Id.getInstance().register(this, "DatasetCreate");
+        this.setQxObjectId("DatasetCreate");
         var maxHeight = qx.bom.Document.getHeight() - 20;
         this.set({
             layout: new qx.ui.layout.VBox(5),
@@ -44,13 +46,13 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
             new agrammon.ui.form.VarInput(null, null,null,
                                      this.tr("Incremental filter on dataset name"),
                                      this.tr("Filter on dataset name"), false);
-        datasetFilter.addListener('input', function(e) {
+        datasetFilter.addListener('input', (e) => {
               this.__searchFilter = e.getData().toLowerCase();
               this.__searchTimer.restart();
-          }, this);
+        }, this);
 
         this.__searchTimer = new qx.event.Timer(this.__searchTimeout);
-        this.__searchTimer.addListener('interval', function(e) {
+        this.__searchTimer.addListener('interval', (e) => {
             this.debug('timer fired, searchFilter='+ this.__searchFilter);
             this.__searchTimer.stop();
             this.__table.updateView();
@@ -63,6 +65,9 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
         this.__table.setMargin(0,10,0,10);
         this.add(this.__table, {flex: 1});
 
+        var btnCancel = new qx.ui.form.Button(this.tr("Close"), "icon/16/actions/window-close.png");
+        btnCancel.addListener("execute", this.close, this);
+
         var nameBox = new qx.ui.container.Composite(new qx.ui.layout.HBox().set({alignY: 'middle'}));
 
         var nameLabel =
@@ -72,16 +77,11 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
         var nameField = new qx.ui.form.TextField();
         this.nameField = nameField;
         nameBox.add(nameField);
-        this.addListener('appear', function() {
+        this.addListener('appear', () => {
             nameField.focus();
+            this.updateView();
         }, this);
 
-
-        var btnCancel = new qx.ui.form.Button(this.tr("Close"),
-                                              "icon/16/actions/window-close.png");
-        btnCancel.addListener("execute", function(e) {
-            this.close();
-        }, this);
         this.__buttonRow =
             new qx.ui.container.Composite(new qx.ui.layout.HBox(10,'right'));
         this.__buttonRow.setPadding(5,10,0,10);
@@ -89,6 +89,16 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
         this.__btnNew = new qx.ui.form.Button(this.tr("Create"), "");
         this.__btnNew.addListener("execute", function(e) {
             callBack(this);
+        }, this);
+
+        this.addListenerOnce('appear', () => {
+            this.addOwnedQxObject(nameField, "DatasetName");
+            this.addOwnedQxObject(this.__btnNew, "CreateButton");
+            this.addOwnedQxObject(btnCancel, "CancelButton");
+            this.debug('datasetCreateWindowID=', qx.core.Id.getAbsoluteIdOf(this));
+            this.debug('createButtonID=', qx.core.Id.getAbsoluteIdOf(this.__btnNew));
+            this.debug('cancelButtonID=', qx.core.Id.getAbsoluteIdOf(btnCancel));
+            this.debug('datasetNameFieldID=', qx.core.Id.getAbsoluteIdOf(nameField));
         }, this);
 
         this.__buttonRow.add(nameBox);
@@ -100,25 +110,11 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
 
         this.__datasetCache = agrammon.module.dataset.DatasetCache.getInstance();
         this.__setDatasets = function() {
-            // used for datasetFilter
-            that.__datasets = this.__datasetCache.getDatasets();
-		    var len = that.__datasets.length;
-            that.debug('__setDatasets(): len='+len);
-		    if (len<1) {
-                //		        alert('No existing datasets in database yet.');
-			    return;
-		    }
-            var datasetTable = that.__table;
-            var datasetTm = datasetTable.getTableModel();
-            datasetTm.setData([[]]);
-            datasetTm.addRows(that.__datasets);
-            datasetTable.getSelectionModel().resetSelection();
-            datasetTable.resetCellFocus();
             this.updateView();
-        }; // this.__setDatasets()
+        };
+
         this.__btnNew.setEnabled(false);
-        this.__table.getSelectionModel().addListener("changeSelection",
-                                                     function(e) {
+        this.__table.getSelectionModel().addListener("changeSelection", (e) => {
             var selections =
                 this.__table.getSelectionModel().getSelectedRanges().length;
                 if (selections > 0 ||  this.nameField.getValue() ) {
@@ -130,8 +126,7 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
                 }
         }, this);
 
-        this.nameField.addListener("input",
-                                   function(e) {
+        this.nameField.addListener("input", (e) => {
             var selections =
                 this.__table.getSelectionModel().getSelectedRanges().length;
                 if (selections > 0 ||  this.nameField.getValue() ) {
@@ -147,8 +142,7 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
         this.addListener("resize", this.center, this);
 
         // resize window if browser window size changes
-        qx.core.Init.getApplication().getRoot().addListener("resize",
-                                                            function () {
+        qx.core.Init.getApplication().getRoot().addListener("resize", () => {
             var height = qx.bom.Document.getHeight() - 20;
             this.setMaxHeight(height);
         }, this);
@@ -194,18 +188,20 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
             }
         },
 
-       updateView: function() {
+        updateView: function() {
             let tm = this.__table.getTableModel();
             let data = this.__datasetCache.getDatasets();
             if (data == null) return;
 
             let searchFilter = this.__searchFilter;
             tm.setData(data.filter(function(row) {
-                    if ( !row[0] || !row[8]) return false;
-                    if (!searchFilter) return true;
-                    return qx.lang.String.contains(row[0].toLowerCase(), searchFilter);
-                })
-            );
+                // not is-demo
+                if (!row[8]) return false;
+                // search filter is empty
+                if (!searchFilter) return true;
+                // match search filter
+                return qx.lang.String.contains(row[0].toLowerCase(), searchFilter);
+            }));
         },
 
         __createTable: function() {

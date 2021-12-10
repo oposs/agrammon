@@ -47,8 +47,8 @@ sub static-content($root) is export {
             get -> 'index.html' {
                 static "$root/agrammon/index.html"
             }
-            get -> 'index.js' {
-                static "$root/agrammon/index.js"
+            get -> 'agrammon', *@path {
+                static "$root/agrammon", @path
             }
             get -> 'favicon.ico' {
                 static "$root/resource/agrammon/favicon.ico"
@@ -95,7 +95,6 @@ sub static-content($root) is export {
         }
 
         get -> 'doc', *$path {
-            dd $path;
             static "share/doc/$path"
         }
 
@@ -405,8 +404,8 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
     route {
         # working
         post -> LoggedIn $user, 'get_datasets' {
-            my $data = $ws.get-datasets($user, $ws.cfg.agrammon-variant);
-            content 'application/json', $data;
+            my @data := $ws.get-datasets($user, $ws.cfg.agrammon-variant);
+            content 'application/json', @data;
         }
 
         # working
