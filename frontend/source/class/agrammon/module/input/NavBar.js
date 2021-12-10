@@ -48,6 +48,12 @@ qx.Class.define('agrammon.module.input.NavBar', {
         this.__propEditor = propEditor;
         this.__navHash    = new Object;
         this.__navTree    = new qx.ui.tree.Tree('Agrammon','agrammon/nh3.png');
+        this.__navFolders = new Array;
+
+        qx.core.Id.getInstance().register(this, "NavBar");
+        this.setQxObjectId("NavBar");
+        this.addOwnedQxObject(this.__navTree, "Tree");
+
         this.__navTree.set({backgroundColor:'white',
                           padding:0,
                           width:200,
@@ -368,7 +374,8 @@ qx.Class.define('agrammon.module.input.NavBar', {
          __navHash:    null,
          __propEditor: null,
          __rootFolder: null,
-         __sibblings:  null,
+        __sibblings:   null,
+        __navFolders:  null,
 
      /**
        * TODOC
@@ -813,7 +820,13 @@ qx.Class.define('agrammon.module.input.NavBar', {
         __clearTree: function() {
             this.__propEditor.clear();
             this.__rootFolder.removeAll();
-
+            // we need to get rid of previously registered qxObjectIds on
+            // NavBar recreation when loading a dataset
+            this.__navFolders.forEach(navFolder => {
+                this.removeOwnedQxObject(navFolder);
+                navFolder.destroy();
+            });
+            this.__navFolders = new Array;
             this.__navHash = new Object;
             var rootEntry = new Object;
             rootEntry['folder'] = this.__rootFolder;
@@ -1037,7 +1050,14 @@ qx.Class.define('agrammon.module.input.NavBar', {
         },
 
         __createNavFolder: function(labels, type, data, name, instanceOrder) {
-            return new agrammon.module.input.NavFolder(labels, type, data, name, instanceOrder);
+            let folder = new agrammon.module.input.NavFolder(labels, type, data, name, instanceOrder);
+            this.addOwnedQxObject(folder, name);
+            this.debug('NavFolderID=', qx.core.Id.getAbsoluteIdOf(folder), ', type=', type);
+            // store none-root folders for deletion upon loading a new dataset
+            if (name != 'root') {
+                this.__navFolders.push(folder);
+            }
+            return folder;
         },
 
         __addSingleInstance: function(tree) {

@@ -11,7 +11,7 @@ qx.Class.define('agrammon.module.input.PropTable', {
   * @return {var} TODOC
   * @lint ignoreDeprecated(alert)
 */
-    construct: function () {
+    construct: function (qxTableObjectId) {
         this.base(arguments);
         this.setLayout(new qx.ui.layout.VBox());
 

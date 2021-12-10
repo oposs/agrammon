@@ -10,7 +10,7 @@
 qx.Class.define('agrammon.ui.dialog.DocWindow', {
     extend: qx.ui.window.Window,
 
-    construct: function (title, url) {
+    construct: function (title, url, qxParentId) {
         this.base(arguments);
         this.setLayout(new qx.ui.layout.VBox());
 
@@ -34,6 +34,12 @@ qx.Class.define('agrammon.ui.dialog.DocWindow', {
         var btnCancel =
             new qx.ui.form.Button(this.tr("Close"),
                                   "icon/16/actions/dialog-close.png");
+        this.addListenerOnce('appear', () => {
+            this.addOwnedQxObject(btnCancel, "CloseButton");
+            this.debug('docWindowID=', qx.core.Id.getAbsoluteIdOf(this));
+            this.debug('btnCancelID=', qx.core.Id.getAbsoluteIdOf(btnCancel));
+        }, this);
+
         this.btnCancel = btnCancel;
         btnCancel.setMaxWidth(120);
 
@@ -44,7 +50,6 @@ qx.Class.define('agrammon.ui.dialog.DocWindow', {
         vBox.add(docuText);
         vBox.add(btnCancel);
 
-//        this.setIcon("icon/16/apps/utilities-text-editor.png");
         this.setIcon("icon/16/status/dialog-information.png");
 
         this.add(vBox);

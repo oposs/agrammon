@@ -24,6 +24,8 @@ qx.Class.define('agrammon.ui.dialog.Error', {
 
     construct : function() {
         this.base(arguments);
+        qx.core.Id.getInstance().register(this, "Error");
+        this.setQxObjectId("Error");
 
         this.set({
             modal          : true,
@@ -63,13 +65,26 @@ qx.Class.define('agrammon.ui.dialog.Error', {
 
         box.add(btn);
 
+        this.addListener('disappear', () => {
+            this.destroy();
+        }, this);
+
+        this.addListenerOnce("appear", () => {
+            this.addOwnedQxObject(btn, "OkButton");
+            this.debug('ErrorDialogID=', qx.core.Id.getAbsoluteIdOf(this));
+            this.debug('ErrorOkButtonID=', qx.core.Id.getAbsoluteIdOf(btn));
+        }, this);
+
+        this.addListenerOnce("resize", () => {
+            this.center();
+        }, this);
+
         qx.event.message.Bus.subscribe('error', function(m) {
             var data = m.getData();
             that.setCaption(data[0]);
             error.setLabel(data[1]);
             if (data[2] == 'info') {
                 error.setIcon(null);
-//                that.setModal(false);
             }
             else {
                 error.setIcon('icon/32/status/dialog-error.png');

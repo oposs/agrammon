@@ -7,6 +7,8 @@ qx.Class.define('agrammon.ui.menu.MainMenu', {
 
     construct: function (inputOutput, title, editMenu) {
         this.base(arguments);
+        qx.core.Id.getInstance().register(this, "Menu");
+        this.setQxObjectId("Menu");
         this.__title = title;
 
         qx.locale.Manager.getInstance().addListener("changeLocale",
@@ -20,7 +22,9 @@ qx.Class.define('agrammon.ui.menu.MainMenu', {
 
         var fileMenu = new agrammon.ui.menu.FileMenu();
         var fileButton =  new qx.ui.toolbar.MenuButton(this.tr("File"));
+        this.addOwnedQxObject(fileButton, "FileButton");
         fileButton.setMenu(fileMenu);
+        this.addOwnedQxObject(fileMenu, "File");
 
         var editButton = new qx.ui.toolbar.MenuButton(this.tr("Edit"));
         this.__editButton = editButton;

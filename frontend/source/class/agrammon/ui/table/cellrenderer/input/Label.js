@@ -24,7 +24,6 @@ qx.Class.define('agrammon.ui.table.cellrenderer.input.Label', {
         __colors: null,
 
         _getCellStyle : function(cellInfo) {
-          console.log('label');
             var color;
             if (cellInfo.rowData[0].match(/.+_flattened[\d]*_.+/)) { // match variable name
                 cellInfo.value = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
