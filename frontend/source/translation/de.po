@@ -42,11 +42,11 @@ msgstr "Referenz: "
 msgid "Comment on dataset"
 msgstr "Kommentar zum Datensatz"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Incremental filter on dataset name"
 msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
@@ -62,27 +62,27 @@ msgstr "Erstellen"
 msgid "Sample datasets"
 msgstr "Beispiel-Datensätze"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Last change"
 msgstr "Zuletzt geändert am"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Parameters"
 msgstr "Parameter"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Read-only"
 msgstr "schreibgeschützt"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Model Version"
 msgstr "Modell Version"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Tags"
 msgstr "Marker"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Dataset name"
 msgstr "Datensatz"
 
@@ -102,7 +102,7 @@ msgstr "Datensatz"
 msgid "datasets"
 msgstr "Datensätze"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Info"
 msgstr "Info"
 
@@ -122,7 +122,7 @@ msgstr "Empfänger der ausgewählten Datensätze"
 msgid "sent"
 msgstr "gesendet"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Rename"
 msgstr "Umbenennen"
 
@@ -138,15 +138,15 @@ msgstr "Senden"
 msgid "Send selected dataset(s) to other Agrammon user"
 msgstr "Ausgewählte Datensätze an anderen Agrammon Benutzer schicken"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "New"
 msgstr "Neu"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Create new dataset"
 msgstr "Neuen (leeren) Datensatz anlegen"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Delete"
 msgstr "Löschen"
 
@@ -154,7 +154,7 @@ msgstr "Löschen"
 msgid "Delete selected dataset(s)"
 msgstr "Ausgewählte Datensätze löschen"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Dataset"
 msgstr "Datensatz"
 
@@ -162,11 +162,11 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Error"
 msgstr "Fehler"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "already exists"
 msgstr "existiert bereits."
 
@@ -354,7 +354,7 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -678,7 +678,7 @@ msgstr "Keine Mitteilungen."
 msgid "Apply"
 msgstr "Anwenden"
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/dialog/MsgBox.js
 msgid "OK"
 msgstr "OK"
 
@@ -961,3 +961,47 @@ msgstr "Tag %1 existiert bereits"
 #: agrammon/io/remote/Rpc.js
 msgid "%1: Session expired: please login again"
 msgstr "%1: Sitzung abgelaufen, bitte neu anmelden"
+
+#: agrammon/module/dataset/DatasetTable.js
+msgid "No valid lines found in uploaded file."
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Validation error"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "The following validation errors must be resolved before approval:"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "instance"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "is mandatory"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Warning"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Some inputs must have changed while you tried to finish the module."
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Please reload the module and try again."
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "storeInput error"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "failed"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Error in communication with server"
+msgstr ""

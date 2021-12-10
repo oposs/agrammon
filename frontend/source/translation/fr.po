@@ -363,7 +363,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr "Configuration branch"
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -975,10 +975,46 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
-#. NO LONGER USED
-msgid "No valid lines found in uploaded files"
-msgstr ""
-
 #: agrammon/module/dataset/DatasetTable.js
 msgid "No valid lines found in uploaded file."
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Validation error"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "The following validation errors must be resolved before approval:"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "instance"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "is mandatory"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Warning"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Some inputs must have changed while you tried to finish the module."
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Please reload the module and try again."
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "storeInput error"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "failed"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Error in communication with server"
 msgstr ""

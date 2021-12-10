@@ -50,15 +50,15 @@ msgstr ""
 msgid "Comment on dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Incremental filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Filter on dataset name"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr ""
 
@@ -70,27 +70,27 @@ msgstr ""
 msgid "Sample datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Last change"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Parameters"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Read-only"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Model Version"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Tags"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetCreate.js
 msgid "Dataset name"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "datasets"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Info"
 msgstr ""
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "sent"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Rename"
 msgstr ""
 
@@ -146,15 +146,15 @@ msgstr ""
 msgid "Send selected dataset(s) to other Agrammon user"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "New"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Create new dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Delete"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Delete selected dataset(s)"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Dataset"
 msgstr ""
 
@@ -170,11 +170,11 @@ msgstr ""
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Error"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "already exists"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr ""
 
@@ -682,7 +682,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/dialog/MsgBox.js
 msgid "OK"
 msgstr ""
 
@@ -810,7 +810,7 @@ msgstr ""
 msgid "Password change failed, please try again."
 msgstr ""
 
-#: agrammon/ui/table/cellrenderer/input/Number.js
+#: agrammon/ui/table/cellrenderer/input/Replace.js
 msgid "Flattened"
 msgstr ""
 
@@ -968,4 +968,48 @@ msgstr ""
 
 #: agrammon/io/remote/Rpc.js
 msgid "%1: Session expired: please login again"
+msgstr ""
+
+#: agrammon/module/dataset/DatasetTable.js
+msgid "No valid lines found in uploaded file."
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Validation error"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "The following validation errors must be resolved before approval:"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "instance"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "is mandatory"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Warning"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Some inputs must have changed while you tried to finish the module."
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Please reload the module and try again."
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "storeInput error"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "failed"
+msgstr ""
+
+#: agrammon/io/remote/Rest.js
+msgid "Error in communication with server"
 msgstr ""
