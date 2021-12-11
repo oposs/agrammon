@@ -111,7 +111,7 @@ msgstr "set de données"
 msgid "datasets"
 msgstr "set de données"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Info"
 msgstr "Info"
 
@@ -171,7 +171,7 @@ msgstr "Données"
 msgid "renamed to"
 msgstr "Renommé en"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Error"
 msgstr "Erreur"
 
@@ -183,7 +183,7 @@ msgstr "existe déjà"
 msgid "Rename dataset"
 msgstr "Renommer les données"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "New name"
 msgstr "Nouveau nom"
 
@@ -279,7 +279,7 @@ msgstr "Filtrage du nom du marqueur"
 msgid "Input"
 msgstr "Entrée"
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/module/input/regional/ConfigInstance.js
 msgid "Instance name must not be empty."
 msgstr "Le nom de l'instance ne doit pas être vide."
 
@@ -299,7 +299,7 @@ msgstr "Renommer la catégorie "
 msgid "Duplicate instance "
 msgstr "Copier la catégorie "
 
-#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr "Ajouter une catégorie"
 

@@ -21,7 +21,7 @@ qx.Class.define('agrammon.ui.table.cellrenderer.input.Number', {
             let value = cellInfo.value;
             let defaultValue = (cellInfo.rowData[16] != null) ? cellInfo.rowData[16] : null;
             if (value || value == 0) {
-                if ( String(value).match(/Flattened|Select/) || value === '' || isNaN(value) ) {
+                if ( String(value).match(/Flattened|Select|Standard/) || value === '' || isNaN(value) ) {
                     return value;
                 }
                 else {
@@ -42,6 +42,7 @@ qx.Class.define('agrammon.ui.table.cellrenderer.input.Number', {
             case null:
             case undefined:
             case '':
+            case 'Standard':
                 if (cellInfo.rowData[16] != null) {
                     color = (cellInfo.row % 2 == 1 ? "#c5e1af" : "#dff1d1");
                     // mark default values

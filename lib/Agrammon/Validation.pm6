@@ -164,6 +164,11 @@ sub check-module-inputs(Agrammon::Model::Module $module, %inputs is copy, @probl
     for $module.input -> $input {
         with %inputs{$input.name}:delete -> $value {
             given $input.type {
+                when /integer|float|percent/ {
+                    return if $value eq 'Standard';
+                }
+            }
+            given $input.type {
                 when 'integer' {
                     if $value ~~ Int {
                         check-range($module, $input, $instance, $value, @problems);
