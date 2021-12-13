@@ -3,7 +3,7 @@
 ************************************************************************ */
 
 qx.Class.define('agrammon.ui.menu.MainMenu', {
-    extend: qx.ui.toolbar.ToolBar,
+    extend: qx.ui.menubar.MenuBar,
 
     construct: function (inputOutput, title, editMenu) {
         this.base(arguments);
@@ -21,28 +21,28 @@ qx.Class.define('agrammon.ui.menu.MainMenu', {
         var info = agrammon.Info.getInstance();
 
         var fileMenu = new agrammon.ui.menu.FileMenu();
-        var fileButton =  new qx.ui.toolbar.MenuButton(this.tr("File"));
+        var fileButton =  new qx.ui.menubar.Button(this.tr("File"));
         this.addOwnedQxObject(fileButton, "FileButton");
         fileButton.setMenu(fileMenu);
         this.addOwnedQxObject(fileMenu, "File");
 
-        var editButton = new qx.ui.toolbar.MenuButton(this.tr("Edit"));
+        var editButton = new qx.ui.menubar.Button(this.tr("Edit"));
         this.__editButton = editButton;
         editButton.setMenu(editMenu);
 
         var optionMenu = new agrammon.ui.menu.OptionMenu();
-        var optionButton = new qx.ui.toolbar.MenuButton(this.tr("Options"));
+        var optionButton = new qx.ui.menubar.Button(this.tr("Options"));
         optionButton.setMenu(optionMenu);
 
         var adminMenu = new agrammon.ui.menu.AdminMenu();
         this.__adminMenu = adminMenu;
-        var adminButton = new qx.ui.toolbar.MenuButton(this.tr("Admin"));
+        var adminButton = new qx.ui.menubar.Button(this.tr("Admin"));
         this.__adminButton = adminButton;
         adminButton.setMenu(adminMenu);
         this.showAdmin(false);
 
         var helpMenu = new agrammon.ui.menu.HelpMenu();
-        var helpButton = new qx.ui.toolbar.MenuButton(this.tr("Help"));
+        var helpButton = new qx.ui.menubar.Button(this.tr("Help"));
         helpButton.setMenu(helpMenu);
 
         this.__tooltip = new qx.ui.tooltip.ToolTip(

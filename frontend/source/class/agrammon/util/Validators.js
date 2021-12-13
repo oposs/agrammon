@@ -241,7 +241,7 @@ qx.Class.define("agrammon.util.Validators",
             if ( (newValue == null) || (newValue == '') ) {
                 return null;
             }
-            if (regex != undefined) {
+            if (regex != undefined && newValue != 'Standard') {
                 if (! regex.test(newValue) ) {
                     qx.event.message.Bus.dispatchByName('error',
                             [ qx.locale.Manager.tr("Invalid input"),
