@@ -60,8 +60,9 @@ sub testing-routes($root) {
 }
 
 sub static-content($root) is export {
-#    note "static: root=$root";
-    include testing-routes($root);
+    #    note "static: root=$root, source-mode=%*ENV<SOURCE_MODE>";
+    # TODO: fix include, 2021-12-13, fz
+    #    include testing-routes($root);
     route {
         if %*ENV<SOURCE_MODE> { # Qooxdoo source mode (development)
             get -> 'index.html' {
@@ -117,12 +118,6 @@ sub static-content($root) is export {
         get -> 'doc', *$path {
             static "share/doc/$path"
         }
-
-        # TODO: needs later fixing
-#        get -> 'QxJqPlot/source/resource', *@path {
-#            static $root ~ 'static/resource', @path
-#        }
-
     }
 }
 
@@ -175,9 +170,9 @@ sub frontend-api-routes (Str $schema, $ws) {
             }
         }
         operation 'cloneDataset', -> LoggedIn $user {
-            request-body -> ( :newUsername($new-username),
+            request-body -> ( :newUsername($new-username), :oldUsername($old-username),
                               :oldDataset($old-dataset), :newDataset($new-dataset)  ) {
-                $ws.clone-dataset($user, $new-username, $old-dataset, $new-dataset);
+                $ws.clone-dataset($user, $old-username, $new-username, $old-dataset, $new-dataset);
                 CATCH {
                     .note;
                     when X::Agrammon::DB::Dataset::AlreadyExists {
@@ -424,7 +419,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
     route {
         # working
         post -> LoggedIn $user, 'get_datasets' {
-            my @data := $ws.get-datasets($user, $ws.cfg.agrammon-variant);
+            my @data := $ws.get-datasets($user);
             content 'application/json', @data;
         }
 

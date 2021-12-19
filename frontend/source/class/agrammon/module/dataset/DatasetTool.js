@@ -656,14 +656,22 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                 var data = this.__datasetTable.getSelectionModel().getSelectedRanges();
                 var row = data[0]['minIndex'];
                 var oldDatasetName = this.__datasetTable.getTableModel().getValue(0,row,1);
+                var readOnly       = this.__datasetTable.getTableModel().getValue(3,row,1);
                 var dialog;
                 var okFunction = qx.lang.Function.bind(function(self) {
                     var newDatasetName = self.nameField.getValue();
-
-                    qx.event.message.Bus.dispatchByName(
-                        'agrammon.FileMenu.cloneDataset',
-                        { newDataset : newDatasetName, oldDataset : oldDatasetName }
-                    );
+                    if (readOnly) {
+                        qx.event.message.Bus.dispatchByName(
+                            'agrammon.FileMenu.copyDataset',
+                            { newDataset : newDatasetName, oldDataset : oldDatasetName }
+                        );
+                    }
+                    else {
+                        qx.event.message.Bus.dispatchByName(
+                            'agrammon.FileMenu.cloneDataset',
+                            { newDataset : newDatasetName, oldDataset : oldDatasetName }
+                        );
+                    }
                     self.close();
                     this.close();
                 }, this);

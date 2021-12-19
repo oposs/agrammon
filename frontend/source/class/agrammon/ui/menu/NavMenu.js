@@ -29,8 +29,6 @@ qx.Class.define('agrammon.ui.menu.NavMenu', {
             // doesn't really matter which of the next two I call
             var treeFolder = this.__navTree.getSelection()[0];
             this.__navBar.delInstance(treeFolder);
-            // qx.event.message.Bus.dispatchByName(
-            //     'agrammon.NavBar.deleteInstance', treeFolder);
         }, this);
 
         var renCmd  = new qx.ui.command.Command;

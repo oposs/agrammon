@@ -31,7 +31,7 @@ qx.Class.define('agrammon.module.dataset.DatasetCache', {
         this.__loading = false;
 
         qx.event.message.Bus.subscribe('agrammon.DatasetCache.refresh', function(msg) {
-            if (this.__loading) return;
+//            if (this.__loading) return;
             this.__loading = true;
             var user = msg.getData();
             qx.event.message.Bus.dispatchByName('Agrammon.datasetsLoading');

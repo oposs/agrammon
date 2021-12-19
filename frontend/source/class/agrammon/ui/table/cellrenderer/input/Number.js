@@ -29,6 +29,7 @@ qx.Class.define('agrammon.ui.table.cellrenderer.input.Number', {
                 }
             }
             else {
+                if (defaultValue == null) return '';
                 return defaultValue;
             }
         },

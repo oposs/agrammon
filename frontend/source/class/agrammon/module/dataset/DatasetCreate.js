@@ -55,8 +55,7 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
         this.__searchTimer.addListener('interval', (e) => {
             this.debug('timer fired, searchFilter='+ this.__searchFilter);
             this.__searchTimer.stop();
-            this.__table.updateView();
-
+            this.updateView();
             this.__table.resetCellFocus();
         }, this);
 

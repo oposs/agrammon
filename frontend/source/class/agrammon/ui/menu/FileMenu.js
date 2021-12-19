@@ -351,9 +351,7 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
           * @return {var} TODOC
 	  * @lint ignoreDeprecated(alert)
           */
-         __copyDatasetFunc: function(data,exc,id) {
-//            this.debug('__copyDatasetFunc() this='+this);
-
+        __copyDatasetFunc: function(data,exc,id) {
             if (exc == null) {
                 var datasetName = data;
                 var dataset = new Object;
@@ -377,12 +375,13 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
                        + ' -> ' + newUsername + '/' + newDataset);
             qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
             this.__rpc.callAsync(
-                qx.lang.Function.bind(this.__copyDatasetFunc, this),
-                                      'clone_dataset',
-			                          { 'oldUsername': oldUsername,
-                                        'oldDataset':  oldDataset,
-                                        'newUsername': newUsername,
-			                            'newDataset':  newDataset }
+                (data, exc, id) => { this.__copyDatasetFunc(newDataset, exc, id); },
+                'clone_dataset',
+		{ 'oldUsername': oldUsername,
+                  'oldDataset':  oldDataset,
+                  'newUsername': newUsername,
+		  'newDataset':  newDataset
+                }
             );
         },
 

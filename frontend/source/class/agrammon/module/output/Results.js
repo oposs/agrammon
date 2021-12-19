@@ -171,7 +171,8 @@ qx.Class.define('agrammon.module.output.Results', {
             showFilterGroups = this.resultData[this.reportIndex].type == 'reportDetailed' ? true : false;
             let reports = this.resultData[this.reportIndex].data;
 
-            let data    = this.outputData.getDataset();;
+            let data    = this.outputData.getDataset();
+            if (! data) return;
 //            let refData = this.referenceData.getDataset();
 //            if (refData == null) {
 //                this.__showReference(false);
@@ -310,7 +311,6 @@ qx.Class.define('agrammon.module.output.Results', {
             if (enable) {
                 this.debug('enable');
                 this.__outputPending++;
-                console.log('__enabled(): calling getOutput');
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
                 this.__title.setValue(this.tr("<b>Result summary</b>"));
             }

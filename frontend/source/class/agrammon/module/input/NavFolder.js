@@ -336,32 +336,27 @@ qx.Class.define('agrammon.module.input.NavFolder', {
 
             // not empty
             var complete = true;
-            var i, varName, value, metaData, defaultValue;
-            for (i=0; i<len; i++) {
-                varName = this.__propData[i].getName();
-                metaData = {};
+            for (let i=0; i<len; i++) {
+                let varName = this.__propData[i].getName();
+                let metaData = {};
                 if (!varName.match('ignore')) {
-                    value = this.__propData[i].getValue();
-                    if (    (value === undefined || value === null
-                         || value === ''
-                         || value === '*** Select ***')
-                         && this.__propData[i].getDefaultValue() == null
+                    let value = this.__propData[i].getValue();
+                    let defaultValue = this.__propData[i].getDefaultValue();
+                    if (   (!value                     && defaultValue == null)
+                           ||
+                           (value === '*** Select ***' && defaultValue === '*** Select ***')
                     ) { // incomplete
                         complete = false;
                         break; // one false is enough
                     }
                     else if (value === 'branched') {
-//                        this.debug('isComplete(): varName='+varName);
-//                        this.debug('isComplete(): value=branched');
                         metaData = this.__propData[i].getMetaData();
-//                        this.debug('isComplete(): branches='+metaData.branches);
                         if (!metaData.branches) {
                             complete = false;
                         }
                         else {
                             var total = 0;
                             for (var j=0; j<metaData.branches.length; j++) {
-//                                total += qx.util.format.NumberFormat.getInstance().parse(metaData['branches'][j]);
                                 total += metaData['branches'][j];
                             }
                             // this.debug('isComplete(): total='+total);
@@ -458,9 +453,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                                 }
                                 msg += ', should be removed from dataset.';
                                 alert(msg);
-                                qx.event.message.Bus.dispatchByName(
-                                    'agrammon.NavBar.deleteInstanceData',
-                                    this.__propData[i].getName());
+                                qx.event.message.Bus.dispatchByName('agrammon.NavBar.deleteInstanceData', this.__propData[i].getName());
                             }
                         }
                     } // selector
@@ -558,7 +551,6 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                 }
             }
 
-//            var complete = this.isComplete();
             this.isComplete();
             // This must be done outside!
             // this.rootFolder.isComplete();
