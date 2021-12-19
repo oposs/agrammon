@@ -13,11 +13,14 @@
  * An Error Popup Window that shows messages
  * sent to to 'error' message bus.
  * Usage:
- * qx.event.message.Bus.dispatchByName('error', [ this.tr("Error test"),
- *                                          this.tr("This is just a test."),
- *                                          'info' or 'error', // selects mode
- *                                          { msg: msg, data: data}   // dispatch msg (optional)
- *                                        ]);
+ * qx.event.message.Bus.dispatchByName(
+ *     'error',
+ *     [ this.tr("Error test"),
+ *       this.tr("This is just a test."),
+ *       'info' or 'error', // selects mode
+ *       { msg: msg, data: data}   // dispatch msg (optional)
+ *     ]
+ * );
  */
 qx.Class.define('agrammon.ui.dialog.Error', {
     extend : qx.ui.window.Window,
@@ -32,6 +35,7 @@ qx.Class.define('agrammon.ui.dialog.Error', {
             showMinimize   : false,
             showMaximize   : false,
             resizable      : true,
+            centerOnAppear : true,
             contentPadding : 20,
             zIndex: 10000
         });
@@ -65,18 +69,10 @@ qx.Class.define('agrammon.ui.dialog.Error', {
 
         box.add(btn);
 
-        this.addListener('disappear', () => {
-            this.destroy();
-        }, this);
-
         this.addListenerOnce("appear", () => {
             this.addOwnedQxObject(btn, "OkButton");
             this.debug('ErrorDialogID=', qx.core.Id.getAbsoluteIdOf(this));
             this.debug('ErrorOkButtonID=', qx.core.Id.getAbsoluteIdOf(btn));
-        }, this);
-
-        this.addListenerOnce("resize", () => {
-            this.center();
         }, this);
 
         qx.event.message.Bus.subscribe('error', function(m) {
@@ -88,10 +84,8 @@ qx.Class.define('agrammon.ui.dialog.Error', {
             }
             else {
                 error.setIcon('icon/32/status/dialog-error.png');
-                that.setModal(true);
             }
             that.__msg = data[3];
-            that.center();
             that.open();
             btn.focus();
         });

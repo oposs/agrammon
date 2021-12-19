@@ -653,6 +653,9 @@ components:
                  - oldDataset
                  - newDataset
             properties:
+                oldUsername:
+                    description: Owner of the original dataset
+                    type: string
                 newUsername:
                     description: Owner of the cloned dataset
                     type: string

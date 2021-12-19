@@ -29,8 +29,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
         qx.event.message.Bus.subscribe('agrammon.NavBar.addFolder',          this.__addFolderHandler, this);
         qx.event.message.Bus.subscribe('agrammon.NavBar.renameInstanceData', this.__renameInstanceData,this);
         qx.event.message.Bus.subscribe('agrammon.NavBar.deleteInstanceData', this.__deleteInstanceData,this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.deleteInstance',     this.__deleteInstance,this);
-        qx.event.message.Bus.subscribe('agrammon.NavBar.destroyFolder',      this.__destroyFolder, this);
         qx.event.message.Bus.subscribe('agrammon.NavBar.clearTree',          this.__clearTree,this);
         qx.event.message.Bus.subscribe('agrammon.NavBar.isComplete',         this.__isComplete,this);
 
@@ -844,16 +842,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
             }
         },
 
-        __deleteInstance: function(msg) {
-            var folder = msg.getData();
-            this.delInstance(folder);
-        },
-
-        __destroyFolder: function(msg) {
-            var folder = msg.getData();
-            folder.destroy();
-        },
-
         delInstance: function(folder) {
             var parentFolder = folder.getParentNavFolder();
             var parentName  = parentFolder.getName();
@@ -870,13 +858,12 @@ qx.Class.define('agrammon.module.input.NavBar', {
             parentFolder.delChild(folder);
 
             // remove folder from navTree as well
-            this.__navTree.removeListener("changeSelection",
-                                          this.changeSelectionHandler, this);
+            this.__navTree.removeListener("changeSelection", this.changeSelectionHandler, this);
             folder.getParent().remove(folder);
-            this.__navTree.addListener("changeSelection",
-                                     this.changeSelectionHandler, this);
+            this.__navTree.addListener("changeSelection", this.changeSelectionHandler, this);
             this.__navTree.setSelection([parentFolder]);
             this.__rootFolder.isComplete();
+            this.removeOwnedQxObject(folder);
         }, // delInstance
 
         /**
@@ -888,9 +875,13 @@ qx.Class.define('agrammon.module.input.NavBar', {
         __deleteDataFunc: function(data, exc, id) {
             var folder = this;
             if (exc == null) {
-                qx.event.message.Bus.dispatchByName('error',
+                qx.event.message.Bus.dispatchByName(
+                    'error',
                     [ qx.locale.Manager.tr("Info"),
-                      folder.getName() + ' ' + qx.locale.Manager.tr("deleted.")]);
+                      folder.getName() + ' ' + qx.locale.Manager.tr("deleted.")
+                    ]
+                );
+                folder.destroy(); // cannot do this in delInstance
                 qx.event.message.Bus.dispatchByName('agrammon.Output.reCalc');
             }
             else {

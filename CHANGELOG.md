@@ -1,11 +1,11 @@
 # Agrammon Change Log
 
-- 6.1.2, 2021-12-10, fritz.zaucker@oetiker.ch
+- 6.1.2, 2021-12-13, fritz.zaucker@oetiker.ch
 
   - fix handling of demo datasets
   - set session expiration to 2 hours
   - fix re-login on expired session
-  - instrument frontend for GUI testing
+  - new menubar
 
 - 6.1.1, 2021-09-13, fritz.zaucker@oetiker.ch
 

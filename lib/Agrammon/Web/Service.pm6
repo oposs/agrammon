@@ -104,12 +104,12 @@ class Agrammon::Web::Service {
     }
 
     method clone-dataset(Agrammon::Web::SessionUser $user,
-                         Str $new-username,
+                         $old-username, Str $new-username,
                          Str $old-dataset, Str $new-dataset --> Nil) {
         Agrammon::DB::Dataset.new(
             :$user,
             :agrammon-variant($!cfg.agrammon-variant)
-        ).clone(:$new-username, :$old-dataset, :$new-dataset);
+        ).clone(:$old-username, :$new-username, :$old-dataset, :$new-dataset);
     }
 
     method rename-dataset(Agrammon::Web::SessionUser $user, Str $old, Str $new --> Nil) {
