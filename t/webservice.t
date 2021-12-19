@@ -72,6 +72,7 @@ subtest "get-account-key" => {
 }
 
 transactionally {
+    my $current-datasets = $ws.get-datasets($user);
 
     subtest "create-dataset" => {
         ok my $dataset-name = $ws.create-dataset($user, "MyTestDataset"), "Create dataset MyTestDataset";
@@ -81,11 +82,10 @@ transactionally {
     }
 
     subtest "get-datasets()" => {
-        my $model-version = 'Agrammon6';
-        ok my $datasets = $ws.get-datasets($user, $model-version), "Get $model-version datasets";
+        ok my $datasets = $ws.get-datasets($user), "Get datasets";
         isa-ok $datasets, 'Array', 'Got datasets Array';
 
-        is $datasets.elems, 4, "Found right number of datasets";
+        is $datasets.elems, $current-datasets+2, "Found two additional datasets";
         isa-ok $datasets[0], 'List', 'Got dataset List';
 
         my $found;

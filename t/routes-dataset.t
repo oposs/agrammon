@@ -246,7 +246,6 @@ subtest 'Get all datasets' => {
                 ];
 
         check-mock $fake-store,
-            *.called('cfg', times => 1),
             *.called('get-datasets', times => 1);
     }
 }

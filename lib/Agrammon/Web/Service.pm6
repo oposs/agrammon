@@ -50,7 +50,7 @@ class Agrammon::Web::Service {
     }
 
     #| return list of datasets as expected by Web GUI
-    method get-datasets(Agrammon::Web::SessionUser $user, $type) {
+    method get-datasets(Agrammon::Web::SessionUser $user) {
         return Agrammon::DB::Datasets.new(
             :$user, :agrammon-variant($!cfg.agrammon-variant)
         ).load.list;

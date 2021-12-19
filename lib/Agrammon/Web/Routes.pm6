@@ -419,7 +419,7 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
     route {
         # working
         post -> LoggedIn $user, 'get_datasets' {
-            my @data := $ws.get-datasets($user, $ws.cfg.agrammon-variant);
+            my @data := $ws.get-datasets($user);
             content 'application/json', @data;
         }
 
