@@ -53,6 +53,7 @@
     "Agrammon::DB::Variant": "lib/Agrammon/DB/Variant.pm6",
     "Agrammon::DataSource::CSV": "lib/Agrammon/DataSource/CSV.pm6",
     "Agrammon::DataSource::DB": "lib/Agrammon/DataSource/DB.pm6",
+    "Agrammon::DataSource::Util": "lib/Agrammon/DataSource/Util.pm6",
     "Agrammon::Environment": "lib/Agrammon/Environment.pm6",
     "Agrammon::Formula": "lib/Agrammon/Formula.pm6",
     "Agrammon::Formula::Builder": "lib/Agrammon/Formula/Builder.pm6",
