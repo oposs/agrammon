@@ -1,5 +1,9 @@
 # Agrammon Change Log
 
+- 6.1.4, 2022-01-11, fritz.zaucker@oetiker.ch
+
+  - some cleanup
+
 - 6.1.3, 2022-01-10, fritz.zaucker@oetiker.ch
 
   - fix regional model bug ignoring mitigation_housing_floor
