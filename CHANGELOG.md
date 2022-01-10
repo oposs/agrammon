@@ -1,5 +1,11 @@
 # Agrammon Change Log
 
+- 6.1.3, 2022-01-10, fritz.zaucker@oetiker.ch
+
+  - fix regional model bug ignoring mitigation_housing_floor
+    in dairy cows and other cattle
+  - Update to Rakudo.2021-12
+
 - 6.1.2, 2021-12-13, fritz.zaucker@oetiker.ch
 
   - fix handling of demo datasets

@@ -15,7 +15,7 @@ jobs:
         os:
           - ubuntu-latest
         raku-version:
-          - '2021.06'
+          - '2021.12'
     runs-on: ${{ matrix.os }}
 
     services:
