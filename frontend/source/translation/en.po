@@ -298,7 +298,7 @@ msgstr ""
 msgid "Duplicate instance "
 msgstr ""
 
-#: agrammon/ui/menu/NavMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Add instance"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/ui/dialog/Comment.js
 msgid "Cancel"
 msgstr ""
 
