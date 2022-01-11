@@ -175,7 +175,7 @@ multi sub MAIN(
     ) is export {
     my $model-name = ~$filename.IO.parent;
     my ($model, $module-path) = load-model($cfg-file, $filename, $variants);
-    my %technical = load-technical($module-path, $technical-file);
+    my %technical = load-technical($module-path.IO.parent, $technical-file);
 
     say create-latex-source(
         $model-name,
