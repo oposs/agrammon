@@ -152,7 +152,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 ?if !Kantonal_LU
   +inp_n_excretion
-    type = text
+    type = float
     default_calc = Standard
     default_gui  = Standard
     ++labels
@@ -193,7 +193,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/23.</p>
 
   +tan_fraction
-    type = text
+    type = percent
     default_calc = Standard
     default_gui  = Standard
     ++labels

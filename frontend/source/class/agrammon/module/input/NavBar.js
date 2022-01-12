@@ -589,9 +589,9 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     if (rec.branch) {
                         metaData.branch = true;
                     }
-                    if (rec.type == 'percent') {
-                        defaultValue = null;
-                    }
+//                    if (rec.type == 'percent') {
+//                        defaultValue = null;
+//                    }
                     break;
                 case 'boolean':
                     metaData.type = 'checkbox';

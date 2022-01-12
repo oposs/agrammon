@@ -110,7 +110,7 @@ msgstr ""
 msgid "datasets"
 msgstr ""
 
-#: agrammon/ui/menu/OptionMenu.js
+#: agrammon/module/input/NavBar.js
 msgid "Info"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr ""
 msgid "renamed to"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/input/NavBar.js
 msgid "Error"
 msgstr ""
 
@@ -182,7 +182,7 @@ msgstr ""
 msgid "Rename dataset"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/NavBar.js
 msgid "New name"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgstr ""
 msgid "Input"
 msgstr ""
 
-#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/input/NavBar.js
 msgid "Instance name must not be empty."
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/ui/dialog/Comment.js
+#: agrammon/module/output/SubmitWindow.js
 msgid "Cancel"
 msgstr ""
 
