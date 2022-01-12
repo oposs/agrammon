@@ -105,8 +105,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++description
     Correction factor for the emission due to the use of a grooved floor in housing systems.
   ++formula
-    # TODO: is next line correct? Was missing compared to OtherCattle
-    warn "### mitigation_housing_floor=", (In(mitigation_housing_floor) // 0);
     return 1 unless defined In(mitigation_housing_floor);
     given ( In(mitigation_housing_floor) ) {
       when 'raised_feeding_stands' {

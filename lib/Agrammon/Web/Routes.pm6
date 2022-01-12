@@ -172,7 +172,7 @@ sub frontend-api-routes (Str $schema, $ws) {
         operation 'cloneDataset', -> LoggedIn $user {
             request-body -> ( :newUsername($new-username), :oldUsername($old-username),
                               :oldDataset($old-dataset), :newDataset($new-dataset)  ) {
-                $ws.clone-dataset($user, $old-username, $new-username, $old-dataset, $new-dataset);
+                $ws.clone-dataset($user, $old-username // $new-username, $new-username, $old-dataset, $new-dataset);
                 CATCH {
                     .note;
                     when X::Agrammon::DB::Dataset::AlreadyExists {
@@ -573,6 +573,7 @@ sub html-error(%error) {
     HTML
 }
 
+# prevent header injection
 sub cleanup-filename($filename) {
-    $filename.subst(/<-[\w\ _.-]>/, '', :g);
+    $filename.subst(/<-[\w\ _.-]>/, '-', :g);
 }

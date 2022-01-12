@@ -105,7 +105,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 ?if !Kantonal_LU
   +inp_n_excretion
-    type = text
+    type = float
     default_calc = Standard
     default_gui  = Standard
     ++labels
@@ -156,7 +156,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
             pp. 4/1-4/23.</p>
 
   +tan_fraction
-    type = text
+    type = percent
     default_calc = Standard
     default_gui  = Standard
     ++labels
