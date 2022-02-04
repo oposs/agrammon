@@ -59,7 +59,7 @@ msgstr "Filtre incrémentiel sur le nom de l'ensemble de données"
 msgid "Filter on dataset name"
 msgstr "Filtrage du nom des sets de données"
 
-#: agrammon/ui/About.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Close"
 msgstr "Fermer"
 

@@ -1038,7 +1038,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
         __createNavFolder: function(labels, type, data, name, instanceOrder) {
             let folder = new agrammon.module.input.NavFolder(labels, type, data, name, instanceOrder);
             this.addOwnedQxObject(folder, name);
-            this.debug('NavFolderID=', qx.core.Id.getAbsoluteIdOf(folder), ', type=', type);
+//            this.debug('NavFolderID=', qx.core.Id.getAbsoluteIdOf(folder), ', type=', type);
             // store none-root folders for deletion upon loading a new dataset
             if (name != 'root') {
                 this.__navFolders.push(folder);

@@ -606,7 +606,6 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
         __tagColumn: null,
         __btnAdvanced: null,
         __lastDatasetFilter: {'*all*' : true},
-        __dblClickHandler: null,
         __btnSetReference: null,
         __btnClearReference: null,
         __btnCopy: null,
