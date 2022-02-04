@@ -326,16 +326,12 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         self.with-db: -> $db {
             my $tag-id = Agrammon::DB::Tag.new( :name($tag-name), :$!user).lookup.id;
             die X::Agrammon::DB::Tag::UnknownTag($tag-name) unless $tag-id;
-
+            my $username = $!user.username;
             for @datasets -> $dataset-name {
-                $db.query(q:to/SQL/, $tag-id, $dataset-name);
+                $db.query(q:to/SQL/, $tag-id, $username, $dataset-name, |self!variant);
                     DELETE FROM tagds
-                     WHERE tagds_tag IN ( SELECT tag_id
-                                            FROM tag
-                                           WHERE tag_name = $1 )
-                       AND tagds_dataset IN ( SELECT dataset_id
-                                                FROM dataset
-                                               WHERE dataset_name = $2 )
+                     WHERE tagds_tag     = $1
+                       AND tagds_dataset = dataset_name2id($2,$3,$4,$5,$6)
                 SQL
                 CATCH {
                     # other DB failure

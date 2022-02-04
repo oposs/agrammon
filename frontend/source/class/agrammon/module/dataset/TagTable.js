@@ -44,7 +44,7 @@ qx.Class.define('agrammon.module.dataset.TagTable', {
             }
         }, this);
 
-      this.__table.setMinWidth(150);
+      this.__table.setMinWidth(180);
         this.__table.setAllowGrowX(true);
         this.setPadding(0);
         this.add(this.__table, {flex: 1});
