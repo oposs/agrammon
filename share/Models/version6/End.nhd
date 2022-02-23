@@ -142,6 +142,30 @@ Dummy Module marking the startpoint for the Model Parser
         en = Nitrogen flux livestock production
         de = Stickstofffluss Tierproduktion
         fr = Flux d'azote production animale
+
+  +HAFLReport
+    type = report
+    ++selector
+      en = Summary HAFL
+      de = Zusammenfassung HAFL
+      fr = Résumé HAFL
+    ++data
+      +++LivestockNH3
+        en = Livestock production NH3-Emissions
+        de = Tierproduktion NH3-Emissionen
+        fr = Production animale Emissions de NH3
+      +++PlantNH3
+        en = Plant production NH3-Emissions
+        de = Pflanzenbau NH3-Emissionen
+        fr = Production végétale Emissions de NH3
+      +++SummaryTotal
+        en = Total NH3-Emissions
+        de = Total NH3-Emissionen
+        fr = Totales Emissions de NH3
+      +++LivestockTAN
+        en = TAN flux livestock production
+        de = TAN Fluss Tierproduktion
+        fr = Flux de TAN production animale
 ?endif
 
 
