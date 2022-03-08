@@ -9,7 +9,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 13;
+plan 14;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
