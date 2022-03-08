@@ -106,6 +106,7 @@ transactionally {
         my $old-dataset = 'Agrammon6Testing';
         my $new-dataset = 'Agrammon6Testing Kopie';
         lives-ok { $ws.clone-dataset($user, $old-username, $new-username, $old-dataset, $new-dataset) }, "Clone own dataset";
+        lives-ok { $ws.clone-dataset($user, Nil, $new-username, $old-dataset, $new-dataset ~ '2') }, "Clone own dataset without username";
     }
 
     subtest "rename-dataset" => {

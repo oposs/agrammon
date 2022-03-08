@@ -1,5 +1,9 @@
 # Agrammon Change Log
 
+- 6.2.0, 2022-02-28, fritz.zaucker@oetiker.ch
+
+  - add HAFL (lecture) report to single/regional model
+
 - 6.1.5, 2022-02-04, fritz.zaucker@oetiker.ch
 
   - fix remove tag

@@ -9,7 +9,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 13;
+plan 14;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -102,6 +102,21 @@ transactionally {
                 :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')
                 ), "Create dataset object";
         ok $dataset-id = $dataset.create().id, "Create dataset, id=$dataset-id";
+    }
+
+    subtest 'clone()' => {
+        plan 4;
+        my $old-username   = $user.username;
+        my $new-username   = $user.username;
+        my $old-dataset    = $dataset.name;
+
+        my $new-dataset    = "Copy $dataset.name";
+        ok my $dataset2    = $dataset.clone(:$old-username, :$new-username, :$old-dataset, :$new-dataset), "Cloneddataset with old-name";
+        ok my $dataset2-id = $dataset2<id>, "Cloned dataset $new-dataset, id=$dataset2-id";
+
+        $new-dataset       = "Copy2 $dataset.name";
+        ok my $dataset3    = $dataset.clone(:$new-username, :$old-dataset, :$new-dataset), "Clone dataset without old-name";
+        ok my $dataset3-id = $dataset3<id>, "Cloned dataset $new-dataset, id=$dataset3-id";
     }
 
     subtest 'rename()' => {
@@ -243,7 +258,6 @@ transactionally {
 # order instances
 # delete-instance
 # rename-instance
-# clone
 }
 
 done-testing;
