@@ -200,9 +200,8 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         return self;
     }
 
-    method clone(:$old-username, :$new-username, :$old-dataset, :$new-dataset) {
-        note "clone(): old-username=$old-username, new-username=$new-username, old-dataset=$old-dataset, new-dataset=$new-dataset";
-        $old-username //= $!user.username;
+    method clone(:$current-username, :$new-username, :$old-dataset, :$new-dataset) {
+        my $old-username = $current-username // $!user.username;
 
         # old and new dataset are identical
         die X::Agrammon::DB::Dataset::AlreadyExists.new(:dataset-name($new-dataset))
