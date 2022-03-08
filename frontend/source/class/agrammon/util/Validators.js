@@ -183,11 +183,13 @@ qx.Class.define("agrammon.util.Validators",
               break;
         case 'between':
               valFunc = function(value) {
+                  if (value === 'Standard') {
+                      return '';
+                  }
                   value = parseFloat(value);
                   var low = parseFloat(args[0]);
                   var high = parseFloat(args[1]);
                   if (! (value >= low && value <= high) ) {
-//                      alert('between: value='+value+', arg0='+args[0]+', arg1='+args[1]);
                       return value + ' ' +
                           qx.locale.Manager.tr("not between")
                           + ' ' + args[0] + ' '
