@@ -36,7 +36,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
         this.__propEditor = propEditor;
         this.__navHash    = new Object;
         this.__navTree    = new qx.ui.tree.Tree('Agrammon','agrammon/nh3.png');
-        this.__navFolders = new Array;
 
         qx.core.Id.getInstance().register(this, "NavBar");
         this.setQxObjectId("NavBar");
@@ -363,7 +362,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
         __propEditor: null,
         __rootFolder: null,
         __sibblings:   null,
-        __navFolders:  null,
 
         /**
          * TODOC
@@ -612,17 +610,21 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     break;
                 }
                 helpFunction = agrammon.util.Validators.getHelpFunction(rec.validator, rec.type, rec.help);
-                if (rec.value == undefined && ! rec.defaults.hasFormula) {
+                if (rec.value == undefined && ! rec.defaults.hasFormula && defaultValue != 'Standard') {
                     rec.value = defaultValue;
                 }
                 else {
                     rec.value = null;
                 }
                 // fill propData array
+                let value = rec.value;
+                if (value === defaultValue && defaultValue === 'Standard') {
+                    value = null;
+                }
                 var variable = new agrammon.module.input.Variable().set({
                     name:         rec.variable,
                     labels:       rec.labels,
-                    value:        rec.value,
+                    value:        value,
                     defaultValue: defaultValue,
                     metaData:     metaData,
                     type:         rec.type,
@@ -815,16 +817,18 @@ qx.Class.define('agrammon.module.input.NavBar', {
             this.__rootFolder.removeAll();
             // we need to get rid of previously registered qxObjectIds on
             // NavBar recreation when loading a dataset
-            this.__navFolders.forEach(navFolder => {
-                this.removeOwnedQxObject(navFolder);
-                navFolder.destroy();
+            Object.values(this.__navHash).forEach(entry => {
+                let navFolder = entry.folder;
+                if (navFolder.getName() != 'root') {
+                    this.removeOwnedQxObject(navFolder);
+                    navFolder.destroy();
+                }
             });
-            this.__navFolders = new Array;
             this.__navHash = new Object;
-            var rootEntry = new Object;
-            rootEntry['folder'] = this.__rootFolder;
-            rootEntry['parent'] = null;
-            this.__navHash['root'] = rootEntry;
+            this.__navHash['root'] = {
+                folder : this.__rootFolder,
+                parent : null
+            };
         },
 
         buildTree: function() { // create tree from individual folders
@@ -863,6 +867,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             this.__navTree.addListener("changeSelection", this.changeSelectionHandler, this);
             this.__navTree.setSelection([parentFolder]);
             this.__rootFolder.isComplete();
+            delete this.__navHash[folder.getName()];
             this.removeOwnedQxObject(folder);
         }, // delInstance
 
@@ -1038,11 +1043,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
         __createNavFolder: function(labels, type, data, name, instanceOrder) {
             let folder = new agrammon.module.input.NavFolder(labels, type, data, name, instanceOrder);
             this.addOwnedQxObject(folder, name);
-//            this.debug('NavFolderID=', qx.core.Id.getAbsoluteIdOf(folder), ', type=', type);
-            // store none-root folders for deletion upon loading a new dataset
-            if (name != 'root') {
-                this.__navFolders.push(folder);
-            }
             return folder;
         },
 
