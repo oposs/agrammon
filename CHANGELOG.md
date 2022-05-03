@@ -1,5 +1,10 @@
 # Agrammon Change Log
 
+- 6.2.1, 2022-03-09, fritz.zaucker@oetiker.ch
+
+  - fix send dataset
+  - fix handling of empty values with default value (Standard)
+
 - 6.2.0, 2022-02-28, fritz.zaucker@oetiker.ch
 
   - add HAFL (lecture) report to single/regional model
