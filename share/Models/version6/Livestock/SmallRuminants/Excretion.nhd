@@ -265,7 +265,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
     $exc = In(inp_n_excretion) unless ( lc In(inp_n_excretion) eq 'standard' );
-    if ( ($exc < 0.7 * $TE->{$key}) or ($exc > 1.3 * $TE->{$key})) {
+    if ( ($exc < 0.7 * $TE->{$key}) or ($exc > 1.3 * $TE->{$key}) ) {
         writeLog({
             en => "The N excretion entered for small ruminants differs from the standard by more than 30%!",
             de => "Die eingegebene N-Ausscheidung für Kleinwiederkäuer weicht um mehr als 30% vom Standard ab!",

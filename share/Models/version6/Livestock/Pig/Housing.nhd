@@ -75,8 +75,14 @@ taxonomy = Livestock::Pig::Housing
               Val(c_area, Housing::Type) *
               (1 - Val(red_housing_floor, Housing::MitigationOptions)) * 
               (1 - Val(red_housing_air, Housing::MitigationOptions));
-    #FIXME: Add message if $ef > 1?
-    $ef = 1 unless $ef < 1;
+    if ( $ef > 1 ) {
+        writeLog({
+            en => "NH3 emission factor for indoor part before air scrubber removal of other pig housing systems is greater than (thus will be limited to) 1.",
+            de => "NH3 emission factor for indoor part before air scrubber removal of other pig housing systems is greater than (thus will be limited to) 1.",
+            fr => "NH3 emission factor for indoor part before air scrubber removal of other pig housing systems is greater than (thus will be limited to) 1.",
+        });
+        $ef = 1;
+    }
     return $ef;
 
 +ef_housing_indoor
@@ -103,8 +109,14 @@ taxonomy = Livestock::Pig::Housing
     my $ef = Val(er_housing, Housing::Type) * 
               Val(c_free_factor_housing, Housing::CFreeFactor) *
               Val(c_area, Housing::Type);
-    #FIXME: Add message if $ef > 1?
-    $ef = 1 unless $ef < 1;
+    if ( $ef > 1 ) {
+        writeLog({
+            en => "NH3 emission factor for outdoor part of other pig housing systems is greater than (thus will be limited to) 1.",
+            de => "NH3 emission factor for outdoor part of other pig housing systems is greater than (thus will be limited to) 1.",
+            fr => "NH3 emission factor for outdoor part of other pig housing systems is greater than (thus will be limited to) 1.",
+        });
+        $ef = 1;
+    }
     return $ef;
 
 +ef_nh3_nhousing
