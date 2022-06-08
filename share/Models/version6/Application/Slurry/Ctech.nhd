@@ -34,7 +34,6 @@ taxonomy = Application::Slurry::Ctech
   
 +share_splash_plate  
   type  = percent
-#  default_gui = 90
   ++labels 
     en = Share of slurry applied with splash plate
     de = Anteil Gülleausbringung mit Prallteller/Werfer

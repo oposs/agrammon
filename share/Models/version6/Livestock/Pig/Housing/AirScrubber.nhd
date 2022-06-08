@@ -99,13 +99,5 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
       when 'none' {
         return 0;
       } 
-      default {
-        writeLog({
-          en => "Invalid 'exhaust air scrubber' entered!",
-          de => "Ungültige 'Abluftreinigung' eingegeben!",
-          fr => "Entrée non valable pour ‘Traitement des effluents gazeux'!"
-        });
-        return 0;
-      }
     }    
       

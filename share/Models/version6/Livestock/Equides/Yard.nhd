@@ -79,9 +79,6 @@ livestock. Atmospheric Environment 35:5331-5338.
       when 'paddock_or_pasture_used_as_exercise_yard' {
         1 - Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
       } 
-      default { 
-        1;
-      }
     }
 
 +share_into_yard
