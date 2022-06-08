@@ -46,7 +46,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 +mitigation_housing_air
   type  = enum
-  default_calc = none
   ++enum
     +++none
        en = none
