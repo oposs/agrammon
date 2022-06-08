@@ -105,7 +105,6 @@ taxonomy = Livestock::Equides::Outdoor
 
 +floor_properties_exercise_yard
   type  = enum
-  default_calc = solid_floor
   ++enum
     +++solid_floor
        en = solid_floor

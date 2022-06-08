@@ -48,7 +48,6 @@ taxonomy = Application::Slurry::Csoft
    
   +appl_hotdays
     type  = enum
-    default_calc = sometimes
     ++enum
       +++frequently
          en = frequently
