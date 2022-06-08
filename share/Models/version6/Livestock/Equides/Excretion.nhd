@@ -320,7 +320,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual soluble N excreted by a specified number of animals.
 ?if !Kantonal_LU
   ++formula
-    if ( (not defined In(tan_fraction)) or lc In(tan_fraction) eq 'standard' ) {
+    if ( lc In(tan_fraction) eq 'standard' ) {
       $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
     } else {
       my $tan = In(tan_fraction);
