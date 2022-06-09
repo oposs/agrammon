@@ -91,12 +91,25 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 *** output ***
 
-+red_housing_floor
++red_housing_floor_indoor
   print = Pig
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to UNECE housing systems tasks for fully and partly slatted floors.
+    Reduction factor for the emission due to floor related mitigation strategies - part indoor.
+  ++formula
+    given ( In(mitigation_housing_floor) ) {
+      when 'none' {
+        0;
+      }
+    }
+
++red_housing_floor_outdoor
+  print = Pig
+  ++units 
+    en = -
+  ++description
+    Reduction factor for the emission due to floor related mitigation strategies - part outdoor.
   ++formula
     given ( In(mitigation_housing_floor) ) {
       when 'none' {
@@ -109,7 +122,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++units 
     en = -
   ++description
-    Reduction factor for the emission due to the use of housing system adaptations.
+    Reduction factor for the emission due to the use of housing system adaptations (only indoor).
   ++formula 
       if (In(mitigation_housing_air)  eq 'low_impuls_air_supply'){
           return( Tech(red_low_impuls_air_supply));
