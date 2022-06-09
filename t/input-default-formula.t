@@ -19,6 +19,8 @@ subtest 'Single instance module with input defaults' => {
         is .<output1>, 42, 'Directly provided input works';
         is .<output2>, 84, 'Input default calculated from another input works';
         is .<output3>, 215, 'Input calculated from a technical works';
+        is .<output4>, 42, 'Input default number works';
+        is .<output5>, 'orangs', 'Input default enum works';
     }
 }
 
