@@ -1,5 +1,11 @@
 # Agrammon Change Log
 
+- feature branch floor_mitigation, 2022-06-09, christoph.haeni@bfh.ch
+
+  - pigs: 
+    - floor mitigation has effect on both indoors and outdoors
+    - Slurry_Label_Open has 100% flow into outdoors
+
 - pre, 2022-06-09, christoph.haeni@bfh.ch
 
   - fix model bug ignoring revised housing_type for poultry 
