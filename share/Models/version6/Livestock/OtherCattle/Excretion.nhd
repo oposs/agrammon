@@ -130,7 +130,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   type = float
   distribute = true
   default_gui  = Standard
-  default_formula = In(animals);
+  default_calc = Standard
   ++labels 
     en = Number of available animal places
     de = Anzahl Tierplätze im Stall
@@ -483,7 +483,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   ++description
     barn size (number of animal places)
   ++formula
-    In(dimensioning_barn);
+    if ( lc In(dimensioning_barn) eq 'standard' ) {
+        In(animals);
+    } else {
+        In(dimensioning_barn);
+    }
 
 +area_increase
   print = OtherCattle
