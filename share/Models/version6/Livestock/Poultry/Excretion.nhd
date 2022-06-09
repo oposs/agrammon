@@ -394,7 +394,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       when $_ eq 'layers' or $_ eq 'growers' or $_ eq 'other_poultry' {
         Out(n_excretion);
       } 
-      default {
+      when $_ eq 'turkeys' or $_ eq 'broilers' {
         0;
       }
     }
@@ -412,7 +412,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       when $_ eq 'turkeys' or $_ eq 'broilers' {
         Out(n_excretion);
       } 
-      default {
+      when $_ eq 'layers' or $_ eq 'growers' or $_ eq 'other_poultry' {
         0;
       }
     }
