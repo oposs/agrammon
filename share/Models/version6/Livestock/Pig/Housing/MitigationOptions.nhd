@@ -111,12 +111,14 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++description
     Reduction factor for the emission due to the use of housing system adaptations.
   ++formula 
-      if (In(mitigation_housing_air)  eq 'low_impuls_air_supply'){
-          return( Tech(red_low_impuls_air_supply));
-      }
-      else {
-          return 0;
-      }
+    given ( In(mitigation_housing_air) ) {
+        when 'low_impuls_air_supply' {
+            return Tech(red_low_impuls_air_supply);
+        }
+        when 'none' {
+            return 0;
+        }
+    }
        
        
 
