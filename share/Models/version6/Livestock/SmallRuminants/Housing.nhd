@@ -87,8 +87,14 @@ taxonomy = Livestock::SmallRuminants::Housing
     my $ef_nh3 = Tech(er_housing) * 
                  Val(c_grazing, Housing::KGrazing) * 
                  Val(c_free_factor_housing, Housing::CFreeFactor);
-    #FIXME: Check: Is it in any way even possible that $ef_nh3 > 1???
-    $ef_nh3 = 1 unless $ef_nh3 < 1;
+    if ( $ef_nh3 > 1 ) {
+        writeLog({
+            en => "NH3 emission factor for small ruminants housing systems is greater than (thus will be limited to) 1.",
+            de => "NH3 emission factor for small ruminants housing systems is greater than (thus will be limited to) 1.",
+            fr => "NH3 emission factor for small ruminants housing systems is greater than (thus will be limited to) 1.",
+        });
+        $ef_nh3 = 1;
+    }
     return $ef_nh3;
 
 +nh3_nhousing

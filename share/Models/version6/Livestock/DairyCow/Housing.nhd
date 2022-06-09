@@ -84,8 +84,14 @@ taxonomy = Livestock::DairyCow::Housing
                     Val(er_housing, Housing::Type) * 
                     Val(c_housing_floor, Housing::Floor) * 
                     Val(c_free_factor_housing, Housing::CFreeFactor);
-    #FIXME: Check: Is it in any way even possible that $ef_nh3 > 1???
-    $ef_nh3 = 1 unless $ef_nh3 < 1;
+    if ( $ef_nh3 > 1 ) {
+        writeLog({
+            en => "NH3 emission factor for dairy cow housing systems is greater than (thus will be limited to) 1.",
+            de => "NH3 emission factor for dairy cow housing systems is greater than (thus will be limited to) 1.",
+            fr => "NH3 emission factor for dairy cow housing systems is greater than (thus will be limited to) 1.",
+        });
+        $ef_nh3 = 1;
+    }
     return $ef_nh3;
 
 +nh3_nhousing

@@ -332,26 +332,9 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
     Scaled emission factor of a specific liquid storage for pig slurry.
   ++formula
     # get er pigs
-    if (not defined In(cover_type)) {
-        writeLog({
-          en => 'FIX: Invalid values for "cover_type" (' . In(cover_type) . ')' . "\n",
-          de => 'FIX: Ungültige Eingabe für "cover_type" (' . In(cover_type) . ')' . "\n",
-          fr => 'FIX: Entrée non valable pour "cover_type" (' . In(cover_type) . ')' . "\n"
-        });
-       return 0;
-    }
     my $er_pigs = $TE->{'ef_pig_'.In(cover_type)};
     # scale er pigs
-    if ( not defined In(contains_pig_manure) ) {
-      writeLog({
-        en => 'Invalid values for "Contains pigs slurry" (' . In(contains_pig_manure) . ')' . "\n",
-        de => 'Ungültige Eingabe für "Enthält Schweinegülle" (' . In(contains_pig_manure) . ')' . "\n",
-        fr => 'Entrée non valable pour "Contient du lisier de porc" (' . In(contains_pig_manure) . ')' . "\n"
-      });
-      return Val(n_out_livestock_liquid_pigs_share, ::Livestock) * $er_pigs;
-    } elsif ( not defined In(contains_cattle_manure) ) {
-      return Val(n_out_livestock_liquid_pigs_share, ::Livestock) * $er_pigs;
-    } elsif ( lc In(contains_pig_manure) eq 'no' ) {
+    if ( lc In(contains_pig_manure) eq 'no' ) {
       return 0;
     } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'no' ) {
       return $er_pigs;
@@ -369,20 +352,8 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
     Scaled emission factor of a specific liquid storage for cattle slurry.
   ++formula
     # get er cattle
-    if (not defined In(cover_type)) {
-       return 0;
-    }
     my $er_cattle = $TE->{'ef_cattle_'.In(cover_type)};
-    if ( not defined In(contains_cattle_manure) ) {
-      writeLog({
-        en => 'Invalid values for "Contains cattle slurry" (' . In(contains_cattle_manure) . ')' . "\n",
-        de => 'Ungültige Eingabe für "Enthält Rindergülle" (' . In(contains_cattle_manure) . ')' . "\n",
-        fr => 'Entrée non valable pour "Contient du lisier de bovin" (' . In(contains_cattle_manure) . ')' . "\n"
-      });
-      return (1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock)) * $er_cattle;
-    } elsif ( not defined In(contains_pig_manure) ) {
-      return (1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock)) * $er_cattle;
-    } elsif ( lc In(contains_cattle_manure) eq 'no' ) {
+    if ( lc In(contains_cattle_manure) eq 'no' ) {
       return 0;
     } elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {
       return $er_cattle;

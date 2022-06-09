@@ -36,7 +36,6 @@ taxonomy = Application::Slurry::Applrate
 ?if !Kantonal_LU
   +dilution_parts_water
     type  = float
-    default_calc = 1
     validator = between(0,3);
     ++labels 
       en = Dilution of slurry (liters of water added to one liter of fresh excreta)
@@ -57,7 +56,6 @@ taxonomy = Application::Slurry::Applrate
 
   +appl_rate
     type  = float
-    default_calc = 30
     validator = between(10,120); 
     ++labels 
       en = Mean dose per application

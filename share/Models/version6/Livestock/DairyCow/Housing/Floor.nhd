@@ -105,7 +105,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++description
     Correction factor for the emission due to the use of a grooved floor in housing systems.
   ++formula
-    return 1 unless defined In(mitigation_housing_floor);
     given ( In(mitigation_housing_floor) ) {
       when 'raised_feeding_stands' {
         if ( (Val(housing_type, Type) eq 'Loose_Housing_Slurry') or 
@@ -129,8 +128,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
           1;
         }
       }
-      default {
-        # add when "none" & default Warning!
+      when 'none' {
         1;
       }
     }

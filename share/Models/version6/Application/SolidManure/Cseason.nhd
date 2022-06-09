@@ -28,7 +28,6 @@ taxonomy = Application::SolidManure::Cseason
 ?if !Kantonal_LU
   +appl_summer
     type  = percent
-    default_calc = 30
     ++labels
       en = Share of solid manure applied June to August (in %)
       de = Ausbringung von Mist im Sommer (Juni, Juli, August): Anteil in Prozent
@@ -50,7 +49,6 @@ taxonomy = Application::SolidManure::Cseason
 
   +appl_autumn_winter_spring
     type  = percent
-    default_calc = 70
     ++labels
       en  = Share of solid manure applied September to May (in %)
       de = Ausbringung von Mist von September bis und mit Mai: Anteil in Prozent

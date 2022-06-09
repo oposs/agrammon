@@ -264,8 +264,8 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     my $cat = Out(animalcategory);
     my $key = 'standard_N_excretion_' . $cat;
     my $exc = $TE->{$key};
-    $exc = In(inp_n_excretion) unless ( (not defined In(inp_n_excretion)) or lc In(inp_n_excretion) eq 'standard' );
-    if ( ($exc < 0.7 * $TE->{$key}) or ($exc > 1.3 * $TE->{$key})) {
+    $exc = In(inp_n_excretion) unless ( lc In(inp_n_excretion) eq 'standard' );
+    if ( ($exc < 0.7 * $TE->{$key}) or ($exc > 1.3 * $TE->{$key}) ) {
         writeLog({
             en => "The N excretion entered for small ruminants differs from the standard by more than 30%!",
             de => "Die eingegebene N-Ausscheidung für Kleinwiederkäuer weicht um mehr als 30% vom Standard ab!",
@@ -296,7 +296,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     Annual soluble N excreted by a specified number of small ruminants.
 ?if !Kantonal_LU
   ++formula
-    if ( (not defined In(tan_fraction)) or lc In(tan_fraction) eq 'standard' ) {
+    if ( lc In(tan_fraction) eq 'standard' ) {
       $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
     } else {
       my $tan = In(tan_fraction);

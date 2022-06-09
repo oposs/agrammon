@@ -92,8 +92,14 @@ taxonomy = Livestock::Equides::Housing
     my $c_housing = Val(c_grazing, Housing::KGrazing) * 
                     Tech(er_housing) * 
                     Val(c_free_factor_housing, Housing::CFreeFactor) ;
-    #FIXME: Check: Is it in any way even possible that nh3_nhousing > tan_into_housing???
-    $c_housing = 1 unless $c_housing < 1;
+    if ( $c_housing > 1 ) {
+        writeLog({
+            en => "NH3 emission factor for equides housing systems is greater than (thus will be limited to) 1.",
+            de => "NH3 emission factor for equides housing systems is greater than (thus will be limited to) 1.",
+            fr => "NH3 emission factor for equides housing systems is greater than (thus will be limited to) 1.",
+        });
+        $c_housing = 1;
+    }
     Out(tan_into_housing) * $c_housing;
 
 +n_outhousing
