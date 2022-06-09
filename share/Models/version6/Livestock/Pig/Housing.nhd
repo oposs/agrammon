@@ -73,7 +73,7 @@ taxonomy = Livestock::Pig::Housing
     my $ef = Val(er_housing, Housing::Type) * 
               Val(c_free_factor_housing, Housing::CFreeFactor) *
               Val(c_area, Housing::Type) *
-              (1 - Val(red_housing_floor, Housing::MitigationOptions)) * 
+              (1 - Val(red_housing_floor_indoor, Housing::MitigationOptions)) * 
               (1 - Val(red_housing_air, Housing::MitigationOptions));
     if ( $ef > 1 ) {
         writeLog({
@@ -97,7 +97,7 @@ taxonomy = Livestock::Pig::Housing
     Out(ef_housing_indoor_before_air_scrubber) *
     (1 - Val(red_air_scrubber, Housing::AirScrubber));
 
-+ef_housing_grazing
++ef_housing_outdoor
   print = Pig
   ++units
      en = -
@@ -108,6 +108,7 @@ taxonomy = Livestock::Pig::Housing
   ++formula
     my $ef = Val(er_housing, Housing::Type) * 
               Val(c_free_factor_housing, Housing::CFreeFactor) *
+              (1 - Val(red_housing_floor_outdoor, Housing::MitigationOptions)) * 
               Val(c_area, Housing::Type);
     if ( $ef > 1 ) {
         writeLog({
@@ -131,7 +132,7 @@ taxonomy = Livestock::Pig::Housing
     # indoor part
     Val(share_indoor, Housing::Type) * Out(ef_housing_indoor) +
     # grazing part
-    (1 - Val(share_indoor, Housing::Type)) * Out(ef_housing_grazing);
+    (1 - Val(share_indoor, Housing::Type)) * Out(ef_housing_outdoor);
 
 +nh3_nhousing
   print = Pig
