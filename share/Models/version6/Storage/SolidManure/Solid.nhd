@@ -302,7 +302,7 @@ taxonomy = Storage::SolidManure::Solid
     ++description
       Free reduction of the Emission rate for the Yard Storage, cattle manure.
     ++formula
-    if(In(free_correction_factor_cattle_manure)//0 != 0) {
+    if(In(free_correction_factor_cattle_manure) != 0) {
         writeLog({en=>"You have entered an additional emission mitigation measure for a storage of cattle solid manure of"
                       . In(free_correction_factor_cattle_manure) 
                       . "\%!\n", 
@@ -326,7 +326,7 @@ taxonomy = Storage::SolidManure::Solid
     ++description
       Free reduction of the Emission rate for Storage Pig manure.
     ++formula
-    if(In(free_correction_factor_pig_manure)//0 != 0) {
+    if(In(free_correction_factor_pig_manure) != 0) {
         writeLog({en=>"You have entered an additional emission mitigation measure for a storage of pigs solid manure of"
                       . In(free_correction_factor_cattle_manure) 
                       . "\%!\n", 
