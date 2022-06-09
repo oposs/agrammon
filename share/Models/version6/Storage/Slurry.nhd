@@ -196,7 +196,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
 ?else
   ++formula
     # needs warning here
-    my $mixing = In(mixing_frequency) // '7_to_12_times_per_year';
+    my $mixing = In(mixing_frequency);
     return $TE->{'c_mixing_' . $mixing};
 ?endif
 

@@ -86,7 +86,7 @@ taxonomy = Application::SolidManure::CfreeFactor
   ++description
     Free reduction of the Emission rate for the Yard.
   ++formula
-  if(In(free_correction_factor)//0 != 0) {
+  if(In(free_correction_factor) != 0) {
       writeLog({en=>"You have entered an additional emission mitigation measure for a application of solid manure of "
                     . In(free_correction_factor) 
                     . "\%!\n", 
