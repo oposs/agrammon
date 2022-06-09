@@ -192,11 +192,16 @@ Selects the emission rate and other correciton factors for the specific housing 
   ++description
     Factor for considering grazing part.
   ++formula 
-    if ( Out(housing_type) eq 'Slurry_Label' or Out(housing_type) eq 'Slurry_Label_Open' ) {
-       return 0.5;
-    }
-    else {
-       return 1;
+    given ( Out(housing_type) ) {
+        when 'Slurry_Label' {
+            return 0.5;
+        }
+        when 'Slurry_Label_Open' {
+            return 0;
+        }
+        default { 
+            return 1; 
+        }
     }
 
 
