@@ -49,7 +49,6 @@ taxonomy = Application::SolidManure::CincorpTime
 ?if !Kantonal_LU
   +incorp_lw4h
     type  = percent
-    default_calc = 0  
     ++labels
       en = Share of solid manure incorporated within 4 hours (in %)
       de = Mist eingearbeitet innerhalb von 4 Stunden: Anteil in Prozent
@@ -73,7 +72,6 @@ taxonomy = Application::SolidManure::CincorpTime
 
   +incorp_lw8h
     type  = percent
-    default_calc = 0    
     ++labels
       en = Share of solid manure incorporated within 8 hours (in %)
       de = Mist eingearbeitet innerhalb von 8 Stunden: Anteil in Prozent
@@ -145,7 +143,6 @@ taxonomy = Application::SolidManure::CincorpTime
 ?if !Kantonal_LU
   +incorp_gt3d
     type  = percent
-    default_calc = 0  
     ++labels
       en = Share of solid manure incorporated more than 3 days (in %)
       de = Mist eingearbeitet innerhalb von mehr als 3 Tagen: Anteil in Prozent

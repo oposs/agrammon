@@ -21,6 +21,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 +mitigation_housing_floor
   type  = enum
   default_calc = none
+  default_gui = none
   ++enum
     +++none
        en = none
@@ -46,7 +47,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 
 +mitigation_housing_air
   type  = enum
-  default_calc = none
   ++enum
     +++none
        en = none
@@ -99,11 +99,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     Reduction factor for the emission due to UNECE housing systems tasks for fully and partly slatted floors.
   ++formula
     given ( In(mitigation_housing_floor) ) {
-      when "none" {
-        0;
-      }
-      default {
-        # TODO: Warning not defined mitigation_housing_floor! (Same with red_housing_air below)
+      when 'none' {
         0;
       }
     }

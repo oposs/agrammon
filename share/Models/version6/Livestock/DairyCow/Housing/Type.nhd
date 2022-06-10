@@ -100,13 +100,6 @@ Selects the emission rate and other correction factors for the specific housing 
   ++description
     Housing type (needed in other modules).
   ++formula
-    if ( not defined In(housing_type) ) {
-      writeLog({
-        en => "TODO: dairy cow input 'housing_type' not defined!",
-        de => "TODO: dairy cow input 'housing_type' not defined!",
-        fr => "TODO: dairy cow input 'housing_type' not defined!"
-      });
-    }
     In(housing_type);
 
 +k_area

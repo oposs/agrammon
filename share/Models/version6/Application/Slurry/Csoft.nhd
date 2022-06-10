@@ -29,7 +29,6 @@ taxonomy = Application::Slurry::Csoft
 ?if !Kantonal_LU
   +appl_evening 
     type  = percent
-    default_calc = 0 
     ++labels 
       en = Share of slurry applied in the evening after 18:00
       de = Anteil Gülleausbringung am Abend nach 18:00 Uhr
@@ -48,7 +47,6 @@ taxonomy = Application::Slurry::Csoft
    
   +appl_hotdays
     type  = enum
-    default_calc = sometimes
     ++enum
       +++frequently
          en = frequently

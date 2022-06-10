@@ -63,6 +63,45 @@ taxonomy = Top
     +++de
        <p>Test Eingabe3</p>
 
++input4
+  type = integer
+  ++default_formula
+    42
+  ++labels
+    en = Input4
+    de = Eingabe4
+  ++units
+    en = -
+  ++description
+    Test input4
+  ++help
+    +++en
+       <p>Test input4</p>
+    +++de
+       <p>Test Eingabe4</p>
+
++input5
+  type = enum
+  ++default_formula
+    'orangs'
+  ++enum
+    +++orangs
+       de = Orang Utans
+    +++chimps
+       de = Schimpansen
+  ++labels
+    en = Input5
+    de = Eingabe5
+  ++units
+    en = -
+  ++description
+    Test input5
+  ++help
+    +++en
+       <p>Test input5</p>
+    +++de
+       <p>Test Eingabe5</p>
+
 *** technical ***
 
 +tech1
@@ -106,3 +145,21 @@ taxonomy = Top
     In(input3);
   ++description
     output3
+
++output4
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+  ++formula
+    In(input4);
+  ++description
+    output4
+
++output5
+  ++units
+    en = -
+    de = -
+  ++formula
+    In(input5);
+  ++description
+    output5
