@@ -85,13 +85,37 @@ paths:
                       enum:
                           - model
                           - calculation
+                - in: query
+                  name: format
+                  description: output format; defaults to `text`
+                  schema:
+                      type: string
+                      enum:
+                          - text
+                          - csv
+                          - json
+                - in: query
+                  name: language
+                  schema:
+                     type: string
+                     description: language for various parameters, defaults to `de`
+                     enum:
+                         - de
+                         - en
+                         - fr
             responses:
                 '200':
-                    description: Input template CSV file
+                    description: Input template file in specified format
                     content:
+                        application/json:
+                            schema:
+                                description: JSON formatted
                         text/csv:
                             schema:
-                                type: string
+                                description: CSV formatted
+                        text/plain:
+                            schema:
+                                description: human readable text formatted
                 '400':
                     description: Invalid request.
                     content:

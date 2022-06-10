@@ -1,5 +1,7 @@
 # Agrammon Change Log
 
+  - extend REST inputTemplate for json
+
 - 6.2.1, 2022-03-09, fritz.zaucker@oetiker.ch
 
   - fix send dataset

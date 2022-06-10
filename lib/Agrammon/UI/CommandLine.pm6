@@ -163,9 +163,10 @@ multi sub MAIN(
 }
 
 #| Dump model
-multi sub MAIN('dump', Str $filename, ExistingFile :$cfg-file, Str :$variants = 'Base', SortOrder :$sort = 'model') is export {
+multi sub MAIN('dump', Str $filename, ExistingFile :$cfg-file, Str :$variants = 'Base', SortOrder :$sort = 'model',
+               SupportedLanguage :$language = 'de', OutputFormat :$format = 'text') is export {
     my ($model) = load-model($cfg-file, $filename, $variants);
-    say chomp $model.dump($sort);
+    say chomp $format eq 'json' ?? $model.dump-json($sort, $language) !! $model.dump($sort, $language);
 }
 
 #| Create LaTeX documentation

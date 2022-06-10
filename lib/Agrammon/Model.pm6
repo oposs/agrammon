@@ -1,4 +1,6 @@
 use v6;
+use JSON::Fast;
+
 use Agrammon::Formula::Compiler;
 use Agrammon::Inputs;
 use Agrammon::Formula::LogCollector;
@@ -128,11 +130,11 @@ class Agrammon::Model {
             my $*AGRAMMON-TAXONOMY = my $tax = $!module.taxonomy;
             my %*AGRAMMON-GUI = %(:de(@gui[1]), :fr(@gui[2]), :en(@gui[3])) if @gui;
             my $env = Agrammon::Environment.new(
-                input => $input.input-hash-for($tax),
-                technical => $!module.technical-hash,
-                technical-override => %technical{$tax},
-                output => $outputs
-            );
+                    input => $input.input-hash-for($tax),
+                    technical => $!module.technical-hash,
+                    technical-override => %technical{$tax},
+                    output => $outputs
+                    );
             for $!module.output -> $output {
                 my $*AGRAMMON-OUTPUT = my $name = $output.name;
                 my $result = $output.compiled-formula()($env);
@@ -194,7 +196,7 @@ class Agrammon::Model {
             }
             my %input-data := $input-data.input-hash-for($!module.taxonomy);
             for $!module.input -> Agrammon::Model::Input $input {
-                my $key   = $input.name;
+                my $key = $input.name;
                 my $value = %input-data{$key};
                 @result.push: AnnotatedInput.new: :$!module, :$input, :$instance-id, :$value, :%gui-root;
             }
@@ -244,9 +246,9 @@ class Agrammon::Model {
 
         {
             return Agrammon::ModuleParser.parse(
-                preprocess($file.slurp, %!preprocessor-options),
-                actions => $!module-builder
-            ).ast;
+                    preprocess($file.slurp, %!preprocessor-options),
+                    actions => $!module-builder
+                    ).ast;
             CATCH {
                 die "Failed to parse module $file:\n$_";
             }
@@ -263,7 +265,7 @@ class Agrammon::Model {
     method !load-internal($module-name, $root?, $root-module?, :%pending, :%loaded --> ModuleRunner) {
         # trying to load module while already loading it
         die X::Agrammon::Model::CircularModel.new(:module($module-name))
-            if %pending{$module-name}:exists;
+        if %pending{$module-name}:exists;
 
         # module has already been loaded
         return $_ with %loaded{$module-name};
@@ -286,8 +288,8 @@ class Agrammon::Model {
         for @externals -> $external {
             my $external-name = $external.name;
             my $include = $external-name.starts-with('::')
-                ?? $external-name.substr(2)
-                !! $parent
+                    ?? $external-name.substr(2)
+                    !! $parent
                     ?? normalize($parent ~ '::' ~ $external-name)
                     !! $external-name;
             push @dependencies, self!load-internal($include, $instance-root, $gui-root-module, :%pending, :%loaded);
@@ -313,38 +315,38 @@ class Agrammon::Model {
             for $module.output -> $output (:$name, :$formula, *%) {
                 with $formula.input-used.first(* !(elem) %known-input) {
                     die X::Agrammon::Model::InvalidInput.new(
-                        module => $module.taxonomy,
-                        output => $output.name,
-                        input => $_
-                    );
+                            module => $module.taxonomy,
+                            output => $output.name,
+                            input => $_
+                            );
                 }
 
                 with $formula.technical-used.first(* !(elem) %known-technical) {
                     die X::Agrammon::Model::InvalidTechnical.new(
-                        module => $module.taxonomy,
-                        output => $output.name,
-                        technical => $_
-                    );
+                            module => $module.taxonomy,
+                            output => $output.name,
+                            technical => $_
+                            );
                 }
 
                 for $formula.output-used -> $sym {
                     with %known-outputs{$sym.module} -> %module-outputs {
                         without %module-outputs{$sym.symbol} {
                             die X::Agrammon::Model::InvalidOutputSymbol.new(
-                                module => $module.taxonomy,
-                                output => $output.name,
-                                from => $sym.module,
-                                symbol => $sym.symbol
-                            );
+                                    module => $module.taxonomy,
+                                    output => $output.name,
+                                    from => $sym.module,
+                                    symbol => $sym.symbol
+                                    );
                         }
                     }
                     else {
                         die X::Agrammon::Model::InvalidOutputModule.new(
-                            module => $module.taxonomy,
-                            output => $output.name,
-                            from => $sym.module,
-                            symbol => $sym.symbol
-                        );
+                                module => $module.taxonomy,
+                                output => $output.name,
+                                from => $sym.module,
+                                symbol => $sym.symbol
+                                );
                     }
                 }
 
@@ -410,14 +412,45 @@ class Agrammon::Model {
         $!entry-point.annotate-inputs($input-data)
     }
 
-    method dump(Str $sort) {
+    method dump(Str $sort, $language) {
         my Str $output;
         my \order = $sort eq 'calculation' ?? @!evaluation-order.reverse !! @!load-order;
         for order {
             my $level = .taxonomy.comb('::').elems;
-            $output  ~= .taxonomy.indent(4 * $level) ~ "\n";
+            $output  ~= .taxonomy.indent(4 * $level);
+            $output ~= '[]' if (.instance-root // '') eq .taxonomy;
+            $output ~= "\n";
+            for .input -> $input {
+                $output  ~= $input.name.indent(4 * ($level + 1)) ~ "\n";
+                $output  ~= $input.labels{$language}.indent(4 * ($level + 2))
+                        ~ ' [' ~ ($input.units{$language} // '') ~ "]\n";
+
+            }
         }
         return $output;
+    }
+
+    method dump-json(Str $sort, $language) {
+        my %input-hash;
+        my \order = $sort eq 'calculation' ?? @!evaluation-order.reverse !! @!load-order;
+        for order {
+            my @keys = .taxonomy.split('::');
+            my $last = @keys.pop;
+            my $cursor = %input-hash;
+            for @keys -> $element {
+                $cursor{$element} //= %();
+                $cursor = $cursor{$element};
+            }
+            $cursor{$last}<instances> = True if .instances;
+            if .input.elems {
+                my @inputs;
+                $cursor{$last}<inputs> = @inputs;
+                for .input {
+                    @inputs.push(.as-template-hash($language));
+                }
+            }
+        }
+        return to-json %input-hash;
     }
 
     method get-module(Str $taxonomy --> Agrammon::Model::Module) {
@@ -434,7 +467,9 @@ class Agrammon::Model {
             }
         }
         else {
-            $_ # The module lookup failure
+            $_
+            # The module lookup failure
+
         }
     }
 
@@ -470,7 +505,7 @@ class Agrammon::Model {
         %!output-print-cache ||= @!evaluation-order.map({
             .taxonomy => %(.output.map({ .name => (.split(',').List with .print) }))
         });
-        !@print-set or ( %!output-print-cache{$module}{$output} ) ∩ @print-set
+        !@print-set or (%!output-print-cache{$module}{$output}) ∩ @print-set
     }
 
     method output-format(Str $module, Str $output) {

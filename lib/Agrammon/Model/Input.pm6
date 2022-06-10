@@ -50,15 +50,25 @@ class Agrammon::Model::Input {
         }
     }
 
-    method enum(--> Hash) { %!enum-lookup }
+    method enum(--> Hash) {
+        %!enum-lookup
+    }
 
-    method enum-ordered(--> Array) { @!enum-order }
+    method enum-ordered(--> Array) {
+        @!enum-order
+    }
 
-    method is-valid-enum-value($value) { %!enum-lookup{$value}:exists }
+    method is-valid-enum-value($value) {
+        %!enum-lookup{$value}:exists
+    }
 
-    method is-distribute(--> Bool) { $!distribute }
+    method is-distribute(--> Bool) {
+        $!distribute
+    }
 
-    method is-filter(--> Bool) { $!filter }
+    method is-filter(--> Bool) {
+        $!filter
+    }
 
     method as-hash {
         my $validator = $.validator;
@@ -85,9 +95,9 @@ class Agrammon::Model::Input {
         }
 
         return %(
-            :defaults( %(
-                calc       => $.default-calc,
-                gui        => $.default-gui,
+            :defaults(%(
+                calc => $.default-calc,
+                gui => $.default-gui,
                 hasFormula => $.default-formula.defined,
             )),
             :enum(%!enum-lookup),
@@ -105,4 +115,22 @@ class Agrammon::Model::Input {
         );
     }
 
+    method as-template-hash($language) {
+        my %input =
+            variable => $!name,
+            unit => %!units{$language} // %!units<en> // '',
+            label => %!labels{$language} // %!labels<en>;
+        if $!type eq 'enum' {
+            %input<enums> = %!enum-lookup;
+        }
+        %input<help> = %!help{$language} // %!help<en> // '';
+        %input<validator> = $!validator if $!validator;
+        with $.default-formula {
+            %input<hasDefaultFormula> = $.default-formula.defined;
+        }
+        with $.default-calc {
+            %input<default> = $.default-calc;
+        }
+        return %input
+    }
 }

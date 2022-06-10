@@ -8,6 +8,7 @@ use Agrammon::TechnicalParser;
 use Agrammon::UI::Web;
 use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
+use JSON::Fast;
 use DB::Pg;
 use Test;
 
@@ -16,7 +17,7 @@ use AgrammonTest;
 
 # FIX ME: use separate test database
 
-plan 41;
+plan 42;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -386,6 +387,25 @@ transactionally {
         ) },
         X::Agrammon::DB::User::UnknownRole,
         "User needs valid role";
+}
+
+subtest "Get input template ..." => {
+    my $sort = 'model';
+    my $language = 'de';
+
+    subtest "... as JSON" => {
+        ok my $input-hash = from-json $ws.get-input-template($sort, 'json', $language);
+        is $input-hash<Livestock><DairyCow><Excretion><inputs>[0]<variable>, 'animalcategory', 'Found input animalcategory';
+    }
+
+    subtest "... as CSV" => {
+        ok my $inputs = $ws.get-input-template($sort, 'csv', $language);
+        ok $inputs ~~ / 'Livestock::DairyCow[Demo]::Excretion' /, "Found Livestock::DairyCow::Excretion";
+    }
+    subtest "... as TEXT" => {
+        ok my $inputs = $ws.get-input-template($sort, 'text', $language);
+        ok $inputs ~~ / 'Livestock::DairyCow::Excretion' /, "Found Livestock::DairyCow::Excretion";
+    }
 }
 
 subtest "Get model data" => {
