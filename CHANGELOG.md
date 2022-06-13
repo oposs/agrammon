@@ -1,5 +1,7 @@
 # Agrammon Change Log
 
+  - extend REST inputTemplate for json
+
 - pre, 2022-06-09, christoph.haeni@bfh.ch
 
   - fix model bug ignoring revised housing_type for poultry 

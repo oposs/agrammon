@@ -263,17 +263,29 @@ subtest 'load()' => {
 subtest 'dump()' => {
     my $path = $*PROGRAM.parent.add('test-data/Models/test_simple/');
     my $output-expected = q:to/OUTPUT/;
-        Simple
-            Simple::Sub1
-            Simple::Sub1a
-            Simple::Sub2
-            Simple::Sub2a
-            Simple::Sub2b
-        OUTPUT
+    Simple
+        input1
+            Input1 [-]
+        Simple::Sub1
+            sub1Input1
+                Input1 [-]
+        Simple::Sub1a
+            sub1aInput1
+                Input1 [-]
+        Simple::Sub2
+            sub1Input1
+                Input1 [-]
+        Simple::Sub2a
+            sub2aInput1
+                Input1 [-]
+        Simple::Sub2b
+            sub2bInput1
+                Input1 [-]
+    OUTPUT
     given 'Simple' -> $module {
         ok my $model = Agrammon::Model.new(:$path);
         $model.load($module);
-        is $model.dump('model'), $output-expected, 'Output as expected';
+        is $model.dump('model', 'en'), $output-expected, 'Output as expected';
     }
 }
 

@@ -236,22 +236,29 @@ class Agrammon::Web::Service {
     }
 
     #| Get a CSV formatted template of all model inputs
-    #| with one demo instance for all multi-instance modules.
-    method get-input-template($sort) {
-        my @modules := $sort eq 'model' ?? $!model.load-order !! $!model.evaluation-order;
-        my Str @inputs;
-        for @modules -> $module {
-            if $module.instance-root -> $root {
-                # Multi-instance module
-                my $instance-name = 'Demo';
-                add-module-inputs(@inputs, $module, :$instance-name);
-            }
-            else {
-                # Single instance module
-                add-module-inputs(@inputs, $module);
+    #| CSV format has one demo instance for all multi-instance modules.
+    method get-input-template($sort, $format, $language) {
+        my $model = self.model;
+        given $format {
+            when 'json' { $model.dump-json($sort, $language) };
+            when 'text' { $model.dump($sort, $language) };
+            when 'csv'  {
+                my @modules := $sort eq 'model' ?? $!model.load-order !! $!model.evaluation-order;
+                my Str @inputs;
+                for @modules -> $module {
+                    if $module.instance-root -> $root {
+                        # Multi-instance module
+                        my $instance-name = 'Demo';
+                        add-module-inputs(@inputs, $module, :$instance-name);
+                    }
+                    else {
+                        # Single instance module
+                        add-module-inputs(@inputs, $module);
+                    }
+                }
+                @inputs.join("\n") ~ "\n";
             }
         }
-        @inputs
     }
 
     method get-latex(Str $technical-file, Str $sort) {

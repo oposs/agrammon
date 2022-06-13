@@ -82,12 +82,12 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        en = Rabbit doe inc. kits
        de = Zibbe mit Jungtieren
        fr = lapin y juv.
-       it = 
+       it = Zibbe mit Jungtieren
     +++rabbit_young
        en = young rabbit (older 35d)
        de = Jungtier (ab 35 Tage)
        fr = lapin jeune (a 35 jour)
-       it = 
+       it = Jungtier (ab 35 Tage)
   
  ++labels
     en = Animal category

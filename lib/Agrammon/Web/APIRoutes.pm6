@@ -63,8 +63,25 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
             content 'text/plain', $ws.get-technical($technical);
         }
 
-        operation 'getInputTemplate', -> APIUser $user, :$sort = 'model' {
-            content 'text/csv', $ws.get-input-template($sort).join("\n") ~ "\n";
+        operation 'getInputTemplate', -> APIUser $user,
+                                         :$sort = 'model', :$format = 'json',
+                                         :$language = 'de' {
+            my $inputs = $ws.get-input-template($sort, $format, $language);
+            if not ($format eq 'json' or $format eq 'csv' or $format eq 'text') {
+                my $error = "Content type is '$format', must be 'json' or 'csv' or 'text'";
+                $format eq 'json'
+                        ?? bad-request 'application/json', %( :$error)
+                        !! bad-request 'text/plain', $error ~ "\n";
+            }
+            else {
+                my $content-type;
+                given $format {
+                    when 'json' { $content-type = 'application/json' };
+                    when 'text' { $content-type = 'text/plain' };
+                    when 'csv'  { $content-type = 'text/csv' };
+                }
+                content $content-type, $inputs;
+            }
         }
 
         operation 'runSimulation', -> APIUser $user, :$accept is header = 'text/plain' {

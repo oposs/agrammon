@@ -4,6 +4,10 @@ use Agrammon::Web::Service;
 
 use Cro::HTTP::Client;
 use Cro::HTTP::Test;
+use Cro::HTTP::Router;
+use Cro::OpenAPI::RoutesFromDefinition;
+
+use JSON::Fast;
 use Test::Mock;
 use Test;
 
@@ -19,14 +23,18 @@ my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
     },
     overriding => {
-        get-outputs-for-rest => -> Str $simulation-name, Str $dataset-name, Str $csv-data, $type,
-                :$model-version, :$variants, :$technical-file,
-                :$language, :$format, :$print-only,
-                :$include-filters, :$all-filters {
-            "Test results"
+        get-input-template => -> $sort, $format, $language {
+            given $format {
+                when 'json' { to-json %() } ;
+                when 'csv'  { "module;variable;" } ;
+                when 'text' { "module\n\tvariable" } ;
+            }
         },
-        get-input-template => -> $user, :$sort {
-            "module;variable;"
+        get-outputs-for-rest => -> Str $simulation-name, Str $dataset-name, Str $csv-data, $type,
+                                       :$model-version, :$variants, :$technical-file,
+                                       :$language, :$format, :$print-only,
+                                        :$include-filters, :$all-filters {
+            "Test results"
         },
     }
 );
@@ -53,14 +61,41 @@ subtest 'Get LaTeX' => {
     }
 }
 
-subtest 'Get input template' => {
-    test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
-        test-given '/inputTemplate', {
-            test get,
-                status => 200,
-        };
-        check-mock $fake-store,
-            *.called('get-input-template', times => 1);
+subtest 'Get input template ...' => {
+    subtest '... as JSON' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/inputTemplate?format=json', {
+                test get,
+                    status => 200,
+                    content-type => 'application/json',
+            };
+            check-mock $fake-store,
+                *.called('get-input-template', times => 1);
+        }
+    }
+
+    subtest '... as CSV' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/inputTemplate?format=csv', {
+                test get,
+                    status => 200,
+                    content-type => 'text/csv',
+            };
+            check-mock $fake-store,
+                    *.called('get-input-template', times => 2);
+        }
+    }
+
+    subtest '... as TEXT' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/inputTemplate?format=text', {
+                test get,
+                    status => 200,
+                    content-type => 'text/plain',
+            };
+            check-mock $fake-store,
+                    *.called('get-input-template', times => 3);
+        }
     }
 }
 
@@ -88,7 +123,10 @@ subtest 'Run simulation' => {
     subtest 'Required parameters' => {
         test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
             test-given '/run', {
-                test post(:content-type('multipart/form-data'), :body(make-body(%{})) ),
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body(make-body(%{}))
+                ),
                 status => 200,
             };
             check-mock $fake-store,
@@ -99,15 +137,18 @@ subtest 'Run simulation' => {
     subtest 'Correct optional parameters' => {
         test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
             test-given '/run', {
-                test post(:content-type('multipart/form-data'),
-                          :body(make-body(%{
-                                                 :language('de'),
-                                                 :model('version6'),
-                                                 :variants('Base'),
-                                             }
-                                         )
-                               )
-                         ),
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body(
+                        make-body(
+                            %{
+                                :language('en'),
+                                :model('version6'),
+                                :variants('Base'),
+                            }
+                        )
+                    )
+                ),
                 status => 200,
             };
             check-mock $fake-store,
