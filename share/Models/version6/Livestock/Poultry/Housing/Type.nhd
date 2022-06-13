@@ -357,7 +357,7 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
   ++formula
     if ( Val(animalcategory, ..::Excretion) eq "layers" or 
          Val(animalcategory, ..::Excretion) eq "growers" ) {
-      given ( In(housing_type) ) {
+      given ( Out(housing_type) ) {
         when "manure_belt_without_manure_belt_drying_system" {
           return Tech(er_housing_layers_growers_manure_belt_without_manure_belt_drying_system);
         } 
@@ -382,8 +382,8 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
   ++description
     Emission rate for the poultry housing type.
   ++formula
-    if ( In(housing_type) eq "manure_belt_without_manure_belt_drying_system" or 
-         In(housing_type) eq "manure_belt_with_manure_belt_drying_system" ) {
+    if ( Out(housing_type) eq "manure_belt_without_manure_belt_drying_system" or 
+         Out(housing_type) eq "manure_belt_with_manure_belt_drying_system" ) {
       given ( In(manure_removal_interval) ) {
         when "less_than_twice_a_month" {
          return Tech(c_manure_removal_interval_less_than_twice_a_month);
