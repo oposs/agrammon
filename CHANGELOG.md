@@ -1,5 +1,15 @@
 # Agrammon Change Log
 
+- pre, 2022-06-09, christoph.haeni@bfh.ch
+
+  - fix model bug ignoring revised housing_type for poultry 
+    emission rate
+  - fix model bug ignoring NxOx emissions 
+    for Label_Slurry_Open systems
+  - fix regional model bug evaluating default_calc 
+    instead of user selection for drop down selection
+    (enums) -> see issue #539
+
 - 6.2.1, 2022-03-09, fritz.zaucker@oetiker.ch
 
   - fix send dataset
