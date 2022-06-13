@@ -27,6 +27,7 @@ given $outputs.new-instance('Test::SubModule', 'Monkey C') {
 my $include-filters = False;
 my @print-set;
 my $json= output-as-json($model, $outputs, "en", @print-set, $include-filters);
+my $json-short= output-as-json($model, $outputs, "en", @print-set, $include-filters, :short);
 my $gui= output-for-gui($model, $outputs, :language("en"), :$include-filters);
 is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
 [
@@ -220,6 +221,80 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
   "log": [
   ]
 }
+OUTPUT
+
+is to-json($json-short, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct short JSON output";
+[
+  {
+    "filters": [
+    ],
+    "label": null,
+    "print": "7",
+    "unit": "monkeys/hour",
+    "value": 142,
+    "var": "Test::result"
+  },
+  {
+    "filters": [
+    ],
+    "instance": "Monkey A",
+    "label": null,
+    "print": "7",
+    "unit": "monkeys/hour",
+    "value": 20,
+    "var": "Test::SubModule[Monkey A]::sub_result"
+  },
+  {
+    "filters": [
+    ],
+    "instance": "Monkey A",
+    "label": null,
+    "print": "7",
+    "unit": "monkey kids",
+    "value": 5,
+    "var": "Test::SubModule[Monkey A]::SubTest::kids"
+  },
+  {
+    "filters": [
+    ],
+    "instance": "Monkey B",
+    "label": null,
+    "print": "7",
+    "unit": "monkeys/hour",
+    "value": 30,
+    "var": "Test::SubModule[Monkey B]::sub_result"
+  },
+  {
+    "filters": [
+    ],
+    "instance": "Monkey B",
+    "label": null,
+    "print": "7",
+    "unit": "monkey kids",
+    "value": 10,
+    "var": "Test::SubModule[Monkey B]::SubTest::kids"
+  },
+  {
+    "filters": [
+    ],
+    "instance": "Monkey C",
+    "label": null,
+    "print": "7",
+    "unit": "monkeys/hour",
+    "value": 40,
+    "var": "Test::SubModule[Monkey C]::sub_result"
+  },
+  {
+    "filters": [
+    ],
+    "instance": "Monkey C",
+    "label": null,
+    "print": "7",
+    "unit": "monkey kids",
+    "value": 15,
+    "var": "Test::SubModule[Monkey C]::SubTest::kids"
+  }
+]
 OUTPUT
 
 done-testing;
