@@ -39,7 +39,7 @@ sub get-data($model, $outputs, $include-filters, @print-set, $short, $language?)
                 push @records, make-record($module, $output, $model, $raw-value, $var, $order, $short, :$language, :@print-set);
                 if $include-filters {
                     if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
-                        add-filters(@records, $module, $output, $model, $raw-value, $var, $order, :@print-set);
+                        add-filters(@records, $module, $output, $model, $raw-value, $var, $order, $short, :@print-set);
                     }
                 }
                 $last-order = $order;
@@ -55,7 +55,7 @@ sub get-data($model, $outputs, $include-filters, @print-set, $short, $language?)
                         push @records, make-record($fq-name, $output, $model, $raw-value, $var, $order, $short, $instance-id, :$language, :@print-set);
                         if $include-filters {
                             if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
-                                add-filters(@records, $fq-name, $output, $model, $raw-value, $var, $order, :@print-set);
+                                add-filters(@records, $fq-name, $output, $model, $raw-value, $var, $order, $short, :@print-set);
                             }
                         }
                         $last-order = $order;
@@ -109,11 +109,11 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, $order, $short, $in
 
 sub add-filters(@records, $fq-name, $output, $model,
                  Agrammon::Outputs::FilterGroupCollection $collection,
-                 $var, $order, :@print-set) {
+                 $var, $order, $sort, :@print-set) {
     for $collection.results-by-filter-group {
         my %keyFilters := .key;
         my @filters = translate-filter-keys($model, %keyFilters).map: -> $trans { %( label => $trans.key, enum => $trans.value ) };
         my $value := .value;
-        push @records, make-record($fq-name, $output, $model, $value, $var, $order, :@print-set, :@filters);
+        push @records, make-record($fq-name, $output, $model, $value, $var, $order, $sort, :@print-set, :@filters);
     }
 }
