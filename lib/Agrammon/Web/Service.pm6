@@ -291,7 +291,7 @@ class Agrammon::Web::Service {
         Str $simulation-name, Str $dataset-name, $input-data, InputFormats $type,
         :$model-version, :$variants, :$technical-file,
         :$language = 'de', OutputFormats :$format!, :$print-only,
-        :$include-filters = False, :$all-filters = False
+        :$include-filters = False, :$all-filters = False, :$compact-output
     ) {
         my $data-source = do given $type {
             when 'text/csv'         { Agrammon::DataSource::CSV.new }
@@ -329,6 +329,7 @@ class Agrammon::Web::Service {
         my $outputs = $!model.run(:$input, :%technical);
 
         my @print-set = ($print-only).split(',') if $print-only;
+        my $short = $compact-output eq 'true';
         my $result;
         given $format {
             when 'text/csv' {
@@ -340,7 +341,8 @@ class Agrammon::Web::Service {
             }
             when 'application/json' {
                 $result = output-as-json(
-                    $!model, $outputs, $language, @print-set, $include-filters, :$all-filters
+                    $!model, $outputs, $language, @print-set, $include-filters, :$all-filters,
+                    :$short
                 );
             }
             when 'text/plain' {

@@ -229,6 +229,12 @@ components:
                     enum:
                         - 'true'
                         - 'false'
+                compact-output:
+                    description: compact instead of full output
+                    type: string
+                    enum:
+                        - 'true'
+                        - 'false'
         Error:
             required:
                 - error
