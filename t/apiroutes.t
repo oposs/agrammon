@@ -33,7 +33,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
         get-outputs-for-rest => -> Str $simulation-name, Str $dataset-name, Str $csv-data, $type,
                                        :$model-version, :$variants, :$technical-file,
                                        :$language, :$format, :$print-only,
-                                        :$include-filters, :$all-filters {
+                                        :$include-filters, :$all-filters, :$compact-output {
             "Test results"
         },
     }

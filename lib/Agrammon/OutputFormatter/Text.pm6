@@ -80,6 +80,8 @@ sub add-filters(@module-lines, Agrammon::Outputs::FilterGroupCollection $collect
     for @results {
         my %filters := .key;
         my $value := .value;
+#        TODO: make this an option
+#        next unless $value;
         my @filters = %filters.map: { .key ~ '=' ~ .value };
         for (@filters || '(Uncategorized)').kv -> $idx, $filter-id {
             my $padding = ' ' x $longest-filter - $filter-id.chars;
