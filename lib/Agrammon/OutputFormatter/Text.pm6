@@ -77,9 +77,12 @@ sub add-filters(@module-lines, Agrammon::Outputs::FilterGroupCollection $collect
         $unit, Str $prefix, Bool :$all-filters) {
     my @results = $collection.results-by-filter-group(:all($all-filters));
     my $longest-filter = @results.map({ .key.map({ .key.chars + .value.chars }) }).flat.max + 1;
+    warn "TEXT formatter might have to be extended for multiple filter groups" if @filters.elems > 1;
     for @results {
         my %filters := .key;
         my $value := .value;
+#        TODO: make this an option
+#        next unless $value;
         my @filters = %filters.map: { .key ~ '=' ~ .value };
         for (@filters || '(Uncategorized)').kv -> $idx, $filter-id {
             my $padding = ' ' x $longest-filter - $filter-id.chars;
