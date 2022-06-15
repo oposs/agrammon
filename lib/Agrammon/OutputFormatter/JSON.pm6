@@ -140,7 +140,6 @@ sub merge-filters($record, $fq-name, $output, $model,
 #        TODO: make this an option
 #        next unless $value;
         my $filter-record =  make-record($fq-name, $output, $model, $value, $var, $order, $sort, :@print-set, :@filters);
-        dd $filter-record;
         push $record<values>, %( :label($filter-record<filters>[0]<enum>{$language}), :value($filter-record<fullValue>));
     }
     push $record<values>, %( :label($record<label>:delete), :value($record<fullValue>:delete));
