@@ -133,7 +133,6 @@ sub add-filters(@records, $fq-name, $output, $model,
 sub merge-filters($record, $fq-name, $output, $model,
                 Agrammon::Outputs::FilterGroupCollection $collection,
                 $var, $order, $sort, $language?, :@print-set) {
-    warn "JSON formatter must be extended for multiple filter groups" if @filters.elems > 1;
     for $collection.results-by-filter-group {
         my %keyFilters := .key;
         my @filters = translate-filter-keys($model, %keyFilters).map: -> $trans { %( label => $trans.key, enum => $trans.value ) };
