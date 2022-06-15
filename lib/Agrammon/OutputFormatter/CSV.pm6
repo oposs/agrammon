@@ -16,11 +16,11 @@ sub output-as-csv(
 ) is export {
     return (gather for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
         my $prefix = "$simulation-name;$dataset-id" if $simulation-name;
+        my $filters = $include-filters ?? 'total' !! '';
         when Hash {
             for sorted-kv($_) -> $output, $value {
                 next unless $model.should-print($module, $output, @print-set);
 
-                my $filters = '';
                 my $raw-value = $value;
                 my $var = $output;
                 my $unit = $model.output-unit($module, $output, $language);
@@ -42,7 +42,6 @@ sub output-as-csv(
         }
         when Array {
             for sorted-kv($_) -> $instance-id, %instance-outputs {
-                my $filters = '';
                 for sorted-kv(%instance-outputs) -> $fq-name, %values {
                     my $q-name = module-with-instance($module, $instance-id, $fq-name);
                     for sorted-kv(%values) -> $output, $value {
@@ -82,8 +81,8 @@ sub add-filters(Agrammon::Outputs::FilterGroupCollection $collection,
         for (@filters || ( :value('Uncategorized') ) ) {
             my @data = (
                 |($prefix if $prefix),
-                $q-name,
-                $fq-name,
+                $q-name,  # module
+                $fq-name, # variable
                 .<value>,
                 flat-value($raw-value) // '',
                 $unit
