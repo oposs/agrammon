@@ -1,6 +1,11 @@
 # Agrammon Change Log
 
-  - extend REST inputTemplate for json
+
+- feature branch floor_mitigation, 2022-06-09, christoph.haeni@bfh.ch
+
+  - pigs: 
+    - floor mitigation has effect on both indoors and outdoors
+    - Slurry_Label_Open has 100% flow into outdoors
 
 - pre, 2022-06-09, christoph.haeni@bfh.ch
 

@@ -88,7 +88,9 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
             request-body 'multipart/form-data' => -> (
                 :$simulation!,  :$dataset!, :$inputs!, :$technical='',
                 :$model = 'version6', :$variants = 'Base', :$language = 'de',
-                :$print-only = '', :$include-filters = 'false', :$all-filters = 'false'
+                :$print-only = '',
+                :$compact-output = 'true',
+                :$include-filters = 'false', :$all-filters = 'false'
             ) {
                 my $type = $inputs.content-type;
                 if not ($type eq 'application/json' or $type eq 'text/csv') {
@@ -103,6 +105,7 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
                         ~$simulation, ~$dataset, $input-data, ~$type,
                         :model-version(~$model), :variants(~$variants), :technical-file(~$technical),
                         :language(~$language), :format($accept), :print-only(~$print-only),
+                        :$compact-output,
                         :include-filters($include-filters eq 'true'), :all-filters($all-filters eq 'true')
                     );
                     if $accept eq 'application/json' {

@@ -153,12 +153,12 @@ subtest 'Running the model produces output instances with filters' => {
 
         my $csv = output-as-csv('Demo', 'Test', $model, $output, "en", @print-set, $include-filters) ~ "\n";
         is $csv, q:to/OUTPUT/, 'Correct CSV output';
-            Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;;141.003688;kg N/year
+            Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;total;141.003688;kg N/year
             Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;nursing_sows;88.156444;kg N/year
             Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;dry_sows;0;kg N/year
             Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;weaned_piglets_up_to_25kg;20.826;kg N/year
             Demo;Test;SummaryByAnimalCategory;n_excretion_otherpig;boars;32.021244;kg N/year
-            Demo;Test;Total;nh3_nanimalproduction;;352.7111423399035;kg N/year
+            Demo;Test;Total;nh3_nanimalproduction;total;352.7111423399035;kg N/year
             OUTPUT
 
         my $text = output-as-text($model, $output, "en", @print-set, $include-filters) ~ "\n";
@@ -177,135 +177,30 @@ subtest 'Running the model produces output instances with filters' => {
         is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
             [
               {
-                "filters": [
-                ],
-                "format": "%.0f",
-                "fullValue": 141.003688,
-                "label": null,
-                "order": -1,
                 "print": "OtherPigFlux",
                 "unit": "kg N/year",
-                "value": "141",
-                "var": "SummaryByAnimalCategory::n_excretion_otherpig"
-              },
-              {
-                "filters": [
+                "values": [
                   {
-                    "enum": {
-                      "de": "Säugende Sauen",
-                      "en": "nursing sows",
-                      "fr": "Truies allaitantes",
-                      "it": "nursing sows"
-                    },
-                    "label": {
-                      "de": "Tierkategorie",
-                      "en": "Animal category",
-                      "fr": "Catégorie d'animaux"
-                    }
+                    "label": "nursing sows",
+                    "value": 88.156444
+                  },
+                  {
+                    "label": "dry sows",
+                    "value": 0.0
+                  },
+                  {
+                    "label": "weaned piglets up to 25kg",
+                    "value": 20.826
+                  },
+                  {
+                    "label": "boars",
+                    "value": 32.021244
+                  },
+                  {
+                    "label": null,
+                    "value": 141.003688
                   }
                 ],
-                "format": "%.0f",
-                "fullValue": 88.156444,
-                "labels": {
-                },
-                "order": -1,
-                "print": "OtherPigFlux",
-                "units": {
-                  "de": "kg N/Jahr",
-                  "en": "kg N/year",
-                  "fr": "kg N/an"
-                },
-                "value": "88",
-                "var": "SummaryByAnimalCategory::n_excretion_otherpig"
-              },
-              {
-                "filters": [
-                  {
-                    "enum": {
-                      "de": "Galtsauen",
-                      "en": "dry sows",
-                      "fr": "Truies gestantes",
-                      "it": "dry sows"
-                    },
-                    "label": {
-                      "de": "Tierkategorie",
-                      "en": "Animal category",
-                      "fr": "Catégorie d'animaux"
-                    }
-                  }
-                ],
-                "format": "%.0f",
-                "fullValue": 0.0,
-                "labels": {
-                },
-                "order": -1,
-                "print": "OtherPigFlux",
-                "units": {
-                  "de": "kg N/Jahr",
-                  "en": "kg N/year",
-                  "fr": "kg N/an"
-                },
-                "value": "0",
-                "var": "SummaryByAnimalCategory::n_excretion_otherpig"
-              },
-              {
-                "filters": [
-                  {
-                    "enum": {
-                      "de": "Ferkel abgesetzt bis 25 kg",
-                      "en": "weaned piglets up to 25kg",
-                      "fr": "Porcelets sevrés jusqu' à 25 kg",
-                      "it": "weaned piglets up to 25kg"
-                    },
-                    "label": {
-                      "de": "Tierkategorie",
-                      "en": "Animal category",
-                      "fr": "Catégorie d'animaux"
-                    }
-                  }
-                ],
-                "format": "%.0f",
-                "fullValue": 20.826,
-                "labels": {
-                },
-                "order": -1,
-                "print": "OtherPigFlux",
-                "units": {
-                  "de": "kg N/Jahr",
-                  "en": "kg N/year",
-                  "fr": "kg N/an"
-                },
-                "value": "21",
-                "var": "SummaryByAnimalCategory::n_excretion_otherpig"
-              },
-              {
-                "filters": [
-                  {
-                    "enum": {
-                      "de": "Eber",
-                      "en": "boars",
-                      "fr": "Verrats",
-                      "it": "boars"
-                    },
-                    "label": {
-                      "de": "Tierkategorie",
-                      "en": "Animal category",
-                      "fr": "Catégorie d'animaux"
-                    }
-                  }
-                ],
-                "format": "%.0f",
-                "fullValue": 32.021244,
-                "labels": {
-                },
-                "order": -1,
-                "print": "OtherPigFlux",
-                "units": {
-                  "de": "kg N/Jahr",
-                  "en": "kg N/year",
-                  "fr": "kg N/an"
-                },
-                "value": "32",
                 "var": "SummaryByAnimalCategory::n_excretion_otherpig"
               },
               {
