@@ -177,9 +177,7 @@ subtest 'Running the model produces output instances with filters' => {
         is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
             [
               {
-                "print": "OtherPigFlux",
-                "unit": "kg N/year",
-                "values": [
+                "filtered-values": [
                   {
                     "label": "nursing sows",
                     "value": 88.156444
@@ -201,11 +199,11 @@ subtest 'Running the model produces output instances with filters' => {
                     "value": 141.003688
                   }
                 ],
+                "print": "OtherPigFlux",
+                "unit": "kg N/year",
                 "var": "SummaryByAnimalCategory::n_excretion_otherpig"
               },
               {
-                "filters": [
-                ],
                 "format": "%.0f",
                 "fullValue": 352.7111423399035e0,
                 "label": "Total Animalproduction NH3-Emissions",
@@ -224,8 +222,6 @@ subtest 'Running the model produces output instances with filters' => {
         is to-json($gui<data>[^3], :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct GUI output";
             [
               {
-                "filters": [
-                ],
                 "format": "%.0f",
                 "fullValue": 961.003688,
                 "label": "Total N excretion",

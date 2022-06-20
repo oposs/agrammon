@@ -27,7 +27,7 @@ given $outputs.new-instance('Test::SubModule', 'Monkey C') {
 my $include-filters = False;
 my @print-set;
 my $json= output-as-json($model, $outputs, "en", @print-set, $include-filters);
-my $json-short= output-as-json($model, $outputs, "en", @print-set, $include-filters, :short);
+my $json-short= output-as-json($model, $outputs, "en", @print-set, $include-filters, :compact-output);
 my $gui= output-for-gui($model, $outputs, :language("en"), :$include-filters);
 is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
 [
@@ -44,8 +44,6 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "var": "Test::result"
   },
   {
-    "filters": [
-    ],
     "format": "",
     "fullValue": 20,
     "instance": "Monkey A",
@@ -57,8 +55,6 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "var": "Test::SubModule[Monkey A]::sub_result"
   },
   {
-    "filters": [
-    ],
     "format": "",
     "fullValue": 5,
     "instance": "Monkey A",
@@ -70,8 +66,6 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "var": "Test::SubModule[Monkey A]::SubTest::kids"
   },
   {
-    "filters": [
-    ],
     "format": "",
     "fullValue": 30,
     "instance": "Monkey B",
@@ -83,8 +77,6 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "var": "Test::SubModule[Monkey B]::sub_result"
   },
   {
-    "filters": [
-    ],
     "format": "",
     "fullValue": 10,
     "instance": "Monkey B",
@@ -96,8 +88,6 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "var": "Test::SubModule[Monkey B]::SubTest::kids"
   },
   {
-    "filters": [
-    ],
     "format": "",
     "fullValue": 40,
     "instance": "Monkey C",
@@ -109,8 +99,6 @@ is to-json($json, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct JSON output";
     "var": "Test::SubModule[Monkey C]::sub_result"
   },
   {
-    "filters": [
-    ],
     "format": "",
     "fullValue": 15,
     "instance": "Monkey C",
@@ -140,8 +128,6 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "var": "Test::result"
     },
     {
-      "filters": [
-      ],
       "format": "",
       "fullValue": 20,
       "instance": "Monkey A",
@@ -153,8 +139,6 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "var": "Test::SubModule[Monkey A]::sub_result"
     },
     {
-      "filters": [
-      ],
       "format": "",
       "fullValue": 5,
       "instance": "Monkey A",
@@ -166,8 +150,6 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "var": "Test::SubModule[Monkey A]::SubTest::kids"
     },
     {
-      "filters": [
-      ],
       "format": "",
       "fullValue": 30,
       "instance": "Monkey B",
@@ -179,8 +161,6 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "var": "Test::SubModule[Monkey B]::sub_result"
     },
     {
-      "filters": [
-      ],
       "format": "",
       "fullValue": 10,
       "instance": "Monkey B",
@@ -192,8 +172,6 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "var": "Test::SubModule[Monkey B]::SubTest::kids"
     },
     {
-      "filters": [
-      ],
       "format": "",
       "fullValue": 40,
       "instance": "Monkey C",
@@ -205,8 +183,6 @@ is to-json($gui, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct output for gui";
       "var": "Test::SubModule[Monkey C]::sub_result"
     },
     {
-      "filters": [
-      ],
       "format": "",
       "fullValue": 15,
       "instance": "Monkey C",
@@ -235,8 +211,6 @@ is to-json($json-short, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct short JSON 
     "var": "Test::result"
   },
   {
-    "filters": [
-    ],
     "instance": "Monkey A",
     "label": null,
     "print": "7",
@@ -245,8 +219,6 @@ is to-json($json-short, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct short JSON 
     "var": "Test::SubModule[Monkey A]::sub_result"
   },
   {
-    "filters": [
-    ],
     "instance": "Monkey A",
     "label": null,
     "print": "7",
@@ -255,8 +227,6 @@ is to-json($json-short, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct short JSON 
     "var": "Test::SubModule[Monkey A]::SubTest::kids"
   },
   {
-    "filters": [
-    ],
     "instance": "Monkey B",
     "label": null,
     "print": "7",
@@ -265,8 +235,6 @@ is to-json($json-short, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct short JSON 
     "var": "Test::SubModule[Monkey B]::sub_result"
   },
   {
-    "filters": [
-    ],
     "instance": "Monkey B",
     "label": null,
     "print": "7",
@@ -275,8 +243,6 @@ is to-json($json-short, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct short JSON 
     "var": "Test::SubModule[Monkey B]::SubTest::kids"
   },
   {
-    "filters": [
-    ],
     "instance": "Monkey C",
     "label": null,
     "print": "7",
@@ -285,8 +251,6 @@ is to-json($json-short, :sorted-keys) ~ "\n", q:to/OUTPUT/, "Correct short JSON 
     "var": "Test::SubModule[Monkey C]::sub_result"
   },
   {
-    "filters": [
-    ],
     "instance": "Monkey C",
     "label": null,
     "print": "7",

@@ -132,7 +132,7 @@ class Agrammon::Web::Service {
 
         my $old-dataset  = %params<oldDataset>;
         my $new-dataset  = submission-dataset(%params);
-        self.clone-dataset($user, $recipientMail, $old-dataset, $new-dataset);
+        self.clone-dataset($user, $user.username, $recipientMail, $old-dataset, $new-dataset);
 
         # set in t/webservice.t to avoid sending email
         if not %*ENV<AGRAMMON_TESTING> {
@@ -264,7 +264,6 @@ class Agrammon::Web::Service {
     method get-latex(Str $technical-file, Str $sort) {
         my $model      = self.model;
         my $model-path = $model.path;
-        my $filename   = 'End.nhd';
         my $sections   = 'description';
         my $model-name = 'Agrammon version6';
         my %technical  = load-technical($model-path, $technical-file);
@@ -283,19 +282,20 @@ class Agrammon::Web::Service {
     }
 
     subset InputFormats  of Str where 'application/json' | 'text/csv';
-    subset OutputFormats of Str where 'application/json' | 'text/csv' | 'text/plain';
+    subset OutputFormats of Str where 'application/json' | 'text/csv' | 'text/plain' | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
     #| Run model from input data as CSV or JSON
     #| and return output formatted as CSV, JSON, or TEXT
     method get-outputs-for-rest(
         Str $simulation-name, Str $dataset-name, $input-data, InputFormats $type,
         :$model-version, :$variants, :$technical-file,
-        :$language = 'de', OutputFormats :$format!, :$print-only,
+        :$language = 'de', OutputFormats :$format!, :$print-only, :$report-selected, :$user,
         :$include-filters = False, :$all-filters = False, :$compact-output
     ) {
         my $data-source = do given $type {
             when 'text/csv'         { Agrammon::DataSource::CSV.new }
             when 'application/json' { Agrammon::DataSource::JSON.new }
+            when 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' { Agrammon::DataSource::Excel.new }
             default { die "Output format '$type' not supported"; }
         }
         my $input = $data-source.load($simulation-name, $dataset-name, $input-data);
@@ -329,11 +329,10 @@ class Agrammon::Web::Service {
         my $outputs = $!model.run(:$input, :%technical);
 
         my @print-set = ($print-only).split(',') if $print-only;
-        my $short = $compact-output eq 'true';
         my $result;
         given $format {
             when 'text/csv' {
-                die "CSV output including filters is not yet supported" if $include-filters;
+#                die "CSV output including filters is not yet supported" if $include-filters;
                 $result = output-as-csv(
                     $simulation-name, $dataset-name, $!model,
                     $outputs, $language, @print-set, $include-filters, :$all-filters
@@ -342,13 +341,25 @@ class Agrammon::Web::Service {
             when 'application/json' {
                 $result = output-as-json(
                     $!model, $outputs, $language, @print-set, $include-filters, :$all-filters,
-                    :$short
+                    :compact-output($compact-output eq 'true')
                 );
             }
             when 'text/plain' {
                 $result = output-as-text(
                     $!model, $outputs, $language, @print-set, $include-filters, :$all-filters
                 ) ~ "\n";
+            }
+            when 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' {
+                my $reports = self.get-input-variables<reports>;
+                $result = input-output-as-excel(
+                    $!cfg, $user, $dataset-name,
+                     $!model, $outputs,
+                     $input,
+                     $reports,
+                     $language,
+                     $report-selected.Int,
+                     $include-filters, $all-filters
+                );
             }
         }
 
@@ -448,7 +459,6 @@ class Agrammon::Web::Service {
 
         # set in t/webservice.t to avoid sending email
         if not %*ENV<AGRAMMON_TESTING> {
-            my %params;
             my %lx = $!cfg.translations{$language // 'de'};
             my $subject = %lx{'Agrammon account key'};
             my $msg = %lx{'enter account key'} ~ " $key";

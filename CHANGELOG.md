@@ -1,6 +1,12 @@
 # Agrammon Change Log
 
-  - extend REST inputTemplate for json
+  - Add excel export to cmdline and REST
+        - add excel test script and data
+
+  - Issue 552: memory leak excel report identified
+  - Issue 551: extend REST inputTemplate for json
+  - Issue 550: implement compact json output with filters
+  - Issue 549: fix CSV output with filters
 
 - pre, 2022-06-09, christoph.haeni@bfh.ch
 

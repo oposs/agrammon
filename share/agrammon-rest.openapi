@@ -154,6 +154,9 @@ paths:
                         text/plain:
                             schema:
                                 description: human readable text formatted
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+                            schema:
+                                description: XLSX formatted
                 '400':
                     description: Invalid request.
                     content:
@@ -209,6 +212,9 @@ components:
                         - LU
                 print-only:
                     description: limit the output to results marked in the model with the specified label.
+                    type: string
+                report-selected:
+                    description: use predefined report
                     type: string
                 language:
                     type: string
