@@ -88,15 +88,15 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
             request-body 'multipart/form-data' => -> (
                 :$simulation!,  :$dataset!, :$inputs!, :$technical='',
                 :$model = 'version6', :$variants = 'Base', :$language = 'de',
-                :$print-only = '',
+                :$print-only = '', :$report-selected = 0,
                 :$compact-output = 'true',
                 :$include-filters = 'false', :$all-filters = 'false'
             ) {
                 my $type = $inputs.content-type;
-                if not ($type eq 'application/json' or $type eq 'text/csv') {
-                    my $error = "Content type is '$type', must be 'application/json' or 'text/csv'";
+                if not ($type eq 'application/json' or $type eq 'text/csv' or $type eq 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                    my $error = "Content type is '$type', must be 'application/json', 'text/csv' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'";
                     $accept eq 'application/json'
-                        ?? bad-request 'application/json', %( :$error)
+                        ?? bad-request 'application/json', %( :$error )
                         !! bad-request 'text/plain', $error ~ "\n";
                 }
                 else {
@@ -104,12 +104,23 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
                     my $results = $ws.get-outputs-for-rest(
                         ~$simulation, ~$dataset, $input-data, ~$type,
                         :model-version(~$model), :variants(~$variants), :technical-file(~$technical),
-                        :language(~$language), :format($accept), :print-only(~$print-only),
+                        :language(~$language), :format($accept), :print-only(~$print-only), :$user, :report-selected(~$report-selected),
                         :$compact-output,
                         :include-filters($include-filters eq 'true'), :all-filters($all-filters eq 'true')
                     );
                     if $accept eq 'application/json' {
-                        content $accept, @($results)
+                        content $accept, %(
+                            outputs => @($results),
+                            model => %(
+                                version => ~$model,
+                                technical => ~$technical,
+                                variants => ~$variants
+                            )
+                        )
+                    }
+                    elsif $accept eq 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' {
+                        header 'Content-disposition', qq{attachment; filename="excelReport.xlsx"};
+                        content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $results.to-blob;
                     }
                     else {
                         content $accept, $results

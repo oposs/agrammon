@@ -11,9 +11,9 @@ sub output-as-json(
     @print-set,
     Bool $include-filters,
     Bool :$all-filters = False,
-    Bool :$short = False
+    Bool :$compact-output = False
 ) is export {
-    return get-data($model, $outputs, $include-filters, @print-set, $short, $language, :merge-filters);
+    return get-data($model, $outputs, $include-filters, @print-set, $compact-output, $language, :merge-filters);
 }
 
 sub output-for-gui(Agrammon::Model $model,
@@ -28,7 +28,7 @@ sub output-for-gui(Agrammon::Model $model,
     );
 }
 
-sub get-data($model, $outputs, $include-filters, @print-set, $short, $language?, :$merge-filters) {
+sub get-data($model, $outputs, $include-filters, @print-set, $compact-output, $language?, :$merge-filters) {
     my @records;
     my $last-order = -1;
     for sorted-kv($outputs.get-outputs-hash) -> $module, $_ {
@@ -36,16 +36,19 @@ sub get-data($model, $outputs, $include-filters, @print-set, $short, $language?,
             for sorted-kv($_) -> $output, $raw-value {
                 my $var = $module ~ '::' ~ $output;
                 my $order = $model.output-labels($module, $output)<sort> || $last-order;
-                my $record = make-record($module, $output, $model, $raw-value, $var, $order, $short, :$language, :@print-set);
+                my $record = make-record($module, $output, $model, $raw-value, $var, $order, $compact-output, :$language, :@print-set);
                 push @records, $record;
                 if $include-filters {
                     if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
                         if $merge-filters {
-                            merge-filters($record, $module, $output, $model, $raw-value, $var, $order, $short, $language, :@print-set);
+                            merge-filters($record, $module, $output, $model, $raw-value, $var, $order, $language, :@print-set);
                         }
                         else {
-                            add-filters(@records, $module, $output, $model, $raw-value, $var, $order, $short, :@print-set);
+                            add-filters(@records, $module, $output, $model, $raw-value, $var, $order, $compact-output, :@print-set);
                         }
+                    }
+                    else {
+                        $record<filters>:delete;
                     }
                 }
                 $last-order = $order;
@@ -58,17 +61,20 @@ sub get-data($model, $outputs, $include-filters, @print-set, $short, $language?,
                     for sorted-kv(%values) -> $output, $raw-value {
                         my $order = $model.output-labels($fq-name, $output)<sort> || $last-order;
                         my $var = $q-name ~ '::' ~ $output;
-                        my $record =  make-record($fq-name, $output, $model, $raw-value, $var, $order, $short, $instance-id, :$language, :@print-set);
+                        my $record =  make-record($fq-name, $output, $model, $raw-value, $var, $order, $compact-output, $instance-id, :$language, :@print-set);
                         push @records, $record;
                         if $include-filters {
                             if $raw-value ~~ Agrammon::Outputs::FilterGroupCollection && $raw-value.has-filters {
                                 if $merge-filters {
-                                    merge-filters($record, $fq-name, $output, $model, $raw-value, $var, $order, $short, $language, :@print-set);
+                                    merge-filters($record, $fq-name, $output, $model, $raw-value, $var, $order, $language, :@print-set);
                                 }
                                 else {
-                                    add-filters(@records, $fq-name, $output, $model, $raw-value, $var, $order, $short, :@print-set);
+                                    add-filters(@records, $fq-name, $output, $model, $raw-value, $var, $order, $compact-output, :@print-set);
                                 }
                             }
+                        }
+                        else {
+                            $record<filters>:delete;
                         }
                         $last-order = $order;
                     }
@@ -79,7 +85,7 @@ sub get-data($model, $outputs, $include-filters, @print-set, $short, $language?,
     return @records.sort(+*.<order>);
 }
 
-sub make-record($fq-name, $output, $model, $raw-value, $var, $order, $short, $instance-id?, :$language, :@filters, :@print-set) {
+sub make-record($fq-name, $output, $model, $raw-value, $var, $order, $compact-output, $instance-id?, :$language, :@filters, :@print-set) {
     next unless $model.should-print($fq-name, $output, @print-set);
     my $var-print = $model.output-print($fq-name, $output);
     my $format = $model.output-format($fq-name, $output);
@@ -87,7 +93,7 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, $order, $short, $in
     my $value = ($format && $full-value.defined)
             ?? sprintf($format, $full-value)
             !! $full-value;
-    my %record = $short ?? %(
+    my %record = $compact-output ?? %(
         :print($var-print),
         :value($full-value),
         :$var,
@@ -114,7 +120,7 @@ sub make-record($fq-name, $output, $model, $raw-value, $var, $order, $short, $in
     else {
         %record<units>  = $model.output-units($fq-name, $output);
         %record<labels> = $model.output-labels($fq-name, $output);
-        %record<labels><sort>:delete if $short;
+        %record<labels><sort>:delete if $compact-output;
     }
     return %record;
 }
@@ -132,17 +138,18 @@ sub add-filters(@records, $fq-name, $output, $model,
 
 sub merge-filters($record, $fq-name, $output, $model,
                 Agrammon::Outputs::FilterGroupCollection $collection,
-                $var, $order, $sort, $language?, :@print-set) {
+                $var, $order, $language?, :@print-set) {
     for $collection.results-by-filter-group {
         my %keyFilters := .key;
         my @filters = translate-filter-keys($model, %keyFilters).map: -> $trans { %( label => $trans.key, enum => $trans.value ) };
         my $value := .value;
 #        TODO: make this an option
 #        next unless $value;
-        my $filter-record =  make-record($fq-name, $output, $model, $value, $var, $order, $sort, :@print-set, :@filters);
-        push $record<values>, %( :label($filter-record<filters>[0]<enum>{$language}), :value($filter-record<fullValue>));
+        my $compact-output = False;
+        my $filter-record =  make-record($fq-name, $output, $model, $value, $var, $order, $compact-output, :@print-set, :@filters);
+        push $record<filtered-values>, %( :label($filter-record<filters>[0]<enum>{$language}), :value($filter-record<fullValue>));
     }
-    push $record<values>, %( :label($record<label>:delete), :value($record<fullValue>:delete));
+    push $record<filtered-values>, %( :label($record<label>:delete), :value($record<fullValue>:delete));
     $record<order>:delete;
     $record<format>:delete;
     $record<value>:delete;

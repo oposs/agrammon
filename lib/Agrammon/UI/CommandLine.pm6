@@ -12,6 +12,7 @@ use Agrammon::DataSource::CSV;
 use Agrammon::Documentation;
 use Agrammon::ModelCache;
 use Agrammon::OutputFormatter::CSV;
+use Agrammon::OutputFormatter::Excel;
 use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::OutputFormatter::Util;
@@ -25,16 +26,21 @@ use Agrammon::Web::Routes;
 use Agrammon::Web::SessionStore;
 use Agrammon::Web::SessionUser;
 
+my class CmdUser is Agrammon::DB::User does Cro::HTTP::Auth is export {
+}
+
 
 my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location
 ;
 
+my $cmd-user = CmdUser.new(:username(%*ENV<USERNAME>));
+
 subset ExistingFile        of Str where { !.defined or .IO.e or note("No such file $_") && exit 1 }
 subset ExistingFileOrStdin of Str where { !.defined or .IO.e or $_ eq '-' or note("No such file $_") && exit 1 }
 subset SupportedLanguage of Str where { $_ ~~ /^ de|en|fr $/ or note("ERROR: --language=[de|en|fr]") && exit 1 };
 subset SortOrder of Str where { $_ ~~ /^ model|calculation $/ or note("ERROR: --sort=[model|calculation]") && exit 1 };
-subset OutputFormat of Str where { $_ ~~ /^ csv|json|text $/ or note("ERROR: --format=[csv|json|text]") && exit 1 };
+subset OutputFormat of Str where { $_ ~~ /^ csv|json|text|excel $/ or note("ERROR: --format=[csv|json|text|excel]") && exit 1 };
 
 #| Start the web interface
 multi sub MAIN('web', Str $model-filename, ExistingFile :$cfg-file, Str :$technical-file) is export {
@@ -50,14 +56,15 @@ multi sub MAIN('web', Str $model-filename, ExistingFile :$cfg-file, Str :$techni
 
 #| Run the model
 multi sub MAIN('run', Str $filename, ExistingFileOrStdin $input, ExistingFile :$cfg-file, Str :$technical-file,
-        SupportedLanguage :$language = 'de', Str :$print-only, Str :$variants = 'Base',
+        SupportedLanguage :$language = 'de', Str :$print-only,  Int :$report-selected, Str :$variants = 'Base',
         Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
-        OutputFormat :$format = 'text'
+        OutputFormat :$format = 'text', Str :$export-filename='test.xlsx'
     ) is export {
     my @print-set = $print-only.split(',') if $print-only;
     my $data = run $filename, $input.IO, $technical-file, $variants, $format, $language, @print-set,
             ($include-filters or $include-all-filters),
-            $batch, $degree, $max-runs, :$cfg-file, :all-filters($include-all-filters);
+            $batch, $degree, $max-runs, :$cfg-file, :all-filters($include-all-filters), :user($cmd-user),
+            :$report-selected, :$export-filename;
     my %results := $data.results;
     my %validation-errors := $data.validation-errors;
 
@@ -84,17 +91,25 @@ multi sub MAIN('run', Str $filename, ExistingFileOrStdin $input, ExistingFile :$
         }
         else {
             for %results.kv -> $simulation, %sim-results {
-                @output.push("### Simulation $simulation");
-                @output.push("##  Print filter: $print-only") if $print-only;
+                if $format ne 'excel' {
+                    @output.push("### Simulation $simulation");
+                    @output.push("##  Print filter: $print-only") if $print-only;
+                }
                 for %sim-results.keys.sort -> $dataset {
-                    @output.push("#   Dataset $dataset");
-                    @output.push(%sim-results{$dataset});
+                    if $format eq 'excel' {
+                        spurt 'export.xlsx', %sim-results{$dataset}.to-blob;
+                        return;
+                    }
+                    else {
+                        @output.push("#   Dataset $dataset");
+                        @output.push(%sim-results{$dataset});
+                    }
                 }
             }
         }
         $output = @output.join("\n");
     }
-    say $output;
+    say $output unless $format eq 'excel' ;
 }
 
 #| Get inputs from dataset
@@ -280,9 +295,10 @@ sub get-dataset (
 }
 
 sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, $format, $language, @print-set,
-         Bool $include-filters, $batch, $degree, $max-runs, :$all-filters, Str :$cfg-file) {
+         Bool $include-filters, $batch, $degree, $max-runs, :$all-filters,
+         Str :$cfg-file, Int :$report-selected, CmdUser :$user, Str :$export-filename = 'export.xlsx') {
 
-    my ($model, $module-path) = load-model($cfg-file, $model-filename, $variants);
+    my ($model, $module-path, $cfg, $db) = load-model($cfg-file, $model-filename, $variants);
     my %technical = load-technical($module-path.IO.parent, $technical-file);
 
     my $fh = get-input-filehandle($input-path);
@@ -319,7 +335,22 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
                     }
                     when 'text' {
                         $result = output-as-text(
-                            $model, $outputs, $language, @print-set, $include-filters, :$all-filters
+                                $model, $outputs, $language, @print-set, $include-filters, :$all-filters
+                                                                              );
+                    }
+                    when 'excel' {
+                        my $ui-web = Agrammon::UI::Web.new(:$model);
+
+                        my $reports := $ui-web.get-input-variables<reports>;
+                        note "report-selected=$report-selected, user=" ~ $user.username if %*ENV<AGRAMMON_DEBUG>;
+                        $result = input-output-as-excel(
+                                $cfg, $user, $export-filename,
+                                $model, $outputs,
+                                $input,
+                                $reports,
+                                $language,
+                                $report-selected,
+                                $include-filters, $all-filters
                         );
                     }
                 }

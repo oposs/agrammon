@@ -10,7 +10,7 @@ use Spreadsheet::XLSX::Styles;
 
 sub input-output-as-excel(
     Agrammon::Config $cfg,
-    Agrammon::Web::SessionUser $user,
+    $user,
     Str $dataset-name, Agrammon::Model $model,
     Agrammon::Outputs $outputs, Agrammon::Inputs $inputs, $reports,
     Str $language, Int $report-selected,
@@ -90,6 +90,7 @@ sub input-output-as-excel(
     my $last-instance = '';
     my $last-module = '';
     @records := %data<inputs>;
+    note "inputs: " ~ @records.elems if %*ENV<AGRAMMON_DEBUG>;
     for @records -> %rec {
 
         # raw data
@@ -124,6 +125,7 @@ sub input-output-as-excel(
     my %print-labels = %data<print-labels>;
 
     @records := %data<outputs>;
+    note "outputs: " ~ @records.elems if %*ENV<AGRAMMON_DEBUG>;
     $row = 5;
     $row-formatted = $row;
     $col = 0;
