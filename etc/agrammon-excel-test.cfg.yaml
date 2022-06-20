@@ -1,0 +1,32 @@
+General:
+    debugLevel: 0
+    log_file:   /tmp/agrammon.log
+    log_level:  warn
+    mojo_secret: MyCookieSecret
+    tmpDir     : agrammon
+    latexTimeout : 30
+    pdflatex   : /usr/bin/lualatex
+    translationDir : share/translations
+    
+Database:
+    name:     agrammon_test
+    host:     myhost
+    user:     agrammon
+    password: verySecret
+    version: '6.0'
+
+GUI:
+    variant: Single
+    title:
+        de: AGRAMMON 6.3.0 Einzelbetriebsmodell
+        en: AGRAMMON 6.3.0 Single Farm Model
+        fr: AGRAMMON 6.3.0 modèle Exploitation individuelle
+
+Model:
+    debugLevel: 0
+    path:      share/Models
+    model:     version6
+    technical: technical.cfg
+    top:       End.nhd
+    variant:   Base
+    version:   '6.3.0'
