@@ -34,7 +34,7 @@ my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location
 ;
 
-my $cmd-user = CmdUser.new(:username(%*ENV<USERNAME>));
+my $cmd-user = CmdUser.new(:username(%*ENV<USERNAME> // %*ENV<USERNAME>  // 'Unknown User'));
 
 subset ExistingFile        of Str where { !.defined or .IO.e or note("No such file $_") && exit 1 }
 subset ExistingFileOrStdin of Str where { !.defined or .IO.e or $_ eq '-' or note("No such file $_") && exit 1 }
