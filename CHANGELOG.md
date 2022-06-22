@@ -1,14 +1,14 @@
-# Agrammon Change Log
+- 6.3.0, 2022-06-23, fritz.zaucker@oetiker.ch
 
   - Add excel export to cmdline and REST
-        - add excel test script and data
-
-  - Issue 552: memory leak excel report identified
+    including Excel export test script and data
+  - RT 54044: fix Excel report generation performance
+  - Issue 552: memory leak excel report identified and fixed
   - Issue 551: extend REST inputTemplate for json
   - Issue 550: implement compact json output with filters
   - Issue 549: fix CSV output with filters
 
-- pre, 2022-06-09, christoph.haeni@bfh.ch
+  The followiung changes will change some simulation results:
 
   - fix model bug ignoring revised housing_type for poultry 
     emission rate
