@@ -23,7 +23,7 @@
     "Email::MIME",
     "IO::Path::ChildSecure",
     "IO::String",
-    "LibXML:ver<0.5.12+>",
+    "LibXML:ver<0.7.9+>",
     "Net::SMTP::Client::Async",
     "POFile",
     "OO::Monitors",
