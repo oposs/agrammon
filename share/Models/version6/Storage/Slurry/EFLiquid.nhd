@@ -369,7 +369,7 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
     ++description
       Free reduction of the Emission rate for the Yard.
     ++formula
-    if(In(free_correction_factor)//0 != 0) {
+    if(In(free_correction_factor) != 0) {
         writeLog({en=>"You have entered an additional emission mitigation measure for a storage of slurry of "
                       . In(free_correction_factor)
                       . "\%!\n",

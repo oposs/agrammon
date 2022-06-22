@@ -305,38 +305,42 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
   ++description
     Housing type (needed in other modules).
   ++formula
-    if ( Val(animalcategory, ..::Excretion) eq "layers" or 
-         Val(animalcategory, ..::Excretion) eq "growers" ) {
-      return In(housing_type);
-    } else {
-      if ( In(housing_type) eq "manure_belt_without_manure_belt_drying_system" ) {
-        writeLog({
-          en => "The category manure belt without manure belt drying system is not valid, please select the housing system deep litter for broilers.",
-          de => "Für Mastpoulets ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung "
-                . "(für die Berechnung wird Bodenhaltung gesetzt).",
-          fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
-                . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
-        });
-      } 
-      elsif ( In(housing_type) eq "manure_belt_with_manure_belt_drying_system" ) {
-        writeLog({
-          en => "Manure belt with manure belt drying system not valid, please select deep litter as housing type for broilers.",
-          de => "Für Mastpoulets ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung "
-                . "(für die Berechnung wird Bodenhaltung gesetzt).",
-          fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
-                . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
-        });
-      }  
-      elsif ( In(housing_type) eq "deep_pit" ) {
-        writeLog({
-          en => "Deep pit not valid, please select deep litter as housing type for broilers.",
-          de => "Für Mastpoulets ist Kotgrube als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung. "
-                . "(für die Berechnung wird Bodenhaltung gesetzt).",
-          fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
-                 . "fosse à déjections. Choisissez plutôt ‘Litière profonde'."
-        });
-      }
-      return "deep_litter";
+    given ( Val(animalcategory, ..::Excretion) ) {
+        when $_ eq 'layers' or $_ eq 'growers' {
+            return In(housing_type);
+        }
+        when $_ eq 'broilers' or $_ eq 'turkeys' or $_ eq 'other_poultry' {
+            given ( In(housing_type) ) {
+                when 'manure_belt_without_manure_belt_drying_system' {
+                    writeLog({
+                      en => "The category manure belt without manure belt drying system is not valid, please select the housing system deep litter for broilers.",
+                      de => "Für Mastpoulets ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung "
+                            . "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
+                            . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
+                    });
+                  } 
+                when 'manure_belt_with_manure_belt_drying_system' {
+                    writeLog({
+                      en => "Manure belt with manure belt drying system not valid, please select deep litter as housing type for broilers.",
+                      de => "Für Mastpoulets ist Kotbandentmistung als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung "
+                            . "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
+                            . "tapis d'évacuation du fumier. Choisissez plutôt ‘Litière profonde'."
+                    });
+                }  
+                when 'deep_pit' {
+                    writeLog({
+                      en => "Deep pit not valid, please select deep litter as housing type for broilers.",
+                      de => "Für Mastpoulets ist Kotgrube als Aufstallung nicht vorgesehen. Wählen Sie stattdessen Bodenhaltung. "
+                            . "(für die Berechnung wird Bodenhaltung gesetzt).",
+                      fr => "Pour des poulets à l‘engrais, il n'est pas prévu de stabulation avec "
+                             . "fosse à déjections. Choisissez plutôt ‘Litière profonde'."
+                    });
+                }
+            }
+            return "deep_litter";
+        }
     }
 
 +drinking_system

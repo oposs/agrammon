@@ -86,7 +86,7 @@ Selects other correction factors for the specific housing types for poultry.
   ++description
     Free correction factor for NH3 housing emission.
   ++formula
-    if( In(free_correction_factor) // 0 != 0 ) {
+    if( In(free_correction_factor) != 0 ) {
       writeLog({
         en => "You have entered an additional emission mitigation measure for a poultry housing of " 
               . In(free_correction_factor) . "\%!\n", 
