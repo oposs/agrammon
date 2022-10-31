@@ -1,5 +1,6 @@
 - current
 
+  - Change GUI labels for pigs from grazing to outdoor
   - Add defaults (0) and validators ge(0) to Recycling Fertilizers
 
 - 6.3.0, 2022-06-23, fritz.zaucker@oetiker.ch
