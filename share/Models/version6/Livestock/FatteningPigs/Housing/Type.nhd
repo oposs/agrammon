@@ -168,11 +168,16 @@ Selects the emission rate and other correciton factors for the specific housing 
   ++description
     Factor for considering indoor mitigation efficiencies.
   ++formula 
-    if ( Out(housing_type) eq 'Slurry_Label' or Out(housing_type) eq 'Slurry_Label_Open' ) {
-      return 0.5;
-    }
-    else {
-      return 1;
+    given ( Out(housing_type) ) {
+      when 'Slurry_Label' or 'Slurry_Label_Open' {
+        return 0.5;
+      }
+      when 'Outdoor' {
+        return 0;
+      }
+      default {
+        return 1;
+      }
     }
 
 
