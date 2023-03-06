@@ -217,7 +217,7 @@ taxonomy = Livestock::DairyCow::Outdoor
 
 +grazing_days
   type  = float
-  validator = between(0,270);
+  validator = between(0,365);
   ++labels 
     en = Grazing days per year
     de = Jährliche Weidetage
@@ -339,6 +339,13 @@ taxonomy = Livestock::DairyCow::Outdoor
   ++description
     Grazing days per year.
   ++formula
+    if ( In(grazing_days) > 270 ) {
+      writeLog({
+        en => "The number of grazing days is not more than 270 days in most cases.",
+        de => "Die Weidedauer beträgt in der Regel nicht mehr als 270 Tage.",
+        fr => "De manière générale, la durée de pâturage ne dépasse pas 270 jours."
+      });
+    } 
     In(grazing_days);
 
 ##########
