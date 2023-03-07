@@ -29,7 +29,7 @@ Selects the emission rate and other correciton factors for the specific housing 
        fr = Stabulation_labellisée_à_aires_multiples_et_parcours
        it = Slurry_Label
     +++Slurry_Label_Open
-       en = grazing climate house
+       en = outdoor climate house
        de = Nicht wärmegedämmter Stall (siehe Spalte Hilfe)
        fr = Stabulation labellisée à aires multiples et parcours comme stabulation à front ouvert/étable froide
        it = Slurry Label Open Front Housing non insulated stables
@@ -39,7 +39,7 @@ Selects the emission rate and other correciton factors for the specific housing 
        fr = Stabulation_litière_profonde
        it = Deep_Litter
     +++Outdoor
-       en = grazing
+       en = outdoor
        de = Weidehaltung
        fr = Plein_air
        it = Outdoor
@@ -168,11 +168,16 @@ Selects the emission rate and other correciton factors for the specific housing 
   ++description
     Factor for considering indoor mitigation efficiencies.
   ++formula 
-    if ( Out(housing_type) eq 'Slurry_Label' or Out(housing_type) eq 'Slurry_Label_Open' ) {
-      return 0.5;
-    }
-    else {
-      return 1;
+    given ( Out(housing_type) ) {
+      when 'Slurry_Label' or 'Slurry_Label_Open' {
+        return 0.5;
+      }
+      when 'Outdoor' {
+        return 0;
+      }
+      default {
+        return 1;
+      }
     }
 
 
