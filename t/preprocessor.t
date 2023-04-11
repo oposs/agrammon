@@ -441,4 +441,70 @@ throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::ElsifAfterE
     ?endif
     IN
 
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::MixedAndOr, line => 1;
+    ?if A ?and B ?or C
+    line 1
+    ?else
+    line 2
+    line 3
+    ?endif
+    IN
+
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::MixedAndOr, line => 1;
+    ?if A ?or B ?and C
+    line 1
+    ?else
+    line 2
+    line 3
+    ?endif
+    IN
+
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::ElsifMultiOptions, line => 3;
+    ?if A
+    line 1
+    ?elsif A ?or B
+    line 2
+    ?else
+    line 3
+    ?endif
+    IN
+
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::ElsifMultiOptions, line => 3;
+    ?if A
+    line 1
+    ?elsif A ?and B
+    line 2
+    ?else
+    line 3
+    ?endif
+    IN
+
+is preprocess(Q:to/IN/, {:!A, :!B, :C}), Q:to/OUT/, '?if on present and true option included with ?or';
+    line 1
+    ?if A ?or !B ?or C
+    line 2
+    ?endif
+    line 3
+    IN
+    line 1
+
+    line 2
+
+    line 3
+    OUT
+
+   is preprocess(Q:to/IN/, {:A, :!B, :C}), Q:to/OUT/, '?if on present and true option included with ?and';
+    line 1
+    ?if A ?and !B ?and C
+    line 2
+    ?endif
+    line 3
+    IN
+    line 1
+
+    line 2
+
+    line 3
+    OUT
+
 done-testing;

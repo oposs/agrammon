@@ -34,6 +34,20 @@ class X::Agrammon::Preprocessor::ElsifAfterElse does X::Agrammon::Preprocessor {
     }
 }
 
+#| Exception thrown when ?or and ?and in same if statement
+class X::Agrammon::Preprocessor::MixedAndOr does X::Agrammon::Preprocessor {
+    method message() {
+        "Invalid preprocessor ?and and ?or in same ?if found at line $!line"
+    }
+}
+
+#| Exception thrown when ?elsif with multiple options
+class X::Agrammon::Preprocessor::ElsifMultiOptions does X::Agrammon::Preprocessor {
+    method message() {
+        "Invalid preprocessor ?elsif with multiple options found at line $!line"
+    }
+}
+
 #| Preprocess the provided source code for C-style preprocessor directives (but
 #| with a different syntax, given `#` is taken as the comment character). The
 #| syntax available is:
@@ -64,11 +78,45 @@ sub preprocess(Str $source, %options --> Str) is export {
         if $content.starts-with('?') {
             @result-lines.push('');
             given $content {
+                # simple ?if
                 when /^ '?if' \h+ [$<negate>='!']? <option=.ident> \h* $/ {
                     my $enabled = $<negate> ?? .not !! .so given %options{~$<option>};
                     my $matched = $enabled;
                     my $start-line = $number + 1;
                     @open.push(OpenDirective.new(:$start-line, :$enabled, :$matched, :accept-elsif));
+                }
+                # ?if with ?or'ed options
+                when /^ '?if' \h+ $<option> = [ '!'?<ident> | '!'?<ident> (' ?or ' '!'?<ident>)* ] \h* $/ {
+                    my @a := |$<option>.split(' ?or ');
+                    my $enabled = False;
+                    for @a -> $a {
+                        $a ~~ / [$<negate>='!']? <option=.ident> /;
+                        $enabled =  $<negate> ?? .not !! .so given %options{~$<option>};
+                        last if $enabled;
+                    }
+                    my $matched = $enabled;
+                    my $start-line = $number + 1;
+                    @open.push(OpenDirective.new(:$start-line, :$enabled, :$matched, :accept-elsif));
+                }
+                # ?if with ?and'ed options
+                when /^ '?if' \h+ $<option> = [ '!'?<ident> | '!'?<ident> (' ?and ' '!'?<ident>)* ] \h* $/ {
+                    my @a := |$<option>.split(' ?and ');
+                    my $enabled = True;
+                    for @a -> $a {
+                        $a ~~ / [$<negate>='!']? <option=.ident> /;
+                        $enabled = $enabled && ( $<negate> ?? .not !! .so given %options{~$<option>});
+                    }
+                    my $matched = $enabled;
+                    my $start-line = $number + 1;
+                    @open.push(OpenDirective.new(:$start-line, :$enabled, :$matched, :accept-elsif));
+                }
+                # mixed ?and and ?or not supported
+                when /^ '?if' .+ [ '?and' .+ '?or' | '?or' .+ '?and' ] / {
+                    die X::Agrammon::Preprocessor::MixedAndOr.new: :line($number + 1);
+                }
+                # no ?elsif with multiple options
+                when /^ '?elsif' .+ [ '?and' | '?or' ] / {
+                    die X::Agrammon::Preprocessor::ElsifMultiOptions.new: :line($number + 1);
                 }
                 when /^ '?elsif' \h+ [$<negate>='!']? <option=.ident> \h* $/ {
                     if @open.pop -> $prev-part {
