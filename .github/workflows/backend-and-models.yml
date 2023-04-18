@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - ubuntu-latest
+          - ubuntu-20.04
         raku-version:
           - '2023.02'
     runs-on: ${{ matrix.os }}
