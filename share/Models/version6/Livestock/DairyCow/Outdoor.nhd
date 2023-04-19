@@ -157,7 +157,7 @@ taxonomy = Livestock::DairyCow::Outdoor
 ?endif
        <p>Proposition de valeur standard: sol en dur</p>
 
-?if !Kantonal_LU
+?if !Kantonal_LU and !BLW
   +free_correction_factor
     type = float
     default_calc = 0
@@ -294,7 +294,7 @@ taxonomy = Livestock::DairyCow::Outdoor
   ++formula
     In(floor_properties_exercise_yard);
 
-?if !Kantonal_LU
+?if !Kantonal_LU and !BLW
   +c_free_factor_yard
     print = DairyCow
     ++units 

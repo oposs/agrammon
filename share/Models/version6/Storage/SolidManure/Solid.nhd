@@ -69,7 +69,7 @@ taxonomy = Storage::SolidManure::Solid
        <p>Cette part comprend le fumier stocké sous une couverture en dur, dans le sens d'un contenant fermé, ou sous un autre type de couverture, p.ex. une bâche.</p> 
        <p>Proposition de valeur standard: 0% </p>
 
-?if !Kantonal_LU
+?if !Kantonal_LU and !BLW
   +free_correction_factor_cattle_manure
     type = float
     default_calc = 0
@@ -169,7 +169,7 @@ taxonomy = Storage::SolidManure::Solid
        <p>Cette part comprend le fumier stocké sous une couverture en dur, dans le sens d'un contenant fermé, ou sous un autre type de couverture, p.ex. une bâche. </p>
        <p>Proposition de valeur standard: 0% </p>
 
-?if !Kantonal_LU
+?if !Kantonal_LU and !BLW
   +free_correction_factor_pig_manure
     type = float
     default_calc = 0
@@ -294,14 +294,14 @@ taxonomy = Storage::SolidManure::Solid
     }
     return;
 
-?if !Kantonal_LU
-  +c_free_factor_storage_solidmanure_cattle
++c_free_factor_storage_solidmanure_cattle
     print = 10
     ++units 
       en = -
     ++description
       Free reduction of the Emission rate for the Yard Storage, cattle manure.
     ++formula
+?if !Kantonal_LU and !BLW
     if(In(free_correction_factor_cattle_manure) != 0) {
         writeLog({en=>"You have entered an additional emission mitigation measure for a storage of cattle solid manure of"
                       . In(free_correction_factor_cattle_manure) 
@@ -317,15 +317,19 @@ taxonomy = Storage::SolidManure::Solid
        
     } else {
       return 1;
-    } 
+    }
+?else
+    return 1;
+?endif
 
-  +c_free_factor_storage_solidmanure_pig
++c_free_factor_storage_solidmanure_pig
     print = 10
     ++units 
       en = -
     ++description
       Free reduction of the Emission rate for Storage Pig manure.
     ++formula
+?if !Kantonal_LU and !BLW
     if(In(free_correction_factor_pig_manure) != 0) {
         writeLog({en=>"You have entered an additional emission mitigation measure for a storage of pigs solid manure of"
                       . In(free_correction_factor_cattle_manure) 
@@ -342,6 +346,8 @@ taxonomy = Storage::SolidManure::Solid
     } else {
       return 1;
     } 
+?else
+    return 1;
 ?endif
 
 +c_covered_basin_cattle

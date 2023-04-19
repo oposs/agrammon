@@ -100,6 +100,9 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
   distribute = true
   default_gui  = Standard
   default_calc = Standard
+?if BLW
+  hidden = true
+?endif
   ++labels 
     en = Number of available animal places
     de = Anzahl Tierplätze im Stall

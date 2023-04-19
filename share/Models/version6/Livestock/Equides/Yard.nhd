@@ -133,12 +133,11 @@ livestock. Atmospheric Environment 35:5331-5338.
      fr = -
   ++description
     NH3 emission factor for dairy cow yard.
-?if Kantonal_LU
   ++formula
-    Tech(er_yard) * 
+?if Kantonal_LU or BLW
+    Tech(er_yard) *
     Out(c_floor_properties_exercise_yard);
 ?else
-  ++formula
     Tech(er_yard) * 
     Out(c_floor_properties_exercise_yard) * 
     Val(c_free_factor_yard, Outdoor);

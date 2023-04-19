@@ -45,13 +45,12 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
     en = Share of poultry manure covered during storage
     de = Anteil von gedeckt gelagertem Kot oder Mist aus der Geflügelhaltung
     fr = Part des fientes ou du fumier de volaille stockés qui sont couverts
-  ++units 
+  ++units
     en = % 
   ++description
     Share of droppings or mist from poultry stored in covered basin.
   ++help
     +++en
-
       <p>Covered storage means a solid cover (e.g. a closed store) or
       another cover such as a plastic sheet.</p>
      <p>Standard value for Switzerland: 70%</p>
@@ -62,17 +61,18 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
        <p>Cette part comprend les fientes ou le fumier stocké sous une couverture en dur, dans le sens d'un contenant fermé, ou sous un autre type de couverture, p.ex. une bâche. </p>
        <p>Proposition de valeur standard: 70%</p>
 
-?if !Kantonal_LU
+?if !Kantonal_LU and !BLW
   +free_correction_factor
     type = float
     default_calc = 0
     default_gui = 0
+    hidden = true
     validator = between(-100,100);
     ++labels 
       en = Additional emission mitigation measure
       de = Zusätzliche emissionsmindernde Massnahme Geflügelmist (siehe Spalte Hilfe)
       fr = Mesure supplémentaire limitant les émissions dues au stockage des fientes ou du fumier de volaille (cf. aide)
-    ++units 
+    ++units
       en = %
     ++description
       Factor to define free ?
@@ -121,28 +121,28 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
 
 +er_layers_growers_other_poultry
   value = 0.25
-  ++units  
+  ++units
     en = -
   ++description 
    Emission rate for layers, growers and other poultry for manure (deep pit, deep litter) and droppings (manure belt)(based on EAGER workshop, January 2008: 15% Ntot, converted using Nsol 60% and emission factor of 25%.
 
 +er_turkeys_broilers
   value = 0.1
-  ++units  
+  ++units
     en = -
   ++description 
    Emission rate for  manure of broilers and turkeys based on EAGER workshop, January 2008: 6% Ntot, converted using Nsol 60% and emission factor of 10%.
 
 +c_droppings_mist_covered_basin
   value = 0.75
-  ++units  
+  ++units
     en = -
   ++description
     Reduction of emission rate for the droppings or mist stored in covered basin for poultry.
   
 +immobilizationrate_poultry
   value = 0	      
-  ++units  
+  ++units
     en = -
   ++description
     No Immobilization is taken into account.
@@ -155,21 +155,21 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
 
 +c_covered_basin
   print = 10
-  ++units  
+  ++units
     en = -
   ++description
     Correction factor for storage droppings or mist in coverd basin.
   ++formula
       1 - ( Tech(c_droppings_mist_covered_basin) * In(share_covered_basin)/100 );
 
-?if !Kantonal_LU
-  +c_free_factor_storage_poultrymanure
-    print = 10
-    ++units 
-      en = -
-    ++description
-      Free reduction of the Emission rate for the Yard.
-    ++formula
++c_free_factor_storage_poultrymanure
+  print = 10
+  ++units
+    en = -
+  ++description
+    Free reduction of the Emission rate for the Yard.
+  ++formula
+?if !Kantonal_LU and !BLW
     if(In(free_correction_factor) != 0) {
         writeLog({en=>"You have entered an additional emission mitigation measure for a storage of poultry manure of " 
                       . In(free_correction_factor) 
@@ -184,7 +184,9 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
        
     } else {
       return 1;
-    } 
+    }
+?else
+    return 1;
 ?endif
 
 +n_check
@@ -205,7 +207,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
 
 +share_into_storage_solid_poultry
   print = share_storage
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -220,7 +222,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
 
 +er_nh3_nstorage_solid_poultry
   print = 1a
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an
@@ -257,7 +259,7 @@ European Agricultural Gaseous Emissions Inventory Researchers Network
 
 +immobilization_rate_poultry
   print = 7
-  ++units  
+  ++units
     en = kg N/year
     de = kg N/Jahr
     fr = kg N/an

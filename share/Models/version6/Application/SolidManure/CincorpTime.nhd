@@ -23,6 +23,7 @@ taxonomy = Application::SolidManure::CincorpTime
 
 *** input ***
 
+?if !BLW
 +incorp_lw1h
   type  = percent
   ++labels
@@ -164,9 +165,15 @@ taxonomy = Application::SolidManure::CincorpTime
          <p>La somme des catégories «Part de fumier incorporé» doit donner 100%. Chaque catégorie doit avoir un pourcentage entre 0 et 100 (les 0% doivent aussi être introduits).</p>
          <p>Proposition de valeur standard: 10%</p>
 ?endif
+?endif
 
 +incorp_none
   type  = percent
+?if BLW
+  default_calc = 100
+  default_gui  = 100
+  hidden = true
+?endif
   ++labels 
     en = Share of solid manure not incorporated (in %)
     de = Keine Einarbeitung von Mist: Anteil in Prozent
@@ -201,7 +208,11 @@ taxonomy = Application::SolidManure::CincorpTime
   ++description
     Share of incorporated solid manure within 1 hour.
   ++formula
-	In(incorp_lw1h) / 100;
+?if BLW
+     0;
+?else
+     In(incorp_lw1h) / 100;
+?endif
 
 +incorp_lw4h
   print = 22
@@ -209,11 +220,10 @@ taxonomy = Application::SolidManure::CincorpTime
     en = -
   ++description
     Share of incorporated solid manure within 4 hour.
-?if Kantonal_LU
   ++formula
+?if Kantonal_LU or BLW
     0;
 ?else
-  ++formula
     In(incorp_lw4h) / 100;
 ?endif
     
@@ -223,11 +233,10 @@ taxonomy = Application::SolidManure::CincorpTime
     en = -
   ++description
     Share of incorporated solid manure within 8 hour.
-?if Kantonal_LU
   ++formula
+?if Kantonal_LU or BLW
     0;
 ?else
-  ++formula
     In(incorp_lw8h) / 100;
 ?endif
     
@@ -238,7 +247,11 @@ taxonomy = Application::SolidManure::CincorpTime
   ++description
     Share of incorporated solid manure within 1 day.
   ++formula
+?if BLW
+    0;
+?else
     In(incorp_lw1d) / 100;
+?endif
     
 +incorp_lw3d
   print = 22
@@ -247,19 +260,22 @@ taxonomy = Application::SolidManure::CincorpTime
   ++description
     Share of incorporated solid manure within 3 days.
   ++formula
+?if BLW
+    0;
+?else
     In(incorp_lw3d) / 100;
-    
+?endif
+
 +incorp_gt3d
   print = 22
   ++units
     en = -
   ++description
     Share of incorporated solid manure after 3 days.
-?if Kantonal_LU
   ++formula
+?if Kantonal_LU or BLW
     0;
 ?else
-  ++formula
     In(incorp_gt3d) / 100;
 ?endif
     

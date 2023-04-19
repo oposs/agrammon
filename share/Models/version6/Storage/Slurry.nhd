@@ -68,6 +68,17 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
 ?if !Kantonal_LU
   +mixing_frequency
     type = enum
+?if BLW
+    default_calc = 7_to_12_times_per_year
+    default_gui = 7_to_12_times_per_year
+    hidden = true
+    ++enum
+      +++7_to_12_times_per_year
+         en = 7_to_12_times_per_year
+         de = 7_bis_12_mal_pro_Jahr
+         fr = 7_à_12_fois_par_an
+         it = 7_to_12_times_per_year
+?else
     ++enum
       +++at_most_2_times_per_year
          en = at_most_2_times_per_year
@@ -99,6 +110,7 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
          de = mehr_als_30_mal_pro_Jahr
          fr = plus_que_30_fois_par_an
          it = more_than_30_times_per_year
+?endif
     ++labels
       en = Frequency of slurry mixing
       de = Häufigkeit Aufrühren des Güllelagers

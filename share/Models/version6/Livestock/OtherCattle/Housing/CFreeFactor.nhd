@@ -15,6 +15,9 @@ taxonomy = Livestock::OtherCattle::Housing::CFreeFactor
   type = float
   default_calc = 0
   default_gui = 0
+?if BLW
+  hidden = true
+?endif
   validator = between(-100,100);
   ++labels 
     en = Additional emission mitigation measure for the housing (see column Help)

@@ -281,12 +281,18 @@ taxonomy = Livestock::OtherCattle::Outdoor
 
 +floor_properties_exercise_yard
   type  = enum
+?if BLW
+  hidden = true
+  default_calc = solid_floor
+  default_gui  = solid_floor
+?endif
   ++enum
      +++solid_floor
        en = solid_floor
        de = Boden_planbefestigt
        fr = sol_en_dur
        it = solid_floor
+?if !BLW
      +++perforated_floor
        en = perforated_floor
        de = Boden_perforiert
@@ -303,6 +309,7 @@ taxonomy = Livestock::OtherCattle::Outdoor
        de = kein_Laufhof:_Auslauf_auf_Weide
        fr = pas_de_parcours:_accès_au_pâturage
        it = paddock_or_pasture_used_as_exercise_yard
+?endif
 ?endif
   ++labels 
     en = Type of exercise yard
@@ -353,7 +360,7 @@ taxonomy = Livestock::OtherCattle::Outdoor
 ?endif
        <p>Proposition de valeur standard: sol en dur</p>
 
-?if !Kantonal_LU
+?if !Kantonal_LU and !BLW
   +free_correction_factor
     type = float
     default_calc = 0

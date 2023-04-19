@@ -31,9 +31,14 @@ taxonomy = Application::Slurry::Ctech
  Forschungsanstalt für Agrarökologie und Landbau, Zürich-Reckenholz. 107pp. 
 
 *** input ***
-  
+
 +share_splash_plate  
   type  = percent
+?if BLW
+  default_calc = 0
+  default_gui = 0
+  hidden = true
+?endif
   ++labels 
     en = Share of slurry applied with splash plate
     de = Anteil Gülleausbringung mit Prallteller/Werfer
@@ -60,7 +65,6 @@ taxonomy = Application::Slurry::Ctech
        <p>La somme des catégories «Part de lisier épandu» doit donner 100%. Chaque catégorie doit avoir un pourcentage entre 0 et 100 (les 0% doivent aussi être introduits).</p>
 
        <p>Proposition de valeur standard: 90%</p>
-
 
 +share_trailing_hose  
   type  = percent

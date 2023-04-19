@@ -27,6 +27,7 @@ taxonomy = Application::Slurry::Csoft
 *** input ***
 
 ?if !Kantonal_LU
+?if !BLW
   +appl_evening 
     type  = percent
     ++labels 
@@ -44,9 +45,14 @@ taxonomy = Application::Slurry::Csoft
          <p>Vorschlag für Standardwert: 20%</p>
       +++fr
          <p>Proposition de valeur standard: 20%</p>
-   
+?endif
   +appl_hotdays
     type  = enum
+?if BLW
+    hidden = true
+    default_calc = sometimes
+    default_gui  = sometimes
+?endif
     ++enum
       +++frequently
          en = frequently
@@ -144,12 +150,11 @@ The correction is omitted for solid manure since infiltration into soil does not
   ++description
   Correction factor of the emission rate if slurry is applied by
   considering  different kinds of "soft measures". 
-?if Kantonal_LU
   ++formula
-    1 + 
+?if Kantonal_LU or BLW
+    1 +
     Tech(c_hotdays_sometimes);
 ?else
-  ++formula
     1 + 
     In(appl_evening) / 100 * Tech(c_evening) + 
     $TE->{'c_hotdays_'.In(appl_hotdays)};
