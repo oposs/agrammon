@@ -24,11 +24,12 @@ class Agrammon::Model::Input {
     has @!enum-order;
     has %!enum-lookup;
     has Int $.order;
+    has Bool $!hidden = False;
     has Bool $!distribute = False;
     has Bool $!filter = False;
 
     submethod TWEAK(:$default_calc, :$default_gui, :$default_formula, :$default_formula_code,
-                    :$distribute, :$filter, :@enum --> Nil) {
+                    :$hidden, :$distribute, :$filter, :@enum --> Nil) {
         with $default_calc {
             $!default-calc = val($_);
         }
@@ -37,6 +38,9 @@ class Agrammon::Model::Input {
         }
         with $default_gui {
             $!default-gui = val($_);
+        }
+        with $hidden {
+            $!hidden = .lc eq 'true';
         }
         with $distribute {
             $!distribute = .lc eq 'true';
@@ -68,6 +72,10 @@ class Agrammon::Model::Input {
 
     method is-filter(--> Bool) {
         $!filter
+    }
+
+    method is-hidden(--> Bool) {
+        $!hidden
     }
 
     method as-hash {

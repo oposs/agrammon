@@ -186,6 +186,21 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
 
 ?endif
 
+### just for testing hidden inputs
++hiddenAnimals
+  type = float
+  hidden = true
+  default_calc = 42
+  default_gui = 42
+  ++labels
+    en = Test
+    de = Test
+    fr = Test
+  ++units
+    en = -
+  ++description
+    Just for testing.
+
 *** technical ***
 
 +standard_N_excretion
@@ -382,4 +397,3 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     else {
       return "barn dimensioning ok";
     }
-

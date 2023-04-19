@@ -11,6 +11,7 @@ class Agrammon::UI::Web {
         for $!model.load-order -> $module {
             $order += 1000;
             for $module.input -> $input {
+                next if $input.is-hidden;
                 $order += 100;
                 my %input-hash = $input.as-hash;
                 %input-hash<order> = $order;
