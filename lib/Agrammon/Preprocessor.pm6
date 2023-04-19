@@ -73,7 +73,7 @@ sub preprocess(Str $source, %options --> Str) is export {
             @result-lines.push('');
             given $content {
                 when /^ '?if' $<parts>=(\h+ [$<negate>='!']? <option=.ident>)+ % [\h+ $<op>=< and or >] \h* $/ {
-                    my $enabled = process-match($<parts>, $<negate>, %options, $<op>, $<option>, $number);
+                    my $enabled = process-match($<parts>, $<op>, %options, $number);
                     my $matched = $enabled;
                     my $start-line = $number + 1;
                     @open.push(OpenDirective.new(:$start-line, :$enabled, :$matched, :accept-elsif));
@@ -83,7 +83,7 @@ sub preprocess(Str $source, %options --> Str) is export {
                         unless $prev-part.accept-elsif {
                             die X::Agrammon::Preprocessor::ElsifAfterElse.new: :line($number + 1);
                         }
-                        my $enabled = !$prev-part.matched && process-match($<parts>, $<negate>, %options, $<op>, $<option>, $number);
+                        my $enabled = !$prev-part.matched && process-match($<parts>, $<op>, %options, $number);
                         my $matched = $prev-part.matched || $enabled;
                         my $start-line = $number + 1;
                         @open.push(OpenDirective.new(:$start-line, :$enabled, :$matched, :accept-elsif));
@@ -130,15 +130,15 @@ sub preprocess(Str $source, %options --> Str) is export {
 }
 
 #| helper method used in preprocess()
-sub process-match($parts, $negate, %options, $op, $option, $number --> Bool) {
-    unless all([eq] |$op) {
+sub process-match(@parts, @op, %options, $number --> Bool) {
+    unless all([eq] @op) {
         die X::Agrammon::Preprocessor::MixedAndOr.new: :line($number + 1);
     }
 
-    my @enabled-parts = $parts.map: -> $/ {
+    my @enabled-parts = @parts.map: -> $/ {
         $<negate> ?? .not !! .so given %options{~$<option>}
     }
-    $op && $op[0] eq 'or'
+    @op && @op[0] eq 'or'
         ?? ?any(@enabled-parts)
         !! ?all(@enabled-parts);
 }
