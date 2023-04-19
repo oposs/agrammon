@@ -41,13 +41,6 @@ class X::Agrammon::Preprocessor::MixedAndOr does X::Agrammon::Preprocessor {
     }
 }
 
-#| Exception thrown when ?elsif with multiple options
-class X::Agrammon::Preprocessor::ElsifMultiOptions does X::Agrammon::Preprocessor {
-    method message() {
-        "Invalid preprocessor ?elsif with multiple options found at line $!line"
-    }
-}
-
 #| Preprocess the provided source code for C-style preprocessor directives (but
 #| with a different syntax, given `#` is taken as the comment character). The
 #| syntax available is:
@@ -62,7 +55,6 @@ class X::Agrammon::Preprocessor::ElsifMultiOptions does X::Agrammon::Preprocesso
 #| BAR, and BAR2 will be looked up and truth-tested in C<%options>.
 #| and/or parts are optional, but must not be mixed on one clause.
 #| Nesting is allowed. An error will be raised on mis-nesting.
-
 sub preprocess(Str $source, %options --> Str) is export {
     my @result-lines;
     my class OpenDirective {
@@ -91,7 +83,7 @@ sub preprocess(Str $source, %options --> Str) is export {
                         unless $prev-part.accept-elsif {
                             die X::Agrammon::Preprocessor::ElsifAfterElse.new: :line($number + 1);
                         }
-                        my $enabled = so !$prev-part.matched && process-match($<parts>, $<negate>, %options, $<op>, $<option>, $number);
+                        my $enabled = !$prev-part.matched && process-match($<parts>, $<negate>, %options, $<op>, $<option>, $number);
                         my $matched = $prev-part.matched || $enabled;
                         my $start-line = $number + 1;
                         @open.push(OpenDirective.new(:$start-line, :$enabled, :$matched, :accept-elsif));
