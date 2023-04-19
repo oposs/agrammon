@@ -341,7 +341,7 @@ class Agrammon::Web::Service {
             when 'application/json' {
                 $result = output-as-json(
                     $!model, $outputs, $language, @print-set, $include-filters, :$all-filters,
-                    :compact-output($compact-output eq 'true')
+                    :compact-output( ($compact-output //'') eq 'true')
                 );
             }
             when 'text/plain' {
