@@ -418,13 +418,17 @@ subtest "Get model data" => {
 
         with $input-hash<inputs> -> @module-inputs {
             for @module-inputs -> $input {
-                my $var    = $input<variable>;
-                next unless $var ~~ /'::dairy_cows'/;
-                is-deeply $input.keys.sort, qw|branch defaults enum gui help labels models options optionsLang order type units validator variable|,
-                          "$var has expected keys";
+                my $var = $input<variable>;
+                # this variable must not show up
+                flunk "Hidden variable $var must not be shown by get-input-variables()" if $var ~~ / '::hiddenAnimals' /;
+
+                # These variables should have all the same elements
+                next unless $var ~~ / '::animals' /;
+                is-deeply $input.keys.sort, qw|branch defaults enum filter gui help labels models options optionsLang order type units validator variable|,
+                    "$var has expected keys";
                 subtest "$var" => {
                     is $input<branch>, 'false', 'branch is false';
-                    is-deeply $input<defaults>, %( calc => Any, gui => Any), "defaults as expected";
+                    is-deeply $input<defaults>, %( calc => Any, gui => Any, hasFormula => False), "defaults as expected";
                     is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
                 }
             }
