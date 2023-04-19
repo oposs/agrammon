@@ -274,11 +274,99 @@ is preprocess(Q:to/IN/, {:!A, :!B}), Q:to/OUT/, 'if/elsif/else emits else if no 
     line 5
     OUT
 
+is preprocess(Q:to/IN/, {:!A, :!B, :!C}), Q:to/OUT/, 'if/elsif/else emits else if no conditions true with and';
+    line 1
+    ?if A
+    line 2
+    ?elsif B and C
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+
+
+
+
+    line 4
+
+    line 5
+    OUT
+
+is preprocess(Q:to/IN/, {:!A, :!B, :!C}), Q:to/OUT/, 'if/elsif/else emits else if no conditions true with or';
+    line 1
+    ?if A
+    line 2
+    ?elsif B or C
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+
+
+
+
+    line 4
+
+    line 5
+    OUT
+
 is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'if/elsif not (!)/else emits else if no conditions true';
     line 1
     ?if A
     line 2
     ?elsif !B
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+
+
+
+
+    line 4
+
+    line 5
+    OUT
+
+is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'if/elsif not (!)/else emits else if no conditions true with or';
+    line 1
+    ?if A
+    line 2
+    ?elsif !B or A
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+
+
+
+
+    line 4
+
+    line 5
+    OUT
+
+is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'if/elsif not (!)/else emits else if no conditions true with and';
+    line 1
+    ?if A
+    line 2
+    ?elsif !B and !A
     line 3
     ?else
     line 4
@@ -340,11 +428,99 @@ is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'if/elsif not (!)/else emits firs
     line 5
     OUT
 
+is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'if/elsif not (!)/else emits first true part (when if) with and';
+    line 1
+    ?if A and !B
+    line 2
+    ?elsif !B
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+    line 2
+
+
+
+
+
+    line 5
+    OUT
+
+is preprocess(Q:to/IN/, {:A, :!B}), Q:to/OUT/, 'if/elsif not (!)/else emits first true part (when if) with or';
+    line 1
+    ?if !A or !B
+    line 2
+    ?elsif !B
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+    line 2
+
+
+
+
+
+    line 5
+    OUT
+
 is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'if/elsif/else emits first true part (when elsif)';
     line 1
     ?if A
     line 2
     ?elsif B
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+
+
+    line 3
+
+
+
+    line 5
+    OUT
+
+is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'if/elsif/else emits first true part (when elsif) with and';
+    line 1
+    ?if A
+    line 2
+    ?elsif B and !A
+    line 3
+    ?else
+    line 4
+    ?endif
+    line 5
+    IN
+    line 1
+
+
+
+    line 3
+
+
+
+    line 5
+    OUT
+
+is preprocess(Q:to/IN/, {:!A, :B}), Q:to/OUT/, 'if/elsif/else emits first true part (when elsif) with or';
+    line 1
+    ?if A
+    line 2
+    ?elsif !B or !A
     line 3
     ?else
     line 4
@@ -440,5 +616,71 @@ throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::ElsifAfterE
     line 3
     ?endif
     IN
+
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::MixedAndOr, line => 1;
+    ?if A and B or C
+    line 1
+    ?else
+    line 2
+    line 3
+    ?endif
+    IN
+
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::MixedAndOr, line => 1;
+    ?if A or B and C
+    line 1
+    ?else
+    line 2
+    line 3
+    ?endif
+    IN
+
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::MixedAndOr, line => 3;
+    ?if A
+    line 1
+    ?elsif A or B and C
+    line2
+    ?else
+    line 3
+    ?endif
+    IN
+
+throws-like { preprocess(Q:to/IN/, {}) }, X::Agrammon::Preprocessor::MixedAndOr, line => 3;
+    ?if A
+    line 1
+    ?elsif A and B or C
+    line2
+    ?else
+    line 3
+    ?endif
+    IN
+
+is preprocess(Q:to/IN/, {:!A, :!B, :C}), Q:to/OUT/, '?if on present and true option included with or';
+    line 1
+    ?if A or !B or C
+    line 2
+    ?endif
+    line 3
+    IN
+    line 1
+
+    line 2
+
+    line 3
+    OUT
+
+is preprocess(Q:to/IN/, {:A, :!B, :C}), Q:to/OUT/, '?if on present and true option included with and';
+    line 1
+    ?if A and !B and C
+    line 2
+    ?endif
+    line 3
+    IN
+    line 1
+
+    line 2
+
+    line 3
+    OUT
 
 done-testing;
