@@ -1,5 +1,6 @@
 - current
-
+  
+  - Allow absolute path for --technical-file
   - Change GUI labels for pigs from grazing to outdoor
   - Allow grazing days > 270 days for dairy cows and other cattle
   - Add defaults (0) and validators ge(0) to Recycling Fertilizers
