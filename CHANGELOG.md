@@ -1,8 +1,10 @@
-- current
+- 6.4.0, 2023-06-22, fritz.zaucker@oetiker.ch
 
+  - Allow absolute path for --technical-file
   - Change GUI labels for pigs from grazing to outdoor
   - Allow grazing days > 270 days for dairy cows and other cattle
   - Add defaults (0) and validators ge(0) to Recycling Fertilizers
+  - Check for unused technical parameters on documentation generation
 
 - 6.3.0, 2022-06-23, fritz.zaucker@oetiker.ch
 

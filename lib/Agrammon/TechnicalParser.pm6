@@ -31,7 +31,8 @@ sub parse-technical(Str $to-parse) is export {
 }
 
 sub load-technical(IO::Path $model-path, Str $technical-file) is export {
-    my $tech-input = $model-path.IO.&child-secure($technical-file // 'technical.cfg');
+    my $tech-input = $model-path.IO.&child-secure($technical-file // 'technical.cfg')
+        unless $technical-file and ($tech-input = IO::Path.new($technical-file)).is-absolute;
     timed "Load parameters from $tech-input", {
         my $params = parse-technical( $tech-input.IO.slurp );
         %($params.technical.map(-> %module {
