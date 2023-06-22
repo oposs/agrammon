@@ -2,7 +2,7 @@ use v6;
 use Agrammon::Model;
 
 #| Get model data for LaTeX document generation
-sub get-model-data( Agrammon::Model $model, $sort, :%technical! ) {
+sub get-model-data( Agrammon::Model $model, $sort ) {
     my @sections;
     my \order = $sort eq 'calculation' ?? $model.evaluation-order.reverse !! $model.load-order;
     for order -> $module {
@@ -20,17 +20,18 @@ sub get-model-data( Agrammon::Model $model, $sort, :%technical! ) {
 
 #| Create a LaTeX source of the model
 sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, $doc-sections, :%technical! ) is export {
-    my @sections = get-model-data( $model, $sort, :%technical );
+    my @sections = get-model-data( $model, $sort );
 
     my @latex;
-
     @latex.push(latex-preamble($model-name));
 
     my $last-section = '';
     for @sections -> %section {
-        next unless any %section<inputs outputs>;
 
         my $module  = %section<module>;
+        %technical{$module}:delete unless %technical{$module}.keys;
+
+        next unless any %section<inputs outputs technicals>;
         my $section = $module;
         $section    = ~$0 if $module ~~ / (.+?) '::' /;
         my $title   = latex-escape($module);
@@ -89,14 +90,27 @@ sub create-latex-source( Str $model-name, Agrammon::Model $model, $sort, $doc-se
                 my $desc = latex-escape($technical.description // '');
                 my $value = %technical{$module}{$technical.name} // '???';
                 @latex.push(Q:s"\item[$name] $value $unit\\ $desc");
+                %technical{$module}{$technical.name}:delete;
             }
             @latex.push('\end{description}');
+            %technical{$module}:delete unless %technical{$module}.keys;
         }
         @latex.push('\clearpage');
+
     }
 
+    if %technical.keys {
+        @latex.push('\section{Unused technical parameters}');
+        @latex.push('\textbf{This section should not exist!}');
+        @latex.push('\begin{description}');
+        for %technical.kv -> $module, %param {
+            for %param.kv -> $name, $value {
+                @latex.push(Q:s"\item[$module] " ~ latex-escape($name) ~ "= $value");
+            }
+        }
+        @latex.push('\end{description}');
+    }
     @latex.push(latex-closing);
-
     @latex.join("\n");
 }
 
