@@ -14,7 +14,7 @@ grammar Agrammon::Formula::Parser {
     }
 
     method panic($message) {
-        die "$message near " ~ self.orig.substr(self.pos, 50).perl;
+        die "$message near " ~ self.orig.substr(self.pos, 50).raku;
     }
 
     rule statement {

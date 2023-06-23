@@ -5,7 +5,7 @@ use Digest::SHA1::Native;
 
 sub load-model-using-cache(IO() $cache-dir, IO() $path, $module, %preprocessor-options?) is export {
     my $hash = hash-model($path, %preprocessor-options).trans('0'..'9' => 'A'..'J');
-    my $cached = $cache-dir.IO.add("$hash.pm6");
+    my $cached = $cache-dir.IO.add("$hash.rakumod");
     unless $cached.e {
         my $m = Agrammon::Model.new(:$path, :%preprocessor-options, :!compile-formulas);
         $m.load($module);
@@ -14,8 +14,8 @@ sub load-model-using-cache(IO() $cache-dir, IO() $path, $module, %preprocessor-o
             unit module {$hash};
             use Agrammon::Model;
             our $model = BEGIN Agrammon::Model
-                    .new(path => {$path.absolute.perl}.IO, preprocessor-options => {%preprocessor-options.raku})
-                    .load({$module.perl}, :!compile-formulas);
+                    .new(path => {$path.absolute.raku}.IO, preprocessor-options => {%preprocessor-options.raku})
+                    .load({$module.raku}, :!compile-formulas);
             my @modules := $model.evaluation-order;
             {set-formulas-code($m)}
             MODULE
