@@ -176,7 +176,7 @@ class X::Agrammon::Inputs::Distribution::BadBranchMatrix is Exception {
     has Int $.expected-cols;
     has @.bad-matrix;
     method message() {
-        "Bad matrix '@!bad-matrix.perl()' for $!instance-id of $!input-name-a/$!input-name-b in $!taxonomy; " ~
+        "Bad matrix '@!bad-matrix.raku()' for $!instance-id of $!input-name-a/$!input-name-b in $!taxonomy; " ~
                 "expected $!expected-rows rows and $!expected-cols columns"
     }
 }

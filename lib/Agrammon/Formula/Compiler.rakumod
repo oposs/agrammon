@@ -74,7 +74,7 @@ multi compile(Agrammon::Formula::Hash $hash) {
 }
 
 multi compile(Agrammon::Formula::Pair $pair) {
-    q:c"{$pair.key.perl} => ({compile($pair.value)})"
+    q:c"{$pair.key.raku} => ({compile($pair.value)})"
 }
 
 multi compile(Agrammon::Formula::VarDecl $decl) {
@@ -92,7 +92,7 @@ multi compile(Agrammon::Formula::CallBuiltin $call) {
                         die "Can not do a multi-arg return";
     }
     else {
-        q:c"$env.find-builtin({$call.name.perl})({$call.args.map(&compile).join(', ')})"
+        q:c"$env.find-builtin({$call.name.raku})({$call.args.map(&compile).join(', ')})"
     }
 }
 
@@ -205,19 +205,19 @@ multi compile(Agrammon::Formula::BinOp::Assign $op) {
 }
 
 multi compile(Agrammon::Formula::Integer $val) {
-    $val.value.perl
+    $val.value.raku
 }
 
 multi compile(Agrammon::Formula::Rational $val) {
-    $val.value.perl
+    $val.value.raku
 }
 
 multi compile(Agrammon::Formula::Float $val) {
-    $val.value.perl
+    $val.value.raku
 }
 
 multi compile(Agrammon::Formula::String $val) {
-    $val.value.perl
+    $val.value.raku
 }
 
 multi compile(Agrammon::Formula::Nil) {
