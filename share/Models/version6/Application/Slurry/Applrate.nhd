@@ -67,11 +67,11 @@ taxonomy = Application::Slurry::Applrate
       Application rate, mean volume of slurry applied on a ha per deployment.
     ++help
       +++en
-         <p>Standard value for Switzerland: 30 m<sup>3</sup></p>
+         <p>Standard value for Switzerland: 25 m<sup>3</sup></p>
       +++de
-         <p>Vorschlag für Standardwert: 30 m<sup>3</sup></p>
+         <p>Vorschlag für Standardwert: 25 m<sup>3</sup></p>
       +++fr
-         <p>Proposition de valeur standard: 30 m<sup>3</sup></p>
+         <p>Proposition de valeur standard: 25 m<sup>3</sup></p>
 ?endif
  
 *** technical ***

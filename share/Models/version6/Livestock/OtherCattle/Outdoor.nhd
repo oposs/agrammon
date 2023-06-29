@@ -1,7 +1,7 @@
 *** general ***
 
 author   = Agrammon Group
-date     = 2020-11-16
+date     = 2023-06-13
 taxonomy = Livestock::OtherCattle::Outdoor
 
 +short
@@ -99,7 +99,7 @@ taxonomy = Livestock::OtherCattle::Outdoor
          </tr>
       </table>
     +++de
-       <p>Rinder, die angebunden gehalten werden, müssen regelmässig, mindestens jedoch an 60 Tagen während der Vegetationsperiode und an 30 Tagen während der Winterfütterungsperiode, Auslauf erhalten (Tierschutzverordnung vom 23. April 2008, Stand am 1. Januar 2009).</p>
+       <p>Rinder, die angebunden gehalten werden, müssen regelmässig, mindestens jedoch an 60 Tagen während der Vegetationsperiode und an 30 Tagen während der Winterfütterungsperiode, Auslauf erhalten (Tierschutzverordnung vom 23. April 2008, Stand am 1. Juni 2022).</p>
        <p>Vorschlag für Standardwerte</p>
        <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
          <tr>
@@ -168,7 +168,7 @@ taxonomy = Livestock::OtherCattle::Outdoor
          </tr>
       </table>
     +++fr
-       <p>Les bovins gardés à l'attache doivent avoir accès régulièrement à un parcours extérieur, au moins pendant 60 jours durant la période de végétation et pendant 30 jours durant la période d'affouragement d'hiver (Ord. sur la protection des animaux du 23 avril 2008, état au 1er janvier 2009). </p>
+       <p>Les bovins gardés à l'attache doivent avoir accès régulièrement à un parcours extérieur, au moins pendant 60 jours durant la période de végétation et pendant 30 jours durant la période d'affouragement d'hiver (Ord. sur la protection des animaux du 23 avril 2008, état au 1er juin 2022). </p>
        <p>Proposition de valeurs standard</p>
        <table border="1" style='font-family: Tahoma,"Liberation Sans",Arial; font-size: 8pt'> 
          <tr>

@@ -14,8 +14,11 @@ taxonomy = Livestock::DairyCow::Housing::KGrazing
 
   This process calculates the correction factor for the non
   proportional change of the housing emission according to the
-  grazing hours per day. Source is Phillips et al. (1998) and  Gilhespy et al. (2006)
-  empirical estimation was done by Thomas Kupper.
+  grazing hours per day based on Phillips et al. (1998) and  Gilhespy et al. (2006).
+
+  Gilhespy, S., Webb, J., Retter, A., Chadwick, D. 2006. Dependence of ammonia emissions from housing on the time cattle spent inside. J. Environ. Qual. 35(5): 1659-1667.
+  Phillips, V.R., Bishop, S.J., Price, J.S., You, S. 1998. Summer emissions of ammonia from a slurry-based, UK, dairy cow house. Bioresource Technol. 65(3): 213-219.
+
 
 *** input ***
 

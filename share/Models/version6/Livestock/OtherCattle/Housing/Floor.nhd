@@ -1,17 +1,19 @@
 *** general ***
 
 author   = Agrammon Group 
-date     = 2008-03-30
+date     = 2023-06-13
 taxonomy = Livestock::OtherCattle::Housing::Floor
 
 +short
-    Computes the annual NH3 reduction due to a grooved floor in cattle housing systems.
+    Computes the annual NH3 reduction due to low emissions techniques in housing systems.
 
 +description
-    This submodul calculates the annual NH3 reduction due to a grooved floor in cattle housing systems according to the UNECE guideline 2007.
+    This submodul calculates the annual NH3 reduction due to low emission techniques in housing systems.
 
  \subsubsection{References}
-UNECE 2007. Guidance document on control techniques for preventing and abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
+Braam, C.R., Ketelaars, J., Smits, M.C.J. 1997. Effects of floor design and floor cleaning on ammonia emission from cubicle houses for dairy cows. Neth. J. Agric. Sci. 45(1): 49-64.
+Braam, C.R., Smits, M.C.J., Gunnink, H., Swierstra, D. 1997. Ammonia emission from a double-sloped solid floor in a cubicle house for dairy cows. J. Agr. Eng. Res. 68(4): 375-386.
+Zähner, M., Poteko, J., Zeyer, K., Schrade, S. 2017. Laufflächengestaltung: Emissionsminderung und verfahrenstechnische Aspekte - erste Ergebnisse aus dem Emissionsversuchsstall Tänikon. Bautagung Raumberg-Gumpenstein 2019; Höhere Bundeslehr- und Forschungsanstalt für Landwirtschaft Raumberg-Gumpenstein, Österreich. p 13-18.
 
 
 *** external ***
@@ -56,19 +58,19 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        <p>Elevated feed stalls:<p>
        <p>This system consists of an elevated feeding area and separations between the animals. The animals are controlled at the feeding barrier which minimizes the accumulation of excretions in the feeding area. Applicable for Tied Housing Slurry and Tied Housing Slurry Plus Solid Manure.<p>
        <p>Double-sloped solid floor operating with urine gutter:<p>
-       <p>Double-sloped solid floor (slope of 3 %) operating with a longitudinal urine gutter. The floor and the urine gutter must be cleaned by a scraper at two-hour intervals (controlled by a timer). Applicable for Tied Housing Slurry.<p>
+       <p>Double-sloped solid floor (slope of 3 %) operating with a longitudinal urine gutter. The floor and the urine gutter must be cleaned by a scraper at least every 2 hours (controlled by a timer). Applicable for Tied Housing Slurry.<p>
        <p>Standard value for Switzerland: “none”</p>
     +++de
        <p>Fressstand erhöht zum Laufgang:</p>
        <p>Dieses System besteht aus einem erhöhten Fressbereich (Podest) und Fressplatzabtrennungen. Die Tiere werden am Fressgitter so gesteuert, dass möglichst wenig Exkremente auf den Standflächen des Fressbereichs anfallen. Anwendbar für Laufstall mit Produktion von Vollgülle und Laufstall mit Produktion von Gülle und Mist.</p>
        <p>Boden mit Quergefälle und Harnsammelrinne:</p>
-       <p>Planbefestigte Laufflächen mit einem Quergefälle von 3 % und einer Längsrinne. Der Boden und die Harnabflussrinne müssen mittels Schieber und Rinnenräumer in zweistündigem Rhythmus gereinigt werden (Steuerung mit einer Zeitschaltuhr). Anwendbar für Laufstall mit Produktion von Vollgülle.</p>
+       <p>Planbefestigte Laufflächen mit einem Quergefälle von 3 % und einer Längsrinne. Der Boden und die Harnabflussrinne müssen mittels Schieber und Rinnenräumer mindestens alle 2 Stunden gereinigt werden (Steuerung mit einer Zeitschaltuhr). Anwendbar für Laufstall mit Produktion von Vollgülle.</p>
        <p>Vorschlag für Standardwert: keine</p>
     +++fr
        <p>Stalle d’affouragement surélevée :</p>
        <p>Ce système se compose d'une aire d'alimentation surélevée et de places d’alimentation avec séparations. Les animaux sont contrôlés au niveau des cornadis ce-qui minimise l’accumulation des excréments dans l'aire d'alimentation. Applicable pour stabulation libre avec production de lisier complet et stabulation libre avec production de lisier et de fumier.</p>
        <p>Sol non perforé avec pente transversale :</p>
-       <p>Sol non perforé, inclinées à 3 % vers une rigole longitudinale. Le sol et la rigole d’écoulement doivent être nettoyés au moyen d’un dispositif spécial toutes les deux heures (commande munie d’une minuterie). Applicable pour stabulation libre avec production de lisier complet.</p>
+       <p>Sol non perforé, inclinées à 3 % vers une rigole longitudinale. Le sol et la rigole d’écoulement doivent être nettoyés au moyen d’un dispositif spécial au moins toutes les deux heures (commande munie d’une minuterie). Applicable pour stabulation libre avec production de lisier complet.</p>
        <p>Proposition de valeur standard: aucune</p>
 
 

@@ -13,9 +13,10 @@ and type of concentrates used.
 
 +description
 
- This process accounts for the fact, that special rations can result in higher or lower N excretions as compared to standard excretions from Flisch et al. (2009). A differentiated consideration of the duration of the summer and winter feeding period according to farm location (altitude etc.) is possible but was not implemented for the emission inventory.
+ This process accounts for the fact, that special rations can result in higher or lower N excretions as compared to standard excretions from Richner et al. (2017). A differentiated consideration of the duration of the summer and winter feeding period according to farm location (altitude etc.) is possible but was not implemented for the emission inventory.
 \subsubsection{References:}
-Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
+Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/24.
+
 
 
 *** input ***

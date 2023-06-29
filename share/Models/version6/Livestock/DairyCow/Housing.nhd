@@ -13,7 +13,7 @@ taxonomy = Livestock::DairyCow::Housing
   This process calculates the NH3 emission in dairy cow housing
   depending on the N excretion and the housing systems. The NH3
   emission is assumed to be proportional to the total N excretion of
-  the animals because the contaminated surfaces will primarily drive
+  the animals because the soiled surfaces will primarily drive
   emission, which will remain active even when animals are on the
   pasture or exercise yard.
 
@@ -27,7 +27,7 @@ taxonomy = Livestock::DairyCow::Housing
 
   For housing systems with integrated exercise yards, it is difficult to
   distinguish between emissions from housing, exercise yard and storage. 
-  For these housingtypes the emission may be only validated for the sum of
+  For these housing types, the emission may be only validated for the sum of
   housing, exercise yard and storage emission.
   
 *** input ***

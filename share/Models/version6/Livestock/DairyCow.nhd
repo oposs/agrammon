@@ -6,10 +6,11 @@ instances = multi
 gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches laitières,Livestock::Dairy cows
 
 +short
-  annual emission
+  Collects the annual emission of NH3 and the N flux for dairy cows.
   
 + description
-  XXX
+  This process summarizes the annual emission of NH3 for dairy cows. 
+  from housing, yard and grazing. Further it summarizes the annual N flux from housing and yard to the storage for dairy cows.
   
 *** input ***
 

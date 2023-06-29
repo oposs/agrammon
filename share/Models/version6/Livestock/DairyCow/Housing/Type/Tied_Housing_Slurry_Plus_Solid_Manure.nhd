@@ -22,8 +22,12 @@ Describes correction factors for the tied housing liquid solid system for dairy 
   ++units  
     en = -
   ++description
-    Emission rate for the tied housing liquid solid system for dairy cows.  According to the consensus obtained in the workshop at ART Tänikon 02/11/07: 4% Ntot, converted using Nsol of 60% and the emission rate of 6.7% based on TAN.
-   
+    The emission factor for tied housings is based on the corresponding value from UNECE (2014) which is 4.8 kg NH3 per cow and year (or 4.0 kg NH3-N per cow and year). This corresponds to 3.5% of a dairy cow's excretion of 112 kg N. With a TAN content of 55% Ntot in the excreta of cattle, this results in an emission factor of 6.4% TAN (0.035 / 0.55 = 0.064). This value agrees well with the emission factor which was previously implemented in Agrammon and thus retained.
+    
+    \subsubsection{References:}
+
+    UNECE. 2014. Guidance document for preventing and abating ammonia emissions from agricultural sources. Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Economic Commission for Europe (UNECE).
+
 +share_liquid
   value = .57
   ++units  

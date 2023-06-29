@@ -11,32 +11,14 @@ milk yield and the feed ration.
 
 +description
 
-This process calculates the annual N excretion (total N and Nsol (urea plus
-measured total ammoniacal nitrogen)) of a number of dairy cows as a
-function of the milk yield and the supplied feed ration. Nitrogen
-surpluses from increased nitrogen uptake are primarily excreted as
-Nsol in the urine. Eighty percent of the increased N excretion is
-therefore added to the Nsol fraction.
+This process calculates the annual N excretion (total N and TAN (Total Ammoniacal Nitrogen) of a number of dairy cows as a function of the milk yield and the supplied feed ration. Nitrogen surpluses from increased nitrogen uptake are primarily excreted as TAN in the urine.
 
-The standard N excretion was taken from the official Swiss fertilizer
-guidelines. These values were compiled on the basis of official
-feeding recommendations (RAP 1999) by a group of feeding experts under
-the lead of H. Menzi. Even though the methodology used is not
-documented in detail, it was well known to the authors of DYNAMO.
+The standard N excretion was taken from the PRIF 2017 (Richner et al., 2017; PRIF: Principles of Agricultural Crop Fertilisation in Switzerland).
 
 \subsubsection{References:}
 
-Burgos SA, Robinson PH, Fadel JG, DePeters EJ 2005. Ammonia volatilization
-potential: Prediction of urinary urea nitrogen output on lactating dairy
-cows. Agriculture, Ecosystems and Environment 111:261-269.
+Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/24.
 
-Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and
-dung of grazing cattle: effect of N intake. Atmospheric environment
-32:295-300.
-
-RAP 1999. Fütterungsempfehlungen und Nährwerttabelle für Wiederkäuer. 4. Überarbeitete Auflage, 327p, Landwirtschaftliche Lehrmittelzentrale, Zollikofen.
-
-Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
 
 *** input ***
 
@@ -131,7 +113,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
             nitrogen excretion according to PRIF 2017 is applied (Richner
             et al., 2017) is applied (PRIF: Principles of Agricultural Crop
             Fertilisation in Switzerland). If a number is entered, a value
-            for the nitrogen excretion can be selected by the user.</p>
+            for the nitrogen excretion can be selected by the user. This option applies for cases for which the nitrogen excretion can be optained from e.g. a feeding model.</p>
          <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
             M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
             Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
@@ -141,7 +123,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       +++de
          <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD
             2017 (Richner et al., 2017) verwendet. Bei Eingabe einer Zahl kann der Wert für die
-            Stickstoffausscheidung selbst gewählt werden.</p>
+            Stickstoffausscheidung selbst gewählt werden. Diese Option ist für Fälle gedacht, in denen die Stickstoffausscheidung beispielsweise aus einem Fütterungsmodell bekannt ist.</p>
          <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
             M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
             Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
@@ -178,11 +160,14 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       TAN fraction of the annual standard N excretion
     ++help
       +++en
-         <p>If "Standard" is selected ...</p>
+         <p>If "Standard" is selected the proportion of TAN in the excretions of the dairy cows is calculaded according to the Agrammon model. If a number is entered, a value
+            for the proportion of TAN in the excretion can be selected by the user. This option applies for cases for which the proportion of TAN in the excretions can be optained from e.g. a feeding model.</p>
       +++de
-         <p>Bei Eingabe <b>Standard</b> wird ...</p>
+         <p>Bei Eingabe <b>Standard</b> wird der Anteil von TAN in den Ausscheidungen der Milchkühe wie vom Modell Agrammon vorgegeben festgelegt. Bei Eingabe einer Zahl kann der Wert für den
+            Anteil von TAN in den Ausscheidungen selbst gewählt werden. Diese Option ist für Fälle gedacht, in denen  der Anteil von TAN in den Ausscheidungen beispielsweise aus einem Fütterungsmodell bekannt ist.</p>
       +++fr
-         <p>Si "Standard" est introduisé, la valeur de ...</p>
+         <p>Si <b>Standard</b> est introduisé le pourcentage de TAN dans les excrétions des vâches laitières est utilisée comme défini par le modèle Agrammon. Si un nombre est introduisé une valeur pour la proportion de TAN
+         dans les excrétions peut être déterminée par l'utilisateur/-trice. Cette option est destinée aux cas où la proportion de TAN dans les excréments est connue, par exemple à partir d'un modèle d'alimentation.</p>
 
 ?endif
 
@@ -211,15 +196,14 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     fr = kg N/an
   ++description
     Annual standard N excretion for a dairy cow according to
-    Flisch et al. (2009).
+    Richner et al. (2017).
 
 +share_Nsol
   value = 0.55
   ++units
     en  = -
   ++description
-    Nsol content of excreta. Derived from e.g.
-    Peterson et al. (1998) or Burgos et al. (2005).
+    TAN content of excreta.
 
 +feed_influence_on_Nsol
   value = 1
@@ -227,7 +211,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     en = kg Nsol/kg N
   ++description
     Proportion of N (calculated from feed ration correction) excreted as
-    Nsol. Derived from e.g. Peterson et al. (1998).
+    TAN.
 
 *** external ***
 
