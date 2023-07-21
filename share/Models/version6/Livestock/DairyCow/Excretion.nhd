@@ -46,7 +46,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   +++de
      <p>Für Milchkühe sind keine Unterkategorien vorgesehen.</p>
   +++fr
-     <p><Für Milchkühe sind keine Unterkategorien vorgesehen./p>
+     <p><Il n'y a pas de sous-catégories pour les vaches laitières./p>
 
 +animals
   type = float
@@ -66,7 +66,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     +++de
        <p>Tatsächliche Anzahl Tiere im Stall.</p>
     +++fr
-       <p>Nombre effectif d'animaux dans la stabulation.</p>
+       <p>Nombre effectif d'animaux dans l'étable.</p>
 
 +dimensioning_barn
   type = float
@@ -90,7 +90,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
          <p>Bei Auswahl "Standard" wird die Anzahl Tierplätze im Stall der eingegebenen Anzahl Tiere gleichgesetzt.</p>
       +++fr
          <p>Pour les stabulations libres: mentionner toutes les places accessibles aux animaux. Le nombre de places dans l'étable peut être supérieur au cheptel actuel, dans la perspective d'un agrandissement futur de l'exploitation p.ex. Dans les stabulations libres, un nombre de places supérieur au nombre d'animaux signifie une augmentation de la surface souillée par animal. Au contraire, dans les stabulations entravées, un nombre de places supérieur au nombre d'animaux ne conduit pas à une augmentation de la surface souillée par animal, vu que ces places libres ne sont pas accessibles aux animaux.  </p>
-         <p>Si "Standard" est introduisé, la valeur du nombre d'animaux est utilisée.</p>
+         <p>Si "Standard" est sélectionné, la valeur du nombre d'animaux est utilisée.</p>
 
 ?if !Kantonal_LU
   +inp_n_excretion
@@ -131,10 +131,10 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
             GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
             pp. 4/1-4/23.</p>
       +++fr
-         <p>Si "Standard" est introduisé, la valeur de référence pour
+         <p>Si "Standard" est sélectionné, la valeur de référence pour
             les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
             est utilisée (PRIF: « Principes de la fertilisation des
-            cultures agricoles en Suisse » ). Si un nombre est introduisé
+            cultures agricoles en Suisse » ). Si un nombre est saisi
             une valeur pour les excrétions azotées peut être déterminée par
             l'utilisateur/-trice.</p>
           <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
@@ -166,7 +166,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
          <p>Bei Eingabe <b>Standard</b> wird der Anteil von TAN in den Ausscheidungen der Milchkühe wie vom Modell Agrammon vorgegeben festgelegt. Bei Eingabe einer Zahl kann der Wert für den
             Anteil von TAN in den Ausscheidungen selbst gewählt werden. Diese Option ist für Fälle gedacht, in denen  der Anteil von TAN in den Ausscheidungen beispielsweise aus einem Fütterungsmodell bekannt ist.</p>
       +++fr
-         <p>Si <b>Standard</b> est introduisé le pourcentage de TAN dans les excrétions des vâches laitières est utilisée comme défini par le modèle Agrammon. Si un nombre est introduisé une valeur pour la proportion de TAN
+         <p>Si <b>Standard</b> est sélectionné, le pourcentage de TAN issu des excrétions des vâches laitières est utilisé comme défini par le modèle Agrammon. Si un nombre est saisi, une valeur pour la proportion de TAN
          dans les excrétions peut être déterminée par l'utilisateur/-trice. Cette option est destinée aux cas où la proportion de TAN dans les excréments est connue, par exemple à partir d'un modèle d'alimentation.</p>
 
 ?endif

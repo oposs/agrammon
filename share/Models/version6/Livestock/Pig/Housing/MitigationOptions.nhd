@@ -61,7 +61,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
   ++labels 
     en = Mitigation options for housing systems: air supply
     de = Emissionsmindernde Massnahmen Zuluftführung
-    fr = Mesures limitant les émissions amenée d'air
+    fr = Mesures limitant les émissions grâce à l'amenée d'air
   ++units 
     en = -
   ++description
@@ -77,7 +77,10 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 Ratschow, J.-P., Schulte-Sutrum, R., Büscher, W., Nannen, C., Feller, B. 2008. DLG-Merkblatt 346: Kühlung von Schweineställen. DLG, Frankfurt/Main.</p>
        <p>Vorschlag für Standardwert: keine</p>
     +++fr
-       <p></p>
+       <p>L'amenée d'air à faible impulsion via une gaine de ventilation ou une ventilation par l'intermédiare du couloir d'alimentation est pris en compte comme mesure standard (voir ci-dessous le document de DLG).
+       Ce système peut être sélectioné comme mesure réduisant les émissions uniquement si un effet important sur les émissions est démontrable et considérable par rapport au système standard. </p>
+       <p>Büscher, W., Franke, G., Haidn, B., Müller, H.J., Niethammer, F., Leuschner, P. 2003. DLG-Arbeitsunterlage: Lüftung von Schweineställen. DLG, Frankfurt/Main.
+Ratschow, J.-P., Schulte-Sutrum, R., Büscher, W., Nannen, C., Feller, B. 2008. DLG-Merkblatt 346: Kühlung von Schweineställen. DLG, Frankfurt/Main.</p>
        <p>Proposition valeur standard: aucune</p>
         
 
