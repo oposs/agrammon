@@ -11,7 +11,8 @@ cow as a function of the winter feed ration.
 
 +description
 
-
+Computes the correction factor for the annual N excretion of a dairy
+cow as a function of the winter feed ration.
 
 
  *** input ***
