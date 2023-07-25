@@ -11,28 +11,14 @@ crude protein and the energy content of the feed ration.
 
 +description
 
-This process calculates the annual N excretion (total N and Nsol) of different pig categories according to the crude protein and energy content of the feed ration.
+This process calculates the annual N excretion (total N and TAN=Total Ammoniacal Nitrogen) of a number of pigs as a function of the supplied feed ration. Nitrogen surpluses from increased nitrogen uptake are primarily excreted as TAN in the urine.
 
-\begin{todo}{Harald Menzi}{}
-   Formulation of Beat Reidy maybe mistaken,
-\end{todo}
+The standard N excretion was taken from the PRIF 2017 (Richner et al., 2017; PRIF: Principles of Agricultural Crop Fertilisation in Switzerland).
 
 \subsubsection{References:}
 
-BLW, SRVA, LBL 2003. Weisungen zur Beruecksichtigung von Ökofuttern in der
-Suisse-Bilanz. 2003.
+Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/24.
 
-
-Burgos SA, Robinson PH, Fadel JG, DePeters EJ 2005. Ammonia volatilization
-potential: Prediction of urinary urea nitrogen output on lactating dairy
-cows. Agriculture, Ecosystems and Environment 111:261-269.
-
-
-Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and
-dung of grazing cattle: effect of N intake. Atmospheric environment
-32:295-300.
-
-Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung im Acker- und Futterbau. Agrarforschung 16(2).
 
 *** input ***
 
@@ -191,11 +177,14 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       TAN fraction of the annual standard N excretion
     ++help
       +++en
-         <p>If "Standard" is selected ...</p>
+         <p>If "Standard" is selected the proportion of TAN in the excretions of the animals is calculaded according to the Agrammon model. If a number is entered, a value
+            for the proportion of TAN in the excretion can be selected by the user. This option applies for cases for which the proportion of TAN in the excretions can be optained from e.g. a feeding model.</p>
       +++de
-         <p>Bei Eingabe <b>Standard</b> wird ...</p>
+         <p>Bei Eingabe <b>Standard</b> wird der Anteil von TAN in den Ausscheidungen der Tiere wie vom Modell Agrammon vorgegeben festgelegt. Bei Eingabe einer Zahl kann der Wert für den
+            Anteil von TAN in den Ausscheidungen selbst gewählt werden. Diese Option ist für Fälle gedacht, in denen  der Anteil von TAN in den Ausscheidungen beispielsweise aus einem Fütterungsmodell bekannt ist.</p>
       +++fr
-         <p>Si "Standard" est introduisé, la valeur de ...</p>
+         <p>Si <b>Standard</b> est introduisé le pourcentage de TAN dans les excrétions des animaux est utilisée comme défini par le modèle Agrammon. Si un nombre est introduisé une valeur pour la proportion de TAN
+         dans les excrétions peut être déterminée par l'utilisateur/-trice. Cette option est destinée aux cas où la proportion de TAN dans les excréments est connue, par exemple à partir d'un modèle d'alimentation.</p>
 
 ?endif
 
@@ -211,34 +200,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
      de = g RP/kg
      fr = g MA/kg
   ++description
-       <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
-
-       <p>Bei Verwendung von zwei verschiedenen Futtermitteln bei abgesetzten
-       Ferkeln: nach Verzehr gemittelte Gehalt einsetzen.</p>
-
-       <p>Standardwerte zur Eingabe, falls die Gehalte des auf dem Betrieb
-       verwendeten Futters nicht bekannt sind:</p>
-
-       <ul>
-         <li>Säugende Sauen 180 g RP /kg; </li>
-
-         <li>Galtsauen 145 g RP /kg;  </li>
-
-         <li>Remonten 170 g RP /kg ;  </li>
-
-         <li>Eber 171 g RP /kg ;  </li>
-
-         <li>abgesetzte Ferkel 177 g RP /kg </li>
-       </ul>
-
-       <p>RP-Gehalte von nährstoffreduziertem Futter: </p>
-       <ul>
-         <li>Säugende Sauen 155 g RP /kg;  </li>
-
-         <li>Galtsauen, Remonten und Eber 135 g RP /kg; </li>
-
-         <li>abgesetzte Ferkel 165 g RP /kg </li>
-      </ul>
+       Crude protein content in the ration
   ++help
     +++en
        <p>The data of the feeds used on the farm must be entered.</p>
@@ -247,20 +209,13 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        Standard values for Switzerland:
 
        <ul>
-       <li>Nursing sows: 180 g CP /kg</li>
-       <li>Dry sows: 145 g CP /kg</li>
-       <li>Gilts: 170 g CP /kg</li>
-       <li>Boars: 171 g CP /kg</li>
-       <li>Weaned piglets: 177 g CP /kg</li>
+       <li>Nursing sows: 164 g CP /kg</li>
+       <li>Dry sows: 128 g CP /kg</li>
+       <li>Gilts: 151 g CP /kg</li>
+       <li>Boars: 128 g CP /kg</li>
+       <li>Weaned piglets: 162 g CP /kg</li>
        </ul>
-
-       For feeds with a reduced protein content:
-
-       <ul>
-       <li>Nursing sows: 155 g CP /kg</li>
-       <li>Dry sows and gilts: 135 g CP /kg</li>
-       <li>Boars: 140 g CP /kg</li>
-       </li>Weaned piglets: 165 g CP /kg</li>
+      
     +++de
        <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
 
@@ -271,20 +226,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        verwendeten Futters nicht bekannt sind:
 
        <ul>
-         <li>Säugende Sauen: 180 g RP /kg</li>
-         <li>Galtsauen: 145 g RP /kg</li>
-         <li>Remonten: 170 g RP /kg</li>
-         <li>Eber: 171 g RP /kg;</li>
-         <li>abgesetzte Ferkel: 177 g RP /kg</li>
-       </ul>
-
-       RP-Gehalte von nährstoffreduziertem Futter:
-
-       <ul>
-         <li>Säugende Sauen: 155 g RP /kg</li>
-         <li>Galtsauen und Remonten: 135 g RP /kg</li>
-         <li>Eber: 140 g RP /kg;</li>
-         <li>abgesetzte Ferkel: 165 g RP /kg</li>
+         <li>Säugende Sauen: 164 g RP /kg</li>
+         <li>Galtsauen: 128 g RP /kg</li>
+         <li>Remonten: 151 g RP /kg</li>
+         <li>Eber: 128 g RP /kg;</li>
+         <li>abgesetzte Ferkel: 162 g RP /kg</li>
        </ul>
 
     +++fr
@@ -297,20 +243,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        Proposition de valeurs standard:
 
        <ul>
-       <li>truies allaitantes: 180 g MA /kg</li>
-       <li>truies gestantes: 145 g MA /kg</li>
-       <li>verrats: 171 g MA /kg</li>
-       <li>truies de remonte: 170 g MA /kg</li>
-       <li>porcelets sevrés 177 g MA /kg</li>
-       </ul>
-
-       Teneur en matière azotée pour les aliments à teneurs réduites:
-
-       <ul>
-       <li>truies allaitantes: 155 g MA /kg</li>
-       <li>truies en gestation et truies de remonte: 135 g MA /kg</li>
-       <li>verrats 140 g MA /kg</li>
-       <li>porcelets sevrés 165 g MA /kg</li>
+       <li>truies allaitantes: 164 g MA /kg</li>
+       <li>truies gestantes: 128 g MA /kg</li>
+       <li>verrats: 128 g MA /kg</li>
+       <li>truies de remonte: 151 g MA /kg</li>
+       <li>porcelets sevrés 162 g MA /kg</li>
        </ul>
 
 +energy_content
@@ -325,21 +262,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
     de = MJ VES/kg
     fr = MJ EDP/kg
   ++description
-       <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
-
-       <p>Bei Verwendung von zwei verschiedenen Futtermitteln bei
-       abgesetzten Ferkeln: nach Verzehr gemittelten Gehalt einsetzen.</p>
-
-       Standardwerte zur Eingabe, falls die Gehalte des auf dem Betrieb
-       verwendeten Futters nicht bekannt sind:
-
-       <ul>
-         <li>Säugende Sauen: 13.7 MJ VES /kg</li>
-         <li>Galtsauen: 12.1 MJ VES /kg</li>
-         <li>Remonten: 14.0 MJ VES /kg</li>
-         <li>Eber: 12.9 MJ VES /kg;</li>
-         <li>abgesetzte Ferkel: 13.7 MJ VES /kg</li>
-       </ul>
+       Digestible energy content in the ration
   ++help
     +++en
       <p>The data of the feeds used on the farm must be entered.</p>
@@ -348,11 +271,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       Standard values for Switzerland:
 
       <ul>
-        <li>Nursing sows: 13.7 MJ DE* /kg</li>
+        <li>Nursing sows: 13.9 MJ DE* /kg</li>
         <li>Dry sows: 12.1 MJ DE* /kg</li>
         <li>Gilts: 14.0 MJ DE* /kg</li>
-        <li>Boars: 12.9 MJ DE* /kg MJ DE* /kg</li>
-        <li>Weaned piglets: 13.7 MJ DE* /kg</li>
+        <li>Boars: 12.1 MJ DE* /kg MJ DE* /kg</li>
+        <li>Weaned piglets: 13.9 MJ DE* /kg</li>
       </ul>
       *Digestible energy
     +++de
@@ -363,11 +286,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
        Standardwerte zur Eingabe, falls die Gehalte des auf dem Betrieb verwendeten Futters nicht bekannt sind:
 
        <ul>
-         <li>Säugende Sauen: 13.7 MJ VES /kg</li>
+         <li>Säugende Sauen: 13.9 MJ VES /kg</li>
          <li>Galtsauen: 12.1 MJ VES /kg</li>
          <li>Remonten: 14.0 MJ VES /kg</li>
-         <li>Eber: 12.9 MJ VES /kg;</li>
-         <li>abgesetzte Ferkel: 13.7 MJ VES /kg</li>
+         <li>Eber: 12.1 MJ VES /kg;</li>
+         <li>abgesetzte Ferkel: 13.9 MJ VES /kg</li>
        </ul>
     +++fr
       <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
@@ -379,11 +302,11 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
       Proposition de valeurs standard:
 
       <ul>
-        <li>truies allaitantes: 13.7 MJ EDP /kg</li>
+        <li>truies allaitantes: 13.9 MJ EDP /kg</li>
         <li>truies en gestation: 12.1 MJ EDP /kg</li>
         <li>remontes: 14.0 MJ EDP /kg</li>
-        <li>verrats: 12.9 MJ EDP /kg</li>
-        <li>porcelets sevrés: 13.7 MJ EDP /kg</li>
+        <li>verrats: 12.1 MJ EDP /kg</li>
+        <li>porcelets sevrés: 13.9 MJ EDP /kg</li>
       </ul>
 
 *** technical ***

@@ -12,7 +12,7 @@ gui       = Storage::Slurry,Hofdüngerlager::Gülle,Stockage::Lisier,Storage::Sl
 
 +description
 
-  This Process calculates the annual NH3 emission from a single liquid manuare
+  This Process calculates the annual NH3 emission from a single liquid manure
   storage, considering a specific emission factor.
 
 
@@ -40,11 +40,11 @@ Menzi H, Frick R, Kaufmann R, 1997a. Ammoniak-Emissionen in der Schweiz: Ausmass
     +++en
        <p></p>
     +++de
-       <p>Volumen des Güllelagers ohne Güllelager und Kanäle unter perforierten Böden von Ställen (z.B. perforierte Laufgänge und Fressplätze von Boxenlaufställen, Schwemmkanäle in Anbindeställen) angeben. </p>
-       <p>Vorschlag für Standardwerte: Berechnung des Volumen des Güllelagers mittels Güllenanfall nach GRUDAF (Verdünnung 1:1; Lagerdauer: 5 Monate für Talregion, 6 Monate für Hügelregion und 7 Monate für Bergregion)</p>
+       <p>Volumen des Güllelagers ohne Güllelager/-keller und Kanäle unter perforierten oder planbefestigten Böden von Ställen (z.B. Laufgänge und Fressplätze von Boxenlaufställen, Schwemmkanäle in Anbindeställen) angeben. </p>
+       <p>Vorschlag für Standardwerte: Berechnung des Volumen des Güllelagers mittels Güllenanfall nach GRUD (Verdünnung 1:1; Lagerdauer: 5 Monate für Talregion, 6 Monate für Hügelregion und 7 Monate für Bergregion)</p>
     +++fr
-       <p>Mentionner le volume du stock de lisier sans compter les caniveaux sous les grilles ni les canaux sous les sols perforés des stabulations (p.ex. couloirs de déplacement et places d'affouragement perforés) </p>
-       <p>Proposition de valeur standard: calcul du volume du stock de lisier à l'aide de la production de lisier d'après Grudaf (dilution 1:1; durée de stockage: 5 mois pour les régions de plaine, 6 pour les régions de collines et 7 pour les régions de montagne)</p>
+       <p>Mentionner le volume du stock de lisier sans compter les caniveaux sous les grilles ni les canaux sous les sols perforés ou bétonnés des stabulations (p.ex. couloirs de déplacement et places d'affouragement) </p>
+       <p>Proposition de valeur standard: calcul du volume du stock de lisier à l'aide de la production de lisier d'après PRIF (dilution 1:1; durée de stockage: 5 mois pour les régions de plaine, 6 pour les régions de collines et 7 pour les régions de montagne)</p>
 
 +depth
   type  = float

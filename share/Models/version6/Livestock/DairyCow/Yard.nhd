@@ -32,14 +32,14 @@ taxonomy = Livestock::DairyCow::Yard
   ++units
     en = -
   ++description
-    Share of excretion per day for animals with roughage exclusively on the yard.
+    Share of excretion per day for animals with roughage exclusively supplied in the yard.
 
 +share_available_roughage_is_partly_supplied_in_the_exercise_yard
   value = 0.2
   ++units
     en = -
   ++description
-    Share of excretion per day for animals with roughage partly on the yard.
+    Share of excretion per day for animals with roughage partly supplied in the yard.
 
 +share_available_roughage_is_not_supplied_in_the_exercise_yard
   value = 0.1
@@ -53,28 +53,28 @@ taxonomy = Livestock::DairyCow::Yard
   ++units
     en = -
   ++description
-    Reduction efficiency according to Reidy and Menzi.
+    Reduction efficiency based on expert judgment.
 
 +red_floor_properties_unpaved_floor
   value = 0.5
   ++units
     en = -
   ++description
-    Reduction efficiency according to Reidy and Menzi.
+    Reduction efficiency based on expert judgment.
 
 +red_floor_properties_perforated_floor
   value = 0.75
   ++units
     en = -
   ++description
-    Reduction efficiency according to Reidy and Menzi.
+    Reduction efficiency based on expert judgment.
 
 +red_floor_properties_paddock_or_pasture_used_as_exercise_yard
   value = 0.9
   ++units
     en = -
   ++description
-    Reduction efficiency according to Reidy and Menzi.
+    Reduction efficiency based on expert judgment.
 
 *** output ***
 

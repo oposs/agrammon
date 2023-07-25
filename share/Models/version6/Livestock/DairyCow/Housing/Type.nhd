@@ -10,7 +10,7 @@ Selects the emission rate and other correction factors for the specific housing 
 
 +description
 
- This process selects the correction factor for the specific housing types for dairy cows. Among these correction factors are the emission rate for the housing type, the correction factor for the housing type area, the correction factor for the area per animal, the liquid and solid share for the housing type as well as the factor on what barn size increases the regularized minimal (limited to 0.5).
+ This process selects the correction factor for the specific housing types for dairy cows. Among these correction factors are the emission factor for the housing type, the correction factor for the housing type area, the correction factor for the area per animal, the liquid and solid share for the housing type as well as the factor on what barn size increases the regularized minimal (limited to 0.5).
 
 
 *** input ***

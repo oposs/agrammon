@@ -15,9 +15,7 @@ gui       = Livestock::SmallRuminants,Tierhaltung::Kleinwiederkäuer,Production 
  Summarizes the annual emission of NH3 for goats, fattening sheep and milksheep from housing, yard and grazing.
 Summarizes the annual N flux from housing to the storage for goats, fattening sheep and milksheep.
              
-  \begin{todo}{Cyrill Bonjour}{}
-     Give a better description.
-  \end{todo}
+  
 
 
 *** technical ***
