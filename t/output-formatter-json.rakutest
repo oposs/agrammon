@@ -1,8 +1,10 @@
 use v6;
 use Agrammon::Model;
 use Agrammon::OutputFormatter::JSON;
-use Test;
+
 use JSON::Fast;
+
+use Test;
 
 my $path = $*PROGRAM.parent.add('test-data/Models/run-test-multi-deep');
 my $model = Agrammon::Model.new(:$path);
