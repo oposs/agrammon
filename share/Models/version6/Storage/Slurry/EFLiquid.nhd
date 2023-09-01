@@ -12,8 +12,9 @@ taxonomy = Storage::Slurry::EFLiquid
 
 \subsubsection{References}
 
-UNECE 2007. Guidance document on control techniques for preventing and
-abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
+UNECE. 2014. Guidance document for preventing and abating ammonia emissions from agricultural sources.
+Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Economic Commission for Europe (UNECE). 
+
 
  De Bode MJC, 1990. Vergleich der Ammoniakemissionen aus verschiedenen
  Flüssigmistlagersystemen. In: Ammoniak in der Umwelt. Hrsg.: KTBL und
@@ -46,8 +47,8 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
        it = perforated_cover
     +++tent
        en = tent
-       de = Folien_Folienzelt
-       fr = Bâche_Tente
+       de = Zeltdach
+       fr = Toit conique
        it = tent
     +++floating_cover
        en = floating_cover
@@ -74,12 +75,21 @@ abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
     +++de
        <p>Wenn mehrere Lager mit unterschiedlicher Abdeckung vorhanden sind, für jeden Typ Abdeckung ein Lager mit dem entsprechenden Volumen erstellen.</p>
        <p>Perforierte Abdeckung: nur anwendbar in Kombination mit einem Laufhof mit perforierter Abdeckung.</p>
+        <p>Die Abdeckung "Teilschwimmende Folie" lässt sich wie folgt eingeben: unter "Zusätzliche emissionsmindernde Massnahme Güllelager" 50 eingeben. Damit wird 50 % Emissionsminderung im Vergleich zu einem ungedeckten Lager angerechnet.</p>
+         <p>Für die Abdeckung "Zeltdach": die aktuell in Agrammon hinterlegte Emissionsreduktion von 60 % entspricht nicht mehr dem aktuellen Stand des Wissens. Es wird empfohlen, für die die Abdeckung "Zeltdach" unter Abdeckung "ungedeckt" 
+         und unter "Zusätzliche emissionsmindernde Massnahme Güllelager" 80 einzugeben. Damit wird 80 % Emissionsminderung im Vergleich zu einem ungedeckten Lager angerechnet. Damit ist der aktuelle Wissensstand angemessen abgebildet. Bei der nächsten Modellrevision
+         (voraussichtlich 2024/25) wird die Emissionsreduktion durch die Abdeckung "Zeltdach" entsprechend angepasst.</p>
        <p>Vorschlag für Standardwerte:</p>
-       <p>Erstellung von 3 Güllelagern, welche folgende prozentualen Anteile des gesamten berechneten Gülleanfalls aufnehmen: feste Abdeckung (Beton, Holz): 70 %,  ungedeckt: 15 % und perforierte Abdeckung: 15 % </p>
+       <p>feste Abdeckung (Beton, Holz), deren Anteil rund 75 % des Güllelagervolumens ausmacht.</p>
     +++fr
        <p>S'il existe plusieurs stocks avec des couvertures différentes, introduire pour chaque type de couverture un stock avec le volume correspondant. </p>
+       <p>Couverture perforée : seulement en combination avec une aire de sortie avec un sol perforé.</p> 
+        <p>Pour la couverture "Bâche semi-flottante", il faut saisir 50 sous "Mesure supplémentaire limitant les émissions dues au stockage du lisier". Ainsi, une réduction des émissions de 50 % est calculée par rapport à un stock découvert.</p>
+         <p>Pour la couverture "Toit conique": la valeur actuelle enregistrée dans Agrammon (réduction des émissions de 60%) ne correspond plus à l'état des connaissances actuel. Pour une couverture "Toit conique", il est recommandé de sélectionner "découvert" comme type de couverture 
+         et d'inscrire 80 sous "Mesure supplémentaire limitant les émissions dues au stockage du lisier". Ainsi, une réduction des émissions de 80 % est calculée par rapport à un stock découvert. De cette façon, la valeur représente au mieux l'état des connaissances actuelles. Lors de la prochaine révision du modèle
+         (probablement 2024/25), la valeur de réduction des émissions pour la couverture "Toit conique" sera adaptée en conséquence.</p>
        <p>Proposition de valeur standard:</p>
-       <p>Création de 3 stocks de lisiers avec les capacités suivantes (en % de la production totale de lisier): couverture en dur (béton, bois): 70%, découvert: 15% et couverture perforée: 15%.</p>
+       <p>couverture en dur (béton, bois) qui représente environ 75 % du volume de stockage du lisier.</p>
 
 
 +contains_cattle_manure

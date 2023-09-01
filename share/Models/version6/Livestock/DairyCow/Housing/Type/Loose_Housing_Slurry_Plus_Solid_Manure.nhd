@@ -13,10 +13,7 @@ Describes correction factors for the loose housing liquid solid system for dairy
   This process describes the correction factors for the loose housing liquid solid system for dairy cows such as the housing specific emission rate, the area per animal correction, the liquid share and solid share.
 
 \subsubsection{References:}
- UNECE 2007. Guidance document on control techniques for preventing and abating 
- emissions of ammonia. UNECE executive body for the 
- convention on long-range transboundary air pollution, Working Group on 
- Strategies and Review, EB.AIR/WH.5/2007/13/ 16 July 2007, Genf. 35p.
+ UNECE. 2014. Guidance document for preventing and abating ammonia emissions from agricultural sources. Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Economic Commission for Europe (UNECE).
 
 
 *** input ***
@@ -28,8 +25,14 @@ Describes correction factors for the loose housing liquid solid system for dairy
   ++units  
     en = -
   ++description
-    Emission rate for the loose housing liquid solid system for dairy cows.  According to the consensus obtained in the workshop at ART Tänikon 02/11/07: 11% Ntot; converted using Nsol of 60% and the emission rate of 18.3% based on TAN. Reference value UNECE(2007): 11 kg NH3 = 8% TAN.
+    The value according to UNECE (2014) of 12 kg NH3 per cow and year (= 9.9 kg NH3-N per cow and year) was used as a basis, which corresponds to approximately 9% of the excretions of a dairy cow (excretion of 112 kg N per cow and year). The value according to UNECE (2014) is probably mainly based on older studies from the Netherlands (Monteny, 2000). In Swiss loose housings, the soiled area per cow is on average 4-4.5 m2. This is 0.5-1 m2 higher compared to the experimental conditions of Monteny (2000). Therefore, an increase of the emission factor by 9% to 10% Ntot was assumed. With a TAN content of 55% Ntot in the excretions of cattle, an emission factor of 18.2% TAN results (0.10 / 0.55 = 0.182). This value is almost equal to the value of 18.3% which was previously implemented in Agrammon and thus retained.
     
+    \subsubsection{References:}
+
+Monteny, G.J. 2000. Modelling of ammonia emissions from dairy cow houses. PhD Thesis. Wageningen University.
+
+    UNECE. 2014. Guidance document for preventing and abating ammonia emissions from agricultural sources. Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Economic Commission for Europe (UNECE).
+
 +share_liquid
   value = .57
   ++units  
@@ -42,7 +45,7 @@ Describes correction factors for the loose housing liquid solid system for dairy
   ++units  
     en = -
   ++description
-    According to the consensus obtained in the workshop at ART Tänikon 02/11/07: it is assumed that additional surfaces are entirely used since barriers are hardly fea-sible. The emission is increased by 5% per 10% of additional surfaces up to a maximum of 50% additional surface.
+    It is assumed that additional surfaces are entirely used by the animals since barriers in loose housings are hardly feasible. It is assumed that the emission is increased by 5% per 10% of additional surfaces up to a maximum of 50% additional surface.
 
 
 *** external ***

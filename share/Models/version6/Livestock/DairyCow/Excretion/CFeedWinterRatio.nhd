@@ -11,26 +11,8 @@ cow as a function of the winter feed ration.
 
 +description
 
-This process calculates the correction factor for the N excretion
-during the winter feeding period as compared to the standard excretion
-values of Walther et al. (2001). The average feed ration considered for
-the standard excretion presented in Walther et al. (2001) was
-calculated as average of four summer and four winter standard rations
-using dsummer and dwinter mentioned above. To calculate the N
-excretion of farm-specific winter rations, excretions were calculated
-with the same model used by the authors of Walther et al. (2001) (based
-on official feeding recommendations (RAP 1999)) using proportions of
-the specific feed typically used on farms (expert assumptions). No
-correction was considered for hay, because hay is used by virtually
-all farms during the winter feeding period. The thus calculated winter
-excretions were then expressed as % of average excretions.
-
-\subsubsection{References:}
-
-RAP 1999. Fütterungsempfehlungen und Nährwerttabellen für
-Wiederkäuer. 4. überarbeitete Auflage. LMZ Zollikofen.  
-Walther U,Ryser JP, Flisch R (Eds.) 2001. Grundlagen für die Düngung im Acker-
-und Futterbau 2001. Agrarforschung 8:1-80.
+Computes the correction factor for the annual N excretion of a dairy
+cow as a function of the winter feed ration.
 
 
  *** input ***

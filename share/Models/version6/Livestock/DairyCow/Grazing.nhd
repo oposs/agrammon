@@ -15,23 +15,6 @@ taxonomy = Livestock::DairyCow::Grazing
  according to the time the animals spend on the pasture. It assumes that the 
  excretions on the pasture are proportional to the time the animals are grazed.
 
-\subsubsection{References:}
-Bussink DW 1992. Ammonia volatilization from grassland receiving nitrogen
-fertilizer and rotationally grazed by dairy cattle. Fertilizer Research
-33:257-265.
-
-Bussink DW 1994. Relationship between ammonia volatilization and nitrogen
-fertilizer application rate, intake and excretion of herbage nitrogen by
-cattle on grazed swards. Fertilizer Research 38:111-121.
-
-
-Jarvis SC, Hatch DJ, Lockyer DR 1989. Ammonia fluxes from grazed grassland: annual losses from cattle production systems and their relation to nitrogen inputs. Journal of Agricultural Science 113:99-108.
-
-
-Peterson SO, Sommer SG, Aaes O, Soegaard K 1998. Ammonia losses from urine and dung of grazing cattle: effect of N intake. Atmospheric environment 32:295-300.
-
-
-Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammonia from urine in grass swards. Atmospheric environment 35:867-875.
 
 
 *** external ***
@@ -47,28 +30,37 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
   ++units  
     en = -
   ++description
-    Emission rate for the calculation of the annual NH3 emission during grazing for dairy cows. 5% Ntot (conversion with a portion of Nsol of 60%: EF 8.3% TAN; value based on Table 1 (Mean emission rate of 3.1% N excreted; range: 1.6-5.7% for grazing cows on a sward fertilized with 250 kg N/y) of Bussink (1992) and Table 3 (Mean emission rate of 3.3% N excreted; range: 0.0-7.4% for grazing cows on a sward fertilized with 250 kg N/y) of Bussink (1994)). The corresponding value is rather lower for Switzerland since the level of fertilization is lower resulting in a lower level for crude protein. The N level in the fodder of the sward fertilized with 250 kg N/y (31 g/kg d.m.; Table 4) is comparable to values common for Switzerland (Bussink (1994)). The EF chosen includes a safety margin.
+    Based on results of Bussink et al. (1992, 1994), an emission factor of 5% N was chosen. Based on a TAN content of 60%, the resulting emission factor is 8.3% TAN (0.050 / 0.600 = 0.083; according to the current content of TAN which is 55% N, an emission factor of 9.1% TAN would result). The previous emission factor of 8.3% TAN is within the range of recent values reported by Bell et al. (2017) and Voglmeier et al. (2018), so the existing of 8.3% of TAN is retained.
+
+\subsubsection{References:}
+
+Bell, M., Flechard, C., Fauvel, Y., Häni, C., Sintermann, J., Jocher, M., Menzi, H., Hensen, A., Neftel, A. 2017. Ammonia emissions from a grazed field estimated by miniDOAS measurements and inverse dispersion modelling. Atmos. Meas. Tech. 10(5): 1875–1892.
+Bussink, D.W. 1992. Ammonia volatilization from grassland receiving nitrogen-fertilizer and rotationally grazed by dairy-cattle. Fertil. Res. 33(3): 257-265.
+Bussink, D.W., Huijsmans, J.F.M., Ketelaars, J. 1994. Ammonia volatilization from nitric-acid-treated cattle slurry surface applied to grassland. Neth. J. Agric. Sci. 42(4): 293-309.
+Voglmeier, K., Jocher, M., Häni, C., Ammann, C. 2018. Ammonia emission measurements of an intensively grazed pasture. Biogeosciences 15(14): 4593-4608.
+
+
 
 +er_n2_dairycow_grazing
   value = 0.0
   ++units  
     en = -
   ++description
-    Emission rate for manure application. Not considerd relevant
+    Emission factor for manure application. Not considerd relevant
 
 +er_no_dairycow_grazing
   value = 0.0055
   ++units  
     en = -
   ++description
-    Emission rate for manure application. Stehfest, Bouwman 2006
+    Emission factor for manure application. Stehfest, Bouwman 2006
 
 +er_n2o_dairycow_grazing
   value = 0.0
   ++units  
     en = -
   ++description
-    Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
+    Emission factor for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
 
 
 *** input ***

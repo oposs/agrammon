@@ -11,10 +11,7 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
 +description
 
   This formula takes into account the amount of concentrates used per cow during the winter and summer feeding period. The correction is based on the fact that concentrates (grains) can specifically balance the energy to protein ratio, thus reducing the crude protein.
-
-
-\subsubsection{References:}
-  Flückiger E 1989. Stickstoff- und Mineralstoffumsatz von Milchkühen in Abhängigkeit von Rationentyp und Produktionsphase unter besonderer Berücksichtigung umweltrelevanter Aspekte. Diss ETH Nr 8865.
+  
 
 
 
