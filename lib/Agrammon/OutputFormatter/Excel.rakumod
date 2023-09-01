@@ -102,23 +102,23 @@ sub input-output-as-excel(
         $row++;
 
         # formatted data
-# commented out for the moment for performance reasons
-#        my $instance = %rec<instance>;
-#        my $module = %rec<gui>;
-#        if $module ne $last-module {
-#            $input-sheet-formatted.set($row-formatted, $col+0, $module, :bold);
-#            $row-formatted++;
-#            $last-module = $module;
-#        }
-#        if $instance and $instance ne $last-instance {
-#            $input-sheet-formatted.set($row-formatted, $col+1, $instance, :bold);
-#            $row-formatted++;
-#            $last-instance = $instance;
-#        }
-#        $input-sheet-formatted.set($row-formatted, $col+1, %rec<input>);
-#        $input-sheet-formatted.set($row-formatted, $col+2, (%rec<value-translated> // '???'), :number-format('0.0'), :horizontal-align(RightAlign));
-#        $input-sheet-formatted.set($row-formatted, $col+3, %rec<unit>);
-#        $row-formatted++;
+        # comment out if not using ExcelFast (for the moment for performance reasons)
+       my $instance = %rec<instance>;
+       my $module = %rec<gui>;
+       if $module ne $last-module {
+           $input-sheet-formatted.set($row-formatted, $col+0, $module, :bold);
+           $row-formatted++;
+           $last-module = $module;
+       }
+       if $instance and $instance ne $last-instance {
+           $input-sheet-formatted.set($row-formatted, $col+1, $instance, :bold);
+           $row-formatted++;
+           $last-instance = $instance;
+       }
+       $input-sheet-formatted.set($row-formatted, $col+1, %rec<input>);
+       $input-sheet-formatted.set($row-formatted, $col+2, (%rec<value-translated> // '???'), :number-format('0.0'), :horizontal-align(RightAlign));
+       $input-sheet-formatted.set($row-formatted, $col+3, %rec<unit>);
+       $row-formatted++;
     }
 
     # add outputs

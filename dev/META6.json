@@ -83,6 +83,7 @@
     "Agrammon::OutputFormatter::CSV": "lib/Agrammon/OutputFormatter/CSV.rakumod",
     "Agrammon::OutputFormatter::CollectData": "lib/Agrammon/OutputFormatter/CollectData.rakumod",
     "Agrammon::OutputFormatter::Excel": "lib/Agrammon/OutputFormatter/Excel.rakumod",
+    "Agrammon::OutputFormatter::ExcelFast": "lib/Agrammon/OutputFormatter/ExcelFast.rakumod",
     "Agrammon::OutputFormatter::JSON": "lib/Agrammon/OutputFormatter/JSON.rakumod",
     "Agrammon::OutputFormatter::PDF": "lib/Agrammon/OutputFormatter/PDF.rakumod",
     "Agrammon::OutputFormatter::Text": "lib/Agrammon/OutputFormatter/Text.rakumod",

@@ -12,7 +12,8 @@ use Agrammon::DataSource::CSV;
 use Agrammon::Documentation;
 use Agrammon::ModelCache;
 use Agrammon::OutputFormatter::CSV;
-use Agrammon::OutputFormatter::Excel;
+use Agrammon::OutputFormatter::ExcelFast;
+#use Agrammon::OutputFormatter::Excel;
 use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::OutputFormatter::Util;
@@ -97,7 +98,7 @@ multi sub MAIN('run', Str $filename, ExistingFileOrStdin $input, ExistingFile :$
                 }
                 for %sim-results.keys.sort -> $dataset {
                     if $format eq 'excel' {
-                        spurt 'export.xlsx', %sim-results{$dataset}.to-blob;
+                        spurt "$export-filename.xlsx", %sim-results{$dataset};
                         return;
                     }
                     else {

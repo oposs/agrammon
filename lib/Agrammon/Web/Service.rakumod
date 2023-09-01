@@ -16,7 +16,7 @@ use Agrammon::Model;
 use Agrammon::ModelCache;
 use Agrammon::OutputsCache;
 use Agrammon::OutputFormatter::CSV;
-use Agrammon::OutputFormatter::Excel;
+use Agrammon::OutputFormatter::ExcelFast;
 use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::PDF;
 use Agrammon::OutputFormatter::Text;

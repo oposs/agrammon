@@ -5,6 +5,7 @@
   - Allow grazing days > 270 days for dairy cows and other cattle
   - Add defaults (0) and validators ge(0) to Recycling Fertilizers
   - Check for unused technical parameters on documentation generation
+  - Use ExcelFast (with Inline::Perl5)
 
 - 6.3.0, 2022-06-23, fritz.zaucker@oetiker.ch
 
