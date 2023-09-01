@@ -271,7 +271,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             # update failed
             die X::Agrammon::DB::Dataset::RenameFailed.new(:dataset-name($new), :old-name($!name), :new-name($new)) unless $ret.rows;
 
-            # rename suceeded
+            # rename succeeded
             $!name = $new;
         }
     }

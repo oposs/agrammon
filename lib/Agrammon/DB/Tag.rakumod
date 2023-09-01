@@ -68,7 +68,7 @@ class Agrammon::DB::Tag does Agrammon::DB {
             # update failed
             die X::Agrammon::DB::Tag::CreateFailed.new(:$!name) unless $ret.value;
 
-            # rename suceeded
+            # rename succeeded
             $!id = $ret.value;
         }
         return self;
@@ -96,7 +96,7 @@ class Agrammon::DB::Tag does Agrammon::DB {
             # update failed
             die X::Agrammon::DB::Tag::RenameFailed.new(:old-name($!name), :new-name($new)) unless $ret.rows;
 
-            # rename suceeded
+            # rename succeeded
             $!name = $new;
         }
         return self.name;
