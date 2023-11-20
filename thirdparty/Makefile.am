@@ -48,7 +48,5 @@ distclean-local:
 	ls -1 | grep -v Makefile | grep -v cpanfile | xargs rm -rf
 
 install-exec-hook:
-	cp -fr lib/perl5/* $(DESTDIR)$(libdir)
-	cp -f bin/cover $(DESTDIR)$(bindir)
-	$(AM_V_at)echo "** Patching cover command"
-	$(PERL) -i -p -e 's{use warnings;}{use warnings;\nuse lib qw($(libdir));}' $(DESTDIR)$(bindir)/cover
+	mkdir -p "$(prefix)/Inline/perl5"
+	cp -fr lib/perl5/* "$(prefix)/Inline/perl5"

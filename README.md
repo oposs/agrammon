@@ -42,9 +42,9 @@ CREATE DATABASE agrammon OWNER agrammon;
 
 Load a database dump (auto creation not yet implemented)
 
-## Installation Web App
+## Setup Web App
 
-Install npm and jq from your distro and then run
+Install npm, jq, and libperl-dev from your distro and then run
 
 mkdir -p public # first time only
 ./bootstrap
@@ -62,3 +62,18 @@ and point your browser to the shown URL (defaults to localhost:20000)
 
 The Agrammon model can be accessed via a REST interface, for details see the
 [online documentation](https://redocly.github.io/redoc/?url=https://model.agrammon.ch/single/api/v1/openapi.yaml)
+
+## Server Installation
+
+./bootstrap
+./make dist
+scp agrammon-$VERSION.tar.gz server:sources/
+ssh server
+cd sources
+tar zxf agrammon-$VERSION.tar.gz
+cd agrammon-$VERSION
+./configure --prefix=DESTDIR
+make
+make install
+
+(Re-) start agrammon service with appropriate config file

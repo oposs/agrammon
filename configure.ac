@@ -1,6 +1,6 @@
 #  Copyright (C) 2020 Oetiker+Partner AG
 
-AC_INIT([agrammon],m4_esyscmd([jq '.version' < META6.json | tr -d '""' ]),[fritz.zaucker@oetiker.ch])
+AC_INIT([agrammon],m4_esyscmd([jq '.version' < META6.json | tr -d '"\n']),[fritz.zaucker@oetiker.ch])
 AC_PREREQ([2.59])
 AC_CONFIG_AUX_DIR(conftools)
 
@@ -31,6 +31,14 @@ AC_PATH_PROG(NPX, npx, npx-not-found)
 AC_PATH_PROG(XGETTEXT, xgettext, xgettext-not-found)
 AC_PATH_PROG(MSGMERGE, msgmerge, msgmerge-not-found)
 
+AC_PATH_PROG(JQ, jq, no)
+if test ! -x "$JQ"; then
+  AC_MSG_ERROR(jq not found - cannot get version from META6.json without it)
+fi
+AC_PATH_PROG(TR, tr, no)
+if test ! -x "$TR"; then
+  AC_MSG_ERROR(tr not found - cannot get version from META6.json without it)
+fi
 
 URL_CAT="neither curl nor wget found"
 
@@ -148,11 +156,11 @@ fi
 AC_ARG_VAR(RAKULIB,   [Colon separated list of raku library directories])
 AC_SUBST(RAKULIB)
 
-#    lib/Makefile
-#    bin/Makefile
 AC_CONFIG_FILES([
     Makefile
     etc/Makefile
+    bin/Makefile
+    lib/Makefile
     frontend/Makefile
     thirdparty/Makefile
 ])
@@ -182,8 +190,8 @@ if test "$mod_ok" = "0"; then
 
 ** SOME PERL MODULES ARE MISSING ******************************
 
-If you know where perl can find the missing modules, set
-the RAKULIB environment variable accordingly. Otherwise
+If you know where raku can find the missing modules, set
+the PERL5LIB environment variable accordingly. Otherwise
 just proceed and the missing modules will be installed
 automatically.
 

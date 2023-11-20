@@ -16,7 +16,7 @@ jobs:
           - ubuntu-20.04
           - ubuntu-latest
         raku-version:
-          - '2023.02'
+          - '2023.04'
     runs-on: ${{ matrix.os }}
 
     services:
