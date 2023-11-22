@@ -8,6 +8,7 @@ use Agrammon::Web::SessionUser;
 #use Spreadsheet::XLSX;
 #use Spreadsheet::XLSX::Styles;
 
+use Temp::Path;
 use Excel::Writer::XLSX:from<Perl5>;
 
 sub input-output-as-excel(
@@ -19,9 +20,8 @@ sub input-output-as-excel(
     Bool $include-filters, Bool $all-filters
 ) is export {
 
-    my $temp-filename = "$dataset-name.xlsx";
-
-    my $workbook = Excel::Writer::XLSX.new($temp-filename);
+    my $temp-file = make-temp-path :suffix<.xlsx>;
+    my $workbook = Excel::Writer::XLSX.new($temp-file.absolute);
     
     # prepare sheets
     my $output-sheet = $workbook.add_worksheet('Ergebnisse');
@@ -162,5 +162,5 @@ sub input-output-as-excel(
         $row-formatted++;
     }
     $workbook.close();
-    return $temp-filename.IO.slurp: :bin;
+    return $temp-file.slurp: :bin;
 }

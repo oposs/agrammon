@@ -17,3 +17,11 @@ etc/*.yaml
 etc/*.secret
 public/
 conftools/
+thirdparty/build.log
+thirdparty/cache
+thirdparty/carton/
+thirdparty/latest-build
+thirdparty/touch
+thirdparty/lib/
+thirdparty/work/
+thirdparty/bin/

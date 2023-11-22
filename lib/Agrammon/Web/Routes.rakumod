@@ -357,7 +357,9 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> %params {
                 # prevent header injection
                 my $filename = cleanup-filename "%params<datasetName>.xlsx";
-                my $excel = $ws.get-excel-export($user, %params).to-blob;
+                # use with Excel.pm
+                # my $excel = $ws.get-excel-export($user, %params).to-blob;
+                my $excel = $ws.get-excel-export($user, %params);
                 header 'Content-disposition', qq{attachment; filename="$filename"};
                 content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $excel;
                 CATCH {

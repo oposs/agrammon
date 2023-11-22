@@ -172,6 +172,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 ?endif
 
 ### just for testing hidden inputs
+?if TESTING
 +hiddenAnimals
   type = float
   hidden = true
@@ -185,6 +186,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     en = -
   ++description
     Just for testing.
+?endif
 
 *** technical ***
 
