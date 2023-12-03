@@ -1,0 +1,1 @@
+requires 'Excel::Writer::XLSX';
