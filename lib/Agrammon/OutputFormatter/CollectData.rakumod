@@ -14,7 +14,7 @@ sub collect-data(
     # add inputs
     my @inputs;
     for $model.annotate-inputs($inputs) -> $ai {
-        my $gui = $ai.gui-root{$language} // 'NO GUI ROOT';
+        my $gui-translated = $ai.gui-root{$language} // 'NO GUI ROOT';
         my $value = $ai.value;
         my $value-translated = $value;
         if $value and $ai.input.enum {
@@ -23,11 +23,13 @@ sub collect-data(
         @inputs.push( %(
             :module($ai.module.taxonomy),
             :instance($ai.instance-id // ''),
-            :input($ai.input.labels{$language} // $ai.input.labels<en> // $ai.input.name),
+            :input($ai.input.name),
+            :input-translated($ai.input.labels{$language} // $ai.input.labels<en> // $ai.input.name),
             :$value,
             :$value-translated,
             :unit($ai.input.units{$language} // $ai.input.units<en> // ''),
-            :$gui,
+            :$gui-translated,
+            :gui($ai.gui-root{'raw'}),
         ));
     }
 
