@@ -69,11 +69,13 @@ class Agrammon::OutputsCache {
     method get-or-calculate(Str $user, Str $dataset, &calculate --> Agrammon::Outputs) {
         with $!storage.find($user, $dataset) {
             # Cache hit, we're good.
+            note "Found " ~ .outputs.elems ~ " outputs for user=$user, dataset=$dataset in cache";
             return .outputs;
         }
         else {
             # Calculate, then add the results to the cache.
             my $outputs = calculate();
+            note "Got " ~ .outputs.elems ~ " outputs for user=$user, dataset=$dataset from calculate()";
             $!storage.add($user, $dataset, $outputs);
             return $outputs;
         }
