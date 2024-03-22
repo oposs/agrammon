@@ -239,10 +239,13 @@ sub input-output-as-pdf(
         my $new-module = False;
         my $new-instance = False;
 
+        my $module-translated = %rec<gui-translated>;
         my $module = %rec<gui>;
+        my $module-title = $module-translated // $module;
+
         if $module ne $last-module {
             @input-formatted.push( %(
-                :module(latex-escape($module)),
+                :module(latex-escape($module-title.subst(/ '::' /, ' '))),
                 :$first-module));
             $last-module = $module;
             $new-module = True;
@@ -265,15 +268,15 @@ sub input-output-as-pdf(
 
         @input-formatted.push(%(
             :unit(latex-small-spaces(latex-escape(%rec<unit>))),
-            :label(latex-chemify(latex-escape(%rec<input>))),
+            :label(latex-chemify(latex-escape(%rec<input-translated> // %rec<input>))),
             :value(format-value(%rec<value-translated>)),
             :$first-line));
     }
 
     # setup template data
     %data<titles>     = %titles;
-    %data<dataset>    = latex-escape($dataset-name // 'NO DATASET');
-    %data<username>   = $user.username // 'NO USER';
+    %data<dataset>    = latex-escape($dataset-name   // 'NO DATASET');
+    %data<username>   = latex-escape($user.username) // 'NO USER';
     %data<model>      = $cfg.gui-variant // 'NO MODEL';
     %data<timestamp>  = timestamp;
     %data<version>    = latex-escape($cfg.gui-title{$language} // 'NO  VERSION');
