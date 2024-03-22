@@ -496,6 +496,11 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                 RETURNING data_val
             SQL
 
+            CATCH {
+                "Couldn't store variable $variable";
+                .note;
+            }
+
             # couldn't store variable
             die X::Agrammon::DB::Dataset::StoreDataFailed.new($variable) unless $ret.rows;
 
