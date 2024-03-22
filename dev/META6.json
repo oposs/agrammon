@@ -16,6 +16,7 @@
     "Cro::WebApp::Template",
     "Cro::APIToken",
     "Cro::APIToken::Store::Pg",
+    "Cro::HTTP::Log::File",
     "Crypt::Random",
     "Data::Dump::Tree",
     "DB::Pg",
