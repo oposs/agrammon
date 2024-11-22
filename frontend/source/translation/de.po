@@ -526,10 +526,6 @@ msgstr "Report erfolgreich abgeschickt."
 msgid "Report submission failed."
 msgstr "Report konnte nicht geschickt werden."
 
-#. NO LONGER USED
-msgid "Password must have at least 6 characters."
-msgstr "Das Passwort muss mindestens 6 Zeichen lang sein."
-
 #: agrammon/module/user/Account.js
 msgid "eMail (your username)"
 msgstr "eMail (Ihr Benutzername)"
@@ -543,8 +539,8 @@ msgid "eMail (will be your username)"
 msgstr "eMail (wird Ihr Benutzername sein)"
 
 #: agrammon/module/user/Account.js
-msgid "Password (minimum 6 characters)"
-msgstr "Passwort (mindestens 6 Zeichen)"
+msgid "Password (minimum 8 characters)"
+msgstr "Passwort (mindestens 8 Zeichen)"
 
 #: agrammon/module/user/Account.js
 msgid "Repeat Password"

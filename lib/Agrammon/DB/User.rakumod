@@ -64,9 +64,15 @@ class X::Agrammon::DB::User::PasswordResetFailed is Exception {
     }
 }
 
-class X::Agrammon::DB::User::InvalidPassword is Exception {
+class X::Agrammon::DB::User::InvalidLogin is Exception {
     method message() {
         "Invalid username or password";
+    }
+}
+
+class X::Agrammon::DB::User::InvalidPassword is Exception {
+    method message() {
+        "Password does not fit requirements";
     }
 }
 
@@ -130,6 +136,7 @@ class Agrammon::DB::User does Agrammon::DB {
         my $role = $role-name || 'user';
         die X::Agrammon::DB::User::Exists.new(:$!username) if self.exists;
         die X::Agrammon::DB::User::NoUsername.new(:$!username) unless $!username;
+        die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($!password);
 
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $role);
@@ -161,6 +168,7 @@ class Agrammon::DB::User does Agrammon::DB {
         my $role = $role-name || 'user';
         die X::Agrammon::DB::User::Exists.new(:$!username) if self.exists;
         die X::Agrammon::DB::User::NoUsername.new(:$!username) unless $!username;
+        die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($!password);
 
         my $key;
 
@@ -271,8 +279,9 @@ class Agrammon::DB::User does Agrammon::DB {
     method change-password($old, $new) {
         self.with-db: -> $db {
 
-            die X::Agrammon::DB::User::InvalidPassword.new    unless self.password-is-valid($!username, $old);
+            die X::Agrammon::DB::User::InvalidLogin.new    unless self.password-is-valid($!username, $old);
             die X::Agrammon::DB::User::PasswordsIdentical.new if $old eq $new;
+            die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($new);
 
             $db.query(q:to/SQL/, $!username, $new);
                 UPDATE pers
@@ -281,7 +290,7 @@ class Agrammon::DB::User does Agrammon::DB {
                 RETURNING pers_email
             SQL
 
-            die X::Agrammon::DB::User::InvalidPassword.new unless self.password-is-valid($!username, $new);
+            die X::Agrammon::DB::User::InvalidLogin.new unless self.password-is-valid($!username, $new);
         }
     }
 
@@ -289,11 +298,18 @@ class Agrammon::DB::User does Agrammon::DB {
         get-password-key($username, $password) eq $key
     }
 
+    sub password-allowed(Str $password) {
+        return False if $password.chars < 8;
+        return True;
+    }
+
     method reset-password($email, $password, $key?) {
         # self reset, anonymous user
         if $key and not password-key-is-valid($email, $password, $key) {
             die X::Agrammon::DB::User::CannotResetPassword.new;
         }
+        die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($password);
+
         self.with-db: -> $db {
             $db.query(q:to/SQL/, $email, $password);
                 UPDATE pers
@@ -306,6 +322,8 @@ class Agrammon::DB::User does Agrammon::DB {
     }
 
     method self-reset-password($new-password) {
+        die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($new-password);
+
         # self reset, anonymous user
         my $email = $!username;
         my $key = self.get-account-key();

@@ -63,7 +63,7 @@ qx.Class.define('agrammon.module.user.Account', {
         this.user.setPadding(5);
 
         this.password1 =
-            new agrammon.ui.form.VarPassword(this.tr("Password (minimum 6 characters)"),
+            new agrammon.ui.form.VarPassword(this.tr("Password (minimum 8 characters)"),
                                         '', '', '');
         pbox.add(this.password1);
         this.password1.setPadding(5);
