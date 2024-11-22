@@ -15,12 +15,12 @@ qx.Class.define('agrammon.module.Main',
                                         this.__selectInput, this);
         this.set({padding:0});
 
-        var report = new agrammon.module.output.Reports(output, reference);
+        let report = new agrammon.module.output.Reports(output, reference);
         this.add(input);
         this.add(report);
 
 // Thomas Kupper: not needed
-//        var graph  = new agrammon.module.output.Graphs(output, reference);
+//        let graph  = new agrammon.module.output.Graphs(output, reference);
 //        this.add(graph);
 
     }, // construct

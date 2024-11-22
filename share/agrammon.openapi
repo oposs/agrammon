@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.x
 info:
     version: 1.0.0
     title: OpenApi Agrammon
@@ -6,71 +6,36 @@ info:
         REST api for the [Agrammon web application](https://agrammon.ch/en/agrammon-model/).
         NOTE: some routes are not yet OpenApi based
 paths:
-    /get_account_key:
-        post:
-            summary: Get a key for account creation
-            operationId: getAccountKey
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            required:
-                                - email
-                                - password
-                            properties:
-                                email:
-                                    description: User's email used as username
-                                    type: string
-                                password:
-                                    description: Inital password
-                                    type: string
-                                firstname:
-                                    description: Firstname
-                                    type: string
-                                    nullable: true
-                                lastname:
-                                    description: Lastname
-                                    type: string
-                                    nullable: true
-                                org:
-                                    description: Organization
-                                    type: string
-                                    nullable: true
-                                language:
-                                    type: string
-                                    enum:
-                                        - de
-                                        - en
-                                        - fr
+    /activate_account:
+        get:
+            summary: Activate newly created user account
+            operationId: activateAccount
+            parameters:
+                - name: key
+                  in: query
+                  description: Activation key
+                  required: true
+                  schema:
+                      type: string
             responses:
-                '204':
-                    description: Key created and mailed
-                '400':
-                    description: No username
+                '200':
+                    description: Account activated.
                     content:
-                        application/json:
+                        text/html:
                             schema:
-                                $ref: "#/components/schemas/BadRequest"
+                                type: string
                 '404':
-                    description: Couldn't create account
+                    description: Could not activate account
                     content:
-                        application/json:
+                        text/html:
                             schema:
-                                $ref: "#/components/schemas/CreationFailed"
-                '409':
-                    description: User already exists
+                                type: string
+                default:
+                    description: Unknown response
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-                '422':
-                    description: Role doesn't exist
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Unknown"
     /create_account:
         post:
             summary: Create new user account
@@ -102,6 +67,10 @@ paths:
                                     description: Lastname
                                     type: string
                                     nullable: true
+                                language:
+                                    description: Lastname
+                                    type: string
+                                    nullable: true
                                 org:
                                     description: Organization
                                     type: string
@@ -124,6 +93,9 @@ paths:
                                     - username
                                 properties:
                                     username:
+                                        type: string
+                                        format: email
+                                    key:
                                         type: string
                 '400':
                     description: No username
@@ -634,7 +606,6 @@ components:
             required:
                 - email
                 - password
-                - key
             properties:
                 email:
                     description: Login name
@@ -642,10 +613,6 @@ components:
                 password:
                     description: New password
                     type: string
-                key:
-                    description: Secret
-                    type: string
-                    nullable: true
         CloneDataset:
             type: object
             required:
@@ -891,6 +858,12 @@ components:
                 error:
                     type: string
         CreationFailed:
+            required:
+                - error
+            properties:
+                error:
+                    type: string
+        ActivationFailed:
             required:
                 - error
             properties:

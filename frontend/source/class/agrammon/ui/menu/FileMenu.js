@@ -176,9 +176,6 @@ qx.Class.define('agrammon.ui.menu.FileMenu', {
         }, this);
         var logoutButton =
             new qx.ui.menu.Button(this.tr("Logout"), null, logoutCommand);
-        logoutButton.addListener("execute", function(e) {
-            qx.event.message.Bus.dispatchByName('agrammon.main.logout');
-        }, this);
 
         // qxObjectIds for testing
         this.addListenerOnce('appear', () => {

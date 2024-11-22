@@ -123,33 +123,41 @@ sub static-content($root) is export {
 
 sub frontend-api-routes (Str $schema, $ws) {
     openapi $schema.IO, {
-        # get key for self account creation or password reset
-        operation 'getAccountKey', -> {
-            request-body -> (:$email!, :$password!, :$firstname, :$lastname, :$org, :$language) {
-                $ws.get-account-key($email, $password, $language);
-                CATCH {
-                    .note;
-                    when X::Agrammon::DB::User::Exists
-                       | X::Agrammon::DB::User::CreateFailed  {
-                        conflict 'application/json', %( error => .message );
-                    }
-                    when X::Agrammon::DB::User::NoPassword {
-                        bad-request 'application/json', %( error => .message );
-                    }
-                    when X::Agrammon::DB::User::NoUsername {
-                        bad-request 'application/json', %( error => .message );
-                    }
-                }
+        # activate account; redirect to base URL on success
+        operation 'activateAccount', -> :$key {
+            note "activateAccount(key=$key)";
+            my $username = $ws.activate-account($key).username;
+            if $username {
+                note "activateAccount: activated $username";
+                redirect :see-other, '/';
+            }
+            else {
+                response.status = 404;
+                note "activateAccount: Could not activate account.";
+                content 'text/html; charset=utf-8', "Could not activate Agrammon account. Perhaps already activated?";
             }
         }
         # create account
         operation 'createAccount', -> Agrammon::Web::SessionUser $maybe-user {
-            request-body -> (:$email!, :$password!, Any :$key, :$firstname, :$lastname, :$org, Any :$role) {
-                die X::Agrammon::DB::User::CannotSetRole.new
-                    unless not $role or $maybe-user ~~ LoggedInAdmin;
+            request-body -> (:$email!, :$password!, Any :$key, :$firstname, :$lastname, :$org, :$language, Any :$role) {
+                note "createAccount($email/$password)";
 
-                my $username = $ws.create-account($maybe-user, $email, $password, $firstname, $lastname, $org, $role);
-                content 'application/json', { :$username };
+                dd $maybe-user;
+                if (not $maybe-user or not $maybe-user.logged-in) {
+                    # anonymous user, not logged in
+                    note "createAccount: self service for user $email";
+                    my $key = $ws.self-create-account($email, $password, $firstname, $lastname, $org, $role);
+                    my $username = $email;
+                    content 'application/json', { :$username, :$key };
+                }
+                else {
+                    # logged in user or admin
+                    die X::Agrammon::DB::User::CannotSetRole.new
+                        unless not $role or $maybe-user ~~ LoggedInAdmin;
+
+                    my $username = $ws.create-account($email, $password, $firstname, $lastname, $org, $role);
+                    content 'application/json', { :$username };
+                }
                 CATCH {
                     .note;
                     when X::Agrammon::DB::User::CreateFailed  {
@@ -279,17 +287,23 @@ sub frontend-api-routes (Str $schema, $ws) {
         }
         operation 'resetPassword', -> Agrammon::Web::SessionUser $maybe-user {
             request-body -> (:$email!, :$password!, :$key) {
-
+                note "Route: resetPassword($email/$password)";
                 # self-reset
-                if (not $maybe-user) {
+                # dd $maybe-user;
+                if (not $maybe-user or not $maybe-user.logged-in) {
                     # anonymous user, not logged in
-                    $maybe-user = Agrammon::Web::SessionUser.new;
+                    note "resetPassword: self service for user $email";
+                    my $user = $ws.self-reset-password($email, $password);
+
+                    # $maybe-user = Agrammon::Web::SessionUser.new;
+                    # return;
                 }
                 # admin user or self-reset
-                if     $maybe-user ~~ LoggedInAdmin
+                elsif     $maybe-user ~~ LoggedInAdmin
                     or $maybe-user ~~ LoggedIn and $maybe-user.username eq $email
                     or $key  {
-                    $ws.reset-password($maybe-user, $email, $password, $key);
+                    $ws.reset-password($maybe-user, $email, $password);
+                    # $ws.reset-password($maybe-user, $email, $password, $key);
                 }
                 else {
                     die X::Agrammon::DB::User::CannotResetPassword.new;
@@ -520,6 +534,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         post -> LoggedIn $user, 'logout' {
             my $old-username = $user.logout();
+            note "logout: $old-username" if $old-username;
             content 'application/json', %(
                 :username($user.username),
                 :sudoUser($old-username),

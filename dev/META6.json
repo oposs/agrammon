@@ -18,6 +18,7 @@
     "Cro::APIToken::Store::Pg",
     "Cro::HTTP::Log::File",
     "Crypt::Random",
+    "Crypt::Random::Extra",
     "Data::Dump::Tree",
     "DB::Pg",
     "Digest::SHA1::Native",

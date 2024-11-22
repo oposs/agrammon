@@ -113,12 +113,12 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
 
                         // collect all tags of the selected datasets into the tag hash and count them
                         for (t=0; t<nDatasetTags; t++) {
-                                        if (tags[datasetTags[t]]) {
-                                            tags[datasetTags[t]]++;
-                                        }
-                                        else {
-                                            tags[datasetTags[t]]=1;
-                                        }
+                            if (tags[datasetTags[t]]) {
+                                tags[datasetTags[t]]++;
+                            }
+                            else {
+                                tags[datasetTags[t]]=1;
+                            }
                         } // t loop
                     } // if (datasetTags)
                 }     // s loop
@@ -129,10 +129,10 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
             var nActiveTags = 0;
                 for (t in tags) {
                     if (tags[t] == nDatasets) { // tag is assigned to each selected dataset
-                            that.__activeTags.push([ t ]);
-                    filter[t] = true;
-                    nActiveTags++;
-                    delete tags[t]; // remove this element from hash
+                        that.__activeTags.push([ t ]);
+                        filter[t] = true;
+                        nActiveTags++;
+                        delete tags[t]; // remove this element from hash
                     }
                 }
 
@@ -141,7 +141,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
             if (this.__mode != 'all') {
                 return;
             }
-                activeTagsTm.setData([]);
+            activeTagsTm.setData([]);
             availableTagsTable.setFilter(filter);
             if (nActiveTags > 0) {
                 activeTagsTm.addRows(that.__activeTags);
@@ -923,6 +923,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
               * @lint ignoreDeprecated(alert)
           */
          __rename_tag_func: function(data,exc,id) {
+            console.log('rename_tag_func', data, exc, id);
             if (exc) {
                 alert(exc);
             }
@@ -954,8 +955,10 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                 var row = data[0]['minIndex'];
                 var tm = table.getTableModel();
                 var tag_old = tm.getValue(0, row, 1);
+                console.log('tag_old=', tag_old);
                 var okFunction = qx.lang.Function.bind(function(self) {
                     var tag_new = self.nameField.getValue();
+                    console.log('tag_new=', tag_new);
                     if (this.__datasetCache.tagExists(tag_new)) {
                         qx.event.message.Bus.dispatchByName('error', [
                             this.tr('Error'),
@@ -964,11 +967,14 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                         self.close();
                         return;
                     }
-
+                    console.log('tag_new=', tag_new);
                     tm.setValue(0, row, tag_new, 1);
 
+                    console.log('calling renameTag on __availableTagsTable=', this.__availableTagsTable);
                     this.__availableTagsTable.renameTag(tag_old, tag_new);
+                    console.log('calling __datasetTable.renameTag');
                     this.__datasetTable.renameTag(tag_old, tag_new);
+                    console.log('calling async rename_tag');
                     this.__rpc.callAsync(
                         qx.lang.Function.bind(this.__rename_tag_func,this),
                         'rename_tag',
@@ -976,7 +982,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
                             oldName: tag_old,
                             newName: tag_new
                         }
-                            );
+                    );
                     self.close();
                 }, this);
                 dialog = new agrammon.ui.dialog.Dialog(

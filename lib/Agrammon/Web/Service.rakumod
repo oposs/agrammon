@@ -211,9 +211,9 @@ class Agrammon::Web::Service {
             }
         };
 
-         return {
-             :$results,
-             :@validation-errors,
+        return {
+            :$results,
+            :@validation-errors,
         };
     }
 
@@ -367,8 +367,9 @@ class Agrammon::Web::Service {
     }
 
     method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
-        my $results = self!get-outputs($user, $dataset-name)<results>;
-        my $validation-errors = self!get-outputs($user, $dataset-name)<validation-errors>;
+        my $outputs = self!get-outputs($user, $dataset-name);
+        my $results = $outputs<results>;
+        my $validation-errors = $outputs<validation-errors>;
         # Write validation errors to log file for the moment to help debug
         # broken production datasets.
 	if $validation-errors {
@@ -446,7 +447,27 @@ class Agrammon::Web::Service {
        );
     }
 
-    method create-account($user, $email, $password, $firstname, $lastname, $org, $role?) {
+    method self-create-account($email, $password, $firstname, $lastname, $org, $role?) {
+        my $key = Agrammon::DB::User.new(
+            :username($email), :$password,
+            :$firstname, :$lastname,
+            :organisation($org)
+        ).self-create-account($role);
+        note "Account created for $email: activation key=$key";
+        if not %*ENV<AGRAMMON_TESTING> {
+            my $subject = "Agrammon account activation";
+            my $msg = "Click on the link to activate your Agrammon account: https://model.agrammon.ch/single/activate_account?key=$key";
+            Agrammon::Email.new(
+                :to($email),
+                :from('support@agrammon.ch'),
+                :$subject,
+                :$msg,
+            ).send;
+        }
+        return $key;
+    }
+
+    method create-account($email, $password, $firstname, $lastname, $org, $role?) {
         return Agrammon::DB::User.new(
             :username($email), :$password,
             :$firstname, :$lastname,
@@ -454,21 +475,9 @@ class Agrammon::Web::Service {
         ).create-account($role).username;
     }
 
-    method get-account-key($email, $password, $language) {
-        my $key = Agrammon::DB::User.new(:username($email), :$password).get-account-key;
-
-        # set in t/webservice.t to avoid sending email
-        if not %*ENV<AGRAMMON_TESTING> {
-            my %lx = $!cfg.translations{$language // 'de'};
-            my $subject = %lx{'Agrammon account key'};
-            my $msg = %lx{'enter account key'} ~ " $key";
-            Agrammon::Email.new(
-                :to($email),
-                :from('support@agrammon.ch'),
-                :$subject,
-                :$msg
-            ).send;
-        }
+    method activate-account($key) {
+        # note "Service: Activating account with key $key";
+        return Agrammon::DB::User.new.activate-account($key);
     }
 
     method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password --> Nil) {
@@ -477,6 +486,25 @@ class Agrammon::Web::Service {
 
     method reset-password($user, Str $email, Str $password, $key?) {
         return $user.reset-password($email, $password, $key);
+    }
+
+    method self-reset-password(Str $email, Str $password) {
+        note "Service: selfService resetting password for $email";
+        my $key = Agrammon::DB::User.new(
+            :username($email), :password('dummy')
+        ).self-reset-password($password);
+        note "New password set for $email: activation key=$key";
+        if not %*ENV<AGRAMMON_TESTING> {
+            my $subject = "Agrammon account activation";
+            my $msg = "Click on the link to confirm Agrammon password change for account $email: https://model.agrammon.ch/single/activate_account?key=$key";
+            Agrammon::Email.new(
+                :to($email),
+                :from('support@agrammon.ch'),
+                :$subject,
+                :$msg,
+            ).send;
+        }
+        return $key;
     }
 
     method store-data(Agrammon::Web::SessionUser $user, $dataset-name, $variable, $value, @branches?, @options?, $row? --> Nil) {

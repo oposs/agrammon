@@ -30,6 +30,7 @@ clean: node_modules
 	$(NPX) qx compile --target=build --feedback=false --erase --update-po-files
 	mkdir -p ../public/$(QX_CLASS)
 	cp -p compiled/build/$(QX_CLASS)/*.js ../public/$(QX_CLASS)
+	cp -p compiled/build/$(QX_CLASS)/*.js.map ../public/$(QX_CLASS)
 	cp -p compiled/build/index.html ../public
 	cp -pa compiled/build/resource ../public
 	touch $@

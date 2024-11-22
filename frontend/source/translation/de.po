@@ -22,7 +22,7 @@ msgstr "Benutzerwechsel beendet"
 msgid "Returning from %1 to %2"
 msgstr "Zurück von %1 zu %2"
 
-#: agrammon/Application.js
+#: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr "Bitte melden Sie sich an"
 
@@ -354,7 +354,7 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/user/Account.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -526,7 +526,7 @@ msgstr "Report erfolgreich abgeschickt."
 msgid "Report submission failed."
 msgstr "Report konnte nicht geschickt werden."
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Password must have at least 6 characters."
 msgstr "Das Passwort muss mindestens 6 Zeichen lang sein."
 
@@ -574,11 +574,7 @@ msgstr "Passwort neu setzen"
 msgid "Passwords must be equal."
 msgstr "Die Passwort-Eingaben müssen identisch sein."
 
-#: agrammon/module/user/Account.js
-msgid "An activation key will be sent to you by eMail after pressing the button"
-msgstr "Ein Aktivierungsschlüssel wird Ihnen per eMail zugesandt nach Klicken auf"
-
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Key (sent by eMail)"
 msgstr "Schlüssel (geschickt per eMail)"
 
@@ -602,7 +598,7 @@ msgstr "Passwort zurück setzen"
 msgid "Login"
 msgstr "Anmelden"
 
-#: agrammon/ui/menu/AdminMenu.js
+#: agrammon/module/user/Account.js
 msgid "Reset password"
 msgstr "Passwort zurücksetzen"
 
@@ -610,11 +606,11 @@ msgstr "Passwort zurücksetzen"
 msgid "Activate new account"
 msgstr "Konto neu aktivieren"
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Enter key below to re-activate your account"
 msgstr "Geben Sie den Schlüssel ein, um Ihr Konto zu re-aktivieren."
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Enter key below to activate your account"
 msgstr "Geben Sie den Schlüssel ein, um Ihr Konto zu aktivieren."
 
@@ -906,7 +902,7 @@ msgstr "Gültigkeit der Eingabewerte"
 msgid "Help text currently only available in German"
 msgstr "Hilfe-Text im Moment nur auf Deutsch verfügbar "
 
-#: agrammon/module/user/Login.js
+#. NO LONGER USED
 msgid "Remember"
 msgstr "Merken"
 
@@ -1000,8 +996,36 @@ msgstr ""
 
 #: agrammon/io/remote/Rest.js
 msgid "failed"
-msgstr ""
+msgstr "fehlgeschlagen"
 
 #: agrammon/io/remote/Rest.js
 msgid "Error in communication with server"
+msgstr "Fehler in der Kommunikation mit dem Server"
+
+#: agrammon/module/user/Account.js
+msgid "Password must have at least 8 characters."
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "Password (minimum 8 characters)"
+msgstr "Passwort (mindestens 8 Zeichen)"
+
+#: agrammon/module/user/Account.js
+msgid "An activation link will be sent to you by eMail after pressing the button"
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "An activation link will be sent to you by eMail."
+msgstr "Ein Aktivierungslink wird Ihnen per eMail zugesandt."
+
+#: agrammon/module/user/SelfService.js
+msgid "Account creation successful"
+msgstr "Konto erstellt"
+
+#: agrammon/module/user/SelfService.js
+msgid "Account activation key sent to %1"
+msgstr "Aktivierungslink geschickt an %1"
+
+#: agrammon/module/user/SelfService.js
+msgid "A confirmation link will be sent to you by eMail."
 msgstr ""

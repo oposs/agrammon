@@ -1,5 +1,6 @@
 use v6;
 use Cro::HTTP::Auth;
+use Agrammon::DB;
 use Agrammon::DB::User;
 
 class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
@@ -14,10 +15,18 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
         else {
             $!logged-in = self.password-is-valid($username, $password);
             die X::Agrammon::DB::User::InvalidPassword.new unless $!logged-in;
+
         }
 
         self.set-username($username);
         self.load;
+        self.with-db: -> $db {
+                $db.query(q:to/SQL/, $.id, $!sudo-username);
+                    INSERT INTO login (login_pers, login_sudouser)
+                    VALUES ($1, $2)
+                SQL
+                # die X::Agrammon::DB::User::CreateFailed.new(:$!username) unless $ret.rows;
+        }
         return self;
     }
 
