@@ -125,11 +125,11 @@ sub frontend-api-routes (Str $schema, $ws) {
     openapi $schema.IO, {
         # activate account; redirect to base URL on success
         operation 'activateAccount', -> :$key {
-            note "activateAccount(key=$key)";
             my $username = $ws.activate-account($key).username;
             if $username {
                 note "activateAccount: activated $username";
-                redirect :see-other, '/';
+                # redirect :see-other, '/';
+                content 'text/html; charset=utf-8', "Activated Agrammon account $username. You can now log in.";
             }
             else {
                 response.status = 404;
@@ -140,9 +140,6 @@ sub frontend-api-routes (Str $schema, $ws) {
         # create account
         operation 'createAccount', -> Agrammon::Web::SessionUser $maybe-user {
             request-body -> (:$email!, :$password!, Any :$key, :$firstname, :$lastname, :$org, :$language, Any :$role) {
-                note "createAccount($email/$password)";
-
-                dd $maybe-user;
                 if (not $maybe-user or not $maybe-user.logged-in) {
                     # anonymous user, not logged in
                     note "createAccount: self service for user $email";
@@ -288,8 +285,6 @@ sub frontend-api-routes (Str $schema, $ws) {
         operation 'resetPassword', -> Agrammon::Web::SessionUser $maybe-user {
             request-body -> (:$email!, :$password!, :$key) {
                 note "Route: resetPassword($email/$password)";
-                # self-reset
-                # dd $maybe-user;
                 if (not $maybe-user or not $maybe-user.logged-in) {
                     # anonymous user, not logged in
                     note "resetPassword: self service for user $email";
