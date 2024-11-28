@@ -1,3 +1,6 @@
+- 6.4.1, 2024-11-22, fritz.zaucker@oetiker.ch
+  - New Self Service for account creation and password reset
+
 - 6.4.0, 2023-06-22, fritz.zaucker@oetiker.ch
 
   - Allow absolute path for --technical-file

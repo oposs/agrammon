@@ -28,6 +28,7 @@ sub input-output-as-excel(
     my $output-sheet-formatted = $workbook.add_worksheet('Ergebnisse formatiert');
     my $input-sheet = $workbook.add_worksheet('Eingaben');
     my $input-sheet-formatted = $workbook.add_worksheet('Eingaben formatiert');
+    my $input-sheet-raw = $workbook.add_worksheet('Eingaben für REST');
     
     my $timestamp = timestamp;
     my $model-version = $cfg.gui-title{$language} ~ " - " ~ $cfg.gui-variant;
@@ -45,6 +46,10 @@ sub input-output-as-excel(
     $input-sheet.set_column(1, 1, 20);
     $input-sheet.set_column(2, 3, 50);
     $input-sheet.set_column(4, 4, 10);
+
+    $input-sheet-raw.set_column(0, 0, 60);
+    $input-sheet-raw.set_column(1, 1, 50);
+    $input-sheet-raw.set_column(2, 2, 50);
 
     $input-sheet-formatted.set_column(0, 0, 10);
     $input-sheet-formatted.set_column(1, 2, 50);
@@ -75,11 +80,12 @@ sub input-output-as-excel(
     }
 
     for ($output-sheet, $input-sheet) -> $sheet {
-        $sheet.write(0, 2, $dataset-name);
-        $sheet.write(1, 2, $user.username);
-        $sheet.write(2, 2, $model-version);
-        $sheet.write(3, 2, $timestamp);
+        $sheet.write(0, 0, $dataset-name);
+        $sheet.write(1, 0, $user.username);
+        $sheet.write(2, 0, $model-version);
+        $sheet.write(3, 0, $timestamp);
     }
+    $input-sheet-raw.write(0,0, "# $dataset-name, {$user.username}, $model-version, $timestamp");
 
     # prepared data
     my %data = collect-data(
@@ -94,6 +100,7 @@ sub input-output-as-excel(
     my $col = 0;
     my $row = 5;
     my $row-formatted = $row;
+    my $row-raw = 1;
     my $last-print = '';
 #    for @records.sort(+*.<order>) -> %rec {
     my $last-instance = '';
@@ -102,10 +109,10 @@ sub input-output-as-excel(
     note "inputs: " ~ @records.elems if %*ENV<AGRAMMON_DEBUG>;
     for @records -> %rec {
 
-        # raw data
+        # unformatted data
         $input-sheet.write($row, $col+0, %rec<gui>);
         $input-sheet.write($row, $col+1, %rec<instance>);
-        $input-sheet.write($row, $col+2, %rec<input>);
+        $input-sheet.write($row, $col+2, %rec<input-translated>);
         $input-sheet.write($row, $col+3, (%rec<value> // '???'), $number-format-right);
         $input-sheet.write($row, $col+4, %rec<unit>);
         $row++;
@@ -123,10 +130,24 @@ sub input-output-as-excel(
             $row-formatted++;
             $last-instance = $instance;
         }
-        $input-sheet-formatted.write($row-formatted, $col+1, %rec<input>);
+        $input-sheet-formatted.write($row-formatted, $col+1, %rec<input-translated>);
         $input-sheet-formatted.write($row-formatted, $col+2, (%rec<value-translated> // '???'), $number-format-right-short);
         $input-sheet-formatted.write($row-formatted, $col+3, %rec<unit>);
         $row-formatted++;
+
+        # raw data
+        my $module-instance = %rec<module>;
+        my $gui = %rec<gui>;
+        if $instance {
+#            note "instance=$instance, gui=$gui, module-instance=$module-instance";
+            my $match = $module-instance.match(/$gui/);
+            $module-instance = $match.replace-with("$gui\[$instance\]");
+        }
+        $input-sheet-raw.write($row-raw, $col+0, $module-instance);
+        $input-sheet-raw.write($row-raw, $col+1, %rec<input>);
+        $input-sheet-raw.write($row-raw, $col+2, (%rec<value> // '???'), $number-format-right);
+        $row-raw++;
+
     }
 
     # add outputs

@@ -1,6 +1,7 @@
 use v6;
 
 use Crypt::Random;
+use Crypt::Random::Extra;
 use Digest::SHA1::Native;
 
 use Agrammon::DB;
@@ -38,6 +39,12 @@ class X::Agrammon::DB::User::CreateFailed is Exception {
     }
 }
 
+class X::Agrammon::DB::User::ActivationFailed is Exception {
+    method message {
+        "Couldn't activate account";
+    }
+}
+
 class X::Agrammon::DB::User::NoPassword is Exception {
     method message() {
         "Need password to create an account!";
@@ -57,9 +64,15 @@ class X::Agrammon::DB::User::PasswordResetFailed is Exception {
     }
 }
 
-class X::Agrammon::DB::User::InvalidPassword is Exception {
+class X::Agrammon::DB::User::InvalidLogin is Exception {
     method message() {
         "Invalid username or password";
+    }
+}
+
+class X::Agrammon::DB::User::InvalidPassword is Exception {
+    method message() {
+        "Password does not fit requirements";
     }
 }
 
@@ -103,11 +116,13 @@ class Agrammon::DB::User does Agrammon::DB {
     }
 
     my $secret = crypt_random(Int(64/8));
+    my $encrypt-key = 'jah7Eiyitui1Zibe';
 
     sub get-password-key($username, $password) {
         my $digest = sha1-hex($username ~ $password ~ $secret);
+        return $digest;
         # only easily human readable characters
-        return substr($digest ~~ tr/1/x/, 5, 6);
+        # return substr($digest ~~ tr/1/x/, 5, 6);
     }
 
     method get-account-key() {
@@ -121,6 +136,7 @@ class Agrammon::DB::User does Agrammon::DB {
         my $role = $role-name || 'user';
         die X::Agrammon::DB::User::Exists.new(:$!username) if self.exists;
         die X::Agrammon::DB::User::NoUsername.new(:$!username) unless $!username;
+        die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($!password);
 
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $role);
@@ -136,8 +152,42 @@ class Agrammon::DB::User does Agrammon::DB {
 
             $ret = $db.query(q:to/SQL/, $!username, $!firstname, $!lastname, $!password, $!organisation, %r<id> );
                 INSERT INTO pers (pers_email, pers_first, pers_last,
-                                  pers_password, pers_org, pers_role)
-                VALUES ($1, $2, $3, crypt($4, gen_salt('bf')), $5, $6)
+                                  pers_password, pers_org, pers_role, pers_activated)
+                VALUES ($1, $2, $3, crypt($4, gen_salt('bf')), $5, $6, now())
+                RETURNING pers_id
+            SQL
+
+            die X::Agrammon::DB::User::CreateFailed.new(:$!username) unless $ret.rows;
+        }
+        return self;
+    }
+
+    # we set a random password (must be NOT NULL)
+    # and save the encrypted password and the activation key
+    method self-create-account($role-name) {
+        my $role = $role-name || 'user';
+        die X::Agrammon::DB::User::Exists.new(:$!username) if self.exists;
+        die X::Agrammon::DB::User::NoUsername.new(:$!username) unless $!username;
+        die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($!password);
+
+        my $key;
+
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $role);
+                SELECT role_id   AS id,
+                       role_name AS name
+                  FROM role
+                 WHERE role_name = $1
+            SQL
+            die X::Agrammon::DB::User::UnknownRole.new(:$role) unless $ret.rows;
+
+            my %r = $ret.hash;
+            $!role = Agrammon::DB::Role.new(|%r);
+            $key = self.get-account-key();
+            $ret = $db.query(q:to/SQL/, $!username, $!firstname, $!lastname, $!organisation, %r<id>, $!password, $encrypt-key, $key );
+                INSERT INTO pers (pers_email, pers_first, pers_last,
+                                  pers_password, pers_org, pers_role, pers_newpassword, pers_newpassword_key)
+                VALUES ($1, $2, $3, gen_random_uuid(), $4, $5, encode(encrypt($6, $7, 'aes'), 'base64'), $8)
                 RETURNING pers_id
             SQL
 
@@ -145,6 +195,25 @@ class Agrammon::DB::User does Agrammon::DB {
 
             $!id = $ret.value;
         }
+        return $key;
+    }
+
+    # set the real password
+    method activate-account($key) {
+        # note "User: Activating account with key $key";
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $key, $encrypt-key, DateTime.now);
+                UPDATE pers SET pers_password = crypt(convert_from(decrypt(decode(pers_newpassword, 'base64'), $2, 'aes'), 'UTF-8'), gen_salt('bf')),
+                                pers_activated = $3,
+                                pers_password_changed = $3,
+                                pers_newpassword = NULL, pers_newpassword_key = NULL
+                 WHERE pers_newpassword_key = $1
+                RETURNING pers_email
+            SQL
+
+            $!username = $ret.value if $ret.rows;
+        }
+        self.load if $!username;
         return self;
     }
 
@@ -210,8 +279,9 @@ class Agrammon::DB::User does Agrammon::DB {
     method change-password($old, $new) {
         self.with-db: -> $db {
 
-            die X::Agrammon::DB::User::InvalidPassword.new    unless self.password-is-valid($!username, $old);
+            die X::Agrammon::DB::User::InvalidLogin.new    unless self.password-is-valid($!username, $old);
             die X::Agrammon::DB::User::PasswordsIdentical.new if $old eq $new;
+            die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($new);
 
             $db.query(q:to/SQL/, $!username, $new);
                 UPDATE pers
@@ -220,7 +290,7 @@ class Agrammon::DB::User does Agrammon::DB {
                 RETURNING pers_email
             SQL
 
-            die X::Agrammon::DB::User::InvalidPassword.new unless self.password-is-valid($!username, $new);
+            die X::Agrammon::DB::User::InvalidLogin.new unless self.password-is-valid($!username, $new);
         }
     }
 
@@ -228,11 +298,18 @@ class Agrammon::DB::User does Agrammon::DB {
         get-password-key($username, $password) eq $key
     }
 
+    sub password-allowed(Str $password) {
+        return False if $password.chars < 8;
+        return True;
+    }
+
     method reset-password($email, $password, $key?) {
         # self reset, anonymous user
         if $key and not password-key-is-valid($email, $password, $key) {
             die X::Agrammon::DB::User::CannotResetPassword.new;
         }
+        die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($password);
+
         self.with-db: -> $db {
             $db.query(q:to/SQL/, $email, $password);
                 UPDATE pers
@@ -242,6 +319,28 @@ class Agrammon::DB::User does Agrammon::DB {
                 SQL
             die X::Agrammon::DB::User::PasswordResetFailed.new unless self.password-is-valid($email, $password);
         }
+    }
+
+    method self-reset-password($new-password) {
+        die X::Agrammon::DB::User::InvalidPassword.new unless password-allowed($new-password);
+
+        # self reset, anonymous user
+        my $email = $!username;
+        my $key = self.get-account-key();
+
+        self.with-db: -> $db {
+            my $ret = $db.query(q:to/SQL/, $email, $new-password, $encrypt-key, $key);
+                UPDATE pers
+                   SET pers_newpassword = encode(encrypt($2, $3, 'aes'), 'base64'),
+                       pers_newpassword_key = $4
+                 WHERE pers_email = $1
+                RETURNING pers_email
+                SQL
+
+            die X::Agrammon::DB::User::PasswordResetFailed.new unless $ret.rows;
+            note "User: confirmation key=$key";
+        }
+        return $key;
     }
 
 }

@@ -51,7 +51,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
          * @param data {Map} the data to send.
          */
         callAsync : function(handler, methodName, data) {
-            var req = new qx.io.request.Xhr(methodName, "POST");
+            let req = new qx.io.request.Xhr(methodName, "POST");
             if (data != null) {
                 req.setRequestData(data);
                 req.setRequestHeader("Content-Type", "application/json");
@@ -60,8 +60,8 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                 this.__pending = { methodName : methodName, data : data, handler : handler };
             }
             req.addListener("statusError", function(e) {
-                var req = e.getTarget();
-                this.handleStatusError(req, methodName);
+                let req = e.getTarget();
+                this.handleStatusError(req, methodName, handler, data);
             }, this);
             let that = this;
             req.addListener("success", function(e) {
@@ -84,18 +84,19 @@ qx.Class.define('agrammon.io.remote.Rpc', {
             req.send();
         },
 
-        handleStatusError : function(req, methodName) {
-            var response = req.getResponse();
-            var status = req.getStatus();
-            var statusText = req.getStatusText();
-            console.error('Rpc.callAsync('+methodName+'): status=', status, ':', statusText, ', response=', response);
+        handleStatusError : function(req, methodName, handler, data) {
+            let response = req.getResponse();
+            let status = req.getStatus();
+            let statusText = req.getStatusText();
+            console.log('Rpc.callAsync('+methodName+'): status=', status, ':', statusText, ', response=', response);
+            let username = agrammon.Info.getInstance().getUserName();
             if (response && response.error) {
-                var params = [
+                let params = [
                     qx.locale.Manager.tr("Error") + ' ' + status,
                     response.error,
                     'error',
                 ];
-                if (!agrammon.Info.getInstance().getUserName()) {
+                if (!username) {
                     params.push( { msg: 'agrammon.main.logout', data: null} );
                 }
                 // no results
@@ -107,11 +108,13 @@ qx.Class.define('agrammon.io.remote.Rpc', {
             else {
                 let retry = true;
                 let sudo  = null;
-                let title;
+                let title = qx.locale.Manager.tr("Please authenticate yourself");
                 switch (status) {
                 case 404:
                 case 401:
-                    title = qx.locale.Manager.tr("%1: Session expired: please login again", status);
+                    if (username) {
+                        title = qx.locale.Manager.tr("%1: Session expired: please login again", status);
+                    }
                     break;
                 default:
                     title = qx.locale.Manager.tr("Error %1: %2 - please login again", status, statusText);
@@ -119,6 +122,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                 }
                 new agrammon.module.user.Login(title, sudo, retry).open();
             }
+            handler(data);
         },
 
         /* A variant of the asyncCall method which pops up error messages
@@ -132,9 +136,9 @@ qx.Class.define('agrammon.io.remote.Rpc', {
          * @return {var} the method call reference.
          */
         callAsyncSmart : function(handler, methodName) {
-            var origHandler = handler;
+            let origHandler = handler;
 
-            var superHandler = function(ret, exc, id) {
+            let superHandler = function(ret, exc, id) {
                 if (exc) {
                     agrammon.ui.dialog.MsgBox.getInstance().exc(exc);
                 } else {

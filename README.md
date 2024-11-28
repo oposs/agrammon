@@ -44,6 +44,8 @@ Load a database dump (auto creation not yet implemented)
 
 ## Installation Web App
 
+apt install libnsl-dev
+
 Install npm and jq from your distro and then run
 
 mkdir -p public # first time only

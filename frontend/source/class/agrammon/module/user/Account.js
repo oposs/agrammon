@@ -7,6 +7,8 @@
  * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
  */
 
+/* TODO: cleanup together with SelfService.js */
+
 qx.Class.define('agrammon.module.user.Account', {
     extend: qx.ui.window.Window,
 
@@ -35,9 +37,9 @@ qx.Class.define('agrammon.module.user.Account', {
         var manager = new qx.ui.form.validation.Manager();
         // create a validator function
         var passwordLengthValidator = function(value, item) {
-            var valid = value != null && value.length >= 6;
+            var valid = value != null && value.length >= 8;
             if (!valid) {
-                item.setInvalidMessage(that.tr("Password must have at least 6 characters."));
+                item.setInvalidMessage(that.tr("Password must have at least 8 characters."));
             }
             return valid;
         };
@@ -63,7 +65,7 @@ qx.Class.define('agrammon.module.user.Account', {
         this.user.setPadding(5);
 
         this.password1 =
-            new agrammon.ui.form.VarPassword(this.tr("Password (minimum 6 characters)"),
+            new agrammon.ui.form.VarPassword(this.tr("Password (minimum 8 characters)"),
                                         '', '', '');
         pbox.add(this.password1);
         this.password1.setPadding(5);
@@ -130,9 +132,9 @@ qx.Class.define('agrammon.module.user.Account', {
 
 
         if (!adminCreate && !adminReset) {
-	    var msg = this.tr("An activation key will be sent to you by eMail after pressing the button");
+	    var msg = this.tr("An activation link will be sent to you by eMail after pressing the button");
             this.msg1 =
-                new qx.ui.basic.Label('<font color=red><b>'+ msg + ' ' + this.msg0 + '.</b></font>').set({rich: true});
+                new qx.ui.basic.Label('<font color=red><b>'+ msg + ' <i>' + this.msg0 + '</i></b></font>').set({rich: true});
             this.msg1.setPaddingLeft(5);
             this.msg1.setPaddingRight(5);
             this.msg1.setPaddingTop(5);
@@ -140,11 +142,11 @@ qx.Class.define('agrammon.module.user.Account', {
             pbox.add(this.msg1);
         }
 
-        var key =
-            new agrammon.ui.form.VarInput(this.tr("Key (sent by eMail)"),
-                                     '', '', '');
-        this.key = key;
-        key.setPadding(5);
+        // var key =
+        //     new agrammon.ui.form.VarInput(this.tr("Key (sent by eMail)"),
+        //                              '', '', '');
+        // this.key = key;
+        // key.setPadding(5);
 
         var bbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(10));
         // bbox.set({height: 'auto', width:'auto', padding: 5});
@@ -234,28 +236,28 @@ qx.Class.define('agrammon.module.user.Account', {
             this.password1.setEnabled(false);
             this.password2.setEnabled(false);
 
-            if (passwordReset && ! adminReset) {
-                this.location = this.password2;
-                this.action = this.tr("Enter key below to re-activate your account");
-            }
-            else if (!adminCreate) {
-                this.location = this.organisation;
-                this.action = this.tr("Enter key below to activate your account");
-            }
-            // reverse order!
-            if (!adminCreate && !adminReset) {
-                this.pbox._addAfter(this.key, this.location);
-                this.msg1.setValue('<font color=red><b>'
-                                 + this.action + '</b></font>');
-                this.pbox._addAfter(this.msg1, this.location);
-            }
+            // if (passwordReset && ! adminReset) {
+            //     this.location = this.password2;
+            //     this.action = this.tr("Enter key below to re-activate your account");
+            // }
+            // else if (!adminCreate) {
+            //     this.location = this.organisation;
+            //     this.action = this.tr("Enter key below to activate your account");
+            // }
+            // // reverse order!
+            // if (!adminCreate && !adminReset) {
+            //     this.pbox._addAfter(this.key, this.location);
+            //     this.msg1.setValue('<font color=red><b>'
+            //                      + this.action + '</b></font>');
+            //     this.pbox._addAfter(this.msg1, this.location);
+            // }
 
             var action;
             if (adminCreate) {
                  action = 'create_account';
             }
             else {
-                 action = 'get_account_key';
+                 action = 'activate_account';
             }
             var firstName, lastName, org;
             // not for self password reset

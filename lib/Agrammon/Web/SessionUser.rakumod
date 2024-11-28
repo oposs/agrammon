@@ -1,12 +1,13 @@
 use v6;
 use Cro::HTTP::Auth;
+use Agrammon::DB;
 use Agrammon::DB::User;
 
 class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
     has Bool $.logged-in = False;
     has Str $.sudo-username;
 
-    method auth($username, $password, $sudo-username?) {
+    method auth($username, $password, $sudo-username, $cfg) {
         if $sudo-username {
             die X::Agrammon::DB::User::MayNotSudo.new(:username($sudo-username)) unless self.may-sudo;
             $!sudo-username = $sudo-username;
@@ -14,10 +15,18 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
         else {
             $!logged-in = self.password-is-valid($username, $password);
             die X::Agrammon::DB::User::InvalidPassword.new unless $!logged-in;
+
         }
 
         self.set-username($username);
         self.load;
+        self.with-db: -> $db {
+                $db.query(q:to/SQL/, $.id, $!sudo-username, "$cfg<guiVariant>::$cfg<modelVariant>");
+                    INSERT INTO login (login_pers, login_sudouser, login_variant)
+                    VALUES ($1, $2, $3)
+                SQL
+                # die X::Agrammon::DB::User::CreateFailed.new(:$!username) unless $ret.rows;
+        }
         return self;
     }
 

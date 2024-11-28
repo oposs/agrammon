@@ -44,11 +44,11 @@ qx.Class.define('agrammon.module.dataset.TagTable', {
             }
         }, this);
 
-      this.__table.setMinWidth(180);
+        this.__table.setMinWidth(180);
         this.__table.setAllowGrowX(true);
         this.setPadding(0);
         this.add(this.__table, {flex: 1});
-
+        this.setFilter({});
     }, // construct
 
     members :
@@ -78,6 +78,7 @@ qx.Class.define('agrammon.module.dataset.TagTable', {
         },
 
         setFilter: function(filter) {
+            // console.log('setFilter', filter);
             if (filter == {}) {
                 this.__filterHash = {'*all*': true};
             }
@@ -128,15 +129,17 @@ qx.Class.define('agrammon.module.dataset.TagTable', {
         },
 
         renameTag: function(tag_old, tag_new) {
-
+            console.log('renameTag', tag_old, tag_new);
             var i, tm=this.__table.getTableModel();
             var tag, len = tm.getRowCount(0);
+            console.log('renaming');
             for (i=0; i<len; i++) {
                 tag = tm.getValue(0,i,0);
                 if (tag == tag_old) {
                     tm.setValue(0, i, tag_new, 0);
                 }
             }
+            console.log('setting filterHash', this.__filterHash);
             if (this.__filterHash[tag_old]) {
                 this.addToFilter(tag_new, true);
                 this.removeFromFilter(tag_old);
@@ -144,14 +147,17 @@ qx.Class.define('agrammon.module.dataset.TagTable', {
         },
 
         delTag: function(dTag) {
+            console.log('delTag', dTag);
             var i, tm=this.__table.getTableModel();
             var tag, len = tm.getRowCount(0);
+            console.log('deleting');
             for (i=0; i<len; i++) {
                 tag = tm.getValue(0,i,0);
                 if (tag == dTag) {
                     tm.removeRows(i,1);
                 }
             }
+            console.log('setting filterHash', this.__filterHash);
             if (this.__filterHash[dTag]) {
                 this.removeFromFilter(dTag);
             }

@@ -1,3 +1,5 @@
+.mise.toml
+*.tar.gz
 .precomp/
 tmp/
 t/test-data/.secret
@@ -15,5 +17,16 @@ aclocal.m4
 etc/*.cfg
 etc/*.yaml
 etc/*.secret
+Inline/
 public/
 conftools/
+test/rest/
+thirdparty/build.log
+thirdparty/cache
+thirdparty/carton/
+thirdparty/latest-build
+thirdparty/sources
+thirdparty/touch
+thirdparty/lib/
+thirdparty/work/
+thirdparty/bin/

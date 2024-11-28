@@ -30,7 +30,7 @@ msgstr ""
 msgid "Returning from %1 to %2"
 msgstr ""
 
-#: agrammon/Application.js
+#: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr ""
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/user/Account.js
 msgid "Cancel"
 msgstr ""
 
@@ -531,10 +531,6 @@ msgid "Report submission failed."
 msgstr ""
 
 #: agrammon/module/user/Account.js
-msgid "Password must have at least 6 characters."
-msgstr ""
-
-#: agrammon/module/user/Account.js
 msgid "eMail (your username)"
 msgstr ""
 
@@ -547,7 +543,7 @@ msgid "eMail (will be your username)"
 msgstr ""
 
 #: agrammon/module/user/Account.js
-msgid "Password (minimum 6 characters)"
+msgid "Password (minimum 8 characters)"
 msgstr ""
 
 #: agrammon/module/user/Account.js
@@ -578,11 +574,11 @@ msgstr ""
 msgid "Passwords must be equal."
 msgstr ""
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "An activation key will be sent to you by eMail after pressing the button"
 msgstr ""
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Key (sent by eMail)"
 msgstr ""
 
@@ -606,7 +602,7 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: agrammon/ui/menu/AdminMenu.js
+#: agrammon/module/user/Account.js
 msgid "Reset password"
 msgstr ""
 
@@ -614,11 +610,11 @@ msgstr ""
 msgid "Activate new account"
 msgstr ""
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Enter key below to re-activate your account"
 msgstr ""
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Enter key below to activate your account"
 msgstr ""
 
@@ -910,7 +906,7 @@ msgstr ""
 msgid "Help text currently only available in German"
 msgstr ""
 
-#: agrammon/module/user/Login.js
+#. NO LONGER USED
 msgid "Remember"
 msgstr ""
 
@@ -1012,4 +1008,28 @@ msgstr ""
 
 #: agrammon/io/remote/Rest.js
 msgid "Error in communication with server"
+msgstr ""
+
+#: agrammon/module/user/Account.js
+msgid "Password must have at least 8 characters."
+msgstr ""
+
+#: agrammon/module/user/Account.js
+msgid "An activation link will be sent to you by eMail after pressing the button"
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "An activation link will be sent to you by eMail."
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "Account creation successful"
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "Account activation key sent to %1"
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "A confirmation link will be sent to you by eMail."
 msgstr ""

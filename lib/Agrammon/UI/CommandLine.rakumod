@@ -59,7 +59,7 @@ multi sub MAIN('web', Str $model-filename, ExistingFile :$cfg-file, Str :$techni
 multi sub MAIN('run', Str $filename, ExistingFileOrStdin $input, ExistingFile :$cfg-file, Str :$technical-file,
         SupportedLanguage :$language = 'de', Str :$print-only,  Int :$report-selected, Str :$variants = 'Base',
         Bool :$include-filters, Bool :$include-all-filters=False, Int :$batch=1, Int :$degree=4, Int :$max-runs,
-        OutputFormat :$format = 'text', Str :$export-filename='test.xlsx'
+        OutputFormat :$format = 'text', Str :$export-filename='test'
     ) is export {
     my @print-set = $print-only.split(',') if $print-only;
     my $data = run $filename, $input.IO, $technical-file, $variants, $format, $language, @print-set,
@@ -98,8 +98,8 @@ multi sub MAIN('run', Str $filename, ExistingFileOrStdin $input, ExistingFile :$
                 }
                 for %sim-results.keys.sort -> $dataset {
                     if $format eq 'excel' {
-                        spurt "$export-filename.xlsx", %sim-results{$dataset};
-                        return;
+                        $export-filename //= $dataset;
+                        spurt "$export-filename-$dataset.xlsx", %sim-results{$dataset};
                     }
                     else {
                         @output.push("#   Dataset $dataset");

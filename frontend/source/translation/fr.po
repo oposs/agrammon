@@ -31,7 +31,7 @@ msgstr "Fin changer d'utilisateur"
 msgid "Returning from %1 to %2"
 msgstr "Retour de % 1 à% 2"
 
-#: agrammon/Application.js
+#: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr "Veuillez s'il vous plaît vous identifier"
 
@@ -363,7 +363,7 @@ msgstr ""
 msgid "Branch configuration"
 msgstr "Configuration branch"
 
-#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/user/Account.js
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -544,10 +544,6 @@ msgid "Report submission failed."
 msgstr "La soumission du rapport a échoué."
 
 #: agrammon/module/user/Account.js
-msgid "Password must have at least 6 characters."
-msgstr "Le mot de passe doit comporter au moins 6 caractères."
-
-#: agrammon/module/user/Account.js
 msgid "eMail (your username)"
 msgstr "e-mail (votre nom d'utilisateur)"
 
@@ -560,8 +556,8 @@ msgid "eMail (will be your username)"
 msgstr "e-mail (sera votre nom d'utilisateur)"
 
 #: agrammon/module/user/Account.js
-msgid "Password (minimum 6 characters)"
-msgstr "Mot de passe (min. 6 caractères)"
+msgid "Password (minimum 8 characters)"
+msgstr ""
 
 #: agrammon/module/user/Account.js
 msgid "Repeat Password"
@@ -591,11 +587,11 @@ msgstr "Changer de mot de passe"
 msgid "Passwords must be equal."
 msgstr "Les mots de passe doivent être égaux."
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "An activation key will be sent to you by eMail after pressing the button"
 msgstr "Une clé d'activation va vous être envoyée par email en cliquant sur le bouton"
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Key (sent by eMail)"
 msgstr "Clé (envoyée par e-mail)"
 
@@ -619,7 +615,7 @@ msgstr "Réinitialisation du mot de passe"
 msgid "Login"
 msgstr "Entrer"
 
-#: agrammon/ui/menu/AdminMenu.js
+#: agrammon/module/user/Account.js
 msgid "Reset password"
 msgstr "Changer de mot de passe"
 
@@ -627,11 +623,11 @@ msgstr "Changer de mot de passe"
 msgid "Activate new account"
 msgstr "Activer un nouveau compte"
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Enter key below to re-activate your account"
 msgstr "Entrer la clé ci-dessous pour réactiver votre compte"
 
-#: agrammon/module/user/Account.js
+#. NO LONGER USED
 msgid "Enter key below to activate your account"
 msgstr "Entrer la clé ci-dessous pour activer votre compte"
 
@@ -935,7 +931,7 @@ msgstr ""
 msgid "Error %1: %2 - please login again"
 msgstr ""
 
-#: agrammon/module/user/Login.js
+#. NO LONGER USED
 msgid "Remember"
 msgstr ""
 
@@ -1017,4 +1013,28 @@ msgstr ""
 
 #: agrammon/io/remote/Rest.js
 msgid "Error in communication with server"
+msgstr ""
+
+#: agrammon/module/user/Account.js
+msgid "Password must have at least 8 characters."
+msgstr ""
+
+#: agrammon/module/user/Account.js
+msgid "An activation link will be sent to you by eMail after pressing the button"
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "An activation link will be sent to you by eMail."
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "Account creation successful"
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "Account activation key sent to %1"
+msgstr ""
+
+#: agrammon/module/user/SelfService.js
+msgid "A confirmation link will be sent to you by eMail."
 msgstr ""

@@ -1,0 +1,17 @@
+* hr-inclNOxExtended is based on version5, but somewhat modified.
+
+  Check with Christoph Häni to figure out where the simulation result
+  differences come from. Adapt tests and use version5 instead.
+
+* version4:
+
+  pre-version6 version for Kantonalmodell (hr-limit-2010)
+
+* version5:
+
+  pre-version6 version for Single and Regional model
+  (hr-inclNOxExtended, 2020-07-31)
+
+* version6:
+
+  Cleanup and extension by Christoph Häni

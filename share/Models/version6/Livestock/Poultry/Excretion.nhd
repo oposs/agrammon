@@ -10,13 +10,21 @@ Computes the annual N excretion of the different poultry categories.
 
 +description
 
-This process calculates the annual N excretion (total N and TAN=Total Ammoniacal Nitrogen) of a number of animals as a function of the supplied feed ration.
+This process calculates the annual N excretion (total N and TAN=Total
+Ammoniacal Nitrogen) of a number of animals as a function of the
+supplied feed ration.
 
-The standard N excretion was taken from the PRIF 2017 (Richner et al., 2017; PRIF: Principles of Agricultural Crop Fertilisation in Switzerland).
+The standard N excretion was taken from the PRIF 2017 (Richner et al.,
+2017; PRIF: Principles of Agricultural Crop Fertilisation in
+Switzerland).
 
 \subsubsection{References:}
 
-Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/24.
+Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi,
+H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W.,
+Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher
+Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6)
+Spezialpublikation, pp. 4/1-4/24.
 
 
 *** input ***
@@ -101,11 +109,14 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Number of available animal places.
     ++help
       +++en
-         <p>If "Standard" is selected the number of available animal places is equal to the number of animals.</p>
+         <p>If "Standard" is selected the number of available animal places
+            is equal to the number of animals.</p>
       +++de
-         <p>Bei Auswahl "Standard" wird die Anzahl Tierplätze im Stall der eingegebenen Anzahl Tiere gleichgesetzt.</p>
+         <p>Bei Auswahl "Standard" wird die Anzahl Tierplätze im Stall
+         der eingegebenen Anzahl Tiere gleichgesetzt.</p>
       +++fr
-         <p>Si "Standard" est introduisé, la valeur du nombre d'animaux est utilisée.</p>
+         <p>Si "Standard" est introduisé, la valeur du nombre d'animaux
+         est utilisée.</p>
 
 ?if !Kantonal_LU
   +inp_n_excretion
