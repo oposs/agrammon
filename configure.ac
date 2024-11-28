@@ -1,7 +1,7 @@
 #  Copyright (C) 2020 Oetiker+Partner AG
 
-AC_INIT([agrammon],m4_esyscmd([jq '.version' < META6.json | tr -d '""' ]),[fritz.zaucker@oetiker.ch])
-AC_PREREQ([2.59])
+AC_INIT([agrammon], m4_esyscmd(jq '.version' < META6.json | tr -d '""' | tr -d '\n'),[fritz.zaucker@oetiker.ch])
+AC_PREREQ([2.71])
 AC_CONFIG_AUX_DIR(conftools)
 
 MJ_CLASS=Agrammon
@@ -132,8 +132,7 @@ else
 fi
 
 AC_ARG_ENABLE(pkgonly,
-        AC_HELP_STRING([--enable-pkgonly],
-                        [Skip all checking]))
+        AS_HELP_STRING([--enable-pkgonly],[Skip all checking]))
 AC_SUBST(enable_pkgonly)
 
 actual_prefix=$prefix
