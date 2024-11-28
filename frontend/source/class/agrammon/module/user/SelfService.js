@@ -7,6 +7,8 @@
  * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
  */
 
+/* TODO: cleanup together with Account.js */
+
 qx.Class.define('agrammon.module.user.SelfService', {
     extend: qx.ui.window.Window,
 

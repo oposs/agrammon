@@ -11,6 +11,7 @@
   "depends": [
     "Cro::Core",
     "Cro::HTTP",
+    "Cro::HTTP::Log::File",
     "Cro::HTTP::Session::Pg",
     "Cro::OpenAPI::RoutesFromDefinition:ver<1.0.4+>",
     "Cro::WebApp::Template",

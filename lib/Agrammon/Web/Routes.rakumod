@@ -509,7 +509,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
         post -> Agrammon::Web::SessionUser $user, 'auth' {
             request-body -> (:$username, :$password, :$sudo, *%rest) {
                 my $sudo-username = $user.username if $user.logged-in && $sudo;
-                if $user.auth($username, $password, $sudo-username) {
+                if $user.auth($username, $password, $sudo-username, $ws.get-cfg) {
                     content 'application/json', %(
                         :$username,
                         :role($user.role.name),

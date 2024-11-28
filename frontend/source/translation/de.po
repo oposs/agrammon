@@ -1002,10 +1002,6 @@ msgstr "Fehler in der Kommunikation mit dem Server"
 msgid "Password must have at least 8 characters."
 msgstr ""
 
-#: agrammon/module/user/SelfService.js
-msgid "Password (minimum 8 characters)"
-msgstr "Passwort (mindestens 8 Zeichen)"
-
 #: agrammon/module/user/Account.js
 msgid "An activation link will be sent to you by eMail after pressing the button"
 msgstr ""

@@ -557,7 +557,7 @@ msgstr "e-mail (sera votre nom d'utilisateur)"
 
 #: agrammon/module/user/Account.js
 msgid "Password (minimum 8 characters)"
-msgstr "Mot de passe (min. 8 caractères)"
+msgstr ""
 
 #: agrammon/module/user/Account.js
 msgid "Repeat Password"
@@ -1017,10 +1017,6 @@ msgstr ""
 
 #: agrammon/module/user/Account.js
 msgid "Password must have at least 8 characters."
-msgstr ""
-
-#: agrammon/module/user/SelfService.js
-msgid "Password (minimum 8 characters)"
 msgstr ""
 
 #: agrammon/module/user/Account.js
