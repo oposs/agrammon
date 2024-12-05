@@ -1,3 +1,6 @@
+- 6.4.2, 2024-12-04, fritz.zaucker@oetiker.ch
+  - Fix RPC error handling (RT 59213)
+
 - 6.4.1, 2024-11-22, fritz.zaucker@oetiker.ch
   - New Self Service for account creation and password reset
 

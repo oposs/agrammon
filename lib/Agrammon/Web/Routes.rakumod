@@ -479,7 +479,6 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
                 my $data = $ws.send-datasets($user, @datasets, $recipient, $language);
                 content 'application/json', $data;
                 CATCH {
-                    .note;
                     when X::Agrammon::DB::User::UnknownUser {
                         conflict 'application/json', %( error => .message );
                     }

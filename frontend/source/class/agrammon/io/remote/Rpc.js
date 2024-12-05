@@ -88,7 +88,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
             let response = req.getResponse();
             let status = req.getStatus();
             let statusText = req.getStatusText();
-            console.log('Rpc.callAsync('+methodName+'): status=', status, ':', statusText, ', response=', response);
+            // console.error('Rpc.callAsync('+methodName+'): status=', status, ':', statusText, ', response=', response, ', error=', response.error);
             let username = agrammon.Info.getInstance().getUserName();
             if (response && response.error) {
                 let params = [
@@ -104,6 +104,7 @@ qx.Class.define('agrammon.io.remote.Rpc', {
                     qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
                 }
                 qx.event.message.Bus.dispatchByName('error', params);
+                return;
             }
             else {
                 let retry = true;

@@ -975,43 +975,43 @@ msgstr ""
 msgid "No valid lines found in uploaded file."
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "Validation error"
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "The following validation errors must be resolved before approval:"
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "instance"
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "is mandatory"
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "Warning"
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "Some inputs must have changed while you tried to finish the module."
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "Please reload the module and try again."
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "storeInput error"
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "failed"
 msgstr ""
 
-#: agrammon/io/remote/Rest.js
+#. NO LONGER USED
 msgid "Error in communication with server"
 msgstr ""
 
