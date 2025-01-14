@@ -78,7 +78,7 @@ qx.Class.define('agrammon.ui.dialog.Error', {
         qx.event.message.Bus.subscribe('error', function(m) {
             var data = m.getData();
             that.setCaption(data[0]);
-            error.setLabel(data[1]);
+            error.setLabel(qx.locale.Manager.tr(data[1]));
             if (data[2] == 'info') {
                 error.setIcon(null);
             }
