@@ -50,7 +50,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr "Schliessen"
 
