@@ -519,7 +519,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
                 }
                 CATCH {
                     .note;
-                    when X::Agrammon::DB::User::InvalidPassword  {
+                    when X::Agrammon::DB::User::InvalidLogin  {
                         forbidden 'application/json', %( error => .message );
                     }
                 }

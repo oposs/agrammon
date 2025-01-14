@@ -121,8 +121,6 @@ class Agrammon::DB::User does Agrammon::DB {
     sub get-password-key($username, $password) {
         my $digest = sha1-hex($username ~ $password ~ $secret);
         return $digest;
-        # only easily human readable characters
-        # return substr($digest ~~ tr/1/x/, 5, 6);
     }
 
     method get-account-key() {
@@ -186,8 +184,15 @@ class Agrammon::DB::User does Agrammon::DB {
             $key = self.get-account-key();
             $ret = $db.query(q:to/SQL/, $!username, $!firstname, $!lastname, $!organisation, %r<id>, $!password, $encrypt-key, $key );
                 INSERT INTO pers (pers_email, pers_first, pers_last,
-                                  pers_password, pers_org, pers_role, pers_newpassword, pers_newpassword_key)
-                VALUES ($1, $2, $3, gen_random_uuid(), $4, $5, encode(encrypt($6, $7, 'aes'), 'base64'), $8)
+                                  pers_password,
+                                  pers_org, pers_role,
+                                  pers_newpassword, pers_newpassword_key
+                                 )
+                VALUES ($1, $2, $3,
+                        gen_random_uuid(), -- random password until activated
+                        $4, $5,
+                        encode(encrypt($6, $7, 'aes'), 'base64'), $8
+                       )
                 RETURNING pers_id
             SQL
 
@@ -212,6 +217,7 @@ class Agrammon::DB::User does Agrammon::DB {
             SQL
 
             $!username = $ret.value if $ret.rows;
+            note "Account activated for $!username";
         }
         self.load if $!username;
         return self;

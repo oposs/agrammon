@@ -14,8 +14,7 @@ class Agrammon::Web::SessionUser is Agrammon::DB::User does Cro::HTTP::Auth {
         }
         else {
             $!logged-in = self.password-is-valid($username, $password);
-            die X::Agrammon::DB::User::InvalidPassword.new unless $!logged-in;
-
+            die X::Agrammon::DB::User::InvalidLogin.new unless $!logged-in;
         }
 
         self.set-username($username);

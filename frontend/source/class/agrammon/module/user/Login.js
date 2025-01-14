@@ -21,7 +21,7 @@ qx.Class.define('agrammon.module.user.Login', {
         // content of the form elements if they appear inside a form AND
         // the form has a name (firefox comes to mind).
         var el = this.getContentElement();
-        var form = new qx.html.Element('form',null,{name: 'cbLoginform', autocomplete: 'on'});
+        var form = new qx.html.Element('form',null,{name: 'AgrammonLoginform', autocomplete: 'on'});
         form.insertBefore(el);
         el.insertInto(form);
 

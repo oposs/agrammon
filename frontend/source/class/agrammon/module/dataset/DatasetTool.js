@@ -517,6 +517,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
         this.__setDatasets = function() {
             // used for datasetFilter
             that.__datasets = this.__datasetCache.getDatasets();
+            if (! that.__datasets) return;
             var len = that.__datasets.length;
             if (len<1) return;
 
@@ -533,16 +534,17 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
 
         this.__setTags = function() {
             var data = this.__datasetCache.getTags();
-                var len = data.length;
-                if (len<1) {
-                        return;
-                    }
-                var i, rec;
-                that.__availableTags = [];
-                for (i=0; i<len; i++) {
-                        rec = [ data[i] ];
-                        that.__availableTags.push(rec);
-                }
+            if (!data) return;
+            var len = data.length;
+            if (len<1) {
+                return;
+            }
+            var i, rec;
+            that.__availableTags = [];
+            for (i=0; i<len; i++) {
+                rec = [ data[i] ];
+                that.__availableTags.push(rec);
+            }
             availableTagsTm.setData(that.__availableTags);
             availableTagsTable.updateView();
         }; // this.__setTags()
