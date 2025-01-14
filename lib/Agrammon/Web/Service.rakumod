@@ -456,7 +456,10 @@ class Agrammon::Web::Service {
         note "Account created for $email: activation key=$key";
         if not %*ENV<AGRAMMON_TESTING> {
             my $subject = "Agrammon account activation";
-            my $msg = "Click on the link to activate your Agrammon account: https://model.agrammon.ch/single/activate_account?key=$key";
+            # start link on new line to avoid . at beginning of second line
+            # of the encode string (seems to disappear in the received
+            # email) ... Fritz, 2025-01-14
+            my $msg = "Click on the link to activate your Agrammon account:\n\nhttps://model.agrammon.ch/single/activate_account?key=$key";
             Agrammon::Email.new(
                 :to($email),
                 :from('support@agrammon.ch'),
