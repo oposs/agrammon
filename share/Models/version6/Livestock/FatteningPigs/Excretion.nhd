@@ -348,6 +348,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 +energy_content
   type = float
   validator = between(9,16);
+  default_calc = Standard
+  default_gui  = Standard
   ++labels
     en = Energy content of the ration
     de = Energiegehalt der Ration
@@ -517,10 +519,11 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Walther et al. (2001).
 ?if Kantonal_LU
   ++formula
+    my $energyContent = lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
     my $exc = Tech(standard_N_excretion_fattening_pigs) * 
               (1 - (
                 Tech(standard_crude_protein_fattening_pigs) - 
-                (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / In(energy_content))
+                (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / $energy_content)
               ) * 
               Tech(cfeed_fattening_pigs));
     if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
@@ -539,11 +542,15 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     }
 ?else
   ++formula
+    my $energyContent = lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
+    writeLog({
+      de => Out(animalcategory) . ": energy_content = " .  $energyContent
+    });
     if ( lc In(inp_n_excretion) eq 'standard' ) {
       my $exc = Tech(standard_N_excretion_fattening_pigs) * 
                 (1 - (
                   Tech(standard_crude_protein_fattening_pigs) - 
-                  (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / In(energy_content))
+                  (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / $energyContent)
                 ) * 
                 Tech(cfeed_fattening_pigs));
       if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
