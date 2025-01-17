@@ -92,11 +92,11 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   distribute = true
   default_gui  = Standard
   default_calc = Standard
-  ++labels 
+  ++labels
     en = Number of available animal places
     de = Anzahl Tierplätze im Stall
     fr = Nombre de places dans l'étable
-  ++units  
+  ++units
     en = -
   ++description
     Number of available animal places.
@@ -188,8 +188,12 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 ?endif
 
+
+
 +crude_protein
   type = float
+  default_calc = Standard
+  default_gui  = Standard
   validator = between(100,220);
   ++labels
      en = Crude protein content of the ration
@@ -215,7 +219,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
        <li>Boars: 128 g CP /kg</li>
        <li>Weaned piglets: 162 g CP /kg</li>
        </ul>
-      
+
     +++de
        <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
 
@@ -230,7 +234,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
          <li>Galtsauen: 128 g RP /kg</li>
          <li>Remonten: 151 g RP /kg</li>
          <li>Eber: 128 g RP /kg;</li>
-         <li>abgesetzte Ferkel: 162 g RP /kg</li>
+         <li>Ferkel abgesetzte bis 25 kg: 162 g RP /kg</li>
        </ul>
 
     +++fr
@@ -253,6 +257,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 +energy_content
   type = float
   validator = between(9,16);
+  default_calc = Standard
+  default_gui  = Standard
   ++labels
     en = Energy content of the ration
     de = Energiegehalt der Ration
@@ -290,7 +296,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
          <li>Galtsauen: 12.1 MJ VES /kg</li>
          <li>Remonten: 14.0 MJ VES /kg</li>
          <li>Eber: 12.1 MJ VES /kg;</li>
-         <li>abgesetzte Ferkel: 13.9 MJ VES /kg</li>
+         <li>Ferkel abgesetzte bis 25 kg: 13.9 MJ VES /kg</li>
        </ul>
     +++fr
       <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
@@ -603,19 +609,20 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   ++formula
     my $minimal = $TE->{'minimal_N_excretion_' . Out(animalcategory)};
     my $stdN = $TE->{'standard_N_excretion_' . Out(animalcategory)};
-    my $Nexcr =  $stdN* 
-              (1 - 
-                ($TE->{'standard_crude_protein_' . Out(animalcategory)} - 
-                  In(crude_protein) * $TE->{'standard_energy_content_' . Out(animalcategory)} / In(energy_content)
-                ) * 
+    my $energyContent = lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
+    my $Nexcr =  $stdN *
+              (1 -
+                ($TE->{'standard_crude_protein_' . Out(animalcategory)} -
+                  In(crude_protein) * $TE->{'standard_energy_content_' . Out(animalcategory)} / $energyContent
+                ) *
               $TE->{'cfeed_' . Out(animalcategory)});
     if( $Nexcr < $minimal ) {
       writeLog({
         en => "The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
               . "The excretion was set to " . $minimal ." kg N per animal!",
-        de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+        de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine!\n"
               . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!",
-        fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+        fr => "Franz.: Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine!\n"
               . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!"
       });
       return $minimal;
@@ -626,20 +633,24 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   ++formula
     my $minimal = $TE->{'minimal_N_excretion_' . Out(animalcategory)};
     my $stdN = $TE->{'standard_N_excretion_' . Out(animalcategory)};
+    my $energyContent = lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
+    writeLog({
+      de => Out(animalcategory) . ": energy_content = " .  $energyContent
+    });
     if ( lc In(inp_n_excretion) eq 'standard' ) {
-      my $Nexcr =  $stdN* 
-                (1 - 
-                  ($TE->{'standard_crude_protein_' . Out(animalcategory)} - 
-                    In(crude_protein) * $TE->{'standard_energy_content_' . Out(animalcategory)} / In(energy_content)
-                  ) * 
+      my $Nexcr =  $stdN *
+                (1 -
+                  ($TE->{'standard_crude_protein_' . Out(animalcategory)} -
+                    In(crude_protein) * $TE->{'standard_energy_content_' . Out(animalcategory)} / $energyContent
+                  ) *
                 $TE->{'cfeed_' . Out(animalcategory)});
       if( $Nexcr < $minimal ) {
         writeLog({
-          en => "The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
+          en => Out(animalcategory) . ": The entries for the contents of energy and crude protein of the ration result in a N excretion below the minimum for pigs.\n"
                 . "The excretion was set to " . $minimal ." kg N per animal!",
-          de => "Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine! \n"
+          de => Out(animalcategory) . ": Der gewählte Energie- und Rohproteingehalt der Ration bewirken eine N Ausscheidung unterhalb des Minimums für Schweine!\n"
                 . "Die Ausscheidung wurde auf ". $minimal ."  kg N pro Tier gesetzt!",
-          fr => "La teneur de la ration en énergie et en matière azotée engendrent une excrétion de N inférieure au minimum pour les porcs! \n"
+          fr => Out(animalcategory) . ": La teneur de la ration en énergie et en matière azotée engendrent une excrétion de N inférieure au minimum pour les porcs!\n"
                 . "Les excrétions azotées ont été fixées à". $minimal ."  kg N par animal!"
         });
         return $minimal;
@@ -649,17 +660,17 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     } else {
       if( In(inp_n_excretion) < $minimal ) {
         writeLog({
-          en => "The entry for N excretion is below the minimum for pigs!",
-          de => "Der gewählte N Ausscheidung liegt unterhalb des Minimums für Schweine!",
-          fr => "Les excrétions azotées sont inférieures au minimum pour les porcs!"
+          en => Out(animalcategory) . ": The entry for N excretion is below the minimum for pigs!",
+          de => Out(animalcategory) . ": Der gewählte N Ausscheidung liegt unterhalb des Minimums für Schweine!",
+          fr => Out(animalcategory) . ": Les excrétions azotées sont inférieures au minimum pour les porcs!"
         });
       }
-      if ( In(inp_n_excretion) < 0.7 * $stdN or 
+      if ( In(inp_n_excretion) < 0.7 * $stdN or
            In(inp_n_excretion) > 1.3 * $stdN ) {
         writeLog({
-          en => "The N excretion entered for pigs differs from the standard by more than 30%!",
-          de => "Die eingegebene N-Ausscheidung für Zuchtschweine weicht um mehr als 30% vom Standard ab.",
-          fr => "Les excrétions azotées saisies pour les porcs s'écartent de plus de 30% du standard!"
+          en => Out(animalcategory) . ": The N excretion entered for pigs differs from the standard by more than 30%!",
+          de => Out(animalcategory) . ": Die eingegebene N-Ausscheidung für Zuchtschweine weicht um mehr als 30% vom Standard ab!",
+          fr => Out(animalcategory) . ": Les excrétions azotées saisies pour les porcs s'écartent de plus de 30% du standard!"
         });
       }
       return In(inp_n_excretion);
@@ -721,14 +732,14 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 +area_increase
   print = Pig
-  ++units  
+  ++units
     en = -
   ++description
     Factor on what barn size does increase the regularized minimal, limited to 0.5
-  ++formula 
-    if ( (Out(animals) < Out(dimensioning_barn) ) and (Out(animals) != 0) ) { 
-      if ( Out(dimensioning_barn) >= (Out(animals) * 1.5) ) {   
-        0.5; 
+  ++formula
+    if ( (Out(animals) < Out(dimensioning_barn) ) and (Out(animals) != 0) ) {
+      if ( Out(dimensioning_barn) >= (Out(animals) * 1.5) ) {
+        0.5;
       }
       else {
         Out(dimensioning_barn) / Out(animals) - 1;
@@ -752,7 +763,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
       });
       return "barn dimensioning too small";
-    } 
+    }
     else {
       return "barn dimensioning ok";
     }
