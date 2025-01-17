@@ -30,7 +30,7 @@ msgstr ""
 msgid "Returning from %1 to %2"
 msgstr ""
 
-#: agrammon/Application.js
+#: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr ""
 
