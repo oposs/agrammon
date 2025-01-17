@@ -296,6 +296,7 @@ qx.Class.define('agrammon.module.output.Results', {
             if (this.getEnabled()) {
                 this.__outputPending++;
                 this.__clearTable();
+//                console.log('Results.__recalc(): dispatching Output.getOutput');
                 qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
             }
         },
@@ -309,10 +310,12 @@ qx.Class.define('agrammon.module.output.Results', {
                 return;
             }
             if (enable) {
-                this.debug('enable');
-                this.__outputPending++;
-                qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
                 this.__title.setValue(this.tr("<b>Result summary</b>"));
+// perhaps race condition? Fritz, 2025-01-17
+//                this.debug('__enabled(): enable');
+//                this.__outputPending++;
+//                console.log('Results.__enabled(): dispatching Output.getOutput');
+//                qx.event.message.Bus.dispatchByName('agrammon.Output.getOutput');
             }
             else {
                 this.__clearTable();
