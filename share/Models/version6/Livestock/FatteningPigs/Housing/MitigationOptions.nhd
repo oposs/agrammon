@@ -118,7 +118,7 @@ Ratschow, J.-P., Schulte-Sutrum, R., Büscher, W., Nannen, C., Feller, B. 2008. 
   ++description
     Reduction factor for the emission due to the use of housing system adaptations.
   ++formula 
-      if (In(mitigation_housing_air)  eq 'low_impuls_air_supply'){
+      if (In(mitigation_housing_air) eq 'low_impuls_air_supply'){
           return( Tech(red_low_impuls_air_supply));
       }
       else {
