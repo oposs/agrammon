@@ -597,6 +597,28 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   ++formula
     In(animalcategory);
 
++crude_protein
+  print = Pig
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Crude protein content of feed ration.
+  ++formula
+    lc In(crude_protein) eq 'standard'  ?  $TE->{'default_crude_protein_'  . Out(animalcategory)} : In(crude_protein);
+
++energy_content
+  print = Pig
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Energy content of feed ration
+  ++formula
+    lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
+
 +n_excretion_animal
   print = Pig
   ++units
@@ -609,8 +631,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   ++formula
     my $minimal = $TE->{'minimal_N_excretion_' . Out(animalcategory)};
     my $stdN = $TE->{'standard_N_excretion_' . Out(animalcategory)};
-    my $energyContent = lc In(energy_content) eq 'standard' ?  $TE->{'default_energy_content_' . Out(animalcategory)} : In(energy_content);
-    my $crudeProtein  = lc In(crude_protein) eq 'standard'  ?  $TE->{'default_crude_protein_'  . Out(animalcategory)} : In(crude_protein);
+    my $energyContent = Out(energy_content);
+    my $crudeProtein  = Out(crude_protein);
     my $Nexcr =  $stdN *
               (1 -
                 ($TE->{'standard_crude_protein_' . Out(animalcategory)} -
@@ -634,14 +656,14 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   ++formula
     my $minimal = $TE->{'minimal_N_excretion_' . Out(animalcategory)};
     my $stdN = $TE->{'standard_N_excretion_' . Out(animalcategory)};
-    my $energyContent = lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
-    my $crudeProtein  = lc In(crude_protein) eq 'standard'  ?  $TE->{'default_crude_protein_'  . Out(animalcategory)} : In(crude_protein);
-    writeLog({
-      de => Out(animalcategory) . ": crude protein = " .  $crudeProtein
-    });
-    writeLog({
-      de => Out(animalcategory) . ": energy content = " .  $energyContent
-    });
+    my $energyContent = Out(energy_content);
+    my $crudeProtein  = Out(crude_protein);
+#    writeLog({
+#      de => Out(animalcategory) . ": crude protein = " .  $crudeProtein
+#    });
+#    writeLog({
+#      de => Out(animalcategory) . ": energy content = " .  $energyContent
+#    });
     if ( lc In(inp_n_excretion) eq 'standard' ) {
       my $Nexcr =  $stdN *
                 (1 -

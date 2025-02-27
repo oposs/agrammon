@@ -507,9 +507,9 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     my $crudeProteinPhase1  = lc In(feeding_phase_1_crude_protein) eq 'standard' ? $TE->{'default_crude_protein_fattening_pigs'} : In(feeding_phase_1_crude_protein);
     my $crudeProteinPhase2  = lc In(feeding_phase_2_crude_protein) eq 'standard' ? $TE->{'default_crude_protein_fattening_pigs'} : In(feeding_phase_2_crude_protein);
     my $crudeProteinPhase3  = lc In(feeding_phase_3_crude_protein) eq 'standard' ? $TE->{'default_crude_protein_fattening_pigs'} : In(feeding_phase_3_crude_protein);
-    writeLog({
-        de => Out(animalcategory) . ": crude protein= " . $crudeProteinPhase1 . ' / ' . $crudeProteinPhase2 . ' / ' . $crudeProteinPhase3
-    });
+#    writeLog({
+#        de => Out(animalcategory) . ": crude protein= " . $crudeProteinPhase1 . ' / ' . $crudeProteinPhase2 . ' / ' . $crudeProteinPhase3
+#    });
     if ( $crudeProteinPhase2 == $crudeProteinPhase3 and $crudeProteinPhase2 != $crudeProteinPhase1 ) {
         $crudeProteinPhase1 * Tech(phase_1_2_duration) +
         $crudeProteinPhase2 * Tech(phase_2_2_duration);
@@ -518,6 +518,17 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
       $crudeProteinPhase2 * Tech(phase_2_3_duration) +
       $crudeProteinPhase3 * Tech(phase_3_3_duration)
     }
+
++energy_content
+  print = FatteningPigs
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Energy content of feed ration
+  ++formula
+    lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
 
 +n_excretion_animal
   print = FatteningPigs
@@ -530,10 +541,10 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Walther et al. (2001).
 ?if Kantonal_LU
   ++formula
-    my $energyContent = lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
-    writeLog({
-      de => Out(animalcategory) . ": energy content = " .  $energyContent
-    });
+    my $energyContent = Out(energy_content);
+#    writeLog({
+#      de => Out(animalcategory) . ": energy content = " .  $energyContent
+#    });
     my $exc = Tech(standard_N_excretion_fattening_pigs) * 
               (1 - (
                 Tech(standard_crude_protein_fattening_pigs) - 
@@ -556,10 +567,10 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     }
 ?else
   ++formula
-    my $energyContent = lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
-    writeLog({
-      de => Out(animalcategory) . ": energy_content = " .  $energyContent
-    });
+    my $energyContent = Out(energy_content);
+#    writeLog({
+#      de => Out(animalcategory) . ": energy content = " .  $energyContent
+#    });
     if ( lc In(inp_n_excretion) eq 'standard' ) {
       my $exc = Tech(standard_N_excretion_fattening_pigs) * 
                 (1 - (
