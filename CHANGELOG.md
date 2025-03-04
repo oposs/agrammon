@@ -1,3 +1,9 @@
+- 6.5.0, 2025-01-17, fritz.zaucker@oetiker.ch
+  - RT 59314: defaults for Pig and Fattenpig excretion 
+              and protein energy content
+  - RT 57743: Possibly fix race condition leading to apparently
+    simulation not changing after value change
+
 - 6.4.2, 2024-12-04, fritz.zaucker@oetiker.ch
   - Fix RPC error handling (RT 59213)
 

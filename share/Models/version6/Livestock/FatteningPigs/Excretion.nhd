@@ -170,6 +170,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 +feeding_phase_1_crude_protein
   type = float
+  default_calc = Standard
+  default_gui  = Standard
   validator = between(130,200);
   ++labels
     en = Phase feeding: Crude protein content of the ration during phase 1
@@ -238,6 +240,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 +feeding_phase_2_crude_protein
   type = float
+  default_calc = Standard
+  default_gui  = Standard
   validator = between(120,200);
   ++labels
     en = Phase feeding: Crude protein content of the ration during phase 2
@@ -294,6 +298,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 +feeding_phase_3_crude_protein
   type = float
+  default_calc = Standard
+  default_gui  = Standard
   validator = between(110,200);
   ++labels
     en = Phase feeding: Crude protein content of the ration during phase 3
@@ -348,6 +354,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 +energy_content
   type = float
   validator = between(9,16);
+  default_calc = Standard
+  default_gui  = Standard
   ++labels
     en = Energy content of the ration
     de = Energiegehalt der Ration
@@ -496,15 +504,31 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   ++description
     Crude protein content of feed ration - for 1-, 2- or 3-phase-feeding.
   ++formula
-    if ( In(feeding_phase_2_crude_protein) == In(feeding_phase_3_crude_protein) and
-         In(feeding_phase_2_crude_protein) != In(feeding_phase_1_crude_protein) ) {
-        In(feeding_phase_1_crude_protein) * Tech(phase_1_2_duration) +
-        In(feeding_phase_2_crude_protein) * Tech(phase_2_2_duration);
+    my $crudeProteinPhase1  = lc In(feeding_phase_1_crude_protein) eq 'standard' ? $TE->{'default_crude_protein_fattening_pigs'} : In(feeding_phase_1_crude_protein);
+    my $crudeProteinPhase2  = lc In(feeding_phase_2_crude_protein) eq 'standard' ? $TE->{'default_crude_protein_fattening_pigs'} : In(feeding_phase_2_crude_protein);
+    my $crudeProteinPhase3  = lc In(feeding_phase_3_crude_protein) eq 'standard' ? $TE->{'default_crude_protein_fattening_pigs'} : In(feeding_phase_3_crude_protein);
+#    writeLog({
+#        de => Out(animalcategory) . ": crude protein= " . $crudeProteinPhase1 . ' / ' . $crudeProteinPhase2 . ' / ' . $crudeProteinPhase3
+#    });
+    if ( $crudeProteinPhase2 == $crudeProteinPhase3 and $crudeProteinPhase2 != $crudeProteinPhase1 ) {
+        $crudeProteinPhase1 * Tech(phase_1_2_duration) +
+        $crudeProteinPhase2 * Tech(phase_2_2_duration);
     } else {
-      In(feeding_phase_1_crude_protein) * Tech(phase_1_3_duration) +
-      In(feeding_phase_2_crude_protein) * Tech(phase_2_3_duration) +
-      In(feeding_phase_3_crude_protein) * Tech(phase_3_3_duration)
+      $crudeProteinPhase1 * Tech(phase_1_3_duration) +
+      $crudeProteinPhase2 * Tech(phase_2_3_duration) +
+      $crudeProteinPhase3 * Tech(phase_3_3_duration)
     }
+
++energy_content
+  print = FatteningPigs
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Energy content of feed ration
+  ++formula
+    lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
 
 +n_excretion_animal
   print = FatteningPigs
@@ -517,10 +541,14 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Walther et al. (2001).
 ?if Kantonal_LU
   ++formula
+    my $energyContent = Out(energy_content);
+#    writeLog({
+#      de => Out(animalcategory) . ": energy content = " .  $energyContent
+#    });
     my $exc = Tech(standard_N_excretion_fattening_pigs) * 
               (1 - (
                 Tech(standard_crude_protein_fattening_pigs) - 
-                (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / In(energy_content))
+                (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / $energy_content)
               ) * 
               Tech(cfeed_fattening_pigs));
     if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
@@ -539,11 +567,15 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     }
 ?else
   ++formula
+    my $energyContent = Out(energy_content);
+#    writeLog({
+#      de => Out(animalcategory) . ": energy content = " .  $energyContent
+#    });
     if ( lc In(inp_n_excretion) eq 'standard' ) {
       my $exc = Tech(standard_N_excretion_fattening_pigs) * 
                 (1 - (
                   Tech(standard_crude_protein_fattening_pigs) - 
-                  (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / In(energy_content))
+                  (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / $energyContent)
                 ) * 
                 Tech(cfeed_fattening_pigs));
       if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {

@@ -326,7 +326,7 @@ sub frontend-api-routes (Str $schema, $ws) {
         }
         operation 'storeData', -> LoggedIn $user {
             request-body -> ( :datasetName($dataset-name), :$variable, :$value, :@branches, :@options , Int :$row) {
-                note "storeData($variable=$value)";
+                note "storeData($variable=" ~ ($value // 'undef') ~ ")";
                 $ws.store-data(
                     $user, $dataset-name, $variable, $value, @branches, @options, $row
                 );
