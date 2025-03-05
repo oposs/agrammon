@@ -548,7 +548,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     my $exc = Tech(standard_N_excretion_fattening_pigs) * 
               (1 - (
                 Tech(standard_crude_protein_fattening_pigs) - 
-                (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / $energy_content)
+                (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / $energyContent)
               ) * 
               Tech(cfeed_fattening_pigs));
     if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
