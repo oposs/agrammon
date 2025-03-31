@@ -783,7 +783,7 @@ msgid "Current password"
 msgstr ""
 
 #: agrammon/ui/menu/OptionMenu.js
-msgid "New password (at least 6 characters)"
+msgid "New password (at least 8 characters)"
 msgstr ""
 
 #: agrammon/ui/menu/OptionMenu.js

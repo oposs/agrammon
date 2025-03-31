@@ -496,10 +496,10 @@ class Agrammon::Web::Service {
         my $key = Agrammon::DB::User.new(
             :username($email), :password('dummy')
         ).self-reset-password($password);
-        note "New password set for $email: activation key=$key";
+        note "Service: New password set for $email: activation key=$key";
         if not %*ENV<AGRAMMON_TESTING> {
-            my $subject = "Agrammon account activation";
-            my $msg = "Click on the link to confirm Agrammon password change for account $email: https://model.agrammon.ch/single/activate_account?key=$key";
+            my $subject = "Agrammon password reset";
+            my $msg = "Click on the link to confirm Agrammon password change for account $email:\n\nhttps://model.agrammon.ch/single/activate_account?key=$key";
             Agrammon::Email.new(
                 :to($email),
                 :from('support@agrammon.ch'),
