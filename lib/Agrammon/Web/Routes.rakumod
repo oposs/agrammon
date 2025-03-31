@@ -285,6 +285,7 @@ sub frontend-api-routes (Str $schema, $ws) {
         operation 'resetPassword', -> Agrammon::Web::SessionUser $maybe-user {
             request-body -> (:$email!, :$password!, :$key) {
                 note "Route: resetPassword($email/$password)";
+                note "       key=" ~ ($key // 'UNDEF');
                 if (not $maybe-user or not $maybe-user.logged-in) {
                     # anonymous user, not logged in
                     note "resetPassword: self service for user $email";
