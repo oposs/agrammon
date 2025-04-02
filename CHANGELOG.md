@@ -1,6 +1,8 @@
 - 6.5.1, 2025-03-31, fritz.zaucker@oetiker.ch
   - RT 59825: fix self service password reset
               fix minimum length requirement in GUI
+  - reload on logout
+  - localized activation mails
  
 - 6.5.0, 2025-01-17, fritz.zaucker@oetiker.ch
   - RT 59314: defaults for Pig and Fattenpig excretion 

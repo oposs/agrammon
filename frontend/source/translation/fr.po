@@ -799,7 +799,7 @@ msgstr "Changer le mot de passe pour "
 msgid "Current password"
 msgstr "Mot de passe actuel"
 
-#. NO LONGER USED
+#: agrammon/ui/menu/OptionMenu.js
 msgid "New password (at least 8 characters)"
 msgstr "Nouveau mot de passe (au moins 8 caractères)"
 
@@ -1039,6 +1039,6 @@ msgstr ""
 msgid "A confirmation link will be sent to you by eMail."
 msgstr ""
 
-#: agrammon/ui/menu/OptionMenu.js
+#. NO LONGER USED
 msgid "New password (at least 6 characters)"
 msgstr ""

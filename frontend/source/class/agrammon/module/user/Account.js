@@ -331,10 +331,9 @@ qx.Class.define('agrammon.module.user.Account', {
                     }
                 );
             }
-            this.key.destroy();
+            that.key.destroy();
 
-            this.btnOK.removeListener("execute",
-                                      this.activateAccount, this);
+            that.btnOK.removeListener("execute", this.activateAccount, this);
         };
         this.activateAccount = activateAccount;
 

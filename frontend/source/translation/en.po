@@ -782,7 +782,7 @@ msgstr ""
 msgid "Current password"
 msgstr ""
 
-#. NO LONGER USED
+#: agrammon/ui/menu/OptionMenu.js
 msgid "New password (at least 8 characters)"
 msgstr ""
 
@@ -1032,8 +1032,4 @@ msgstr ""
 
 #: agrammon/module/user/SelfService.js
 msgid "A confirmation link will be sent to you by eMail."
-msgstr ""
-
-#: agrammon/ui/menu/OptionMenu.js
-msgid "New password (at least 6 characters)"
 msgstr ""

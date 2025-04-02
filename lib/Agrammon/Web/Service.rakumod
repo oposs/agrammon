@@ -45,6 +45,7 @@ class Agrammon::Web::Service {
             variant      => %model<variant>,
             version      => %model<version>,
             submission   => %gui<submission>,
+            baseUrl      => %gui<baseUrl>,
         );
         return %cfg;
     }
@@ -447,19 +448,26 @@ class Agrammon::Web::Service {
        );
     }
 
-    method self-create-account($email, $password, $firstname, $lastname, $org, $role?) {
+    method self-create-account($email, $password, $firstname, $lastname, $org, $language, $role?) {
         my $key = Agrammon::DB::User.new(
             :username($email), :$password,
             :$firstname, :$lastname,
             :organisation($org)
         ).self-create-account($role);
-        note "Account created for $email: activation key=$key";
+        # note "Account created for $email: activation key=$key";
         if not %*ENV<AGRAMMON_TESTING> {
             my $subject = "Agrammon account activation";
             # start link on new line to avoid . at beginning of second line
             # of the encode string (seems to disappear in the received
             # email) ... Fritz, 2025-01-14
-            my $msg = "Click on the link to activate your Agrammon account:\n\nhttps://model.agrammon.ch/single/activate_account?key=$key";
+            my $url = $!cfg.gui-url;
+
+            my %text = %(
+                de => "Klicken Sie auf den folgenden Link, um ihr Agrammon Konto zu aktivieren:",
+                en => "Click on the following link to activate your Agrammon account:",
+                fr => "Cliquez sur le lien suivant pour activer votre compte Agrammon:",
+            );
+            my $msg = (%text{$language} // %text<en>) ~ "\n\n$url/activate_account?key=$key";
             Agrammon::Email.new(
                 :to($email),
                 :from('support@agrammon.ch'),
@@ -480,7 +488,12 @@ class Agrammon::Web::Service {
 
     method activate-account($key) {
         # note "Service: Activating account with key $key";
-        return Agrammon::DB::User.new.activate-account($key);
+        my $username= Agrammon::DB::User.new.activate-account($key);
+        if $username {
+            note "Service: account $username activated with key $key";
+            return $!cfg.gui-url;
+        }
+        return;
     }
 
     method change-password(Agrammon::Web::SessionUser $user, Str $old-password, Str $new-password --> Nil) {
@@ -491,15 +504,21 @@ class Agrammon::Web::Service {
         return $user.reset-password($email, $password, $key);
     }
 
-    method self-reset-password(Str $email, Str $password) {
-        note "Service: selfService resetting password for $email";
+    method self-reset-password(Str $email, Str $password, Str $language) {
+        # note "Service: selfService resetting password for $email";
         my $key = Agrammon::DB::User.new(
             :username($email), :password('dummy')
         ).self-reset-password($password);
-        note "Service: New password set for $email: activation key=$key";
+        # note "Service: New password set for $email: activation key=$key";
         if not %*ENV<AGRAMMON_TESTING> {
             my $subject = "Agrammon password reset";
-            my $msg = "Click on the link to confirm Agrammon password change for account $email:\n\nhttps://model.agrammon.ch/single/activate_account?key=$key";
+            my $url = $!cfg.gui-url;
+            my %text = %(
+                de => "Klicken Sie auf den folgenden Link, um das Zurücksetzen Ihres Agrammon-Passworts zu bestätigen:",
+                en => "Click on the following link to confirm your Agrammon password reset:",
+                fr => "Cliquez sur le lien suivant pour confirmer la réinitialisation de votre mot de passe Agrammon:",
+            );
+            my $msg = (%text{$language} // %text<en>) ~ "\n\n$url/activate_account?key=$key";
             Agrammon::Email.new(
                 :to($email),
                 :from('support@agrammon.ch'),

@@ -22,7 +22,7 @@ msgstr "Benutzerwechsel beendet"
 msgid "Returning from %1 to %2"
 msgstr "Zurück von %1 zu %2"
 
-#: agrammon/Application.js
+#: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr "Bitte melden Sie sich an"
 
@@ -318,7 +318,7 @@ msgstr "Zum Editieren anklicken"
 msgid "Unit"
 msgstr "Einheit"
 
-#: agrammon/ui/menu/MainMenu.js
+#: agrammon/module/user/Login.js
 msgid "Help"
 msgstr "Hilfe"
 
@@ -532,7 +532,7 @@ msgstr "eMail (Ihr Benutzername)"
 
 #: agrammon/module/user/Account.js
 msgid "eMail (username) for reset"
-msgstr "eMail (Benutzername) zum Zuruecksetzen"
+msgstr "eMail (Benutzername) zum Zurücksetzen"
 
 #: agrammon/module/user/Account.js
 msgid "eMail (will be your username)"
@@ -774,9 +774,9 @@ msgstr "Passwort ändern für "
 msgid "Current password"
 msgstr "Altes Passwort"
 
-#. NO LONGER USED
+#: agrammon/ui/menu/OptionMenu.js
 msgid "New password (at least 8 characters)"
-msgstr "Neues Passwort (mindestens 8 Zeichen)"
+msgstr ""
 
 #: agrammon/ui/menu/OptionMenu.js
 msgid "Confirm password"
@@ -1020,8 +1020,4 @@ msgstr "Ein Bestätigungslink wird Ihnen per eMail zugesendet."
 
 #: agrammon/module/user/Account.js
 msgid "An activation link will be sent to you by eMail after pressing the button"
-msgstr ""
-
-#: agrammon/ui/menu/OptionMenu.js
-msgid "New password (at least 6 characters)"
 msgstr ""

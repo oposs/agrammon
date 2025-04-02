@@ -3,7 +3,7 @@
 AUTOMAKE_OPTIONS =  foreign
 
 # SUBDIRS = thirdparty etc frontend
-SUBDIRS = thirdparty frontend
+SUBDIRS = frontend Inline
 
 PUB := $(shell find -L public -type d \( -name ".??*" -o -name transpiled \) -prune -o -not -name "*db.json" -a -not -name "*.map" -a -not -name "*~" -a -not -name transpiled -a -not -name "*.tmp"  -a -type f -print )
 

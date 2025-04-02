@@ -123,13 +123,12 @@ sub static-content($root) is export {
 
 sub frontend-api-routes (Str $schema, $ws) {
     openapi $schema.IO, {
-        # activate account; redirect to base URL on success
+        # activate account; redirect to Agrammon URL on success
         operation 'activateAccount', -> :$key {
-            my $username = $ws.activate-account($key).username;
-            if $username {
-                note "activateAccount: activated $username";
-                # redirect :see-other, '/';
-                content 'text/html; charset=utf-8', "Activated Agrammon account $username. You can now log in.";
+            my $url = $ws.activate-account($key);
+            if $url {
+                note "Routes: account activated, redirecting to $url";
+                redirect :see-other, $url;
             }
             else {
                 response.status = 404;
@@ -142,8 +141,7 @@ sub frontend-api-routes (Str $schema, $ws) {
             request-body -> (:$email!, :$password!, Any :$key, :$firstname, :$lastname, :$org, :$language, Any :$role) {
                 if (not $maybe-user or not $maybe-user.logged-in) {
                     # anonymous user, not logged in
-                    note "createAccount: self service for user $email";
-                    my $key = $ws.self-create-account($email, $password, $firstname, $lastname, $org, $role);
+                    my $key = $ws.self-create-account($email, $password, $firstname, $lastname, $org, $language, $role);
                     my $username = $email;
                     content 'application/json', { :$username, :$key };
                 }
@@ -153,6 +151,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                         unless not $role or $maybe-user ~~ LoggedInAdmin;
 
                     my $username = $ws.create-account($email, $password, $firstname, $lastname, $org, $role);
+                    note "Account created for user $email";
                     content 'application/json', { :$username };
                 }
                 CATCH {
@@ -283,13 +282,13 @@ sub frontend-api-routes (Str $schema, $ws) {
             }
         }
         operation 'resetPassword', -> Agrammon::Web::SessionUser $maybe-user {
-            request-body -> (:$email!, :$password!, :$key) {
-                note "Route: resetPassword($email/$password)";
-                note "       key=" ~ ($key // 'UNDEF');
+            request-body -> (:$email!, :$password!, :$key, :$language) {
+                # note "Route: resetPassword($email/$password)";
+                #note "       key=" ~ ($key // 'UNDEF');
                 if (not $maybe-user or not $maybe-user.logged-in) {
                     # anonymous user, not logged in
                     note "resetPassword: self service for user $email";
-                    my $user = $ws.self-reset-password($email, $password);
+                    my $user = $ws.self-reset-password($email, $password, $language);
 
                     # $maybe-user = Agrammon::Web::SessionUser.new;
                     # return;
@@ -298,6 +297,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                 elsif     $maybe-user ~~ LoggedInAdmin
                     or $maybe-user ~~ LoggedIn and $maybe-user.username eq $email
                     or $key  {
+                    note "resetPassword for user $email";
                     $ws.reset-password($maybe-user, $email, $password);
                     # $ws.reset-password($maybe-user, $email, $password, $key);
                 }
@@ -529,9 +529,19 @@ sub application-routes(Agrammon::Web::Service $ws) {
 
         post -> LoggedIn $user, 'logout' {
             my $old-username = $user.logout();
-            note "logout: $old-username" if $old-username;
+            my $username = $user.username;
+            if $old-username {
+                note "logout: $old-username";
+            }
+            else {
+                my $cfg = $ws.get-cfg;
+                # dd $cfg;
+                my $url = $cfg<baseUrl>;
+                note "logout $username, redirecting to $url";
+                redirect :see-other, $url;
+            }
             content 'application/json', %(
-                :username($user.username),
+                :username($username),
                 :sudoUser($old-username),
                 :role($user.role.name),
             );

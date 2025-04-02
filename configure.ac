@@ -156,7 +156,6 @@ AC_CONFIG_FILES([
     Makefile
     etc/Makefile
     frontend/Makefile
-    thirdparty/Makefile
 ])
 
 AC_SUBST(VERSION)

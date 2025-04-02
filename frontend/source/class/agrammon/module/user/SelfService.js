@@ -227,6 +227,7 @@ qx.Class.define('agrammon.module.user.SelfService', {
             }
             let username  = this.user.getValue();
             let password  = this.password1.getValue();
+            let locale    = qx.locale.Manager.getInstance().getLocale().replace(/_.+/,'');
 
             this.__rpc.callAsync(
                 accountHandler,
@@ -234,6 +235,7 @@ qx.Class.define('agrammon.module.user.SelfService', {
                 {
                     email:    username,
                     password: password,
+                    language:  locale
                 }
             );
         };
