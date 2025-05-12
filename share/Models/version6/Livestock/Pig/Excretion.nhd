@@ -207,10 +207,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
        Crude protein content in the ration
   ++help
     +++en
-       <p>The data of the feeds used on the farm must be entered.</p>
-       <p>If two different feeds are used for weaned piglets the weighed mean content must be entered.</p>
-
-       Standard values for Switzerland:
+       <p>The content in the diet used on the farm must be entered. If two different feeds are used the weighed mean content must be entered.</p>
+       <p>If the content of the diet used is not known, <b>Standard</b> can be entered. In this case, the N excretion is calculated based on the common contents in the ration listed below:</p>
 
        <ul>
        <li>Nursing sows: 164 g CP /kg</li>
@@ -220,14 +218,12 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
        <li>Weaned piglets: 162 g CP /kg</li>
        </ul>
 
+       <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
     +++de
-       <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
+       <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben. Bei Verwendung von zwei verschiedenen Futtermitteln: nach Verzehr gemittelten Gehalt einsetzen.</p>
 
-       <p>Bei Verwendung von zwei verschiedenen Futtermitteln bei
-       abgesetzten Ferkeln: nach Verzehr gemittelten Gehalt einsetzen.</p>
-
-       Standardwerte zur Eingabe, falls die Gehalte des auf dem Betrieb
-       verwendeten Futters nicht bekannt sind:
+       <p>Falls der Gehalt des verwendeten Futtermittels nicht bekannt ist, kann <b>Standard</b> eingegeben werden. In diesem Fall erfolgt die Berechnung der N-Ausscheidung basierend auf den unten aufgeführten häufigen Gehalten in der Ration:</p>
 
        <ul>
          <li>Säugende Sauen: 164 g RP /kg</li>
@@ -237,14 +233,12 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
          <li>Ferkel abgesetzte bis 25 kg: 162 g RP /kg</li>
        </ul>
 
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
     +++fr
-       <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
+       <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites. Lorsque des aliments différents sont utilisés, introduire une teneur moyenne pondérée selon la quantité ingérée.</p>
 
-       <p>Lorsque deux aliments différents sont utilisés pour les
-       porcelets sevrés, introduire une teneur moyenne pondérée selon
-       la quantité ingérée.</p>
-
-       Proposition de valeurs standard:
+       <p>Si les teneurs des aliments utilisés ne sont pas connues, il est possible d’ introduire <b>Standard</b>. Dans ce cas, le calcul de l'excrétion d'azote est basé sur les teneurs fréquentes de la ration indiquées ci-dessous:</p>
 
        <ul>
        <li>truies allaitantes: 164 g MA /kg</li>
@@ -253,6 +247,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
        <li>truies de remonte: 151 g MA /kg</li>
        <li>porcelets sevrés 162 g MA /kg</li>
        </ul>
+
+       <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
 
 +energy_content
   type = float
@@ -271,10 +267,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
        Digestible energy content in the ration
   ++help
     +++en
-      <p>The data of the feeds used on the farm must be entered.</p>
-      <p>If two different feeds are used for weaned piglets the weighed mean content must be entered.</p>
-
-      Standard values for Switzerland:
+      <p>The content in the diet used on the farm must be entered. If two different feeds are used the weighed mean content must be entered.</p>
+      <p>If the content of the diet used is not known, <b>Standard</b> can be entered. In this case, the N excretion is calculated based on the common contents in the ration listed below:</p>
 
       <ul>
         <li>Nursing sows: 13.9 MJ DE* /kg</li>
@@ -284,12 +278,13 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         <li>Weaned piglets: 13.9 MJ DE* /kg</li>
       </ul>
       *Digestible energy
-    +++de
-      <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
-       <p>Bei Verwendung von zwei verschiedenen Futtermitteln bei
-       abgesetzten Ferkeln: nach Verzehr gemittelten Gehalt einsetzen.</p>
 
-       Standardwerte zur Eingabe, falls die Gehalte des auf dem Betrieb verwendeten Futters nicht bekannt sind:
+      <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+    +++de
+     <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben. Bei Verwendung von zwei verschiedenen Futtermitteln: nach Verzehr gemittelten Gehalt einsetzen.</p>
+
+     <p>Falls der Gehalt des verwendeten Futtermittels nicht bekannt ist, kann <b>Standard</b> eingegeben werden. In diesem Fall erfolgt die Berechnung der N-Ausscheidung basierend auf den unten aufgeführten häufigen Gehalten in der Ration:</p>
 
        <ul>
          <li>Säugende Sauen: 13.9 MJ VES /kg</li>
@@ -298,14 +293,13 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
          <li>Eber: 12.1 MJ VES /kg;</li>
          <li>Ferkel abgesetzte bis 25 kg: 13.9 MJ VES /kg</li>
        </ul>
+
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
     +++fr
-      <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
-      <p>Lorsque deux aliments différents sont utilisés pour les
-      porcelets sevrés, introduire une teneur moyenne pondérée selon
-      la quantité ingérée.</p>
+      <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites. Lorsque des aliments différents sont utilisés, introduire une teneur moyenne pondérée selon la quantité ingérée.</p>
 
-
-      Proposition de valeurs standard:
+      <p>Si les teneurs des aliments utilisés ne sont pas connues, il est possible d’ introduire <b>Standard</b>. Dans ce cas, le calcul de l'excrétion d'azote est basé sur les teneurs fréquentes de la ration indiquées ci-dessous:</p>
 
       <ul>
         <li>truies allaitantes: 13.9 MJ EDP /kg</li>
@@ -314,6 +308,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         <li>verrats: 12.1 MJ EDP /kg</li>
         <li>porcelets sevrés: 13.9 MJ EDP /kg</li>
       </ul>
+      
+      <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
 
 *** technical ***
 

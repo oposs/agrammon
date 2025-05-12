@@ -186,6 +186,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         
  ++help
    +++en
+        <p>The content in the diet used on the farm must be entered.</p>
         <ul>
           <li>For one phase feeding, the CP content of the feed used
               and for phase 2 and 3 below, the value of phase 1 must
@@ -198,8 +199,10 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
           <li>For one phase feeding: 151 g CP /kg</li>
           <li>For two phase feeding 160 g CP /kg and for three phase feeding 165 g CP /kg, respectively, for phase 1</li>
         </ul>
+        <p>If <b>Standard</b> is selected the N-excretion is calculated for one phase feeding using 151 g CP /kg.</p>
 
    +++de
+    <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p> 
         <ul>
           <li>Bei Durchmast (von 25 kg bis zur Schlachtung gleiches Futter
               eingesetzt): den RP Gehalt des verwendeten Durchmastfutters
@@ -216,11 +219,14 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
           <li>Bei Durchmast: 151 g RP /kg</li>
           <li>Mastphase 1 bei 2-Phasenfütterung 160 g RP /kg und bei 3-Phasenfütterung 165 g RP /kg</li>
         </ul>
+        <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 151 g RP /kg berechnet.</p>
+
 
    +++fr
+    <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
         <ul>
-          <li>S'il n'y a pas de changement d'aliment pendant toute la
-            durée de l'engraissement (de 25 kg jusqu'à l'abattage),
+          <li>En cas d'alimentation monophase (aucun changement d'aliment pendant toute la
+            durée de l'engraissement de 25 kg jusqu'à l'abattage),
             introduire la teneur en matière azotée de l'aliment utilisé,
             puis introduire la valeur de la catégorie Phase
             d'engraissement 1 plus bas dans les catégories Phase
@@ -233,9 +239,10 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	<p>Proposition de valeurs standard:</p>
 
         <ul>
-        <li>S'il n'y a pas de changement d'aliment pendant toute la durée de l'engraissement: 151 g MA /kg</li>
+        <li>En cas d'alimentation monophase: 151 g MA /kg</li>
           <li>Pour la phase d’engraissement 1 en cas d’alimentation en 2 phases : 160 g MA /kg; pour la phase d’engraissement 1 en cas d’alimentation en 3 phases : 165 g MA /kg</li>
         </ul>
+        <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 151 g MA /kg.</p>
 
 
 +feeding_phase_2_crude_protein
@@ -255,7 +262,9 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         Crude protein content in the ration of phase 2
  ++help
    +++en
+        <p>The content in the diet used on the farm must be entered.</p>
         <ul>
+          <p>The content in the diet used on the farm must be entered.</p>
           <li>For one phase feeding, the value of phase 1 must be entered.</li>
           <li>For one phase feeding, the CP content of the feed used
               and for phase 2 and 3 below, the value of phase 1 must
@@ -267,8 +276,10 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         <ul>
           <li>For two phase feeding 136 g CP /kg and for three phase feeding 140 g CP /kg, respectively, for phase 2</li>
         </ul>
+        <p>If <b>Standard</b> is selected the N-excretion is calculated for one phase feeding using 151 g CP /kg.</p>
         
    +++de
+        <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
         <ul>
           <li>Bei Durchmast: den gleichen Wert wie für Mastphase 1 eingeben.</li>
           <li>Bei 2-Phasenfütterung: den RP Gehalt des auf dem Betrieb verwendeten Futters von Mastphase 2 eingeben und unten bei Mastphase 3 den gleichen Wert wie für Mastphase 2 eingeben.</li>
@@ -280,11 +291,13 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         <ul>
           <li>Mastphase 2 bei 2-Phasenfütterung 136 g RP /kg und bei 3-Phasenfütterung: 140 g RP /kg</li>
         </ul>
+         <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 151 g RP /kg berechnet.</p>
 
         
    +++fr
-        <ul>
-          <li>Lorsque l'aliment reste le même: introduire la valeur de la catégorie Phase d'engraissement 1.</li>
+    <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
+      </p><ul>
+          <li>En cas d'alimentation monophase: introduire la valeur de la catégorie Phase d'engraissement 1.</li>
           <li>En cas d'alimentation en 2 phases: introduire la teneur en matière azotée de l'aliment utilisé sur l'exploitation pendant la phase 2.</li>
           <li>En cas d'alimentation en 3 phases: introduire la teneur en matière azotée de l'aliment utilisé sur l'exploitation pendant la phase 2.</li>
         </ul>
@@ -294,6 +307,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         <ul>
           <li>Pour la phase d’engraissement 2 en cas d’alimentation en 2 phases : 136 g MA /kg; pour la phase d’engraissement 2 en cas d’alimentation en 3 phases : 140 g MA /kg</li>
         </ul>
+        <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 151 g MA /kg.</p>
 
 
 +feeding_phase_3_crude_protein
@@ -313,6 +327,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
       Crude protein content in the ration of phase 3
  ++help
    +++en
+        <p>The content in the diet used on the farm must be entered.</p>
         <ul>
           <li>For one phase feeding, the value of phase 1 must be entered.</li>
           <li>For two phase feeding, the value of phase 2 must be entered.</li>
@@ -323,8 +338,10 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         <ul>
           <li>For multiple phase feeding for phase 3: 130 g CP /kg</li>
         </ul>
+        <p>If <b>Standard</b> is selected the N-excretion is calculated for one phase feeding using 151 g CP /kg.</p>
 
    +++de
+        <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
         <ul>
           <li>Bei Durchmast: den gleichen Wert wie für Mastphase 1 eingeben.</li>
           <li>Bei 2-Phasenfütterung: den gleichen Wert wie für Mastphase 2 eingeben.</li>
@@ -336,10 +353,13 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         <ul>
           <li>Mastphase 3 bei 3-Phasenfütterung: 130 g RP /kg</li>
         </ul>
+         <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 151 g RP /kg berechnet.</p>
+
 
    +++fr
+    <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
         <ul>
-          <li>Lorsque l'aliment reste le même: introduire la valeur de la catégorie Phase d'engraissement 1.</li>
+          <li>En cas d'alimentation monophase: introduire la valeur de la catégorie Phase d'engraissement 1.</li>
           <li>En cas d'alimentation en 2 phases: introduire la valeur de la catégorie Phase d'engraissement 2.</li>
           <li>En cas d'alimentation en 3 phases: introduire la teneur en matière azotée de l'aliment utilisé sur l'exploitation pendant la phase 3.</li>
         </ul>
@@ -349,6 +369,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         <ul>
           <li>Pour la phase d'engraissement 3 en cas d'alimentation en 3 phases: 130 g MA /kg</li>
         </ul>
+        <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 151 g MA /kg.</p>
 
 
 +energy_content
