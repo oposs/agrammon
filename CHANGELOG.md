@@ -1,3 +1,7 @@
+- 6.5.2, 2025-05-26, christoph.haenggi@bfh.ch
+
+  - Fixed help texts and wrong technical value
+
 - 6.5.1, 2025-03-31, fritz.zaucker@oetiker.ch
   - RT 59825: fix self service password reset
               fix minimum length requirement in GUI
