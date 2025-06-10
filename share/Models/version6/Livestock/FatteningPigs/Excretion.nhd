@@ -201,6 +201,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         </ul>
         <p>If <b>Standard</b> is selected the N-excretion is calculated for one phase feeding using 151 g CP /kg.</p>
 
+        <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
    +++de
     <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p> 
         <ul>
@@ -220,6 +222,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
           <li>Mastphase 1 bei 2-Phasenfütterung 160 g RP /kg und bei 3-Phasenfütterung 165 g RP /kg</li>
         </ul>
         <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 151 g RP /kg berechnet.</p>
+
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
 
 
    +++fr
@@ -243,6 +247,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
           <li>Pour la phase d’engraissement 1 en cas d’alimentation en 2 phases : 160 g MA /kg; pour la phase d’engraissement 1 en cas d’alimentation en 3 phases : 165 g MA /kg</li>
         </ul>
         <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 151 g MA /kg.</p>
+
+         <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
 
 
 +feeding_phase_2_crude_protein
@@ -277,6 +283,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
           <li>For two phase feeding 136 g CP /kg and for three phase feeding 140 g CP /kg, respectively, for phase 2</li>
         </ul>
         <p>If <b>Standard</b> is selected the N-excretion is calculated for one phase feeding using 151 g CP /kg.</p>
+
+        <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
         
    +++de
         <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
@@ -293,6 +301,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         </ul>
          <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 151 g RP /kg berechnet.</p>
 
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
         
    +++fr
     <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
@@ -308,6 +318,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
           <li>Pour la phase d’engraissement 2 en cas d’alimentation en 2 phases : 136 g MA /kg; pour la phase d’engraissement 2 en cas d’alimentation en 3 phases : 140 g MA /kg</li>
         </ul>
         <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 151 g MA /kg.</p>
+
+         <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
 
 
 +feeding_phase_3_crude_protein
@@ -340,6 +352,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
         </ul>
         <p>If <b>Standard</b> is selected the N-excretion is calculated for one phase feeding using 151 g CP /kg.</p>
 
+        <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
    +++de
         <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
         <ul>
@@ -354,6 +368,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
           <li>Mastphase 3 bei 3-Phasenfütterung: 130 g RP /kg</li>
         </ul>
          <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 151 g RP /kg berechnet.</p>
+
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
 
 
    +++fr
@@ -370,6 +386,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
           <li>Pour la phase d'engraissement 3 en cas d'alimentation en 3 phases: 130 g MA /kg</li>
         </ul>
         <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 151 g MA /kg.</p>
+
+         <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
 
 
 +energy_content
@@ -389,12 +407,29 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Energy content of feed ration.
   ++help
     +++en
-      <p>Standard value for Switzerland: 14 MJ DE* /kg</p>
-      <p>*Digestible energy</p>
+      <p>Standard value for Switzerland: 13.9 MJ DE* /kg</p>
+
+       <p>*Digestible energy</p>
+
+<p>If the content of the diet used is not known, <b>Standard</b> can be entered. In this case, the N excretion is calculated based on 13.9 MJ DE* /kg</p>
+
+      *Digestible energy
+
+      <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+     
     +++de
-      <p>Vorschlag für Standardwert: 14 MJ VES /kg</p>
+      <p>Vorschlag für Standardwert: 13.9 MJ VES /kg</p>
+
+      <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 13.9 MJ VES /kg berechnet.</p>
+         
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
     +++fr
-       <p>Proposition de valeurs standard: 14 MJ EDP /kg</p>
+       <p>Proposition de valeurs standard: 13.9 MJ EDP /kg</p>
+
+       <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 13.9 MJ EDP /kg.</p>
+
+         <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
 
 
 *** technical ***
