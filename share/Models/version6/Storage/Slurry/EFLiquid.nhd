@@ -205,125 +205,81 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
 
 *** technical ***
 
-+ef_cattle_uncovered
-  value =  2.19
+## base emission factors
++ef_liquid_storage_cattle
+  value = 365 * 6
   ++units
     en =  kg N/m2/year
     de =  kg N/m2/Jahr
     fr =  kg N/m2/an
   ++description
-    The emission factor for uncovered storage is based on experiments of de Bode (1990) and Sommer et al. (1993) measuring emissions of 2.5 to 6.9 g N m-2 day-1 for cattle slurry, for the emission of the none coverd a mean of the higher values is assumed. -> Assumption: 6.0 gN m-2 day-1 resp. 2.19 kg N /m2 /yr according to the results of the decision of the session of 10 April 208 (participants: C. Bonjour, C. Leuenbergern, M. Raaflaub, H. Menzi, T. Kupper).
+    The Emission factor for uncovered storage is based on the review by
+    Kupper et al. (2020).
 
-+ef_cattle_solid_cover
-  value =  0.219
++ef_liquid_storage_pig
+  value = 365 * 8
   ++units
     en =  kg N/m2/year
     de =  kg N/m2/Jahr
     fr =  kg N/m2/an
   ++description
-    Emission factor for solid covered storage based on ef_cattle_uncovered with a reduction of 90%.
-    UNECE (2007) p 13 does suggest a reduction of 80%.
-    Since covers of storages are more tight in Switzerland a reduction of 90% was choosen.
+    The Emission factor for uncovered storage is based on the review by
+    Kupper et al. (2020).
 
-+ef_cattle_tent
-  value =  0.876
+# Tank cover correction factors
++c_liquid_storage_uncovered
+  value =  1.0
   ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
+    en =  -
+    de =  -
+    fr =  -
   ++description
-    Emission factor for tent covered storage (ef_cattle_uncovered with a reduction of 60%) differs to the UNECE (2007) p.13 reference (ef_cattle_uncovered with a reduction of 80% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that tent covered storage emit more ammonia then assumed by UNECE.
+    Correction factor for uncovered tanks.
 
-+ef_cattle_floating_cover
-  value =  0.438
++c_liquid_storage_solid_cover
+  value =  0.1
   ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
+    en =  -
+    de =  -
+    fr =  -
   ++description
-    Emission factor for floating covered storage (sheeting may be a type of plastic, canvas or other suitable material) (ef_cattle_uncovered with a reduction of 80%) differs to the UNECE (2007) p.13 referrence (ef_cattle_uncovered with a reduction of 60% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that floating covered storage emit less ammonia then assumed by UNECE.
+    Correction factor for solid cover.
 
-+ef_cattle_perforated_cover
-  value =  1.314
++c_liquid_storage_tent
+  value =  0.4
   ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
+    en =  -
+    de =  -
+    fr =  -
   ++description
-    Emission factor for perforated_cover storage based on ef_cattle_uncovered with a reduction of 40% after UNECE (2007) p 13.
+    Correction factor for tent cover.
 
-+ef_cattle_natural_crust
-  value =  1.314
++c_liquid_storage_floating_cover
+  value =  0.2
   ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
+    en =  -
+    de =  -
+    fr =  -
   ++description
-    Emission factor for a natural crust covered storage based on ef_cattle_uncovered with a reduction of 40% after UNECE (2007) p 13.
+    Correction factor for floating cover.
 
-## Pigs
-+ef_pig_uncovered
-  value = 2.92
++c_liquid_storage_perforated_cover
+  value =  0.6
   ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
+    en =  -
+    de =  -
+    fr =  -
   ++description
-    The Emission factor for uncovered storage is based on experiments of
-    de Bode (1990) and Sommer et al. (1993) measuring emissions of 2.5 to
-    6.9 g N m-2 day-1 for cattle slurry, for the emission of the none
-    coverd a mean of the higher values is assumed. Assumption: 8.0 gN m-2
-    day-1 resp. 2.92 kgN m-2 /yr according to the report "Abklärungen zur
-    Klasierung von Stallsystemen und Hofdüngerlagern bezüglich der
-    Ammoniak-Emissionen" and the decision of the session of 10 April 208
-    (participants: C. Bonjour, C. Leuenbergern, M. Raaflaub, H. Menzi,
-    T. Kupper).
+    Correction factor for perforated cover.
 
-+ef_pig_solid_cover
-  value = 0.292
++c_liquid_storage_natural_crust
+  value =  0.6
   ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
+    en =  -
+    de =  -
+    fr =  -
   ++description
-    Emission factor for solid coverd storage based on ef_pig_uncovered with a reduction of 90%. UNECE (2007) p 13 does suggest a reduction of 80%.Since covers of storages are more tight in Switzerland a reduction of 90% was choosen.
-
-+ef_pig_tent
-  value = 1.168
-  ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
-  ++description
-    Emission factor for tent covered storage (ef_pig_uncovered with a reduction of 60%) differs to the UNECE (2007) p.13 referrence (ef_pig_uncovered with a reduction of 80% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that tent covered storage emit more ammonia then assumed by UNECE.
-
-+ef_pig_floating_cover
-  value = 0.584
-  ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
-  ++description
-    Emission factor for floating covered storage (sheeting may be a type of plastic, canvas or other suitable material) (ef_pig_uncovered with a reduction of 80%) differs to the UNECE (2007) p.13 referrence (ef_pig_uncovered with a reduction of 60% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that floating covered storage emit less ammonia then assumed by UNECE.
-
-+ef_pig_perforated_cover
-  value = 1.752
-  ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
-  ++description
-    Emission factor for perforated_cover storage based on ef_pig_uncovered with a reduction of 40% after UNECE (2007) p 13.
-
-+ef_pig_natural_crust
-  value = 1.752
-  ++units
-    en =  kg N/m2/year
-    de =  kg N/m2/Jahr
-    fr =  kg N/m2/an
-  ++description
-    Emission factor for a natural crust covered storage (e.g. chopped straw, peat, bark, LECA balls, ect.)based on ef_pig_uncovered with a reduction of 40% after UNECE (2007) p 13.
-
+    Correction factor for natural crust.
 
 *** external ***
 
@@ -342,7 +298,7 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Scaled emission factor of a specific liquid storage for pig slurry.
   ++formula
     # get er pigs
-    my $er_pigs = $TE->{'ef_pig_'.In(cover_type)};
+    my $er_pigs = $TE->{'c_liquid_storage_'.In(cover_type)} * Tech(ef_liquid_storage_pig);
     # scale er pigs
     if ( lc In(contains_pig_manure) eq 'no' ) {
       return 0;
@@ -362,7 +318,7 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Scaled emission factor of a specific liquid storage for cattle slurry.
   ++formula
     # get er cattle
-    my $er_cattle = $TE->{'ef_cattle_'.In(cover_type)};
+    my $er_cattle = $TE->{'c_liquid_storage_'.In(cover_type)} * Tech(ef_liquid_storage_cattle);
     if ( lc In(contains_cattle_manure) eq 'no' ) {
       return 0;
     } elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {
