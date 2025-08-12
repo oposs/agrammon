@@ -202,7 +202,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range days per year.
   ++formula
     if ( In(free_range) and lc In(free_range) eq 'yes' ) {
-      return $TE->{'free_range_days_'.Val(animalcategory, Excretion)};
+      return $TE->{'free_range_days_'.Val(animalcategory, Excretion).'_fix'};
     } else {
       return 0;
     }
@@ -217,7 +217,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range hours per day.
   ++formula
     if ( In(free_range) and lc In(free_range) eq 'yes' ) {
-      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion)};
+      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion).'_fix'};
     } else {
       return 0;
     }
