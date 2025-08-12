@@ -55,11 +55,6 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
        de = Schwimmfolie
        fr = Bâche_flottante
        it = floating_cover
-    +++partial_floating_cover
-       en = partial_floating_cover
-       de = Teilschwimmende_Folie
-       fr = Bâche_flottante_partielle
-       it = partial_floating_cover
     +++natural_crust
        en = natural_crust
        de = natürliche_Schwimmschicht
