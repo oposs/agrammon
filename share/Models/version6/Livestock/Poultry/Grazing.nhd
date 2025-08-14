@@ -18,56 +18,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
 *** external ***
 
 +Excretion
-
-
-
-*** input ***
-
-+free_range
-  type = enum
-  ++enum
-    +++yes
-       en = yes
-       de = Ja
-       fr = oui
-       it = yes
-    +++no
-       en = no
-       de = Nein
-       fr = non
-       it = no
-  ++labels
-    en = Do the animals have access to a free range?
-    de = Haben die Tiere Zugang zu einer Weide?
-    fr = Les animaux ont-ils accès à un pâturage?
-  ++units  
-    en = -
-  ++description
-    Average free range hours per day.
-  ++help
-    +++en
-       <p>Standard values for Switzerland:</p>
-       <p>Layers: yes</p>
-       <p>Growers: no</p>
-       <p>Broilers: no</p>
-       <p>Turkeys: yes</p>
-       <p>Other poultry: yes</p>
-    +++de
-       <p>Weide im Sinne der DZV (Direktzahlungsverordnung vom 23. Oktober 2013, Stand am 14. März 2023). Der Aussenklimabereich fällt nicht unter diese Kategorie.</p>
-       <p>Vorschlag für Standardwerte:</p>
-       <p>Legehennen: ja</p>
-       <p>Junghennen: nein</p>
-       <p>Mastpoulets: nein</p>
-       <p>Masttruten: ja</p>
-       <p>Anderes Geflügel: ja</p>
-    +++fr
-       <p>Pâturage au sens de l'OPD (Ordonnance sur les paiements directs du 23 octobre 2013, état le 14r mars 2023). L'aire à climat extérieur n'est pas comprise dans cette catégorie.</p>
-       <p>Propositions de valeurs standard:</p>
-       <p>Poules pondeuses: oui</p>
-       <p>Poulettes: non</p>
-       <p>Poulets à l'engrais: non</p>
-       <p>Dindes: oui</p>
-       <p>Autre volaille: oui</p>
++Outdoor
 
 *** technical ***
 
@@ -99,128 +50,11 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
 
-+free_range_days_layers
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
 
-+free_range_hours_layers
-  value = 2.88
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 12% of Day
-
-+free_range_days_growers
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-
-+free_range_hours_growers
-  value = 2.88
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 12% of Day
-
-+free_range_days_turkeys
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-
-+free_range_hours_turkeys
-  value = 0.96
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 4% of Day
-
-+free_range_days_other_poultry
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-
-+free_range_hours_other_poultry
-  value = 2.88
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 12% of Day
-
-+free_range_days_broilers
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-
-+free_range_hours_broilers   
-  value = 0.96
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 4% of Day
+*** input ***
 
 
 *** output ***
-
-+free_range_days
-  print = Poultry
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-  ++formula
-    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
-      return $TE->{'free_range_days_'.Val(animalcategory, Excretion).'_fix'};
-    } else {
-      return 0;
-    }
-
-+free_range_hours
-  print = Poultry
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day.
-  ++formula
-    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
-      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion).'_fix'};
-    } else {
-      return 0;
-    }
 
 +n_into_grazing
   print = Poultry
@@ -232,8 +66,10 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Annual N excretion free_range (grazing).
   ++formula
     Val(n_excretion, Excretion) *
-    Out(free_range_days) / 365 * 
-    Out(free_range_hours) / 24;
+    Val(free_range_days, Outdoor) / 365 * 
+    Val(free_range_hours, Outdoor) / 24 *
+    Val(free_range_share, Outdoor)
+    ;
 
 +tan_into_grazing
   print = Poultry
@@ -245,8 +81,10 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Annual N excretion free_range (grazing).
   ++formula
     Val(tan_excretion, Excretion) *  
-    Out(free_range_days) / 365 * 
-    Out(free_range_hours) / 24;
+    Val(free_range_days, Outdoor) / 365 * 
+    Val(free_range_hours, Outdoor) / 24 *
+    Val(free_range_share, Outdoor)
+    ;
 
 +ef_nh3_ngrazing
   print = Poultry,ef_nh3
