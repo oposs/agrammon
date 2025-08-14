@@ -12,6 +12,10 @@ taxonomy = Livestock::Poultry::Outdoor
 
  Fixed input parameters for exercise yard and grazing.
 
+*** external ***
+
++Excretion
+
 *** input ***
 
 +free_range
