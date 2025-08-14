@@ -184,6 +184,21 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
 
++k_grazing_a
+  value = 0.9989
+  ++units  
+    en = -
+  ++description
+    Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
+
++k_grazing_b
+  value = 0.0403
+  ++units  
+    en = -
+  ++description
+    Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
+
+
 *** input ***
 
 +free_range
@@ -281,6 +296,34 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
       return 0;
     }
 
+### KGrazing.nhd
+
++c_grazing
+  print = c_housing,Poultry
+  ++units  
+    en = -
+  ++description
+    The correction factor for the reduction of the housing emission
+    depending on the number of grazing hours per day and the grazing days per year.
+  ++formula
+    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
+      my $grazing_total = Out(free_range_days) * Out(free_range_hours);
+      # calculate correction factor 
+      my $k_grazing = exp(Tech(k_grazing_b) * Out(free_range_hours));
+      # increase emission of TAN fraction which is excreted into housing on a grazing day
+      my $c_share_1 = (
+          # TAN fraction into housing uncorrected
+          (365.0 - Out(free_range_days)) * 24.0 + 
+          # TAN fraction into housing corrected
+          Out(free_range_days) * (24.0 - Out(free_range_hours)) * $k_grazing
+      ) /
+      # divided by total amount of TAN into housing 
+      (365.0 * 24.0 - Out(free_range_hours) * Out(free_range_days));
+      # fix share of animals in free range area
+      1 + ($c_share_1 - 1) * Out(free_range_share);
+    } else {
+      1;
+    }
 
 
 ### Grazing.nhd
@@ -297,8 +340,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Val(n_excretion, Excretion) *
     Out(free_range_days) / 365 * 
     Out(free_range_hours) / 24 *
-    Out(free_range_share)
-    ;
+    Out(free_range_share);
 
 +tan_into_grazing
   print = Poultry
@@ -312,8 +354,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Val(tan_excretion, Excretion) *  
     Out(free_range_days) / 365 * 
     Out(free_range_hours) / 24 *
-    Out(free_range_share)
-    ;
+    Out(free_range_share);
 
 +ef_nh3_ngrazing
   print = Poultry,ef_nh3
