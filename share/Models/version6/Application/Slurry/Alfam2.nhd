@@ -351,19 +351,16 @@ Hafner et al. ??? ALFAM2
     dry matter content resulting from dilution
   ++formula
     # undiluted DM -> alfam2_dm_*
-    add(
+    scale(
       scale(
-        scale(
-          Val(has_cattle, ::Livestock) P+
-          Val(has_others, ::Livestock),
-          Tech(alfam2_dm_cattle)
-        ) P+ scale(
-          Val(has_pigs, ::Livestock),
-          Tech(alfam2_dm_pig)
-        ),
-        Val(c_dilution, Applrate)
+        Val(has_cattle, ::Livestock) P+
+        Val(has_others, ::Livestock),
+        Tech(alfam2_dm_cattle)
+      ) P+ scale(
+        Val(has_pigs, ::Livestock),
+        Tech(alfam2_dm_pig)
       ),
-      Tech(alfam2_dm_center) * -1
+      Val(c_dilution, Applrate)
     );
 
 +er_alfam2
