@@ -113,6 +113,13 @@ class Agrammon::Outputs::FilterGroupCollection {
                 :$!provenance
     }
 
+    #| Produce a new filter group collection which has the natural logarithm of this one.
+    method log() {
+        self.bless:
+                :instances(%!values-by-filter.map({ .key => log( .value ) })),
+                :$!provenance
+    }
+
     #| Apply an operation pairwise between this group collection and another one, returning a
     #| new group collection as the result. When a group exists in collections, then the operation
     #| is applied to their values. When a group exists on only one side, the base value is used.

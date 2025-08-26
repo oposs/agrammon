@@ -18,6 +18,7 @@ sub get-builtins is export {
         abs => &abs,
         sign => &sign,
         exp => &exp,
+        log => &log,
         # Construct a filter group from data
         filterGroup => &filter-group,
         # Turn a filter group into a simple scalar value
@@ -110,4 +111,8 @@ multi filter-group-scalar(Any $value) {
 
 multi sign(Agrammon::Outputs::FilterGroupCollection $group) {
     $group.sign()
+}
+
+multi log(Agrammon::Outputs::FilterGroupCollection $group) {
+    $group.log()
 }
