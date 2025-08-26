@@ -121,6 +121,15 @@ is applied.
 
 *** output ***
 
++appl_season_sum
+  print = 22
+  ++units 
+    en = -
+  ++description
+    .
+  ++formula
+    In(appl_summer) + In(appl_autumn_winter_spring);
+
 +appl_summer
   print = 22
   ++units 
@@ -132,7 +141,7 @@ is applied.
     0.5;
 ?else
   ++formula
-    In(appl_summer) / 100;
+    In(appl_summer) / Out(appl_season_sum);
 ?endif
 
 +appl_autumn_winter_spring
@@ -146,7 +155,7 @@ is applied.
     0.5;
 ?else
   ++formula
-    In(appl_autumn_winter_spring) / 100;
+    In(appl_autumn_winter_spring) / Out(appl_season_sum);
 ?endif
 
 +c_season
