@@ -1,0 +1,63 @@
+
+*** general ***
+
+author   = Agrammon Group
+date     = 2017-07-10
+taxonomy = Application::Slurry::Alfam2
+
++short
+
+ Computes the annual NH3 emission from slurry
+ application.
+
++description
+
+TODO
+
+\subsubsection{References:}
+
+Hafner et al. ??? ALFAM2
+
+*** input ***
+
+*** technical ***
+
+
+*** external ***
+
++::Livestock
++Applrate
++Ctech
+
+*** output ***
+
++alfam2_dm
+  print = 22
+  ++units
+    en = %
+  ++description
+    dry matter content resulting from dilution
+  ++formula
+    # undiluted DM -> alfam2_dm_*
+    add(
+      scale(
+        scale(
+          Val(has_cattle, ::Livestock) P+
+          Val(has_others, ::Livestock),
+          Tech(alfam2_dm_cattle)
+        ) P+ scale(
+          Val(has_pigs, ::Livestock),
+          Tech(alfam2_dm_pig)
+        ),
+        Val(c_dilution, Applrate)
+      ),
+      Tech(alfam2_dm_center) * -1
+    );
+
++er_alfam2
+  print = ef_nh3,application,liquid
+  ++units
+    en = -
+  ++description
+    emission factor for trailing hose based on alfam2 calculation
+  ++formula
