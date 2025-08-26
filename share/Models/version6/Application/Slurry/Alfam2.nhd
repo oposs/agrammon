@@ -585,15 +585,15 @@ Hafner et al. ??? ALFAM2
       return scale(Val(n_excretion, ::Livestock), 0);
     }
 
-# +er_alfam2
-#   print = ef_nh3,application,liquid
-#   ++units
-#     en = -
-#   ++description
-#     emission factor for trailing hose based on alfam2 calculation
-#   ++formula
-#     my $out = 0;
-#     for 1..5 -> $n {
-#       $out = $out + $n;
-#     }
-#     return $out;
++er_alfam2
+  print = ef_nh3,application,liquid
+  ++units
+    en = -
+  ++description
+    emission factor for trailing hose based on alfam2 calculation
+  ++formula
+    scale(Out(er_alfam2_share_bc), Val(share_splash_plate, Ctech)) P+
+    scale(Out(er_alfam2_share_th), Val(share_trailing_hose, Ctech)) P+
+    scale(Out(er_alfam2_share_ts), Val(share_trailing_shoe, Ctech)) P+
+    scale(Out(er_alfam2_share_os), Val(share_shallow_injection, Ctech)) P+
+    scale(Out(er_alfam2_share_cs), Val(share_deep_injection, Ctech))

@@ -87,52 +87,6 @@ taxonomy = Application::Slurry::Csoft
 
 *** technical ***
 
-+c_evening 
-  value = -0.2
-  ++units 
-    en = -
-  ++description
-    Correction factor of the emission rate if slurry is applied in the
-    evening (after 18h)(Menzi et al 1997; Frick and Menzi 1997).
-
-    Assumption based on a single experiment with an application after 18h in August at a temperature of >20Â°C: reduction of the emission by 38%, the reduction of the emission averaged over the whole year is only 50%, i.e. -0.2
-The correction is omitted for solid manure since infiltration into soil does not occur.
-
-
-+c_hotdays_frequently 
-  value = 0.05
-  ++units 
-    en = -
-  ++description
-    Correction factor of the emission rate if slurry is applied frequently 
-    on hot days.
-
-    Loss calculated according to the model of Katz (Menzi et al. 1997b) at 17Â°C (i.e. +5Â°C) compared to the reference temperature of 12Â°C (other parameters: 70% rela-tive air humidity, 1.15 kg/m3 TAN, 30 m3/ha) resulting in a loss of 19.22 kg N/ha at 17 Â°C and 55.7% TAN, respectively (compared to 17.45 kg N/ha and 50.6% TAN at 12Â°C, respectively) which corresponds to an increase of 10.1% (rounded to 10%).
-
-+c_hotdays_sometimes
-  value = 0.0
-  ++units 
-    en = -
-  ++description  
-    Correction factor of the emission rate if slurry is applied sometimes
-    on hot days (estimation based on Menzi et al (1997)).
-
-+c_hotdays_rarely
-  value = -0.02
-  ++units 
-    en = -
-  ++description
-    Correction factor of the emission rate if slurry is applied rarely
-    on hot days (estimation based on Menzi et al (1997)).
-
-+c_hotdays_never
-  value = -0.04
-  ++units 
-    en = -
-  ++description
-    Correction factor of the emission rate if slurry is applied never
-    on hot days (estimation based on Menzi et al (1997)).
-
 *** external ***
 
 *** output ***
@@ -154,21 +108,3 @@ The correction is omitted for solid manure since infiltration into soil does not
     .
   ++formula
     In(appl_hotdays);
-
-+c_soft
-  print = 15
-  ++units 
-    en = -
-  ++description
-  Correction factor of the emission rate if slurry is applied by
-  considering  different kinds of "soft measures". 
-?if Kantonal_LU
-  ++formula
-    1 + 
-    Tech(c_hotdays_sometimes);
-?else
-  ++formula
-    1 + 
-    In(appl_evening) / 100 * Tech(c_evening) + 
-    $TE->{'c_hotdays_'.In(appl_hotdays)};
-?endif

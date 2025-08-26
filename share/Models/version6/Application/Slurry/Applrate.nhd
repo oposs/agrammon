@@ -76,18 +76,6 @@ taxonomy = Application::Slurry::Applrate
  
 *** technical ***
 
-+norm_er
-  value = 0.5
-  ++units 
-    en = -
-  ++description
-    Standard emission of 50% of the applied TAN calculated based on an
-    equation published by Menzi et al (1998) using a TAN standard of 1.15 
-    kg / m3 for an 1:1 dilution, with application rate (AR) standard of 30 m3 / ha and average 
-    swiss meteorological conditions ( T=12 C, humitity=70%):
-    ((19.41 * TAN-standard + 4.2 * 1.102 - 9.51) * (0.0214 * AR-standard + 0.36) / (AR-standard * TAN-standard)))
-   
-
 *** external ***
 
 
@@ -102,47 +90,3 @@ taxonomy = Application::Slurry::Applrate
   ++formula
     1 / (In(dilution_parts_water) + 1);
 
-+TAN_content
-  print = 15
-  ++units 
-    en = -
-  ++description
-    TAN content of the slurry compared to the emission rate occuring with a
-    standard application rate of 30 m3 and a TAN content of 1.15 kg N / m3.
-?if Kantonal_LU
-  ++formula
-    # dilution_parts_water = 1:
-    1.15;
-?else
-  ++formula
-    # TODO: check for TAN < 0.5 -> 0.5? -> ask Thomas
-    2.3*(1/(In(dilution_parts_water)+1));
-?endif
-
-+c_app
-  print = 15
-  format= %.5f
-  ++units 
-    en = -
-  ++description
-    Correction factor taking into account the slurry application rate per 
-    ha and the TAN content of the slurry.
-?if Kantonal_LU
-  ++formula
-    my $appl_rate = 25;
-    (19.41 * Out(TAN_content) + 4.2 * 1.102 - 9.51) * 
-    ($appl_rate * 0.0214 + 0.36) /
-    ($appl_rate * Out(TAN_content)) - 
-    Tech(norm_er);
-?else
-  ++formula
-    if ( (In(appl_rate) * Out(TAN_content)) > 0 ) {
-       (19.41 * Out(TAN_content) + 4.2 * 1.102 - 9.51) * 
-       (In(appl_rate) * 0.0214 + 0.36) /
-       (In(appl_rate) * Out(TAN_content)) - 
-       Tech(norm_er);
-    } else { 
-      return 1; 
-    }
-?endif    
- 
