@@ -106,6 +106,13 @@ class Agrammon::Outputs::FilterGroupCollection {
                 :$!provenance
     }
 
+    #| Produce a new filter group collection which has the maxima of this one compared to an additional number
+    method max(Numeric $number --> Agrammon::Outputs::FilterGroupCollection) {
+        self.bless:
+                :instances(%!values-by-filter.map({ .key => max( .value, $number ) })),
+                :$!provenance
+    }
+
     #| Produce a new filter group collection which has the sign of this one.
     method sign() {
         self.bless:

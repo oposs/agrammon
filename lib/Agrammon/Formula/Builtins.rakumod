@@ -19,6 +19,7 @@ sub get-builtins is export {
         sign => &sign,
         exp => &exp,
         log => &log,
+        max => &max,
         # Construct a filter group from data
         filterGroup => &filter-group,
         # Turn a filter group into a simple scalar value
@@ -34,6 +35,12 @@ sub get-builtins is export {
             die "add operator expects a filter group as its first argument"
                     unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
             $filter-group.add(+$additor)
+        },
+        # Return maxima of the filter group entries compared to an additional number
+        max => -> $filter-group, $number {
+            die "max operator expects a filter group as its first argument"
+                    unless $filter-group ~~ Agrammon::Outputs::FilterGroupCollection;
+            $filter-group.max(+$number)
         },
         # Select only values in filter group 'a'
         # where values in filter group 'crit' are greater than 0
