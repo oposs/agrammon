@@ -93,6 +93,15 @@ taxonomy = Application::Slurry::Applrate
 
 *** output ***
 
++c_dilution
+  print = 15
+  ++units
+    en = -
+  ++description
+    todo
+  ++formula
+    1 / (In(dilution_parts_water) + 1);
+
 +TAN_content
   print = 15
   ++units 
