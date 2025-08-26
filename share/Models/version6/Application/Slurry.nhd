@@ -105,6 +105,7 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 +Slurry::Csoft
 +Slurry::Cseason
 +Slurry::Cfermented
++Slurry::Alfam2
 ?if !Kantonal_LU
   +Slurry::CfreeFactor
 ?endif
@@ -154,55 +155,27 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
   ++description
     Total annual NH3 emission from slurry application.
   ++formula
-?if Single_old
-    #### liquid application old incorrect way
-    my $nh3_loss = scale( 
-      Val(tan_into_application_liquid, ::Storage),
-      Val(c_tech, Slurry::Ctech) *
-      Val(c_soft, Slurry::Csoft) *
-      Val(c_season, Slurry::Cseason) *
-      (
-        (1 - Val(share_fermented_slurry, Slurry::Cfermented)) *
-        Out(er_App_liquid) +
-        Val(share_fermented_slurry, Slurry::Cfermented) *
-        Tech(er_App_fermented_slurry) + 
-        Val(c_app, Slurry::Applrate)
-      )
-    );
-?else
-    #### liquid application correct way (implement and clean up as soon as permitted)
-    my $nh3_loss = scale(
-      # only pigs
-      scale(
-        multiplyPairwise(
-          Val(has_pigs, ::Livestock),
-          Val(tan_into_application_liquid, ::Storage)
-        ),
-        (1 - Val(share_fermented_slurry, Slurry::Cfermented)) *
-        Tech(er_App_pigs_liquid)
-      ) P+
-      # only cattle
-      scale(
-        multiplyPairwise(
-          Val(has_cattle, ::Livestock),
-          Val(tan_into_application_liquid, ::Storage)
-        ),
-        (1 - Val(share_fermented_slurry, Slurry::Cfermented)) *
-        Tech(er_App_cattle_liquid)
-      ) P+    
-      # both
-      scale(
-        Val(tan_into_application_liquid, ::Storage),
-        Val(share_fermented_slurry, Slurry::Cfermented) *
-        Tech(er_App_fermented_slurry) + 
-        Val(c_app, Slurry::Applrate)
-      ),
-      # other factors affecting emission
-      Val(c_tech, Slurry::Ctech) *
-      Val(c_soft, Slurry::Csoft) *
-      Val(c_season, Slurry::Cseason)
-    );
-?endif
+    # alfam2-based loss
+    my $nh3_loss = Val(tan_into_application_liquid, ::Storage) P*
+      Val(er_alfam2, Slurry::Alfam2);
+    # fix for fermented?
+    my $share_fermented = Val(share_fermented_slurry, Slurry::Cfermented);
+    if ($share_fermented > 0) {
+      # get er_alfam2|cattle for fermented slurry
+      my $hc = Val(has_cattle, ::Livestock);
+      my $ec = Val(er_alfam2, Slurry::Alfam2) P* $hc;
+      my $er_fermented = scalar($ec) / scalar($hc);
+      # get shares & losses
+      my $share_non_fermented = 1 - $share_fermented;
+      my $loss_fermented = scale(
+        Val(tan_into_application_liquid, ::Storage) P* $er_fermented,
+        $share_fermented
+      );
+      $nh3_loss = scale(
+          $nh3_loss,
+          $share_non_fermented
+        ) P+ $loss_fermented;
+    }
 ?if Kantonal_LU
     $nh3_loss;
 ?else
