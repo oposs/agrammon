@@ -19,6 +19,7 @@ sub get-builtins is export {
         sign => &sign,
         exp => &exp,
         log => &log,
+        exp => &exp,
         max => &max,
         # Construct a filter group from data
         filterGroup => &filter-group,
@@ -122,4 +123,7 @@ multi sign(Agrammon::Outputs::FilterGroupCollection $group) {
 
 multi log(Agrammon::Outputs::FilterGroupCollection $group) {
     $group.log()
+}
+multi exp(Agrammon::Outputs::FilterGroupCollection $group) {
+    $group.exp()
 }
