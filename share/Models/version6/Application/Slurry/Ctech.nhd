@@ -220,6 +220,28 @@ taxonomy = Application::Slurry::Ctech
 
 *** output ***
 
++share_apptech_sum
+  print = 15
+  ++units
+    en = -
+  ++description
+    Reduction factor for the emission due to the used application technology
+    as compared to broadcasting.
+  ++formula
+    my $apptech_sum = In(share_deep_injection) +
+      In(share_shallow_injection) +
+      In(share_trailing_shoe) +
+      In(share_trailing_hose) +
+	    In(share_splash_plate);
+    if( abs( $apptech_sum - 100)  > 1e-6 )
+    {
+	writeLog({en => "Please correct accordingly: the categories of slurry application do not add up to 100\%!\n",
+		  de => "Bitte korrigieren: die Summe der Kategorien Gülleausbringung ist nicht gleich 100\%!\n",
+		  fr => "Veuillez corriger : la somme des catégories «Epandage du lisier» n'est pas égale à 100% !\%!\n"});
+      # Warning + Test!
+    }
+    return $apptech_sum;
+
 +share_deep_injection
   print = 22
   ++units 
@@ -227,7 +249,7 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_deep_injection) / 100;
+    In(share_deep_injection) / Out(share_apptech_sum);
 
 +share_shallow_injection
   print = 22
@@ -236,7 +258,7 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_shallow_injection) / 100;
+    In(share_shallow_injection) / Out(share_apptech_sum);
 
 +share_trailing_shoe
  print = 22
@@ -245,7 +267,7 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_trailing_shoe) / 100;
+    In(share_trailing_shoe) / Out(share_apptech_sum);
 
 +share_trailing_hose
  print = 22
@@ -254,7 +276,7 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_trailing_hose) / 100;
+    In(share_trailing_hose) / Out(share_apptech_sum);
 
 +share_splash_plate
  print = 22
@@ -263,7 +285,7 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_splash_plate) / 100;
+    In(share_splash_plate) / Out(share_apptech_sum);
 
 +c_tech
   print = 15
