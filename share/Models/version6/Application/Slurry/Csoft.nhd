@@ -137,6 +137,24 @@ The correction is omitted for solid manure since infiltration into soil does not
 
 *** output ***
 
++appl_evening
+  print = 15
+  ++units 
+    en = -
+  ++description
+    Fraction applied after 6pm.
+  ++formula
+    In(appl_evening) / 100;
+
++appl_hotdays
+  print = 15
+  ++units 
+    en = -
+  ++description
+    .
+  ++formula
+    In(appl_hotdays);
+
 +c_soft
   print = 15
   ++units 
