@@ -20,8 +20,320 @@ Hafner et al. ??? ALFAM2
 
 *** input ***
 
-*** technical ***
++alfam2_dm_cattle
+  value = 9
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
 
++alfam2_dm_pig
+  value = 5
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++log_dm_center
+  value = 1.31155
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++log_dm_sd
+  value = 0.597853
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++int
+  value = -1.223043
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs
+  value = -2.03672
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os
+  value = -1.070925
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th
+  value = -0.507794
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts
+  value = -0.566021
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++man_source_pig
+  value = -0.41401
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++log_dm
+  value = 0.419879
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++frac_after6pm
+  value = -0.020349
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++warm_days_often
+  value = 0.019579
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++warm_days_sometimes
+  value = 0.01018
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++frac_warm_season
+  value = 0.109627
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs_x_man_source_pig
+  value = 0.408921
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_man_source_pig
+  value = 0.321456
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_man_source_pig
+  value = 0.144772
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_man_source_pig
+  value = 0.163733
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs_x_log_dm
+  value = -0.408948
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_log_dm
+  value = -0.250239
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_log_dm
+  value = -0.161238
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_log_dm
+  value = -0.180425
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++man_source_pig_x_log_dm
+  value = -0.13384
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs_x_man_source_pig_x_log_dm
+  value = 0.123584
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_man_source_pig_x_log_dm
+  value = -0.018586
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_man_source_pig_x_log_dm
+  value = 0.035662
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_man_source_pig_x_log_dm
+  value = 0.040679
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_man_source_pig
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_log_dm
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_man_source_pig_x_log_dm
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++man_source_cattle
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs_x_man_source_cattle
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_man_source_cattle
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_man_source_cattle
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_man_source_cattle
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++man_source_cattle_x_log_dm
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs_x_man_source_cattle_x_log_dm
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_man_source_cattle_x_log_dm
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_man_source_cattle_x_log_dm
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_man_source_cattle_x_log_dm
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_man_source_cattle
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_man_source_cattle_x_log_dm
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++warm_days_never
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
 
 *** external ***
 
