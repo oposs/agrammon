@@ -416,7 +416,7 @@ Hafner et al. ??? ALFAM2
           Val(has_pigs, ::Livestock) P* Out(log_dm), 
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_log_dm'}
         );
-      return $one_var P+ $two_vars P+ $three_vars;
+      return exp($one_var P+ $two_vars P+ $three_vars);
     } else {
       return scale(Val(n_excretion, ::Livestock), 0);
     }
