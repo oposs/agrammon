@@ -50,7 +50,7 @@ Hafner et al. ??? ALFAM2
     automatically generated technical parameter for alfam2
 
 +int
-  value = -1.223043
+  value = -1.212863
   ++units
     en = -
   ++description
@@ -105,15 +105,15 @@ Hafner et al. ??? ALFAM2
   ++description
     automatically generated technical parameter for alfam2
 
-+warm_days_often
-  value = 0.019579
++warm_days_never
+  value = -0.01018
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
-+warm_days_sometimes
-  value = 0.01018
++warm_days_frequently
+  value = 0.009399
   ++units
     en = -
   ++description
@@ -212,6 +212,13 @@ Hafner et al. ??? ALFAM2
 
 +app_mthd_ts_x_man_source_pig_x_log_dm
   value = 0.040679
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++warm_days_rarely
+  value = -0.00509
   ++units
     en = -
   ++description
@@ -329,23 +336,18 @@ Hafner et al. ??? ALFAM2
   ++description
     automatically generated technical parameter for alfam2
 
-+warm_days_never
-  value = 0
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
 *** external ***
 
 +::Livestock
 +Applrate
 +Ctech
++Csoft
++Cseason
 
 *** output ***
 
 +alfam2_dm
-  print = 22
+  print = application, liquid
   ++units
     en = %
   ++description
@@ -364,10 +366,98 @@ Hafner et al. ??? ALFAM2
       Val(c_dilution, Applrate)
     );
 
-+er_alfam2
-  print = ef_nh3,application,liquid
++log_dm
+  print = 22
   ++units
     en = -
   ++description
-    emission factor for trailing hose based on alfam2 calculation
+    logarithm of dry matter content
   ++formula
+    my $log_dm = log(Out(alfam2_dm));
+    # fix no excretion
+    $log_dm = max($log_dm, 0.0);
+    # scale
+    $log_dm = scale(add($log_dm, Tech(log_dm_center) * -1), 1 / Tech(log_dm_sd));
+    return $log_dm;
+
++er_alfam2_share_bc
+  print = 22
+  ++units
+    en = -
+  ++description
+    emission factor share for broadcast based on alfam2 calculation
+  ++formula
+    my $app_tech = 'bc';
+    if (Val(share_splash_plate, Ctech) > 0) {
+      my $one_var = add(
+        scale(Val(has_pigs, ::Livestock), Tech(man_source_pig)) P+
+        scale(Out(log_dm), Tech(log_dm))
+        ,
+        Tech(int) + $TE->{'app_mthd_' . $app_tech} + 
+          $TE->{'warm_days_' . Val(appl_hotdays, Csoft)} +
+          Val(appl_evening, Csoft) * Tech(frac_after6pm) +
+          Val(appl_summer, Cseason) * Tech(frac_warm_season)
+      );
+      my $two_vars = 
+        scale(
+          Val(has_pigs, ::Livestock), 
+          $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig'}
+        ) P+
+        scale(
+          Out(log_dm), 
+          $TE->{'app_mthd_' . $app_tech . '_x_log_dm'}
+        ) P+
+        scale(
+          Val(has_pigs, ::Livestock) P* Out(log_dm), 
+          Tech(man_source_pig_x_log_dm)
+        );
+      my $three_vars = 
+        scale(
+          Val(has_pigs, ::Livestock) P* Out(log_dm), 
+          $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_log_dm'}
+        );
+      return $one_var P+ $two_vars P+ $three_vars;
+    } else {
+      return scale(Val(n_excretion, ::Livestock), 0);
+    }
+
+# +er_alfam2_share_th
+#   print = 22
+#   ++units
+#     en = -
+#   ++description
+#     emission factor share for trailing hose based on alfam2 calculation
+
+# +er_alfam2_share_ts
+#   print = 22
+#   ++units
+#     en = -
+#   ++description
+#     emission factor share for trailing shoe based on alfam2 calculation
+
+# +er_alfam2_share_os
+#   print = 22
+#   ++units
+#     en = -
+#   ++description
+#     emission factor share for shallow injection based on alfam2 calculation
+
+# +er_alfam2_share_cs
+#   print = 22
+#   ++units
+#     en = -
+#   ++description
+#     emission factor share for deep injection based on alfam2 calculation
+
+# +er_alfam2
+#   print = ef_nh3,application,liquid
+#   ++units
+#     en = -
+#   ++description
+#     emission factor for trailing hose based on alfam2 calculation
+#   ++formula
+#     my $out = 0;
+#     for 1..5 -> $n {
+#       $out = $out + $n;
+#     }
+#     return $out;
