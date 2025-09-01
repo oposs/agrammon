@@ -50,175 +50,175 @@ Hafner et al. ??? ALFAM2
     automatically generated technical parameter for alfam2
 
 +int
-  value = -1.212863
+  value = -1.30218
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs
-  value = -2.03672
+  value = -2.028095
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os
-  value = -1.070925
+  value = -1.073015
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th
-  value = -0.507794
+  value = -0.556339
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts
-  value = -0.566021
+  value = -0.61511
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +man_source_pig
-  value = -0.41401
+  value = -0.300005
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +log_dm
-  value = 0.419879
+  value = 0.407781
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +frac_after6pm
-  value = -0.020349
+  value = -0.020495
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +warm_days_never
-  value = -0.01018
+  value = -0.010367
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +warm_days_frequently
-  value = 0.009399
+  value = 0.009517
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +frac_warm_season
-  value = 0.109627
+  value = 0.111537
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_man_source_pig
-  value = 0.408921
+  value = 0.401095
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_man_source_pig
-  value = 0.321456
+  value = 0.324546
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_man_source_pig
-  value = 0.144772
+  value = 0.20584
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_man_source_pig
-  value = 0.163733
+  value = 0.225537
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_log_dm
-  value = -0.408948
+  value = -0.398317
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_log_dm
-  value = -0.250239
+  value = -0.257517
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_log_dm
-  value = -0.161238
+  value = -0.171673
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_log_dm
-  value = -0.180425
+  value = -0.191043
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +man_source_pig_x_log_dm
-  value = -0.13384
+  value = -0.12088
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_man_source_pig_x_log_dm
-  value = 0.123584
+  value = 0.112117
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_man_source_pig_x_log_dm
-  value = -0.018586
+  value = -0.011489
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_man_source_pig_x_log_dm
-  value = 0.035662
+  value = 0.050092
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_man_source_pig_x_log_dm
-  value = 0.040679
+  value = 0.055369
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +warm_days_rarely
-  value = -0.00509
+  value = -0.005184
   ++units
     en = -
   ++description
