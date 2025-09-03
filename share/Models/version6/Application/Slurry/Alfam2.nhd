@@ -784,6 +784,132 @@ Hafner et al. ??? ALFAM2
   ++description
     automatically generated technical parameter for alfam2
 
++warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++man_source_pig_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs_x_man_source_pig_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_man_source_pig_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_man_source_pig_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_man_source_pig_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_man_source_pig_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++man_source_cattle_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs_x_man_source_cattle_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_man_source_cattle_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_man_source_cattle_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_man_source_cattle_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_man_source_cattle_x_warm_days_sometimes
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
 *** external ***
 
 +::Livestock
