@@ -81,7 +81,7 @@ taxonomy = Application::Slurry::Applrate
 
 *** output ***
 
-+c_dilution
++dilution
   print = 15
   ++units
     en = -
