@@ -21,20 +21,6 @@ Hafner et al. ??? ALFAM2
 *** input ***
 
 *** technical ***
-+alfam2_dm_cattle
-  value = 9
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+alfam2_dm_pig
-  value = 5
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
 +int
   value = -0.729241811179267
   ++units
