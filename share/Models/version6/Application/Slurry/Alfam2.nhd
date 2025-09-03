@@ -940,10 +940,11 @@ Hafner et al. ??? ALFAM2
   ++formula
     my $app_tech = 'bc';
     if (Val(share_splash_plate, Ctech) > 0) {
-      my $one_var = add(
-        scale(Val(has_cattle, ::Livestock), 0) P+
+      my $is_pig = scale(Val(has_cattle, ::Livestock), 0) P+
         scale(Val(has_others, ::Livestock), 0) P+
-        scale(Val(has_pigs, ::Livestock), Tech(man_source_pig)) 
+        Val(has_pigs, ::Livestock);
+      my $one_var = add(
+        scale($is_pig, Tech(man_source_pig)) 
         ,
         Tech(int) + $TE->{'app_mthd_' . $app_tech} + 
           Out(log_dilution) * Tech(log_dil) +
@@ -954,23 +955,23 @@ Hafner et al. ??? ALFAM2
       my $two_vars = 
         add(
           scale(
-            Val(has_pigs, ::Livestock), 
+            $is_pig, 
             $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig'}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_log_dil) * Out(log_dilution)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_after6pm) * Val(appl_evening, Csoft)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             $TE->{'man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_warm_season) * Val(appl_summer, Cseason)
           ),
           $TE->{'app_mthd_' . $app_tech . '_x_log_dil'} * Out(log_dilution) +
@@ -980,21 +981,21 @@ Hafner et al. ??? ALFAM2
         );
       my $three_vars = 
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_log_dil'} * 
             Out(log_dilution)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_after6pm'} * 
             Val(appl_evening, Csoft)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_warm_season'} * 
             Val(appl_summer, Cseason)
         );
@@ -1012,10 +1013,11 @@ Hafner et al. ??? ALFAM2
   ++formula
     my $app_tech = 'th';
     if (Val(share_trailing_hose, Ctech) > 0) {
-      my $one_var = add(
-        scale(Val(has_cattle, ::Livestock), 0) P+
+      my $is_pig = scale(Val(has_cattle, ::Livestock), 0) P+
         scale(Val(has_others, ::Livestock), 0) P+
-        scale(Val(has_pigs, ::Livestock), Tech(man_source_pig)) 
+        Val(has_pigs, ::Livestock);
+      my $one_var = add(
+        scale($is_pig, Tech(man_source_pig)) 
         ,
         Tech(int) + $TE->{'app_mthd_' . $app_tech} + 
           Out(log_dilution) * Tech(log_dil) +
@@ -1026,23 +1028,23 @@ Hafner et al. ??? ALFAM2
       my $two_vars = 
         add(
           scale(
-            Val(has_pigs, ::Livestock), 
+            $is_pig, 
             $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig'}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_log_dil) * Out(log_dilution)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_after6pm) * Val(appl_evening, Csoft)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             $TE->{'man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_warm_season) * Val(appl_summer, Cseason)
           ),
           $TE->{'app_mthd_' . $app_tech . '_x_log_dil'} * Out(log_dilution) +
@@ -1052,21 +1054,21 @@ Hafner et al. ??? ALFAM2
         );
       my $three_vars = 
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_log_dil'} * 
             Out(log_dilution)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_after6pm'} * 
             Val(appl_evening, Csoft)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_warm_season'} * 
             Val(appl_summer, Cseason)
         );
@@ -1084,10 +1086,11 @@ Hafner et al. ??? ALFAM2
   ++formula
     my $app_tech = 'ts';
     if (Val(share_trailing_shoe, Ctech) > 0) {
-      my $one_var = add(
-        scale(Val(has_cattle, ::Livestock), 0) P+
+      my $is_pig = scale(Val(has_cattle, ::Livestock), 0) P+
         scale(Val(has_others, ::Livestock), 0) P+
-        scale(Val(has_pigs, ::Livestock), Tech(man_source_pig)) 
+        Val(has_pigs, ::Livestock);
+      my $one_var = add(
+        scale($is_pig, Tech(man_source_pig)) 
         ,
         Tech(int) + $TE->{'app_mthd_' . $app_tech} + 
           Out(log_dilution) * Tech(log_dil) +
@@ -1098,23 +1101,23 @@ Hafner et al. ??? ALFAM2
       my $two_vars = 
         add(
           scale(
-            Val(has_pigs, ::Livestock), 
+            $is_pig, 
             $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig'}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_log_dil) * Out(log_dilution)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_after6pm) * Val(appl_evening, Csoft)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             $TE->{'man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_warm_season) * Val(appl_summer, Cseason)
           ),
           $TE->{'app_mthd_' . $app_tech . '_x_log_dil'} * Out(log_dilution) +
@@ -1124,21 +1127,21 @@ Hafner et al. ??? ALFAM2
         );
       my $three_vars = 
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_log_dil'} * 
             Out(log_dilution)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_after6pm'} * 
             Val(appl_evening, Csoft)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_warm_season'} * 
             Val(appl_summer, Cseason)
         );
@@ -1156,10 +1159,11 @@ Hafner et al. ??? ALFAM2
   ++formula
     my $app_tech = 'os';
     if (Val(share_shallow_injection, Ctech) > 0) {
-      my $one_var = add(
-        scale(Val(has_cattle, ::Livestock), 0) P+
+      my $is_pig = scale(Val(has_cattle, ::Livestock), 0) P+
         scale(Val(has_others, ::Livestock), 0) P+
-        scale(Val(has_pigs, ::Livestock), Tech(man_source_pig)) 
+        Val(has_pigs, ::Livestock);
+      my $one_var = add(
+        scale($is_pig, Tech(man_source_pig)) 
         ,
         Tech(int) + $TE->{'app_mthd_' . $app_tech} + 
           Out(log_dilution) * Tech(log_dil) +
@@ -1170,23 +1174,23 @@ Hafner et al. ??? ALFAM2
       my $two_vars = 
         add(
           scale(
-            Val(has_pigs, ::Livestock), 
+            $is_pig, 
             $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig'}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_log_dil) * Out(log_dilution)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_after6pm) * Val(appl_evening, Csoft)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             $TE->{'man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_warm_season) * Val(appl_summer, Cseason)
           ),
           $TE->{'app_mthd_' . $app_tech . '_x_log_dil'} * Out(log_dilution) +
@@ -1196,21 +1200,21 @@ Hafner et al. ??? ALFAM2
         );
       my $three_vars = 
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_log_dil'} * 
             Out(log_dilution)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_after6pm'} * 
             Val(appl_evening, Csoft)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_warm_season'} * 
             Val(appl_summer, Cseason)
         );
@@ -1228,10 +1232,11 @@ Hafner et al. ??? ALFAM2
   ++formula
     my $app_tech = 'cs';
     if (Val(share_deep_injection, Ctech) > 0) {
-      my $one_var = add(
-        scale(Val(has_cattle, ::Livestock), 0) P+
+      my $is_pig = scale(Val(has_cattle, ::Livestock), 0) P+
         scale(Val(has_others, ::Livestock), 0) P+
-        scale(Val(has_pigs, ::Livestock), Tech(man_source_pig)) 
+        Val(has_pigs, ::Livestock);
+      my $one_var = add(
+        scale($is_pig, Tech(man_source_pig)) 
         ,
         Tech(int) + $TE->{'app_mthd_' . $app_tech} + 
           Out(log_dilution) * Tech(log_dil) +
@@ -1242,23 +1247,23 @@ Hafner et al. ??? ALFAM2
       my $two_vars = 
         add(
           scale(
-            Val(has_pigs, ::Livestock), 
+            $is_pig, 
             $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig'}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_log_dil) * Out(log_dilution)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_after6pm) * Val(appl_evening, Csoft)
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             $TE->{'man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
           ) P+
           scale(
-            Val(has_pigs, ::Livestock),
+            $is_pig,
             Tech(man_source_pig_x_frac_warm_season) * Val(appl_summer, Cseason)
           ),
           $TE->{'app_mthd_' . $app_tech . '_x_log_dil'} * Out(log_dilution) +
@@ -1268,21 +1273,21 @@ Hafner et al. ??? ALFAM2
         );
       my $three_vars = 
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_log_dil'} * 
             Out(log_dilution)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_after6pm'} * 
             Val(appl_evening, Csoft)
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_warm_days_' . Val(appl_hotdays, Csoft)}
         ) P+
         scale(
-          Val(has_pigs, ::Livestock),
+          $is_pig,
           $TE->{'app_mthd_' . $app_tech . '_x_man_source_pig_x_frac_warm_season'} * 
             Val(appl_summer, Cseason)
         );
