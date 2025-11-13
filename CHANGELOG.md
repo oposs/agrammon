@@ -1,5 +1,11 @@
 - 6.6.0, 2025-11-13, fritz.zaucker@oetiker.ch
 
+- 6.5.3, 2025-05-27, fritz.zaucker@oetiker.ch
+
+  - RT 60131: Fix pig default energy_content calculations
+
+- 6.5.2, 2025-05-26, christoph.haenggi@bfh.ch
+
   - PR 601: Anpassungen Modell
      - technische Parameter
      - Modelländerungen unter anderem im Bereich Slurry
