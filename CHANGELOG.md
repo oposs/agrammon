@@ -1,3 +1,7 @@
+- 6.5.2, 2025-05-27, fritz.zaucker@oetiker.ch
+
+  - RT 60131: Fix pig default energy_content calculations
+
 - 6.5.2, 2025-05-26, christoph.haenggi@bfh.ch
 
   - Fixed help texts and wrong technical value

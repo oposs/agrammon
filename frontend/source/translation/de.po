@@ -318,7 +318,7 @@ msgstr "Zum Editieren anklicken"
 msgid "Unit"
 msgstr "Einheit"
 
-#: agrammon/module/user/Login.js
+#: agrammon/ui/menu/MainMenu.js
 msgid "Help"
 msgstr "Hilfe"
 
