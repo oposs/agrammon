@@ -79,6 +79,7 @@ taxonomy = Livestock::Poultry::Housing
     NH3 emission factor before air scrubber removal of poultry housing systems.
   ++formula
     my $ef = Val(er_housing, Housing::Type) * 
+              Val(c_grazing, Grazing) *
               Val(c_area, Housing::Type) * 
               Val(c_manure_removal_interval, Housing::Type) * 
               Val(c_drinking_system, Housing::Type) * 
@@ -115,7 +116,7 @@ taxonomy = Livestock::Poultry::Housing
     Annual NH3 emission from poultry housing systems 
     per animal place.
   ++formula
-    Val(n_excretion, Excretion) * Out(ef_housing); 
+    Out(n_into_housing) * Out(ef_housing); 
 
 +tan_air_scrubber
   print = 5b

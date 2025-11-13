@@ -106,10 +106,31 @@ class Agrammon::Outputs::FilterGroupCollection {
                 :$!provenance
     }
 
+    #| Produce a new filter group collection which has the maxima of this one compared to an additional number
+    method max(Numeric $number --> Agrammon::Outputs::FilterGroupCollection) {
+        self.bless:
+                :instances(%!values-by-filter.map({ .key => max( .value, $number ) })),
+                :$!provenance
+    }
+
     #| Produce a new filter group collection which has the sign of this one.
     method sign() {
         self.bless:
                 :instances(%!values-by-filter.map({ .key => sign( .value ) })),
+                :$!provenance
+    }
+
+    #| Produce a new filter group collection which has the natural logarithm of this one.
+    method log() {
+        self.bless:
+                :instances(%!values-by-filter.map({ .key => log( .value ) })),
+                :$!provenance
+    }
+
+    #| Produce a new filter group collection which has the exponential of this one.
+    method exp() {
+        self.bless:
+                :instances(%!values-by-filter.map({ .key => exp( .value ) })),
                 :$!provenance
     }
 

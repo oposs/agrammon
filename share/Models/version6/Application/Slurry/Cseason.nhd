@@ -89,37 +89,19 @@ is applied.
 
 *** technical ***
 
-+c_summer
-  value = 0.15
-  ++units 
-    en = -
-  ++description
-    Correction factor for the application of slurry in summer (June to
-    August): Model calculation according to the model of Katz (Menzi et
-    al. 1997b) with meteorological data from Liebefeld 1993-2002:
-    average from March to November 12°C, 70% relative air humidity, 1.15
-    kg/m3 TAN, 30 m3/ha resulting in a loss of 50.6% TAN; summer 17.8°C
-    resulting in a loss of 56.7% TAN (+12%). Value chosen for
-    cal-culation: +15%
-      
- 
-+c_autumn_winter_spring
-  value = -0.05
-  ++units 
-    en = -
-  ++description
-    Correction factor for the application of slurry in autumn, winter and spring (Sept to May): Model calculation according to the model of Katz (Menzi et
-    al. 1997b) with meteorological data from Liebefeld 1993-2002: average
-    from March to November 12°C, 70% relative air humidity, 1.15 kg/m3
-    TAN, 30 m3/ha resulting in a loss of 50.6% TAN; spring/autumn/winter 9°C
-    resulting in a loss of 48.1% TAN (-4.8%). Value chosen for
-    calculation: -5%
-
-
 *** external ***
 
 
 *** output ***
+
++appl_season_sum
+  print = 22
+  ++units 
+    en = -
+  ++description
+    .
+  ++formula
+    In(appl_summer) + In(appl_autumn_winter_spring);
 
 +appl_summer
   print = 22
@@ -132,7 +114,7 @@ is applied.
     0.5;
 ?else
   ++formula
-    In(appl_summer) / 100;
+    In(appl_summer) / Out(appl_season_sum);
 ?endif
 
 +appl_autumn_winter_spring
@@ -146,31 +128,6 @@ is applied.
     0.5;
 ?else
   ++formula
-    In(appl_autumn_winter_spring) / 100;
+    In(appl_autumn_winter_spring) / Out(appl_season_sum);
 ?endif
 
-+c_season
-  print = 15
-  ++units 
-    en = -
-  ++description
-    Correction factor of the standard emission rate depending on season of 
-    application.
-  ++formula
-    if( abs(Out(appl_summer)+Out(appl_autumn_winter_spring)-1) < 0.000001 ){
-    	return (1 + ( Out(appl_summer) * Tech(c_summer) +
-   	            Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
-    }
-    else {
-        writeLog({en => "Please correct accordingly: the categories of \"share of slurry application from June to August\" "
-		        . "and \"share of slurry application from September to May\" do not add up to 100\%!",
-                  de => "Bitte korrigieren: die Summe der Kategorien Ausbringung von Gülle im Sommer und von "
-                        . "September bis Mai ist nicht gleich 100\%\n",
-                  fr => "Veuillez corriger: la somme des catégories «Part de lisier épandu en été» et «de "
- 		        . "septembre à mai» n'est pas égale à 100% !\n"
-                  });
-        # Warning!
-    	return (1 + ( Out(appl_summer) * Tech(c_summer) +
-         	Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
-    }
-    

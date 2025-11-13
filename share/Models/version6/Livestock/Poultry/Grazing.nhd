@@ -19,6 +19,184 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
 
 +Excretion
 
+*** technical ***
+
++er_free_range
+  value = 0.7
+  ++units  
+    en = -
+  ++description
+    Emission rate for free range poultry, based on Menzi et al. (1997): 70% of TAN or 28% of Ntot
+
++er_n2_free_range
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Not considerd relevant
+
++er_no_free_range
+  value = 0.0055
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Stehfest, Bouwman 2006
+
++er_n2o_free_range
+  value = 0.02
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
+
++free_range_days_layers
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_layers
+  value = 2.88
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 12% of Day
+
++free_range_share_layers
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++free_range_days_growers
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_growers
+  value = 2.88
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 12% of Day
+
++free_range_share_growers
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++free_range_days_turkeys
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_turkeys
+  value = 0.96
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 4% of Day
+
++free_range_share_turkeys
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++free_range_days_other_poultry
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_other_poultry
+  value = 2.88
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 12% of Day
+
++free_range_share_other_poultry
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++free_range_days_broilers
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_broilers   
+  value = 0.96
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 4% of Day
+
++free_range_share_broilers   
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++k_grazing_a
+  value = 0.9989
+  ++units  
+    en = -
+  ++description
+    Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
+
++k_grazing_b
+  value = 0.0403
+  ++units  
+    en = -
+  ++description
+    Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
 
 
 *** input ***
@@ -69,128 +247,9 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
        <p>Dindes: oui</p>
        <p>Autre volaille: oui</p>
 
-*** technical ***
-
-+er_free_range
-  value = 0.7
-  ++units  
-    en = -
-  ++description
-    Emission rate for free range poultry, based on Menzi et al. (1997): 70% of TAN or 28% of Ntot
-
-+er_n2_free_range
-  value = 0.0
-  ++units  
-    en = -
-  ++description
-    Emission rate for manure application. Not considerd relevant
-
-+er_no_free_range
-  value = 0.0055
-  ++units  
-    en = -
-  ++description
-    Emission rate for manure application. Stehfest, Bouwman 2006
-
-+er_n2o_free_range
-  value = 0.02
-  ++units  
-    en = -
-  ++description
-    Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
-
-+free_range_days_layers
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-
-+free_range_hours_layers
-  value = 2.88
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 12% of Day
-
-+free_range_days_growers
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-
-+free_range_hours_growers
-  value = 2.88
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 12% of Day
-
-+free_range_days_turkeys
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-
-+free_range_hours_turkeys
-  value = 0.96
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 4% of Day
-
-+free_range_days_other_poultry
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-
-+free_range_hours_other_poultry
-  value = 2.88
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 12% of Day
-
-+free_range_days_broilers
-  value = 280
-  ++units  
-    en = days/year
-    de = Tage/Jahr
-    fr = jours/an
-  ++description
-    Average free range days per year.
-
-+free_range_hours_broilers   
-  value = 0.96
-  ++units  
-    en = hours/day
-    de = Stunden/Tag
-    fr = heures/jour
-  ++description
-    Average free range hours per day, assumed is 4% of Day
-
-
 *** output ***
+
+### Outdoor.nhd
 
 +free_range_days
   print = Poultry
@@ -202,7 +261,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range days per year.
   ++formula
     if ( In(free_range) and lc In(free_range) eq 'yes' ) {
-      return $TE->{'free_range_days_'.Val(animalcategory, Excretion)};
+      return $TE->{'free_range_days_'.Val(animalcategory, Excretion).'_fix'};
     } else {
       return 0;
     }
@@ -217,10 +276,57 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range hours per day.
   ++formula
     if ( In(free_range) and lc In(free_range) eq 'yes' ) {
-      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion)};
+      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion).'_fix'};
     } else {
       return 0;
     }
+
++free_range_share
+  print = Poultry
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Share of animals in free range.
+  ++formula
+    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
+      return $TE->{'free_range_share_'.Val(animalcategory, Excretion).'_fix'};
+    } else {
+      return 0;
+    }
+
+### KGrazing.nhd
+
++c_grazing
+  print = c_housing,Poultry
+  ++units  
+    en = -
+  ++description
+    The correction factor for the reduction of the housing emission
+    depending on the number of grazing hours per day and the grazing days per year.
+  ++formula
+    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
+      my $grazing_total = Out(free_range_days) * Out(free_range_hours);
+      # calculate correction factor 
+      my $k_grazing = exp(Tech(k_grazing_b) * Out(free_range_hours));
+      # increase emission of TAN fraction which is excreted into housing on a grazing day
+      my $c_share_1 = (
+          # TAN fraction into housing uncorrected
+          (365.0 - Out(free_range_days)) * 24.0 + 
+          # TAN fraction into housing corrected
+          Out(free_range_days) * (24.0 - Out(free_range_hours)) * $k_grazing
+      ) /
+      # divided by total amount of TAN into housing 
+      (365.0 * 24.0 - Out(free_range_hours) * Out(free_range_days));
+      # fix share of animals in free range area
+      1 + ($c_share_1 - 1) * Out(free_range_share);
+    } else {
+      1;
+    }
+
+
+### Grazing.nhd
 
 +n_into_grazing
   print = Poultry
@@ -233,7 +339,8 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++formula
     Val(n_excretion, Excretion) *
     Out(free_range_days) / 365 * 
-    Out(free_range_hours) / 24;
+    Out(free_range_hours) / 24 *
+    Out(free_range_share);
 
 +tan_into_grazing
   print = Poultry
@@ -246,7 +353,8 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++formula
     Val(tan_excretion, Excretion) *  
     Out(free_range_days) / 365 * 
-    Out(free_range_hours) / 24;
+    Out(free_range_hours) / 24 *
+    Out(free_range_share);
 
 +ef_nh3_ngrazing
   print = Poultry,ef_nh3

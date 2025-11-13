@@ -171,54 +171,31 @@ taxonomy = Application::Slurry::Ctech
 
 *** technical ***
 
-+red_splash_plate
-  value = 0.0 
-  ++units 
-    en = -
-  ++description
-    There is no reduction for broadcasting with splash plate as to this way of 
-    applying slurry all the other methods are compared to.
-
-+red_trailing_hose  
-  value = -0.4 
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to broadcasting applying trailing hose.
-    Adopted from UNECE (2007), Frick and Menzi (1997) 
-    and Menzi et al. (1997).
-
-+red_trailing_shoe 
-  value = -0.5
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to broadcasting applying trailing shoe. 
-    Adopted from UNECE (2007), Frick and Menzi (1997) 
-    and Menzi et al. (1997).
-
-+red_shallow_injection 
-  value = -0.6  
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to broadcasting applying shallow injection.
-    Adopted from UNECE (2007), Frick and Menzi (1997) 
-    and Menzi et al. (1997).
-
-+red_deep_injection 
-  value = -0.9  
-  ++units 
-    en = -
-  ++description
-    Reduction efficiency as compared to broadcasting applying deep injection.
-    Adopted from UNECE(2007), Frick and Menzi (1997) 
-    and Menzi et al. (1997). 
- 
-
 *** external ***
 
 *** output ***
+
++share_apptech_sum
+  print = 15
+  ++units
+    en = -
+  ++description
+    Reduction factor for the emission due to the used application technology
+    as compared to broadcasting.
+  ++formula
+    my $apptech_sum = In(share_deep_injection) +
+      In(share_shallow_injection) +
+      In(share_trailing_shoe) +
+      In(share_trailing_hose) +
+	    In(share_splash_plate);
+    if( abs( $apptech_sum - 100)  > 1e-6 )
+    {
+	writeLog({en => "Please correct accordingly: the categories of slurry application do not add up to 100\%!\n",
+		  de => "Bitte korrigieren: die Summe der Kategorien Gülleausbringung ist nicht gleich 100\%!\n",
+		  fr => "Veuillez corriger : la somme des catégories «Epandage du lisier» n'est pas égale à 100% !\%!\n"});
+      # Warning + Test!
+    }
+    return $apptech_sum;
 
 +share_deep_injection
   print = 22
@@ -227,7 +204,7 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_deep_injection) / 100;
+    In(share_deep_injection) / Out(share_apptech_sum);
 
 +share_shallow_injection
   print = 22
@@ -236,7 +213,7 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_shallow_injection) / 100;
+    In(share_shallow_injection) / Out(share_apptech_sum);
 
 +share_trailing_shoe
  print = 22
@@ -245,7 +222,7 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_trailing_shoe) / 100;
+    In(share_trailing_shoe) / Out(share_apptech_sum);
 
 +share_trailing_hose
  print = 22
@@ -254,7 +231,7 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_trailing_hose) / 100;
+    In(share_trailing_hose) / Out(share_apptech_sum);
 
 +share_splash_plate
  print = 22
@@ -263,42 +240,5 @@ taxonomy = Application::Slurry::Ctech
   ++description
     Share
   ++formula
-    In(share_splash_plate) / 100;
+    In(share_splash_plate) / Out(share_apptech_sum);
 
-+c_tech
-  print = 15
-  ++units 
-    en = -
-  ++description
-    Reduction factor for the emission due to the used application technology 
-    as compared to broadcasting.
-  ++formula
-    if( abs( Out(share_deep_injection) +
-          Out(share_shallow_injection) +
-          Out(share_trailing_shoe) +
-          Out(share_trailing_hose) +
-	  Out(share_splash_plate)
-	  - 1)  < 1e-8 )
-    {
-
-	return 1 + ( Out(share_deep_injection) * Tech(red_deep_injection) +
-              Out(share_shallow_injection) * Tech(red_shallow_injection) +
-              Out(share_trailing_shoe) * Tech(red_trailing_shoe) +
-              Out(share_trailing_hose) * Tech(red_trailing_hose) +
-	      Out(share_splash_plate) * Tech(red_splash_plate) 
-        );
-    }
-    else{
-    	writeLog({en => "Please correct accordingly: the categories of slurry application do not add up to 100\%!\n",
-                  de => "Bitte korrigieren: die Summe der Kategorien Gülleausbringung ist nicht gleich 100\%!\n",
-                  fr => "Veuillez corriger : la somme des catégories «Epandage du lisier» n'est pas égale à 100% !\%!\n"});
-      # Warning + Test!
-	    return 1 + ( Out(share_deep_injection) * Tech(red_deep_injection) +
-              Out(share_shallow_injection) * Tech(red_shallow_injection) +
-              Out(share_trailing_shoe) * Tech(red_trailing_shoe) +
-              Out(share_trailing_hose) * Tech(red_trailing_hose) +
-	          Out(share_splash_plate) * Tech(red_splash_plate) 
-              );
-    }
-
- 
