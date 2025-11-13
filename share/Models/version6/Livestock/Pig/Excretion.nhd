@@ -613,7 +613,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   ++description
     Energy content of feed ration
   ++formula
-    lc In(energy_content) eq 'standard' ?  $TE->{'standard_energy_content_' . Out(animalcategory)} : In(energy_content);
+    lc In(energy_content) eq 'standard' ?  $TE->{'default_energy_content_' . Out(animalcategory)} : In(energy_content);
 
 +n_excretion_animal
   print = Pig
