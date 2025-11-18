@@ -22,56 +22,56 @@ Hafner et al. ??? ALFAM2
 
 *** technical ***
 +int
-  value = -0.621164464951232
+  value = -0.623031477544246
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs
-  value = -2.64675932566896
+  value = -2.64496750392584
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os
-  value = -1.44530497245318
+  value = -1.44450749911147
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th
-  value = -0.773714213991169
+  value = -0.773993936869452
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts
-  value = -0.860607683341734
+  value = -0.860819295957924
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +man_source_pig
-  value = -0.79322927952684
+  value = -0.792376048779475
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +log_dil
-  value = 0.711684880834016
+  value = 0.710983020541326
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +frac_after6pm
-  value = -0.0849496824422064
+  value = -0.0846347043048641
   ++units
     en = -
   ++description
@@ -84,99 +84,106 @@ Hafner et al. ??? ALFAM2
   ++description
     automatically generated technical parameter for alfam2
 
++warm_days_rarely
+  value = -0.00688684265057319
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
 +warm_days_frequently
-  value = 0.0136065658106799
+  value = 0.0136065658106797
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +frac_warm_season
-  value = 0.167956400217915
+  value = 0.170544752230272
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_man_source_pig
-  value = 0.877791375148178
+  value = 0.877007481065271
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_man_source_pig
-  value = 0.565593779352385
+  value = 0.565660782759987
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_man_source_pig
-  value = 0.378988713057468
+  value = 0.379003195899564
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_man_source_pig
-  value = 0.42054852656025
+  value = 0.420542700643376
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_log_dil
-  value = -0.692071779460353
+  value = -0.691444422975637
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_log_dil
-  value = -0.41100235172451
+  value = -0.411251940145185
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_log_dil
-  value = -0.261701990664386
+  value = -0.261958838295349
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_log_dil
-  value = -0.293450401969351
+  value = -0.293707957266803
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_frac_after6pm
-  value = 0.0829069758640293
+  value = 0.0826057453417469
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_frac_after6pm
-  value = 0.0538644857427013
+  value = 0.0537307664473502
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_frac_after6pm
-  value = -0.00583358181106413
+  value = -0.00571388663854305
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_frac_after6pm
-  value = -0.00248075990932875
+  value = -0.00236929145245958
   ++units
     en = -
   ++description
@@ -190,14 +197,14 @@ Hafner et al. ??? ALFAM2
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_warm_days_never
-  value = 0.00731242006264164
+  value = 0.00731242006264166
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_warm_days_never
-  value = -0.00553137298436984
+  value = -0.00553137298436985
   ++units
     en = -
   ++description
@@ -210,232 +217,295 @@ Hafner et al. ??? ALFAM2
   ++description
     automatically generated technical parameter for alfam2
 
++app_mthd_cs_x_warm_days_rarely
+  value = 0.00667777396711891
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_warm_days_rarely
+  value = 0.00363313192478731
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_warm_days_rarely
+  value = -0.00273577497416177
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_warm_days_rarely
+  value = -0.0025842177325797
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
 +app_mthd_cs_x_warm_days_frequently
-  value = -0.0132430888537376
+  value = -0.0132430888537374
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_warm_days_frequently
-  value = -0.00795853512848567
+  value = -0.00795853512848545
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_warm_days_frequently
-  value = 0.00309829859803516
+  value = 0.0030982985980354
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_warm_days_frequently
-  value = 0.00268875814502558
+  value = 0.00268875814502581
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_frac_warm_season
-  value = -0.162514380187497
+  value = -0.165054277976722
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_frac_warm_season
-  value = -0.0846309824221823
+  value = -0.086387613132451
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_frac_warm_season
-  value = 0.0736766364506306
+  value = 0.0738123919884316
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_frac_warm_season
-  value = 0.0705967157961634
+  value = 0.0706036399584072
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +man_source_pig_x_log_dil
-  value = -0.222915906962393
+  value = -0.222741765280829
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +man_source_pig_x_frac_after6pm
-  value = 0.0422973373562718
+  value = 0.0421394038249239
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +man_source_pig_x_warm_days_never
-  value = 0.00755311212568741
+  value = 0.00755311212568744
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++man_source_pig_x_warm_days_rarely
+  value = 0.00375066194256948
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +man_source_pig_x_warm_days_frequently
-  value = -0.0071077922288329
+  value = -0.00710779222883264
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +man_source_pig_x_frac_warm_season
-  value = -0.0905318820512987
+  value = -0.0918743025713635
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_man_source_pig_x_log_dil
-  value = 0.204625880677327
+  value = 0.204521673142513
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_man_source_pig_x_log_dil
-  value = -0.0441054305327667
+  value = -0.0434424895414042
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_man_source_pig_x_log_dil
-  value = 0.0749141644019767
+  value = 0.0749382636543397
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_man_source_pig_x_log_dil
-  value = 0.0837109507099058
+  value = 0.0837463522195064
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_man_source_pig_x_frac_after6pm
-  value = -0.0404583013996656
+  value = -0.0403127085937713
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_man_source_pig_x_frac_after6pm
-  value = -0.0164350167684615
+  value = -0.0164229263640604
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_man_source_pig_x_frac_after6pm
-  value = -0.00197133234787153
+  value = -0.00195308353546831
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_man_source_pig_x_frac_after6pm
-  value = -0.00305927405570539
+  value = -0.00304086325961192
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_man_source_pig_x_warm_days_never
-  value = -0.00717083283560119
+  value = -0.00717083283560118
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_man_source_pig_x_warm_days_never
-  value = -0.00195348805418406
+  value = -0.00195348805418412
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_man_source_pig_x_warm_days_never
-  value = 0.00263897496576918
+  value = 0.00263897496576917
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_man_source_pig_x_warm_days_never
-  value = 0.00250316972189414
+  value = 0.0025031697218941
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_cs_x_man_source_pig_x_warm_days_rarely
+  value = -0.00355957427366364
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_man_source_pig_x_warm_days_rarely
+  value = -0.000960950237491712
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_man_source_pig_x_warm_days_rarely
+  value = 0.00129775773648877
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_man_source_pig_x_warm_days_rarely
+  value = 0.00123136209952487
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_man_source_pig_x_warm_days_frequently
-  value = 0.00677700913858849
+  value = 0.00677700913858824
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_man_source_pig_x_warm_days_frequently
-  value = 0.00230361049749512
+  value = 0.00230361049749487
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_man_source_pig_x_warm_days_frequently
-  value = -0.00130368004762645
+  value = -0.00130368004762668
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_man_source_pig_x_warm_days_frequently
-  value = -0.00114398175487064
+  value = -0.0011439817548709
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_cs_x_man_source_pig_x_frac_warm_season
-  value = 0.0855580927703286
+  value = 0.0868569520720348
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_os_x_man_source_pig_x_frac_warm_season
-  value = 0.0192566547197357
+  value = 0.0198951891378453
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_th_x_man_source_pig_x_frac_warm_season
-  value = -0.034402735513342
+  value = -0.034421427055263
   ++units
     en = -
   ++description
     automatically generated technical parameter for alfam2
 
 +app_mthd_ts_x_man_source_pig_x_frac_warm_season
-  value = -0.0330868127047201
+  value = -0.0330516717923881
   ++units
     en = -
   ++description
@@ -476,6 +546,13 @@ Hafner et al. ??? ALFAM2
   ++description
     automatically generated technical parameter for alfam2
 
++app_mthd_bc_x_warm_days_rarely
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
 +app_mthd_bc_x_warm_days_frequently
   value = 0
   ++units
@@ -505,6 +582,13 @@ Hafner et al. ??? ALFAM2
     automatically generated technical parameter for alfam2
 
 +app_mthd_bc_x_man_source_pig_x_warm_days_never
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_man_source_pig_x_warm_days_rarely
   value = 0
   ++units
     en = -
@@ -575,6 +659,13 @@ Hafner et al. ??? ALFAM2
     automatically generated technical parameter for alfam2
 
 +man_source_cattle_x_warm_days_never
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++man_source_cattle_x_warm_days_rarely
   value = 0
   ++units
     en = -
@@ -679,6 +770,34 @@ Hafner et al. ??? ALFAM2
   ++description
     automatically generated technical parameter for alfam2
 
++app_mthd_cs_x_man_source_cattle_x_warm_days_rarely
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_os_x_man_source_cattle_x_warm_days_rarely
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_th_x_man_source_cattle_x_warm_days_rarely
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_ts_x_man_source_cattle_x_warm_days_rarely
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
 +app_mthd_cs_x_man_source_cattle_x_warm_days_frequently
   value = 0
   ++units
@@ -757,6 +876,13 @@ Hafner et al. ??? ALFAM2
     automatically generated technical parameter for alfam2
 
 +app_mthd_bc_x_man_source_cattle_x_warm_days_never
+  value = 0
+  ++units
+    en = -
+  ++description
+    automatically generated technical parameter for alfam2
+
++app_mthd_bc_x_man_source_cattle_x_warm_days_rarely
   value = 0
   ++units
     en = -
@@ -897,132 +1023,6 @@ Hafner et al. ??? ALFAM2
     automatically generated technical parameter for alfam2
 
 +app_mthd_bc_x_man_source_cattle_x_warm_days_sometimes
-  value = 0
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+warm_days_rarely
-  value = -0.0069202070426543
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_cs_x_warm_days_rarely
-  value = 0.00671108609895056
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_os_x_warm_days_rarely
-  value = 0.00365621003132082
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_th_x_warm_days_rarely
-  value = -0.00276568649218492
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_ts_x_warm_days_rarely
-  value = -0.00261202600493505
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+man_source_pig_x_warm_days_rarely
-  value = 0.0037765560628437
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_cs_x_man_source_pig_x_warm_days_rarely
-  value = -0.00358541641780059
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_os_x_man_source_pig_x_warm_days_rarely
-  value = -0.00097674402709203
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_th_x_man_source_pig_x_warm_days_rarely
-  value = 0.00131948748288459
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_ts_x_man_source_pig_x_warm_days_rarely
-  value = 0.00125158486094707
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_bc_x_warm_days_rarely
-  value = 0
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_bc_x_man_source_pig_x_warm_days_rarely
-  value = 0
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+man_source_cattle_x_warm_days_rarely
-  value = 0
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_cs_x_man_source_cattle_x_warm_days_rarely
-  value = 0
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_os_x_man_source_cattle_x_warm_days_rarely
-  value = 0
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_th_x_man_source_cattle_x_warm_days_rarely
-  value = 0
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_ts_x_man_source_cattle_x_warm_days_rarely
-  value = 0
-  ++units
-    en = -
-  ++description
-    automatically generated technical parameter for alfam2
-
-+app_mthd_bc_x_man_source_cattle_x_warm_days_rarely
   value = 0
   ++units
     en = -
