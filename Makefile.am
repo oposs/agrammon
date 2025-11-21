@@ -17,3 +17,5 @@ PM := $(shell find lib -name "*.pm")
 
 EXTRA_DIST = META6.json README.md VERSION cpanfile COPYRIGHT CHANGELOG.md bootstrap $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) bin lib
 
+deps:
+	zef --debug --/test --deps-only --test-depends install .
