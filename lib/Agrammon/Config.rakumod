@@ -61,6 +61,7 @@ class Agrammon::Config {
     method db-conninfo {
         return 'dbname='   ~ %!database<name> ~ ' '
              ~ 'host='     ~ %!database<host> ~ ' '
+             ~ 'port='     ~ (%!database<port> // '5432') ~ ' '
              ~ 'user='     ~ %!database<user> ~ ' '
              ~ 'password=' ~ %!database<password>;
     }

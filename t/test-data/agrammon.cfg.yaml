@@ -9,8 +9,9 @@ General:
 Database:
     name:     agrammon_test
     host:     localhost
+    port:     55432
     user:     agrammon
-    password: agrammonATwork
+    password: agrammon
     version: '6.0'
 
 GUI:

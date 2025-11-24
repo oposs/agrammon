@@ -1,0 +1,10 @@
+# Create Docker PostgreSQL
+
+# Build the image
+docker build -t agrammon-db .
+
+# Run the container
+docker run -d -p 55432:5432 --name agrammon-postgres --replace agrammon-db
+
+# Test
+psql -h localhost --port 55432 -U agrammon -d agrammon_test
