@@ -13,6 +13,7 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
 }
 
 my $*AGRAMMON-DB-CONNECTION;
+my $cfg;
 
 subtest 'Connect to database' => {
     my $conninfo;
@@ -23,8 +24,8 @@ subtest 'Connect to database' => {
     else {
         $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
     }
-    my $cfg = Agrammon::Config.new;
-    ok $cfg.load($cfg-file), "Load config from file $cfg-file";
+    $cfg = Agrammon::Config.new;
+    lives-ok { $cfg.load($cfg-file) }, "Load config from file $cfg-file";
     $conninfo = $cfg.db-conninfo;
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 }
@@ -35,13 +36,13 @@ subtest 'Create user' => {
         :firstname<XF>,
         :lastname<XL>,
         :organisation<XO>,
-        :password<XP>,
+        :password<XP123456>,
     ), 'Create new user';
     is $user.username,     'agtest', 'User has correct username';
     is $user.firstname,    'XF',     'User has correct firstname';
     is $user.lastname,     'XL',     'User has correct lastname';
     is $user.organisation, 'XO',     'User has correct organisation';
-    is $user.password,     'XP',     'User has correct password';
+    is $user.password,     'XP123456',     'User has correct password';
 
     lives-ok { $user.get-account-key } , 'User gets account key';
 
@@ -51,8 +52,8 @@ transactionally {
     my $username  = 'agtest';
     my $username2 = 'agtest2';
     my $username3 = 'agtest3';
-    my $password = 'XP';
-    my ($uid, $uid2, $uid3);
+    my $password = 'XP123456';
+    my ($uid, $uid2, $uid3, $key);
 
     ok prepare-test-db, 'Test database prepared';
 
@@ -64,7 +65,8 @@ transactionally {
             :organisation<XO>,
             :$password,
         ), 'Create new admin account';
-        ok $uid = $user.create-account('admin').id, "Create account, uid=$uid";
+        ok $key = $user.create-account('admin'), "Create account, key=$key";
+        ok $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
         is $user.username, $username, "Username is $username";
         is $user.role.name, 'admin', "User role is admin";
 
@@ -75,7 +77,8 @@ transactionally {
             :organisation<XO>,
             :$password,
         ), 'Create new user account';
-        ok $uid2 = $user.create-account('user').id, "Create account, uid=$uid2";
+        ok $key = $user.create-account('user'), "Create account, key=$key";
+        ok $uid2 = $user.activate-account($key).id, "Activate account, uid2=$uid2";
         is $user.role.name, 'user', "User role is user";
 
         ok $user = Agrammon::DB::User.new(
@@ -85,7 +88,8 @@ transactionally {
             :organisation<XO>,
             :$password,
         ), 'Create new user account';
-        ok $uid3 = $user.create-account(Any).id, "Create account, uid=$uid3";
+        ok $key  = $user.create-account(Any), "Create account, key=$key";
+        ok $uid3 = $user.activate-account($key).id, "Activate account, uid3=$uid3";
         is $user.role.name, 'user', "User role is user by default";
 
         throws-like { $user.create-account('admin')},
@@ -103,10 +107,16 @@ transactionally {
         is $new-user.username, $username, "Username is $username";
     }
 
+dd $cfg;
+     my %cfg = (
+        guiVariant   => $cfg.gui<variant>,
+        modelVariant => $cfg.model<variant>,
+     );
+
     subtest "auth() and logout()" => {
         ok my $session-user = Agrammon::Web::SessionUser.new(:$username), "Create Agrammon::Web::SessionUser with username $username";
-        throws-like { $session-user.auth($username, 'WrongPW').logged-in }, X::Agrammon::DB::User::InvalidPassword, "$username was not authenticated with $password";
-        ok $session-user.auth($username, $password).logged-in, "$username was authenticated with $password";
+        throws-like { $session-user.auth($username, 'WrongPW', Any, %cfg).logged-in }, X::Agrammon::DB::User::InvalidLogin, "$username was not authenticated with $password";
+        ok $session-user.auth($username, $password, Any, %cfg).logged-in, "$username was authenticated with $password";
         ok ! $session-user.logout, "Logout $username";
         ok ! $session-user.logged-in, "$username is logged out";
     }
@@ -116,21 +126,21 @@ transactionally {
         subtest "login $username" => {
             ok $session-user = Agrammon::Web::SessionUser.new(:$username).load,
                 "Create Agrammon::Web::SessionUser with username $username";
-            ok $session-user.auth($username, $password).logged-in, "$username was authenticated with $password";
+            ok $session-user.auth($username, $password, Any, %cfg).logged-in, "$username was authenticated with $password";
             ok $session-user.may-sudo, "$username may change account";
             is $session-user.username, $username, "Username is $username";
             is $session-user.id, $uid, "Uid is $uid";
         }
 
         subtest "sudo $username -> $username2" => {
-            ok $session-user.auth($username2, $password, $username).logged-in, "Change to account $username2";
+            ok $session-user.auth($username2, $password, $username, %cfg).logged-in, "Change to account $username2";
             is $session-user.username, $username2, "Username is $username2";
             is $session-user.id, $uid2, "Uid is $uid2";
             ok ! $session-user.may-sudo, "$username2 may not change account";
         }
 
         subtest "sudo $username2 -> $username3" => {
-            throws-like { $session-user.auth($username2, $password, $username3) },
+            throws-like { $session-user.auth($username2, $password, $username3, %cfg) },
                         X::Agrammon::DB::User::MayNotSudo, "$username2 cannot sudo";
         }
 

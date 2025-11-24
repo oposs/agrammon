@@ -43,7 +43,7 @@ my %config-expected = (
 my $file = "t/test-data/agrammon.cfg.yaml";
 
 ok my $cfg = Agrammon::Config.new, 'Create Agrammon Config';
-ok $cfg.load($file), "Load config from file $file";
+lives-ok { $cfg.load($file) }, "Load config from file $file";
 
 is-deeply $cfg.general,     %config-expected<General>,            'Config.general as expected';
 is-deeply $cfg.gui,         %config-expected<GUI>,                'Config.gui as expected';
