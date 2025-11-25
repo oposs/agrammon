@@ -478,7 +478,7 @@ class Agrammon::Web::Service {
         return $key;
     }
 
-    method create-account($email, $password, $firstname, $lastname, $org, $role?) {
+    method create-account($email, $password, $firstname, $lastname, $org, $language, $role?) {
         return Agrammon::DB::User.new(
             :username($email), :$password,
             :$firstname, :$lastname,

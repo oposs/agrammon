@@ -20,30 +20,20 @@ my $role = 'user';
 my $fake-auth = make-fake-auth($role);
 my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
-        get-account-key => -> $email, $password {
-        },
     },
     overriding => {
         reset-password => -> $user, $email, $password, $key? {
         },
         change-password => -> $user, $old-password, $new-password {
         },
-        create-account => -> $user, $email, $password, $firstname, $lastname, $org, $role {
+        create-account => -> $email, $password, $firstname, $lastname, $org, $language, $role {
             $email
+        },
+        activate-account => -> $key {
+           'http://agrammon.ch'  
         },
     }
 );
-
-subtest 'Get account key' => {
-    test-service routes($fake-store), :$fake-auth, {
-        test-given '/get_account_key', {
-            test post(json => { :email('foo@bar.com'), :password('xyz') }),
-                status => 204;
-        };
-        check-mock $fake-store,
-            *.called('get-account-key', times => 1);
-    }
-}
 
 subtest 'Reset password' => {
     test-service routes($fake-store), :$fake-auth, {
@@ -70,19 +60,32 @@ subtest 'Change password' => {
 subtest 'Create account' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/create_account', {
-            test post(json => { :email('foo@bar.com'), :password('xyz'), :role('user') }),
+            test post(json => { :email('foo@bar.com'), :password('xyz'), :firstname('foo'), :lastname('bar'), :org('X'), :language('de'), :role('user') }),
                 status => 200,
                 json   => { :username('foo@bar.com') };
-            test post(json => { :email('foo2@bar.com'), :password('xyz'), :role('admin') }),
+            test post(json => { :email('foo2@bar.com'), :password('xyz'), :firstname('foo'), :lastname('bar'), :org('X'), :language('de'), :role('admin') }),
                 status => 200,
                 json   => { :username('foo2@bar.com') };
-            test post(json => { :email('foo3@bar.com'), :password('xyz'), :role('unknown') }),
+            # fail for invalid role
+            test post(json => { :email('foo3@bar.com'), :password('xyz'), :firstname('foo'), :lastname('bar'), :org('X'), :language('de'), :role('unknown') }),
                 status => 400;
         };
         check-mock $fake-store,
             *.called('create-account', times => 2);
     }
 }
+
+subtest 'Activate account' => {
+    test-service routes($fake-store), :$fake-auth, {
+        test-given '/activate_account?key=xyz', {
+            test get(),
+                status => 200;
+        };
+        check-mock $fake-store,
+            *.called('activate-account', times => 1);
+    }
+}
+
 
 done-testing;
 

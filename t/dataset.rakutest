@@ -75,8 +75,9 @@ subtest 'Create dataset' => {
 
 transactionally {
     my $dataset-name = 'agtest';
-    my $password = 'XP';
+    my $password = 'XP123456';
     my $uid;
+    my $key;
     my $dataset;
     my $dataset-id;
 
@@ -89,7 +90,8 @@ transactionally {
                 :organisation<XO>,
                 :$password,
                 ), 'Create new user account';
-        ok $uid = $user.create-account('user').id, "Create account, uid=$uid";
+        ok $key = $user.create-account('user'), "Create account, key=$key";
+        ok $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
     }
 
     ok prepare-test-db($uid), 'Test database prepared';
