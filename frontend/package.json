@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@qooxdoo/framework": "^7.8.0",
+    "@qooxdoo/framework": "^7.9.2",
     "jsdoctypeparser": "*"
   },
   "dependencies": {
