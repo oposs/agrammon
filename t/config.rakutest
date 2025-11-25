@@ -18,7 +18,7 @@ my %config-expected = (
         name     => 'agrammon_test',
         host     => 'localhost',
         user     => 'agrammon',
-        password => "agrammonATwork",
+        password => "agrammon",
         version  => '6.0',
     },
     GUI => {

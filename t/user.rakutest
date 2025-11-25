@@ -30,6 +30,7 @@ subtest 'Connect to database' => {
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 }
 
+
 subtest 'Create user' => {
     ok my $user = Agrammon::DB::User.new(
         :username<agtest>,
@@ -45,7 +46,6 @@ subtest 'Create user' => {
     is $user.password,     'XP123456',     'User has correct password';
 
     lives-ok { $user.get-account-key } , 'User gets account key';
-
 }
 
 transactionally {
@@ -107,7 +107,7 @@ transactionally {
         is $new-user.username, $username, "Username is $username";
     }
 
-dd $cfg;
+# dd $cfg;
      my %cfg = (
         guiVariant   => $cfg.gui<variant>,
         modelVariant => $cfg.model<variant>,

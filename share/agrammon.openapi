@@ -56,9 +56,6 @@ paths:
                                 password:
                                     description: Inital password
                                     type: string
-                                key:
-                                    description: Validation key
-                                    type: string
                                 firstname:
                                     description: Firstname
                                     type: string

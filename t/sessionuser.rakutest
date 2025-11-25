@@ -59,10 +59,12 @@ transactionally {
             :organisation<XO>,
             :$password,
         ), 'Create new user';
-        ok $uid = $user.create-account('admin'), "Create account, uid=$uid";
+        ok my $key = $user.create-account('admin'), "Create account, key=$key";
+        ok $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
+
         is $user.username, $username, "Username is $username";
         is $user.role.name, 'admin', "User role is admin";
-        throws-like {$uid = $user.create-account('admin')},
+        throws-like {my $key = $user.create-account('admin')},
                     X::Agrammon::DB::User::Exists, "Cannot create existing account";
     }
 
@@ -94,7 +96,9 @@ sub prepare-test-db {
     STATEMENT
 
     my @ids = $results.arrays.sort;
+    dd @ids;
     if not @ids eqv [[0],[1],[2]] {
+        note "Creating roles";
         my $sth = $db.prepare(q:to/STATEMENT/);
             INSERT INTO role (role_id, role_name)
             VALUES ($1, $2)

@@ -138,7 +138,7 @@ sub frontend-api-routes (Str $schema, $ws) {
         }
         # create account
         operation 'createAccount', -> Agrammon::Web::SessionUser $maybe-user {
-            request-body -> (:$email!, :$password!, Any :$key, :$firstname, :$lastname, :$org, :$language, Any :$role) {
+            request-body -> (:$email!, :$password!, :$firstname, :$lastname, :$org, :$language, Any :$role) {
                 if (not $maybe-user or not $maybe-user.logged-in) {
                     # anonymous user, not logged in
                     my $key = $ws.self-create-account($email, $password, $firstname, $lastname, $org, $language, $role);
@@ -150,7 +150,7 @@ sub frontend-api-routes (Str $schema, $ws) {
                     die X::Agrammon::DB::User::CannotSetRole.new
                         unless not $role or $maybe-user ~~ LoggedInAdmin;
 
-                    my $username = $ws.create-account($email, $password, $firstname, $lastname, $org, $role);
+                    my $username = $ws.create-account($email, $password, $firstname, $lastname, $org, $language, $role);
                     note "Account created for user $email";
                     content 'application/json', { :$username };
                 }
