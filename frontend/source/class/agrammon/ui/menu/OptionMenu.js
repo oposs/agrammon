@@ -67,7 +67,7 @@ qx.Class.define('agrammon.ui.menu.OptionMenu', {
         oldPassword.setPadding(5);
 
         var newPassword1 =
-            new agrammon.ui.form.VarPassword(this.tr("New password (at least 6 characters)"),
+            new agrammon.ui.form.VarPassword(this.tr("New password (at least 8 characters)"),
                                                 '','','');
         this.newPassword1 = newPassword1;
         ibox.add(newPassword1);

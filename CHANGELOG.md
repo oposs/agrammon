@@ -1,3 +1,25 @@
+- 6.6.0, 2025-11-13, fritz.zaucker@oetiker.ch
+
+- 6.5.3, 2025-05-27, fritz.zaucker@oetiker.ch
+
+  - RT 60131: Fix pig default energy_content calculations
+
+- 6.5.2, 2025-05-26, christoph.haenggi@bfh.ch
+
+  - PR 601: Anpassungen Modell
+     - technische Parameter
+     - Modelländerungen unter anderem im Bereich Slurry
+
+- 6.5.2, 2025-05-27, fritz.zaucker@oetiker.ch
+
+  - RT 60131: Fix pig default energy_content calculations
+
+- 6.5.1, 2025-03-31, fritz.zaucker@oetiker.ch
+  - RT 59825: fix self service password reset
+              fix minimum length requirement in GUI
+  - reload on logout
+  - localized activation mails
+ 
 - 6.5.0, 2025-01-17, fritz.zaucker@oetiker.ch
   - RT 59314: defaults for Pig and Fattenpig excretion 
               and protein energy content

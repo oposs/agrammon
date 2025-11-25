@@ -23,7 +23,7 @@ subtest 'Connect to database' => {
         $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
     }
     my $cfg = Agrammon::Config.new;
-    ok $cfg.load($cfg-file), "Load config from file $cfg-file";
+    lives-ok { $cfg.load($cfg-file) }, "Load config from file $cfg-file";
     $conninfo = $cfg.db-conninfo;
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 }
@@ -34,18 +34,18 @@ subtest 'Create user' => {
         :firstname<XF>,
         :lastname<XL>,
         :organisation<XO>,
-        :password<XP>,
+        :password<XP123456>,
     ), 'Create new user';
     is $user.username,     'agtest', 'User has correct username';
     is $user.firstname,    'XF',     'User has correct firstname';
     is $user.lastname,     'XL',     'User has correct lastname';
     is $user.organisation, 'XO',     'User has correct organisation';
-    is $user.password,     'XP',     'User has correct password';
+    is $user.password,     'XP123456', 'User has correct password';
 }
 
 transactionally {
     my $username = 'agtest';
-    my $password = 'XP';
+    my $password = 'XP123456';
     my $uid;
     my $new-user;
 

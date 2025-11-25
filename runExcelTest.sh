@@ -1,4 +1,5 @@
 #! /bin/bash
+export PERL5LIB=Inline/perl5
 raku -Ilib bin/agrammon.raku --cfg-file=etc/agrammon-excel-test.cfg.yaml \
     --export-filename=text.xlsx --format=excel \
     --include-filters --include-all-filters --report-selected=1 \

@@ -30,6 +30,20 @@
   },
   "applications": [
     {
+      "class": "qxl.testtapper.Application",
+      "name": "testtapper",
+      "theme": "qx.theme.Simple",
+      "title": "Qooxdoo TestTAPper",
+      "environment": {
+        "qx.icontheme": "Tango",
+        "qxl.testtapper.testNameSpace": "qx.test"
+      },
+      "include": [
+        "qx.test.*"
+      ],
+      "exclude": []
+    },
+    {
       "name": "agrammon",
       "title": "Agrammon",
       "class": "agrammon.Application",

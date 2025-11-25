@@ -3,7 +3,7 @@
 AUTOMAKE_OPTIONS =  foreign
 
 # SUBDIRS = thirdparty etc frontend
-SUBDIRS = thirdparty frontend
+SUBDIRS = frontend Inline
 
 PUB := $(shell find -L public -type d \( -name ".??*" -o -name transpiled \) -prune -o -not -name "*db.json" -a -not -name "*.map" -a -not -name "*~" -a -not -name transpiled -a -not -name "*.tmp"  -a -type f -print )
 
@@ -17,3 +17,5 @@ PM := $(shell find lib -name "*.pm")
 
 EXTRA_DIST = META6.json README.md VERSION cpanfile COPYRIGHT CHANGELOG.md bootstrap $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) bin lib
 
+deps:
+	zef --debug --/test --deps-only --test-depends install .

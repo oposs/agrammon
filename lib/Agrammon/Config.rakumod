@@ -8,6 +8,7 @@ class Agrammon::Config {
     has %.gui;
     has %.model;
     has %.translations;
+    has $!base-url;
 
     method load(Str $path) {
         my $yaml = slurp($path);
@@ -18,10 +19,15 @@ class Agrammon::Config {
         %!gui          = $config<GUI>;
         %!model        = $config<Model>;
         %!translations = self!get-translations;
+        $!base-url     = $config<GUI><baseUrl>;
     }
 
     method model-path {
         %!model<path>
+    }
+
+    method gui-url {
+        $!base-url;
     }
 
     method gui-variant {
@@ -55,6 +61,7 @@ class Agrammon::Config {
     method db-conninfo {
         return 'dbname='   ~ %!database<name> ~ ' '
              ~ 'host='     ~ %!database<host> ~ ' '
+             ~ 'port='     ~ (%!database<port> // '5432') ~ ' '
              ~ 'user='     ~ %!database<user> ~ ' '
              ~ 'password=' ~ %!database<password>;
     }
