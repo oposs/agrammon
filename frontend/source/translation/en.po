@@ -1,7 +1,3 @@
-#. NO LONGER USED
-msgid ""
-msgstr "Project-Id-Version: 1.0\nReport-Msgid-Bugs-To: you@your.org\nPOT-Creation-Date: 2010-05-13 10:45+0100\nPO-Revision-Date: 2010-05-13 10:45+0100\nLast-Translator: you <you@your.org>\nLanguage-Team: Team <yourteam@your.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n"
-
 #: agrammon/Application.js
 msgid "Agrammon is not supported on Internet Explorer below version 7"
 msgstr ""
@@ -574,14 +570,6 @@ msgstr ""
 msgid "Passwords must be equal."
 msgstr ""
 
-#. NO LONGER USED
-msgid "An activation key will be sent to you by eMail after pressing the button"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Key (sent by eMail)"
-msgstr ""
-
 #: agrammon/module/user/Account.js
 msgid "Login with new account"
 msgstr ""
@@ -608,14 +596,6 @@ msgstr ""
 
 #: agrammon/module/user/Account.js
 msgid "Activate new account"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Enter key below to re-activate your account"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Enter key below to activate your account"
 msgstr ""
 
 #: agrammon/module/user/Account.js
@@ -906,10 +886,6 @@ msgstr ""
 msgid "Help text currently only available in German"
 msgstr ""
 
-#. NO LONGER USED
-msgid "Remember"
-msgstr ""
-
 #: agrammon/module/output/SubmitWindow.js
 msgid "Report submitted successfully."
 msgstr ""
@@ -942,16 +918,8 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
-#. NO LONGER USED
-msgid "Session expired: please login again"
-msgstr ""
-
 #: agrammon/io/remote/Rpc.js
 msgid "Error %1: %2 - please login again"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Datasets of %"
 msgstr ""
 
 #: agrammon/module/dataset/DatasetTool.js
@@ -968,46 +936,6 @@ msgstr ""
 
 #: agrammon/module/dataset/DatasetTable.js
 msgid "No valid lines found in uploaded file."
-msgstr ""
-
-#. NO LONGER USED
-msgid "Validation error"
-msgstr ""
-
-#. NO LONGER USED
-msgid "The following validation errors must be resolved before approval:"
-msgstr ""
-
-#. NO LONGER USED
-msgid "instance"
-msgstr ""
-
-#. NO LONGER USED
-msgid "is mandatory"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Warning"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Some inputs must have changed while you tried to finish the module."
-msgstr ""
-
-#. NO LONGER USED
-msgid "Please reload the module and try again."
-msgstr ""
-
-#. NO LONGER USED
-msgid "storeInput error"
-msgstr ""
-
-#. NO LONGER USED
-msgid "failed"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Error in communication with server"
 msgstr ""
 
 #: agrammon/module/user/Account.js

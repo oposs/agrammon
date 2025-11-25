@@ -570,10 +570,6 @@ msgstr "Passwort neu setzen"
 msgid "Passwords must be equal."
 msgstr "Die Passwort-Eingaben müssen identisch sein."
 
-#. NO LONGER USED
-msgid "Key (sent by eMail)"
-msgstr "Schlüssel (geschickt per eMail)"
-
 #: agrammon/module/user/Account.js
 msgid "Login with new account"
 msgstr "Anmelden mit neuem Konto"
@@ -601,14 +597,6 @@ msgstr "Passwort zurücksetzen"
 #: agrammon/module/user/Account.js
 msgid "Activate new account"
 msgstr "Konto neu aktivieren"
-
-#. NO LONGER USED
-msgid "Enter key below to re-activate your account"
-msgstr "Geben Sie den Schlüssel ein, um Ihr Konto zu re-aktivieren."
-
-#. NO LONGER USED
-msgid "Enter key below to activate your account"
-msgstr "Geben Sie den Schlüssel ein, um Ihr Konto zu aktivieren."
 
 #: agrammon/module/user/Account.js
 msgid "Activate Account"
@@ -898,10 +886,6 @@ msgstr "Gültigkeit der Eingabewerte"
 msgid "Help text currently only available in German"
 msgstr "Hilfe-Text im Moment nur auf Deutsch verfügbar "
 
-#. NO LONGER USED
-msgid "Remember"
-msgstr "Merken"
-
 #: agrammon/Application.js
 msgid "Invalid username or password"
 msgstr "Ungültiger Benutzername oder Passwort"
@@ -934,10 +918,6 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
-#. NO LONGER USED
-msgid "Session expired: please login again"
-msgstr "Sitzung abgelaufen: bitte neu anmelden"
-
 #: agrammon/io/remote/Rpc.js
 msgid "Error %1: %2 - please login again"
 msgstr "Fehler %1: %2 - bitte neu anmelden"
@@ -957,46 +937,6 @@ msgstr "%1: Sitzung abgelaufen, bitte neu anmelden"
 #: agrammon/module/dataset/DatasetTable.js
 msgid "No valid lines found in uploaded file."
 msgstr ""
-
-#. NO LONGER USED
-msgid "Validation error"
-msgstr ""
-
-#. NO LONGER USED
-msgid "The following validation errors must be resolved before approval:"
-msgstr ""
-
-#. NO LONGER USED
-msgid "instance"
-msgstr ""
-
-#. NO LONGER USED
-msgid "is mandatory"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Warning"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Some inputs must have changed while you tried to finish the module."
-msgstr ""
-
-#. NO LONGER USED
-msgid "Please reload the module and try again."
-msgstr ""
-
-#. NO LONGER USED
-msgid "storeInput error"
-msgstr ""
-
-#. NO LONGER USED
-msgid "failed"
-msgstr "fehlgeschlagen"
-
-#. NO LONGER USED
-msgid "Error in communication with server"
-msgstr "Fehler in der Kommunikation mit dem Server"
 
 #: agrammon/module/user/Account.js
 msgid "Password must have at least 8 characters."

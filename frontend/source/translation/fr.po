@@ -1,8 +1,4 @@
 # Automatically generated, 2008.
-#. NO LONGER USED
-msgid ""
-msgstr "Project-Id-Version: bafu-nh 3\nReport-Msgid-Bugs-To: \nPOT-Creation-Date: 2009-02-12 15:52+0100\nPO-Revision-Date: 2008-09-15 20:44+0200\nLast-Translator: Automatically generated\nLanguage-Team: none\nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n > 1);\n"
-
 #: agrammon/Application.js
 msgid "Agrammon is not supported on Internet Explorer below version 7"
 msgstr "Agrammon n'est pas compatible avec une version d'Internet Explorer inférieure à 7"
@@ -371,10 +367,6 @@ msgstr "Annuler"
 msgid "Clear"
 msgstr "Effacer"
 
-#. NO LONGER USED
-msgid "Save config"
-msgstr "Enregistrer"
-
 #: agrammon/module/input/regional/BranchEditor.js
 msgid "Total must be 100%. Now: "
 msgstr "Le total doit être de 100%. Maintenant:"
@@ -410,10 +402,6 @@ msgstr "Nom de l'instance"
 #: agrammon/module/input/regional/ConfigInstance.js
 msgid "Ok"
 msgstr ""
-
-#. NO LONGER USED
-msgid "Graphical Results"
-msgstr "Résultats graphiques"
 
 #: agrammon/module/output/Reports.js
 msgid "Choose table: "
@@ -587,14 +575,6 @@ msgstr "Changer de mot de passe"
 msgid "Passwords must be equal."
 msgstr "Les mots de passe doivent être égaux."
 
-#. NO LONGER USED
-msgid "An activation key will be sent to you by eMail after pressing the button"
-msgstr "Une clé d'activation va vous être envoyée par email en cliquant sur le bouton"
-
-#. NO LONGER USED
-msgid "Key (sent by eMail)"
-msgstr "Clé (envoyée par e-mail)"
-
 #: agrammon/module/user/Account.js
 msgid "Login with new account"
 msgstr "Entrer avec un nouveau compte"
@@ -622,14 +602,6 @@ msgstr "Changer de mot de passe"
 #: agrammon/module/user/Account.js
 msgid "Activate new account"
 msgstr "Activer un nouveau compte"
-
-#. NO LONGER USED
-msgid "Enter key below to re-activate your account"
-msgstr "Entrer la clé ci-dessous pour réactiver votre compte"
-
-#. NO LONGER USED
-msgid "Enter key below to activate your account"
-msgstr "Entrer la clé ci-dessous pour activer votre compte"
 
 #: agrammon/module/user/Account.js
 msgid "Activate Account"
@@ -674,10 +646,6 @@ msgstr "Pour des informations détaillées sur le modèle, veuillez consulter le
 #: agrammon/ui/About.js
 msgid "Implemented by"
 msgstr "Implementé par"
-
-#. NO LONGER USED
-msgid "ViewerIframe.__load(): could not load document %1"
-msgstr "ViewerIframe.__load(): impossible de charger le document% 1"
 
 #: agrammon/ui/dialog/Comment.js
 msgid "Save comment"
@@ -931,10 +899,6 @@ msgstr ""
 msgid "Error %1: %2 - please login again"
 msgstr ""
 
-#. NO LONGER USED
-msgid "Remember"
-msgstr ""
-
 #: agrammon/module/input/PropTable.js
 msgid "Default"
 msgstr ""
@@ -975,46 +939,6 @@ msgstr ""
 msgid "No valid lines found in uploaded file."
 msgstr ""
 
-#. NO LONGER USED
-msgid "Validation error"
-msgstr ""
-
-#. NO LONGER USED
-msgid "The following validation errors must be resolved before approval:"
-msgstr ""
-
-#. NO LONGER USED
-msgid "instance"
-msgstr ""
-
-#. NO LONGER USED
-msgid "is mandatory"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Warning"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Some inputs must have changed while you tried to finish the module."
-msgstr ""
-
-#. NO LONGER USED
-msgid "Please reload the module and try again."
-msgstr ""
-
-#. NO LONGER USED
-msgid "storeInput error"
-msgstr ""
-
-#. NO LONGER USED
-msgid "failed"
-msgstr ""
-
-#. NO LONGER USED
-msgid "Error in communication with server"
-msgstr ""
-
 #: agrammon/module/user/Account.js
 msgid "Password must have at least 8 characters."
 msgstr ""
@@ -1037,8 +961,4 @@ msgstr ""
 
 #: agrammon/module/user/SelfService.js
 msgid "A confirmation link will be sent to you by eMail."
-msgstr ""
-
-#. NO LONGER USED
-msgid "New password (at least 6 characters)"
 msgstr ""
