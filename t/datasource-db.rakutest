@@ -4,10 +4,10 @@ use Agrammon::DataSource::DB;
 use DB::Pg;
 use Test;
 
-plan 21;
+use lib 't/lib';
+use AgrammonTest;
 
-note "FIX: get Agrammon6Testing dataset";
-skip-rest "Dataset Agrammon6Testing missing"; exit;
+plan 21;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -391,11 +391,4 @@ sub prepare-test-db-schema($db, $user) {
     STATEMENT
 }
 
-
-sub transactionally(&test) {
-    my $*AGRAMMON-DB-HANDLE = my $db = $*AGRAMMON-DB-CONNECTION.db;
-    $db.begin;
-    test($db);
-    $db.finish;
-}
-
+done-testing;

@@ -15,6 +15,7 @@ Database:
     version: '6.0'
 
 GUI:
+    baseUrl: https://model.agrammon.ch/single/test
     variant: Single
     title:
         de: AGRAMMON 6.0 Einzelbetriebsmodell

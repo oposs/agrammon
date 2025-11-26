@@ -334,7 +334,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                 SQL
                 CATCH {
                     # other DB failure
-                    .note;    
+                    .note;
                     die X::Agrammon::DB::Dataset::RemoveTagFailed.new(:$tag-name);
                 }
             }

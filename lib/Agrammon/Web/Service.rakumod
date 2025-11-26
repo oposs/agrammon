@@ -454,7 +454,6 @@ class Agrammon::Web::Service {
             :$firstname, :$lastname,
             :organisation($org)
         ).self-create-account($role);
-        # note "Account created for $email: activation key=$key";
         if not %*ENV<AGRAMMON_TESTING> {
             my $subject = "Agrammon account activation";
             # start link on new line to avoid . at beginning of second line
@@ -487,10 +486,8 @@ class Agrammon::Web::Service {
     }
 
     method activate-account($key) {
-        # note "Service: Activating account with key $key";
         my $username= Agrammon::DB::User.new.activate-account($key);
         if $username {
-            note "Service: account $username activated with key $key";
             return $!cfg.gui-url;
         }
         return;
