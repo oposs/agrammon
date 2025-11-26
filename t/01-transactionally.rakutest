@@ -1,7 +1,6 @@
 use v6;
 use Agrammon::Config;
 use Agrammon::DB::User;
-# use Agrammon::Web::SessionUser;
 use DB::Pg;
 use Test;
 
@@ -50,8 +49,7 @@ done-testing;
 
 
 sub transactionally(&test) {
-    my $db;
-    my $*AGRAMMON-DB-HANDLE = $db = $*AGRAMMON-DB-CONNECTION.db;
+    my $*AGRAMMON-DB-HANDLE = my $db = $*AGRAMMON-DB-CONNECTION.db;
     $db.begin;
     test($db);
     $db.finish;

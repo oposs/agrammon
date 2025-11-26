@@ -217,7 +217,6 @@ class Agrammon::DB::User does Agrammon::DB {
             SQL
 
             $!username = $ret.value if $ret.rows;
-            note "Account activated for $!username";
         }
         self.load if $!username;
         return self;
