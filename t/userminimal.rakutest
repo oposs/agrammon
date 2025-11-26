@@ -1,0 +1,58 @@
+use v6;
+use Agrammon::Config;
+use Agrammon::DB::User;
+# use Agrammon::Web::SessionUser;
+use DB::Pg;
+use Test;
+
+plan 2;
+
+if %*ENV<AGRAMMON_UNIT_TEST> {
+    skip-rest 'Not a unit test';
+    exit;
+}
+
+my $*AGRAMMON-DB-CONNECTION;
+my $cfg;
+
+subtest 'Connect to database' => {
+    my $conninfo;
+    my $cfg-file;
+    $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
+    $cfg = Agrammon::Config.new;
+    lives-ok { $cfg.load($cfg-file) }, "Load config from file $cfg-file";
+    $conninfo = $cfg.db-conninfo;
+    ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
+}
+
+
+transactionally {
+
+    my $username  = 'agtest';
+    my $password = 'XP123456';
+    my ($uid, $key);
+
+    subtest 'create-account()' => {
+        ok my $user = Agrammon::DB::User.new(
+            :$username,
+            :firstname<XF>,
+            :lastname<XL>,
+            :organisation<XO>,
+            :$password,
+        ), 'Create new admin account';
+        ok $key = $user.create-account('admin'), "Create account";
+        ok $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
+    }
+
+}
+
+done-testing;
+
+
+sub transactionally(&test) {
+    my $db;
+    my $*AGRAMMON-DB-HANDLE = $db = $*AGRAMMON-DB-CONNECTION.db;
+    $db.begin;
+    test($db);
+    $db.finish;
+}
