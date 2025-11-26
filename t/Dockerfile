@@ -12,6 +12,7 @@ ENV POSTGRES_PASSWORD=postgres
 # 01-init-roles.sh will run before 02-agrammon_test.dump.sql
 COPY init-roles.sh /docker-entrypoint-initdb.d/01-init-roles.sh
 COPY test-data/agrammon.schema.sql /docker-entrypoint-initdb.d/02-agrammon.schema.sql
+COPY test-data/agrammon.test.sql /docker-entrypoint-initdb.d/03-agrammon.test.sql
 
 # Make sure the init script is executable
 RUN chmod +x /docker-entrypoint-initdb.d/01-init-roles.sh
