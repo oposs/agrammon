@@ -26,7 +26,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: agrammon_test
         ports:
-          - 5432:5432
+          - 55432:5432
         options:
           --health-cmd pg_isready
           --health-interval 10s
@@ -77,17 +77,21 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: agrammon_test
           PGPASSFILE: ./dev/pgpass
-          AGRAMMON_DUMP: ./t/test-data/agrammon_test.dump.sql
+          AGRAMMON_DB: agrammon_test
+          AGRAMMON_OWNER: agrammon
+          AGRAMMON_GROUP: agrammon_user
+          AGRAMMON_SCHEMA: ./t/test-data/agrammon.schema.sql
+          AGRAMMON_TEST_DATA: ./t/test-data/agrammon.test.sql
         run: |
           chmod 0600 $PGPASSFILE
-          psql -U postgres -h localhost -c "CREATE USER agrammon PASSWORD 'agrammonATwork'" > /dev/null
-          psql -U postgres -h localhost -c "CREATE GROUP agrammon_user USER agrammon"       > /dev/null
-          psql -U postgres -h localhost -c "GRANT ALL ON SCHEMA public TO agrammon_user"    > /dev/null
-          psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" agrammon_test        > /dev/null
-          psql -U postgres -h localhost --file=$AGRAMMON_DUMP $POSTGRES_DB                  > /dev/null
+          psql -U postgres -h localhost -c "CREATE USER $AGRAMMON_OWNER PASSWORD 'agrammon'"   > /dev/null
+          psql -U postgres -h localhost -c "CREATE GROUP $AGRAMMON_GROUP USER $AGRAMMON_OWNER" > /dev/null
+          psql -U postgres -h localhost -c "GRANT ALL ON SCHEMA public TO $AGRAMMON_GROUP"     > /dev/null
+          psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" $AGRAMMON_DB            > /dev/null
+          psql -U postgres -h localhost --file=$AGRAMMON_SCHEMA $AGRAMMON_DB                   > /dev/null
+          psql -U postgres -h localhost --file=$AGRAMMON_TEST_DATA $AGRAMMON_DB                > /dev/null
 
       - name: Run backend tests
         run: |
-          RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
+          PERL5LIB=Inline/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
