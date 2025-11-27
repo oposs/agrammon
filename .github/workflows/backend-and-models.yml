@@ -53,9 +53,9 @@ jobs:
           psql -U $POSTGRES_USER  -h localhost --port 55432 -c "CREATE USER $AGRAMMON_OWNER PASSWORD 'agrammon'"    > /dev/null
           psql -U $POSTGRES_USER  -h localhost --port 55432 -c "CREATE GROUP $AGRAMMON_GROUP USER $AGRAMMON_OWNER"  > /dev/null
           psql -U $POSTGRES_USER  -h localhost --port 55432 -c "GRANT ALL ON SCHEMA public TO $AGRAMMON_GROUP"      > /dev/null
-          psql -U $POSTGRES_USER  -h localhost --port 55432 -c "ALTER DATABASE $AGRAMMON_DB OWNER TO $AGRAMMON_OWNER"  > /dev/null
-          psql -U $POSTGRES_USER  -h localhost --port 55432 -c "GRANT ALL ON $AGRAMMON_DB TO $AGRAMMON_OWNER"       > /dev/null
+          # psql -U $POSTGRES_USER  -h localhost --port 55432 -c "ALTER DATABASE $AGRAMMON_DB OWNER TO $AGRAMMON_OWNER"  > /dev/null
           psql -U $POSTGRES_USER  -h localhost --port 55432 -c "CREATE EXTENSION pgcrypto" $AGRAMMON_DB             > /dev/null
+          psql -U $POSTGRES_USER  -h localhost --port 55432 -c "GRANT ALL ON $AGRAMMON_DB TO $AGRAMMON_OWNER"       > /dev/null
           psql -U $AGRAMMON_OWNER -h localhost --port 55432 --file=$AGRAMMON_SCHEMA $AGRAMMON_DB                    > /dev/null
           psql -U $AGRAMMON_OWNER -h localhost --port 55432 --file=$AGRAMMON_TEST_DATA $AGRAMMON_DB                 > /dev/null
 
