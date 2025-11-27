@@ -34,6 +34,9 @@ jobs:
           --health-retries 5
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
       - name: Load test database
         env:
           POSTGRES_USER: postgres
@@ -60,9 +63,6 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get install libperl-dev texlive texlive-luatex texlive-latex-recommended texlive-latex-extra texlive-science
-
-      - name: Checkout repo
-        uses: actions/checkout@v2
 
       - name: Setup Perl modules cache
         uses: actions/cache@v4
