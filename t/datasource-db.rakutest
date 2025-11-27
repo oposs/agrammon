@@ -385,10 +385,10 @@ sub prepare-test-db-schema($db, $user) {
        AS 'SELECT dataset_id FROM dataset WHERE dataset_name = $2 AND dataset_pers = pers_email2id($1)' STABLE LANGUAGE 'sql'
     STATEMENT
 
-    $db.query(q:to/STATEMENT/, $user);
-    INSERT INTO pers (pers_email, pers_first, pers_last, pers_password)
-         VALUES ($1, 'X', 'X', 'X')
-    STATEMENT
+#     $db.query(q:to/STATEMENT/, $user);
+#     INSERT INTO pers (pers_email, pers_first, pers_last, pers_password)
+#          VALUES ($1, 'X', 'X', 'X')
+#     STATEMENT
 }
 
 done-testing;
