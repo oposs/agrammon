@@ -85,12 +85,12 @@ jobs:
           AGRAMMON_TEST_DATA: ./t/test-data/agrammon.test.sql
         run: |
           chmod 0600 $PGPASSFILE
-          psql -U postgres -h localhost -c "CREATE USER $AGRAMMON_OWNER PASSWORD 'agrammon'"   > /dev/null
-          psql -U postgres -h localhost -c "CREATE GROUP $AGRAMMON_GROUP USER $AGRAMMON_OWNER" > /dev/null
-          psql -U postgres -h localhost -c "GRANT ALL ON SCHEMA public TO $AGRAMMON_GROUP"     > /dev/null
-          psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" $AGRAMMON_DB            > /dev/null
-          psql -U postgres -h localhost --file=$AGRAMMON_SCHEMA $AGRAMMON_DB                   > /dev/null
-          psql -U postgres -h localhost --file=$AGRAMMON_TEST_DATA $AGRAMMON_DB                > /dev/null
+          psql -U postgres -h localhost --port 55432 -c "CREATE USER $AGRAMMON_OWNER PASSWORD 'agrammon'"   > /dev/null
+          psql -U postgres -h localhost --port 55432 -c "CREATE GROUP $AGRAMMON_GROUP USER $AGRAMMON_OWNER" > /dev/null
+          psql -U postgres -h localhost --port 55432 -c "GRANT ALL ON SCHEMA public TO $AGRAMMON_GROUP"     > /dev/null
+          psql -U postgres -h localhost --port 55432 -c "CREATE EXTENSION pgcrypto" $AGRAMMON_DB            > /dev/null
+          psql -U postgres -h localhost --port 55432 --file=$AGRAMMON_SCHEMA $AGRAMMON_DB                   > /dev/null
+          psql -U postgres -h localhost --port 55432 --file=$AGRAMMON_TEST_DATA $AGRAMMON_DB                > /dev/null
 
       - name: Run backend tests
         run: |
