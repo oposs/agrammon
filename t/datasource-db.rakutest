@@ -208,7 +208,7 @@ transactionally {
 sub prepare-test-db-single-data($user, $dataset, %variant) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
-    prepare-test-db-schema($db, $user);
+#     prepare-test-db-schema($db);
 
     my $userId = $db.query(q:to/STATEMENT/, $user).value;
     SELECT pers_email2id($1)
@@ -239,7 +239,7 @@ sub prepare-test-db-single-data($user, $dataset, %variant) {
 sub prepare-test-db-flattened-data($user, $dataset, %variant) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
-    prepare-test-db-schema($db, $user);
+#     prepare-test-db-schema($db);
 
     my $userId = $db.query(q:to/STATEMENT/, $user).value;
     SELECT pers_email2id($1)
@@ -284,7 +284,7 @@ sub prepare-test-db-flattened-data($user, $dataset, %variant) {
 sub prepare-test-db-branched-data($user, $dataset, %variant) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
-    prepare-test-db-schema($db, $user);
+#     prepare-test-db-schema($db);
 
     my $userId = $db.query(q:to/STATEMENT/, $user).value;
     SELECT pers_email2id($1)
@@ -333,7 +333,7 @@ sub prepare-test-db-branched-data($user, $dataset, %variant) {
     $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSubA::simple', 101);
 }
 
-sub prepare-test-db-schema($db, $user) {
+sub prepare-test-db-schema($db) {
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS pers (
         pers_id       SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
@@ -384,11 +384,6 @@ sub prepare-test-db-schema($db, $user) {
     CREATE OR REPLACE FUNCTION dataset_name2id(USERNAME text, NAME text) returns int4
        AS 'SELECT dataset_id FROM dataset WHERE dataset_name = $2 AND dataset_pers = pers_email2id($1)' STABLE LANGUAGE 'sql'
     STATEMENT
-
-#     $db.query(q:to/STATEMENT/, $user);
-#     INSERT INTO pers (pers_email, pers_first, pers_last, pers_password)
-#          VALUES ($1, 'X', 'X', 'X')
-#     STATEMENT
 }
 
 done-testing;
