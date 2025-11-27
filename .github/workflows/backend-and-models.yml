@@ -110,5 +110,5 @@ jobs:
       - name: Run backend tests
         run: |
           # PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
-          # PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/dataset.rakutest
+          PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/pdf.rakutest
           PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/datasource-db.rakutest
