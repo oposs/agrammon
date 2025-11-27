@@ -14,8 +14,9 @@ jobs:
       matrix:
         os:
           - ubuntu-22.04
+          - ubuntu-24.04
         raku-version:
-          - '2025.01'
+          - '2025.11'
     runs-on: ${{ matrix.os }}
 
     services:
@@ -26,7 +27,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: agrammon_test
         ports:
-          - 5432:5432
+          - 55432:5432
         options:
           --health-cmd pg_isready
           --health-interval 10s
@@ -34,13 +35,55 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Install LaTeX
-        run: |
-          sudo apt update
-          sudo apt-get install texlive texlive-luatex texlive-latex-recommended texlive-latex-extra texlive-science
-
+      # Checkout repository first as we need dev/pgpass for PostgreSQL access
       - name: Checkout repo
         uses: actions/checkout@v2
+
+      - name: Load test database
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          PGPASSFILE: ./dev/pgpass
+          POSTGRES_DB: postgres
+          AGRAMMON_DB: agrammon_test
+          AGRAMMON_OWNER: agrammon
+          AGRAMMON_GROUP: agrammon_user
+          AGRAMMON_SCHEMA: ./t/test-data/agrammon.schema.sql
+          AGRAMMON_TEST_DATA: ./t/test-data/agrammon.test.sql
+        run: |
+          chmod 0600 $PGPASSFILE
+          psql -U $POSTGRES_USER  -h localhost --port 55432 -c "CREATE USER $AGRAMMON_OWNER PASSWORD 'agrammon'"    > /dev/null
+          psql -U $POSTGRES_USER  -h localhost --port 55432 -c "CREATE GROUP $AGRAMMON_GROUP USER $AGRAMMON_OWNER"  > /dev/null
+          psql -U $POSTGRES_USER  -h localhost --port 55432 -c "ALTER DATABASE $AGRAMMON_DB OWNER TO $AGRAMMON_OWNER" > /dev/null
+          psql -U $AGRAMMON_OWNER -h localhost --port 55432 --file=$AGRAMMON_SCHEMA $AGRAMMON_DB                    > /dev/null
+          psql -U $AGRAMMON_OWNER -h localhost --port 55432 --file=$AGRAMMON_TEST_DATA $AGRAMMON_DB                 > /dev/null
+
+      - name: Setup apt cache
+        uses: actions/cache@v4
+        id: aptCache
+        with:
+          path: |
+            /var/cache/apt/archives
+            /var/lib/apt/lists
+          key: ${{ matrix.os }}-apt-${{ hashFiles('.github/workflows/backend-and-models.yml') }}
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt-get install -y libperl-dev texlive texlive-luatex texlive-latex-recommended texlive-science texlive-latex-extra
+
+      - name: Setup Perl modules cache
+        uses: actions/cache@v4
+        id: perlCache
+        with:
+          path: Inline/perl5
+          key: ${{ matrix.os }}-perl-${{ hashFiles('**/cpanfile', '**/cpanfile.snapshot') }}-excel-writer-xlsx-v1
+
+      - name: Install Perl modules
+        if: steps.perlCache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get install -y cpanminus
+          cpanm --notest --local-lib=Inline/perl5 Excel::Writer::XLSX
 
       - name: Setup raku
         uses: Raku/setup-raku@v1
@@ -52,7 +95,7 @@ jobs:
         id: rakuCache
         with:
           path: .raku
-          key: ${{ runner.os }}-${{ matrix.raku-version }}-${{ hashFiles('./dev/META6.json') }}
+          key: ${{ matrix.os }}-${{ matrix.raku-version }}-${{ hashFiles('./dev/META6.json') }}
 
       - name: Install Raku modules
         if: steps.rakuCache.outputs.cache-hit != 'true'
@@ -65,6 +108,7 @@ jobs:
           find  t/test-data/Models/hr-inclNOx* -type f -print0 | sort -z | xargs -0 shasum > ./MODEL_MD5
           cat ./MODEL_MD5
           mkdir -p $HOME/.agrammon
+          touch $HOME/.agrammon/.gitkeep
 
       - name: Setup model cache
         uses: actions/cache@v4
@@ -73,21 +117,7 @@ jobs:
           path: $HOME/.agrammon
           key: AgrammonModels-${{ hashFiles('./MODEL_MD5') }}
 
-      - name: Load test database
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: agrammon_test
-          PGPASSFILE: ./dev/pgpass
-          AGRAMMON_DUMP: ./t/test-data/agrammon_test.dump.sql
-        run: |
-          chmod 0600 $PGPASSFILE
-          psql -U postgres -h localhost -c "CREATE USER agrammon PASSWORD 'agrammonATwork'" > /dev/null
-          psql -U postgres -h localhost -c "CREATE GROUP agrammon_user USER agrammon"       > /dev/null
-          psql -U postgres -h localhost -c "GRANT ALL ON SCHEMA public TO agrammon_user"    > /dev/null
-          psql -U postgres -h localhost -c "CREATE EXTENSION pgcrypto" agrammon_test        > /dev/null
-          psql -U postgres -h localhost --file=$AGRAMMON_DUMP $POSTGRES_DB                  > /dev/null
-
       - name: Run backend tests
         run: |
-          RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
+          PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
+          # PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/datasource-db.rakutest
