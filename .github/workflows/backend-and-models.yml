@@ -42,6 +42,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
+      - name: Install Perl modules
+        run: |
+          sudo apt-get install -y cpanminus
+          cpanm --notest --local-lib=Inline/perl5 Excel::Writer::XLSX
+
       - name: Setup raku
         uses: Raku/setup-raku@v1
         with:
