@@ -10,14 +10,17 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 15;
+plan 16;
 
 # routing tests related to application logic
 
 sub make-fake-auth($role) {
     mocked(
         Agrammon::Web::SessionUser,
-        returning => { :id(42), :logged-in, :username('username'), :$role }
+        returning => { :id(42), :logged-in, :username('username'), :$role },
+        overriding => {
+            logout => -> { Nil }
+        }
     )
 }
 
@@ -26,9 +29,10 @@ my $fake-auth = make-fake-auth($role);
 
 my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
-        get-cfg => %( :title('Agrammon'), :version('SHL') ),
     },
     overriding => {
+        get-cfg => -> { %( :title('Agrammon'), :version('SHL'), :baseUrl('/') ) },
+        logout  => %( :role("user"), :sudoUser(Any), :username("username")),
         get-input-variables => {
             %(
                 inputs  => [
@@ -44,7 +48,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
             %( :variable('x'), :value(2) )
         },
         get-excel-export => -> $user, %params {
-            Spreadsheet::XLSX.new;
+            Buf.new(0x50, 0x4b, 0x03, 0x04);  # Mock Excel file (starts with PK zip signature)
         },
         delete-instance => -> $user, $dataset-name, $instance, $pattern {
         },
@@ -69,7 +73,7 @@ subtest 'Get configuration without login' => {
     test-service routes($fake-store), {
         test post('/get_cfg'),
             status => 200,
-            json => { title => 'Agrammon', version => 'SHL' };
+            json => { title => 'Agrammon', version => 'SHL', baseUrl => '/' };
         check-mock $fake-store,
             *.called('get-cfg', times => 1);
     }
@@ -79,7 +83,7 @@ subtest 'Get configuration with login' => {
     test-service routes($fake-store), :$fake-auth, {
         test post('/get_cfg'),
             status => 200,
-            json => { title => 'Agrammon', version => 'SHL' };
+            json => { title => 'Agrammon', version => 'SHL', baseUrl => '/' };
         check-mock $fake-store,
             *.called('get-cfg', times => 2);
     }
@@ -251,9 +255,25 @@ subtest 'Order instances' => {
 
 subtest 'Logout' => {
     test-service routes($fake-store), :$fake-auth, {
+        test post('/logout', :!follow),
+                status => 303;  # redirect see-other
+    }
+}
+
+subtest 'Sudo logout' => {
+    # Create a fake auth that simulates a sudo session
+    my $fake-sudo-auth = mocked(
+        Agrammon::Web::SessionUser,
+        returning => { :id(42), :logged-in, :username('admin'), :$role },
+        overriding => {
+            logout => -> { 'impersonated-user' }  # Returns the username that was being impersonated
+        }
+    );
+
+    test-service routes($fake-store), fake-auth => $fake-sudo-auth, {
         test post('/logout'),
                 status => 200,
-                json   => { :username('username'), :role('user'),  :sudoUser(Any) }
+                json   => { :username('admin'), :role('user'), :sudoUser('impersonated-user') }
     }
 }
 

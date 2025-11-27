@@ -29,12 +29,13 @@ subtest 'Connect to database' => {
         $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
     }
     my $cfg = Agrammon::Config.new;
-    ok $cfg.load($cfg-file), "Load config from file $cfg-file";
+    lives-ok { $cfg.load($cfg-file) }, "Load config from file $cfg-file";
     $conninfo = $cfg.db-conninfo;
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(:$conninfo), 'Create DB::Pg object';
 }
 
 my $user;
+
 subtest 'Create user' => {
     plan 2;
     ok $user = Agrammon::DB::User.new(
@@ -72,7 +73,6 @@ subtest 'Create dataset' => {
     is $dataset.tags.elems,  0,            'User has 0 tags';
 }
 
-
 transactionally {
     my $dataset-name = 'agtest';
     my $password = 'XP123456';
@@ -82,7 +82,7 @@ transactionally {
     my $dataset-id;
 
     subtest 'create-account()' => {
-        plan 2;
+        plan 3;
         ok $user = Agrammon::DB::User.new(
                 :username<agtest>,
                 :firstname<XF>,

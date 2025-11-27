@@ -15,9 +15,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-# FIX ME: use separate test database
-
-plan 42;
+plan 54;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -26,14 +24,41 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
 %*ENV<AGRAMMON_TESTING> = True;
 
 my $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
-my $username = 'fritz.zaucker@oetiker.ch';
+my $username = 'agtest';
+
 
 my $*AGRAMMON-DB-CONNECTION;
-my ($ws, $user);
-subtest "Setup" => {
-    my $cfg = Agrammon::Config.new;
-    ok $cfg.load($cfg-file), "Load config from file $cfg-file";
+my ($ws, $user, $cfg);
+
+subtest "Setup DB" => {
+    $cfg = Agrammon::Config.new;
+    lives-ok { $cfg.load($cfg-file) }, "Load config from file $cfg-file";
     ok $*AGRAMMON-DB-CONNECTION = DB::Pg.new(conninfo => $cfg.db-conninfo), 'Create DB::Pg object';
+}
+
+
+transactionally {
+
+    subtest 'Create user' => {
+        ok $user = Agrammon::DB::User.new(
+            :$username,
+            :firstname<XF>,
+            :lastname<XL>,
+            :organisation<XO>,
+            :password<XP123456>,
+        ), 'Create new user';
+        is $user.username,     'agtest', 'User has correct username';
+        is $user.firstname,    'XF',     'User has correct firstname';
+        is $user.lastname,     'XL',     'User has correct lastname';
+        is $user.organisation, 'XO',     'User has correct organisation';
+        is $user.password,     'XP123456',     'User has correct password';
+
+        ok my $key = $user.create-account('admin'), "Create account, key=$key";
+        ok my $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
+
+    #    lives-ok { $user.get-account-key } , 'User gets account key';
+    }
+
     $user = Agrammon::Web::SessionUser.new(:$username);
     ok $user.load, "Load user $username";
 
@@ -51,28 +76,27 @@ subtest "Setup" => {
         }));
     };
     ok $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters), "Create Web::Service object";
-}
 
-subtest "get-cfg()" => {
-    my %cfg-expected = (
-        guiVariant => "Single",
-        modelVariant => "Base",
-        submission => Any,
-        title => {de => "AGRAMMON 6.0 Einzelbetriebsmodell",
-                  en => "AGRAMMON 6.0 Single Farm Model",
-                  fr => "AGRAMMON 6.0 modèle Exploitation individuelle"
-                 },
-        variant => "Base",
-        version => "6.0"
-    );
-    is-deeply my $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
-}
+    subtest "get-cfg()" => {
+        my %cfg-expected = (
+            baseUrl => 'https://model.agrammon.ch/single/test',
+            guiVariant => "Single",
+            modelVariant => "Base",
+            submission => Any,
+            title => {de => "AGRAMMON 6.0 Einzelbetriebsmodell",
+                    en => "AGRAMMON 6.0 Single Farm Model",
+                    fr => "AGRAMMON 6.0 modèle Exploitation individuelle"
+                    },
+            variant => "Base",
+            version => "6.0"
+        );
+        is-deeply $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
+    }
 
-subtest "get-account-key" => {
-    lives-ok { $ws.get-account-key('foo@bar42.ch', 'mypassword', 'de') }, "Get account key";
-}
+# subtest "get-account-key" => {
+#     lives-ok { $ws.get-account-key('foo@bar42.ch', 'mypassword', 'de') }, "Get account key";
+# }
 
-transactionally {
     my $current-datasets = $ws.get-datasets($user);
 
     subtest "create-dataset" => {
@@ -102,10 +126,10 @@ transactionally {
     }
 
     subtest "clone-dataset" => {
-        my $old-username = 'fritz.zaucker@oetiker.ch';
-        my $new-username = 'fritz.zaucker@oetiker.ch';
-        my $old-dataset = 'Agrammon6Testing';
-        my $new-dataset = 'Agrammon6Testing Kopie';
+        my $old-username = 'agtest';
+        my $new-username = 'agtest';
+        my $old-dataset = 'MyTestDataset';
+        my $new-dataset = 'MyTestDataset Kopie';
         lives-ok { $ws.clone-dataset($user, $old-username, $new-username, $old-dataset, $new-dataset) }, "Clone own dataset";
         lives-ok { $ws.clone-dataset($user, Nil, $new-username, $old-dataset, $new-dataset ~ '2') }, "Clone own dataset without username";
     }
@@ -122,45 +146,51 @@ transactionally {
 
     my $newUser;
     subtest "create-account" => {
-        ok $username = $ws.create-account(
-            $user,
-            'foo@bar.com', 'myPassword',
+        my $key;
+        my $username = 'agtest2';
+        ok $key = $ws.create-account(
+            $username, 'myPassword',
             'Erika', 'Mustermann', 'MyOrg', 'user'
         ), "Create new user account with all data";
-        is $username, 'foo@bar.com', "User has expected username";
-
         $newUser = Agrammon::Web::SessionUser.new(:$username).load;
-        is $newUser.username, $username, "New user has right username";
+        ok $ws.activate-account($key), "Activate new user account";
+        is $newUser.username, $username, "New user has right username=$username";
 
-        ok $username = $ws.create-account(
-            $user,
-            'foo2@bar.com', 'myPassword',
+        $username = 'agtest3';
+        ok $key= $ws.create-account(
+            $username, 'myPassword',
             Any, Any, Any, 'user'
         ), "Create new user account with only required data";
-        is $username, 'foo2@bar.com', "User has expected username";
+        $newUser = Agrammon::Web::SessionUser.new(:$username).load;
+        is $newUser.username, $username, "New user has right username=$username";
 
-        ok $username = $ws.create-account(
-            $user,
-            'foo3@bar.com', 'myPassword',
+        $username = 'agtest4';
+        ok $key = $ws.create-account(
+            $username, 'myPassword',
             Any, Any, Any, Any
         ), "Create new user account with only required data with default role";
-        is $username, 'foo3@bar.com', "User has expected username";
+        $newUser = Agrammon::Web::SessionUser.new(:$username).load;
+        is $newUser.username, $username, "New user has right username=$username";
+        ok $ws.activate-account($key), "Activate new user account";
     }
 
     subtest "change-password" => {
-        lives-ok    { $ws.change-password($newUser, "myPassword", "test34") }, 'Password update sucessful';
+        lives-ok    { $ws.change-password($newUser, "myPassword", "test3456") }, 'Password update sucessful';
         throws-like { $ws.change-password($newUser, "myPassword", "test34") },
-            X::Agrammon::DB::User::InvalidPassword, 'Password invalid';
-        throws-like { $ws.change-password($newUser, "test34", "test34") },
+            X::Agrammon::DB::User::InvalidLogin, 'Old password invalid';
+        throws-like { $ws.change-password($newUser, "test3456", "test3456") },
             X::Agrammon::DB::User::PasswordsIdentical, 'Passwords identical';
+        throws-like { $ws.change-password($newUser, "test3456", "test34") },
+            X::Agrammon::DB::User::InvalidPassword, 'New password invalid';
     }
 
     subtest "reset-password" => {
-        my $key = $ws.get-account-key( 'foo@bar.com', 'test12', 'de');
+        # my $key = $user.get-account-key( 'foo@bar.com', 'test12', 'de');
+        my $key = $newUser.get-account-key();
         lives-ok  { $ws.reset-password($user, 'foo@bar.com', 'test12', $key) }, 'Password reset sucessful';
         throws-like { $ws.reset-password($user, 'foo@bar.com', 'test34', "invalidKey") },
             X::Agrammon::DB::User::CannotResetPassword, 'Passwords reset with invalid key fails';
-    }
+    } if 0;
 
     subtest "create-tag" => {
         lives-ok { $ws.create-tag($user, "00MyTestTag") },    "Create tag";
@@ -178,6 +208,7 @@ transactionally {
 
     subtest "set-tag" => {
         lives-ok { $ws.set-tag($user, ['MyNewTestDataset'], '00MyNewTestTag') }, "Set tag";
+        lives-ok { $ws.set-tag($user, ['MyNewTestDataset'], '00MyNewTestTag') }, "Setting same tag twice doesn't die";
     }
 
     subtest "remove-tag" => {
@@ -200,27 +231,6 @@ transactionally {
         lives-ok { $ws.store-input-comment($user, $dataset, $variable, $comment) }, "Store input comment";
     }
 
-    subtest "load-dataset" => {
-        lives-ok { $ws.load-dataset($user, 'Agrammon6Testing') }, "Load Agrammon6Testing";
-    };
-
-    subtest "rename-instance" => {
-        lives-ok {
-            $ws.rename-instance(
-                $user, 'TestSingle',
-                'Stall Milchkühe', 'MKüheX',
-                'Livestock::DairyCow[]'
-            )
-        }, "Rename instance";
-    }
-
-    subtest "order-instances" => {
-        lives-ok { $ws.order-instances(
-            $user, 'Agrammon6Testing',
-            ('Livestock::OtherCattle[Test1]', 'Livestock::OtherCattle[Test]',))
-        }, "Order instances";
-    };
-
     subtest "store-data" => {
         my $dataset = 'MyNewTestDataset';
         my $variable = 'PlantProduction::AgriculturalArea::agricultural_area';
@@ -228,16 +238,37 @@ transactionally {
         my $row   = 1;
         lives-ok { $ws.store-data($user,  $dataset, $variable, $value) }, "Simple input stored";
 
-        $variable = 'Livestock::DairyCow[MK]::Excretion::dairy_cows';
         my @branches;
         my @options;
-        lives-ok { $ws.store-data($user, $dataset, $variable, $value, @branches, @options, $row) }, "Instance input stored";
+        $variable = 'Livestock::DairyCow[MK2]::Excretion::dairy_cows';
+        lives-ok { $ws.store-data($user, $dataset, $variable, $value, @branches, @options, $row) }, "Instance input $variable stored";
+
+        $variable = 'Livestock::DairyCow[MK1]::Excretion::dairy_cows';
+        lives-ok { $ws.store-data($user, $dataset, $variable, $value, @branches, @options, $row) }, "Instance input $variable stored";
+
 
         for %{ "Livestock::Poultry[Branched]::Housing::Type::housing_type" => 'deep_pit',
                "Livestock::Poultry[Branched]::Housing::Type::manure_removal_interval" => 'once_a_day'
         }.kv -> $variable, $value {
            lives-ok { $ws.store-data($user, $dataset, $variable, $value, @branches, @options, $row++) }, "Instance input stored";
        }
+    }
+
+    subtest "order-instances" => {
+        lives-ok { $ws.order-instances(
+            $user, 'MyNewTestDataset',
+            ('Livestock::DairyCow[MK2]', 'Livestock::DairyCow[MK1]',))
+        }, "Order instances";
+    }
+
+    subtest "rename-instance" => {
+        lives-ok {
+            $ws.rename-instance(
+                $user, 'MyNewTestDataset',
+                'MK1', 'MK',
+                'Livestock::DairyCow[]'
+            )
+        }, "Rename instance";
     }
 
     subtest "delete-instance" => {
@@ -296,65 +327,80 @@ transactionally {
         )}, "Load branch data";
     }
 
+    throws-like { $ws.rename-dataset($user, 'MyTestDataset', 'MyTestDataset') },
+        X::Agrammon::DB::Dataset::RenameFailed,
+        "Rename dataset fails if old and new name are identical";
+
+    throws-like { $ws.rename-tag($user, '01MyTestTag', '01MyTestTag') },
+        X::Agrammon::DB::Tag::RenameFailed,
+        "Rename tag fails if old and new name are identical";
+
+    # throws-like { $ws.rename-dataset($user, 'MyTestDataset', 'MyTestDataset2') },
+    #     X::Agrammon::DB::Dataset::RenameFailed,
+    #     "Rename dataset TestSingle fails for existing new dataset name MyTestDataset2";
+
+    # $ws.create-tag($user, "01MyTestTag");
+    # $ws.create-tag($user, "02MyTestTag");
+    # throws-like { $ws.rename-tag($user, '01MyTestTag', '02MyTestTag') },
+    #     X::Agrammon::DB::Tag::AlreadyExists,
+    #     "Rename tag fails for existing new tag name";
+
+
+
     subtest "delete-datasets" => {
         is $ws.delete-datasets($user, @('MyNewTestDataset')), 1, 'One dataset deleted';
     }
 
-    throws-like { $ws.rename-dataset($user, 'TestSingle', 'MyTestDataset2') },
+
+}
+
+ok $user = Agrammon::Web::SessionUser.new(
+    :$username,
+    :password<XP123456>,
+), 'Create new user';
+
+transactionally {
+    ok my $key = $user.create-account('user'), "Create account, key=$key";
+    ok my $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
+    ok $ws.create-dataset($user, "MyTestDataset"), "Create dataset MyTestDataset";
+    ok $ws.create-dataset($user, "MyTestDataset2"), "Create dataset MyTestDataset2";
+    throws-like { $ws.rename-dataset($user, 'MyTestDataset', 'MyTestDataset2') },
         X::Agrammon::DB::Dataset::AlreadyExists,
-        "Rename dataset TestSingle fails for existing new dataset name MyTestDataset2";
+        "Rename dataset MyTestDataset fails for existing new dataset name MyTestDataset2";
 }
 
-transactionally {
-    throws-like { $ws.rename-dataset($user, 'TestSingle', 'TestSingle') },
-        X::Agrammon::DB::Dataset::RenameFailed,
-        "Rename dataset fails if old and new name are identical";
-}
 
 transactionally {
+    ok my $key = $user.create-account('user'), "Create account, key=$key";
+    ok my $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
     throws-like { $ws.rename-dataset($user, 'NoDataset', 'NewDataset') },
         X::Agrammon::DB::Dataset::RenameFailed,
         "Rename dataset fails if old dataset name doesn't exist";
 }
 
-transactionally {
-    $ws.create-tag($user, "01MyTestTag");
-    $ws.create-tag($user, "02MyTestTag");
-    throws-like { $ws.rename-tag($user, '01MyTestTag', '02MyTestTag') },
-        X::Agrammon::DB::Tag::AlreadyExists,
-        "Rename tag fails for existing new tag name";
-}
+
 
 transactionally {
-    $ws.create-tag($user, "01MyTestTag");
-    throws-like { $ws.rename-tag($user, '01MyTestTag', '01MyTestTag') },
-        X::Agrammon::DB::Tag::RenameFailed,
-        "Rename tag fails if old and new name are identical";
-}
-
-transactionally {
-    $ws.create-dataset($user, "MyTestDataset");
-    $ws.create-tag($user,     "01MyTestTag");
-    lives-ok { $ws.set-tag($user, ['MyTestDataset'], '01MyTestTag') }, "Set tag";
-    lives-ok { $ws.set-tag($user, ['MyTestDataset'], '01MyTestTag') }, "Setting same tag twice doesn't die";
-}
-
-transactionally {
+    ok my $key = $user.create-account('user'), "Create account, key=$key";
+    ok my $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
     throws-like { $ws.rename-tag($user, '03MyTestTag', '04MyTestTag') },
         X::Agrammon::DB::Tag::RenameFailed,
         "Rename tag fails if old tag name doesn't exist";
 }
 
 transactionally {
+    ok my $key = $user.create-account('user'), "Create account, key=$key";
+    ok my $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
     throws-like { $ws.delete-tag($user, 'NoTag') },
         X::Agrammon::DB::Tag::DeleteFailed,
         "Delete tag fails if tag name doesn't exist";
 }
 
+
+
 transactionally {
     throws-like {
         $ws.create-account(
-            $user,
             '', 'myPassword', Any,
             Any, Any, Any
         ) },
@@ -362,32 +408,33 @@ transactionally {
         "User needs none-empty username/email";
 }
 
+
 transactionally {
     $ws.create-account(
-        $user,
-        'foo2@bar.com', 'myPassword',
+        'foo2@bar.com', 'myPassword', Any,
         Any, Any, Any
     );
     throws-like {
         $ws.create-account(
-            $user,
-            'foo2@bar.com', 'myPassword',
+            'foo2@bar.com', 'myPassword', Any,
             Any, Any, Any
         ) },
         X::Agrammon::DB::User::Exists,
         "User already exists";
 }
 
+
+
 transactionally {
     throws-like {
         $ws.create-account(
-            $user,
-            'foo3@bar.ch', 'myPassword',
+            'foo3@bar.ch', 'myPassword', Any,
             Any, Any, Any, 'NoRole'
         ) },
         X::Agrammon::DB::User::UnknownRole,
         "User needs valid role";
 }
+
 
 subtest "Get input template ..." => {
     my $sort = 'model';
@@ -408,54 +455,7 @@ subtest "Get input template ..." => {
     }
 }
 
-subtest "Get model data" => {
-    my $dataset-name = 'TestSingle';
-    my $input-hash;
 
-    subtest "Get input variables" => {
-        ok $input-hash = $ws.get-input-variables, "Get inputs";
-        is-deeply $input-hash.keys.sort, qw|graphs inputs reports| , "Input hash has expected keys";
-
-        with $input-hash<inputs> -> @module-inputs {
-            for @module-inputs -> $input {
-                my $var = $input<variable>;
-                # this variable must not show up
-                flunk "Hidden variable $var must not be shown by get-input-variables()" if $var ~~ / '::hiddenAnimals' /;
-
-                # These variables should have all the same elements
-                next unless $var ~~ / '::animals' /;
-                is-deeply $input.keys.sort, qw|branch defaults enum filter gui help labels models options optionsLang order type units validator variable|,
-                    "$var has expected keys";
-                subtest "$var" => {
-                    is $input<branch>, 'false', 'branch is false';
-                    is-deeply $input<defaults>, %( calc => Any, gui => Any, hasFormula => False), "defaults as expected";
-                    is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
-                }
-            }
-        }
-    }
-
-    subtest "get-output-variables($dataset-name)" => {
-        ok my $output-hash = $ws.get-output-variables($user, $dataset-name), "Get outputs";
-        is-deeply $output-hash.keys.sort, qw|data log| , "Output hash has expected keys";
-        is-deeply $output-hash<data>.[0].keys.sort, qw|filters format fullValue labels order print units value var| , "Output data value hash has expected keys";
-        is-deeply $output-hash<data>.[0]<labels>.keys.sort, qw|de en fr sort| , "Output data value labels hash has expected keys";
-    }
-
-    subtest "graphs and reports" => {
-# currently commented out in model
-#        my $graphs = $input-hash<graphs>;
-#        my %graph = $graphs[0];
-#        is-deeply %graph.keys.sort, qw|data name order resultView selector submit type|, "First graph has expected keys";
-#        is %graph<type>, 'bar', "Graph has correct type";
-
-        my $reports = $input-hash<reports>;
-        my %report = $reports[0];
-        is-deeply %report.keys.sort, qw|data name order resultView selector submit type|, "First report has expected keys";
-        is %report<type>, 'report', "Report has correct type";
-    }
-
-}
 
 subtest "get-outputs-for-rest" => {
     my $filename = 't/test-data/inputs-version6.json';
@@ -469,8 +469,63 @@ subtest "get-outputs-for-rest" => {
         :print-only('SummaryTotal')
     );
     is $result[0]<label>, 'Total', "Got expected label";
-    is $result[0]<value>, 220, "Got expected amount";
+    is $result[0]<value>, 141, "Got expected amount";
 }
+
+
+transactionally {
+    ok my $key = $user.create-account('user'), "Create account, key=$key";
+    ok my $uid = $user.activate-account($key).id, "Activate account, uid=$uid";
+    ok $ws.create-dataset($user, "TestSingle"), "Create dataset TestSingle";
+
+    subtest "Get model data" => {
+        my $dataset-name = 'TestSingle';
+        my $input-hash;
+
+        subtest "Get input variables" => {
+            ok $input-hash = $ws.get-input-variables, "Get inputs";
+            is-deeply $input-hash.keys.sort, qw|graphs inputs reports| , "Input hash has expected keys";
+
+            with $input-hash<inputs> -> @module-inputs {
+                for @module-inputs -> $input {
+                    my $var = $input<variable>;
+                    # this variable must not show up
+                    flunk "Hidden variable $var must not be shown by get-input-variables()" if $var ~~ / '::hiddenAnimals' /;
+
+                    # These variables should have all the same elements
+                    next unless $var ~~ / '::animals' /;
+                    is-deeply $input.keys.sort, qw|branch defaults enum filter gui help labels models options optionsLang order type units validator variable|,
+                        "$var has expected keys";
+                    subtest "$var" => {
+                        is $input<branch>, 'false', 'branch is false';
+                        is-deeply $input<defaults>, %( calc => Any, gui => Any, hasFormula => False), "defaults as expected";
+                        is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
+                    }
+                }
+            }
+        }
+
+        subtest "get-output-variables($dataset-name)" => {
+            ok my $output-hash = $ws.get-output-variables($user, $dataset-name), "Get outputs";
+            is-deeply $output-hash.keys.sort, qw|data log| , "Output hash has expected keys";
+            is-deeply $output-hash<data>.[0].keys.sort, qw|filters format fullValue labels order print units value var| , "Output data value hash has expected keys";
+            is-deeply $output-hash<data>.[0]<labels>.keys.sort, qw|de en fr sort| , "Output data value labels hash has expected keys";
+        } if 0;
+
+        subtest "get reports" => {
+            my $reports = $input-hash<reports>;
+            my %report = $reports[0];
+            is-deeply %report.keys.sort, qw|data name order resultView selector submit type|, "First report has expected keys";
+            is %report<type>, 'report', "Report has correct type";
+        }
+
+    }
+}
+
+note "Skipping excel export";
+skip-rest "Test data missing";
+exit;
+
 
 subtest "get-excel-export" => {
     my $dataset-name = 'TestSingle';

@@ -7,6 +7,8 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
+plan 4;
+
 # routing tests related to user accounts
 
 sub make-fake-auth($role) {
@@ -30,7 +32,7 @@ my $fake-store = mocked(Agrammon::Web::Service,
             $email
         },
         activate-account => -> $key {
-           'http://agrammon.ch'  
+           'http://agrammon.ch'
         },
     }
 );
@@ -75,11 +77,14 @@ subtest 'Create account' => {
     }
 }
 
+# skip-rest "Wrong syntax for account activation test";
+# exit;
+
 subtest 'Activate account' => {
     test-service routes($fake-store), :$fake-auth, {
         test-given '/activate_account?key=xyz', {
-            test get(),
-                status => 200;
+            test get(:!follow),
+                status => 303;  # redirect see-other
         };
         check-mock $fake-store,
             *.called('activate-account', times => 1);
