@@ -42,7 +42,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
+      - name: Setup Perl modules cache
+        uses: actions/cache@v4
+        id: perlCache
+        with:
+          path: Inline/perl5
+          key: ${{ runner.os }}-perl-${{ hashFiles('**/cpanfile', '**/cpanfile.snapshot') }}-excel-writer-xlsx-v1
+
       - name: Install Perl modules
+        if: steps.perlCache.outputs.cache-hit != 'true'
         run: |
           sudo apt-get install -y cpanminus
           cpanm --notest --local-lib=Inline/perl5 Excel::Writer::XLSX
@@ -99,4 +107,4 @@ jobs:
 
       - name: Run backend tests
         run: |
-          PERL5LIB=Inline/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
+          PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
