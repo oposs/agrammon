@@ -65,7 +65,7 @@ jobs:
           path: |
             /var/cache/apt/archives
             /var/lib/apt/lists
-          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/backend-and-models.yml') }}
+          key: ${{ matrix.os }}-apt-${{ hashFiles('.github/workflows/backend-and-models.yml') }}
 
       - name: Install system dependencies
         run: |
@@ -77,7 +77,7 @@ jobs:
         id: perlCache
         with:
           path: Inline/perl5
-          key: ${{ runner.os }}-perl-${{ hashFiles('**/cpanfile', '**/cpanfile.snapshot') }}-excel-writer-xlsx-v1
+          key: ${{ matrix.os }}-perl-${{ hashFiles('**/cpanfile', '**/cpanfile.snapshot') }}-excel-writer-xlsx-v1
 
       - name: Install Perl modules
         if: steps.perlCache.outputs.cache-hit != 'true'
@@ -95,7 +95,7 @@ jobs:
         id: rakuCache
         with:
           path: .raku
-          key: ${{ runner.os }}-${{ matrix.raku-version }}-${{ hashFiles('./dev/META6.json') }}
+          key: ${{ matrix.os }}-${{ matrix.raku-version }}-${{ hashFiles('./dev/META6.json') }}
 
       - name: Install Raku modules
         if: steps.rakuCache.outputs.cache-hit != 'true'
