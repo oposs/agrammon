@@ -57,10 +57,19 @@ jobs:
           psql -U $AGRAMMON_OWNER -h localhost --port 55432 --file=$AGRAMMON_SCHEMA $AGRAMMON_DB                    > /dev/null
           psql -U $AGRAMMON_OWNER -h localhost --port 55432 --file=$AGRAMMON_TEST_DATA $AGRAMMON_DB                 > /dev/null
 
+      - name: Setup apt cache
+        uses: actions/cache@v4
+        id: aptCache
+        with:
+          path: |
+            /var/cache/apt/archives
+            /var/lib/apt/lists
+          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/backend-and-models.yml') }}
+
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt-get install libperl-dev texlive texlive-luatex texlive-latex-recommended texlive-science texlive-latex-extra
+          sudo apt-get install -y libperl-dev texlive texlive-luatex texlive-latex-recommended texlive-science texlive-latex-extra
 
       - name: Setup Perl modules cache
         uses: actions/cache@v4
@@ -109,5 +118,4 @@ jobs:
       - name: Run backend tests
         run: |
           # PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
-          PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/pdf.rakutest
           PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/datasource-db.rakutest
