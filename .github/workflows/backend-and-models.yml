@@ -91,6 +91,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           PGPASSFILE: ./dev/pgpass
+          POSTGRES_DB: agrammon_test
           AGRAMMON_DB: agrammon_test
           AGRAMMON_OWNER: agrammon
           AGRAMMON_GROUP: agrammon_user
