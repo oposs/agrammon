@@ -20,4 +20,8 @@ class Agrammon::Environment {
     method find-builtin($name) {
         %!builtins{$name} // get-builtins(){$name} // die "No such builtin function '$name'";
     }
+
+    method iterate($value) {
+        $value ~~ Map ?? $value.kv !! $value.list
+    }
 }

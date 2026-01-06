@@ -41,12 +41,28 @@ class Agrammon::Formula::StatementList does Agrammon::Formula {
     }
 }
 
+class Agrammon::Formula::Block does Agrammon::Formula {
+    has Agrammon::Formula::StatementList $.statements;
+
+    method input-used() { $!statements.input-used }
+    method technical-used() { $!statements.technical-used }
+    method output-used() { $!statements.output-used }
+}
+
 class Agrammon::Formula::Routine does Agrammon::Formula {
     has Agrammon::Formula::StatementList $.statements;
 
     method input-used() { $!statements.input-used }
     method technical-used() { $!statements.technical-used }
     method output-used() { $!statements.output-used }
+}
+
+class Agrammon::Formula::VarDecl does Agrammon::Formula::LValue {
+    has Str $.name;
+}
+
+class Agrammon::Formula::Var does Agrammon::Formula::LValue {
+    has Str $.name;
 }
 
 class Agrammon::Formula::If does Agrammon::Formula {
@@ -70,12 +86,22 @@ class Agrammon::Formula::If does Agrammon::Formula {
     }
 }
 
-class Agrammon::Formula::Block does Agrammon::Formula {
-    has Agrammon::Formula::StatementList $.statements;
+class Agrammon::Formula::For does Agrammon::Formula {
+    has Agrammon::Formula $.iterable;
+    has Agrammon::Formula::VarDecl @.loop-vars;
+    has Agrammon::Formula::Block $.block;
 
-    method input-used() { $!statements.input-used }
-    method technical-used() { $!statements.technical-used }
-    method output-used() { $!statements.output-used }
+    method input-used() {
+        self!merge-inputs: $!iterable.input-used, $!block.input-used
+    }
+
+    method technical-used() {
+        self!merge-technicals: $!iterable.technical-used, $!block.technical-used
+    }
+
+    method output-used() {
+        self!merge-outputs: $!iterable.output-used, $!block.output-used
+    }
 }
 
 class Agrammon::Formula::Given does Agrammon::Formula {
@@ -145,14 +171,6 @@ class Agrammon::Formula::WhenMod does Agrammon::Formula {
     }
 }
 
-class Agrammon::Formula::VarDecl does Agrammon::Formula::LValue {
-    has Str $.name;
-}
-
-class Agrammon::Formula::Var does Agrammon::Formula::LValue {
-    has Str $.name;
-}
-
 class Agrammon::Formula::CallBuiltin does Agrammon::Formula::LValue {
     has Str $.name;
     has Agrammon::Formula @.args;
@@ -215,6 +233,22 @@ class Agrammon::Formula::Sum does Agrammon::Formula {
     has Agrammon::OutputReference $.reference;
 
     method output-used() { ($!reference,) }
+}
+
+class Agrammon::Formula::Array does Agrammon::Formula {
+    has Agrammon::Formula @.values;
+
+    method input-used() {
+        self!merge-inputs: @!values.map(*.input-used)
+    }
+
+    method technical-used() {
+        self!merge-technicals: @!values.map(*.technical-used)
+    }
+
+    method output-used() {
+        self!merge-outputs: @!values.map(*.output-used)
+    }
 }
 
 class Agrammon::Formula::Hash does Agrammon::Formula {

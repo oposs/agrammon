@@ -64,6 +64,13 @@ grammar Agrammon::Formula::Parser {
         'default' <block>
     }
 
+    rule statement_control:sym<for> {
+        'for'
+        [ '(' <EXPR> ')' || <.panic('Missing or malformed loop expression')> ]
+        ['->' <variable>+ % [ ',' ] || <.panic('Missing or malformed loop variables')> ]
+        <block>
+    }
+
     rule block {
         [ '{' || <.panic('Expected block')> ]
         <statementlist>
@@ -150,6 +157,12 @@ grammar Agrammon::Formula::Parser {
 
     rule term:sym<( )> {
         '(' <EXPR> [ ')' || <.panic('Missing closing )')> ]
+    }
+
+    rule term:sym<[ ]> {
+        '['
+        <EXPR>* %% [ ',' ]
+        [ ']' || <.panic('Missing ] on array literal or malformed array')> ]
     }
 
     rule term:sym<{ }> {
