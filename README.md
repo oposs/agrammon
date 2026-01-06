@@ -22,10 +22,23 @@ Please see the [Agrammon website](https://www.agrammon.ch) for more details.
 
 ## Port to Raku
 
-This is a port of the existing Agrammon web application to Raku.  It will
-be finished by Christmas.
+This is a port of the existing Agrammon web application to Raku.  It was
+finished by Christmas.
+
+## Development setup
+
+You'll need to:
+
+1. Install `rakudo` and `zef`
+2. Install the Raku dependencies: `zef install --deps-only .`
+3. Install the Perl dependencies: `cpanm --installdeps .`
+4. Install the `lualatex` program and Latex packages needed (`sudo apt install
+   texlive-luatex texlive-latex-extra texlive-fonts-recommended texlive-science`)
 
 ## Running tests
+
+Run tests using `prove6 -l t/`. If missing `prove6`, you can install it with
+`zef install App::Prove6`.
 
 To only run unit tests, set `AGRAMMON_UNIT_TEST=1` in the environment.  The
 integration tests currently have quite some setup dependencies; this should
