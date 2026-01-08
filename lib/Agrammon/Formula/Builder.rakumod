@@ -97,6 +97,13 @@ class Agrammon::Formula::Builder {
         )
     }
 
+    method statement_control:sym<for>($/) {
+        make Agrammon::Formula::For.new(
+            iterable => $<EXPR>.ast,
+            loop-vars => $<variable>.map(-> $var { Agrammon::Formula::VarDecl.new(name => ~$var) }),
+            block => $<block>.ast
+        );
+    }
 
     method block($/) {
         make Agrammon::Formula::Block.new(
@@ -260,6 +267,12 @@ class Agrammon::Formula::Builder {
 
     method term:sym<( )>($/) {
         make $<EXPR>.ast;
+    }
+
+    method term:sym<[ ]>($/) {
+        make Agrammon::Formula::Array.new(
+            values => $<EXPR>.map(*.ast)
+        );
     }
 
     method term:sym<{ }>($/) {

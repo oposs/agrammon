@@ -1098,4 +1098,124 @@ subtest {
     is $result.Numeric, 42, 'Correct result';
 }, 'P+ upgrades scalar value on left side';
 
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'TestModule');
+        my $total = 0;
+        for ([1, 2, 3]) -> $num {
+            $total = $total + $num;
+        }
+        return $total;
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new);
+    is $result, 6, 'Correct result from for loop over array literal';
+}, 'Basic for loop over array literal';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'TestModule');
+        my $nums = [1, 2, 3];
+        my $total = 0;
+        for ($nums) -> $num {
+            $total = $total + $num;
+        }
+        return $total;
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new);
+    is $result, 6, 'Correct result from for loop over variable';
+}, 'For loop over variable containing array';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'TestModule');
+        my $total = 0;
+        for ([3, 5, 7, 9]) -> $a, $b {
+            $total = $total + $a * $b;
+        }
+        return $total;
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new);
+    is $result, 3*5 + 7*9, 'Correct result from for loop taking two values at a time';
+}, 'For loop taking two values at a time';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'TestModule');
+        my $total = 0;
+        for ({ a => 1, b => 3 }) -> $key, $value {
+            $total = $total + $value;
+        }
+        return $total;
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new);
+    is $result, 4, 'Correct result from for loop over hash literal';
+}, 'For loop over hash literal';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'TestModule');
+        my $mapping = { x => 10, y => 20 };
+        my $total = 0;
+        for ($mapping) -> $key, $value {
+            $total = $total + $value;
+        }
+        return $total;
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new);
+    is $result, 30, 'Correct result from for loop over variable containing hash';
+}, 'For loop over variable containing hash';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'TestModule');
+        my $h = { apple => 2, banana => 3 };
+        my $keys = '';
+        my $total = 0;
+        for ($h) -> $key, $value {
+            $keys = $keys . $key . ',';
+            $total = $total + $value;
+        }
+        return $keys . $total;
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new);
+    ok $result eq 'apple,banana,5' || $result eq 'banana,apple,5',
+        'Correct result with keys concatenated (either order)';
+}, 'For loop over hash verifying keys';
+
+subtest {
+    my $f = parse-formula(q:to/FORMULA/, 'TestModule');
+        my $res = 0;
+        for (['bc', 'th', 'ts']) -> $tech {
+            $res = $res + $TE->{'app_tech_' . $tech};
+        }
+        return $res;
+        FORMULA
+    ok $f ~~ Agrammon::Formula, 'Get something doing Agrammon::Formula from parse';
+    is-deeply $f.input-used, (), 'Correct inputs-used';
+    is-deeply $f.technical-used, (), 'Correct technical-used (indirect not included)';
+    is-deeply $f.output-used, (), 'Correct output-used';
+    my $result = compile-and-evaluate($f, Agrammon::Environment.new(
+        technical => { app_tech_bc => 10, app_tech_th => 20, app_tech_ts => 30 }
+    ));
+    is $result, 60, 'Correct result from for loop with dynamic technical access';
+}, 'For loop with indirect technical access';
+
 done-testing;

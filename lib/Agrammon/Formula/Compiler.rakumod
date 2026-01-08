@@ -41,6 +41,12 @@ multi compile(Agrammon::Formula::Default $default) {
     q:f"default { &compile($default.block) }"
 }
 
+multi compile(Agrammon::Formula::For $for) {
+    q:f"for $env.iterate(&compile($for.iterable)) -> " ~
+        $for.loop-vars.map(*.name).join(", ") ~
+        q:f" { &compile($for.block) }"
+}
+
 multi compile(Agrammon::Formula::WhenMod $when) {
     q:f"&compile($when.then) when &compile($when.test)"
 }
@@ -67,6 +73,10 @@ multi compile(Agrammon::Formula::Sum $sum) {
     given $sum.reference {
         q:c"$env.output.get-sum('{.module}', '{.symbol}')"
     }
+}
+
+multi compile(Agrammon::Formula::Array $array) {
+    q:c"@( {$array.values.map(&compile).join(',')} )"
 }
 
 multi compile(Agrammon::Formula::Hash $hash) {
