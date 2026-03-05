@@ -26,7 +26,7 @@ msgstr ""
 msgid "Returning from %1 to %2"
 msgstr ""
 
-#: agrammon/io/remote/Rpc.js
+#: agrammon/Application.js
 msgid "Please authenticate yourself"
 msgstr ""
 
@@ -658,7 +658,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: agrammon/ui/dialog/MsgBox.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "OK"
 msgstr ""
 
