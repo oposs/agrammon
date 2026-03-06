@@ -175,6 +175,42 @@ paths:
                         text/plain:
                             schema:
                                 description: text formatted
+    /upload_accounts:
+        post:
+            summary: Bulk create user accounts from CSV (admin and support only)
+            operationId: uploadAccounts
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            required:
+                                - accounts
+                            properties:
+                                accounts:
+                                    type: string
+                                    format: binary
+                                    description: CSV file with columns email, password, and optionally first, last, org
+            responses:
+                '200':
+                    description: Account creation results
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/UploadAccountsResult"
+                '401':
+                    description: Not authorized.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                '403':
+                    description: Admin or support access required.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 components:
     schemas:
         Run:
@@ -247,3 +283,19 @@ components:
             properties:
                 error:
                     type: string
+        UploadAccountsResult:
+            type: object
+            required:
+                - created
+                - errors
+            properties:
+                created:
+                    description: List of successfully created account emails
+                    type: array
+                    items:
+                        type: string
+                errors:
+                    description: List of error messages for failed account creations
+                    type: array
+                    items:
+                        type: string

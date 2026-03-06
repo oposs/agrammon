@@ -12,6 +12,7 @@ use Agrammon::Web::SessionUser;
 
 subset LoggedIn of Agrammon::Web::SessionUser where .logged-in;
 subset LoggedInAdmin of LoggedIn where .is-admin;
+subset LoggedInAdminOrSupport of LoggedIn where { .is-admin || .is-support };
 
 
 sub routes(Agrammon::Web::Service $ws) is export {
@@ -583,6 +584,53 @@ sub application-routes(Agrammon::Web::Service $ws) {
                     .note;
                     bad-request 'application/json', %( error => .message );
                 }
+            }
+        }
+
+        post -> LoggedInAdminOrSupport $user, 'upload_accounts' {
+            request-body -> (:$file!) {
+                my $csv-content = $file.body-text;
+                my @lines = $csv-content.lines;
+                unless @lines {
+                    bad-request 'application/json', %( error => 'Empty file' );
+                }
+
+                # Parse header line to get column mapping
+                my @header = @lines.shift.split(',').map(*.trim);
+                my %col = @header.kv.map(-> $i, $col { $col => $i });
+
+                # Validate required columns
+                for <email password> -> $required {
+                    unless %col{$required}:exists {
+                        bad-request 'application/json', %( error => "Missing required column '$required' in CSV header" );
+                    }
+                }
+
+                my @created;
+                my @errors;
+                for @lines.kv -> $line-num, $line {
+                    next unless $line.trim;  # Skip empty lines
+
+                    my @values = $line.split(',').map(*.trim);
+
+                    my $email     = @values[%col<email>];
+                    my $password  = @values[%col<password>];
+                    my $firstname = %col<first>:exists ?? @values[%col<first>] !! Str;
+                    my $lastname  = %col<last>:exists  ?? @values[%col<last>]  !! Str;
+                    my $org       = %col<org>:exists   ?? @values[%col<org>]   !! Str;
+
+                    $ws.create-account($email, $password, $firstname, $lastname, $org, Str, Str);
+                    @created.push: $email;
+
+                    CATCH {
+                        when X::Agrammon::DB::User::Exists
+                           | X::Agrammon::DB::User::CreateFailed
+                           | X::Agrammon::DB::User::InvalidPassword {
+                            @errors.push: "Line { $line-num + 2 } ($email): " ~ .message;
+                        }
+                    }
+                }
+                content 'application/json', { :@created, :@errors };
             }
         }
 

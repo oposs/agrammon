@@ -26,7 +26,7 @@ msgstr ""
 msgid "Returning from %1 to %2"
 msgstr ""
 
-#: agrammon/Application.js
+#: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr ""
 
@@ -658,7 +658,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/AdminMenu.js
 msgid "OK"
 msgstr ""
 
@@ -960,4 +960,36 @@ msgstr ""
 
 #: agrammon/module/user/SelfService.js
 msgid "A confirmation link will be sent to you by eMail."
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Upload accounts"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Upload a CSV file with user account data."
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Select CSV file"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Created %1 accounts"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "No valid accounts found in uploaded file."
+msgstr ""
+
+#. NO LONGER USED
+msgid "Errors (%1):"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Warning"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "%1 errors"
 msgstr ""

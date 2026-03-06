@@ -7,7 +7,7 @@ use Cro::HTTP::Test;
 use Test::Mock;
 use Test;
 
-plan 4;
+plan 6;
 
 # routing tests related to user accounts
 
@@ -91,6 +91,135 @@ subtest 'Activate account' => {
     }
 }
 
+subtest 'Upload accounts (admin)' => {
+    my $fake-admin-auth = mocked(
+        Agrammon::Web::SessionUser,
+        returning => { :id(42), :logged-in, :is-admin(True), :is-support(False) }
+    );
+    my $fake-admin-store = mocked(Agrammon::Web::Service,
+        overriding => {
+            create-account => -> $email, $password, $firstname, $lastname, $org, $language, $role {
+                $email
+            },
+        }
+    );
+
+    subtest 'Upload valid CSV' => {
+        test-service routes($fake-admin-store), :fake-auth($fake-admin-auth), {
+            test-given '/upload_accounts', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body([
+                        Cro::HTTP::Body::MultiPartFormData::Part.new(
+                            headers => [
+                                Cro::HTTP::Header.new(
+                                    :name('Content-type'),
+                                    :value('text/csv')
+                                )
+                            ],
+                            :name('file'),
+                            :filename('users.csv'),
+                            :body-blob("email,password,first,last\ntest1\@example.com,pass123,Test,User\ntest2\@example.com,pass456,Another,Person".encode)
+                        ),
+                    ])
+                ),
+                status => 200,
+                json => { :created(['test1@example.com', 'test2@example.com']), :errors([]) };
+            };
+            check-mock $fake-admin-store,
+                *.called('create-account', times => 2);
+        }
+    }
+
+    subtest 'Upload CSV missing required column' => {
+        test-service routes($fake-admin-store), :fake-auth($fake-admin-auth), {
+            test-given '/upload_accounts', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body([
+                        Cro::HTTP::Body::MultiPartFormData::Part.new(
+                            headers => [
+                                Cro::HTTP::Header.new(
+                                    :name('Content-type'),
+                                    :value('text/csv')
+                                )
+                            ],
+                            :name('file'),
+                            :filename('users.csv'),
+                            :body-blob("email,first,last\ntest\@example.com,Test,User".encode)
+                        ),
+                    ])
+                ),
+                status => 400;
+            };
+        }
+    }
+
+    subtest 'Upload empty file' => {
+        test-service routes($fake-admin-store), :fake-auth($fake-admin-auth), {
+            test-given '/upload_accounts', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body([
+                        Cro::HTTP::Body::MultiPartFormData::Part.new(
+                            headers => [
+                                Cro::HTTP::Header.new(
+                                    :name('Content-type'),
+                                    :value('text/csv')
+                                )
+                            ],
+                            :name('file'),
+                            :filename('users.csv'),
+                            :body-blob("".encode)
+                        ),
+                    ])
+                ),
+                status => 400;
+            };
+        }
+    }
+}
+
+subtest 'Upload accounts (support)' => {
+    my $fake-support-auth = mocked(
+        Agrammon::Web::SessionUser,
+        returning => { :id(42), :logged-in, :is-admin(False), :is-support(True) }
+    );
+    my $fake-support-store = mocked(Agrammon::Web::Service,
+        overriding => {
+            create-account => -> $email, $password, $firstname, $lastname, $org, $language, $role {
+                $email
+            },
+        }
+    );
+
+    subtest 'Support can upload valid CSV' => {
+        test-service routes($fake-support-store), :fake-auth($fake-support-auth), {
+            test-given '/upload_accounts', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body([
+                        Cro::HTTP::Body::MultiPartFormData::Part.new(
+                            headers => [
+                                Cro::HTTP::Header.new(
+                                    :name('Content-type'),
+                                    :value('text/csv')
+                                )
+                            ],
+                            :name('file'),
+                            :filename('users.csv'),
+                            :body-blob("email,password,first,last\ntest1\@example.com,pass123,Test,User".encode)
+                        ),
+                    ])
+                ),
+                status => 200,
+                json => { :created(['test1@example.com']), :errors([]) };
+            };
+            check-mock $fake-support-store,
+                *.called('create-account', times => 1);
+        }
+    }
+}
 
 done-testing;
 

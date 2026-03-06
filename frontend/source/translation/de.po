@@ -658,7 +658,7 @@ msgstr "Keine Mitteilungen."
 msgid "Apply"
 msgstr "Anwenden"
 
-#: agrammon/ui/dialog/MsgBox.js
+#: agrammon/ui/menu/AdminMenu.js
 msgid "OK"
 msgstr "OK"
 
@@ -960,4 +960,36 @@ msgstr "Ein Bestätigungslink wird Ihnen per eMail zugesendet."
 
 #: agrammon/module/user/Account.js
 msgid "An activation link will be sent to you by eMail after pressing the button"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Upload accounts"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Upload a CSV file with user account data."
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Select CSV file"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Created %1 accounts"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "No valid accounts found in uploaded file."
+msgstr ""
+
+#. NO LONGER USED
+msgid "Errors (%1):"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Warning"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "%1 errors"
 msgstr ""

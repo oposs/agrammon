@@ -115,6 +115,10 @@ class Agrammon::DB::User does Agrammon::DB {
         $!role.is-admin
     }
 
+    method is-support {
+        $!role.is-support
+    }
+
     my $secret = crypt_random(Int(64/8));
     my $encrypt-key = 'jah7Eiyitui1Zibe';
 

@@ -13,12 +13,14 @@ use Test;
 
 # routing tests related to REST API
 
-sub make-fake-auth {
-    mocked(APIUser)
+sub make-fake-auth(:$is-admin = False, :$is-support = False) {
+    mocked(APIUser, returning => { :$is-admin, :$is-support })
 }
 my $schema = 'share/agrammon-rest.openapi';
 
 my $fake-auth = make-fake-auth;
+my $fake-admin-auth = make-fake-auth(:is-admin);
+my $fake-support-auth = make-fake-auth(:is-support);
 my $fake-store = mocked(Agrammon::Web::Service,
     returning => {
     },
@@ -35,6 +37,9 @@ my $fake-store = mocked(Agrammon::Web::Service,
                                        :$language, :$format, :$print-only, :$report-selected,
                                        :$include-filters, :$all-filters, :$compact-output, :$user {
             "Test results"
+        },
+        create-account => -> $email, $password, $firstname, $lastname, $org, $language, $role {
+            $email
         },
     }
 );
@@ -223,6 +228,104 @@ subtest 'Run simulation' => {
             };
             check-mock $fake-store,
                 *.called('get-outputs-for-rest', times => 2);
+        }
+    }
+}
+
+sub make-accounts-body($csv-content) {
+    [
+        Cro::HTTP::Body::MultiPartFormData::Part.new(
+            headers => [
+                Cro::HTTP::Header.new(
+                    :name('Content-type'),
+                    :value('text/csv')
+                )
+            ],
+            :name('accounts'),
+            :filename('accounts.csv'),
+            :body-blob($csv-content.encode)
+        ),
+    ]
+}
+
+subtest 'Upload accounts' => {
+    subtest 'Admin can upload valid CSV' => {
+        my $admin-store = mocked(Agrammon::Web::Service,
+            overriding => {
+                create-account => -> $email, $password, $firstname, $lastname, $org, $language, $role {
+                    $email
+                },
+            }
+        );
+        test-service rest-api-routes($schema, $admin-store), :fake-auth($fake-admin-auth), {
+            test-given '/upload_accounts', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body(make-accounts-body("email,password,first,last\ntest1\@example.com,pass123,Test,User\ntest2\@example.com,pass456,Another,Person"))
+                ),
+                status => 200,
+                json => { :created(['test1@example.com', 'test2@example.com']), :errors([]) };
+            };
+            check-mock $admin-store,
+                *.called('create-account', times => 2);
+        }
+    }
+
+    subtest 'Support can upload valid CSV' => {
+        my $support-store = mocked(Agrammon::Web::Service,
+            overriding => {
+                create-account => -> $email, $password, $firstname, $lastname, $org, $language, $role {
+                    $email
+                },
+            }
+        );
+        test-service rest-api-routes($schema, $support-store), :fake-auth($fake-support-auth), {
+            test-given '/upload_accounts', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body(make-accounts-body("email,password,first,last\ntest1\@example.com,pass123,Test,User"))
+                ),
+                status => 200,
+                json => { :created(['test1@example.com']), :errors([]) };
+            };
+            check-mock $support-store,
+                *.called('create-account', times => 1);
+        }
+    }
+
+    subtest 'Regular user gets forbidden' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/upload_accounts', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body(make-accounts-body("email,password\ntest\@example.com,pass123"))
+                ),
+                status => 403;
+            };
+        }
+    }
+
+    subtest 'Missing required column returns bad request' => {
+        test-service rest-api-routes($schema, $fake-store), :fake-auth($fake-admin-auth), {
+            test-given '/upload_accounts', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body(make-accounts-body("email,first,last\ntest\@example.com,Test,User"))
+                ),
+                status => 400;
+            };
+        }
+    }
+
+    subtest 'Empty file returns bad request' => {
+        test-service rest-api-routes($schema, $fake-store), :fake-auth($fake-admin-auth), {
+            test-given '/upload_accounts', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body(make-accounts-body(""))
+                ),
+                status => 400;
+            };
         }
     }
 }
