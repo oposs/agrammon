@@ -376,7 +376,7 @@
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::Type;drinking_system;bell_drinkers
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::Type;housing_type;manure_belt_with_manure_belt_drying_system
 2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Housing::Type;manure_removal_interval;twice_a_month
-2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Grazing;free_range;fix
+2010v2.1_20120425;2648;Livestock::Poultry[Growers]::Grazing;free_range;mobile
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Excretion;animalcategory;layers
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Excretion;animals;20
 2010v2.1_20120425;2648;Livestock::Poultry[Layers]::Excretion;dimensioning_barn;0
