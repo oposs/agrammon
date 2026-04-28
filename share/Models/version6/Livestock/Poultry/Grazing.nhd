@@ -204,11 +204,16 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
 +free_range
   type = enum
   ++enum
-    +++yes
-       en = yes
-       de = Ja
-       fr = oui
-       it = yes
+    +++fix
+       en = yes, permanent housing
+       de = Ja, fester Stall
+       fr = oui, stabulation fixe
+       it = yes, permanent housing
+    +++mobile
+       en = yes, mobile housing
+       de = Ja, mobiler Stall
+       fr = oui, stabulation mobile
+       it = yes, mobile housing
     +++no
        en = no
        de = Nein
@@ -260,10 +265,10 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Average free range days per year.
   ++formula
-    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
-      return $TE->{'free_range_days_'.Val(animalcategory, Excretion).'_fix'};
-    } else {
+    if ( In(free_range) and lc In(free_range) eq 'no' ) {
       return 0;
+    } else {
+      return $TE->{'free_range_days_'.Val(animalcategory, Excretion).'_'.In(free_range)};
     }
 
 +free_range_hours
@@ -275,10 +280,10 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Average free range hours per day.
   ++formula
-    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
-      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion).'_fix'};
-    } else {
+    if ( In(free_range) and lc In(free_range) eq 'no' ) {
       return 0;
+    } else {
+      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion).'_'.In(free_range)};
     }
 
 +free_range_share
@@ -290,10 +295,10 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++description
     Share of animals in free range.
   ++formula
-    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
-      return $TE->{'free_range_share_'.Val(animalcategory, Excretion).'_fix'};
-    } else {
+    if ( In(free_range) and lc In(free_range) eq 'no' ) {
       return 0;
+    } else {
+      return $TE->{'free_range_share_'.Val(animalcategory, Excretion).'_'.In(free_range)};
     }
 
 ### KGrazing.nhd
@@ -306,7 +311,9 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     The correction factor for the reduction of the housing emission
     depending on the number of grazing hours per day and the grazing days per year.
   ++formula
-    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
+    if ( In(free_range) and lc In(free_range) eq 'no' ) {
+      1;
+    } else {
       my $grazing_total = Out(free_range_days) * Out(free_range_hours);
       # calculate correction factor 
       my $k_grazing = exp(Tech(k_grazing_b) * Out(free_range_hours));
@@ -321,8 +328,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
       (365.0 * 24.0 - Out(free_range_hours) * Out(free_range_days));
       # fix share of animals in free range area
       1 + ($c_share_1 - 1) * Out(free_range_share);
-    } else {
-      1;
     }
 
 
