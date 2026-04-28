@@ -70,10 +70,20 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
        fr = Veaux_de_vâches_allaitantes
        it = calves_suckling_cows
     +++beef_cattle
-       en = beef_cattle
-       de = Masttiere_Rindviehmast
-       fr = Bovins_à_l'engrais
-       it = beef_cattle
+       en = beef cattle entire fattening period
+       de = Masttiere_Rindviehmast ganze Mastperiode
+       fr = Bovins_à_l'engrais mise en stabulation – sortie 
+       it = beef cattle entire fattening period
+    +++beef_cattle_grower
+       en = excretion_beef_cattle_grower
+       de = Masttiere_Rindviehmast bis 160 Tage
+       fr = Bovins_à_l'engrais age max. 160 j.
+       it = beef_cattle cattle_grower
+    +++beef_cattle_finisher
+       en = excretion_beef_cattle_ finisher
+       de = Masttiere_Rindviehmast > 160 Tage
+       fr = Bovins_à_l'engrais age > 160 j.
+       it = beef_cattle finisher
   ++labels
     en = Animal category
     de = Tierkategorie
@@ -274,6 +284,26 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Annual standard N excretion for a beefcattle, according to
     Flisch et al. (2009).
 
++standard_N_excretion_beef_cattle_grower
+  value = 33
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a beefcattle, according to
+    Flisch et al. (2009).
+
++standard_N_excretion_beef_cattle_finisher
+  value = 33
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for a beefcattle, according to
+    Flisch et al. (2009).
+
 +standard_N_excretion_fattening_calves
   value = 13
   ++units
@@ -352,6 +382,22 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_beef_cattle
+  value = 0.6
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta for beefcattle. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_beef_cattle_grower
+  value = 0.6
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta for beefcattle. Derived from e.g.
+    Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_beef_cattle_finisher
   value = 0.6
   ++units
     en = -
