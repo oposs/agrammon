@@ -238,9 +238,9 @@ Computes the annual NH3 emission from crop residues.
   ++description
     Total NH3 emission from crop residues.
   ++formula
-    Val(nh3_nsugarbeet_leaves) +
-    Val(nh3_nvegetable_residues) +
-    Val(nh3_ngreen_manure) +
-    Val(nh3_nmeadow_residues) +
-    Val(nh3_npasture_mulch);
+    Out(nh3_nsugarbeet_leaves) +
+    Out(nh3_nvegetable_residues) +
+    Out(nh3_ngreen_manure) +
+    Out(nh3_nmeadow_residues) +
+    Out(nh3_npasture_mulch);
 

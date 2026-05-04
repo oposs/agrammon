@@ -21,6 +21,7 @@ gui      = PlantProduction,Pflanzenbau,Production végétale,Plant production
 
 +PlantProduction::MineralFertiliser
 +PlantProduction::RecyclingFertiliser
++PlantProduction::CropResidues
 
 
 *** output ***

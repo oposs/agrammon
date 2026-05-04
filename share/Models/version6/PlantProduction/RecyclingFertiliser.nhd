@@ -247,7 +247,7 @@ Vanderweerden and Jarvis (1997)
   ++description
     NH3 emission from total recycling fertiliser.
   ++formula
-    Val(nh3_nliquid_digestate) +
-    Val(nh3_nsolid_digestate) +
-    Val(nh3_ncompost);
+    Out(nh3_nliquid_digestate) +
+    Out(nh3_nsolid_digestate) +
+    Out(nh3_ncompost);
 
