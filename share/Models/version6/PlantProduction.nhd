@@ -41,7 +41,8 @@ gui      = PlantProduction,Pflanzenbau,Production végétale,Plant production
     Annual NH3 emission from plant production.
   ++formula
     Val(nh3_nmineralfertiliser, PlantProduction::MineralFertiliser) +
-    Val(nh3_nrecyclingfertiliser, PlantProduction::RecyclingFertiliser) 
+    Val(nh3_nrecyclingfertiliser, PlantProduction::RecyclingFertiliser) +
+    Val(nh3_ncropresidues, PlantProduction::CropResidues)
 
 +compost 
   format= %.0f
@@ -93,3 +94,4 @@ gui      = PlantProduction,Pflanzenbau,Production végétale,Plant production
     Amount of liquid digestate in m3 per year.
   ++formula
     Val(liquid_digestate, PlantProduction::RecyclingFertiliser);
+
