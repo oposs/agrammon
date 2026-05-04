@@ -45,21 +45,21 @@ taxonomy = Application::Slurry::Ctech
   ++help
     +++en
        <p>The categories of slurry application must add up to 100 %. For each category, a number between 0 % und 100 % must be entered.</p>
-       <p>Standard value for Switzerland: 90%</p>
+       <p>Standard value for Switzerland: 0%</p>
     +++de
        <p>Auch wenn Hofdünger nicht auf dem Betrieb sondern über Abnahmeverträge verwerten werden, sind die Angaben zur Hofdüngerausbringung erforderlich. In diesen Fall wird eingetragen, wie die Ausbringung der Hofdünger durch den/die Abnehmer erfolgt.</p>
        <p>Unter diese Kategorie fallen sämtliche Breitverteiler wie Prallteller, Pendel- oder Schwenkverteiler, Prallkopfverteiler oder Mehrfachdüsenverteiler.</p>
 
        <p>Die Summe der Kategorien Anteil Gülleausbringung muss 100 % geben. Jede Kategorie Anteil Gülleausbringung muss einen Eintrag, zwischen 0% und 100 % aufweisen (auch 0 % muss eingetragen werden).</p>
 
-       <p>Vorschlag für Standardwert: 90%</p>
+       <p>Vorschlag für Standardwert: 0%</p>
     +++fr
        <p>Même si les engrais de ferme ne sont pas valorisés sur l'exploitation, mais via des contrats de reprise, les données relatives à l'épandage de ces engrais sont nécessaires. Dans ce cas, l'épandage par le repreneur est à décrire. </p>
        <p>Cette catégorie comprend tous les systèmes à répartition large, comme les déflecteurs, les répartiteurs pendulaires, verticaux ou les buses pivotantes et les canons.</p>
 
        <p>La somme des catégories «Part de lisier épandu» doit donner 100%. Chaque catégorie doit avoir un pourcentage entre 0 et 100 (les 0% doivent aussi être introduits).</p>
 
-       <p>Proposition de valeur standard: 90%</p>
+       <p>Proposition de valeur standard: 0%</p>
 
 
 +share_trailing_hose  
@@ -75,19 +75,19 @@ taxonomy = Application::Slurry::Ctech
   ++help
     +++en
        <p>The categories of slurry application must add up to 100 %. For each category, a number between 0 % und 100 % must be entered.</p>
-       <p>Standard value for Switzerland: 10%</p>
+       <p>Standard value for Switzerland: 100% (most frequently applied technique)</p>
     +++de
        <p>Beim Schleppschlauch wird die Gülle mittels Schläuchen, die hinter dem Gerät über den Boden schleifen, direkt auf den Boden geleitet.</p>
 
        <p>Die Summe der Kategorien Anteil Gülleausbringung muss 100 % geben. Jede Kategorie Anteil Gülleausbringung muss einen Eintrag, zwischen 0% und 100 % aufweisen (auch 0 % muss eingetragen werden).</p>
 
-       <p>Vorschlag für Standardwert: 10%</p>
+       <p>Vorschlag für Standardwert: 100% (häufigste Technik)</p>
     +++fr
        <p>Avec ce système, le lisier est conduit directement sur le sol grâce à des tuyaux souples qui pendent derrière la machine. </p>
 
        <p>La somme des catégories «Part de lisier épandu» doit donner 100%. Chaque catégorie doit avoir un pourcentage entre 0 et 100 (les 0% doivent aussi être introduits). </p>
 
-       <p>Proposition de valeur standard: 10%</p>
+       <p>Proposition de valeur standard: 100% (la technique la plus courante).</p>
 
 +share_trailing_shoe 
   type  = percent
