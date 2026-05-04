@@ -27,17 +27,17 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
   filter = true
   ++enum
     +++fattening_sheep
-       en = fattening_sheep
+       en = Fattening_sheep
        de = Schafe
        fr = Moutons_à_l'engrais
        it = fattening_sheep
     +++milksheep
-       en = milksheep
+       en = Milksheep
        de = Milchschafe
        fr = Brebis_laitières
        it = milksheep
     +++goats
-       en = goats
+       en = Goats
        de = Ziegen
        fr = Chèvres
        it = goats
@@ -51,31 +51,34 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Animal category (Fattening sheep, milksheep and goats).
   ++help
     +++en
-       <p>Only the number of adult females must be entered for all categories. The other animals (young animals, males) are included therein.</p>
+       <p>The animal categories are provided as units which aggegate the mother animals including young and male animals. To calculate emissions of specific categories such as young goats or young sheep: please refer to the help texts under "Number of animals" and "N excretion."</p>
     +++de
-       <p>Hier sind für alle Kategorien nur die Muttertiere einzutragen. Die Remontierung von Zuchttieren, die Ausmast der übrigen Jungtiere und der Anteil der Böcke sind bei den Muttertieren eingeschlossen.</p>
+       <p>Angegeben sind aggregierte Tierkategorien, welche Muttertiere inkl. Jungtiere und männliche Tiere einschliessen. Für die Berechnung der Emissionen von spezifischen Kategorien wie z.B. Jungziege oder Jungschaf: Hilfetexte unter "Anzahl Tiere" und "N-Ausscheidung" beachten.</p>
     +++fr
-       <p>N'introduire ici que les animaux en lactation pour toutes les catégories. La remonte des animaux d'élevage, l'engraissement des autres jeunes et la part de mâles reproducteurs sont compris dans les animaux en lactation. </p>
+       <p>Les catégories d'animaux sont indiquées comme catégories aggrégées qui incluent les mères plus les jeunes animaux et les mâles. Pour le calcul des émissions par catégories spécifiques telles que jeune chèvre ou jeune mouton : consulter les textes d'aide sous "Nombre d'animaux" et "Excrétions azotées".</p>
 
 +animals
   type = float
   validator = ge(0)
   distribute = true
   ++labels
-    en = Number of animals (mother animals only)
-    de = Anzahl Tiere (nur Muttertiere)
-    fr = Nombre d'animaux (mères uniquement)
+    en = Number of animals
+    de = Anzahl Tiere
+    fr = Nombre d'animaux
   ++units
     en = -
   ++description
     Number of other animals for the selected type in barn.
   ++help
     +++en
-       <p> </p>
+       <p>To calculate the emissions per place of sheep or goat: only the number of adult females must be entered for all categories. The other animals (young animals, males) are included therein. </p>
+       <p>To calculate the emissions of a specific category such as young goats or young sheep: enter the number of the specific category and refer to the help texts under "N excretion." </p>
     +++de
-       <p> </p>
+       <p>Zur Berechnung der Emissionen nach Schaf- oder Ziegenplatz: nur die Anzahl Muttertiere eingeben. Die Rechnung schliesst in diesem Fall Muttertier inkl. Remontierung von Zuchttieren, Ausmast der übrigen Jungtiere und Anteil Bock ein.</p>
+       <p>Zur Berechnung der Emissionen von einzelnen Tierkategorien: z.B. Jungziege oder Jungschaf: Die Anzahl Tiere der ensprechenden Kategorie eingeben und die Hilfetexte unter "N-Ausscheidung" beachten.</p>
     +++fr
-       <p> </p>
+       <p>Pour calculer les émissions par place mouton ou chèvre: n'introduire ici que les animaux en lactation pour toutes les catégories. La remonte des animaux d'élevage, l'engraissement des autres jeunes et la part de mâles reproducteurs sont compris dans les animaux en lactation.</p>
+       <p>Pour calculer les émissions par catégorie spécifique telles que jeune chèvre ou jeune mouton : introduiser le nombre des animaux spécifiques et consulter les textes d'aide sous "Excrétions azotées".</p>
 
 ?if !Kantonal_LU
   +inp_n_excretion
@@ -83,51 +86,80 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     default_calc = Standard
     default_gui  = Standard
     ++labels
-      en = N_excretion
-      de = N_Ausscheidung
-      fr = Excrétions_azotées
+      en = N excretion
+      de = N Ausscheidung
+      fr = Excrétions azotées
     ++units
       en = kg N/year
       de = kg N/Jahr
       fr = kg N/an
     ++description
-      Annual standard N excretion for a dairy cow
+      Annual standard N excretion small ruminants
     ++help
       +++en
-         <p>If "Standard" is selected the standard value for the
-            nitrogen excretion according to PRIF 2017 is applied (Richner
-            et al., 2017) is applied (PRIF: Principles of Agricultural Crop
-            Fertilisation in Switzerland). If a number is entered, a value
+         <p>If "Standard" is selected the standard value for the N-excretion per place of sheep or goat according to Lazzari, Schlegel (2025a,b) is used. If a number is entered, a value
             for the nitrogen excretion can be selected by the user.</p>
-         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
-            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
-            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
-            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
-            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-            pp. 4/1-4/23.</p>
+         <p>To calculate the emissions of the animal categories listed below: select "Fattening sheep", "Milksheep" oder "Goats" under Animal category. For the N excretion, the following values are suggested (Agridea, BLW, 2025):</p>
+         
+          <ul>
+          <li>Milksheep: 16.1 kg N/year</li>
+          <li>Other sheep over 365 days old: 9.5 kg N/year</li>
+          <li>Young sheep over 180 up to 365 days old: 9.8 kg N/year</li>
+          <li>Lambs up to 180 Tage days old: 3.3 kg N/year</li>
+          </p>
+          <li>Milkgoat: 9.3 kg N/year</li>
+          <li>Other goat over 365 days old: 8.2 kg N/year</li>
+          <li>Young goat over 180 up to 365 days old: 7.7 kg N/year</li>
+          <li>Goat kid up to 180 days old from a herd of milkgoats: 2.9 kg N/year</li>
+          <li>Goat kid up to 180 days old from a herd of other goats: 5.5 kg N/year</li>
+          </ul>
+      
+         <p>Agridea, BLW. 2025. Wegleitung Suisse-Bilanz. Auflage 1.20. Agridea, Lindau. Bundesamt für Landwirtschaft, BLW, Bern.<p>
+         <p>Lazzari G., Schlegel P. 2025a. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Ziegen. Agrarforschung Schweiz 16: 81-89.<p>
+         <p>Lazzari G., Schlegel P. 2025b. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Schafen. Agrarforschung Schweiz 16: 26-35.</p>
       +++de
-         <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD
-            2017 (Richner et al., 2017) verwendet. Bei Eingabe einer Zahl kann der Wert für die
+         <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung pro Schaf- oder Ziegenplatz gemäss Lazzari, Schlegel (2025a,b) verwendet. Bei Eingabe einer Zahl kann der Wert für die
             Stickstoffausscheidung selbst gewählt werden.</p>
-         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
-            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
-            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
-            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
-            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-            pp. 4/1-4/23.</p>
+         <p>Für die Berechnung der Emissionen einer der unten aufgeführten Tierkategorien: unter Tierkategorie "Schafe", "Milchschafe" oder "Ziegen" anwählen. Für N-Ausscheidung werden die folgenden Werte vorgeschlagen (Agridea, BLW, 2025):</p>
+         
+          <ul>
+          <li>Milchschaf: 16.1 kg N/Jahr</li>
+          <li>Andere Schafe über 365 Tage alt: 9.5 kg N/Jahr</li>
+          <li>Jungschafe über 180 bis 365 Tage alt: 9.8 kg N/Jahr</li>
+          <li>Lämmer bis 180 Tage alt: 3.3 kg N/Jahr</li>
+          </p>
+          <li>Milchziege: 9.3 kg N/Jahr</li>
+          <li>Andere Ziegen über 365 Tage alt: 8.2 kg N/Jahr</li>
+          <li>Jungziegen über 180 bis 365 Tage alt: 7.7 kg N/Jahr</li>
+          <li>Zicklein bis 180 Tage alt aus Milchziegenherde: 2.9 kg N/Jahr</li>
+          <li>Zicklein bis 180 Tage alt aus Mutterziegenherde: 5.5 kg N/Jahr</li>
+          </ul>
+      
+         <p>Agridea, BLW. 2025. Wegleitung Suisse-Bilanz. Auflage 1.20. Agridea, Lindau. Bundesamt für Landwirtschaft, BLW, Bern.<p>
+         <p>Lazzari G., Schlegel P. 2025a. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Ziegen. Agrarforschung Schweiz 16: 81-89.<p>
+         <p>Lazzari G., Schlegel P. 2025b. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Schafen. Agrarforschung Schweiz 16: 26-35.</p>
       +++fr
-         <p>Si "Standard" est introduisé, la valeur de référence pour
-            les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
-            est utilisée (PRIF: « Principes de la fertilisation des
-            cultures agricoles en Suisse » ). Si un nombre est introduisé
+         <p>Si "Standard" est introduisé, la valeur standard est utilisé pour les excrétions azotées par place de mouton ou chère d'après Lazzari, Schlegel (2025a,b). Si un nombre est introduisé
             une valeur pour les excrétions azotées peut être déterminée par
             l'utilisateur/-trice.</p>
-         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
-            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
-            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
-            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
-            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
-            pp. 4/1-4/23.</p>
+         <p>Pour calculer les émissions des catégories d'animaux données ci-dessous : sélectionner "Moutons à l'engrais", "Brebis laitières" ou "Chèvres" sous Catégorie d'animaux. Les valeurs suivantes sont proposées pour les excrétions azotées (Agridea, BLW, 2025):</p>
+         
+          <ul>
+          <li>Brebis laitière : 16.1 kg N/an</li>
+          <li>Autres moutons (plus de 365 jours) : 9.5 kg N/an</li>
+          <li>Jeunes moutons de 180 à 365 jours : 9.8 kg N/an</li>
+          <li>Agneaux jusqu’à 180 jours : 3.3 kg N/an</li>
+          </p>
+          <li>Chèvre laitière : 9.3 kg N/an</li>
+          <li>Autres chèvres (plus de 365 jours) : 8.2 kg N/an</li>
+          <li>Jeunes chèvres de 180 à 365 jours : 7.7 kg N/an</li>
+          <li>Cabri jusqu’à 180 jours provenant de troupeaux de chèvres laitières : 2.9 kg N/an</li>
+          <li>Cabri jusqu’à 180 jours provenant de troupeaux de chèvres mères : 5.5 kg N/an</li>
+          </ul>
+      
+         <p>Agridea, BLW. 2025. Wegleitung Suisse-Bilanz. Auflage 1.20. Agridea, Lindau. Bundesamt für Landwirtschaft, BLW, Bern.<p>
+         <p>Lazzari G., Schlegel P. 2025a. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Ziegen. Agrarforschung Schweiz 16: 81-89.<p>
+         <p>Lazzari G., Schlegel P. 2025b. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Schafen. Agrarforschung Schweiz 16: 26-35.</p>
 
   +tan_fraction
     type = percent
