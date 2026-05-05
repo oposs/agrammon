@@ -50,10 +50,11 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
        <p>Standard value for Switzerland: „none“</p>
     +++de
        <p>Vorschlag für Standardwert: keine</p>
+       <p>Es wird empfohlen, eine gemessene Abscheiderate für den installierten Wäschertypen zu verwenden. Abscheideraten liegen beispielsweise in DLG Prüfberichten (https://www.dlg.org/tests/landtechnik-betriebsmittel/pruefberichte/) vor. Vorschlag zum Vorgehen: Auswählen "keine" unter "Abluftreinigung" und Einsetzen der gemessenen Abscheiderate unter "Zusätzliche emissionsmindernde Massnahme Stall".</p>
     +++fr
        <p>Proposition de valeur standard: aucun</p>
-    
-    
+       <p>Il est recommandé d'utiliser le taux d’élimination mesuré pour le type d’épurateur installé. Les taux élimination sont disponibles dans les rapport DLG (https://www.dlg.org/tests/landtechnik-betriebsmittel/pruefberichte/). Proposition de procédure : sélectionner "aucun" sous "Traitement des effluents gazeux" et introduire le taux d’élimination mesuré sous "Mesure supplémentaire limitant les émission".</p>
+         
 
 *** technical ***
 
