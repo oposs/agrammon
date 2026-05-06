@@ -1,0 +1,246 @@
+
+*** general ***
+
+author   = Agrammon Group
+date     = 2026-05-04
+taxonomy = PlantProduction::CropResidues
+gui	 = PlantProduction::CropResidues,Pflanzenbau::Ernterückstände,Production végétale::Résidus végétaux,Plant production::Crop residues
+
++short
+
+Computes the annual NH3 emission from crop residues.
+	
++description 
+
+Computes the annual NH3 emission from crop residues.
+
+*** input ***
+
++sugarbeet_leaves
+  type  = float
+  validator    = ge(0)
+  default_calc = 0
+  default_gui  = 0
+  ++labels 
+    en = Sugar beet
+    de = Zuckerrüben
+    fr = Betterave sucrière
+  ++units  
+    en = ha
+    de = ha
+    fr = ha
+  ++description
+    todo
+  ++help
+    +++en
+       <p>todo</p>
+    +++de
+       <p>todo</p> 
+    +++fr
+       <p>todo</p> 
+
++vegetable_residues
+  type  = float
+  validator    = ge(0)
+  default_calc = 0
+  default_gui  = 0
+  ++labels 
+    en = Open-field vegetables
+    de = Freilandgemüse
+    fr = Légumes de plein champ
+  ++units  
+    en = ha
+    de = ha
+    fr = ha
+  ++description
+    todo
+  ++help
+    +++en
+       <p>todo</p>
+    +++de
+       <p>todo</p> 
+    +++fr
+       <p>todo</p> 
+
++green_manure
+  type  = float
+  validator    = ge(0)
+  default_calc = 0
+  default_gui  = 0
+  ++labels 
+    en = Green manure
+    de = Gründüngungen
+    fr = Engrais vert
+  ++units  
+    en = ha
+    de = ha
+    fr = ha
+  ++description
+    todo
+  ++help
+    +++en
+       <p>todo</p>
+    +++de
+       <p>todo</p> 
+    +++fr
+       <p>todo</p> 
+
++meadow_residues
+  type  = float
+  validator    = ge(0)
+  default_calc = 0
+  default_gui  = 0
+  ++labels 
+    en = Intensive and medium-intensive meadows
+    de = Wiese intensiv und mittel intensiv
+    fr = Prairie intensive et mi-intensive
+  ++units  
+    en = ha
+    de = ha
+    fr = ha
+  ++description
+    todo
+  ++help
+    +++en
+       <p>todo</p>
+    +++de
+       <p>todo</p> 
+    +++fr
+       <p>todo</p> 
+
++pasture_mulch
+  type  = float
+  validator    = ge(0)
+  default_calc = 0
+  default_gui  = 0
+  ++labels 
+    en = Intensive and medium-intensive pastures (only mulched area)
+    de = Weide intensiv und mittel intensiv (nur gemulchte Fläche)
+    fr = Pâturage intensive et mi-intensive (surface broyée seulement)
+  ++units  
+    en = ha
+    de = ha
+    fr = ha
+  ++description
+    todo
+  ++help
+    +++en
+       <p>todo</p>
+    +++de
+       <p>todo</p> 
+    +++fr
+       <p>todo</p> 
+
+*** technical ***
+
++er_sugarbeet_leaves
+  value = 5
+  ++units  
+    en = kg N/ha/year
+  ++description
+    todo
+
++er_vegetable_residues
+  value = 4.5
+  ++units  
+    en = kg N/ha/year
+  ++description
+    todo
+
++er_green_manure
+  value = 4
+  ++units  
+    en = kg N/ha/year
+  ++description
+    todo
+
++er_meadow_residues
+  value = 0.75
+  ++units  
+    en = kg N/ha/year
+  ++description
+    todo
+
++er_pasture_mulch
+  value = 0.7
+  ++units  
+    en = kg N/ha/year
+  ++description
+    todo
+
+*** external ***
+
+
+
+*** output ***
+
++nh3_nsugarbeet_leaves
+  print = 15
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NH3 emission from sugar beet residues.
+  ++formula
+    In(sugarbeet_leaves) * Tech(er_sugarbeet_leaves);
+
++nh3_nvegetable_residues
+  print = 15
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NH3 emission from open-field vegetable residues.
+  ++formula
+    In(vegetable_residues) * Tech(er_vegetable_residues);
+
++nh3_ngreen_manure
+  print = 15
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NH3 emission from green manure.
+  ++formula
+    In(green_manure) * Tech(er_green_manure);
+
++nh3_nmeadow_residues
+  print = 15
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NH3 emission from meadow residues.
+  ++formula
+    In(meadow_residues) * Tech(er_meadow_residues);
+
++nh3_npasture_mulch
+  print = 15
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    NH3 emission from pasture (mulched area) residues.
+  ++formula
+    In(pasture_mulch) * Tech(er_pasture_mulch);
+
++nh3_ncropresidues
+  print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Total NH3 emission from crop residues.
+  ++formula
+    Out(nh3_nsugarbeet_leaves) +
+    Out(nh3_nvegetable_residues) +
+    Out(nh3_ngreen_manure) +
+    Out(nh3_nmeadow_residues) +
+    Out(nh3_npasture_mulch);
+
