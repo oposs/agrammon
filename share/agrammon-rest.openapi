@@ -190,7 +190,6 @@ paths:
                             properties:
                                 accounts:
                                     type: string
-                                    format: binary
                                     description: CSV file with columns email, password, and optionally first, last, org
             responses:
                 '200':
@@ -199,6 +198,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/UploadAccountsResult"
+                '400':
+                    description: Bad request (e.g. empty file or missing required CSV column).
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
                 '401':
                     description: Not authorized.
                     content:

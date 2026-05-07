@@ -21,11 +21,17 @@ my %expected-results =
         # 'nh3_napplication' => 1358.309,
         # 'n_into_application' => 7504.237,
         # 'tan_into_application' => 3224.344
-        'nh3_ntotal' => 2386.638,
-        'nh3_nanimalproduction' => 2364.438,
-        'nh3_napplication' =>757.852,
-        'n_into_application' => 7585.328,
-        'tan_into_application' => 3309.785,
+        # adapt to PlantProduction::CropResidues addition, 2026-05-07
+        # 'nh3_ntotal' => 2386.638,
+        # 'nh3_nanimalproduction' => 2364.438,
+        # 'nh3_napplication' =>757.852,
+        # 'n_into_application' => 7585.328,
+        # 'tan_into_application' => 3309.785,
+        'nh3_ntotal' => 2494.751,
+        'nh3_nanimalproduction' => 2472.551,
+        'nh3_napplication' => 866.739,
+        'n_into_application' => 7588.647,
+        'tan_into_application' => 3313.298,
     },
     'hr-inclNOxExtended' => {
         'nh3_ntotal' => 3156.761,

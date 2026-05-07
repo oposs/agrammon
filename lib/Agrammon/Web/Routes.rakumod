@@ -591,46 +591,48 @@ sub application-routes(Agrammon::Web::Service $ws) {
             request-body -> (:$file!) {
                 my $csv-content = $file.body-text;
                 my @lines = $csv-content.lines;
-                unless @lines {
+                if !@lines {
                     bad-request 'application/json', %( error => 'Empty file' );
                 }
+                else {
+                    # Parse header line to get column mapping
+                    my @header = @lines.shift.split(',').map(*.trim);
+                    my %col = @header.kv.map(-> $i, $col { $col => $i });
 
-                # Parse header line to get column mapping
-                my @header = @lines.shift.split(',').map(*.trim);
-                my %col = @header.kv.map(-> $i, $col { $col => $i });
-
-                # Validate required columns
-                for <email password> -> $required {
-                    unless %col{$required}:exists {
-                        bad-request 'application/json', %( error => "Missing required column '$required' in CSV header" );
+                    # Validate required columns
+                    my $missing = <email password>.first({ !(%col{$_}:exists) });
+                    if $missing.defined {
+                        bad-request 'application/json',
+                            %( error => "Missing required column '$missing' in CSV header" );
                     }
-                }
+                    else {
+                        my @created;
+                        my @errors;
+                        for @lines.kv -> $line-num, $line {
+                            next unless $line.trim;  # Skip empty lines
 
-                my @created;
-                my @errors;
-                for @lines.kv -> $line-num, $line {
-                    next unless $line.trim;  # Skip empty lines
+                            my @values = $line.split(',').map(*.trim);
 
-                    my @values = $line.split(',').map(*.trim);
+                            my $email     = @values[%col<email>];
+                            my $password  = @values[%col<password>];
+                            my $firstname = %col<first>:exists ?? @values[%col<first>] !! Str;
+                            my $lastname  = %col<last>:exists  ?? @values[%col<last>]  !! Str;
+                            my $org       = %col<org>:exists   ?? @values[%col<org>]   !! Str;
 
-                    my $email     = @values[%col<email>];
-                    my $password  = @values[%col<password>];
-                    my $firstname = %col<first>:exists ?? @values[%col<first>] !! Str;
-                    my $lastname  = %col<last>:exists  ?? @values[%col<last>]  !! Str;
-                    my $org       = %col<org>:exists   ?? @values[%col<org>]   !! Str;
+                            $ws.create-account($email, $password, $firstname, $lastname, $org, Str, Str);
+                            @created.push: $email;
 
-                    $ws.create-account($email, $password, $firstname, $lastname, $org, Str, Str);
-                    @created.push: $email;
-
-                    CATCH {
-                        when X::Agrammon::DB::User::Exists
-                           | X::Agrammon::DB::User::CreateFailed
-                           | X::Agrammon::DB::User::InvalidPassword {
-                            @errors.push: "Line { $line-num + 2 } ($email): " ~ .message;
+                            CATCH {
+                                when X::Agrammon::DB::User::Exists
+                                   | X::Agrammon::DB::User::CreateFailed
+                                   | X::Agrammon::DB::User::InvalidPassword {
+                                    @errors.push: "Line { $line-num + 2 } ($email): " ~ .message;
+                                }
+                            }
                         }
+                        content 'application/json', { :@created, :@errors };
                     }
                 }
-                content 'application/json', { :@created, :@errors };
             }
         }
 
