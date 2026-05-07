@@ -3,7 +3,7 @@ author = Agrammon Group
 date = 2017-07-12
 taxonomy = Livestock::DairyCow
 instances = multi
-gui = Livestock::DairyCow,Tierhaltung::Milchkühe,Production animale::Vâches laitières,Livestock::Dairy cows
+gui = Livestock::Dairy Cow,Tierhaltung::Milchkühe,Production animale::Vâches laitières,Livestock::Dairy cows
 
 +short
   Collects the annual emission of NH3 and the N flux for dairy cows.

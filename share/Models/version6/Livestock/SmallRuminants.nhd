@@ -4,7 +4,7 @@ author    = Agrammon Group
 date      = 2017-07-12
 taxonomy  = Livestock::SmallRuminants
 instances = multi
-gui       = Livestock::SmallRuminants,Tierhaltung::Kleinwiederkäuer,Production animale::Petits ruminants,Livestock::Small ruminants
+gui       = Livestock::Small Ruminants,Tierhaltung::Kleinwiederkäuer,Production animale::Petits ruminants,Livestock::Small ruminants
 
 +short
 

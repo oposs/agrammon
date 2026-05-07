@@ -3,7 +3,7 @@
 author   = Agrammon Group
 date     = 2017-07-10
 taxonomy = Storage::SolidManure
-gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage::Solid manure
+gui       = Storage::Solid Manure,Hofdüngerlager::Mist,Stockage::Fumier,Storage::Solid manure
 
 +short
 

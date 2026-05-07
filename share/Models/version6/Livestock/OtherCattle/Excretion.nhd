@@ -96,17 +96,14 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     +++en
        <p>Growing bulls can be entered in the corresponding category of heifers. Breeding bulls must be entered in the category heifers over two years.</p>
        <p>Beef cattle entire fattening period includes categories both beef cattle grower and finisher.</p>
-       <p>To calculate the emissions of the specific categories beef cattle grower and beef cattle finisher: refer to the help texts under "N excretion." </p>
     +++de
        <p>Ammenkühe werden unter der Kategorie Mutterkühe eingetragen.</p>
        <p>Zu den Kategorien der Aufzuchtrinder zählen die Remonten der Milchkühe und der Mutterkühe. Aufzuchtkälber gehören zur Kategorie Aufzuchtrinder unter 1-jährig. Stiere zur Aufzucht können in der entsprechenden Alterskategorie der Aufzuchtrinder eingetragen werden. Zuchtstiere werden unter Aufzuchtrinder über 2-jährig eingetragen.</p>
        <p>Masttiere Rindviehmast ganze Mastperiode: 1 Platz (d.h. sämtliche Masttiere Rindviehmast bis 160 Tage und > 160 Tage).</p>
-       <p>Zur Berechnung der Emissionen der Kategorien Masttiere (Rindviehmast) bis 160 Tage oder Masttiere (Rindviehmast) >160 Tage: Hilfetexte unter "N-Ausscheidung" beachten.</p>
     +++fr
        <p>Les vâches mères sont introduites dans la catégorie "Vâches allaitantes".</p>
        <p>La catégorie "Remontes" se compose des remontes pour vâches laitières et pour vâches allaitantes. Les veaux d'élevage appartiennent à la catégorie "Remontes de moins d'un an". Les taurillons d'élevage peuvent être mentionnés dans les remontes, dans la catégorie d'âge correspondante. Les taureaux d'élevage sont à mentionner dans la catégorie "Remontes âgés de plus de 2 ans". </p>
        <p>Bovins à l'engrais : 1 place (c.à.d. tous les bovins à l'engrais age max. 160 j. et > 160 j.).</p>
-       <p>Pour calculer les émissions des catégories bovins à l'engrais age max. 160 j. ou bovins à l'engrais age > 160 j. : consulter les textes d'aide sous "Excrétions azotées".</p>
 
 
 +animals
@@ -173,42 +170,20 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
       Annual standard N excretion for other cattle
     ++help
       +++en
-         <p>If "Standard" is selected the standard value for the N-excretion according to PRIF 2017 (Richner et al., 2017) or, for beef cattle, the values based on Poupon et al.(2025) and Schlegel et al. (2020) are used. If a number is entered, a value
+         <p>If "Standard" is selected the standard value for the N-excretion according to PRIF 2017 (Richner et al., 2017) or, for the three beef cattle categories, the values based on Poupon et al.(2025) and Schlegel et al. (2020) are used. If a number is entered, a value
             for the nitrogen excretion can be selected by the user.</p>
-         <p>To calculate the emissions of beef cattle grower or finisher: select "Beef cattle" under Animal category. For the N excretion, the following values are suggested (Poupon et al., 2025; Schlegel et al., 2020):</p>
-         
-          <ul>
-          <li>Beef cattle grower: 22 kg N/year</li>
-          <li>Beef cattle finisher: 49 kg N/year</li>
-          </ul>
-      
          <p>Poupon, M., Probst, S., Kupper, T. 2025. Révision des valeurs d’excrétions d’azote chez les bovins d’engraissement, les chèvres et les moutons. Bericht auf Französisch mit Zusammenfassung auf Deutsch erstellt im Auftrag des Bundesamts für Umwelt. CH-3052 Zollikofen: Berner Fachhochschule. Hochschule für Agrar-, Forst- und Lebensmittelwissenschaften, Zollikofen.<p>
          <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/23.<p>
          <p>Schlegel, P., Willi, C., Vollenweider, O., Morel, I. 2020. Richtwerte für den Nährstoffanfall aus der Rindviehmast. Agrarforschung Schweiz 4(2): 92–95.</p>
       +++de
-         <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD 2017 (Richner et al., 2017) oder bei "Masttieren Rindviehmast ganze Mastperiode" der Wert basierend auf Poupon et al.(2025) und Schlegel et al. (2020) verwendet. Bei Eingabe einer Zahl kann der Wert für die
+         <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD 2017 (Richner et al., 2017) oder bei den 3 Kategorien "Masttieren Rindviehmast" die Werte basierend auf Poupon et al.(2025) und Schlegel et al. (2020) verwendet. Bei Eingabe einer Zahl kann der Wert für die
             Stickstoffausscheidung selbst gewählt werden.</p>
-         <p>Für die Berechnung der Emissionen der Tierkategorien Masttiere Rindviehmast bis 160 Tage oder > 160 Tage: unter Tierkategorie "Masttiere Rindviehmast ganze Mastperiode" anwählen. Für die N-Ausscheidung werden die folgenden Werte vorgeschlagen (Poupon et al., 2025; Schlegel et al., 2020):</p>
-         
-          <ul>
-          <li>Rindviehmast bis 160 Tage: 22 kg N/Jahr</li>
-          <li>Rindviehmast > 160 Tage: 49 kg N/Jahr</li>
-          </ul>
-      
          <p>Poupon, M., Probst, S., Kupper, T. 2025. Révision des valeurs d’excrétions d’azote chez les bovins d’engraissement, les chèvres et les moutons. Bericht auf Französisch mit Zusammenfassung auf Deutsch erstellt im Auftrag des Bundesamts für Umwelt. CH-3052 Zollikofen: Berner Fachhochschule. Hochschule für Agrar-, Forst- und Lebensmittelwissenschaften, Zollikofen.<p>
          <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/23.<p>
          <p>Schlegel, P., Willi, C., Vollenweider, O., Morel, I. 2020. Richtwerte für den Nährstoffanfall aus der Rindviehmast. Agrarforschung Schweiz 4(2): 92–95.</p>
       +++fr
-         <p>Si "Standard" est introduisé, la valeur standard est utilisé d'après PRIF 2017 (Richner et al., 2017) ou, pour la catégorie "Bovins à l'engrais mise en stabulation – sortie", la valeur d'après Poupon et al.(2025) et Schlegel et al. (2020). Si un nombre est introduisé
-            une valeur pour les excrétions azotées peut être déterminée par
-            l'utilisateur/-trice.</p>
-         <p>Pour calculer les émissions des catégories Bovins à l'engrais age max. 160 j. ou age > 160 j. : sélectionner "Bovins à l'engrais mise en stabulation – sortie" sous Catégorie d'animaux. Les valeurs suivantes sont proposées pour les excrétions azotées (Poupon et al., 2025; Schlegel et al., 2020):</p>
-         
-          <ul>
-          <li>Bovins à l'engrais age max. 160 j.: 22 kg N/an</li>
-          <li>Bovins à l'engrais age > 160 j.: 49 kg N/an</li>
-          </ul>
-      
+         <p>Si "Standard" est introduisé, la valeur standard est utilisé d'après PRIF 2017 (Richner et al., 2017) ou, pour les trois catégories "Bovins à l'engrais", les valeurs d'après Poupon et al.(2025) et Schlegel et al. (2020). Si un nombre est introduisé
+            une valeur pour les excrétions azotées peut être déterminée par l'utilisateur/-trice.</p>
          <p>Poupon, M., Probst, S., Kupper, T. 2025. Révision des valeurs d’excrétions d’azote chez les bovins d’engraissement, les chèvres et les moutons. Bericht auf Französisch mit Zusammenfassung auf Deutsch erstellt im Auftrag des Bundesamts für Umwelt. CH-3052 Zollikofen: Berner Fachhochschule. Hochschule für Agrar-, Forst- und Lebensmittelwissenschaften, Zollikofen.<p>
          <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/23.<p>
          <p>Schlegel, P., Willi, C., Vollenweider, O., Morel, I. 2020. Richtwerte für den Nährstoffanfall aus der Rindviehmast. Agrarforschung Schweiz 4(2): 92–95.</p>

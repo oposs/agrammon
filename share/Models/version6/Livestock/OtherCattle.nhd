@@ -4,7 +4,7 @@ author    = Agrammon Group
 date      = 2017-07-12
 taxonomy  = Livestock::OtherCattle
 instances = multi
-gui       = Livestock::OtherCattle,Tierhaltung::Übriges Rindvieh,Production animale::Autres bovins,Livestock::Other cattle
+gui       = Livestock::Other Cattle,Tierhaltung::Übriges Rindvieh,Production animale::Autres bovins,Livestock::Other cattle
 
 +short
   Collects the annual emission of NH3 and the N flux for cattle 

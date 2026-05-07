@@ -3,7 +3,7 @@
 author   = Agrammon Group
 date     = 2008-03-30
 taxonomy = Application::SolidManure
-gui	 = Application::SolidManure,Hofdüngerausbringung::Mist,Epandage::Fumier,Application::Solid manure
+gui	 = Application::Solid Manure,Hofdüngerausbringung::Mist,Epandage::Fumier,Application::Solid manure
 
 +short
 

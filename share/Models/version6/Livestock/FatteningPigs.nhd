@@ -4,7 +4,7 @@ author    = Agrammon Group
 date      = 2008-02-19
 taxonomy  = Livestock::FatteningPigs
 instances = multi
-gui       = Livestock::FatteningPigs,Tierhaltung::Mastschweine,Production animale::Porcs à l'engrais,Livestock::Fattening pigs
+gui       = Livestock::Fattening Pigs,Tierhaltung::Mastschweine,Production animale::Porcs à l'engrais,Livestock::Fattening pigs
 
 +short
 
