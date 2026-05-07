@@ -1,10 +1,49 @@
-# Create Docker PostgreSQL
+# Test database (podman)
 
-# Build the image
-docker build -t agrammon-db .
+The test suite expects a PostgreSQL instance with the test schema and seed
+data loaded. The `Dockerfile` here builds an image that initializes the DB
+on first start; podman runs the OCI image just like docker.
 
-# Run the container
-docker run -d -p 55432:5432 --name agrammon-postgres --replace agrammon-db
+## Quick start (driven by the top-level Makefile)
 
-# Test
-psql -h localhost --port 55432 -U agrammon -d agrammon_test
+    # Build image and start the container (idempotent: --replace).
+    make db-start
+
+    # Run the full test suite against it.
+    make test
+
+    # Or run only DB-independent tests:
+    make unit-test
+
+    # Stop and remove the test DB container when done.
+    make db-stop
+
+The Makefile exposes these targets:
+
+  - `db-build`    — build the `agrammon-db` image from `t/Dockerfile`.
+  - `db-start`    — build + run the container (`agrammon-postgres`),
+                    wait until pg_isready succeeds.
+  - `db-stop`     — stop and remove the container.
+  - `db-restart`  — stop + start.
+  - `db-logs`     — tail container logs.
+  - `db-psql`     — open a psql shell against the running test DB.
+  - `test`        — `prove6 -l t/` with `AGRAMMON_CFG=t/test-data/agrammon.cfg.yaml`
+                    (assumes the DB container is running).
+  - `unit-test`   — `AGRAMMON_UNIT_TEST=1 prove6 -l t/` (skips DB-backed tests).
+
+Configurable via env / make variables:
+  - `PODMAN`       (default: `podman`)
+  - `DB_IMAGE`     (default: `agrammon-db`)
+  - `DB_CONTAINER` (default: `agrammon-postgres`)
+  - `DB_PORT`      (default: `55432`)
+
+## Manual usage
+
+    # Build the image (run from the project root):
+    podman build -t agrammon-db t/
+
+    # Run the container:
+    podman run -d -p 55432:5432 --name agrammon-postgres --replace agrammon-db
+
+    # Connect with psql:
+    psql -h localhost --port 55432 -U agrammon -d agrammon_test
