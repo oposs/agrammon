@@ -1,7 +1,9 @@
 {
+  "packageManager": "pnpm@10.4.1",
   "devDependencies": {
-    "@qooxdoo/framework": "^7.8.0",
-    "jsdoctypeparser": "*"
+    "@qooxdoo/framework": "7.8.0",
+    "jsdoctypeparser": "*",
+    "regenerator-runtime": "^0.14.1"
   },
   "dependencies": {
     "coveralls": "^3.1.1",
@@ -9,5 +11,12 @@
     "puppeteer": "^10.4.0",
     "puppeteer-to-istanbul": "^1.4.0",
     "yargs": "^17.2.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@qooxdoo/framework",
+      "core-js-bundle",
+      "puppeteer"
+    ]
   }
 }

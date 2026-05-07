@@ -28,6 +28,7 @@ AC_ARG_VAR(NODE,   [Path to local node binary])
 AC_PATH_PROG(NODE, node, no)
 AC_PATH_PROG(NPM, npm, npm-not-found)
 AC_PATH_PROG(NPX, npx, npx-not-found)
+AC_PATH_PROG(PNPM, pnpm, pnpm-not-found)
 AC_PATH_PROG(XGETTEXT, xgettext, xgettext-not-found)
 AC_PATH_PROG(MSGMERGE, msgmerge, msgmerge-not-found)
 
