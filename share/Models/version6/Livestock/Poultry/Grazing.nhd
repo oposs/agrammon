@@ -204,7 +204,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
 +free_range
   type = enum
   ++enum
-    +++fix
+    +++yes
        en = yes, permanent housing
        de = Ja, fester Stall
        fr = oui, stabulation fixe
@@ -256,6 +256,21 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
 
 ### Outdoor.nhd
 
++free_range_housing
+  print = Poultry
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Housing type for free range poultry (permanent vs. mobile)
+  ++formula
+    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
+      return 'permanent';
+    } else {
+      return In(free_range);
+    }
+
 +free_range_days
   print = Poultry
   ++units  
@@ -268,7 +283,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     if ( In(free_range) and lc In(free_range) eq 'no' ) {
       return 0;
     } else {
-      return $TE->{'free_range_days_'.Val(animalcategory, Excretion).'_'.In(free_range)};
+      return $TE->{'free_range_days_'.Val(animalcategory, Excretion).'_'.Out(free_range_housing)};
     }
 
 +free_range_hours
@@ -283,7 +298,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     if ( In(free_range) and lc In(free_range) eq 'no' ) {
       return 0;
     } else {
-      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion).'_'.In(free_range)};
+      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion).'_'.Out(free_range_housing)};
     }
 
 +free_range_share
@@ -298,7 +313,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     if ( In(free_range) and lc In(free_range) eq 'no' ) {
       return 0;
     } else {
-      return $TE->{'free_range_share_'.Val(animalcategory, Excretion).'_'.In(free_range)};
+      return $TE->{'free_range_share_'.Val(animalcategory, Excretion).'_'.Out(free_range_housing)};
     }
 
 ### KGrazing.nhd

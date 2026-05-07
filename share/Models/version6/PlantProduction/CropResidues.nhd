@@ -4,7 +4,7 @@
 author   = Agrammon Group
 date     = 2026-05-04
 taxonomy = PlantProduction::CropResidues
-gui	 = PlantProduction::CropResidues,Pflanzenbau::Ernterückstände,Production végétale::Résidus végétaux,Plant production::Crop residues
+gui	 = Plant Production::Crop Residues,Pflanzenbau::Ernterückstände,Production végétale::Résidus végétaux,Plant production::Crop residues
 
 +short
 
@@ -33,11 +33,11 @@ Computes the annual NH3 emission from crop residues.
     todo
   ++help
     +++en
-       <p>todo</p>
+       <p>Enter the crop area in ha.</p>
     +++de
-       <p>todo</p> 
+       <p>Eingabe der Anbaufläche in ha.</p> 
     +++fr
-       <p>todo</p> 
+       <p>Saisir la surface cultivée en ha.</p> 
 
 +vegetable_residues
   type  = float
@@ -56,11 +56,11 @@ Computes the annual NH3 emission from crop residues.
     todo
   ++help
     +++en
-       <p>todo</p>
+       <p>Enter the crop area in ha.</p>
     +++de
-       <p>todo</p> 
+       <p>Eingabe der Anbaufläche in ha.</p> 
     +++fr
-       <p>todo</p> 
+       <p>Saisir la surface cultivée en ha.</p> 
 
 +green_manure
   type  = float
@@ -79,11 +79,11 @@ Computes the annual NH3 emission from crop residues.
     todo
   ++help
     +++en
-       <p>todo</p>
+       <p>Enter the crop area in ha.</p>
     +++de
-       <p>todo</p> 
+       <p>Eingabe der Anbaufläche in ha.</p> 
     +++fr
-       <p>todo</p> 
+       <p>Saisir la surface cultivée en ha.</p> 
 
 +meadow_residues
   type  = float
@@ -102,11 +102,11 @@ Computes the annual NH3 emission from crop residues.
     todo
   ++help
     +++en
-       <p>todo</p>
+       <p>Enter the crop area in ha.</p>
     +++de
-       <p>todo</p> 
+       <p>Eingabe der Anbaufläche in ha.</p> 
     +++fr
-       <p>todo</p> 
+       <p>Saisir la surface cultivée en ha.</p> 
 
 +pasture_mulch
   type  = float
@@ -125,11 +125,11 @@ Computes the annual NH3 emission from crop residues.
     todo
   ++help
     +++en
-       <p>todo</p>
+       <p>Enter the crop area in ha.</p>
     +++de
-       <p>todo</p> 
+       <p>Eingabe der Anbaufläche in ha.</p> 
     +++fr
-       <p>todo</p> 
+       <p>Saisir la surface cultivée en ha.</p> 
 
 *** technical ***
 
@@ -231,6 +231,11 @@ Computes the annual NH3 emission from crop residues.
 
 +nh3_ncropresidues
   print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
+  ++labels
+    sort = 110
+      en = Crop residues
+      de = Ernterückstände
+      fr = Résidus végétaux 
   ++units  
     en = kg N/year
     de = kg N/Jahr

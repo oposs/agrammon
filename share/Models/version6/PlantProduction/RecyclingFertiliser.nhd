@@ -3,7 +3,7 @@
 author   = Agrammon Group
 date     = 2008-03-30
 taxonomy = PlantProduction::RecyclingFertiliser
-gui	 = PlantProduction::RecyclingFertiliser,Pflanzenbau::Recyclingdünger,Production végétale::Engrais de recyclage,Plant production::Recycling fertiliser
+gui	 = Plant Production::Recycling Fertiliser,Pflanzenbau::Recyclingdünger,Production végétale::Engrais de recyclage,Plant production::Recycling fertiliser
 
 +short
 
@@ -147,7 +147,7 @@ Vanderweerden and Jarvis (1997)
 
 +compost 
   format= %.0f
-  print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
+  print = PlantProductionDetails
   ++labels 
     sort = 113
     en = Amount of compost (t fresh matter per year)
@@ -164,7 +164,7 @@ Vanderweerden and Jarvis (1997)
  
 +solid_digestate 
   format= %.0f
-  print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
+  print = PlantProductionDetails
   ++labels 
     sort = 114
     en = Amount of solid digestate (t fresh matter per year)
@@ -181,7 +181,7 @@ Vanderweerden and Jarvis (1997)
 
 +liquid_digestate 
   format= %.0f
-  print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
+  print = PlantProductionDetails
   ++labels 
     sort = 115
     en = Amount of liquid digestate (m3 per year)
@@ -198,7 +198,12 @@ Vanderweerden and Jarvis (1997)
 
 +nh3_ncompost
   format = %.0f
-  print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
+  print = PlantProductionDetails
+  ++labels 
+    sort = 113
+    en = compost
+    de = Kompost
+    fr = Compost
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -210,7 +215,12 @@ Vanderweerden and Jarvis (1997)
 
 +nh3_nsolid_digestate
   format = %.0f
-  print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
+  print = PlantProductionDetails
+  ++labels 
+    sort = 114
+    en = solid digestate
+    de = Festes Gärgut
+    fr = Digestats solides
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -222,7 +232,12 @@ Vanderweerden and Jarvis (1997)
 
 +nh3_nliquid_digestate
   format = %.0f
-  print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
+  print = PlantProductionDetails
+  ++labels 
+    sort = 115
+    en = liquid digestate
+    de = Flüssiges Gärgut
+    fr = Digestats liquides
   ++units  
     en = kg N/year
     de = kg N/Jahr

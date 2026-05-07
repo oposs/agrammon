@@ -3,7 +3,7 @@
 author   = Agrammon Group
 date     = 2008-05-07
 taxonomy = PlantProduction
-gui      = PlantProduction,Pflanzenbau,Production végétale,Plant production
+gui      = Plant Production,Pflanzenbau,Production végétale,Plant production
 
 +short
 
