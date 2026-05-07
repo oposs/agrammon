@@ -22,5 +22,5 @@ deps:
 		cpanm --installdeps .
 
 deploy:
-        scp agrammon-`cat VERSION`.tar.gz agrammon@web-volki-01-adm:src/
-        ssh camas@web-volki-01-adm mkdir opt/releases/agrammon-`cat VERSION` && cd opt/releases/agrammon-`cat VERSION` && tar zxf $HOME/src/agrammon-`cat VERSION`
+	scp agrammon-`cat VERSION`.tar.gz agrammon@web-volki-01-adm:src/
+	ssh camas@web-volki-01-adm mkdir opt/releases/agrammon-`cat VERSION` && cd opt/releases/agrammon-`cat VERSION` && tar zxf $HOME/src/agrammon-`cat VERSION`
