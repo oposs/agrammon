@@ -13,9 +13,14 @@ ENV POSTGRES_PASSWORD=postgres
 COPY init-roles.sh /docker-entrypoint-initdb.d/01-init-roles.sh
 COPY test-data/agrammon.schema.sql /docker-entrypoint-initdb.d/02-agrammon.schema.sql
 COPY test-data/agrammon.test.sql /docker-entrypoint-initdb.d/03-agrammon.test.sql
+# Optional dev-only password setup. No-op unless AGRAMMON_DEV_PASSWORD is
+# passed at container start; lets the same image serve test (CI) and dev
+# (local web UI login) workflows.
+COPY 04-dev-password.sh /docker-entrypoint-initdb.d/04-dev-password.sh
 
-# Make sure the init script is executable
-RUN chmod +x /docker-entrypoint-initdb.d/01-init-roles.sh
+# Make sure the init scripts are executable
+RUN chmod +x /docker-entrypoint-initdb.d/01-init-roles.sh \
+              /docker-entrypoint-initdb.d/04-dev-password.sh
 
 # Expose PostgreSQL port
 EXPOSE 5432

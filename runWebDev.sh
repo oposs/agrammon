@@ -1,0 +1,15 @@
+#! /bin/bash
+# Run the web app against the local podman dev database (see Makefile
+# `make dev-db-start`). The DB persists across container restarts via the
+# bind mount in dev/db-data/. Default login: test@agrammon.ch / agrammon.
+set -e
+
+cd "$(dirname "$0")"
+
+if ! podman container exists agrammon-dev-db 2>/dev/null; then
+    echo "Dev DB container not running. Start it first with: make dev-db-start" >&2
+    exit 1
+fi
+
+export PERL5LIB=Inline/perl5
+exec raku -Ilib bin/agrammon.raku --cfg-file=dev/agrammon.dev.yaml web version6/End.nhd
