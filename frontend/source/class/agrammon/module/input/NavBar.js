@@ -574,7 +574,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 }
 
                 // make navbar entry
-                navFolder = this.__addEntry(String(rec.gui.en), rec.gui);
+                navFolder = this.__addEntry(String(rec.gui.raw), rec.gui);
 
                 // data type detection
                 switch (rec.type) {

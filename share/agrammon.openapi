@@ -670,6 +670,9 @@ components:
         LanguageLabels:
             type: object
             properties:
+                raw:
+                    description: Structural/canonical key (only set for gui navigation)
+                    type: string
                 de:
                     type: string
                 en:

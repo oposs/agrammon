@@ -4,7 +4,7 @@
 author   = Agrammon Group
 date     = 2026-05-04
 taxonomy = PlantProduction::CropResidues
-gui	 = Plant Production::Crop Residues,Pflanzenbau::Ernterückstände,Production végétale::Résidus végétaux,Plant production::Crop residues
+gui	 = PlantProduction::CropResidues,Pflanzenbau::Ernterückstände,Production végétale::Résidus végétaux,Plant production::Crop residues
 
 +short
 
