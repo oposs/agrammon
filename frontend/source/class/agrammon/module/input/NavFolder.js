@@ -66,6 +66,14 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         __propData: null,
         __childrenHash: null,
         __instanceOrder: null,
+        // Tracks whether any input under this folder currently holds a value
+        // that was display-mapped from a foreign-version enum alias. Drives
+        // the orange dot/circle in the navbar. Session-only; never persisted.
+        __mapped: false,
+
+        isMapped: function() {
+            return this.__mapped;
+        },
 
         destruct : function() {
             this.__propData = null;
@@ -269,6 +277,20 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                 }
             }
 
+            // Aggregate mapped state from children: any descendant input
+            // holding a foreign-version alias makes this folder orange-when-
+            // otherwise-green. Missing data still wins (red), since orange
+            // is informational and must not mask incomplete inputs.
+            var mapped = false;
+            for (key in this.__childrenHash) {
+                if (typeof this.__childrenHash[key].isMapped === 'function'
+                    && this.__childrenHash[key].isMapped()) {
+                    mapped = true;
+                    break;
+                }
+            }
+            this.__mapped = mapped;
+
             // no direct data
             if (this.isPlain()) {
                 if (complete == undefined) {
@@ -277,22 +299,28 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                         complete = true;
                     }
                 }
-                else if (complete) {
-                    this.setIcon('agrammon/green-dot.png');
+                else if (!complete) {
+                    this.setIcon('agrammon/red-dot.png');
+                }
+                else if (mapped) {
+                    this.setIcon('agrammon/orange-dot.png');
                 }
                 else {
-                    this.setIcon('agrammon/red-dot.png');
+                    this.setIcon('agrammon/green-dot.png');
                 }
             }
             if (this.canInstance()) {
                 if (complete == undefined) {
                     this.setIcon('agrammon/empty-circle.png');
                 }
-                else if (complete) {
-                    this.setIcon('agrammon/green-circle.png');
+                else if (!complete) {
+                    this.setIcon('agrammon/red-circle.png');
+                }
+                else if (mapped) {
+                    this.setIcon('agrammon/orange-circle.png');
                 }
                 else {
-                    this.setIcon('agrammon/red-circle.png');
+                    this.setIcon('agrammon/green-circle.png');
                 }
             }
             if (this.isRoot()) {
@@ -336,6 +364,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
 
             // not empty
             var complete = true;
+            var mapped = false;
             for (let i=0; i<len; i++) {
                 let varName = this.__propData[i].getName();
                 let metaData = {};
@@ -347,7 +376,11 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                            (value === '*** Select ***' && defaultValue === '*** Select ***')
                     ) { // incomplete
                         complete = false;
-                        break; // one false is enough
+                        // Don't break here: we still want to detect any mapped
+                        // values further down the list so a single missing
+                        // input doesn't suppress the orange signal once it
+                        // gets filled in.
+                        continue;
                     }
                     else if (value === 'branched') {
                         metaData = this.__propData[i].getMetaData();
@@ -365,14 +398,32 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                             }
                         }
                     } // value === branched
+                    else {
+                        // Mapped: stored value is a cross-version alias for
+                        // one of the local enum keys. enumAliases is populated
+                        // by the backend's Input.as-hash when `accepts =` is
+                        // declared in the .nhd. Surfaces as orange; does not
+                        // block calculation.
+                        metaData = this.__propData[i].getMetaData();
+                        if (   metaData
+                            && metaData.enumAliases
+                            && metaData.enumAliases.hasOwnProperty(value)
+                        ) {
+                            mapped = true;
+                        }
+                    }
                 }
             }
+            this.__mapped = mapped;
 
-            if (complete) {
-                this.setIcon('agrammon/green-dot.png');
+            if (!complete) {
+                this.setIcon('agrammon/red-dot.png');
+            }
+            else if (mapped) {
+                this.setIcon('agrammon/orange-dot.png');
             }
             else {
-                this.setIcon('agrammon/red-dot.png');
+                this.setIcon('agrammon/green-dot.png');
             }
             return complete;
         }, // isComplete

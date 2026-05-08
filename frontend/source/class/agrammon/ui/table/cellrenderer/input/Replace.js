@@ -55,7 +55,18 @@ qx.Class.define('agrammon.ui.table.cellrenderer.input.Replace', {
                     }
                 }
             default:
-                color = (cellInfo.row % 2 == 1 ? "#c5e1af" : "#dff1d1");
+                // Orange when the stored value is a foreign-version enum alias
+                // mapped onto a local key (declared via `accepts =` in the .nhd).
+                // Informational only — does not block calculation.
+                if (   metaData
+                    && metaData.enumAliases
+                    && metaData.enumAliases.hasOwnProperty(cellInfo.value)
+                ) {
+                    color = (cellInfo.row % 2 == 1 ? "#f9d8a4" : "#fbeacb");
+                }
+                else {
+                    color = (cellInfo.row % 2 == 1 ? "#c5e1af" : "#dff1d1");
+                }
                 break;
             }
             return this.base(arguments,  cellInfo) + "background-color:" +  color + ";";
