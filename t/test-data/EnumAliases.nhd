@@ -1,0 +1,27 @@
+# Synthetic test fixture for enum alias support (cross-version migration).
+# The `accepts =` line on a +++Option block declares foreign enum keys
+# that map onto this option (e.g. values from another model version).
+
+*** general ***
+
+author = Test Author
+date = 2026-05-08
+taxonomy = Test::EnumAliases
+description = Test fixture for enum alias support.
+
+*** input ***
+
++housing_type
+   type=enum
+   ++labels
+     en = Housing type
+   ++enum
+     +++yes
+        en = yes
+        accepts = fix, mobile
+     +++no
+        en = no
+   ++units
+     en = -
+   ++description
+     Test enum with aliased values.

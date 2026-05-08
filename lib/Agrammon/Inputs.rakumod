@@ -79,7 +79,7 @@ role Agrammon::Inputs::Storage {
                     }
                     orwith $input.compiled-default-formula -> &default {
                         %values{$input.name} //= default(Agrammon::Environment.new(
-                                input => %values,
+                                input => $module.canonicalize-input-hash(%values),
                                 technical => $module.technical-hash,
                                 technical-override => %technical{$taxonomy}))
                     }

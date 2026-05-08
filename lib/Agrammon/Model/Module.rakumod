@@ -49,4 +49,22 @@ class Agrammon::Model::Module {
     method set-instance-root(Str $!instance-root) {}
 
     method set-gui-root(Agrammon::Model::Module $!gui-root-module) {}
+
+    #| Returns a copy of $input-hash with enum-typed input values canonicalized:
+    #| values that are declared `accepts =` aliases (e.g. cross-version
+    #| migration) are rewritten to the local enum key so that formulas only
+    #| ever see the canonical local values. Non-enum values pass through.
+    method canonicalize-input-hash(%input-hash --> Hash) {
+        my %out = %input-hash;
+        for @!input -> Agrammon::Model::Input $input {
+            next unless $input.type eq 'enum';
+            my $name = $input.name;
+            with %out{$name} -> $value {
+                if $input.is-mapped-enum-value($value) {
+                    %out{$name} = $input.canonical-enum-value($value);
+                }
+            }
+        }
+        %out
+    }
 }

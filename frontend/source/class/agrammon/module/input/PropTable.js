@@ -65,6 +65,36 @@ qx.Class.define('agrammon.module.input.PropTable', {
                         });
                       renderer.setReplaceMap(replaceMap);
                       renderer.addReversedReplaceMap();
+                      // Map foreign-version enum aliases (declared as
+                      // `accepts =` in the .nhd) to the canonical key's
+                      // localized label so an aliased cell renders with the
+                      // canonical label (and the Replace renderer paints
+                      // it orange via the enumAliases check).
+                      if (metaData.enumAliases) {
+                          var locale = qx.locale.Manager.getInstance().getLocale();
+                          locale = locale.replace(/_.+/,'');
+                          // Build canonicalKey → label index from the option
+                          // rows (rows are [label, '', key]).
+                          var keyToLabel = {};
+                          var j=0;
+                          metaData['options'].forEach(function(row) {
+                              if (row instanceof Array) {
+                                  keyToLabel[row[2]] = metaData.optionsLang[j][locale];
+                                  j++;
+                              }
+                          });
+                          // Adding entries to the renderer's existing map (which
+                          // already contains both forward and reversed mappings
+                          // after addReversedReplaceMap above).
+                          var fullMap = renderer.getReplaceMap() || replaceMap;
+                          for (var alias in metaData.enumAliases) {
+                              var canonical = metaData.enumAliases[alias];
+                              if (keyToLabel[canonical] !== undefined) {
+                                  fullMap[alias] = keyToLabel[canonical];
+                              }
+                          }
+                          renderer.setReplaceMap(fullMap);
+                      }
                       return renderer;
                   }
               }
