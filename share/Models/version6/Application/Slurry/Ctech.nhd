@@ -199,46 +199,46 @@ taxonomy = Application::Slurry::Ctech
 
 +share_deep_injection
   print = 22
-  ++units 
+  ++units
     en = -
   ++description
     Share
   ++formula
-    In(share_deep_injection) / Out(share_apptech_sum);
+    Out(share_apptech_sum) > 0 ? In(share_deep_injection) / Out(share_apptech_sum) : 0;
 
 +share_shallow_injection
   print = 22
-  ++units 
+  ++units
     en = -
   ++description
     Share
   ++formula
-    In(share_shallow_injection) / Out(share_apptech_sum);
+    Out(share_apptech_sum) > 0 ? In(share_shallow_injection) / Out(share_apptech_sum) : 0;
 
 +share_trailing_shoe
  print = 22
-  ++units 
+  ++units
     en = -
   ++description
     Share
   ++formula
-    In(share_trailing_shoe) / Out(share_apptech_sum);
+    Out(share_apptech_sum) > 0 ? In(share_trailing_shoe) / Out(share_apptech_sum) : 0;
 
 +share_trailing_hose
  print = 22
-  ++units 
+  ++units
     en = -
   ++description
     Share
   ++formula
-    In(share_trailing_hose) / Out(share_apptech_sum);
+    Out(share_apptech_sum) > 0 ? In(share_trailing_hose) / Out(share_apptech_sum) : 0;
 
 +share_splash_plate
  print = 22
-  ++units 
+  ++units
     en = -
   ++description
     Share
   ++formula
-    In(share_splash_plate) / Out(share_apptech_sum);
+    Out(share_apptech_sum) > 0 ? In(share_splash_plate) / Out(share_apptech_sum) : 0;
 

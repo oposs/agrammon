@@ -114,12 +114,12 @@ is applied.
     0.5;
 ?else
   ++formula
-    In(appl_summer) / Out(appl_season_sum);
+    Out(appl_season_sum) > 0 ? In(appl_summer) / Out(appl_season_sum) : 0;
 ?endif
 
 +appl_autumn_winter_spring
   print = 22
-  ++units 
+  ++units
     en = -
   ++description
     .
@@ -128,6 +128,6 @@ is applied.
     0.5;
 ?else
   ++formula
-    In(appl_autumn_winter_spring) / Out(appl_season_sum);
+    Out(appl_season_sum) > 0 ? In(appl_autumn_winter_spring) / Out(appl_season_sum) : 0;
 ?endif
 
