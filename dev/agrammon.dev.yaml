@@ -1,0 +1,36 @@
+General:
+    debugLevel: 0
+    log_file:   /tmp/agrammon-dev.log
+    log_level:  info
+    mojo_secret: dev-cookie-secret-change-me-if-you-care
+    tmpDir:     agrammon-dev
+    latexTimeout: 30
+    pdflatex:    /usr/bin/lualatex
+    translationDir: share/translations
+
+Database:
+    name:     agrammon_test
+    host:     localhost
+    port:     55433
+    user:     agrammon
+    password: agrammon
+    version: '6.0'
+    modelVersions: 5,6
+
+GUI:
+    baseUrl: http://localhost:20000
+    variant: Single
+    title:
+        de: AGRAMMON 6.6.0 Einzelbetriebsmodell (DEV)
+        en: AGRAMMON 6.6.0 Single Farm Model (DEV)
+        fr: AGRAMMON 6.6.0 modèle Exploitation individuelle (DEV)
+        it: AGRAMMON 6.6.0 modello di sfruttamento individuale (DEV)
+
+Model:
+    debugLevel: 0
+    path:      share/Models
+    model:     version6
+    technical: technical.cfg
+    top:       End.nhd
+    variant:   Base
+    version:   '6.6.0'

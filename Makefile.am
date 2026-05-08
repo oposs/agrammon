@@ -70,3 +70,61 @@ test:
 # Skip DB-backed tests (those that honor AGRAMMON_UNIT_TEST=1).
 unit-test:
 	AGRAMMON_UNIT_TEST=1 prove6 -l t/
+
+# --- Local development database (podman, persistent) --------------------------
+#
+# Reuses the test image (built via $(DB_IMAGE)) but runs a separate container
+# on a different port with a bind-mounted data directory so datasets survive
+# container restarts. Setting AGRAMMON_DEV_PASSWORD on first start gives the
+# seeded admin user (test@agrammon.ch) a working password for web UI login.
+#
+# Schema/seed scripts only run on the FIRST start (when DEV_DB_DATA is empty).
+# To pick up schema changes, run `make dev-db-reset`.
+
+DEV_DB_CONTAINER ?= agrammon-dev-db
+DEV_DB_PORT      ?= 55433
+DEV_DB_DATA      ?= $(abs_top_builddir)/dev/db-data
+DEV_DB_PASSWORD  ?= agrammon
+
+.PHONY: dev-db-start dev-db-stop dev-db-restart dev-db-logs dev-db-psql dev-db-reset
+
+dev-db-start: db-build
+	@mkdir -p $(DEV_DB_DATA)
+	$(PODMAN) run -d \
+	    -p $(DEV_DB_PORT):5432 \
+	    --name $(DEV_DB_CONTAINER) --replace \
+	    -e AGRAMMON_DEV_PASSWORD=$(DEV_DB_PASSWORD) \
+	    -v $(DEV_DB_DATA):/var/lib/postgresql/data:Z \
+	    $(DB_IMAGE)
+	@echo "Waiting for dev DB to accept connections..."
+	@for i in $$(seq 1 30); do \
+	    if $(PODMAN) exec $(DEV_DB_CONTAINER) pg_isready -U postgres -d agrammon_test >/dev/null 2>&1; then \
+	        echo "Dev DB ready on localhost:$(DEV_DB_PORT) (login: test@agrammon.ch / $(DEV_DB_PASSWORD))"; \
+	        exit 0; \
+	    fi; \
+	    sleep 1; \
+	done; \
+	echo "Dev DB did not become ready in 30s; recent container logs:"; \
+	$(PODMAN) logs --tail 50 $(DEV_DB_CONTAINER); \
+	exit 1
+
+dev-db-stop:
+	-$(PODMAN) stop $(DEV_DB_CONTAINER)
+	-$(PODMAN) rm $(DEV_DB_CONTAINER)
+
+dev-db-restart: dev-db-stop dev-db-start
+
+dev-db-logs:
+	$(PODMAN) logs $(DEV_DB_CONTAINER)
+
+dev-db-psql:
+	psql -h localhost -p $(DEV_DB_PORT) -U agrammon -d agrammon_test
+
+# Wipe the bind-mounted data directory so the next start re-runs init scripts.
+# Refuses to delete unless DEV_DB_DATA looks like a project-relative path, to
+# avoid wiping an unintended directory if someone overrides DEV_DB_DATA.
+dev-db-reset: dev-db-stop
+	@case "$(DEV_DB_DATA)" in \
+	    */dev/db-data) rm -rf $(DEV_DB_DATA); echo "Wiped $(DEV_DB_DATA)";; \
+	    *) echo "Refusing to wipe DEV_DB_DATA=$(DEV_DB_DATA): not a */dev/db-data path"; exit 1;; \
+	esac
