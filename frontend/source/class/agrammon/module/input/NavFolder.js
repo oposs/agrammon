@@ -489,6 +489,17 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                                     break;
                                 }
                             }
+                            // Cross-version enum alias: declared via `accepts =`
+                            // in the .nhd. Accept the value, keep it as-is in
+                            // storage (so reopening in the source version still
+                            // sees its own value); the cell renderer maps it
+                            // to the canonical label and paints it orange.
+                            if (   ! found
+                                && metaData.enumAliases
+                                && metaData.enumAliases.hasOwnProperty(value)
+                            ) {
+                                found = true;
+                            }
                             if (found) {
                                 this.__propData[i].setValue(value);
                             }
