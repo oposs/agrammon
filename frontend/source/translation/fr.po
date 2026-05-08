@@ -663,7 +663,7 @@ msgstr "No messages."
 msgid "Apply"
 msgstr "Appliquer"
 
-#: agrammon/ui/dialog/MsgBox.js
+#: agrammon/ui/menu/AdminMenu.js
 msgid "OK"
 msgstr ""
 
@@ -961,4 +961,36 @@ msgstr ""
 
 #: agrammon/module/user/SelfService.js
 msgid "A confirmation link will be sent to you by eMail."
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Upload accounts"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Upload a CSV file with user account data."
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Select CSV file"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Created %1 accounts"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "No valid accounts found in uploaded file."
+msgstr ""
+
+#. NO LONGER USED
+msgid "Errors (%1):"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "Warning"
+msgstr ""
+
+#: agrammon/ui/menu/AdminMenu.js
+msgid "%1 errors"
 msgstr ""

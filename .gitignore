@@ -6,6 +6,7 @@ tmp/
 t/test-data/.secret
 static/resource
 frontend/cache
+frontend/package-lock.json
 Makefile
 Makefile.in
 /frontend/compiled/

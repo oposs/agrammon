@@ -279,7 +279,13 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
             // only for admin at this point (needs user docu of upload format and better error handling)
             // Fritz, 2021-09-24
             this.__btnUpload.addListener('appear', function() {
-                this.__btnUpload.setEnabled(this.__info.isAdmin());
+                if (!this.__info.isAdmin()) {
+                    this.__btnUpload.hide();
+                }
+                else {
+                    this.__btnUpload.show();
+                }
+//                this.__btnUpload.setEnabled(this.__info.isAdmin());
             }, this);
 
             this.__toolBar.add(this.__btnRename);

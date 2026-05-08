@@ -8,4 +8,8 @@ class Agrammon::DB::Role {
         $!name eq 'admin'
     }
 
+    method is-support {
+        $!name eq 'support'
+    }
+
 }

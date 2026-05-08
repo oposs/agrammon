@@ -77,7 +77,8 @@ qx.Class.define('agrammon.ui.dialog.Help', {
                 help.setHtml(helpText);
             }
             else {
-                help.setHtml(this.tr("Help undefined"));
+//                help.setHtml(this.tr("Help undefined"));
+                help.setHtml(qx.locale.Manager.tr("Help undefined"));
             }
             that.center();
             that.open();

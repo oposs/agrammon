@@ -469,7 +469,8 @@ subtest "get-outputs-for-rest" => {
         :print-only('SummaryTotal')
     );
     is $result[0]<label>, 'Total', "Got expected label";
-    is $result[0]<value>, 141, "Got expected amount";
+    # adapt to PlantProduction::CropResidues addition, 2026-05-07 (was 141)
+    is $result[0]<value>, 156, "Got expected amount";
 }
 
 

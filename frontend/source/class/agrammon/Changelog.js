@@ -6,9 +6,9 @@
 
 /**
  * @asset(agrammon/*)
+ *
+ * @ignore(showdown.*)
  */
-
-// TODO @ignore -> qx-showdown
 
 qx.Class.define("agrammon.Changelog", {
     extend : qx.ui.window.Window,

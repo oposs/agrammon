@@ -11,6 +11,7 @@ on:
 jobs:
   raku:
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-22.04
@@ -28,8 +29,8 @@ jobs:
           POSTGRES_DB: agrammon_test
         ports:
           - 55432:5432
-        options:
-          --health-cmd pg_isready
+        options: >-
+          --health-cmd "pg_isready -U postgres -d agrammon_test"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -37,7 +38,7 @@ jobs:
     steps:
       # Checkout repository first as we need dev/pgpass for PostgreSQL access
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Load test database
         env:
@@ -53,7 +54,8 @@ jobs:
         run: |
           chmod 0600 $PGPASSFILE
           psql -U $POSTGRES_USER  -h localhost --port 55432 -c "CREATE USER $AGRAMMON_OWNER PASSWORD 'agrammon'"    > /dev/null
-          psql -U $POSTGRES_USER  -h localhost --port 55432 -c "CREATE GROUP $AGRAMMON_GROUP USER $AGRAMMON_OWNER"  > /dev/null
+          psql -U $POSTGRES_USER  -h localhost --port 55432 -c "CREATE ROLE $AGRAMMON_GROUP NOLOGIN"                > /dev/null
+          psql -U $POSTGRES_USER  -h localhost --port 55432 -c "GRANT $AGRAMMON_GROUP TO $AGRAMMON_OWNER"           > /dev/null
           psql -U $POSTGRES_USER  -h localhost --port 55432 -c "ALTER DATABASE $AGRAMMON_DB OWNER TO $AGRAMMON_OWNER" > /dev/null
           psql -U $AGRAMMON_OWNER -h localhost --port 55432 --file=$AGRAMMON_SCHEMA $AGRAMMON_DB                    > /dev/null
           psql -U $AGRAMMON_OWNER -h localhost --port 55432 --file=$AGRAMMON_TEST_DATA $AGRAMMON_DB                 > /dev/null
@@ -103,6 +105,23 @@ jobs:
           mkdir -p $GITHUB_WORKSPACE/.raku
           zef --install-to=inst#$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
 
+      # TEMPORARY: overlay a patched Cro::OpenAPI::RoutesFromDefinition.
+      # cro-http 0.8.12 added a per-handler .name lookup in
+      # RouteSet.definition-complete that crashes with OperationHandler
+      # from upstream 1.0.4. The fork adds the missing attributes.
+      # Run *after* the main zef install (so all transitive deps are
+      # already in place), with --/depends --force-install so zef doesn't
+      # try to re-resolve them and just replaces the dist with the patch.
+      # Drop this step once https://github.com/croservices/cro-openapi-routes-from-definition/pull/15
+      # is merged and a 1.0.5 is released.
+      - name: Overlay patched Cro::OpenAPI::RoutesFromDefinition
+        if: steps.rakuCache.outputs.cache-hit != 'true'
+        run: |
+          git clone --branch add-name-attr-to-operationhandler --depth 1 \
+            https://github.com/zaucker/cro-openapi-routes-from-definition.git \
+            $RUNNER_TEMP/cro-openapi-fork
+          zef --install-to=inst#$GITHUB_WORKSPACE/.raku --debug --/test --/depends --force-install install $RUNNER_TEMP/cro-openapi-fork
+
       - name: Checksum model dir
         run: |
           find  t/test-data/Models/hr-inclNOx* -type f -print0 | sort -z | xargs -0 shasum > ./MODEL_MD5
@@ -114,10 +133,10 @@ jobs:
         uses: actions/cache@v4
         id: modelCache
         with:
-          path: $HOME/.agrammon
+          path: ~/.agrammon
           key: AgrammonModels-${{ hashFiles('./MODEL_MD5') }}
 
       - name: Run backend tests
         run: |
-          PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t
+          PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l t
           # PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/datasource-db.rakutest

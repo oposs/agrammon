@@ -1,3 +1,12 @@
+- 6.6.1, 2026-03-05, fritz.zaucker@oetiker.ch
+
+  - Add bulk account creation via CSV file upload
+    - Admin menu: "Upload accounts" button opens file upload dialog
+    - REST API: POST /upload_accounts endpoint for programmatic access
+    - CSV format: email, password (required), first, last, org (optional)
+    - Returns list of created accounts and any errors
+    - Available to admin and support role users
+
 - 6.6.0, 2025-11-13, fritz.zaucker@oetiker.ch
 
 - 6.5.3, 2025-05-27, fritz.zaucker@oetiker.ch
