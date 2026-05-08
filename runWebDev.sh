@@ -12,4 +12,10 @@ if ! podman container exists agrammon-dev-db 2>/dev/null; then
 fi
 
 export PERL5LIB=Inline/perl5
+# SOURCE_MODE=1 makes the Cro static-content routes serve the qooxdoo
+# source target (frontend/compiled/source/) instead of the production
+# build target (public/). Frontend edits then pick up after a single
+# `npx qx compile` (or live via `npx qx compile --watch`) without
+# needing a full minified rebuild.
+export SOURCE_MODE=1
 exec raku -Ilib bin/agrammon.raku --cfg-file=dev/agrammon.dev.yaml web version6/End.nhd
