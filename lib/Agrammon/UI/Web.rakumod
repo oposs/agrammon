@@ -21,7 +21,7 @@ class Agrammon::UI::Web {
                     # append [] to each element in the array
                     @gui >>~=>> '[]';
                 }
-                %input-hash<gui>      = %( <en de fr> Z=> @gui );
+                %input-hash<gui>      = %( :raw(@gui[0]), :de(@gui[1]), :fr(@gui[2]), :en(@gui[3] // @gui[0]) );
                 %input-hash<branch>   = $module.is-multi ?? 'true' !! 'false';
                 my $tax               = $module.taxonomy;
 
