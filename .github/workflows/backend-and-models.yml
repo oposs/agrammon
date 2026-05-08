@@ -3,13 +3,18 @@ name: Agrammon backend and models
 on:
   push:
     branches:
-      - '*'
+      - main
     tags-ignore:
-      - '*'
+      - '**'
   pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   raku:
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -17,7 +22,7 @@ jobs:
           - ubuntu-22.04
           - ubuntu-24.04
         raku-version:
-          - '2025.11'
+          - '2026.04'
     runs-on: ${{ matrix.os }}
 
     services:
@@ -67,7 +72,8 @@ jobs:
           path: |
             /var/cache/apt/archives
             /var/lib/apt/lists
-          key: ${{ matrix.os }}-apt-${{ hashFiles('.github/workflows/backend-and-models.yml') }}
+          # Bump the suffix manually when the apt package list below changes.
+          key: ${{ matrix.os }}-apt-v1
 
       - name: Install system dependencies
         run: |
@@ -112,6 +118,8 @@ jobs:
       # Run *after* the main zef install (so all transitive deps are
       # already in place), with --/depends --force-install so zef doesn't
       # try to re-resolve them and just replaces the dist with the patch.
+      # Skipped on Raku-cache hit because the patched dist is already
+      # baked into the cached .raku/ tree from the previous run.
       # Drop this step once https://github.com/croservices/cro-openapi-routes-from-definition/pull/15
       # is merged and a 1.0.5 is released.
       - name: Overlay patched Cro::OpenAPI::RoutesFromDefinition
@@ -139,4 +147,3 @@ jobs:
       - name: Run backend tests
         run: |
           PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l t
-          # PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -v t/datasource-db.rakutest
