@@ -131,6 +131,13 @@ qx.Class.define('agrammon.module.input.PropTable', {
                     break;
                 case "optionsLang":
                     break;
+                case "enumAliases":
+                    // Consumed by the cell renderer (Replace.js) and by
+                    // setData/isComplete in NavFolder.js. The SelectBox
+                    // editor only shows local options, so nothing to do
+                    // here — but the key must be acknowledged or the
+                    // default branch alerts.
+                    break;
                 case "type":
                     switch ( metaData.type ) {
                     case "checkbox":
