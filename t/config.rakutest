@@ -2,7 +2,7 @@ use v6;
 use Agrammon::Config;
 
 use Test;
-plan 10;
+plan 12;
 
 my %config-expected = (
     General => {
@@ -59,6 +59,25 @@ subtest "Translations" => {
     is $cfg.translations<de><results>, 'Ergebnisse', 'German for results';
     is $cfg.translations<en><results>, 'Results', 'English for results';
     is $cfg.translations<fr><results>, 'Résultats', 'French for results';
+}
+
+is $cfg.versions.elems, 0, 'No Versions: block -> empty versions list';
+
+subtest "Versions block parsed" => {
+    my $vfile = "t/test-data/agrammon.cfg-with-versions.yaml";
+    my $vcfg  = Agrammon::Config.new;
+    lives-ok { $vcfg.load($vfile) }, "Load config with Versions: from $vfile";
+
+    is $vcfg.versions.elems, 2, 'Two Versions entries';
+
+    my $entry = $vcfg.versions[0];
+    is $entry<label>,        '7.0',                            'first entry label';
+    is $entry<url>,          '/single/v7',                     'first entry url';
+    is $entry<version>,      '7.0.0',                          'first entry version';
+    is $entry<title><en>,    'AGRAMMON 7.0 Single Farm Model', 'first entry English title';
+
+    is $vcfg.versions[1]<label>,   '6.0',        'second entry label';
+    is $vcfg.versions[1]<version>, '6.0',        'second entry version';
 }
 
 done-testing;
