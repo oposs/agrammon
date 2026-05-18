@@ -7,6 +7,7 @@ class Agrammon::Config {
     has %.database;
     has %.gui;
     has %.model;
+    has @.versions;
     has %.translations;
     has $!base-url;
 
@@ -18,6 +19,7 @@ class Agrammon::Config {
         %!database     = $config<Database>;
         %!gui          = $config<GUI>;
         %!model        = $config<Model>;
+        @!versions     = ($config<Versions> // ()).list;
         %!translations = self!get-translations;
         $!base-url     = $config<GUI><baseUrl>;
     }

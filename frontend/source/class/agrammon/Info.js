@@ -74,7 +74,10 @@ qx.Class.define( 'agrammon.Info',
                  },
         submissionAddresses: {
             nullable: true
-        }
+        },
+        versions: { init: null,
+                    nullable: true
+                  }
     },
 
     members :
