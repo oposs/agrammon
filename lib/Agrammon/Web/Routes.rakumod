@@ -528,6 +528,25 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
+        # Returns the current user payload (same shape as /auth) if the session
+        # cookie maps to a logged-in user; otherwise responds 403. Lets the SPA
+        # skip the login dialog on reload or version-switch when a session is
+        # still active in the shared session store.
+        post -> Agrammon::Web::SessionUser $user, 'resume_session' {
+            if $user.logged-in {
+                content 'application/json', %(
+                    :username($user.username),
+                    :role($user.role.name),
+                    :lastLogin($user.last-login),
+                    :news(Nil),
+                    :sudoUser($user.sudo-username),
+                );
+            }
+            else {
+                forbidden 'application/json', %( error => 'No active session' );
+            }
+        }
+
         post -> LoggedIn $user, 'logout' {
             my $old-username = $user.logout();
             my $username = $user.username;
