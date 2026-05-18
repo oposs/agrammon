@@ -45,6 +45,16 @@ qx.Class.define('agrammon.ui.menu.OptionMenu', {
         var langButton = new qx.ui.menu.Button(this.tr("Set language ..."),
                                                null, null, langMenu);
 
+        // Model-version submenu. Hidden until setVersions() is called with
+        // a non-empty Versions block; populated lazily so labels match the
+        // current config and the active entry is disabled.
+        var versionMenu = new qx.ui.menu.Menu;
+        var versionButton = new qx.ui.menu.Button(this.tr("Set model version ..."),
+                                                  null, null, versionMenu);
+        versionButton.exclude();
+        this.__versionMenu = versionMenu;
+        this.__versionButton = versionButton;
+
         var passwordDialog =
             new qx.ui.window.Window(this.tr("Changing password for ")
                                            + username,
@@ -146,6 +156,7 @@ qx.Class.define('agrammon.ui.menu.OptionMenu', {
         var passwordButton = new qx.ui.menu.Button(this.tr("Change password"),
                                                    null, passwordCommand);
         this.add(langButton);
+        this.add(versionButton);
         this.add(passwordButton);
 
         return;
@@ -156,6 +167,98 @@ qx.Class.define('agrammon.ui.menu.OptionMenu', {
     {
         __rpc:  null,
         __info: null,
+        __versionMenu:   null,
+        __versionButton: null,
+        __activeVersion: null,
+
+        /**
+         * Populate the model-version submenu.
+         *
+         * @param versions {Array}  list of { label, url, version, title }
+         * @param activeVersion {String}  Model.version string of THIS process
+         */
+        setVersions: function(versions, activeVersion) {
+            this.__activeVersion = activeVersion;
+            this.__versionMenu.removeAll();
+
+            if (!versions || !versions.length) {
+                this.__versionButton.exclude();
+                return;
+            }
+
+            for (var i = 0; i < versions.length; i++) {
+                var v = versions[i];
+                var btn = new qx.ui.menu.Button(v.label);
+                btn.setUserData('versionEntry', v);
+                if (v.version === activeVersion) {
+                    // Can't switch to ourselves — make it visually obvious
+                    // and unclickable.
+                    btn.setEnabled(false);
+                }
+                else {
+                    btn.addListener('execute', this.__onVersionPick, this);
+                }
+                this.__versionMenu.add(btn);
+            }
+            this.__versionButton.show();
+        },
+
+        __onVersionPick: function(e) {
+            var entry = e.getTarget().getUserData('versionEntry');
+            if (!entry) return;
+
+            if (this.__isOlder(entry.version, this.__activeVersion)) {
+                var prevActive = this.__activeVersion;
+                var dialog = new agrammon.ui.dialog.Confirm(
+                    this.tr("Switch to older model version?"),
+                    this.tr("You are about to switch from version %1 to the older version %2. Older model versions may not understand datasets created in a newer one. Continue?",
+                            prevActive, entry.version),
+                    function () {
+                        dialog.close();
+                        window.location.assign(entry.url);
+                    },
+                    this,
+                    false
+                );
+                dialog.open();
+            }
+            else {
+                window.location.assign(entry.url);
+            }
+        },
+
+        /**
+         * true iff `a` is strictly older than `b`.
+         *
+         * Only pure dotted-numeric versions (e.g. "6.6.0") are accepted.
+         * Pre-release tags (-rc1, -alpha), build metadata (+build),
+         * "v" prefixes and the like are not parsed: callers get a console
+         * warning and the version is treated as not-older, so navigation
+         * proceeds without the downgrade-confirm dialog.
+         */
+        __isOlder: function(a, b) {
+            if (!a || !b) return false;
+            var pa = this.__parseVersion(a);
+            var pb = this.__parseVersion(b);
+            if (pa === null || pb === null) return false;
+            var n = Math.max(pa.length, pb.length);
+            for (var i = 0; i < n; i++) {
+                var x = pa[i] || 0, y = pb[i] || 0;
+                if (x < y) return true;
+                if (x > y) return false;
+            }
+            return false;
+        },
+
+        /** Returns Array<Number> for "1.2.3", or null (and warns) otherwise. */
+        __parseVersion: function(v) {
+            var s = String(v);
+            if (!/^\d+(\.\d+)*$/.test(s)) {
+                this.warn("OptionMenu: version string '" + s + "' is not pure dotted-numeric; downgrade comparison disabled for it.");
+                return null;
+            }
+            return s.split('.').map(Number);
+        },
 
         __changePassword: function(data, exc, id) {
             if (exc == null && ! data.error) {
