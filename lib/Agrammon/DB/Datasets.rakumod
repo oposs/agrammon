@@ -11,7 +11,11 @@ class Agrammon::DB::Datasets does Agrammon::DB::Variant {
     method load {
         self.with-db: -> $db {
             my $username = $!user.username;
-            my $results = $db.query(q:to/DATASETS/, ~$username, |self!variant);
+            # Cross-version listing: don't filter by dataset_version here so
+            # the GUI can show datasets from sibling model versions and
+            # grey out the ones that don't match the active version.
+            my @gui-model = %!agrammon-variant<gui model>;
+            my $results = $db.query(q:to/DATASETS/, ~$username, |@gui-model);
                 SELECT dataset_id AS id,
                        dataset_name AS name,
                        date_trunc('seconds', dataset_mod_date) AS "mod-date",
@@ -26,8 +30,7 @@ class Agrammon::DB::Datasets does Agrammon::DB::Variant {
                        dataset_model   AS model,
                        dataset_pers != pers_email2id($1) AS "is-demo"
                   FROM dataset
-                 WHERE dataset_version = $2
-                   AND (dataset_model  = 'UNKNOWN' OR dataset_guivariant= $3 AND dataset_modelvariant = $4)
+                 WHERE (dataset_model  = 'UNKNOWN' OR dataset_guivariant= $2 AND dataset_modelvariant = $3)
                    AND dataset_name    NOT LIKE '%_expanded'
                    AND (dataset_pers=pers_email2id($1) OR dataset_pers=pers_email2id('default')
                                                        OR dataset_pers=pers_email2id('default2'))
