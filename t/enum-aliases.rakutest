@@ -1,0 +1,44 @@
+use v6;
+use Agrammon::ModuleBuilder;
+use Agrammon::ModuleParser;
+use Test;
+
+plan 14;
+
+my $test-root = $*PROGRAM.parent.add('test-data');
+my $module-file = "$test-root/EnumAliases.nhd";
+
+my $parsed = Agrammon::ModuleParser.parsefile(
+    $module-file,
+    actions => Agrammon::ModuleBuilder.new
+);
+ok $parsed, 'EnumAliases.nhd parses';
+
+my $module = $parsed.ast;
+my @input = $module.input;
+is @input.elems, 1, 'one input';
+
+my $input = @input[0];
+is $input.name, 'housing_type', 'correct input name';
+is $input.type, 'enum', 'type is enum';
+
+# Local enum keys are unchanged.
+is $input.enum-ordered.elems, 2, 'two local enum options';
+is $input.enum-ordered.map(*.key).sort.list, <no yes>, 'local options are yes/no';
+
+# Validation accepts both local keys and aliases.
+ok $input.is-valid-enum-value('yes'),    'local "yes" valid';
+ok $input.is-valid-enum-value('no'),     'local "no" valid';
+ok $input.is-valid-enum-value('fix'),    'alias "fix" valid';
+ok $input.is-valid-enum-value('mobile'), 'alias "mobile" valid';
+nok $input.is-valid-enum-value('bogus'), 'unknown value rejected';
+
+# Canonicalization: aliases map to their local key; local keys pass through.
+is $input.canonical-enum-value('fix'),    'yes', 'fix → yes';
+is $input.canonical-enum-value('mobile'), 'yes', 'mobile → yes';
+
+# Ensure module-level canonicalization rewrites alias values for formula eval
+# but leaves non-enum and unmapped values intact.
+my %in = housing_type => 'mobile';
+my %out = $module.canonicalize-input-hash(%in);
+is %out<housing_type>, 'yes', 'canonicalize-input-hash rewrites alias';

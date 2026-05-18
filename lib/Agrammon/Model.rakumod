@@ -130,7 +130,7 @@ class Agrammon::Model {
             my $*AGRAMMON-TAXONOMY = my $tax = $!module.taxonomy;
             my %*AGRAMMON-GUI = %(:de(@gui[1]), :fr(@gui[2]), :en(@gui[3])) if @gui;
             my $env = Agrammon::Environment.new(
-                    input => $input.input-hash-for($tax),
+                    input => $!module.canonicalize-input-hash($input.input-hash-for($tax)),
                     technical => $!module.technical-hash,
                     technical-override => %technical{$tax},
                     output => $outputs
