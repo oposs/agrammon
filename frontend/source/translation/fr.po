@@ -994,3 +994,19 @@ msgstr ""
 #: agrammon/ui/menu/AdminMenu.js
 msgid "%1 errors"
 msgstr ""
+
+#. NO LONGER USED
+msgid "Switch model version"
+msgstr ""
+
+#: agrammon/ui/menu/OptionMenu.js
+msgid "Switch to older model version?"
+msgstr ""
+
+#: agrammon/ui/menu/OptionMenu.js
+msgid "You are about to switch from version %1 to the older version %2. Older model versions may not understand datasets created in a newer one. Continue?"
+msgstr ""
+
+#: agrammon/ui/menu/OptionMenu.js
+msgid "Set model version ..."
+msgstr ""

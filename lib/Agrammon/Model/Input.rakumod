@@ -23,6 +23,7 @@ class Agrammon::Model::Input {
     has Str @.models;
     has @!enum-order;
     has %!enum-lookup;
+    has %!enum-aliases;
     has Int $.order;
     has Bool $!hidden = False;
     has Bool $!distribute = False;
@@ -46,7 +47,20 @@ class Agrammon::Model::Input {
             $!distribute = .lc eq 'true';
         }
         if @enum {
-            @!enum-order = @enum.map({ .key => parse-lang-values(.value, "input $!name") });
+            @!enum-order = @enum.map({
+                my $key = .key;
+                my %lang-values = parse-lang-values(.value, "input $!name");
+                with %lang-values<accepts>:delete -> $accepts {
+                    for @$accepts -> $alias {
+                        if %!enum-aliases{$alias}:exists {
+                            warn "Duplicate enum alias '$alias' in input $!name " ~
+                                 "(already maps to '%!enum-aliases{$alias}', now also '$key')";
+                        }
+                        %!enum-aliases{$alias} = $key;
+                    }
+                }
+                $key => %lang-values
+            });
             %!enum-lookup = @!enum-order;
         }
         with $filter {
@@ -63,7 +77,25 @@ class Agrammon::Model::Input {
     }
 
     method is-valid-enum-value($value) {
-        %!enum-lookup{$value}:exists
+        %!enum-lookup{$value}:exists or %!enum-aliases{$value}:exists
+    }
+
+    #| Returns the canonical (locally declared) enum key for $value.
+    #| If $value is already a local key, returns it unchanged. If it is
+    #| a declared alias, returns the local key it maps to. Otherwise Nil.
+    method canonical-enum-value($value) {
+        return $value if %!enum-lookup{$value}:exists;
+        return %!enum-aliases{$value} // Nil;
+    }
+
+    #| True iff $value is a declared alias (i.e. comes from another model
+    #| version) and is being mapped onto a local enum key.
+    method is-mapped-enum-value($value --> Bool) {
+        %!enum-aliases{$value}:exists
+    }
+
+    method enum-aliases(--> Hash) {
+        %!enum-aliases
     }
 
     method is-distribute(--> Bool) {
@@ -109,6 +141,7 @@ class Agrammon::Model::Input {
                 hasFormula => $.default-formula.defined,
             )),
             :enum(%!enum-lookup),
+            :enumAliases(%!enum-aliases),
             :$!filter,
             :%!help,
             :%!labels,

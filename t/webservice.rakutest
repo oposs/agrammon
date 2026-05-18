@@ -88,7 +88,8 @@ transactionally {
                     fr => "AGRAMMON 6.0 modèle Exploitation individuelle"
                     },
             variant => "Base",
-            version => "6.0"
+            version => "6.0",
+            versions => [],
         );
         is-deeply $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";
     }
@@ -495,7 +496,7 @@ transactionally {
 
                     # These variables should have all the same elements
                     next unless $var ~~ / '::animals' /;
-                    is-deeply $input.keys.sort, qw|branch defaults enum filter gui help labels models options optionsLang order type units validator variable|,
+                    is-deeply $input.keys.sort, qw|branch defaults enum enumAliases filter gui help labels models options optionsLang order type units validator variable|,
                         "$var has expected keys";
                     subtest "$var" => {
                         is $input<branch>, 'false', 'branch is false';

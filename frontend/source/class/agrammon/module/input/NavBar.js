@@ -601,6 +601,14 @@ qx.Class.define('agrammon.module.input.NavBar', {
                         var olen = rec.options.length;
                         metaData.options     = rec.options;
                         metaData.optionsLang = rec.optionsLang;
+                        // Cross-version enum alias map ({alias: canonical}) —
+                        // declared via `accepts =` in the .nhd. Used by
+                        // NavFolder.setData (load), the Replace cell renderer
+                        // (orange highlight + canonical label), and the
+                        // PropTable replaceMap.
+                        if (rec.enumAliases) {
+                            metaData.enumAliases = rec.enumAliases;
+                        }
                     }
                     else {
                         var err = 'This should not happen: unknown variable type=' + rec.type + ' for variable ' + rec.variable;

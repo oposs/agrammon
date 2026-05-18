@@ -123,13 +123,18 @@ qx.Class.define('agrammon.Application', {
 
                     navbar.setVariant(data.modelVariant);
                     agrammon.module.dataset.DatasetTable.getInstance().setVariant(data.variant);
+                    agrammon.module.dataset.DatasetTable.getInstance().setActiveVersion(data.version);
                     mainMenu.setTitle(data.title, data.version);
+                    // setVersions overrides the title with the entry that
+                    // matches data.version (if a Versions block is configured).
+                    mainMenu.setVersions(data.versions, data.version);
                     let info = agrammon.Info.getInstance();
                     info.setVersion(data.version);
                     info.setVariant(data.variant);
                     info.setGuiVariant(data.guiVariant);
                     info.setModelVariant(data.modelVariant);
                     info.setTitle(data.title);
+                    info.setVersions(data.versions);
                     info.setSubmissionAddresses(data.submission);
                             qx.event.message.Bus.dispatchByName('agrammon.Info.setModelVariant', data.modelVariant);
 
