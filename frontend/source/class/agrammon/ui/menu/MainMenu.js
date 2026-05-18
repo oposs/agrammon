@@ -31,6 +31,7 @@ qx.Class.define('agrammon.ui.menu.MainMenu', {
         editButton.setMenu(editMenu);
 
         var optionMenu = new agrammon.ui.menu.OptionMenu();
+        this.__optionMenu = optionMenu;
         var optionButton = new qx.ui.menubar.Button(this.tr("Options"));
         optionButton.setMenu(optionMenu);
 
@@ -68,6 +69,7 @@ qx.Class.define('agrammon.ui.menu.MainMenu', {
         this.addSpacer();
         this.add(title);
         this.addSpacer();
+
         this.add(info);
 
         return;
@@ -79,6 +81,7 @@ qx.Class.define('agrammon.ui.menu.MainMenu', {
         __adminMenu:   null,
         __adminButton: null,
         __editButton:  null,
+        __optionMenu:  null,
         __title:       null,  // the Label widget
         __titles:      null, // multi-lingual hash of title values
         __tooltip:     null,
@@ -104,6 +107,27 @@ qx.Class.define('agrammon.ui.menu.MainMenu', {
               "<h2>AGRAMMON</h2>"
             + "<p>" + version + "; &copy; #YEAR#</p>");
 
+        },
+
+        /**
+         * Forward the Versions block to the OptionMenu (which owns the
+         * "Set model version ..." submenu) and override the page title
+         * from the matching entry, if any.
+         *
+         * @param versions {Array}  list of { label, url, version, title }
+         * @param activeVersion {String}  Model.version string of THIS process
+         */
+        setVersions: function(versions, activeVersion) {
+            this.__optionMenu.setVersions(versions, activeVersion);
+
+            if (versions && versions.length) {
+                for (var i = 0; i < versions.length; i++) {
+                    if (versions[i].version === activeVersion && versions[i].title) {
+                        this.setTitle(versions[i].title, activeVersion);
+                        break;
+                    }
+                }
+            }
         },
 
         __enableEdit: function(msg) {
