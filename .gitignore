@@ -1,7 +1,7 @@
 .claude
 .mise.toml
 *.tar.gz
-.precomp/
+.precomp
 tmp/
 t/test-data/.secret
 static/resource
@@ -9,7 +9,7 @@ frontend/cache
 frontend/package-lock.json
 Makefile
 Makefile.in
-/frontend/compiled/
+frontend/compiled
 frontend/qx_packages/
 /configure
 /config.*
@@ -20,7 +20,7 @@ etc/*.cfg
 etc/*.yaml
 etc/*.secret
 Inline/
-public/
+public
 conftools/
 test/rest/
 thirdparty/build.log
@@ -33,3 +33,4 @@ thirdparty/lib/
 thirdparty/work/
 thirdparty/bin/
 dev/db-data/
+dev/shm/
