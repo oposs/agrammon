@@ -60,7 +60,7 @@ taxonomy = Application::Slurry::Applrate
     ++labels 
       en = Mean dose per application
       de = Mittlere Ausbringungsmenge pro Gabe
-      fr = Quantité moyenne apandue par application
+      fr = Quantité moyenne épandue par application
     ++units
       en = m3/ha
     ++description
