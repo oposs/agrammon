@@ -17,6 +17,50 @@ PM := $(shell find lib -name "*.pm")
 
 EXTRA_DIST = META6.json README.md VERSION cpanfile COPYRIGHT CHANGELOG.md bootstrap $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) bin lib
 
+.PHONY: help
+
+help:
+	@echo "Agrammon — Makefile targets"
+	@echo ""
+	@echo "Setup:"
+	@echo "  deps              Install Raku (zef) and Perl (cpanm) dependencies"
+	@echo ""
+	@echo "Build / dist (automake):"
+	@echo "  all               Build everything (default automake target)"
+	@echo "  dist              Create distribution tarball"
+	@echo "  distcheck         Create tarball and run its tests"
+	@echo "  install           Install built artifacts"
+	@echo "  clean             Remove build artifacts"
+	@echo ""
+	@echo "Test database (podman, ephemeral):"
+	@echo "  db-build          Build the test DB container image"
+	@echo "  db-start          Start the test DB container (port \$$DB_PORT=$(DB_PORT))"
+	@echo "  db-stop           Stop and remove the test DB container"
+	@echo "  db-restart        Restart the test DB container"
+	@echo "  db-logs           Show test DB container logs"
+	@echo "  db-psql           Open psql against the test DB"
+	@echo ""
+	@echo "Tests:"
+	@echo "  test              Run full test suite (needs test DB running)"
+	@echo "  unit-test         Run only unit tests (skip DB-backed tests)"
+	@echo ""
+	@echo "Development database (podman, persistent):"
+	@echo "  dev-db-start      Start dev DB with bind-mounted data (port \$$DEV_DB_PORT=$(DEV_DB_PORT))"
+	@echo "  dev-db-stop       Stop and remove dev DB container"
+	@echo "  dev-db-restart    Restart dev DB container"
+	@echo "  dev-db-logs       Show dev DB container logs"
+	@echo "  dev-db-psql       Open psql against the dev DB"
+	@echo "  dev-db-reset      Wipe dev DB data dir so init scripts re-run on next start"
+	@echo ""
+	@echo "Deployment:"
+	@echo "  deploy            Copy release tarball to deploy host and unpack"
+	@echo ""
+	@echo "Variables (override on command line, e.g. make db-start DB_PORT=5555):"
+	@echo "  PODMAN=$(PODMAN)"
+	@echo "  DB_IMAGE=$(DB_IMAGE)  DB_CONTAINER=$(DB_CONTAINER)  DB_PORT=$(DB_PORT)"
+	@echo "  DEV_DB_CONTAINER=$(DEV_DB_CONTAINER)  DEV_DB_PORT=$(DEV_DB_PORT)"
+	@echo "  DEV_DB_DATA=$(DEV_DB_DATA)"
+
 deps:
 		zef --debug --/test --deps-only --test-depends install .
 		cpanm --installdeps .
