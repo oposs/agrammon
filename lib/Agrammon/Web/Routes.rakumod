@@ -528,10 +528,13 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
-        # Returns the current user payload (same shape as /auth) if the session
-        # cookie maps to a logged-in user; otherwise responds 403. Lets the SPA
-        # skip the login dialog on reload or version-switch when a session is
-        # still active in the shared session store.
+        # Probe the session cookie. Always returns 200 — body is either the
+        # user payload (same shape as /auth) when a session is active, or
+        # { authenticated => False } when none. Using 200 here (instead of
+        # 401/403) is deliberate: the SPA's global RPC error handler turns
+        # any error status into a user-facing popup, but for a startup
+        # probe we want the "no session" case to be silent and just open
+        # the login dialog.
         post -> Agrammon::Web::SessionUser $user, 'resume_session' {
             if $user.logged-in {
                 content 'application/json', %(
@@ -543,7 +546,7 @@ sub application-routes(Agrammon::Web::Service $ws) {
                 );
             }
             else {
-                forbidden 'application/json', %( error => 'No active session' );
+                content 'application/json', %( authenticated => False );
             }
         }
 

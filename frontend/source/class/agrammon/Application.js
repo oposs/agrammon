@@ -138,14 +138,14 @@ qx.Class.define('agrammon.Application', {
                     info.setSubmissionAddresses(data.submission);
                             qx.event.message.Bus.dispatchByName('agrammon.Info.setModelVariant', data.modelVariant);
 
-                    // Try to resume an existing session (shared via the
-                    // Postgres-backed session store). If it succeeds, hand the
-                    // user payload to __authenticate and skip the login
-                    // dialog. If it fails (no session / expired), open the
-                    // login dialog as before.
-                    let resumeFunc = qx.lang.Function.bind(function(rdata, rexc, rid) {
-                        if (rexc == null) {
-                            this.__authenticate(rdata, null, rid);
+                    // Probe the session cookie (shared via the Postgres-
+                    // backed session store). resume_session always returns
+                    // 200: body has `username` when a session is active,
+                    // or `authenticated: false` when none. The latter is
+                    // silent — open the login dialog without a popup.
+                    let resumeFunc = qx.lang.Function.bind(function(response) {
+                        if (response && response.username) {
+                            this.__authenticate(response, null, null);
                         }
                         else {
                             loginDialog.open();
