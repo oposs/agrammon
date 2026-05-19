@@ -1,4 +1,4 @@
-- Unreleased
+- 7.0.0, 2026-05-19, fritz.zaucker@oetiker.ch
 
   - Clean up version-related YAML fields.
     - `Database.version` is removed; `dataset.dataset_version` is now
@@ -10,11 +10,13 @@
       version label (e.g. '7.0'). Exposed in `get_cfg` as `guiVersion`.
       Falls through to `Model.version` when not set.
     - `Versions[].label` is renamed to `Versions[].guiVersion`.
+
   - **Migration required** if you have datasets from before this
     change: see `db/migrate-dataset-version-source.sql`. Without
     migration, legacy datasets can be listed but not modified by the
     running deployment, because the `(user, name, variant)` lookup
     in store-variable won't find them.
+
   - New optional `Model.compatibleVersions` list — Model.version
     strings whose datasets this deployment will claim (promote to its
     own Model.version) on first open. Lets two sibling deployments
@@ -23,6 +25,7 @@
     `dataset_version`, making subsequent edits work normally. Set
     on both sides for round-trip editing. Empty/omitted = strict mode
     (only own version).
+
   - Fix DatasetVersion row renderer: themed font (was browser default),
     accessible mismatch color (was opacity-based, failed WCAG AA).
 
