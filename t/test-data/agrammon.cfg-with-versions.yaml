@@ -12,7 +12,6 @@ Database:
     port:     55432
     user:     agrammon
     password: agrammon
-    version: '6.0'
 
 GUI:
     baseUrl: https://model.agrammon.ch/single/test
@@ -25,7 +24,6 @@ GUI:
 Model:
     debugLevel: 0
     path:      share/Models
-    model:     version6
     top:       End.nhd
     technical: technical.cfg
     variant:   Base

@@ -19,7 +19,6 @@ my %config-expected = (
         host     => 'localhost',
         user     => 'agrammon',
         password => "agrammon",
-        version  => '6.0',
     },
     GUI => {
         baseUrl => 'https://model.agrammon.ch/single/test',
@@ -33,7 +32,6 @@ my %config-expected = (
     Model => {
         debugLevel => 0,
         path       => 'share/Models',
-        model      => 'version6',
         top        =>  'End.nhd',
         technical  =>  'technical.cfg',
         variant    => 'Base',

@@ -53,8 +53,13 @@ class Agrammon::Config {
     }
 
     method agrammon-variant {
+        # `version` tags rows written to `dataset.dataset_version`. Sourced
+        # from Model.version (the same identifier the frontend compares
+        # against in the version switcher), so that dataset table rows
+        # written by this deployment are recognized as belonging to it.
+        # Was Database.version historically — see CHANGELOG.
         %(
-            version => %!database<version>,
+            version => %!model<version>,
             gui     => %!gui<variant>,
             model   => %!model<variant>,
         );
