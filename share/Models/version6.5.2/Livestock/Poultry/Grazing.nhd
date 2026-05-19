@@ -23,6 +23,11 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
 
 *** input ***
 
+# 7.0.0 split +++yes into 'yes' (permanent housing) and 'mobile' (mobile
+# housing). 6.5.2 has only the combined 'yes', so declare 'mobile' as an
+# alias on +++yes here. A v7-tagged dataset opened on this 6.5.2 deployment
+# (via Model.compatibleVersions promotion) will validate and canonicalize
+# the foreign 'mobile' value to the local 'yes' for formula evaluation.
 +free_range
   type = enum
   ++enum
@@ -31,6 +36,7 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
        de = Ja
        fr = oui
        it = yes
+       accepts = mobile
     +++no
        en = no
        de = Nein
