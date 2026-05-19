@@ -96,12 +96,19 @@ is applied.
 
 +appl_season_sum
   print = 22
-  ++units 
+  ++units
     en = -
   ++description
     .
   ++formula
-    In(appl_summer) + In(appl_autumn_winter_spring);
+    my $season_sum = In(appl_summer) + In(appl_autumn_winter_spring);
+    if( abs( $season_sum - 100)  > 1e-6 )
+    {
+	writeLog({en => "Please correct accordingly: the categories 'share of slurry applied June to August' and 'share of slurry applied September to May' must add up to 100 \%!\n",
+		  de => "Bitte korrigieren: Die Summe der Kategorien Ausbringung von Gülle im Sommer (Juni, Juli, August) und Ausbringung von Gülle von September bis und mit Mai muss 100\% geben!\n",
+		  fr => "Veuillez corriger: la somme des catégories‚ «Part de lisier épandu en été (de juin à août)» et «Part de lisier épandu de septembre à mai y c.» doit donner 100%!\n"});
+    }
+    return $season_sum;
 
 +appl_summer
   print = 22
