@@ -1,0 +1,92 @@
+*** general ***
+
+author   = Agrammon Group	
+date     = 2008-05-01
+taxonomy = Application::Slurry::Applrate
+
++short
+
+ Correction factor taking into account the slurry application rate per ha
+ and the TAN content of the slurry as compared to the emission rate occurring
+ with a standard application rate of 30 m3 and a TAN content of 1.15 kg N
+ /m3.
+
++description
+ 
+ This process computes the correction factor as a function of the application
+ rate and the TAN content of the slurry. The equation has been described by
+ Menzi et al. (1998). The correction factor is calculated based on the slurry
+ application rate per ha and the TAN content of the slurry compared to the
+ emission rate occurring with a standard application rate of 30 m3 and a TAN
+ content of 1.15 kg N / m3.
+
+ 
+ \subsubsection{References:}
+  Menzi H, Katz, P E, Fahrni M, Neftel A, Frick R 1998. A simple empirical model
+  based on regression analysis to estimate ammonia emissions after manure
+  application. Atmospheric Environment 32: 301-307.
+
+ \begin{todo}{Haral Menzi}{}
+  Please confirm, as description was not finished by Beat Reidy, appl_rate
+  and tan was not included in calculation.
+ \end{todo}
+ 
+*** input ***
+
+?if !Kantonal_LU
+  +dilution_parts_water
+    type  = float
+    validator = between(0,3);
+    ++labels 
+      en = Dilution of slurry (liters of water added to one liter of fresh excreta)
+      de = Gülleverdünnung (Liter Wasser pro Liter unverdünnter Gülle)
+      fr = Dilution du lisier (litres d'eau par litre de lisier non dilué)
+    ++units
+      en = 1:x
+    ++description
+     Specific slurry dilution. TAN contents have been calculated based on a
+     standard dilution of 1:1 with a TAN content of 1.15 kg N /m3.  
+    ++help
+      +++en
+         <p>Standard value for Switzerland: 1 part undiluted slurry to 1 part water</p>
+      +++de
+         <p>Vorschlag für Standardwert: 1:1</p>
+      +++fr
+         <p>Proposition de valeur standard: 1:1</p>
+
+  +appl_rate
+    type  = float
+    validator = between(10,120); 
+    ++labels 
+      en = Mean dose per application
+      de = Mittlere Ausbringungsmenge pro Gabe
+      fr = Quantité moyenne épandue par application
+    ++units
+      en = m3/ha
+    ++description
+      Application rate, mean volume of slurry applied on a ha per deployment.
+    ++help
+      +++en
+         <p>Standard value for Switzerland: 25 m<sup>3</sup></p>
+      +++de
+         <p>Vorschlag für Standardwert: 25 m<sup>3</sup></p>
+      +++fr
+         <p>Proposition de valeur standard: 25 m<sup>3</sup></p>
+?endif
+ 
+*** technical ***
+
+*** external ***
+
+
+*** output ***
+
++dilution
+  print = 15
+  ++units
+    en = -
+  ++description
+    todo
+  ++formula
+    1 / (In(dilution_parts_water) + 1);
+

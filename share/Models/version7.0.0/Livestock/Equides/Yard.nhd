@@ -1,0 +1,201 @@
+*** general ***
+
+author   = Agrammon Group 
+date     = 2008-03-30
+taxonomy = Livestock::Equides::Yard
+
++short
+    Computes the annual NH3 emission from equides on exercise
+    yards based on the access time and if the the basic feeding is on the yard.
+
++description 
+
+\subsubsection{References}
+
+Keck M 1997: Ammonia emission and odour thresholds of cattle houses
+with exercise yards. In: Voermans JAM and Monteny GJ (Eds): "Ammonia
+and odour emissions from animal production facilities",
+Proc. International Symposium, Vinkeloord, NL, 6-10 October 1997,
+349-354.  Misselbrook TH, Webb J, Chadwick DR, Ellis S, Pain BF
+2001. Gaseous emissions from grazing concrete yards used by
+livestock. Atmospheric Environment 35:5331-5338.
+
+*** external ***
+
++Excretion
++Outdoor
+
+*** input ***
+
+
+*** technical ***
+
++er_yard
+  value = 0.35
+  ++units  
+    en = -
+  ++description	
+    Emission rate for TAN on yard. Empirical estimation Kupper/Menzi, Keck(1997, Misselbrook et al. (2001)
+
++red_floor_properties_unpaved_floor
+  value = 0.5
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_floor_properties_solid_floor
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_floor_properties_paddock_or_pasture_used_as_exercise_yard
+  value = 0.9
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
+
+*** output ***
+
+
++c_floor_properties_exercise_yard 
+  print = Equides
+  ++units  
+    en = -
+  ++description
+    Correction factor for the emission due to the use of the floor properties in housing systems.
+  ++formula 
+    given ( Val(floor_properties_exercise_yard, Outdoor) ) { 
+      when 'unpaved_floor' {
+        1 - Tech(red_floor_properties_unpaved_floor);
+      } 
+      when 'solid_floor' {
+        1 - Tech(red_floor_properties_solid_floor);
+      } 
+      when 'paddock_or_pasture_used_as_exercise_yard' {
+        1 - Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
+      } 
+    }
+
++share_into_yard
+  print = Equides
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Share of annual N excretion into yard.
+  ++formula
+    # access to yard only - days with yard only
+    (Val(yard_days, Outdoor) - Val(days_with_grazing_and_yard, Outdoor)) / 365 * 
+    Val(yard_hours, Outdoor) / 24 +
+    # access to yard only - days with yard and grazing
+    Val(days_with_grazing_and_yard, Outdoor) / 365 *
+    (Val(yard_hours, Outdoor) - Val(hours_with_grazing_and_yard, Outdoor)) / 24 +
+    # access to yard and grazing (shared 50/50)
+    0.5 *
+    Val(days_with_grazing_and_yard, Outdoor) / 365 * 
+    Val(hours_with_grazing_and_yard, Outdoor) / 24;
+
++n_into_yard
+  print = Equides
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N excretion on yard for a defined animal category.
+  ++formula
+    Val(n_excretion, Excretion) * 
+    Out(share_into_yard);
+
++tan_into_yard
+  print = Equides
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual soluble N excretion on yard for a defined animal category.
+  ++formula
+    Val(tan_excretion, Excretion) * 
+    Out(share_into_yard);
+
++ef_nh3_nyard
+  print = Equides,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    NH3 emission factor for dairy cow yard.
+?if Kantonal_LU
+  ++formula
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard);
+?else
+  ++formula
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard) * 
+    Val(c_free_factor_yard, Outdoor);
+?endif
+
++nh3_nyard
+  print = Equides
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual NH3 emission from yard.
+  ++formula
+    Out(tan_into_yard) * Out(ef_nh3_nyard);
+	
++n_outyard_liquid
+  print = Equides
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux from liquid part out of yard.
+  ++formula
+    0;
+
++tan_outyard_liquid
+  print = Equides
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux as TAN from liquid part out of yard into storage.
+  ++formula
+    0;
+
++n_outyard_solid
+  print = Equides
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux from solid part out of yard.
+  ++formula
+    Out(n_into_yard) - Out(nh3_nyard);
+
+
++tan_outyard_solid
+  print = Equides
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux as TAN from solid part out of yard into storage.
+  ++formula
+    Out(tan_into_yard) - Out(nh3_nyard);

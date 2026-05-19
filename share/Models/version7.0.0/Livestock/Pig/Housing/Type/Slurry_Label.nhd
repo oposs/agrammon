@@ -1,0 +1,57 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-04-18
+taxonomy = Livestock::Pig::Housing::Type::Slurry_Label
+
++short
+
+Describes correction factors for the label slurry pig housing system. 
+
++description
+  
+ This process describes the correction factors for the label slurry pig housing system such as the housing specific emission rate, the liquid share and solid share.
+
+
+*** input ***
+
+*** technical ***
+
++er
+  value = 0.486
+  ++units  
+    en = -
+  ++description
+    Emission rate for the label slurry pig housing system. 
+    According to the consensus obtained in the workshop at ART Tänikon 02/11/07: 34 % Ntot; converted using Nsol of 70% and the emission rate of  48.6 % based on TAN. 
+
++share_liquid
+  value = 1
+  ++units  
+    en = -
+  ++description
+    For the label slurry pig housing system 100% of the manure
+    goes into the liquid fraction for storage/application.
+
+
+*** external ***
+
+*** output ***
+    
++er_housing
+  print = Pig
+  ++units  
+    en = -
+  ++description
+    Emission rate for specific housing type.
+  ++formula
+    Tech(er);
+
++share_liquid
+  print = Pig
+  ++units  
+    en = -
+  ++description
+    Liquid part of Ntot for selected housing type.
+  ++formula
+    Tech(share_liquid);

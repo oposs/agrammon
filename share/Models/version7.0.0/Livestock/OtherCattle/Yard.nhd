@@ -1,0 +1,262 @@
+*** general ***
+
+author   = Agrammon Group      
+date     = 2008-05-08
+taxonomy = Livestock::OtherCattle::Yard
+
++short
+   Computes the annual NH3 emission from cattle (apart from dairy
+   cows) on exercise yards. Based on the access time and if the the basic 
+   feeding is on the yard.
+
++description 
+  
+
+*** external ***
+
++Excretion
++Outdoor
+
+*** input ***
+
+*** technical ***
+
++er_yard
+  value = 0.7
+  ++units  
+    en = -
+  ++description 
+     Emission rate for TAN on yard.
+
++share_available_roughage_is_exclusively_supplied_in_the_exercise_yard
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+    Share of excretion per day for animals with roughage exclusively on the yard.
+
++share_available_roughage_is_partly_supplied_in_the_exercise_yard
+  value = 0.2
+  ++units  
+    en = -
+  ++description
+    Share of excretion per day for animals with roughage partly on the yard.
+
++share_available_roughage_is_not_supplied_in_the_exercise_yard
+  value = 0.1
+  ++units  
+    en = -
+  ++description
+    Share of excretion per day for animals with roughage not supplied in the yard.
+
++red_floor_properties_solid_floor
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_floor_properties_unpaved_floor
+  value = 0.5
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_floor_properties_perforated_floor
+  value = 0.75
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
++red_floor_properties_paddock_or_pasture_used_as_exercise_yard
+  value = 0.9
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency according to Reidy and Menzi.
+
+*** output ***
+
++c_floor_properties_exercise_yard
+  print = OtherCattle
+  ++units
+    en = -
+  ++description
+    Correction factor for the emission due to the use of the floor properties in housing systems.
+  ++formula
+    given ( Val(floor_properties_exercise_yard, Outdoor) ) {
+      when 'solid_floor' {
+        1 - Tech(red_floor_properties_solid_floor);
+      } 
+      when  'unpaved_floor' {
+        1 - Tech(red_floor_properties_unpaved_floor);
+      } 
+      when  'perforated_floor' {
+        1 - Tech(red_floor_properties_perforated_floor);
+      } 
+      when  'paddock_or_pasture_used_as_exercise_yard' {
+        1 - Tech(red_floor_properties_paddock_or_pasture_used_as_exercise_yard);
+      } 
+    }
+
++share_excretion
+  print = OtherCattle
+  ++units  
+    en = -
+  ++description
+    Share of excretion on the yard according the stay on yard.
+    If the basic feeding is on the yard the share_basicfeeding is assumed. 
+    Otherwise the share is selected according to the access.
+  ++formula 
+    given ( Val(exercise_yard, Outdoor) ) {
+      when 'available_roughage_is_not_supplied_in_the_exercise_yard' {
+        Tech(share_available_roughage_is_not_supplied_in_the_exercise_yard);
+      } 
+      when 'available_roughage_is_partly_supplied_in_the_exercise_yard' {
+        Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard);
+      }
+      when 'available_roughage_is_exclusively_supplied_in_the_exercise_yard' {
+        Tech(share_available_roughage_is_exclusively_supplied_in_the_exercise_yard);
+      }
+      when 'not_available' {
+        0;
+      }
+    }
+
++share_excretion_with_grazing
+  print = OtherCattle
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Share of excretion on the yard according the stay on yard with parallel acess to Pasture.
+    If the basic feeding is on the yard the share_basicfeeding is assumed. 
+    Otherwise the share is selected according to the access.
+  ++formula
+    if( (Val(days_with_grazing_and_yard, Outdoor) > 0) and 
+        (Out(share_excretion) > Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard)) ){
+      writeLog({
+        en => "The category \"roughage is exclusively supplied in the exercise yard\" is not compatible with the number of grazing days entered!\n",
+        de => "Verabreichung von Grundfutter ausschliesslich auf dem Laufhof ist nicht möglich mit den eingegebenen Weidetagen!\n",
+        fr => "La distribution de fourrage exclusivement dans le parcours extérieur "
+              . "pour les vâches laitières n'est pas possible pendant les jours de pâturage !\n",
+      }); 
+      return Tech(share_available_roughage_is_partly_supplied_in_the_exercise_yard);
+    } else {
+      return Out(share_excretion);
+    }
+         
++n_into_yard
+  print = OtherCattle
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N excretion on yard for a defined animal category.
+  ++formula
+    Val(n_excretion, Excretion) * 
+    (
+      # yard only (100%)
+      Out(share_excretion) * 
+      (Val(yard_days, Outdoor) - Val(days_with_grazing_and_yard, Outdoor)) / 365 +
+      # yard and grazing (share yard)
+      Out(share_excretion_with_grazing) * 
+      Val(days_with_grazing_and_yard, Outdoor) / 365
+    );
+
++tan_into_yard
+  print = OtherCattle
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual soluble N excretion on yard for a defined animal category.
+  ++formula
+    Val(tan_excretion,Excretion) *
+    (
+      # yard only (100%)
+      Out(share_excretion) * 
+      (Val(yard_days, Outdoor) - Val(days_with_grazing_and_yard, Outdoor)) / 365 +
+      # yard and grazing (share yard)
+      Out(share_excretion_with_grazing) * 
+      Val(days_with_grazing_and_yard, Outdoor) / 365
+    );
+
++ef_nh3_nyard
+  print = OtherCattle,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Annual NH3 emission from yard.
+?if Kantonal_LU
+  ++formula
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard);
+?else
+  ++formula
+    Tech(er_yard) * 
+    Out(c_floor_properties_exercise_yard) * 
+    Val(c_free_factor_yard, Outdoor);
+?endif
+
++nh3_nyard
+  print = OtherCattle
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual NH3 emission from yard.
+  ++formula
+    Out(tan_into_yard) * Out(ef_nh3_nyard);
+
++n_outyard_liquid
+  print = OtherCattle
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux from liquid part out of yard.
+  ++formula
+    Out(n_into_yard) - Out(nh3_nyard);
+
++tan_outyard_liquid
+  print = OtherCattle
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux as TAN from liquid part out of yard into storage.
+  ++formula
+    Out(tan_into_yard) - Out(nh3_nyard);
+
++n_outyard_solid
+  print = OtherCattle
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux from solid part out of yard.
+  ++formula
+    0;
+
++tan_outyard_solid
+  print = OtherCattle
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N flux as TAN from solid part out of yard into storage.
+  ++formula
+    0;

@@ -1,0 +1,176 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2012-05-06
+taxonomy = Livestock::RoughageConsuming::Housing
+
++short
+  Computes the annual NH3 emission from small ruminant housing systems.
+
++description 
+
+  This process calculates the NH3 emission in small ruminants housing
+  depending on the N excretion and the housing systems. The NH3
+  emission is assumed to be proportional to the total N excretion of
+  the animals because the contaminated surfaces will primarily drive
+  emissions, which will remain active even when animals are on the
+  pasture or exercise yard.
+
+  A proportional correction is applied according to the area per
+  animal.
+
+  A correction is applied if the part of the day grazing is above a
+  defined grazing hours per days.
+
+  \subsubsection{Definition of System boundaries for the housing Process:}
+
+  For housing systems with integrated exercise yards, it is difficult to
+  distinguish between emissions from housing, exercise yard and storage. 
+  For these housingtypes the emission may be only validated for the sum of
+  housing, exercise yard and storage emission.
+
+*** input ***
+
+*** technical ***
+
++er_housing
+  value = 0.11
+  ++units  
+    en = -
+  ++description
+    Emission rate for loose housing with liquid, solid manure system is assumed (for TAN 0.275 and Nsol 40%).
+
+
+*** external ***
+
++Excretion
++Housing::CFreeFactor
++Housing::KGrazing
++Grazing
+
+*** output ***
+
++n_into_housing
+  print = RoughageConsuming
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux into the house.
+  ++formula
+    Val(n_excretion, Excretion) - 
+    Val(n_into_grazing, Grazing);
+
++tan_into_housing
+  print = RoughageConsuming
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN into the house.
+  ++formula
+    Val(tan_excretion, Excretion) - 
+    Val(tan_into_grazing, Grazing);
+
++ef_nh3_nhousing
+  print = RoughageConsuming,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for roughage consuming housing systems.
+  ++formula
+    my $ef_nh3 = Tech(er_housing) * 
+                 Val(c_grazing, Housing::KGrazing) *
+                 Val(c_free_factor_housing, Housing::CFreeFactor);
+    if ( $ef_nh3 > 1 ) {
+        writeLog({
+            en => "NH3 emission factor for roughage consuming housing systems is greater than (thus will be limited to) 1.",
+            de => "NH3 emission factor for roughage consuming housing systems is greater than (thus will be limited to) 1.",
+            fr => "NH3 emission factor for roughage consuming housing systems is greater than (thus will be limited to) 1.",
+        });
+        $ef_nh3 = 1;
+    }
+    return $ef_nh3;
+
++nh3_nhousing
+  print = RoughageConsuming
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual NH3 emission from small ruminants housing systems 
+    per animal place.
+  ++formula
+   Out(tan_into_housing) * Out(ef_nh3_nhousing);
+
++n_outhousing
+  print = RoughageConsuming
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of the housing.
+  ++formula
+    Out(n_into_housing) - Out(nh3_nhousing);
+
++tan_outhousing
+  print = RoughageConsuming
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of the housing.
+  ++formula
+    Out(tan_into_housing) - Out(nh3_nhousing);
+
++n_outhousing_liquid
+  print = RoughageConsuming
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of housing, slurry or liquid fraction of N flux.
+  ++formula
+    0
+
++tan_outhousing_liquid
+  print = RoughageConsuming
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of housing, slurry or liquid fraction of N flux.
+  ++formula
+    0
+
++n_outhousing_solid
+  print = RoughageConsuming
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of housing, manure fraction of N flux.
+  ++formula
+    Out(n_outhousing); 
+
++tan_outhousing_solid
+  print = RoughageConsuming
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of housing, manure fraction of N flux. 
+  ++formula
+    Out(tan_outhousing);
+ 

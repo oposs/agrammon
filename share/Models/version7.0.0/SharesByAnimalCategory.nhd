@@ -1,0 +1,930 @@
+
+*** general ***
+
+author   = Agrammon Group 
+date     = 2009-04-22
+taxonomy = SharesByAnimalCategory
+
+
++short
+
+ Collects the annual NH3 emission by Animalcategories, and calulates its share of the total
+
++description 
+
+
+*** external ***
+
++SummaryByAnimalCategory 
++PlantProduction
++PlantProduction::MineralFertiliser 
++PlantProduction::RecyclingFertiliser
++Application 
++Livestock
++Storage
++Total
+
+
+*** output ***
+
+
+##### Dairy Cow
+
++share_nh3_dairycow_grazing
+  format= %.1f
+  print = DairyCowShare
+  ++labels
+    sort = 101
+    en = Grazing dairy cows NH3-emissions
+    de = Milchkühe Weide NH3-Emission
+    fr = Vâches laitières Emission de NH3 Pâturage  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from dairy cows grazing areas.
+  ++formula
+     if(Val(nh3_ntotal,Total) >0){
+	Val(nh3_ndairycow_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total) ;
+     }else{0;}
+ 
+
++share_nh3_dairycow_housing_and_yard
+  format= %.1f
+  print = DairyCowShare
+  ++labels
+    sort = 102
+    en = Housing and yard dairy cows NH3-Emissions
+    de = Milchkühe Stall und Laufhof NH3-Emission
+    fr = Vâches laitières Emission de NH3 Stabulation et parcours extérieur 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from dairy cows from all housings and yards.
+  ++formula
+     if(Val(nh3_ntotal,Total) >0){
+        Val(nh3_ndairycow_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_dairycow_storage
+  format= %.1f
+  print = DairyCowShare
+  ++labels
+    sort = 103
+    en = Storage dairy cows NH3-Emissions
+    de = Milchkühe Hofdüngerlager NH3-Emission
+    fr = Vâches laitières Emission de NH3 Stockage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+     if(Val(nh3_ntotal,Total) >0){
+        Val(nh3_ndairycow_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_dairycow_application
+  format= %.1f
+  print = DairyCowShare
+  ++labels
+    sort = 104
+    en = Application dairy cows NH3-Emissions
+    de = Milchkühe Hofdüngerausbringung NH3-Emission
+    fr = Vâches laitières Emission de NH3 Epandage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+     if(Val(nh3_ntotal,Total) >0){
+        Val(nh3_ndairycow_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
+
+## Other Cattle
+
++share_nh3_othercattle_grazing
+  format= %.1f
+  print = OtherCattleShare
+  ++labels
+    sort = 201
+    en = Grazing other cattle NH3-Emissions
+    de = Übriges Rindvieh Weide NH3-Emission
+    fr = Autres bovins Emission de NH3 Pâturage 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from other cattle grazing areas.
+  ++formula
+     if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nothercattle_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+ 
+
++share_nh3_othercattle_housing_and_yard
+  format= %.1f
+  print = OtherCattleShare
+  ++labels
+    sort = 202
+    en = Housing and yard other cattle NH3-Emissions
+    de = Übriges Rindvieh Stall und Laufhof NH3-Emission
+    fr = Autres bovins Emission de NH3 Stabulation et parcours extérieur
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from cattle from all housings and yards.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nothercattle_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_othercattle_storage
+  format= %.1f
+  print = OtherCattleShare
+  ++labels
+    sort = 203
+    en = Storage other cattle NH3-Emissions
+    de = Übriges Rindvieh Hofdüngerlager NH3-Emission
+    fr = Autres bovins Emission de NH3 Stockage des engrais de ferme  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nothercattle_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_othercattle_application
+  format= %.1f
+  print = OtherCattleShare
+  ++labels
+    sort = 204
+    en = Application other cattle NH3-Emissions
+    de = Übriges Rindvieh Hofdüngerausbringung NH3-Emission
+    fr = Autres bovins Emission de NH3 Epandage des engrais de ferm 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nothercattle_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
+###### Cattle: dairy cows plus other cattle #############################################################
+
++share_nh3_cattle_grazing
+  format= %.1f
+  print = CattleShare
+  ++labels
+    sort = 101
+    en = Grazing cattle NH3-Emissions
+    de = Rinder Weide NH3-Emission
+    fr = Bovins Emission de NH3 Pâturage 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from cattle grazing areas.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_ncattle_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+ 
+
++share_nh3_cattle_housing_and_yard
+  format= %.1f
+  print = CattleShare
+  ++labels
+    sort = 102
+    en = Housing and yard cattle NH3-Emissions
+    de = Rinder Stall und Laufhof NH3-Emission
+    fr = Bovins Emission de NH3 Stabulation et parcours extérieur 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from cattle from all housings and yards.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_ncattle_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_cattle_storage
+  format= %.1f
+  print = CattleShare
+  ++labels
+    sort = 103
+    en = Storage cattle NH3-Emissions
+    de = Rinder Hofdüngerlager NH3-Emission
+    fr = Bovins Emission de NH3 Stockage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_ncattle_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+ 
+
++share_nh3_cattle_application
+  format= %.1f
+  print = CattleShare
+  ++labels
+    sort = 104
+    en = Application cattle NH3-Emissions
+    de = Rinder Hofdüngerausbringung NH3-Emission
+    fr = Bovins Emission de NH3 Epandage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_ncattle_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
+#### Pig: pig and fattening pigs #########################################################################
+
+
++share_nh3_pig_grazing
+  format= %.1f
+  print = PigShare
+  ++labels
+    sort = 201
+    en = Grazing pigs NH3-Emissions
+    de = Schweine Weide NH3-Emission
+    fr = Porcs Emission de NH3 Pâturage 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from all pigs grazing areas.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_npig_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+ 
++share_nh3_pig_housing_and_yard
+  format= %.1f
+  print = PigShare
+  ++labels
+    sort = 202
+    en = Housing and yard all pigs NH3-Emissions
+    de = Schweine Stall und Laufhof NH3-Emission
+    fr = Porcs Emission de NH3 Stabulation et parcours extérieur 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from all pigs from all housings and yards.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_npig_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_pig_storage
+  format= %.1f
+  print = PigShare
+  ++labels
+    sort = 203
+    en = Storage pigs NH3-Emissions
+    de = Schweine Hofdüngerlager NH3-Emission
+    fr = Porcs Emission de NH3 Stockage des engrais de ferme  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_npig_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_pig_application
+  format= %.1f
+  print = PigShare
+  ++labels
+    sort = 204
+    en = Application pigs NH3-Emissions
+    de = Schweine Hofdüngerausbringung NH3-Emission
+    fr = Porcs Emission de NH3 Epandage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_npig_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
+#### OtherPig: modul name "pig" ########################################################################
+
+
++share_nh3_otherpig_grazing
+  format= %.1f
+  print = OtherPigShare
+  ++labels
+    sort = 401
+    en = Grazing other pigs NH3-Emissions
+    de = Zuchtschweine Weide NH3-Emission
+    fr = Porcs d'élevage Emission de NH3 Pâturage 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from other pigs grazing areas.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_notherpig_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+ 
++share_nh3_otherpig_housing_and_yard
+  format= %.1f
+  print = OtherPigShare
+  ++labels
+    sort = 402
+    en = Housing and yard other pigs NH3-Emissions
+    de = Zuchtschweine Stall und Laufhof NH3-Emission
+    fr = Porcs d'élevage Emission de NH3 Stabulation et parcours extérieur   
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from other pigs form all housings and yards.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_notherpig_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_otherpig_storage
+  format= %.1f
+  print = OtherPigShare
+  ++labels
+    sort = 403
+    en = Storage other pigs NH3-Emissions
+    de = Zuchtschweine Hofdüngerlager NH3-Emission
+    fr = Porcs d'élevage Emission de NH3 Stockage des engrais de ferme
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_notherpig_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_otherpig_application
+  format= %.1f
+  print = OtherPigShare
+  ++labels
+    sort = 404
+    en = Application other pigs NH3-Emissions
+    de = Zuchtschweine Hofdüngerausbringung NH3-Emission
+    fr = Porcs d'élevage Emission de NH3 Epandage des engrais de ferme  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_notherpig_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
+#### FatteningPig ########################################################################################
+
++share_nh3_fatteningpig_grazing
+  format= %.1f
+  print = FatteningPigShare
+  ++labels
+    sort = 301
+    en = Grazing fattening pigs NH3-Emissions
+    de = Mastschweine Weide NH3-Emission
+    fr = Porcs à l'engrais Emission de NH3 Pâturage
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from fattening pigs grazing areas.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nfatteningpig_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+ 
+
++share_nh3_fatteningpig_housing_and_yard
+  format= %.1f
+  print = FatteningPigShare
+  ++labels
+    sort = 302
+    en = Housing and yard fattening pigs NH3-Emissions
+    de = Mastschweine Stall und Laufhof NH3-Emission
+    fr = Porcs à l'engrais Emission de NH3 Stabulation et parcours extérieur  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from fattening pigs from all housings and yards.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nfatteningpig_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_fatteningpig_storage
+  format= %.1f
+  print = FatteningPigShare
+  ++labels
+    sort = 303
+    en = Storage fattening pigs NH3-Emissions
+    de = Mastschweine Hofdüngerlager NH3-Emission
+    fr = Porcs à l'engrais Emission de NH3 Stockage des engrais de ferme  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+   Val(nh3_nfatteningpig_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_fatteningpig_application
+  format= %.1f
+  print = FatteningPigShare
+  ++labels
+    sort = 304
+    en = Application fattening pigs NH3-Emissions
+    de = Mastschweine Hofdüngerausbringung NH3-Emission
+    fr = Porcs à l'engrais Emission de NH3 Epandage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nfatteningpig_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+######  Poultry  ######################################################################
+
++share_nh3_poultry_grazing
+  format= %.1f
+  print = PoultryShare
+  ++labels
+    sort = 501
+    en = Grazing poultry NH3-Emissions
+    de = Geflügel Weide NH3-Emission
+    fr = Volaille Emission de NH3 Pâturage
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from poultry grazing areas.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_npoultry_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_poultry_housing_and_yard
+  format= %.1f
+  print = PoultryShare
+  ++labels
+    sort = 502
+    en = Housing and yard poultry NH3-Emissions
+    de = Geflügel Stall und Laufhof NH3-Emission
+    fr = Volaille Emission de NH3 Stabulation et parcours extérieur 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from poultry from all housings and yards.
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_npoultry_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_poultry_storage
+  format= %.1f
+  print = PoultryShare
+  ++labels
+    sort = 503
+    en = Storage poultry NH3-Emissions
+    de = Geflügel Hofdüngerlager NH3-Emission
+    fr = Volaille Emission de NH3 Stockage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_npoultry_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_poultry_application
+  format= %.1f
+  print = PoultryShare
+  ++labels
+    sort = 504
+    en = Application poultry NH3-Emissions
+    de = Geflügel Hofdüngerausbringung NH3-Emission
+    fr = Volaille Emission de NH3 Epandage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_npoultry_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+   
+
+######  Equides, SmallRuminants  ######################################################################
+
++share_nh3_other_grazing
+  format= %.1f
+  print = OtherShare
+  ++labels
+    sort = 601
+    en = Grazing equides and small ruminants NH3-Emissions
+    de = Pferde und Kleinwiederkäuer Weide NH3-Emission
+    fr = Equidés et petits ruminants Emission de NH3 Pâturage  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from equides and small ruminants grazing areas.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nother_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+ 
+
++share_nh3_other_housing_and_yard
+  format= %.1f
+  print = OtherShare
+  ++labels
+    sort = 602
+    en = Housing and yard equides and small ruminants NH3-Emissions
+    de = Pferde und Kleinwiederkäuer Stall und Laufhof NH3-Emission
+    fr = Equidés et petits ruminants Emission de NH3 Stabulation et parcours extérieur  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from equides and small ruminants from all housings and yards.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     Val(nh3_nother_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_other_storage
+  format= %.1f
+  print = OtherShare
+  ++labels
+    sort = 603
+    en = Storage equides and small ruminants NH3-Emissions
+    de = Pferde und Kleinwiederkäuer Hofdüngerlager NH3-Emission
+    fr = Equidés et petits ruminants Emission de NH3 Stockage des engrais de ferme  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nother_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_other_application
+  format= %.1f
+  print = OtherShare
+  ++labels
+    sort = 604
+    en = Application equides and small ruminants NH3-Emissions
+    de = Pferde und Kleinwiederkäuer Hofdüngerausbringung NH3-Emission
+    fr = Equidés et petits ruminants Emission de NH3 Stockage des engrais de ferme  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nother_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+######  Equides  ######################################################################
+
++share_nh3_equides_grazing
+  format= %.1f
+  print = EquidesShare
+  ++labels
+    sort = 601
+    en = Grazing equides NH3-Emissions
+    de = Pferde und andere Equiden Weide NH3-Emission
+    fr = Chevaux et autres équidés Emission de NH3 Pâturage  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from equides grazing areas.
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_nequides_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+ 
+
++share_nh3_equides_housing_and_yard
+  format= %.1f
+  print = EquidesShare
+  ++labels
+    sort = 602
+    en = Housing and yard equides NH3-Emissions
+    de = Pferde und andere Equiden Stall und Laufhof NH3-Emission
+    fr = Chevaux et autres équidés Emission de NH3 Stabulation et parcours extérieur  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from equides from all housings and yards.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nequides_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_equides_storage
+  format= %.1f
+  print = EquidesShare
+  ++labels
+    sort = 603
+    en = Storage equides NH3-Emissions
+    de = Pferde und andere Equiden Hofdüngerlager NH3-Emission
+    fr = Chevaux et autres équidés Emission de NH3 Stockage des engrais de ferme  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nequides_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_equides_application
+  format= %.1f
+  print = EquidesShare
+  ++labels
+    sort = 604
+    en = Application equides NH3-Emissions
+    de = Pferde und andere Equiden Hofdüngerausbringung NH3-Emission
+    fr = Chevaux et autres équidés Emission de NH3 Epandage des engrais de ferme  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nequides_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+######  SmallRuminants  ######################################################################
+
++share_nh3_small_ruminant_grazing
+  format= %.1f
+  print = SmallRuminantShare
+  ++labels
+    sort = 701
+    en = Grazing small ruminants NH3-Emissions
+    de = Kleinwiederkäuer Weide NH3-Emission
+    fr = Petits ruminants Emission de NH3 Pâturage  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from small ruminants grazing areas.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nsmall_ruminant_grazing,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_small_ruminant_housing_and_yard
+  format= %.1f
+  print = SmallRuminantShare
+  ++labels
+    sort = 702
+    en = Housing and yard small ruminants NH3-Emissions
+    de = Kleinwiederkäuer Stall und Laufhof NH3-Emission
+    fr = Petits ruminants Emission de NH3 Stabulation et parcours extérieur 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from small ruminants from all housings and yards.
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_nsmall_ruminant_housing_and_yard,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_small_ruminant_storage
+  format= %.1f
+  print = SmallRuminantShare
+  ++labels
+    sort = 703
+    en = Storage small ruminants NH3-Emissions
+    de = Kleinwiederkäuer Hofdüngerlager NH3-Emission
+    fr = Petits ruminants Emission de NH3 Stockage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_nsmall_ruminant_storage,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_small_ruminant_application
+  format= %.1f
+  print = SmallRuminantShare
+  ++labels
+    sort = 704
+    en = Application small ruminants NH3-Emissions
+    de = Kleinwiederkäuer Hofdüngerausbringung NH3-Emission
+    fr = Petits ruminants Emission de NH3 Epandage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_nsmall_ruminant_application,SummaryByAnimalCategory)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+   
+######  Livestock  ######################################################################
+
++share_nh3_livestock_grazing
+  format= %.1f
+  print = LivestockShare
+  ++labels
+    sort = 801
+    en = Grazing lievstock NH3-Emissions
+    de = Tierhaltung Weide NH3-Emission
+    fr = Production animale Emission de NH3 Pâturage  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from livestock grazing areas.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_ngrazing,Livestock )*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_livestock_housing_and_yard
+  format= %.1f
+  print = LivestockShare
+  ++labels
+    sort = 802
+    en = Housing and yard livestock NH3-Emissions
+    de = Tierhaltung Stall und Laufhof NH3-Emission
+    fr = Production animale Emission de NH3 Stabulation et parcours extérieur 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from small ruminants from all housings and yards.
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nhousing_and_yard,Livestock)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_livestock_storage
+  format= %.1f
+  print = LivestockShare
+  ++labels
+    sort = 803
+    en = Storage livestock NH3-Emissions
+    de = Tierhaltung Hofdüngerlager NH3-Emission
+    fr = Production animale Emission de NH3 Stockage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+     	Val(nh3_nstorage,Storage)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_livestock_application
+  format= %.1f
+  print = LivestockShare
+  ++labels
+    sort = 804
+    en = Application livestock NH3-Emissions
+    de = Tierhaltung Hofdüngerausbringung NH3-Emission
+    fr = Production animale Emission de NH3 Epandage des engrais de ferme 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+   Val(nh3_napplication,Application)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_livestock
+  format= %.1f
+  print = LivestockTotalShare
+  ++labels
+    sort = 809
+    en = Livestock NH3-Emissions
+    de = Tierhaltung NH3-Emission
+    fr = Emission de NH3 Production animale 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission (estimation proportional to input of animalcategory in storage)
+  ++formula
+   if(Val(nh3_ntotal,Total) >0){
+      Val(nh3_nanimalproduction,Total)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+      
+######  PlantProduction  ######################################################################
+
++share_nh3_plant_production
+  format= %.1f
+  print = PlantProductionTotalShare
+  ++labels
+    sort = 909
+    en = Share Plantproduction NH3-Emissions
+    de = Total Anteil Pflanzenbau NH3-Emission
+    fr = Total Emission de NH3 Part production végétale  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from livestock grazing areas.
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_nplantproduction,PlantProduction )*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_mineralfertiliser
+  format= %.1f
+  print = PlantProductionShare
+  ++labels
+    sort = 901
+    en = Mineral Fertiliser NH3-Emissions
+    de = Mineraldünger NH3-Emission
+    fr = Emission de NH3 Engrais minéraux  
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from storage (estimation proportional to input of animalcategory in storage)
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     	 Val(nh3_nmineralfertiliser,PlantProduction::MineralFertiliser)*100 / Val(nh3_ntotal,Total);
+     }else{0;}
+
+
++share_nh3_recyclingfertiliser
+  format= %.1f
+  print = PlantProductionShare
+  ++labels
+    sort = 902
+    en = Recycling Fertiliser NH3-Emissions
+    de = Recyclingdünger NH3-Emission
+    fr = Emission de NH3 Engrais de recyclage 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+  if(Val(nh3_ntotal,Total) >0){
+     Val(nh3_nrecyclingfertiliser,PlantProduction::RecyclingFertiliser)*100 / Val(nh3_ntotal,Total);
+  }else{0;};
+
+
++share_nh3_total
+  format= %.1f
+  print = FullTotalShare
+  ++labels 
+    sort = 999
+    en = Total NH3-Emission
+    de = Total NH3-Emission
+    fr = Emission de NH3 Total 
+  ++units
+    en = %
+  ++description
+    Annual NH3 emission from application (estimation proportional to input of animalcategory in storage)
+  ++formula
+    100;

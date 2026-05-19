@@ -1,0 +1,135 @@
+*** general ***
+
+author   = Agrammon Group 
+date     = 2023-06-13
+taxonomy = Livestock::OtherCattle::Housing::Floor
+
++short
+    Computes the annual NH3 reduction due to low emissions techniques in housing systems.
+
++description
+    This submodul calculates the annual NH3 reduction due to low emission techniques in housing systems.
+
+ \subsubsection{References}
+Braam, C.R., Ketelaars, J., Smits, M.C.J. 1997. Effects of floor design and floor cleaning on ammonia emission from cubicle houses for dairy cows. Neth. J. Agric. Sci. 45(1): 49-64.
+Braam, C.R., Smits, M.C.J., Gunnink, H., Swierstra, D. 1997. Ammonia emission from a double-sloped solid floor in a cubicle house for dairy cows. J. Agr. Eng. Res. 68(4): 375-386.
+Zähner, M., Poteko, J., Zeyer, K., Schrade, S. 2017. Laufflächengestaltung: Emissionsminderung und verfahrenstechnische Aspekte - erste Ergebnisse aus dem Emissionsversuchsstall Tänikon. Bautagung Raumberg-Gumpenstein 2019; Höhere Bundeslehr- und Forschungsanstalt für Landwirtschaft Raumberg-Gumpenstein, Österreich. p 13-18.
+
+
+*** external ***
+
++Type
+
+*** input ***
+
++mitigation_housing_floor
+  type  = enum
+  ++enum
+    +++none
+       en =none
+       de =keine
+       fr =aucune
+       it =none
+     +++raised_feeding_stands
+       en = elevated feed stalls
+       de = Fressstand erhöht zum Laufgang
+       fr = Stalle d'affouragement surélevée
+       it = raised_feeding_stands
+    +++floor_with_cross_slope_and_collection_gutter
+       en = double-sloped solid floor operating with urine gutter
+       de = Boden mit Quergefälle und Harnsammelrinne
+       fr = Sol non perforé avec pente transversale
+       it = floor_with_cross_slope_and_collection_gutter
+    +++floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands
+       en = sloped solid floor with urine gutter and elevated feed stalls
+       de = Boden mit Quergefälle und Harnsammelrinne und erhöhte Fressstände
+       fr = Sol non perforé avec pente transv. + stalle d'affouragement
+       it = floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands
+  ++labels 
+    en = Mitigation option for loose housing systems
+    de = Emissionsmindernde Massnahme bei Laufställen
+    fr = Mesures limitant les émissions dans les stabulations pour autres bovins
+  ++units 
+    en = -
+  ++description
+    Mitigation options for loose housing systems for cattle.
+  ++help
+    +++en
+       <p>Elevated feed stalls:<p>
+       <p>This system consists of an elevated feeding area and separations between the animals. The animals are controlled at the feeding barrier which minimizes the accumulation of excretions in the feeding area. Applicable for Tied Housing Slurry and Tied Housing Slurry Plus Solid Manure.<p>
+       <p>Double-sloped solid floor operating with urine gutter:<p>
+       <p>Double-sloped solid floor (slope of 3 %) operating with a longitudinal urine gutter. The floor and the urine gutter must be cleaned by a scraper at least every 2 hours (controlled by a timer). Applicable for Tied Housing Slurry.<p>
+       <p>Standard value for Switzerland: “none”</p>
+    +++de
+       <p>Fressstand erhöht zum Laufgang:</p>
+       <p>Dieses System besteht aus einem erhöhten Fressbereich (Podest) und Fressplatzabtrennungen. Die Tiere werden am Fressgitter so gesteuert, dass möglichst wenig Exkremente auf den Standflächen des Fressbereichs anfallen. Anwendbar für Laufstall mit Produktion von Vollgülle und Laufstall mit Produktion von Gülle und Mist.</p>
+       <p>Boden mit Quergefälle und Harnsammelrinne:</p>
+       <p>Planbefestigte Laufflächen mit einem Quergefälle von 3 % und einer Längsrinne. Der Boden und die Harnabflussrinne müssen mittels Schieber und Rinnenräumer mindestens alle 2 Stunden gereinigt werden (Steuerung mit einer Zeitschaltuhr). Anwendbar für Laufstall mit Produktion von Vollgülle.</p>
+       <p>Vorschlag für Standardwert: keine</p>
+    +++fr
+       <p>Stalle d’affouragement surélevée :</p>
+       <p>Ce système se compose d'une aire d'alimentation surélevée et de places d’alimentation avec séparations. Les animaux sont contrôlés au niveau des cornadis ce-qui minimise l’accumulation des excréments dans l'aire d'alimentation. Applicable pour stabulation libre avec production de lisier complet et stabulation libre avec production de lisier et de fumier.</p>
+       <p>Sol non perforé avec pente transversale :</p>
+       <p>Sol non perforé, inclinées à 3 % vers une rigole longitudinale. Le sol et la rigole d’écoulement doivent être nettoyés au moyen d’un dispositif spécial au moins toutes les deux heures (commande munie d’une minuterie). Applicable pour stabulation libre avec production de lisier complet.</p>
+       <p>Proposition de valeur standard: aucune</p>
+
+
+*** technical ***
+
++red_raised_feeding_stands
+  value = 0.1
+  ++units 
+    en = -
+  ++description
+    Reduction efficiency as compared to cubicle house (UNECE 2007, paragraph 57, table 4).
+
++red_floor_with_cross_slope_and_collection_gutter
+  value = 0.2
+  ++units 
+    en = -
+  ++description
+    Reduction efficiency as compared to cubicle house (UNECE 2007, paragraph 57, table 4).
+
++red_floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands
+  value = 0.3
+  ++units 
+    en = -
+  ++description
+    Reduction efficiency as compared to cubicle house (UNECE 2007, paragraph 57, table 4).
+
+*** output ***
+
++c_housing_floor
+  print = OtherCattle
+  ++units 
+    en = -
+  ++description
+    Correction factor for the emission due to the use of a grooved floor in housing systems.
+  ++formula 
+    given ( In(mitigation_housing_floor) ) {
+      when 'raised_feeding_stands' {
+        if ( (Val(housing_type, Type) eq 'Loose_Housing_Slurry') or 
+            (Val(housing_type, Type) eq 'Loose_Housing_Slurry_Plus_Solid_Manure') ) {
+          1 - Tech(red_raised_feeding_stands);
+        } else {
+          1;
+        }
+      }
+      when 'floor_with_cross_slope_and_collection_gutter' {
+        if ( Val(housing_type, Type) eq 'Loose_Housing_Slurry' ) {
+          1 - Tech(red_floor_with_cross_slope_and_collection_gutter);
+        } else {
+          1;
+        }
+      }
+      when 'floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands' {
+        if ( Val(housing_type, Type) eq 'Loose_Housing_Slurry' ) {
+          1 - Tech(red_floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands);
+        } else {
+          1;
+        }
+      }
+      when 'none' {
+        1;
+      }
+    }

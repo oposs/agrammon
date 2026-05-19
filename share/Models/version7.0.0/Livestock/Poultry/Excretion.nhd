@@ -1,0 +1,474 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-22
+taxonomy = Livestock::Poultry::Excretion
+
++short
+
+Computes the annual N excretion of the different poultry categories.
+
++description
+
+This process calculates the annual N excretion (total N and TAN=Total
+Ammoniacal Nitrogen) of a number of animals as a function of the
+supplied feed ration.
+
+The standard N excretion was taken from the PRIF 2017 (Richner et al.,
+2017; PRIF: Principles of Agricultural Crop Fertilisation in
+Switzerland).
+
+\subsubsection{References:}
+
+Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi,
+H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W.,
+Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher
+Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6)
+Spezialpublikation, pp. 4/1-4/24.
+
+
+*** input ***
+
++animalcategory
+  type = enum
+  filter = true
+  ++enum
+    +++layers
+       en = layers
+       de = Legehennen
+       fr = Poules_pondeuses
+       it = layers
+    +++growers
+       en = growers
+       de = Junghennen
+       fr = Poulettes
+       it = growers
+    +++broilers
+       en = broilers
+       de = Mastpoulets
+       fr = Poulets_à_l'engrais
+       it = broilers
+    +++turkeys
+       en = turkeys
+       de = Masttruten
+       fr = Dindes
+       it = turkeys
+    +++other_poultry
+       en = other_poultry
+       de = Anderes_Geflügel
+       fr = Autre_volaille
+       it = other_poultry
+  ++labels
+    en = Animal category
+    de = Tierkategorie
+    fr = Catégorie d'animaux
+  ++units
+    en = -
+  ++description
+    Poultry category (layers, growers, broilers, turkeys, and other poultry).
+  ++help
+    +++en
+       <p> </p>
+    +++de
+       <p> </p>
+    +++fr
+       <p> </p>
+
++animals
+  type = float
+  validator = ge(0)
+  distribute = true
+  ++labels
+    en= Number of animals
+    de = Anzahl Tiere
+    fr = Nombre d'animaux
+  ++units
+    en = -
+  ++description
+    Number of poultry animals for the selected type in barn.
+  ++help
+    +++en
+       <p> </p>
+    +++de
+       <p> </p>
+    +++fr
+       <p> </p>
+
++dimensioning_barn
+  type = float
+  distribute = true
+  default_gui  = Standard
+  default_calc = Standard
+  ++labels 
+    en = Number of available animal places
+    de = Anzahl Tierplätze im Stall
+    fr = Nombre de places dans l'étable
+  ++units  
+    en = -
+  ++description
+    Number of available animal places.
+    ++help
+      +++en
+         <p>If "Standard" is selected the number of available animal places
+            is equal to the number of animals.</p>
+      +++de
+         <p>Bei Auswahl "Standard" wird die Anzahl Tierplätze im Stall
+         der eingegebenen Anzahl Tiere gleichgesetzt.</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur du nombre d'animaux
+         est utilisée.</p>
+
+?if !Kantonal_LU
+  +inp_n_excretion
+    type = float
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = N excretion
+      de = N Ausscheidung
+      fr = Excrétions azotées
+    ++units
+      en = kg N/year
+      de = kg N/Jahr
+      fr = kg N/an
+    ++description
+      Annual standard N excretion for poultry
+    ++help
+      +++en
+         <p>If "Standard" is selected the standard value for the
+            nitrogen excretion according to PRIF 2017 is applied (Richner
+            et al., 2017) is applied (PRIF: Principles of Agricultural Crop
+            Fertilisation in Switzerland). If a number is entered, a value
+            for the nitrogen excretion can be selected by the user.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+      +++de
+         <p>Bei Auswahl «Standard» wird der Richtwert für die
+            Stickstoffausscheidung gemäss GRUD 2017 (Richner et al., 2017)
+            verwendet. Bei Eingabe einer Zahl kann der Wert für die
+            Stickstoffausscheidung selbst gewählt werden.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur de référence pour
+            les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
+            est utilisée (PRIF: « Principes de la fertilisation des
+            cultures agricoles en Suisse » ). Si un nombre est introduisé
+            une valeur pour les excrétions azotées peut être déterminée par
+            l'utilisateur/-trice.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+
+  +tan_fraction
+    type = percent
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = TAN fraction of N excretion
+      de = TAN Anteil der N Ausscheidung
+      fr = Proportion de TAN des excrétions azotées
+    ++units
+      en = %
+      de = %
+      fr = %
+    ++description
+      TAN fraction of the annual standard N excretion
+    ++help
+      +++en
+         <p>If "Standard" is selected the proportion of TAN in the excretions of the animals is calculaded according to the Agrammon model. If a number is entered, a value
+            for the proportion of TAN in the excretion can be selected by the user. This option applies for cases for which the proportion of TAN in the excretions can be optained from e.g. a feeding model.</p>
+      +++de
+         <p>Bei Eingabe <b>Standard</b> wird der Anteil von TAN in den Ausscheidungen der Tiere wie vom Modell Agrammon vorgegeben festgelegt. Bei Eingabe einer Zahl kann der Wert für den
+            Anteil von TAN in den Ausscheidungen selbst gewählt werden. Diese Option ist für Fälle gedacht, in denen  der Anteil von TAN in den Ausscheidungen beispielsweise aus einem Fütterungsmodell bekannt ist.</p>
+      +++fr
+         <p>Si <b>Standard</b> est introduisé le pourcentage de TAN dans les excrétions des animaux est utilisée comme défini par le modèle Agrammon. Si un nombre est introduisé une valeur pour la proportion de TAN
+         dans les excrétions peut être déterminée par l'utilisateur/-trice. Cette option est destinée aux cas où la proportion de TAN dans les excréments est connue, par exemple à partir d'un modèle d'alimentation.</p>
+
+?endif
+
+*** technical ***
+
+### standard_N_excretion
+
++standard_N_excretion_layers
+  value = 0.80
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for poultry category (layers) according to
+    Flisch et al. (2009).
+
++standard_N_excretion_growers
+  value = 0.31
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for poultry category (growers) according to
+    a decission of the Group suisse bilanz.
+
++standard_N_excretion_broilers
+  value = 0.45
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for poultry category (broilers) according to
+    Flisch et al. (2009).
+
++standard_N_excretion_turkeys
+  value = 1.4
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for poultry category according (turkeys) to
+    Flisch et al. (2009).
+
++standard_N_excretion_other_poultry
+  value = 0.56
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for other poultry category according to
+    Flisch et al. (2009).
+
+###
+
++share_Nsol_layers
+  value = 0.6
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta for layers. Derived from e.g.
+    TODO
+
++share_Nsol_growers
+  value = 0.6
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta for growers. Derived from e.g.
+    TODO
+
++share_Nsol_broilers
+  value = 0.6
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta for broilers. Derived from e.g.
+    TODO
+
++share_Nsol_turkeys
+  value = 0.6
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta for turkeys. Derived from e.g.
+    TODO
+
++share_Nsol_other_poultry
+  value = 0.6
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta for other poultry. Derived from e.g.
+    TODO
+
+
+*** external ***
+
+
+*** output ***
+
++animals
+  print = Poultry
+  ++units
+    en = -
+  ++description
+    Number of poultry animals for the selected type in barn.
+  ++formula
+    In(animals);
+
++animalcategory
+  print = Poultry
+  ++units
+    en = -
+  ++description
+    Poultry category (layers, growers, broilers, turkeys, and other poultry).
+  ++formula
+    In(animalcategory);
+
++n_excretion_animal
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for specified poultry category according to
+    Flisch et al. (2009).
+?if Kantonal_LU
+  ++formula
+    return $TE->{'standard_N_excretion_' . Out(animalcategory)};
+?else
+  ++formula
+    my $cat = Out(animalcategory);
+    my $key = 'standard_N_excretion_' . $cat;
+    my $exc = $TE->{$key};
+    $exc = In(inp_n_excretion) unless ( lc In(inp_n_excretion) eq 'standard' );
+    if (($exc < 0.7 * $TE->{$key}) or ($exc > 1.3 * $TE->{$key})) {
+        writeLog({
+            en => "The N excretion entered for poultry differs from the standard by more than 30%!",
+            de => "Die eingegebene N-Ausscheidung für Geflügel weicht um mehr als 30% vom Standard ab!",
+            fr => "Les excrétions azotées saisies pour les volaille s'écartent de plus de 30 % du standard!",
+        });
+    }
+    return $exc;
+?endif
+
++n_excretion
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by a specified number of animals.
+  ++formula
+    Out(n_excretion_animal) * Out(animals);
+
+
++tan_excretion
+  print = Poultry
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual soluble N excreted by an animalgroup of selected poultry category.
+?if !Kantonal_LU
+  ++formula
+    if ( lc In(tan_fraction) eq 'standard' ) {
+      $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
+    } else {
+      my $tan = In(tan_fraction) / 100;
+      if ( abs($tan - $TE->{"share_Nsol_" . Out(animalcategory)}) > 0.2) {
+        writeLog({
+            en => "The TAN fraction of N excretion entered for poultry differs from the standard by more than 20%!",
+            de => "Der eingegebene TAN Anteil der N Ausscheidung für Geflügel weicht um mehr als 20% vom Standard ab!",
+            fr => "La proportion du TAN des excrétions azotées saisies pour les volaille s'écartent de plus de 20 % du standard!"
+        });
+      }
+      return $tan * Out(n_excretion);
+    }
+?else
+  ++formula
+    $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
+?endif
+
++n_excretion_layers_growers_other_poultry
+  print = Poultry
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by poultry.
+  ++formula
+    given ( Out(animalcategory) ) {
+      when $_ eq 'layers' or $_ eq 'growers' or $_ eq 'other_poultry' {
+        Out(n_excretion);
+      } 
+      when $_ eq 'turkeys' or $_ eq 'broilers' {
+        0;
+      }
+    }
+
++n_excretion_turkeys_broilers
+  print = Poultry
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by poultry.
+  ++formula
+    given ( Out(animalcategory) ) {
+      when $_ eq 'turkeys' or $_ eq 'broilers' {
+        Out(n_excretion);
+      } 
+      when $_ eq 'layers' or $_ eq 'growers' or $_ eq 'other_poultry' {
+        0;
+      }
+    }
+
++dimensioning_barn
+  print = Poultry
+  ++units
+    en = -
+  ++description
+    barn size (number of animal places)
+  ++formula
+    if ( lc In(dimensioning_barn) eq 'standard' ) {
+        In(animals);
+    } else {
+        In(dimensioning_barn);
+    }
+
++area_increase
+  print = Poultry
+  ++units  
+    en = -
+  ++description
+    Factor on what barn size does increase the regularized minimal, limited to 0.5
+  ++formula 
+    if ( (Out(animals) < Out(dimensioning_barn) ) and (Out(animals) != 0) ) { 
+      if ( Out(dimensioning_barn) >= (Out(animals) * 1.5) ) {   
+        0.5; 
+      }
+      else {
+        Out(dimensioning_barn) / Out(animals) - 1;
+      }
+    }
+    else {
+      0.0;
+    }
+
++dimensioning_check
+  print = Poultry
+  ++units
+    en = -
+  ++description
+   Check if number of animals <= number of animal places.
+  ++formula
+    if ( Out(dimensioning_barn) < Out(animals) ) {
+      writeLog({
+        en => "The number of available animal places must be equal or higher than the number of animals.",
+        de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+        fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+      });
+      return "barn dimensioning too small";
+    } 
+    else {
+      return "barn dimensioning ok";
+    }

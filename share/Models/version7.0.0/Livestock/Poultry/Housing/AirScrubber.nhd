@@ -1,0 +1,106 @@
+*** general ***
+
+author   = Agrammon Group 
+date     = 2008-03-30
+taxonomy = Livestock::Poultry::Housing::AirScrubber
+
++short
+    Computes the annual NH3 reduction due to an exhaust air scrubber in housing systems.
+
++description
+    This submodul calculates the annual NH3 reduction due to an exhaust air scrubber in housing systems according to the UNECE guideline 2007.
+
+ \subsubsection{References:}
+UNECE 2007. Guidance document on control techniques for preventing and abating emissions of ammonia. ECE/EB.AIR/WG.5/2007/13.
+
+
+*** external ***
+
+
+*** input ***
+
++air_scrubber
+  type  = enum
+  ++enum
+    +++none
+       en = none
+       de = keine
+       fr = aucun
+       it = none
+    +++acid
+       en = acid scrubber
+       de = Chemischer Wäscher
+       fr = Epurateur acide
+       it = acid
+    +++biotrickling
+       en = biotrickling_filter
+       de = Biowäscher
+       fr = Filtre_biologique
+       it = biotrickling_filter
+  ++labels 
+    en = Exhaust air scrubber
+    de = Abluftreinigung
+    fr = Traitement des effluents gazeux
+  ++units  
+    en = -
+  ++description
+    Exhaust air scrubber: none, acid, biotrickling_filter.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: „none“</p>
+    +++de
+       <p>Vorschlag für Standardwert: keine</p>
+       <p>Es wird empfohlen, eine gemessene Abscheiderate für den installierten Wäschertypen zu verwenden. Abscheideraten liegen beispielsweise in DLG Prüfberichten (https://www.dlg.org/tests/landtechnik-betriebsmittel/pruefberichte/) vor. Vorschlag zum Vorgehen: Auswählen "keine" unter "Abluftreinigung" und Einsetzen der gemessenen Abscheiderate unter "Zusätzliche emissionsmindernde Massnahme Stall".</p>
+    +++fr
+       <p>Proposition de valeur standard: aucun</p>
+       <p>Il est recommandé d'utiliser le taux d’élimination mesuré pour le type d’épurateur installé. Les taux élimination sont disponibles dans les rapport DLG (https://www.dlg.org/tests/landtechnik-betriebsmittel/pruefberichte/). Proposition de procédure : sélectionner "aucun" sous "Traitement des effluents gazeux" et introduire le taux d’élimination mesuré sous "Mesure supplémentaire limitant les émissions dans les stabulations".</p>
+         
+
+*** technical ***
+
++red_acid_air_scrubber
+  value = 0.9
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency as compared to group-housed on fully and partly slatted floors (UNECE 2007, paragraph 71, table 5).
+
++red_biotrickling_filter_air_scrubber
+  value = 0.7
+  ++units  
+    en = -
+  ++description
+    Reduction efficiency as compared to group-housed on fully and partly slatted floors (UNECE 2007, paragraph 71, table 5).
+
+
+*** output ***
+
++air_scrubber
+  print = Poultry
+  ++units  
+    en = -
+  ++description
+    air exhaust scrubber in housing systems.
+  ++formula 
+    In(air_scrubber);
+
++red_air_scrubber
+  print = Poultry
+  ++units  
+    en = -
+  ++description
+    Reduction factor for the emission due to the use of an air exhaust scrubber in housing systems.
+  ++formula 
+    given ( In(air_scrubber) ) { 
+      when 'acid' {
+        return Tech(red_acid_air_scrubber);
+      } 
+      when 'biotrickling' {
+        return Tech(red_biotrickling_filter_air_scrubber);
+      } 
+      when 'none' {
+        return 0;
+      } 
+    }
+      
+      

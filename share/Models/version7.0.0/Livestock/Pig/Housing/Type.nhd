@@ -1,0 +1,215 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-19
+taxonomy = Livestock::Pig::Housing::Type
+
++short
+
+Selects the emission rate and other correciton factors for the specific housing types for pigs.
+
++description
+  
+ This process selects the correction factor for the specific housing types for pigs. Among these correction factors are the emission rate for the housing type, the correction factor for the housing type area, the correction factor for the area per animal, the liquid and solid share for the housing type as well as the factor on what barn size increases the regularized minimal (limited to 0.5).
+
+
+*** input ***
+
++housing_type
+  type  = enum
+  ++enum
+    +++Slurry_Conventional
+       en = slurry conventional
+       de = Konventioneller Stall ohne Auslauf
+       fr = Stabulation conventionnelle sans parcours
+       it = Slurry_Conventional
+    +++Slurry_Label
+       en = slurry_label
+       de = Labelstall mit Mehrflächenbucht und Auslauf
+       fr = Stabulation_labellisée_à_aires_multiples_et_parcours
+       it = Slurry_Label
+    +++Slurry_Label_Open
+       en = outdoor climate house
+       de = Nicht wärmegedämmter Stall (siehe Spalte Hilfe)
+       fr = Stabulation sans isolation thermique (cf. aide)
+       it = Slurry Label Open Front Housing non insulated stables
+    +++Deep_Litter
+       en = deep_litter
+       de = Tiefstreustall
+       fr = Stabulation_litière_profonde
+       it = Deep_Litter
+    +++Outdoor
+       en = outdoor
+       de = Weidehaltung
+       fr = Plein_air
+       it = Outdoor
+  ++labels 
+    en = Housing system
+    de = Aufstallung
+    fr = Type de stabulation
+  ++units  
+    en = -
+  ++description
+    Type of housing.
+  ++help
+    +++en
+       <p>Standard values for Switzerland:</p>
+       <p>Nursing sows: Slurry conventional*</p>
+       <p>Dry sows: Slurry label**</p>
+       <p>Gilts: Slurry label**</p>
+       <p>Weaned piglets up to 25 kg: Slurry conventional</p>
+       <p>Boars: Slurry label</p>
+       <p> *Slurry conventional: conventional housing with partly or fully slatted one-area pen </p>
+       <p> **Slurry label: multi-area pen with littered area or combined lying and feeding cubicles connected to outside yards</p>
+       <p></p>
+    +++de
+       <p>Bei der Aufstallung wird hauptsächlich zwischen
+          konventionellen Stallsystemen ohne Auslauf und Labelställen
+          mit Mehrflächenbucht und Auslauf
+          unterschieden. Tiefstreuställe und Weidehaltung sind von
+          geringer Bedeutung.  Bei den säugenden Sauen ist folgende
+          Kategorie einzugeben: Konventioneller Stall ohne Auslauf,
+          wenn kein Auslauf vorhanden ist. Dies gilt auch für
+          Labelställe ohne Auslauf bei säugenden Sauen.</p>
+       <p>Nicht wärmegedämmter Stall: nicht wärmegedämmter Stall mit
+          freier Lüftung (Aussenklimaställe) und
+          Mikroklimabereichen.</p>
+       <p>Vorschlag für Standardwerte:</p>
+       <p>Säugende Sauen: Konventioneller Stall ohne Auslauf</p>
+       <p>Galtsauen: Labelstall mit Mehrflächenbucht und Auslauf</p>
+       <p>Remonten: Labelstall mit Mehrflächenbucht und Auslauf</p>
+       <p>Ferkel abgesetzt (bis 25 kg): Konventioneller Stall ohne Auslauf</p>
+       <p>Eber: Labelstall mit Mehrflächenbucht und Auslauf</p>
+    +++fr
+       <p>Dans les systèmes de stabulation, on distingue
+          principalement les systèmes conventionnels sans parcours
+          extérieur et les systèmes labellisés à aires multiples et
+          parcours extérieur. Les stabulations à litière profonde et
+          la garde au pâturage sont de moindre importance.  Pour les
+          truies allaitantes, introduire les catégories suivantes:
+          système conventionnel sans parcours extérieur, s'il n'y a
+          pas de parcours extérieur. Cela est valable également pour
+          les systèmes labellisés sans parcours extérieur pour les
+          truies allaitantes.</p>
+       <p>Stabulation sans isolation thermique : porcheries sans
+          isolation thermique à ventilation naturelle (stabulation à
+          climat extérieur) et à zones de microclimat.</p>
+
+       <p>Proposition de valeurs standard:</p>
+       <p>Truies allaitantes: système conventionnel sans parcours extérieur</p>
+       <p>Truies en gestation: système labellisé à aires multiples et parcours extérieur</p>
+       <p>Remontes: système labellisé à aires multiples et parcours extérieur</p>
+       <p>Porcelets sevrés (jusqu'à 25 kg): système conventionnel sans parcours extérieur </p>
+       <p>Verrats: système labellisé à aires multiples et parcours extérieur </p>
+
+
+*** technical ***
+
++k_area
+  value = 0.5
+  ++units  
+    en = -
+  ++description
+    Increasing factor for larger loose housing barns, +10\% excess place leads 
+    to +5\% increase in the NH3 emission.
+
+
+*** external ***
+
++..::Excretion
++Type::Slurry_Conventional
++Type::Slurry_Label
++Type::Slurry_Label_Open
++Type::Deep_Litter
++Type::Outdoor
+
+*** output ***
+
++housing_type
+  print = Pig
+  ++units  
+    en = -
+  ++description
+    Housing type (needed in other modules).
+  ++formula
+    In(housing_type);
+
++er_housing
+  print = Pig
+  ++units  
+    en = -
+  ++description
+    Emission rate for the housing type.
+  ++formula
+    given ( Out(housing_type) ) {
+      when 'Outdoor' {
+       Val(er_housing, Type::Outdoor);
+      }
+      when 'Slurry_Conventional' {
+       Val(er_housing, Type::Slurry_Conventional);
+      }
+      when 'Slurry_Label' {
+       Val(er_housing, Type::Slurry_Label);
+      }
+      when 'Slurry_Label_Open' {
+       Val(er_housing, Type::Slurry_Label_Open);
+      }
+      when 'Deep_Litter' {
+       Val(er_housing, Type::Deep_Litter);
+      }
+    }
+
+
++share_liquid
+  print = Pig
+  ++units  
+    en = -
+  ++description
+    Liquid share for the housing type.
+  ++formula
+    given ( Out(housing_type) ) {
+      when 'Outdoor' {
+       Val(share_liquid, Type::Outdoor);
+      }
+      when 'Slurry_Conventional' {
+       Val(share_liquid, Type::Slurry_Conventional);
+      }
+      when 'Slurry_Label' {
+       Val(share_liquid, Type::Slurry_Label);
+      }
+      when 'Slurry_Label_Open' {
+       Val(share_liquid, Type::Slurry_Label_Open);
+      }
+      when 'Deep_Litter' {
+       Val(share_liquid, Type::Deep_Litter);
+      }
+    }
+
++share_indoor
+  print = Pig
+  ++units
+     en = -
+  ++description
+    Factor for considering indoor mitigation efficiencies.
+  ++formula 
+    given ( Out(housing_type) ) {
+      when 'Slurry_Label' or 'Slurry_Label_Open' {
+        return 0.5;
+      }
+      when 'Outdoor' {
+        return 0;
+      }
+      default {
+        return 1;
+      }
+    }
+
+
++c_area
+  print = Pig
+  ++units  
+    en = -
+  ++description
+    Correction factor for area per animal.
+  ++formula
+    1 + (Val(area_increase, ..::Excretion) * Tech(k_area));

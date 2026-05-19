@@ -1,0 +1,343 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-22
+taxonomy = Livestock::SmallRuminants::Excretion
+#instances = many
+
++short
+
+Computes the annual N excretion of goats, fattening sheep and milksheep.
+
++description
+
+This process calculates the annual N excretion (total N and TAN=Total Ammoniacal Nitrogen) of a number of animals as a function of the supplied feed ration. Nitrogen surpluses from increased nitrogen uptake are primarily excreted as TAN in the urine.
+
+The standard N excretion was taken from the PRIF 2017 (Richner et al., 2017; PRIF: Principles of Agricultural Crop Fertilisation in Switzerland).
+
+\subsubsection{References:}
+
+Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/24.
+
+
+*** input ***
+
++animalcategory
+  type = enum
+  filter = true
+  ++enum
+    +++fattening_sheep
+       en = Fattening_sheep
+       de = Schafe
+       fr = Moutons_à_l'engrais
+       it = fattening_sheep
+    +++milksheep
+       en = Milksheep
+       de = Milchschafe
+       fr = Brebis_laitières
+       it = milksheep
+    +++goats
+       en = Goats
+       de = Ziegen
+       fr = Chèvres
+       it = goats
+  ++labels
+    en = Animal category
+    de = Tierkategorie
+    fr = Catégorie d'animaux
+  ++units
+    en = -
+  ++description
+    Animal category (Fattening sheep, milksheep and goats).
+  ++help
+    +++en
+       <p>The animal categories are provided as units which aggegate the mother animals including young and male animals. To calculate emissions of specific categories such as young goats or young sheep: please refer to the help texts under "Number of animals" and "N excretion."</p>
+    +++de
+       <p>Angegeben sind aggregierte Tierkategorien, welche Muttertiere inkl. Jungtiere und männliche Tiere einschliessen. Für die Berechnung der Emissionen von spezifischen Kategorien wie z.B. Jungziege oder Jungschaf: Hilfetexte unter "Anzahl Tiere" und "N-Ausscheidung" beachten.</p>
+    +++fr
+       <p>Les catégories d'animaux sont indiquées comme catégories aggrégées qui incluent les mères plus les jeunes animaux et les mâles. Pour le calcul des émissions par catégories spécifiques telles que jeune chèvre ou jeune mouton : consulter les textes d'aide sous "Nombre d'animaux" et "Excrétions azotées".</p>
+
++animals
+  type = float
+  validator = ge(0)
+  distribute = true
+  ++labels
+    en = Number of animals
+    de = Anzahl Tiere
+    fr = Nombre d'animaux
+  ++units
+    en = -
+  ++description
+    Number of other animals for the selected type in barn.
+  ++help
+    +++en
+       <p>To calculate the emissions per place of sheep or goat: only the number of adult females must be entered for all categories. The other animals (young animals, males) are included therein. </p>
+       <p>To calculate the emissions of a specific category such as young goats or young sheep: enter the number of the specific category and refer to the help texts under "N excretion." </p>
+    +++de
+       <p>Zur Berechnung der Emissionen nach Schaf- oder Ziegenplatz: nur die Anzahl Muttertiere eingeben. Die Rechnung schliesst in diesem Fall Muttertier inkl. Remontierung von Zuchttieren, Ausmast der übrigen Jungtiere und Anteil Bock ein.</p>
+       <p>Zur Berechnung der Emissionen von einzelnen Tierkategorien: z.B. Jungziege oder Jungschaf: Die Anzahl Tiere der ensprechenden Kategorie eingeben und die Hilfetexte unter "N-Ausscheidung" beachten.</p>
+    +++fr
+       <p>Pour calculer les émissions par place mouton ou chèvre: n'introduire ici que les animaux en lactation pour toutes les catégories. La remonte des animaux d'élevage, l'engraissement des autres jeunes et la part de mâles reproducteurs sont compris dans les animaux en lactation.</p>
+       <p>Pour calculer les émissions par catégorie spécifique telles que jeune chèvre ou jeune mouton : introduiser le nombre des animaux spécifiques et consulter les textes d'aide sous "Excrétions azotées".</p>
+
+?if !Kantonal_LU
+  +inp_n_excretion
+    type = float
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = N excretion
+      de = N Ausscheidung
+      fr = Excrétions azotées
+    ++units
+      en = kg N/year
+      de = kg N/Jahr
+      fr = kg N/an
+    ++description
+      Annual standard N excretion small ruminants
+    ++help
+      +++en
+         <p>If "Standard" is selected the standard value for the N-excretion per place of sheep or goat according to Lazzari, Schlegel (2025a,b) is used. If a number is entered, a value
+            for the nitrogen excretion can be selected by the user.</p>
+         <p>To calculate the emissions of the animal categories listed below: select "Fattening sheep", "Milksheep" oder "Goats" under Animal category. For the N excretion, the following values are suggested (Agridea, BLW, 2025):</p>
+         
+          <ul>
+          <li>Milksheep: 16.1 kg N/year</li>
+          <li>Other sheep over 365 days old: 9.5 kg N/year</li>
+          <li>Young sheep over 180 up to 365 days old: 9.8 kg N/year</li>
+          <li>Lambs up to 180 Tage days old: 3.3 kg N/year</li>
+          </p>
+          <li>Milkgoat: 9.3 kg N/year</li>
+          <li>Other goat over 365 days old: 8.2 kg N/year</li>
+          <li>Young goat over 180 up to 365 days old: 7.7 kg N/year</li>
+          <li>Goat kid up to 180 days old from a herd of milkgoats: 2.9 kg N/year</li>
+          <li>Goat kid up to 180 days old from a herd of other goats: 5.5 kg N/year</li>
+          </ul>
+      
+         <p>Agridea, BLW. 2025. Wegleitung Suisse-Bilanz. Auflage 1.20. Agridea, Lindau. Bundesamt für Landwirtschaft, BLW, Bern.<p>
+         <p>Lazzari G., Schlegel P. 2025a. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Ziegen. Agrarforschung Schweiz 16: 81-89.<p>
+         <p>Lazzari G., Schlegel P. 2025b. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Schafen. Agrarforschung Schweiz 16: 26-35.</p>
+      +++de
+         <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung pro Schaf- oder Ziegenplatz gemäss Lazzari, Schlegel (2025a,b) verwendet. Bei Eingabe einer Zahl kann der Wert für die
+            Stickstoffausscheidung selbst gewählt werden.</p>
+         <p>Für die Berechnung der Emissionen einer der unten aufgeführten Tierkategorien: unter Tierkategorie "Schafe", "Milchschafe" oder "Ziegen" anwählen. Für N-Ausscheidung werden die folgenden Werte vorgeschlagen (Agridea, BLW, 2025):</p>
+         
+          <ul>
+          <li>Milchschaf: 16.1 kg N/Jahr</li>
+          <li>Andere Schafe über 365 Tage alt: 9.5 kg N/Jahr</li>
+          <li>Jungschafe über 180 bis 365 Tage alt: 9.8 kg N/Jahr</li>
+          <li>Lämmer bis 180 Tage alt: 3.3 kg N/Jahr</li>
+          </p>
+          <li>Milchziege: 9.3 kg N/Jahr</li>
+          <li>Andere Ziegen über 365 Tage alt: 8.2 kg N/Jahr</li>
+          <li>Jungziegen über 180 bis 365 Tage alt: 7.7 kg N/Jahr</li>
+          <li>Zicklein bis 180 Tage alt aus Milchziegenherde: 2.9 kg N/Jahr</li>
+          <li>Zicklein bis 180 Tage alt aus Mutterziegenherde: 5.5 kg N/Jahr</li>
+          </ul>
+      
+         <p>Agridea, BLW. 2025. Wegleitung Suisse-Bilanz. Auflage 1.20. Agridea, Lindau. Bundesamt für Landwirtschaft, BLW, Bern.<p>
+         <p>Lazzari G., Schlegel P. 2025a. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Ziegen. Agrarforschung Schweiz 16: 81-89.<p>
+         <p>Lazzari G., Schlegel P. 2025b. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Schafen. Agrarforschung Schweiz 16: 26-35.</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur standard est utilisé pour les excrétions azotées par place de mouton ou chère d'après Lazzari, Schlegel (2025a,b). Si un nombre est introduisé
+            une valeur pour les excrétions azotées peut être déterminée par
+            l'utilisateur/-trice.</p>
+         <p>Pour calculer les émissions des catégories d'animaux données ci-dessous : sélectionner "Moutons à l'engrais", "Brebis laitières" ou "Chèvres" sous Catégorie d'animaux. Les valeurs suivantes sont proposées pour les excrétions azotées (Agridea, BLW, 2025):</p>
+         
+          <ul>
+          <li>Brebis laitière : 16.1 kg N/an</li>
+          <li>Autres moutons (plus de 365 jours) : 9.5 kg N/an</li>
+          <li>Jeunes moutons de 180 à 365 jours : 9.8 kg N/an</li>
+          <li>Agneaux jusqu’à 180 jours : 3.3 kg N/an</li>
+          </p>
+          <li>Chèvre laitière : 9.3 kg N/an</li>
+          <li>Autres chèvres (plus de 365 jours) : 8.2 kg N/an</li>
+          <li>Jeunes chèvres de 180 à 365 jours : 7.7 kg N/an</li>
+          <li>Cabri jusqu’à 180 jours provenant de troupeaux de chèvres laitières : 2.9 kg N/an</li>
+          <li>Cabri jusqu’à 180 jours provenant de troupeaux de chèvres mères : 5.5 kg N/an</li>
+          </ul>
+      
+         <p>Agridea, BLW. 2025. Wegleitung Suisse-Bilanz. Auflage 1.20. Agridea, Lindau. Bundesamt für Landwirtschaft, BLW, Bern.<p>
+         <p>Lazzari G., Schlegel P. 2025a. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Ziegen. Agrarforschung Schweiz 16: 81-89.<p>
+         <p>Lazzari G., Schlegel P. 2025b. Richtwerte für Futterverzehr und Nährstoffausscheidungen von Schafen. Agrarforschung Schweiz 16: 26-35.</p>
+
+  +tan_fraction
+    type = percent
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = TAN fraction of N excretion
+      de = TAN Anteil der N Ausscheidung
+      fr = Proportion de TAN des excrétions azotées
+    ++units
+      en = %
+      de = %
+      fr = %
+    ++description
+      TAN fraction of the annual standard N excretion
+    ++help
+      +++en
+         <p>If "Standard" is selected the proportion of TAN in the excretions of the animals is calculaded according to the Agrammon model. If a number is entered, a value
+            for the proportion of TAN in the excretion can be selected by the user. This option applies for cases for which the proportion of TAN in the excretions can be optained from e.g. a feeding model.</p>
+      +++de
+         <p>Bei Eingabe <b>Standard</b> wird der Anteil von TAN in den Ausscheidungen der Tiere wie vom Modell Agrammon vorgegeben festgelegt. Bei Eingabe einer Zahl kann der Wert für den
+            Anteil von TAN in den Ausscheidungen selbst gewählt werden. Diese Option ist für Fälle gedacht, in denen  der Anteil von TAN in den Ausscheidungen beispielsweise aus einem Fütterungsmodell bekannt ist.</p>
+      +++fr
+         <p>Si <b>Standard</b> est introduisé le pourcentage de TAN dans les excrétions des animaux est utilisée comme défini par le modèle Agrammon. Si un nombre est introduisé une valeur pour la proportion de TAN
+         dans les excrétions peut être déterminée par l'utilisateur/-trice. Cette option est destinée aux cas où la proportion de TAN dans les excréments est connue, par exemple à partir d'un modèle d'alimentation.</p>
+
+?endif
+
+*** technical ***
+
+### standard_N_excretion
+
+
++standard_N_excretion_goats
+  value = 16
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for goats according to
+    Flisch et al. (2009).
+
++standard_N_excretion_fattening_sheep
+  value = 15
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for fattening sheep according to
+    Flisch et al. (2009).
+
++standard_N_excretion_milksheep
+  value = 21
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for milksheep according
+    to Flisch et al. (2009).
+
+
+###  share_Nsol
+
+
++share_Nsol_goats
+  value = 0.4
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta from goats.
+    Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_fattening_sheep
+  value = 0.4
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta from fattening sheep.
+    Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
+
++share_Nsol_milksheep
+  value = 0.4
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta from milksheep.
+    Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
+
+
+*** external ***
+
+*** output ***
+
++animals
+  print = SmallRuminants
+  ++units
+    en = -
+  ++description
+    Number of small ruminants for the selected type in barn.
+  ++formula
+    In(animals);
+
++animalcategory
+  print = SmallRuminants
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    In(animalcategory);
+
++n_excretion_animal
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for specified other animal category according to
+    Flisch et al. (2009).
+?if Kantonal_LU
+  ++formula
+    return $TE->{'standard_N_excretion_' . Out(animalcategory)};
+?else
+  ++formula
+    my $cat = Out(animalcategory);
+    my $key = 'standard_N_excretion_' . $cat;
+    my $exc = $TE->{$key};
+    $exc = In(inp_n_excretion) unless ( lc In(inp_n_excretion) eq 'standard' );
+    if ( ($exc < 0.7 * $TE->{$key}) or ($exc > 1.3 * $TE->{$key}) ) {
+        writeLog({
+            en => "The N excretion entered for small ruminants differs from the standard by more than 30%!",
+            de => "Die eingegebene N-Ausscheidung für Kleinwiederkäuer weicht um mehr als 30% vom Standard ab!",
+            fr => "Les excrétions azotées saisies pour les petits ruminants s'écartent de plus de 30 % du standard!",
+        });
+    }
+    return $exc;
+?endif
+
++n_excretion
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual N excreted by a specified number of small ruminants.
+  ++formula
+    Out(n_excretion_animal) * Out(animals);
+
++tan_excretion
+  print = SmallRuminants
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual soluble N excreted by a specified number of small ruminants.
+?if !Kantonal_LU
+  ++formula
+    if ( lc In(tan_fraction) eq 'standard' ) {
+      $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
+    } else {
+      my $tan = In(tan_fraction);
+      $tan = In(tan_fraction) / 100;
+      if ( abs($tan - $TE->{"share_Nsol_" . Out(animalcategory)}) > 0.2) {
+        writeLog({
+            en => "The TAN fraction of N excretion entered for small ruminants differs from the standard by more than 20%!",
+            de => "Der eingegebene TAN Anteil der N Ausscheidung für Kleinwiederkäuer weicht um mehr als 20% vom Standard ab!",
+            fr => "La proportion du TAN des excrétions azotées saisies pour les petits ruminants s'écartent de plus de 20 % du standard!"
+        });
+      }
+      return $tan * Out(n_excretion);
+    }
+?else
+  ++formula
+    $TE->{"share_Nsol_" . Out(animalcategory)} * Out(n_excretion);
+?endif

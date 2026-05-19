@@ -1,0 +1,465 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-22
+taxonomy = Livestock::Poultry::Grazing
+
++short
+
+ Computes the NH3 emission, the N excretion and the remaining N of free range poultry per year.
+
++description 
+
+ This process calculates the annual NH3 emission of free range poultry depending on the free range N excretion and the emission rate. The annual N excretion calculation is based on the grazing hours per day per year and the free range hours per day per year. The annual remaining N from free range poultry is calculated as the annual N excretion minus the annual NH3 emission.
+
+\subsubsection{References:}
+Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbelastung von Geflügelausläufen. Agrarforschung 4: 361-364.
+
+*** external ***
+
++Excretion
+
+*** technical ***
+
++er_free_range
+  value = 0.7
+  ++units  
+    en = -
+  ++description
+    Emission rate for free range poultry, based on Menzi et al. (1997): 70% of TAN or 28% of Ntot
+
++er_n2_free_range
+  value = 0.0
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Not considerd relevant
+
++er_no_free_range
+  value = 0.0055
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Stehfest, Bouwman 2006
+
++er_n2o_free_range
+  value = 0.02
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
+
++free_range_days_layers
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_layers
+  value = 2.88
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 12% of Day
+
++free_range_share_layers
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++free_range_days_growers
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_growers
+  value = 2.88
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 12% of Day
+
++free_range_share_growers
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++free_range_days_turkeys
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_turkeys
+  value = 0.96
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 4% of Day
+
++free_range_share_turkeys
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++free_range_days_other_poultry
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_other_poultry
+  value = 2.88
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 12% of Day
+
++free_range_share_other_poultry
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++free_range_days_broilers
+  value = 280
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+
++free_range_hours_broilers   
+  value = 0.96
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day, assumed is 4% of Day
+
++free_range_share_broilers   
+  value = -
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
+
++k_grazing_a
+  value = 0.9989
+  ++units  
+    en = -
+  ++description
+    Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
+
++k_grazing_b
+  value = 0.0403
+  ++units  
+    en = -
+  ++description
+    Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
+
+
+*** input ***
+
++free_range
+  type = enum
+  ++enum
+    +++yes
+       en = yes, permanent housing
+       de = Ja, fester Stall
+       fr = oui, stabulation fixe
+       it = yes, permanent housing
+    +++mobile
+       en = yes, mobile housing
+       de = Ja, mobiler Stall
+       fr = oui, stabulation mobile
+       it = yes, mobile housing
+    +++no
+       en = no
+       de = Nein
+       fr = non
+       it = no
+  ++labels
+    en = Do the animals have access to a free range?
+    de = Haben die Tiere Zugang zu einer Weide?
+    fr = Les animaux ont-ils accès à un pâturage?
+  ++units  
+    en = -
+  ++description
+    Average free range hours per day.
+  ++help
+    +++en
+       <p>Standard values for Switzerland:</p>
+       <p>Layers: yes, permanent housing</p>
+       <p>Growers: yes, permanent housing</p>
+       <p>Broilers: no</p>
+       <p>Turkeys: yes, permanent housing</p>
+       <p>Other poultry: yes, permanent housing</p>
+    +++de
+       <p>Weide im Sinne der DZV (Direktzahlungsverordnung vom 23. Oktober 2013, Stand am 14. März 2023). Der Aussenklimabereich fällt nicht unter diese Kategorie.</p>
+       <p>Vorschlag für Standardwerte:</p>
+       <p>Legehennen: Ja, fester Stall</p>
+       <p>Junghennen: Ja, fester Stall</p>
+       <p>Mastpoulets: Nein</p>
+       <p>Masttruten: Ja, fester Stall</p>
+       <p>Anderes Geflügel: Ja, fester Stall</p>
+    +++fr
+       <p>Pâturage au sens de l'OPD (Ordonnance sur les paiements directs du 23 octobre 2013, état le 14r mars 2023). L'aire à climat extérieur n'est pas comprise dans cette catégorie.</p>
+       <p>Propositions de valeurs standard:</p>
+       <p>Poules pondeuses: oui, stabulation fixe</p>
+       <p>Poulettes: oui, stabulation fixe</p>
+       <p>Poulets à l'engrais: non</p>
+       <p>Dindes: oui, stabulation fixe</p>
+       <p>Autre volaille: oui, stabulation fixe</p>
+
+*** output ***
+
+### Outdoor.nhd
+
++free_range_housing
+  print = Poultry
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Housing type for free range poultry (permanent vs. mobile)
+  ++formula
+    if ( In(free_range) and lc In(free_range) eq 'yes' ) {
+      return 'permanent';
+    } else {
+      return In(free_range);
+    }
+
++free_range_days
+  print = Poultry
+  ++units  
+    en = days/year
+    de = Tage/Jahr
+    fr = jours/an
+  ++description
+    Average free range days per year.
+  ++formula
+    if ( In(free_range) and lc In(free_range) eq 'no' ) {
+      return 0;
+    } else {
+      return $TE->{'free_range_days_'.Val(animalcategory, Excretion).'_'.Out(free_range_housing)};
+    }
+
++free_range_hours
+  print = Poultry
+  ++units  
+    en = hours/day
+    de = Stunden/Tag
+    fr = heures/jour
+  ++description
+    Average free range hours per day.
+  ++formula
+    if ( In(free_range) and lc In(free_range) eq 'no' ) {
+      return 0;
+    } else {
+      return $TE->{'free_range_hours_'.Val(animalcategory, Excretion).'_'.Out(free_range_housing)};
+    }
+
++free_range_share
+  print = Poultry
+  ++units  
+    en = -
+    de = -
+    fr = -
+  ++description
+    Share of animals in free range.
+  ++formula
+    if ( In(free_range) and lc In(free_range) eq 'no' ) {
+      return 0;
+    } else {
+      return $TE->{'free_range_share_'.Val(animalcategory, Excretion).'_'.Out(free_range_housing)};
+    }
+
+### KGrazing.nhd
+
++c_grazing
+  print = c_housing,Poultry
+  ++units  
+    en = -
+  ++description
+    The correction factor for the reduction of the housing emission
+    depending on the number of grazing hours per day and the grazing days per year.
+  ++formula
+    if ( In(free_range) and lc In(free_range) eq 'no' ) {
+      1;
+    } else {
+      my $grazing_total = Out(free_range_days) * Out(free_range_hours);
+      # calculate correction factor 
+      my $k_grazing = exp(Tech(k_grazing_b) * Out(free_range_hours));
+      # increase emission of TAN fraction which is excreted into housing on a grazing day
+      my $c_share_1 = (
+          # TAN fraction into housing uncorrected
+          (365.0 - Out(free_range_days)) * 24.0 + 
+          # TAN fraction into housing corrected
+          Out(free_range_days) * (24.0 - Out(free_range_hours)) * $k_grazing
+      ) /
+      # divided by total amount of TAN into housing 
+      (365.0 * 24.0 - Out(free_range_hours) * Out(free_range_days));
+      # fix share of animals in free range area
+      1 + ($c_share_1 - 1) * Out(free_range_share);
+    }
+
+
+### Grazing.nhd
+
++n_into_grazing
+  print = Poultry
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N excretion free_range (grazing).
+  ++formula
+    Val(n_excretion, Excretion) *
+    Out(free_range_days) / 365 * 
+    Out(free_range_hours) / 24 *
+    Out(free_range_share);
+
++tan_into_grazing
+  print = Poultry
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N excretion free_range (grazing).
+  ++formula
+    Val(tan_excretion, Excretion) *  
+    Out(free_range_days) / 365 * 
+    Out(free_range_hours) / 24 *
+    Out(free_range_share);
+
++ef_nh3_ngrazing
+  print = Poultry,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = -
+  ++description
+    Free_range NH3 emission factor from poultry (grazing). 
+  ++formula
+    Tech(er_free_range);
+
++nh3_ngrazing
+  print = Poultry
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual free_range NH3 emission from poultry (grazing). 
+  ++formula
+    Out(tan_into_grazing) * Out(ef_nh3_ngrazing);
+
++n2_ngrazing
+  print = Poultry
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual free_range N2 emission from poultry (grazing). 
+  ++formula
+    Out(n_into_grazing) * Tech(er_n2_free_range);
+
++no_ngrazing
+  print = Poultry
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual free_range NO emission from poultry (grazing). 
+  ++formula
+    Out(n_into_grazing) * Tech(er_no_free_range);
+
++n2o_ngrazing
+  print = Poultry
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual free_range N2O emission from poultry (grazing). 
+  ++formula
+    Out(n_into_grazing) * Tech(er_n2o_free_range);
+
+
++n_remain_grazing
+  print = Poultry
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N remaining free_range (on pasture, etc.).
+  ++formula
+    Out(n_into_grazing) - 
+    Out(nh3_ngrazing) - 
+    Out(n2_ngrazing) - 
+    Out(no_ngrazing) - 
+    Out(n2o_ngrazing);
+
++tan_remain_grazing
+  print = Poultry
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an
+  ++description
+    Annual N remaining free_range (on pasture, etc.).
+  ++formula
+    Out(tan_into_grazing) - 
+    Out(nh3_ngrazing) - 
+    Out(n2_ngrazing) - 
+    Out(no_ngrazing) - 
+    Out(n2o_ngrazing);
+
+ 

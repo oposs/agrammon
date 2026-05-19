@@ -1,0 +1,350 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-04-22
+taxonomy = Storage::Slurry::EFLiquid
+
++short
+
+ Calculates the emission factor for a specific slurry storage.
+
++description
+
+\subsubsection{References}
+
+UNECE. 2014. Guidance document for preventing and abating ammonia emissions from agricultural sources.
+Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Economic Commission for Europe (UNECE). 
+
+
+ De Bode MJC, 1990. Vergleich der Ammoniakemissionen aus verschiedenen
+ Flüssigmistlagersystemen. In: Ammoniak in der Umwelt. Hrsg.: KTBL und
+ VDI, Münster(D), 34:1-13.
+
+ Sommer SG, Christensen BT, Nielsen NE, Schjorring JK, 1993. Ammonia
+ volatilization during storage of cattle and pig slurry - effect of
+ surface cover. Journal of Agricultural Science 121:63-71.
+
+
+*** input ***
+
++cover_type
+  type = enum
+  ++enum
+    +++uncovered
+       en = uncovered
+       de = ungedeckt
+       fr = découvert
+       it = uncovered
+    +++solid_cover
+       en = solid_cover
+       de = feste_Abdeckung_(_Beton,_Holz_)
+       fr = Couverture_en_dur
+       it = solid_cover
+    +++perforated_cover
+       en = perforated_cover
+       de = perforierte_Abdeckung
+       fr = Couverture_perforée
+       it = perforated_cover
+    +++tent
+       en = tent
+       de = Zeltdach
+       fr = Toit conique
+       it = tent
+    +++floating_cover
+       en = floating_cover
+       de = Schwimmfolie
+       fr = Bâche_flottante
+       it = floating_cover
+    +++natural_crust
+       en = natural_crust
+       de = natürliche_Schwimmschicht
+       fr = Couche_flottante_naturelle
+       it = natural_crust
+  ++labels
+    en = Type of cover
+    de = Abdeckung des Güllelagers
+    fr = Type de couverture du stock de lisier
+  ++units
+    en = -
+  ++description
+    Cover type of liquid storage.
+  ++help
+    +++en
+       <p>If a farm has several slurry stores with different covers, for each cover type a store must be created. </p>
+       <p></p>
+    +++de
+       <p>Wenn mehrere Lager mit unterschiedlicher Abdeckung vorhanden sind, für jeden Typ Abdeckung ein Lager mit dem entsprechenden Volumen erstellen.</p>
+       <p>Feste Abdeckung (Beton, Holz): dazu gehören Unterflurlager oder Vorgruben mit einer festen Abdeckung sowie Silos mit einer Spannbeton-Hohlelement-Abdeckung.</p>
+       <p>Perforierte Abdeckung: nur anwendbar in Kombination mit einem Laufhof mit perforierter Abdeckung.</p>
+       <p>Schwimmfolien und teilschwimmende Folien kommen in der Praxis kaum vor. Die Abdeckung "Teilschwimmende Folie" lässt sich wie folgt eingeben: wählen unter "Abdeckung des Güllelagers": "ungedeckt" und unter "Zusätzliche emissionsmindernde Massnahme Güllelager" 50 eingeben. Damit wird 50 % Emissionsminderung im Vergleich zu einem ungedeckten Lager angerechnet.</p>
+       <p>Natürliche Schwimmschicht soll nur für die Modellierung eines ungedeckten Güllelagers mit einer natürlichen Schwimmschicht angewählt werden. Bis 2030 müssen alle Güllelager, bestehende und neu erstellte, mit wirksamen Abdeckungen ausgerüstet sein.</p>
+       <p>Vorschlag für Standardwert:</p>
+       <p>feste Abdeckung (Beton, Holz), deren Anteil rund 75 % des Güllelagervolumens ausmacht.</p>
+    +++fr
+       <p>S'il existe plusieurs stocks avec des couvertures différentes, introduire pour chaque type de couverture un stock avec le volume correspondant. </p>
+       <p>Couverture en dur:  sont inclus les fosses à lisier souterraines ou de préfosses avec une couverture en dur, ainsi que de silos avec une couverture en éléments creux en béton précontraint.</p>
+       <p>Couverture perforée : seulement en combination avec une aire de sortie avec un sol perforé.</p> 
+       <p>Les couvertures "Bâche flottante" et "Bâche semi-flottante" sont peu utilisées dans la pratique. Pour la couverture "Bâche semi-flottante": sélectionner "découvert" sous "Type de couverture du stock de lisier" et faut saisir 50 sous "Mesure supplémentaire limitant les émissions dues au stockage du lisier". Ainsi, une réduction des émissions de 50 % est calculée par rapport à un stock découvert.</p>
+       <p>L'option couche flottante naturelle ne s'applique qu'à la modélisation d'une fosse à lisier non couverte présentant une couche flottante naturelle. D'ici 2030, toutes les fosses, qu'elles soient existantes ou nouvellement construites, devront être efficacement couvertes.</p>
+       <p>Proposition de valeur standard:</p>
+       <p>couverture en dur (béton, bois) qui représente environ 75 % du volume de stockage du lisier.</p>
+
+
++contains_cattle_manure
+   type = enum
+   ++labels
+     en = Contains cattle slurry
+     de = Enthält Rindergülle
+     fr = Contient du lisier de bovin
+   ++enum
+     +++yes
+        en = yes
+        de = Ja
+        fr = Oui
+     +++no
+        en = no
+        de = Nein
+        fr = Non
+  ++units
+    en = -
+   ++description
+     Describes if the specific storage contains cattle manure.
+   ++help
+     +++en
+        <p>Standard value for Switzerland: yes</p>
+     +++de
+        <p>Vorschlag für Standardwert: Ja</p>
+     +++fr
+        <p>Proposition de valeur standard: oui </p>
+
+
++contains_pig_manure
+   type=enum
+   ++labels
+     en = Contains pigs slurry
+     de = Enthält Schweinegülle
+     fr = Contient du lisier de porc
+   ++enum
+     +++yes
+        en = yes
+        de = Ja
+        fr = Oui
+     +++no
+        en = no
+        de = Nein
+        fr = Non
+   ++units
+     en = -
+   ++description
+     Describes if the specific storage contains pig manure.
+  ++help
+    +++en
+       <p>Standard value for Switzerland: yes</p>
+    +++de
+       <p>Vorschlag für Standardwert: Ja</p>
+     +++fr
+        <p>Proposition de valeur standard: oui </p>
+
+?if !Kantonal_LU
+  +free_correction_factor
+    type = float
+    default_calc = 0
+    default_gui = 0
+    validator = between(-100,100);
+    ++labels
+      en = Additional emission mitigation measure
+      de = Zusätzliche emissionsmindernde Massnahme Güllelager (siehe Spalte Hilfe)
+      fr = Mesure supplémentaire limitant les émissions dues au stockage du lisier (cf. aide)
+    ++units
+      en = %
+    ++description
+      Factor to define free ?
+    ++help
+      +++en
+          <p>The emission reduction of a new technique can be entered
+             (e.g. a new type of cover). The number entered corresponds
+             to the emission reduction in percent (e.g. 30%; the
+             emission from the manure storage decreases by 30%). It is
+             recommended to mention the selected measure in the column
+             comment and to justify the number selected for emission
+             reduction.</p>
+          <p>This option mainly targets users who predict emissions and
+          are obliged to consider the effects of new and actually
+          unknown techniques.</p>
+      +++de
+          <p>
+             Hier kann die emissionsmindernde Wirkung einer frei wählbaren Massnahme eingesetzt
+             werden (z.B. ein neuer Typ Abdeckung). Die eingegebene Zahl entspricht der
+             Emissionsminderung in Prozent (z.B. Eingabe 30 %; die Emission aus dem Güllelager
+             nimmt um 30% ab). Es wird empfohlen, die gewählte Massnahme in der Spalte Kommentar
+             aufzuführen und den gewählten Wert zur Emissionsminderung zu begründen.
+          </p>
+          <p>
+             Diese Funktion richtet sich vor allem an Anwender/-innen, welche Emissionen
+             prognostizieren und die Wirkung neuer, aktuell noch nicht bekannter Technologien
+             zur Emissionsminderung berücksichtigen müssen.
+          <p>
+          <p>Vorschlag für Standardwert: 0 %.</p>
+      +++fr
+         <p>
+           Ici, vous pouvez introduire l'effet d'une mesure supplémentaire limitant les
+           émissions (p.ex. un nouveau type de couverture). Le chiffre introduit correspond
+           à la réduction d'émission en pourcent (p.ex. 30%: l'émission provenant du stock
+           de lisier diminue de 30%). Il est recommandé de mentionner la mesure choisie dans
+           la colonne ‘Commentaire' et de justifier le taux de réduction choisi.
+         </p>
+         <p>
+           Cette fonction s'adresse principalement aux utilisateurs/trices qui font des
+           pronostiques d'émissions et qui doivent prendre en compte l'effet de nouvelles
+           technologies destinées à limiter les émissions et encore méconnues actuellement.
+         </p>
+         <p>Proposition valeur standard: 0 %.</p><p> </p>
+?endif
+
+*** technical ***
+
+## base emission factors
++ef_liquid_storage_cattle
+  value = 365 * 6
+  ++units
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    The Emission factor for uncovered storage is based on the review by
+    Kupper et al. (2020).
+
++ef_liquid_storage_pig
+  value = 365 * 8
+  ++units
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    The Emission factor for uncovered storage is based on the review by
+    Kupper et al. (2020).
+
+# Tank cover correction factors
++c_liquid_storage_uncovered
+  value =  1.0
+  ++units
+    en =  -
+    de =  -
+    fr =  -
+  ++description
+    Correction factor for uncovered tanks.
+
++c_liquid_storage_solid_cover
+  value =  0.1
+  ++units
+    en =  -
+    de =  -
+    fr =  -
+  ++description
+    Correction factor for solid cover.
+
++c_liquid_storage_tent
+  value =  0.4
+  ++units
+    en =  -
+    de =  -
+    fr =  -
+  ++description
+    Correction factor for tent cover.
+
++c_liquid_storage_floating_cover
+  value =  0.2
+  ++units
+    en =  -
+    de =  -
+    fr =  -
+  ++description
+    Correction factor for floating cover.
+
++c_liquid_storage_perforated_cover
+  value =  0.6
+  ++units
+    en =  -
+    de =  -
+    fr =  -
+  ++description
+    Correction factor for perforated cover.
+
++c_liquid_storage_natural_crust
+  value =  0.6
+  ++units
+    en =  -
+    de =  -
+    fr =  -
+  ++description
+    Correction factor for natural crust.
+
+*** external ***
+
++::Livestock
+
+*** output ***
+
+
++er_nh3_storage_liquid_pigs
+  print = newStorage
+  ++units
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Scaled emission factor of a specific liquid storage for pig slurry.
+  ++formula
+    # get er pigs
+    my $er_pigs = $TE->{'c_liquid_storage_'.In(cover_type)} * Tech(ef_liquid_storage_pig);
+    # scale er pigs
+    if ( lc In(contains_pig_manure) eq 'no' ) {
+      return 0;
+    } elsif ( lc In(contains_pig_manure) eq 'yes' and lc In(contains_cattle_manure) eq 'no' ) {
+      return $er_pigs;
+    } else {
+      return Val(n_out_livestock_liquid_pigs_share, ::Livestock) * $er_pigs;
+    }
+
++er_nh3_storage_liquid_cattle
+  print = newStorage
+  ++units
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Scaled emission factor of a specific liquid storage for cattle slurry.
+  ++formula
+    # get er cattle
+    my $er_cattle = $TE->{'c_liquid_storage_'.In(cover_type)} * Tech(ef_liquid_storage_cattle);
+    if ( lc In(contains_cattle_manure) eq 'no' ) {
+      return 0;
+    } elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {
+      return $er_cattle;
+    } else {
+      return (1 - Val(n_out_livestock_liquid_pigs_share, ::Livestock)) * $er_cattle;
+    }
+
+?if !Kantonal_LU
+  +c_free_factor_storage_slurry
+    print = 10
+    ++units
+      en = -
+    ++description
+      Free reduction of the Emission rate for the Yard.
+    ++formula
+    if(In(free_correction_factor) != 0) {
+        writeLog({en=>"You have entered an additional emission mitigation measure for a storage of slurry of "
+                      . In(free_correction_factor)
+                      . "\%!\n",
+                  de=>"Sie haben eine zusätzliche emissionsmindernde Massnahme für ein Güllelager von "
+                      . In(free_correction_factor)
+                      . "\% eingegeben!\n",
+                  fr=>"Vous avez introduit une mesure supplémentaire limitant les émissions "
+                      . "du stock de lisier de " . In(free_correction_factor) . "\%.\n" });
+              return 1 - In(free_correction_factor)/100;
+
+    } else {
+      return 1;
+    }
+?endif

@@ -1,0 +1,47 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-05-07
+taxonomy = PlantProduction
+gui      = PlantProduction,Pflanzenbau,Production végétale,Plant production
+
++short
+
+  Computes the annual NH3 emission from plant production.
+  
++description 
+
+  This process summarizes the contribution of the plant production 
+  to the total NH3 emission.
+
+\subsubsection{Differences to DYNAMO}
+     
+
+*** external ***
+
++PlantProduction::MineralFertiliser
++PlantProduction::RecyclingFertiliser
++PlantProduction::CropResidues
+
+
+*** output ***
+
++nh3_nplantproduction
+  format= %.0f
+  print = SummaryPlantProduction,ResultsPlantProduction,PlantNH3
+  ++labels 
+    sort = 199
+    en = Total
+    de = Total
+    fr = Total
+  ++units  
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual NH3 emission from plant production.
+  ++formula
+    Val(nh3_nmineralfertiliser, PlantProduction::MineralFertiliser) +
+    Val(nh3_nrecyclingfertiliser, PlantProduction::RecyclingFertiliser) +
+    Val(nh3_ncropresidues, PlantProduction::CropResidues)
+

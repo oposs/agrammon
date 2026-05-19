@@ -1,0 +1,113 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-05-02
+taxonomy = Application::SolidManure::Solid::CincorpTime
+
++short
+
+ Correction factor taking into account the time lag between application and
+ incorporation of the solid manure.
+
+
++description 
+
+ This process computes the correction factor for the time lag between
+ application and incorporation of the solid manure.
+
+ \subsubsection{References:}
+
+ Menzi H, Keller M, Katz P, Fahrni M, Neftel A 1997. Ammoniakverluste
+  nach der Anwendung von Mist. Agrarforschung 4:328-331.
+
+
+*** input ***
+
+  ## Input taken form ..::CincorpTime
+
+
+*** technical ***
+
++eff_inc_lw1h
+  value = -0.9	
+  ++units
+    en = -
+  ++description
+    Reduction due to incorporation of solid manure within 1 hour.
+    UNECE (2007). 
+
++eff_inc_lw4h
+  value = -0.7	
+  ++units
+    en = -
+  ++description
+     Reduction due to incorporation of solid manure within 4 hours.
+     Empirical estimate deduced from UNECE (2007).
+     Mean value between the category incorporation within 1 hour and incorporation within 8 hours.
+
++eff_inc_lw8h
+  value = -0.5	
+  ++units
+    en = -
+  ++description
+     Reduction due to incorporation of solid manure within 8 hours.
+     Values adapted from UNECE (2007) (category Incorporation by plough within 12 h)
+
++eff_inc_lw1d
+  value = -0.35	
+  ++units
+    en = -
+  ++description
+    Reduction due to incorporation of solid manure within 1 day.
+    Values adapted from UNECE (2007)
+    Empirical estimate deduced from Menzi et al. (1997).
+
++eff_inc_lw3d
+  value = -0.3	
+  ++units
+    en = - 
+  ++description
+    Reduction due to incorporation of solid manure within 3 days.
+    Empirical estimate deduced from Menzi et al. (1997).
+
++eff_inc_gt3d
+  value = -0.1	
+  ++units
+    en = -
+  ++description
+    Reduction due to incorporation of solid manure after 3 days
+    Empirical estimate deduced from Menzi et al. (1997).
+
++eff_inc_none
+  value = 0
+  ++units
+    en = -
+  ++description
+    Basis with no incorporation of solid manure.
+
+*** external ***
++..::CincorpTime
+
+*** output ***
+
+
++c_incorp_time
+  print = 15
+  ++units
+    en = -
+  ++description
+    Correction factor taking into account the time lag between application and
+    incorporation of the solid manure.
+  ++formula
+  # Test for 100% in external Module
+    return 1 + ( Val(incorp_lw1h,..::CincorpTime) * Tech(eff_inc_lw1h) +
+          Val(incorp_lw4h,..::CincorpTime) * Tech(eff_inc_lw4h) +
+          Val(incorp_lw8h,..::CincorpTime) * Tech(eff_inc_lw8h) +
+	  Val(incorp_lw1d,..::CincorpTime) * Tech(eff_inc_lw1d) +
+          Val(incorp_lw3d,..::CincorpTime) * Tech(eff_inc_lw3d) +
+	  Val(incorp_gt3d,..::CincorpTime) * Tech(eff_inc_gt3d) +
+	  Val(incorp_none,..::CincorpTime) * Tech(eff_inc_none)
+         );
+
+ 
+

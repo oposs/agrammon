@@ -1,0 +1,27 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2017-07-10
+taxonomy = Storage::SolidManure
+gui       = Storage::SolidManure,Hofdüngerlager::Mist,Stockage::Fumier,Storage::Solid manure
+
++short
+
+ Computes the annual NH3 emission from solid manure storages.
+        
++description 
+
+ This process calculates the annual NH3 emission from solid manure
+ storage, considering a mean emission rate on TAN flux in solid storage.
+
+
+*** input ***
+
+*** technical ***
+
+*** external ***
+
++SolidManure::Poultry
++SolidManure::Solid
+
+*** output ***

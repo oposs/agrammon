@@ -1,0 +1,205 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-03-30
+taxonomy = Application::SolidManure::Solid
+
+
++short
+
+ Computes the annual NH3 emission from solid manure application.
+
+ Attention: simplified model based on total N output from storage!!!
+
++description 
+
+This process computes the annual average NH3 emission from solid
+manure application (liquid/solid and deep litter). The standard
+emission factor is corrected according to the TAN content and the
+application rate, the application technology, the crops to which the
+manure is applied, respected soft measures during application and the
+application season, the time lag between application and
+incorporation, the incorporation technology used, and the proportion
+of solid manure that is applied on hot days.
+
+\subsubsection{References:}
+
+Menzi H, Keller M, Katz P, Fahrni M, Neftel A 1997. Ammoniakverluste
+nach der Anwendung von Mist. Agrarforschung 4:328-331.
+
+ Menzi H, Katz P, Frick R, Fahrni M, Keller M 1997: Ammonia emissions
+ following the application of solid manure to grassland. In: Jarvis
+ S.C. and Pain B.F. (Eds.): "Nitrogen Emissions from Grassland", CAB,
+ 265-274.
+
+ Webb, J., Sommer, S.G., Kupper, T., Groenestein, C.M., Hutchings, N., Eurich-Menden, B., Rodhe, L., Misselbrook, T., Amon, B. 2012. Emissions of ammonia, nitrous oxide and methane during the management of solid manures. A review. In: Lichtfouse, E., (eds.). Agroecology and Strategies for Climate Change. Heidelberg, Germany: Springer-Verlag GmbH. pp 67-108.
+
+
+*** input ***
+
+*** technical ***
+
++er_App_manure_dairycows_cattle
+  value = 0.6
+  ++units  
+    en = -
+  ++description
+  Emission rate for manure application. The average rate has been
+  derived from Frick et al. (1996) and Menzi et al. (1996). The value is
+  based on the average emissions from diffrent Swiss
+  experiments. Emission based on TAN content of solid manure.
+
++er_App_manure_pigs
+  value = 0.8
+  ++units  
+    en = -
+  ++description
+  Emission rate for manure application. Based on EAGER Review on Solid Manure,
+  Webb et al. (2012), Emission based on TAN of slurry.
+
++er_App_manure_horses_otherequides_smallruminants
+  value = 0.7
+  ++units  
+    en = -
+  ++description
+  Emission rate for manure application. The average rate has been
+  derived from Frick et al. (1996) and Menzi et al. (1996). The value is
+  based on the average emissions from diffrent Swiss
+  experiments. Emission based on TAN of slurry.
+
+
++er_n2_App_manure
+  value = 0
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Not considerd relevant
+
++er_no_App_manure
+  value = 0.0055
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. Stehfest, Bouwman 2006
+
++er_n2o_App_manure
+  value = 0.01
+  ++units  
+    en = -
+  ++description
+    Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
+
+*** external ***
+
++::Livestock
++Solid::CincorpTime
++Cseason
+?if !Kantonal_LU
+  +CfreeFactor
+?endif
+
+*** output ***
+
+
+##### er nh3
++er_nh3_napplication_solid_no_poultry
+  print = er_nh3,application,solid,no_poultry
+  ++units  
+    en = 
+    de = 
+    fr = 
+  ++description
+    NH3 emission rates for solid manure application from all animal categories except poultry.
+?if Kantonal_LU
+  ++formula
+    scale(
+      # er cattle
+      scale(
+        Val(has_cattle, ::Livestock),
+        Tech(er_App_manure_dairycows_cattle)
+      ) P+
+      # er pigs
+      scale(
+        Val(has_pigs, ::Livestock),
+        Tech(er_App_manure_pigs)
+      ) P+
+      # er others
+      scale(
+        Val(has_others, ::Livestock),
+        Tech(er_App_manure_horses_otherequides_smallruminants)
+      ),
+      # other factors
+      Val(c_incorp_time, Solid::CincorpTime) *
+      Val(c_season, Cseason)
+    );
+?else
+  ++formula
+    scale(
+      # er cattle
+      scale(
+        Val(has_cattle, ::Livestock),
+        Tech(er_App_manure_dairycows_cattle)
+      ) P+
+      # er pigs
+      scale(
+        Val(has_pigs, ::Livestock),
+        Tech(er_App_manure_pigs)
+      ) P+
+      # er others
+      scale(
+        Val(has_others, ::Livestock),
+        Tech(er_App_manure_horses_otherequides_smallruminants)
+      ),
+      # other factors
+      Val(c_incorp_time, Solid::CincorpTime) *
+      Val(c_season, Cseason) *
+      Val(c_free_factor_application_solidmanure, CfreeFactor)
+    );
+?endif
+
+##### er n2
++er_n2_napplication_solid_no_poultry
+  print = er_n2,application,solid,no_poultry
+  ++units  
+    en = 
+    de = 
+    fr = 
+  ++description
+    N2 emission rates for solid manure application from all animal categories except poultry.
+  ++formula
+    scale(
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_n2_App_manure)
+    );
+
+##### er no
++er_no_napplication_solid_no_poultry
+  print = er_no,application,solid,no_poultry
+  ++units  
+    en = 
+    de = 
+    fr = 
+  ++description
+    N2 emission rates for solid manure application from all animal categories except poultry.
+  ++formula
+    scale(
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_no_App_manure)
+    );
+
+##### er n2o
++er_n2o_napplication_solid_no_poultry
+  print = er_n2o,application,solid,no_poultry
+  ++units  
+    en = 
+    de = 
+    fr = 
+  ++description
+    N2 emission rates for solid manure application from all animal categories except poultry.
+  ++formula
+    scale(
+      Val(has_no_poultry, ::Livestock),
+      Tech(er_n2o_App_manure)
+    );
+
+

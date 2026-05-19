@@ -1,0 +1,94 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-02-29
+taxonomy = Livestock::DairyCow::Excretion::CMilk
+
++short
+
+Computes the correction factor for the annual N excretion of a dairy
+cow as a function of the milk yield.
+
++description
+
+ This process describes the relationship between the milk yield and the N excretion. While the N excretion decreases by 5% per 1000 kg less milk yield below the standard milk yield, nitrogen excretion increases by 5% per 1000 kg more milk yield above the standard milk yield. This correction factor was taken from GRUD 2017. It was originally derived from excretion calculations for different milk yields ranging from 4000 to 10000 kg year-1. The lower increase of the nitrogen excretion above 7500 kg results from the increasing proportion of concentrate necessary to cover the energy requirement for yields above 7500 kg. It is thus increasingly possible to reduce the unbalance of energy and protein existing in virtually all rations with a high proportion of roughage.
+        \subsubsection{References:}
+Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/24.
+
+
+
+*** input ***
+
++milk_yield
+  type  = float
+  validator = between(1000,15000);
+  ++labels
+    en = Milk yield per dairy cow
+    de = Durchschnittliche Milchleistung pro Kuh
+    fr = Production laitière moyenne par vache
+  ++units  
+    en = kg/year
+    de = kg/Jahr
+    fr = kg/an
+  ++description
+    Annual milk yield per dairy cow.
+  ++help
+    +++en
+      <p>Standard value for Switzerland: 7500 kg per head and year</p>
+    +++de
+      <p>Vorschlag für Standardwert: 7500 kg pro Jahr</p>
+    +++fr
+      <p>Proposition de valeur standard: 7500 kg par an </p>
+ 
+
+
+*** technical ***
+
++standard_milk_yield
+  value = 7500
+  ++units
+    en = kg/year
+    de = kg/Jahr
+    fr = kg/an
+  ++description
+    Annual standard milk yield per dairy cow.
+
++a_high
+  value = 0.02
+  ++units  
+    en = -
+  ++description
+    For milk yield > standard milk yield
+
++a_low
+  value = 0.1
+  ++units  
+    en = -
+  ++description
+    For milk yield < standard milk yield
+
+
+*** output ***
+
++milk_yield
+  print = DairyCow
+  ++units 
+    en = -
+  ++description
+    Milk yield.
+  ++formula
+    In(milk_yield);
+
++cmilk_yield
+  print = DairyCow
+  ++units 
+    en = -
+  ++description
+    Milk yield correction factor for annual N excretion.
+  ++formula
+    if ( Out(milk_yield) > Tech(standard_milk_yield) ) {
+      1 + (Out(milk_yield) - Tech(standard_milk_yield)) / 1000 * Tech(a_high);
+    }
+    else {
+      1 + (Out(milk_yield) - Tech(standard_milk_yield)) / 1000 * Tech(a_low);
+    }

@@ -1,0 +1,236 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2009-02-22
+taxonomy = Livestock::Pig::Housing
+
++short
+
+ Computes the annual NH3 emission from pig housing systems.
+
++description 
+
+ This process calculates the NH3 emission in pig housing
+ depending on the N excretion and the housing systems. The NH3 emission is assumed to be proportional to the total N excretion of the animals because the contaminated surfaces will primarily drive emissions, which will remain active even when animals are on the pasture or exercise yard.
+
+  A proportional correction is applied according to the area per
+  animal.
+
+  A correction is applied if the part of the day grazing is above a
+  defined grazing hours per days.
+
+  \subsubsection{Definition of System boundaries for the housing Process:}
+
+  For housing systems with integrated exercise yards, it is difficult to
+  distinguish between emissions from housing, exercise yard and storage. 
+  For these housingtypes the emission may be only validated for the sum of
+  housing, exercise yard and storage emission.
+  
+*** input ***
+
+*** external ***
+
++Excretion
++Housing::Type
++Housing::AirScrubber
++Housing::MitigationOptions
++Housing::CFreeFactor
++Grazing
+
+*** output ***
+
++n_into_housing
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux into the house.
+  ++formula
+    Val(n_excretion, Excretion) - Val(n_into_grazing, Grazing);
+
++tan_into_housing
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN into the house.
+  ++formula
+    Val(tan_excretion, Excretion) - Val(tan_into_grazing, Grazing);
+
++ef_housing_indoor_before_air_scrubber
+  print = Pig
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for indoor part before air scrubber removal of other pig housing systems.
+  ++formula
+    my $ef = Val(er_housing, Housing::Type) * 
+              Val(c_free_factor_housing, Housing::CFreeFactor) *
+              Val(c_area, Housing::Type) *
+              (1 - Val(red_housing_floor, Housing::MitigationOptions)) * 
+              (1 - Val(red_housing_air, Housing::MitigationOptions));
+    if ( $ef > 1 ) {
+        writeLog({
+            en => "NH3 emission factor for indoor part before air scrubber removal of other pig housing systems is greater than (thus will be limited to) 1.",
+            de => "NH3 emission factor for indoor part before air scrubber removal of other pig housing systems is greater than (thus will be limited to) 1.",
+            fr => "NH3 emission factor for indoor part before air scrubber removal of other pig housing systems is greater than (thus will be limited to) 1.",
+        });
+        $ef = 1;
+    }
+    return $ef;
+
++ef_housing_indoor
+  print = Pig
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for indoor part of other pig housing systems.
+  ++formula
+    Out(ef_housing_indoor_before_air_scrubber) *
+    (1 - Val(red_air_scrubber, Housing::AirScrubber));
+
++ef_housing_grazing
+  print = Pig
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for grazing part of other pig housing systems.
+  ++formula
+    my $ef = Val(er_housing, Housing::Type) * 
+              Val(c_free_factor_housing, Housing::CFreeFactor) *
+              Val(c_area, Housing::Type);
+    if ( $ef > 1 ) {
+        writeLog({
+            en => "NH3 emission factor for outdoor part of other pig housing systems is greater than (thus will be limited to) 1.",
+            de => "NH3 emission factor for outdoor part of other pig housing systems is greater than (thus will be limited to) 1.",
+            fr => "NH3 emission factor for outdoor part of other pig housing systems is greater than (thus will be limited to) 1.",
+        });
+        $ef = 1;
+    }
+    return $ef;
+
++ef_nh3_nhousing
+  print = Pig,ef_nh3
+  ++units
+     en = -
+     de = -
+     fr = - 
+  ++description
+    NH3 emission factor for other pig housing systems.
+  ++formula
+    # indoor part
+    Val(share_indoor, Housing::Type) * Out(ef_housing_indoor) +
+    # grazing part
+    (1 - Val(share_indoor, Housing::Type)) * Out(ef_housing_grazing);
+
++nh3_nhousing
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual NH3 emission from pig housing systems.
+  ++formula
+    # change effect of certain mitigation strategies on indoor/grazing emissions? -> check with Thomas
+    Out(tan_into_housing) * Out(ef_nh3_nhousing);
+
++tan_air_scrubber
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an 
+  ++description
+    Annual N of NH3 emission remaining in air scrubber from pig housing systems.
+  ++formula
+    # change n/tan into storage/application from air scrubber types? -> check with Thomas
+    if ( Val(air_scrubber, Housing::AirScrubber) eq 'biotrickling' ) {
+      # 100% of n in biotrickling filter vanishes
+      Val(share_indoor, Housing::Type) * 
+      # reduction efficiency of air scrubber
+      Val(red_air_scrubber, Housing::AirScrubber) *
+      # multiplied with indoor loss before air scrubber removal
+      Val(tan_excretion,Excretion) * Out(ef_housing_indoor_before_air_scrubber);  
+    } else {
+      # n in acid scrubber adds 100% to flux into storage
+      0;
+    }
+
++n_outhousing
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of the housing excluding N remained in biotrickling filter.
+  ++formula
+    Out(n_into_housing) - Out(nh3_nhousing) - Out(tan_air_scrubber);
+
++tan_outhousing
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of the housing excluding N remained in biotrickling filter.
+    (without remains from acid filter)
+  ++formula
+    Out(tan_into_housing) - Out(nh3_nhousing) - Out(tan_air_scrubber);
+
++n_outhousing_liquid
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of housing, slurry or liquid fraction from pigs. 
+  ++formula
+    Out(n_outhousing) * Val(share_liquid, Housing::Type);
+
++tan_outhousing_liquid
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of housing, slurry or liquid fraction from pigs. 
+  ++formula
+    Out(tan_outhousing) * Val(share_liquid, Housing::Type);
+
++n_outhousing_solid
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux out of housing, manure fraction of N flux from pigs.
+  ++formula
+    Out(n_outhousing) - Out(n_outhousing_liquid);
+
++tan_outhousing_solid
+  print = Pig
+  ++units
+     en = kg N/year
+     de = kg N/Jahr
+     fr = kg N/an	
+  ++description
+    Annual N flux as TAN out of housing, manure fraction of N flux from pigs.  
+  ++formula
+    Out(tan_outhousing) - Out(tan_outhousing_liquid);
+ 

@@ -1,0 +1,759 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2008-04-22
+taxonomy = Livestock::FatteningPigs::Excretion
+
++short
+
+Computes the annual N excretion of fattening pigs as a function of the
+crude protein and the energy content of the feed ration.
+
++description
+
+This process calculates the annual N excretion (total N and TAN=Total Ammoniacal Nitrogen) of a number of fattening pigs as a function of the supplied feed ration. Nitrogen surpluses from increased nitrogen uptake are primarily excreted as TAN in the urine.
+
+The standard N excretion was taken from the PRIF 2017 (Richner et al., 2017; PRIF: Principles of Agricultural Crop Fertilisation in Switzerland).
+
+\subsubsection{References:}
+
+Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für die Düngung landwirtschaftlicher Kulturen in der Schweiz / GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation, pp. 4/1-4/24.
+
+
+*** input ***
+
++animalcategory
+  type = enum
+  filter = true
+  default_gui  = fattening_pigs
+  default_calc = fattening_pigs
+  ++enum
+    +++fattening_pigs
+       en = Fattening pigs
+       de = Mastschweine
+       fr = Porcs à l'engrais
+  ++labels
+    en = Animal category
+    de = Tierkategorie
+    fr = Catégorie d'animaux
+  ++units
+    en = -
+++description
+    Animal category
+++help
+  +++en
+     <p>There are no subcategories for fattening pigs.</p>
+  +++de
+     <p>Für Mastschweine sind keine Unterkategorien vorgesehen.</p>
+  +++fr
+     <p><Für Mastschweine sind keine Unterkategorien vorgesehen./p>
+
++animals
+  type = float
+  validator = ge(0)
+  distribute = true
+  ++labels
+    en = Number of animals
+    de = Anzahl Tiere
+    fr = Nombre d'animaux
+  ++units
+    en = -
+  ++description
+    Number of fattening pigs for the selected type in barn.
+  ++help
+     +++en
+        <p>Fattening pigs: pigs with a live weight from 25 kg until slaughter</p>
+     +++de
+        <p>Mastschweine: Tiere mit Lebendgewicht ab 25 kg bis zur Schlachtung</p>
+     +++fr
+        <p>Porcs à l'engrais: animaux pesant de 25 kg jusqu'à l'abattage </p>
+
++dimensioning_barn
+  type = float
+  distribute = true
+  default_gui  = Standard
+  default_calc = Standard
+  ++labels 
+    en = Number of available animal places
+    de = Anzahl Tierplätze im Stall
+    fr = Nombre de places dans l'étable
+  ++units  
+    en = -
+  ++description
+    Number of available animal places.
+    ++help
+      +++en
+         <p>If "Standard" is selected the number of available animal places is equal to the number of animals.</p>
+      +++de
+         <p>Bei Auswahl "Standard" wird die Anzahl Tierplätze im Stall der eingegebenen Anzahl Tiere gleichgesetzt.</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur du nombre d'animaux est utilisée.</p>
+
+?if !Kantonal_LU
+  +inp_n_excretion
+    type = float
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = N excretion
+      de = N Ausscheidung
+      fr = Excrétions azotées
+    ++units
+      en = kg N/year
+      de = kg N/Jahr
+      fr = kg N/an
+    ++description
+      Annual standard N excretion for a fattening pig
+    ++help
+      +++en
+         <p>If "Standard" is selected the standard value for the
+            nitrogen excretion according to PRIF 2017 is applied (Richner
+            et al., 2017) is applied (PRIF: Principles of Agricultural Crop
+            Fertilisation in Switzerland). If a number is entered, a value
+            for the nitrogen excretion can be selected by the user.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+      +++de
+         <p>Bei Eingabe <b>Standard</b> wird der Richtwert für die Stickstoffausscheidung gemäss GRUD
+            2017 (Richner et al., 2017) verwendet. Bei Eingabe einer Zahl kann der Wert für die
+            Stickstoffausscheidung selbst gewählt werden.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+      +++fr
+         <p>Si "Standard" est introduisé, la valeur de référence pour
+            les excrétions azotées d'après PRIF 2017 (Richner et al., 2017)
+            est utilisée (PRIF: « Principes de la fertilisation des
+            cultures agricoles en Suisse » ). Si un nombre est introduisé
+            une valeur pour les excrétions azotées peut être déterminée par
+            l'utilisateur/-trice.</p>
+         <p>Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner,
+            M., Menzi, H., 2017. 4/ Eigenschaften und Anwendung von
+            Düngern, in: Richner, W., Sinaj, S. (Eds.), Grundlagen für
+            die Düngung landwirtschaftlicher Kulturen in der Schweiz /
+            GRUD 2017. Agrarforschung Schweiz 8 (6) Spezialpublikation,
+            pp. 4/1-4/23.</p>
+
+  +tan_fraction
+    type = percent
+    default_calc = Standard
+    default_gui  = Standard
+    ++labels
+      en = TAN fraction of N excretion
+      de = TAN Anteil der N Ausscheidung
+      fr = Proportion de TAN des excrétions azotées
+    ++units
+      en = %
+      de = %
+      fr = %
+    ++description
+      TAN fraction of the annual standard N excretion
+    ++help
+      +++en
+         <p>If "Standard" is selected the proportion of TAN in the excretions of the animals is calculaded according to the Agrammon model. If a number is entered, a value
+            for the proportion of TAN in the excretion can be selected by the user. This option applies for cases for which the proportion of TAN in the excretions can be optained from e.g. a feeding model.</p>
+      +++de
+         <p>Bei Eingabe <b>Standard</b> wird der Anteil von TAN in den Ausscheidungen der Tiere wie vom Modell Agrammon vorgegeben festgelegt. Bei Eingabe einer Zahl kann der Wert für den
+            Anteil von TAN in den Ausscheidungen selbst gewählt werden. Diese Option ist für Fälle gedacht, in denen  der Anteil von TAN in den Ausscheidungen beispielsweise aus einem Fütterungsmodell bekannt ist.</p>
+      +++fr
+         <p>Si <b>Standard</b> est introduisé le pourcentage de TAN dans les excrétions des animaux est utilisée comme défini par le modèle Agrammon. Si un nombre est introduisé une valeur pour la proportion de TAN
+         dans les excrétions peut être déterminée par l'utilisateur/-trice. Cette option est destinée aux cas où la proportion de TAN dans les excréments est connue, par exemple à partir d'un modèle d'alimentation.</p>
+
+?endif
+
++feeding_phase_1_crude_protein
+  type = float
+  default_calc = Standard
+  default_gui  = Standard
+  validator = between(130,200);
+  ++labels
+    en = Phase feeding: Crude protein content of the ration during phase 1
+    de = Rohproteingehalt der Ration in Mastphase 1 (siehe Spalte Hilfe)
+    fr = Teneur de la ration en matière azotée pendant la phase d'engraissement 1 (voir colonne Aide)
+  ++units
+    en = g CP/kg
+    de = g RP/kg
+    fr = g MA/kg
+  ++description
+        Crude protein content in the ration of phase 1
+        
+ ++help
+   +++en
+        <p>The content in the diet used on the farm must be entered.</p>
+        <ul>
+          <li>For one phase feeding, the CP content of the feed used
+              and for phase 2 and 3 below, the value of phase 1 must
+              be entered, respectively.</li>
+          <li>For multiple phase feeding, the CP content of the feed used for phase 1 must be entered.</li>
+        </ul>
+
+	<p>Standard values for Switzerland:</p>
+        <ul>
+          <li>For one phase feeding: 151 g CP /kg</li>
+          <li>For two phase feeding 160 g CP /kg and for three phase feeding 165 g CP /kg, respectively, for phase 1</li>
+        </ul>
+        <p>If <b>Standard</b> is selected the N-excretion is calculated for one phase feeding using 151 g CP /kg.</p>
+
+        <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+   +++de
+    <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p> 
+        <ul>
+          <li>Bei Durchmast (von 25 kg bis zur Schlachtung gleiches Futter
+              eingesetzt): den RP Gehalt des verwendeten Durchmastfutters
+              eingeben und unten bei Mastphase 2 und 3 den gleichen Wert wie für Mastphase 1
+              eingeben.</li>
+         <li>Bei Phasenfütterung: RP-Gehalt des auf dem Betrieb
+             verwendeten Futters von Mastphase 1 eingeben.</li>
+        </ul>
+
+	<p>Standardwerte zur Eingabe, falls die Gehalte des auf dem
+        Betrieb verwendeten Futters nicht bekannt sind:</p>
+
+        <ul>
+          <li>Bei Durchmast: 151 g RP /kg</li>
+          <li>Mastphase 1 bei 2-Phasenfütterung 160 g RP /kg und bei 3-Phasenfütterung 165 g RP /kg</li>
+        </ul>
+        <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 151 g RP /kg berechnet.</p>
+
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+
+   +++fr
+    <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
+        <ul>
+          <li>En cas d'alimentation monophase (aucun changement d'aliment pendant toute la
+            durée de l'engraissement de 25 kg jusqu'à l'abattage),
+            introduire la teneur en matière azotée de l'aliment utilisé,
+            puis introduire la valeur de la catégorie Phase
+            d'engraissement 1 plus bas dans les catégories Phase
+            d'engraissement 2 et 3.</li>
+          <li>En cas d'alimentation par phase: introduire la teneur en
+             matière azotée de l'aliment utilisé sur l'exploitation pendant
+             la phase 1. </li>
+        </ul>
+
+	<p>Proposition de valeurs standard:</p>
+
+        <ul>
+        <li>En cas d'alimentation monophase: 151 g MA /kg</li>
+          <li>Pour la phase d’engraissement 1 en cas d’alimentation en 2 phases : 160 g MA /kg; pour la phase d’engraissement 1 en cas d’alimentation en 3 phases : 165 g MA /kg</li>
+        </ul>
+        <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 151 g MA /kg.</p>
+
+         <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+
++feeding_phase_2_crude_protein
+  type = float
+  default_calc = Standard
+  default_gui  = Standard
+  validator = between(120,200);
+  ++labels
+    en = Phase feeding: Crude protein content of the ration during phase 2
+    de = Rohproteingehalt der Ration in Mastphase 2 (siehe Spalte Hilfe)
+    fr = Teneur de la ration en matière azotée pendant la phase d'engraissement 2 (voir colonne Aide)
+  ++units
+    en = g CP/kg
+    de = g RP/kg
+    fr = g MA/kg
+  ++description
+        Crude protein content in the ration of phase 2
+ ++help
+   +++en
+        <p>The content in the diet used on the farm must be entered.</p>
+        <ul>
+          <p>The content in the diet used on the farm must be entered.</p>
+          <li>For one phase feeding, the value of phase 1 must be entered.</li>
+          <li>For one phase feeding, the CP content of the feed used
+              and for phase 2 and 3 below, the value of phase 1 must
+              be entered, respectively.</li>
+          <li>For three phase feeding, the CP content of the feed used for phase 2 must be entered.</li>
+        </ul>
+
+	<p>Standard values for Switzerland:</p>
+        <ul>
+          <li>For two phase feeding 136 g CP /kg and for three phase feeding 140 g CP /kg, respectively, for phase 2</li>
+        </ul>
+        <p>If <b>Standard</b> is selected the N-excretion is calculated for one phase feeding using 151 g CP /kg.</p>
+
+        <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+        
+   +++de
+        <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
+        <ul>
+          <li>Bei Durchmast: den gleichen Wert wie für Mastphase 1 eingeben.</li>
+          <li>Bei 2-Phasenfütterung: den RP Gehalt des auf dem Betrieb verwendeten Futters von Mastphase 2 eingeben und unten bei Mastphase 3 den gleichen Wert wie für Mastphase 2 eingeben.</li>
+          <li>Bei 3-Phasenfütterung: den RP Gehalt des auf dem Betrieb verwendeten Futters von Mastphase 2 eingeben.</li>
+        </ul>
+
+	<p>Vorschlag für Standardwerte:</p>
+
+        <ul>
+          <li>Mastphase 2 bei 2-Phasenfütterung 136 g RP /kg und bei 3-Phasenfütterung: 140 g RP /kg</li>
+        </ul>
+         <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 151 g RP /kg berechnet.</p>
+
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+        
+   +++fr
+    <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
+      </p><ul>
+          <li>En cas d'alimentation monophase: introduire la valeur de la catégorie Phase d'engraissement 1.</li>
+          <li>En cas d'alimentation en 2 phases: introduire la teneur en matière azotée de l'aliment utilisé sur l'exploitation pendant la phase 2.</li>
+          <li>En cas d'alimentation en 3 phases: introduire la teneur en matière azotée de l'aliment utilisé sur l'exploitation pendant la phase 2.</li>
+        </ul>
+
+	<p>Proposition de valeurs standard:</p>
+
+        <ul>
+          <li>Pour la phase d’engraissement 2 en cas d’alimentation en 2 phases : 136 g MA /kg; pour la phase d’engraissement 2 en cas d’alimentation en 3 phases : 140 g MA /kg</li>
+        </ul>
+        <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 151 g MA /kg.</p>
+
+         <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+
++feeding_phase_3_crude_protein
+  type = float
+  default_calc = Standard
+  default_gui  = Standard
+  validator = between(110,200);
+  ++labels
+    en = Phase feeding: Crude protein content of the ration during phase 3
+    de = Rohproteingehalt der Ration in Mastphase 3 (siehe Spalte Hilfe)
+    fr = Teneur de la ration en matière azotée pendant la phase d'engraissement 3 (voir colonne Aide)
+  ++units
+    en = g CP/kg
+    de = g RP/kg
+    fr = g MA/kg
+  ++description
+      Crude protein content in the ration of phase 3
+ ++help
+   +++en
+        <p>The content in the diet used on the farm must be entered.</p>
+        <ul>
+          <li>For one phase feeding, the value of phase 1 must be entered.</li>
+          <li>For two phase feeding, the value of phase 2 must be entered.</li>
+          <li>For three phase feeding, the CP content of the feed used for phase 3 must be entered.</li>
+        </ul>
+
+	<p>Standard values for Switzerland:</p>
+        <ul>
+          <li>For multiple phase feeding for phase 3: 130 g CP /kg</li>
+        </ul>
+        <p>If <b>Standard</b> is selected the N-excretion is calculated for one phase feeding using 151 g CP /kg.</p>
+
+        <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+   +++de
+        <p>Es sind die Daten des auf dem Betrieb verwendeten Futters einzugeben.</p>
+        <ul>
+          <li>Bei Durchmast: den gleichen Wert wie für Mastphase 1 eingeben.</li>
+          <li>Bei 2-Phasenfütterung: den gleichen Wert wie für Mastphase 2 eingeben.</li>
+          <li>Bei 3-Phasenfütterung: den RP Gehalt des auf dem Betrieb verwendeten Futters von Mastphase 3 eingeben.</li>
+        </ul>
+
+	<p>Vorschlag für Standardwerte:</p>
+
+        <ul>
+          <li>Mastphase 3 bei 3-Phasenfütterung: 130 g RP /kg</li>
+        </ul>
+         <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 151 g RP /kg berechnet.</p>
+
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+
+   +++fr
+    <p>Les teneurs des aliments utilisés sur l'exploitation doivent être introduites.</p>
+        <ul>
+          <li>En cas d'alimentation monophase: introduire la valeur de la catégorie Phase d'engraissement 1.</li>
+          <li>En cas d'alimentation en 2 phases: introduire la valeur de la catégorie Phase d'engraissement 2.</li>
+          <li>En cas d'alimentation en 3 phases: introduire la teneur en matière azotée de l'aliment utilisé sur l'exploitation pendant la phase 3.</li>
+        </ul>
+
+	<p>Proposition de valeurs standard:</p>
+
+        <ul>
+          <li>Pour la phase d'engraissement 3 en cas d'alimentation en 3 phases: 130 g MA /kg</li>
+        </ul>
+        <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 151 g MA /kg.</p>
+
+         <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+
++energy_content
+  type = float
+  validator = between(9,16);
+  default_calc = Standard
+  default_gui  = Standard
+  ++labels
+    en = Energy content of the ration
+    de = Energiegehalt der Ration
+    fr = Teneur de la ration en énergie
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Energy content of feed ration.
+  ++help
+    +++en
+      <p>Standard value for Switzerland: 13.9 MJ DE* /kg</p>
+
+       <p>*Digestible energy</p>
+
+<p>If the content of the diet used is not known, <b>Standard</b> can be entered. In this case, the N excretion is calculated based on 13.9 MJ DE* /kg</p>
+
+      *Digestible energy
+
+      <p>Source of the values provided: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+     
+    +++de
+      <p>Vorschlag für Standardwert: 13.9 MJ VES /kg</p>
+
+      <p>Bei Auswahl von <b>Standard</b> wird die N-Ausscheidung für Durchmast mit 13.9 MJ VES /kg berechnet.</p>
+         
+       <p>Quelle der angegebenen Gehalte: von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+    +++fr
+       <p>Proposition de valeurs standard: 13.9 MJ EDP /kg</p>
+
+       <p>Si <b>Standard</b> est introduit l'excrétion de N est calculée sur la basé d'alimentation monophase avec 13.9 MJ EDP /kg.</p>
+
+         <p>Source des teneurs indiquées : von Wyl, H., Küng, T., Kupper, T., Spring, P. 2023. Rohproteingehalte in Schweinefutter: Bestandsaufnahme 2021. Agrarforschung Schweiz 14: 116–121.</p>
+
+
+*** technical ***
+
++standard_N_excretion_fattening_pigs
+  value = 13
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for fattening pigs according to
+     Flisch et al. (2009).
+
++standard_energy_content_fattening_pigs
+  value = 14
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Standard energy content of a feed ration for
+    fattening pigs (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
+
++standard_crude_protein_fattening_pigs
+  value = 170
+  ++units
+     en = g CP/kg
+     de = g RP/kg
+     fr = g MA/kg
+  ++description
+    Standard crude protein content of a feed ration for
+    fattening pigs (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
+
++cfeed_fattening_pigs
+  value = 0.009
+  ++units
+    en = -
+  ++description
+    Correction factor for feed with reduced crude protein content
+    for fatteing pigs (BLW, SRVA, LBL 2003).
+    A diffrence from 10 g CP /kg leads to 8 0/0 .
+    Agridea, BLW (2010).
+
++minimal_N_excretion_fattening_pigs
+  value = 9.5
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+ ++description
+    Annual minimal N excretion for fattening pigs according to
+    Flisch et al. (2009). Agridea, BLW (2010).
+
++share_Nsol
+  value = 0.7
+  ++units
+    en = -
+  ++description
+    Nsol content of excreta from fattening pigs. Derived from e.g.
+    Petersen et al. (1998) or Burgos et al. (2005).
+
++phase_1_3_duration
+  value = 0.151
+  ++units
+    en = d
+  ++description
+    Feeding phase 1 of a 3-phase-feeding duration as part of the year.
+
++phase_2_3_duration
+  value = 0.321
+  ++units
+    en = d
+  ++description
+    Feeding phase 2 of a 3-phase-feeding duration as part of the year.
+
++phase_3_3_duration
+  value = 0.528
+  ++units
+    en = d
+  ++description
+    feeding phase 3 of a 3-phase-feeding duration as part of the year.
+
++phase_1_2_duration
+  value = 0.359
+  ++units
+    en = d
+  ++description
+    Feeding phase 1 of a 2-phase-feeding duration as part of the year.
+
++phase_2_2_duration
+  value = 0.641
+  ++units
+    en = d
+  ++description
+    Feeding phase 2 of a 2-phase-feeding duration as part of the year.
+
+
+*** external ***
+
+
+*** output ***
+
++animals
+  print = FatteningPigs
+  ++units
+    en = -
+  ++description
+    Number of fattening pigs of a specific category.
+  ++formula
+    In(animals);
+
++animalcategory
+  print = FatteningPigs
+  ++units
+    en = -
+  ++description
+    Animal category
+  ++formula
+    In(animalcategory);
+
++crude_protein
+  print = FatteningPigs
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Crude protein content of feed ration - for 1-, 2- or 3-phase-feeding.
+  ++formula
+    my $crudeProteinPhase1  = lc In(feeding_phase_1_crude_protein) eq 'standard' ? $TE->{'default_crude_protein_fattening_pigs'} : In(feeding_phase_1_crude_protein);
+    my $crudeProteinPhase2  = lc In(feeding_phase_2_crude_protein) eq 'standard' ? $TE->{'default_crude_protein_fattening_pigs'} : In(feeding_phase_2_crude_protein);
+    my $crudeProteinPhase3  = lc In(feeding_phase_3_crude_protein) eq 'standard' ? $TE->{'default_crude_protein_fattening_pigs'} : In(feeding_phase_3_crude_protein);
+#    writeLog({
+#        de => Out(animalcategory) . ": crude protein= " . $crudeProteinPhase1 . ' / ' . $crudeProteinPhase2 . ' / ' . $crudeProteinPhase3
+#    });
+    if ( $crudeProteinPhase2 == $crudeProteinPhase3 and $crudeProteinPhase2 != $crudeProteinPhase1 ) {
+        $crudeProteinPhase1 * Tech(phase_1_2_duration) +
+        $crudeProteinPhase2 * Tech(phase_2_2_duration);
+    } else {
+      $crudeProteinPhase1 * Tech(phase_1_3_duration) +
+      $crudeProteinPhase2 * Tech(phase_2_3_duration) +
+      $crudeProteinPhase3 * Tech(phase_3_3_duration)
+    }
+
++energy_content
+  print = FatteningPigs
+  ++units
+    en = MJ DE
+    de = MJ VES/kg
+    fr = MJ EDP/kg
+  ++description
+    Energy content of feed ration
+  ++formula
+    lc In(energy_content) eq 'standard' ?  $TE->{'default_energy_content_' . Out(animalcategory)} : In(energy_content);
+
++n_excretion_animal
+  print = FatteningPigs
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual standard N excretion for fattening pigs according to
+    Walther et al. (2001).
+?if Kantonal_LU
+  ++formula
+    my $energyContent = Out(energy_content);
+#    writeLog({
+#      de => Out(animalcategory) . ": energy content = " .  $energyContent
+#    });
+    my $exc = Tech(standard_N_excretion_fattening_pigs) * 
+              (1 - (
+                Tech(standard_crude_protein_fattening_pigs) - 
+                (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / $energyContent)
+              ) * 
+              Tech(cfeed_fattening_pigs));
+    if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
+      writeLog({
+        en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
+              . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
+        de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
+              . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
+        fr => "La teneur de la ration en énergie et en matière azotée engendrent une "
+              ."excrétion  de N inférieure au minimum prévu pour les porcs à l'engrais. "
+              ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
+      });
+      return Tech(minimal_N_excretion_fattening_pigs);
+    } else {
+      return $exc;
+    }
+?else
+  ++formula
+    my $energyContent = Out(energy_content);
+#    writeLog({
+#      de => Out(animalcategory) . ": energy content = " .  $energyContent
+#    });
+    if ( lc In(inp_n_excretion) eq 'standard' ) {
+      my $exc = Tech(standard_N_excretion_fattening_pigs) * 
+                (1 - (
+                  Tech(standard_crude_protein_fattening_pigs) - 
+                  (Out(crude_protein) * Tech(standard_energy_content_fattening_pigs) / $energyContent)
+                ) * 
+                Tech(cfeed_fattening_pigs));
+      if ( $exc < Tech(minimal_N_excretion_fattening_pigs) ) {
+        writeLog({
+          en => "The entry for the N excretion is below the minimum for fattening pigs. \n"
+                . "The excretion was set to " . Tech(minimal_N_excretion_fattening_pigs) . " kg N per animal!",
+          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine! \n"
+                . "Die Ausscheidung wurde auf ". Tech(minimal_N_excretion_fattening_pigs) ." kg N pro Tier gesetzt!",
+          fr => "La teneur de la ration en énergie et en matière azotée engendrent une "
+              ."excrétion  de N inférieure au minimum prévu pour les porcs à l'engrais. "
+              ."L'excrétion a été fixée à ". Tech(minimal_N_excretion_fattening_pigs) ."kg N par animal. \n"
+        });
+        return Tech(minimal_N_excretion_fattening_pigs);
+      } else {
+        return $exc;
+      }
+    } else {
+      if ( In(inp_n_excretion) < Tech(minimal_N_excretion_fattening_pigs) ) {
+        writeLog({
+          en => "The entry for the N excretion is below the minimum for fattening pigs!",
+          de => "Die gewählte N Ausscheidung liegt unterhalb des Minimums für Mastschweine!",
+          fr => "Les excrétions azotées sont inférieures au minimum pour les porcs à l'engrais!"
+        });
+      }
+      if ( (In(inp_n_excretion) < 0.7 * Tech(standard_N_excretion_fattening_pigs)) or (In(inp_n_excretion) > 1.3 * Tech(standard_N_excretion_fattening_pigs)) ) {
+        writeLog({
+            en => "The N excretion entered for fattening pigs differs from the standard by more than 30%!",
+            de => "Die eingegebene N-Ausscheidung für Mastschweine weicht um mehr als 30% vom Standard ab!",
+            fr => "Les excrétions azotées saisies les porcs à l'engrais s'écartent de plus de 30 % du standard!",
+        });
+      }
+      return In(inp_n_excretion);
+    }
+?endif
+
++n_excretion
+  print = FatteningPigs
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual total N excreted by a specified number of fattening pigs.
+  ++formula
+    Out(n_excretion_animal) * Out(animals);
+
++tan_excretion
+  print = FatteningPigs
+  ++units
+    en = kg N/year
+    de = kg N/Jahr
+    fr = kg N/an
+  ++description
+    Annual soluble N excreted by a specified number of fattening pigs.
+?if !Kantonal_LU
+  ++formula
+    if ( lc In(tan_fraction) eq 'standard' ) {
+      Tech(share_Nsol) * Out(n_excretion);
+    } else {
+        my $tan = In(tan_fraction);
+        $tan = In(tan_fraction) / 100;
+        if ( abs($tan - Tech(share_Nsol)) > 0.2) {
+          writeLog({
+            en => "The TAN fraction of N excretion entered for fattening pigs differs from the standard by more than 20%!",
+            de => "Der eingegebene TAN Anteil der N Ausscheidung für Mastschweine weicht um mehr als 20% vom Standard ab!",
+            fr => "La proportion du TAN des excrétions azotées saisies pour les porcs à l'engrais s'écartent de plus de 20 % du standard!"
+          });
+        }
+        return $tan * Out(n_excretion);
+    }
+?else
+  ++formula
+    Tech(share_Nsol) * Out(n_excretion);
+?endif
+
++dimensioning_barn
+  print = FatteningPigs
+  ++units
+    en = -
+  ++description
+    barn size (number of animal places)
+  ++formula
+    if ( lc In(dimensioning_barn) eq 'standard' ) {
+        In(animals);
+    } else {
+        In(dimensioning_barn);
+    }
+
++area_increase
+  print = FatteningPigs
+  ++units  
+    en = -
+  ++description
+    Factor on what barn size does increase the regularized minimal, limited to 0.5
+  ++formula 
+    if ( (Out(animals) < Out(dimensioning_barn) ) and (Out(animals) != 0) ) { 
+      if ( Out(dimensioning_barn) >= (Out(animals) * 1.5) ) {   
+        0.5; 
+      }
+      else {
+        Out(dimensioning_barn) / Out(animals) - 1;
+      }
+    }
+    else {
+      0.0;
+    }
+
++dimensioning_check
+  print = FatteningPigs
+  ++units
+    en = -
+  ++description
+   Check if number of animals <= number of animal places.
+  ++formula
+    if ( Out(dimensioning_barn) < Out(animals) ) {
+      writeLog({
+        en => "The number of available animal places must be equal or higher than the number of animals.",
+        de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+        fr => "Le nombre de places dans l'étable doit être au moins égal au nombre d'animaux."
+      });
+      return "barn dimensioning too small";
+    } 
+    else {
+      return "barn dimensioning ok";
+    }
