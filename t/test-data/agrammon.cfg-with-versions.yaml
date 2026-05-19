@@ -1,0 +1,48 @@
+General:
+    debugLevel: 0
+    log_file:   /tmp/agrammon.log
+    log_level:  warn
+    tempDir: agrammon
+    pdflatex: /usr/bin/lualatex
+    latexTimeout: 30
+    translationDir : share/translations
+Database:
+    name:     agrammon_test
+    host:     localhost
+    port:     55432
+    user:     agrammon
+    password: agrammon
+    version: '6.0'
+
+GUI:
+    baseUrl: https://model.agrammon.ch/single/test
+    variant: Single
+    title:
+        de: AGRAMMON 6.0 Einzelbetriebsmodell
+        en: AGRAMMON 6.0 Single Farm Model
+        fr: AGRAMMON 6.0 modèle Exploitation individuelle
+
+Model:
+    debugLevel: 0
+    path:      share/Models
+    model:     version6
+    top:       End.nhd
+    technical: technical.cfg
+    variant:   Base
+    version:   '6.0'
+
+Versions:
+    - label:   '7.0'
+      url:     /single/v7
+      version: '7.0.0'
+      title:
+          de: AGRAMMON 7.0 Einzelbetriebsmodell
+          en: AGRAMMON 7.0 Single Farm Model
+          fr: AGRAMMON 7.0 modèle Exploitation individuelle
+    - label:   '6.0'
+      url:     /single/v6
+      version: '6.0'
+      title:
+          de: AGRAMMON 6.0 Einzelbetriebsmodell
+          en: AGRAMMON 6.0 Single Farm Model
+          fr: AGRAMMON 6.0 modèle Exploitation individuelle

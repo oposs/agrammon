@@ -46,6 +46,7 @@ class Agrammon::Web::Service {
             version      => %model<version>,
             submission   => %gui<submission>,
             baseUrl      => %gui<baseUrl>,
+            versions     => $!cfg.versions,
         );
         return %cfg;
     }

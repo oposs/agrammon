@@ -217,7 +217,12 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
     {
         variant: { init: null,
                    check: "String"
-                 }
+                 },
+        activeVersion: { init: null,
+                         nullable: true,
+                         check: "String",
+                         apply: "_applyActiveVersion"
+                       }
     },
 
     members :
@@ -235,10 +240,18 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
         __btnClearReference: null,
 
         __table: null,
+        __rowRenderer: null,
         __searchTimer: null,
         __searchFilter: null,
         __filterHash: null,
         __datasetStore: null,
+
+        _applyActiveVersion: function(value) {
+            if (this.__rowRenderer) {
+                this.__rowRenderer.setActiveVersion(value || '');
+                if (this.__table) this.__table.updateContent();
+            }
+        },
 
         __searchTimeout: 250, // timeout after which SearchAsYouType view is updated
         __searchColumn:    0, // Dataset name
@@ -558,7 +571,15 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 padding: 0,
                 showCellFocusIndicator: false
             });
-            table.getDataRowRenderer().setHighlightFocusRow(false);
+
+            // Custom row renderer fades rows whose dataset version doesn't
+            // match the active model version. Column 4 holds the version.
+            this.__rowRenderer = new agrammon.ui.table.rowrenderer.DatasetVersion(4);
+            this.__rowRenderer.setHighlightFocusRow(false);
+            if (this.getActiveVersion()) {
+                this.__rowRenderer.setActiveVersion(this.getActiveVersion());
+            }
+            table.setDataRowRenderer(this.__rowRenderer);
 
             table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
             var tcm = table.getTableColumnModel();
@@ -572,8 +593,10 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
             tcmb.setWidth(this.__commentColumn,70);
 
             tcm.setColumnVisible(3,true);
-            tcm.setColumnVisible(4,false);
-            tcm.setColumnVisible(4,false);
+            // Version column is visible so users can see which model
+            // version each dataset belongs to (the row is faded if it
+            // doesn't match the active version).
+            tcm.setColumnVisible(4,true);
             // FIX ME: Column 5 must not be made visible, because it
             // has an array as value. Needs a specific cell renderer!
             tcm.setColumnVisible(5,false);
