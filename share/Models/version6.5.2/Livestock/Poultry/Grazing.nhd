@@ -42,11 +42,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
        de = Nein
        fr = non
        it = no
-#    +++fix
-#       en = Don't use this option
-#       de = Option nicht wählen
-#       fr = non
-#       it = no
   ++labels
     en = Do the animals have access to a free range?
     de = Haben die Tiere Zugang zu einer Weide?
