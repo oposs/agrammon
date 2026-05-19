@@ -230,27 +230,27 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
   ++help
     +++en
        <p>Standard values for Switzerland:</p>
-       <p>Layers: yes</p>
-       <p>Growers: no</p>
+       <p>Layers: yes, permanent housing</p>
+       <p>Growers: yes, permanent housing</p>
        <p>Broilers: no</p>
-       <p>Turkeys: yes</p>
-       <p>Other poultry: yes</p>
+       <p>Turkeys: yes, permanent housing</p>
+       <p>Other poultry: yes, permanent housing</p>
     +++de
        <p>Weide im Sinne der DZV (Direktzahlungsverordnung vom 23. Oktober 2013, Stand am 14. März 2023). Der Aussenklimabereich fällt nicht unter diese Kategorie.</p>
        <p>Vorschlag für Standardwerte:</p>
-       <p>Legehennen: ja</p>
-       <p>Junghennen: nein</p>
-       <p>Mastpoulets: nein</p>
-       <p>Masttruten: ja</p>
-       <p>Anderes Geflügel: ja</p>
+       <p>Legehennen: Ja, fester Stall</p>
+       <p>Junghennen: Ja, fester Stall</p>
+       <p>Mastpoulets: Nein</p>
+       <p>Masttruten: Ja, fester Stall</p>
+       <p>Anderes Geflügel: Ja, fester Stall</p>
     +++fr
        <p>Pâturage au sens de l'OPD (Ordonnance sur les paiements directs du 23 octobre 2013, état le 14r mars 2023). L'aire à climat extérieur n'est pas comprise dans cette catégorie.</p>
        <p>Propositions de valeurs standard:</p>
-       <p>Poules pondeuses: oui</p>
-       <p>Poulettes: non</p>
+       <p>Poules pondeuses: oui, stabulation fixe</p>
+       <p>Poulettes: oui, stabulation fixe</p>
        <p>Poulets à l'engrais: non</p>
-       <p>Dindes: oui</p>
-       <p>Autre volaille: oui</p>
+       <p>Dindes: oui, stabulation fixe</p>
+       <p>Autre volaille: oui, stabulation fixe</p>
 
 *** output ***
 
