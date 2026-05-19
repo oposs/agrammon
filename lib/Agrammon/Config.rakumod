@@ -40,6 +40,13 @@ class Agrammon::Config {
         %!gui<title>;
     }
 
+    # User-visible short version label (e.g. '7.0'). Distinct from
+    # Model.version (internal identifier). Optional; falls through to
+    # Model.version when not set so existing deployments keep working.
+    method gui-version {
+        %!gui<version> // %!model<version>;
+    }
+
     method model-variant {
         %!model<variant>;
     }
@@ -52,11 +59,25 @@ class Agrammon::Config {
         %!model<version>;
     }
 
+    # Other Model.version strings this deployment accepts as data-
+    # compatible: datasets tagged with any of these will be claimed
+    # (promoted to Model.version) on first open. Empty list = strict
+    # mode (only the deployment's own dataset rows are openable).
+    method model-compatible-versions {
+        (%!model<compatibleVersions> // ()).list;
+    }
+
     method agrammon-variant {
+        # `version` tags rows written to `dataset.dataset_version`. Sourced
+        # from Model.version (the same identifier the frontend compares
+        # against in the version switcher), so that dataset table rows
+        # written by this deployment are recognized as belonging to it.
+        # Was Database.version historically — see CHANGELOG.
         %(
-            version => %!database<version>,
-            gui     => %!gui<variant>,
-            model   => %!model<variant>,
+            version             => %!model<version>,
+            gui                 => %!gui<variant>,
+            model               => %!model<variant>,
+            compatible-versions => self.model-compatible-versions,
         );
     }
 

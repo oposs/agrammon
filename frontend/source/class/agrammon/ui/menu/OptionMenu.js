@@ -188,7 +188,7 @@ qx.Class.define('agrammon.ui.menu.OptionMenu', {
 
             for (var i = 0; i < versions.length; i++) {
                 var v = versions[i];
-                var btn = new qx.ui.menu.Button(v.label);
+                var btn = new qx.ui.menu.Button(v.guiVersion);
                 btn.setUserData('versionEntry', v);
                 if (v.version === activeVersion) {
                     // Can't switch to ourselves — make it visually obvious

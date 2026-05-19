@@ -16,15 +16,26 @@ qx.Class.define('agrammon.ui.table.rowrenderer.DatasetVersion', {
         this.base(arguments);
         this.__versionColumn = versionColumn;
 
-        this.__fontStyle = qx.bom.Font.getDefaultStyles();
+        // Resolve the THEME's default font so cells render in the same
+        // typeface as the rest of the app. qx.bom.Font.getDefaultStyles()
+        // returns the BROWSER default (serif) which shows up as Times New
+        // Roman.
+        var font = qx.theme.manager.Font.getInstance().resolve("default");
+        this.__fontStyle = font ? font.getStyles()
+                                : qx.bom.Font.getDefaultStyles();
         this.__fontStyleString = qx.bom.element.Style.compile(this.__fontStyle).replace(/"/g, "'");
 
         var colorMgr = qx.theme.manager.Color.getInstance();
+        // Mismatch rows use a muted color rather than opacity: opacity
+        // stacking drops effective contrast below WCAG AA (DevTools
+        // flags it), but a real gray that still meets 4.5:1 on the row
+        // background passes the contrast check. #555 = ~7.5:1 on white.
         this._colors = {
             bgcolFocused: colorMgr.resolve("table-row-background-focused"),
             bgcolEven:    colorMgr.resolve("table-row-background-even"),
             bgcolOdd:     colorMgr.resolve("table-row-background-odd"),
             colNormal:    colorMgr.resolve("table-row"),
+            colMismatch:  "#555",
             horLine:      colorMgr.resolve("table-row-line")
         };
     },
@@ -62,9 +73,12 @@ qx.Class.define('agrammon.ui.table.rowrenderer.DatasetVersion', {
                     : this._colors.bgcolOdd;
             }
 
-            style.color = this._colors.colNormal;
+            style.color = this.__isMismatch(rowInfo.rowData)
+                ? this._colors.colMismatch
+                : this._colors.colNormal;
             style.borderBottom = "1px solid " + this._colors.horLine;
-            style.opacity = this.__isMismatch(rowInfo.rowData) ? "0.45" : "1";
+            style.fontStyle = this.__isMismatch(rowInfo.rowData) ? "italic" : "normal";
+            style.opacity = "1";
         },
 
         getRowHeightStyle: function(height) {
@@ -84,10 +98,12 @@ qx.Class.define('agrammon.ui.table.rowrenderer.DatasetVersion', {
                 rowStyle.push((rowInfo.row % 2 == 0) ? this._colors.bgcolEven
                                                     : this._colors.bgcolOdd);
             }
-            rowStyle.push(';color:', this._colors.colNormal);
+            var mismatch = this.__isMismatch(rowInfo.rowData);
+            rowStyle.push(';color:', mismatch ? this._colors.colMismatch
+                                              : this._colors.colNormal);
             rowStyle.push(';border-bottom: 1px solid ', this._colors.horLine);
-            if (this.__isMismatch(rowInfo.rowData)) {
-                rowStyle.push(';opacity:0.45');
+            if (mismatch) {
+                rowStyle.push(';font-style:italic');
             }
             return rowStyle.join("");
         },

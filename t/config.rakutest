@@ -19,7 +19,6 @@ my %config-expected = (
         host     => 'localhost',
         user     => 'agrammon',
         password => "agrammon",
-        version  => '6.0',
     },
     GUI => {
         baseUrl => 'https://model.agrammon.ch/single/test',
@@ -33,7 +32,6 @@ my %config-expected = (
     Model => {
         debugLevel => 0,
         path       => 'share/Models',
-        model      => 'version6',
         top        =>  'End.nhd',
         technical  =>  'technical.cfg',
         variant    => 'Base',
@@ -71,13 +69,13 @@ subtest "Versions block parsed" => {
     is $vcfg.versions.elems, 2, 'Two Versions entries';
 
     my $entry = $vcfg.versions[0];
-    is $entry<label>,        '7.0',                            'first entry label';
+    is $entry<guiVersion>,   '7.0',                            'first entry guiVersion';
     is $entry<url>,          '/single/v7',                     'first entry url';
     is $entry<version>,      '7.0.0',                          'first entry version';
     is $entry<title><en>,    'AGRAMMON 7.0 Single Farm Model', 'first entry English title';
 
-    is $vcfg.versions[1]<label>,   '6.0',        'second entry label';
-    is $vcfg.versions[1]<version>, '6.0',        'second entry version';
+    is $vcfg.versions[1]<guiVersion>, '6.0',     'second entry guiVersion';
+    is $vcfg.versions[1]<version>,    '6.0',     'second entry version';
 }
 
 done-testing;
