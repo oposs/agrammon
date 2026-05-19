@@ -3,7 +3,7 @@
 author   = Agrammon Group
 date     = 2020-02-10
 taxonomy = PlantProduction::MineralFertiliser
-gui      = PlantProduction::Mineral Fertiliser,Pflanzenbau::Mineralische Stickstoffdünger,Production végétale::Engrais minéraux azotés,Plant production::Mineral fertiliser
+gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Stickstoffdünger,Production végétale::Engrais minéraux azotés,Plant production::Mineral fertiliser
 
 +short
 
@@ -1250,8 +1250,8 @@ gui      = PlantProduction::Mineral Fertiliser,Pflanzenbau::Mineralische Stickst
   ++labels
     sort = 110
       en = Mineral fertiliser
-      de = Mineralische Stickstoffdünger
-      fr = Engrais minéraux azotés 
+      de = Mineralischer Dünger
+      fr = Engrais minéral 
   ++units  
       en = kg N/year
       de = kg N/Jahr

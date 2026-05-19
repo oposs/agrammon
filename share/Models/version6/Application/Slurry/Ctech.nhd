@@ -45,21 +45,21 @@ taxonomy = Application::Slurry::Ctech
   ++help
     +++en
        <p>The categories of slurry application must add up to 100 %. For each category, a number between 0 % und 100 % must be entered.</p>
-       <p>Standard value for Switzerland: 0%</p>
+       <p>Standard value for Switzerland: 90%</p>
     +++de
        <p>Auch wenn Hofdünger nicht auf dem Betrieb sondern über Abnahmeverträge verwerten werden, sind die Angaben zur Hofdüngerausbringung erforderlich. In diesen Fall wird eingetragen, wie die Ausbringung der Hofdünger durch den/die Abnehmer erfolgt.</p>
        <p>Unter diese Kategorie fallen sämtliche Breitverteiler wie Prallteller, Pendel- oder Schwenkverteiler, Prallkopfverteiler oder Mehrfachdüsenverteiler.</p>
 
        <p>Die Summe der Kategorien Anteil Gülleausbringung muss 100 % geben. Jede Kategorie Anteil Gülleausbringung muss einen Eintrag, zwischen 0% und 100 % aufweisen (auch 0 % muss eingetragen werden).</p>
 
-       <p>Vorschlag für Standardwert: 0%</p>
+       <p>Vorschlag für Standardwert: 90%</p>
     +++fr
        <p>Même si les engrais de ferme ne sont pas valorisés sur l'exploitation, mais via des contrats de reprise, les données relatives à l'épandage de ces engrais sont nécessaires. Dans ce cas, l'épandage par le repreneur est à décrire. </p>
        <p>Cette catégorie comprend tous les systèmes à répartition large, comme les déflecteurs, les répartiteurs pendulaires, verticaux ou les buses pivotantes et les canons.</p>
 
        <p>La somme des catégories «Part de lisier épandu» doit donner 100%. Chaque catégorie doit avoir un pourcentage entre 0 et 100 (les 0% doivent aussi être introduits).</p>
 
-       <p>Proposition de valeur standard: 0%</p>
+       <p>Proposition de valeur standard: 90%</p>
 
 
 +share_trailing_hose  
@@ -75,19 +75,19 @@ taxonomy = Application::Slurry::Ctech
   ++help
     +++en
        <p>The categories of slurry application must add up to 100 %. For each category, a number between 0 % und 100 % must be entered.</p>
-       <p>Standard value for Switzerland: 100% (most frequently applied technique)</p>
+       <p>Standard value for Switzerland: 10%</p>
     +++de
        <p>Beim Schleppschlauch wird die Gülle mittels Schläuchen, die hinter dem Gerät über den Boden schleifen, direkt auf den Boden geleitet.</p>
 
        <p>Die Summe der Kategorien Anteil Gülleausbringung muss 100 % geben. Jede Kategorie Anteil Gülleausbringung muss einen Eintrag, zwischen 0% und 100 % aufweisen (auch 0 % muss eingetragen werden).</p>
 
-       <p>Vorschlag für Standardwert: 100% (häufigste Technik)</p>
+       <p>Vorschlag für Standardwert: 10%</p>
     +++fr
        <p>Avec ce système, le lisier est conduit directement sur le sol grâce à des tuyaux souples qui pendent derrière la machine. </p>
 
        <p>La somme des catégories «Part de lisier épandu» doit donner 100%. Chaque catégorie doit avoir un pourcentage entre 0 et 100 (les 0% doivent aussi être introduits). </p>
 
-       <p>Proposition de valeur standard: 100% (la technique la plus courante).</p>
+       <p>Proposition de valeur standard: 10%</p>
 
 +share_trailing_shoe 
   type  = percent
@@ -171,74 +171,134 @@ taxonomy = Application::Slurry::Ctech
 
 *** technical ***
 
++red_splash_plate
+  value = 0.0 
+  ++units 
+    en = -
+  ++description
+    There is no reduction for broadcasting with splash plate as to this way of 
+    applying slurry all the other methods are compared to.
+
++red_trailing_hose  
+  value = -0.4 
+  ++units 
+    en = -
+  ++description
+    Reduction efficiency as compared to broadcasting applying trailing hose.
+    Adopted from UNECE (2007), Frick and Menzi (1997) 
+    and Menzi et al. (1997).
+
++red_trailing_shoe 
+  value = -0.5
+  ++units 
+    en = -
+  ++description
+    Reduction efficiency as compared to broadcasting applying trailing shoe. 
+    Adopted from UNECE (2007), Frick and Menzi (1997) 
+    and Menzi et al. (1997).
+
++red_shallow_injection 
+  value = -0.6  
+  ++units 
+    en = -
+  ++description
+    Reduction efficiency as compared to broadcasting applying shallow injection.
+    Adopted from UNECE (2007), Frick and Menzi (1997) 
+    and Menzi et al. (1997).
+
++red_deep_injection 
+  value = -0.9  
+  ++units 
+    en = -
+  ++description
+    Reduction efficiency as compared to broadcasting applying deep injection.
+    Adopted from UNECE(2007), Frick and Menzi (1997) 
+    and Menzi et al. (1997). 
+ 
+
 *** external ***
 
 *** output ***
 
-+share_apptech_sum
-  print = 15
-  ++units
-    en = -
-  ++description
-    Reduction factor for the emission due to the used application technology
-    as compared to broadcasting.
-  ++formula
-    my $apptech_sum = In(share_deep_injection) +
-      In(share_shallow_injection) +
-      In(share_trailing_shoe) +
-      In(share_trailing_hose) +
-	    In(share_splash_plate);
-    if( abs( $apptech_sum - 100)  > 1e-6 )
-    {
-	writeLog({en => "Please correct accordingly: the categories of slurry application do not add up to 100\%!\n",
-		  de => "Bitte korrigieren: die Summe der Kategorien Gülleausbringung ist nicht gleich 100\%!\n",
-		  fr => "Veuillez corriger : la somme des catégories «Epandage du lisier» n'est pas égale à 100% !\%!\n"});
-      # Warning + Test!
-    }
-    return $apptech_sum;
-
 +share_deep_injection
   print = 22
-  ++units
+  ++units 
     en = -
   ++description
     Share
   ++formula
-    Out(share_apptech_sum) > 0 ? In(share_deep_injection) / Out(share_apptech_sum) : 0;
+    In(share_deep_injection) / 100;
 
 +share_shallow_injection
   print = 22
-  ++units
+  ++units 
     en = -
   ++description
     Share
   ++formula
-    Out(share_apptech_sum) > 0 ? In(share_shallow_injection) / Out(share_apptech_sum) : 0;
+    In(share_shallow_injection) / 100;
 
 +share_trailing_shoe
  print = 22
-  ++units
+  ++units 
     en = -
   ++description
     Share
   ++formula
-    Out(share_apptech_sum) > 0 ? In(share_trailing_shoe) / Out(share_apptech_sum) : 0;
+    In(share_trailing_shoe) / 100;
 
 +share_trailing_hose
  print = 22
-  ++units
+  ++units 
     en = -
   ++description
     Share
   ++formula
-    Out(share_apptech_sum) > 0 ? In(share_trailing_hose) / Out(share_apptech_sum) : 0;
+    In(share_trailing_hose) / 100;
 
 +share_splash_plate
  print = 22
-  ++units
+  ++units 
     en = -
   ++description
     Share
   ++formula
-    Out(share_apptech_sum) > 0 ? In(share_splash_plate) / Out(share_apptech_sum) : 0;
+    In(share_splash_plate) / 100;
 
++c_tech
+  print = 15
+  ++units 
+    en = -
+  ++description
+    Reduction factor for the emission due to the used application technology 
+    as compared to broadcasting.
+  ++formula
+    if( abs( Out(share_deep_injection) +
+          Out(share_shallow_injection) +
+          Out(share_trailing_shoe) +
+          Out(share_trailing_hose) +
+	  Out(share_splash_plate)
+	  - 1)  < 1e-8 )
+    {
+
+	return 1 + ( Out(share_deep_injection) * Tech(red_deep_injection) +
+              Out(share_shallow_injection) * Tech(red_shallow_injection) +
+              Out(share_trailing_shoe) * Tech(red_trailing_shoe) +
+              Out(share_trailing_hose) * Tech(red_trailing_hose) +
+	      Out(share_splash_plate) * Tech(red_splash_plate) 
+        );
+    }
+    else{
+    	writeLog({en => "Please correct accordingly: the categories of slurry application do not add up to 100\%!\n",
+                  de => "Bitte korrigieren: die Summe der Kategorien Gülleausbringung ist nicht gleich 100\%!\n",
+                  fr => "Veuillez corriger : la somme des catégories «Epandage du lisier» n'est pas égale à 100% !\%!\n"});
+      # Warning + Test!
+	    return 1 + ( Out(share_deep_injection) * Tech(red_deep_injection) +
+              Out(share_shallow_injection) * Tech(red_shallow_injection) +
+              Out(share_trailing_shoe) * Tech(red_trailing_shoe) +
+              Out(share_trailing_hose) * Tech(red_trailing_hose) +
+	          Out(share_splash_plate) * Tech(red_splash_plate) 
+              );
+    }
+
+ 

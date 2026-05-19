@@ -74,18 +74,20 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
        <p></p>
     +++de
        <p>Wenn mehrere Lager mit unterschiedlicher Abdeckung vorhanden sind, für jeden Typ Abdeckung ein Lager mit dem entsprechenden Volumen erstellen.</p>
-       <p>Feste Abdeckung (Beton, Holz): dazu gehören Unterflurlager oder Vorgruben mit einer festen Abdeckung sowie Silos mit einer Spannbeton-Hohlelement-Abdeckung.</p>
        <p>Perforierte Abdeckung: nur anwendbar in Kombination mit einem Laufhof mit perforierter Abdeckung.</p>
-       <p>Schwimmfolien und teilschwimmende Folien kommen in der Praxis kaum vor. Die Abdeckung "Teilschwimmende Folie" lässt sich wie folgt eingeben: wählen unter "Abdeckung des Güllelagers": "ungedeckt" und unter "Zusätzliche emissionsmindernde Massnahme Güllelager" 50 eingeben. Damit wird 50 % Emissionsminderung im Vergleich zu einem ungedeckten Lager angerechnet.</p>
-       <p>Natürliche Schwimmschicht soll nur für die Modellierung eines ungedeckten Güllelagers mit einer natürlichen Schwimmschicht angewählt werden. Bis 2030 müssen alle Güllelager, bestehende und neu erstellte, mit wirksamen Abdeckungen ausgerüstet sein.</p>
-       <p>Vorschlag für Standardwert:</p>
+        <p>Die Abdeckung "Teilschwimmende Folie" lässt sich wie folgt eingeben: unter "Zusätzliche emissionsmindernde Massnahme Güllelager" 50 eingeben. Damit wird 50 % Emissionsminderung im Vergleich zu einem ungedeckten Lager angerechnet.</p>
+         <p>Für die Abdeckung "Zeltdach": die aktuell in Agrammon hinterlegte Emissionsreduktion von 60 % entspricht nicht mehr dem aktuellen Stand des Wissens. Es wird empfohlen, für die die Abdeckung "Zeltdach" unter Abdeckung "ungedeckt" 
+         und unter "Zusätzliche emissionsmindernde Massnahme Güllelager" 80 einzugeben. Damit wird 80 % Emissionsminderung im Vergleich zu einem ungedeckten Lager angerechnet. Damit ist der aktuelle Wissensstand angemessen abgebildet. Bei der nächsten Modellrevision
+         (voraussichtlich 2024/25) wird die Emissionsreduktion durch die Abdeckung "Zeltdach" entsprechend angepasst.</p>
+       <p>Vorschlag für Standardwerte:</p>
        <p>feste Abdeckung (Beton, Holz), deren Anteil rund 75 % des Güllelagervolumens ausmacht.</p>
     +++fr
        <p>S'il existe plusieurs stocks avec des couvertures différentes, introduire pour chaque type de couverture un stock avec le volume correspondant. </p>
-       <p>Couverture en dur:  sont inclus les fosses à lisier souterraines ou de préfosses avec une couverture en dur, ainsi que de silos avec une couverture en éléments creux en béton précontraint.</p>
        <p>Couverture perforée : seulement en combination avec une aire de sortie avec un sol perforé.</p> 
-       <p>Les couvertures "Bâche flottante" et "Bâche semi-flottante" sont peu utilisées dans la pratique. Pour la couverture "Bâche semi-flottante": sélectionner "découvert" sous "Type de couverture du stock de lisier" et faut saisir 50 sous "Mesure supplémentaire limitant les émissions dues au stockage du lisier". Ainsi, une réduction des émissions de 50 % est calculée par rapport à un stock découvert.</p>
-       <p>L'option couche flottante naturelle ne s'applique qu'à la modélisation d'une fosse à lisier non couverte présentant une couche flottante naturelle. D'ici 2030, toutes les fosses, qu'elles soient existantes ou nouvellement construites, devront être efficacement couvertes.</p>
+        <p>Pour la couverture "Bâche semi-flottante", il faut saisir 50 sous "Mesure supplémentaire limitant les émissions dues au stockage du lisier". Ainsi, une réduction des émissions de 50 % est calculée par rapport à un stock découvert.</p>
+         <p>Pour la couverture "Toit conique": la valeur actuelle enregistrée dans Agrammon (réduction des émissions de 60%) ne correspond plus à l'état des connaissances actuel. Pour une couverture "Toit conique", il est recommandé de sélectionner "découvert" comme type de couverture 
+         et d'inscrire 80 sous "Mesure supplémentaire limitant les émissions dues au stockage du lisier". Ainsi, une réduction des émissions de 80 % est calculée par rapport à un stock découvert. De cette façon, la valeur représente au mieux l'état des connaissances actuelles. Lors de la prochaine révision du modèle
+         (probablement 2024/25), la valeur de réduction des émissions pour la couverture "Toit conique" sera adaptée en conséquence.</p>
        <p>Proposition de valeur standard:</p>
        <p>couverture en dur (béton, bois) qui représente environ 75 % du volume de stockage du lisier.</p>
 
@@ -203,81 +205,125 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
 
 *** technical ***
 
-## base emission factors
-+ef_liquid_storage_cattle
-  value = 365 * 6
++ef_cattle_uncovered
+  value =  2.19
   ++units
     en =  kg N/m2/year
     de =  kg N/m2/Jahr
     fr =  kg N/m2/an
   ++description
-    The Emission factor for uncovered storage is based on the review by
-    Kupper et al. (2020).
+    The emission factor for uncovered storage is based on experiments of de Bode (1990) and Sommer et al. (1993) measuring emissions of 2.5 to 6.9 g N m-2 day-1 for cattle slurry, for the emission of the none coverd a mean of the higher values is assumed. -> Assumption: 6.0 gN m-2 day-1 resp. 2.19 kg N /m2 /yr according to the results of the decision of the session of 10 April 208 (participants: C. Bonjour, C. Leuenbergern, M. Raaflaub, H. Menzi, T. Kupper).
 
-+ef_liquid_storage_pig
-  value = 365 * 8
++ef_cattle_solid_cover
+  value =  0.219
   ++units
     en =  kg N/m2/year
     de =  kg N/m2/Jahr
     fr =  kg N/m2/an
   ++description
-    The Emission factor for uncovered storage is based on the review by
-    Kupper et al. (2020).
+    Emission factor for solid covered storage based on ef_cattle_uncovered with a reduction of 90%.
+    UNECE (2007) p 13 does suggest a reduction of 80%.
+    Since covers of storages are more tight in Switzerland a reduction of 90% was choosen.
 
-# Tank cover correction factors
-+c_liquid_storage_uncovered
-  value =  1.0
++ef_cattle_tent
+  value =  0.876
   ++units
-    en =  -
-    de =  -
-    fr =  -
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
   ++description
-    Correction factor for uncovered tanks.
+    Emission factor for tent covered storage (ef_cattle_uncovered with a reduction of 60%) differs to the UNECE (2007) p.13 reference (ef_cattle_uncovered with a reduction of 80% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that tent covered storage emit more ammonia then assumed by UNECE.
 
-+c_liquid_storage_solid_cover
-  value =  0.1
++ef_cattle_floating_cover
+  value =  0.438
   ++units
-    en =  -
-    de =  -
-    fr =  -
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
   ++description
-    Correction factor for solid cover.
+    Emission factor for floating covered storage (sheeting may be a type of plastic, canvas or other suitable material) (ef_cattle_uncovered with a reduction of 80%) differs to the UNECE (2007) p.13 referrence (ef_cattle_uncovered with a reduction of 60% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that floating covered storage emit less ammonia then assumed by UNECE.
 
-+c_liquid_storage_tent
-  value =  0.4
++ef_cattle_perforated_cover
+  value =  1.314
   ++units
-    en =  -
-    de =  -
-    fr =  -
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
   ++description
-    Correction factor for tent cover.
+    Emission factor for perforated_cover storage based on ef_cattle_uncovered with a reduction of 40% after UNECE (2007) p 13.
 
-+c_liquid_storage_floating_cover
-  value =  0.2
++ef_cattle_natural_crust
+  value =  1.314
   ++units
-    en =  -
-    de =  -
-    fr =  -
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
   ++description
-    Correction factor for floating cover.
+    Emission factor for a natural crust covered storage based on ef_cattle_uncovered with a reduction of 40% after UNECE (2007) p 13.
 
-+c_liquid_storage_perforated_cover
-  value =  0.6
+## Pigs
++ef_pig_uncovered
+  value = 2.92
   ++units
-    en =  -
-    de =  -
-    fr =  -
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
   ++description
-    Correction factor for perforated cover.
+    The Emission factor for uncovered storage is based on experiments of
+    de Bode (1990) and Sommer et al. (1993) measuring emissions of 2.5 to
+    6.9 g N m-2 day-1 for cattle slurry, for the emission of the none
+    coverd a mean of the higher values is assumed. Assumption: 8.0 gN m-2
+    day-1 resp. 2.92 kgN m-2 /yr according to the report "Abklärungen zur
+    Klasierung von Stallsystemen und Hofdüngerlagern bezüglich der
+    Ammoniak-Emissionen" and the decision of the session of 10 April 208
+    (participants: C. Bonjour, C. Leuenbergern, M. Raaflaub, H. Menzi,
+    T. Kupper).
 
-+c_liquid_storage_natural_crust
-  value =  0.6
++ef_pig_solid_cover
+  value = 0.292
   ++units
-    en =  -
-    de =  -
-    fr =  -
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
   ++description
-    Correction factor for natural crust.
+    Emission factor for solid coverd storage based on ef_pig_uncovered with a reduction of 90%. UNECE (2007) p 13 does suggest a reduction of 80%.Since covers of storages are more tight in Switzerland a reduction of 90% was choosen.
+
++ef_pig_tent
+  value = 1.168
+  ++units
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for tent covered storage (ef_pig_uncovered with a reduction of 60%) differs to the UNECE (2007) p.13 referrence (ef_pig_uncovered with a reduction of 80% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that tent covered storage emit more ammonia then assumed by UNECE.
+
++ef_pig_floating_cover
+  value = 0.584
+  ++units
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for floating covered storage (sheeting may be a type of plastic, canvas or other suitable material) (ef_pig_uncovered with a reduction of 80%) differs to the UNECE (2007) p.13 referrence (ef_pig_uncovered with a reduction of 60% after UNECE (2007))based on mutual agreement of AGRAMMON participants that newer studies showed that floating covered storage emit less ammonia then assumed by UNECE.
+
++ef_pig_perforated_cover
+  value = 1.752
+  ++units
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for perforated_cover storage based on ef_pig_uncovered with a reduction of 40% after UNECE (2007) p 13.
+
++ef_pig_natural_crust
+  value = 1.752
+  ++units
+    en =  kg N/m2/year
+    de =  kg N/m2/Jahr
+    fr =  kg N/m2/an
+  ++description
+    Emission factor for a natural crust covered storage (e.g. chopped straw, peat, bark, LECA balls, ect.)based on ef_pig_uncovered with a reduction of 40% after UNECE (2007) p 13.
+
 
 *** external ***
 
@@ -296,7 +342,7 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Scaled emission factor of a specific liquid storage for pig slurry.
   ++formula
     # get er pigs
-    my $er_pigs = $TE->{'c_liquid_storage_'.In(cover_type)} * Tech(ef_liquid_storage_pig);
+    my $er_pigs = $TE->{'ef_pig_'.In(cover_type)};
     # scale er pigs
     if ( lc In(contains_pig_manure) eq 'no' ) {
       return 0;
@@ -316,7 +362,7 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Scaled emission factor of a specific liquid storage for cattle slurry.
   ++formula
     # get er cattle
-    my $er_cattle = $TE->{'c_liquid_storage_'.In(cover_type)} * Tech(ef_liquid_storage_cattle);
+    my $er_cattle = $TE->{'ef_cattle_'.In(cover_type)};
     if ( lc In(contains_cattle_manure) eq 'no' ) {
       return 0;
     } elsif ( lc In(contains_cattle_manure) eq 'yes' and lc In(contains_pig_manure) eq 'no' ) {

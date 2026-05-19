@@ -3,7 +3,7 @@
 author   = Agrammon Group
 date     = 2008-03-30
 taxonomy = PlantProduction::RecyclingFertiliser
-gui	 = PlantProduction::Recycling Fertiliser,Pflanzenbau::Recyclingdünger,Production végétale::Engrais de recyclage,Plant production::Recycling fertiliser
+gui	 = PlantProduction::RecyclingFertiliser,Pflanzenbau::Recyclingdünger,Production végétale::Engrais de recyclage,Plant production::Recycling fertiliser
 
 +short
 
@@ -145,65 +145,8 @@ Vanderweerden and Jarvis (1997)
 
 *** output ***
 
-+compost 
-  format= %.0f
-  print = PlantProductionDetails
-  ++labels 
-    sort = 113
-    en = Amount of compost (t fresh matter per year)
-    de = Kompost (t Frischsubstanz pro Jahr)
-    fr = Compost (en t matière fraîche par an)
-  ++units  
-    en = t/year
-    de = t/Jahr
-    fr = t/an 
-  ++description
-    Amount of compost in t /a.
-  ++formula
-    In(compost);
- 
-+solid_digestate 
-  format= %.0f
-  print = PlantProductionDetails
-  ++labels 
-    sort = 114
-    en = Amount of solid digestate (t fresh matter per year)
-    de = Festes Gärgut (t Frischsubstanz pro Jahr)
-    fr = Quantité de digestats solides issus d'installations industrielles (en t matière fraîche par an)
-  ++units  
-    en = t/year
-    de = t/Jahr
-    fr = t/an
-  ++description
-    Amount of Solid digestate in t /a.
-  ++formula
-    In(solid_digestate);
-
-+liquid_digestate 
-  format= %.0f
-  print = PlantProductionDetails
-  ++labels 
-    sort = 115
-    en = Amount of liquid digestate (m3 per year)
-    de = Flüssiges Gärgut (m3 pro Jahr)
-    fr = Quantité de digestats liquides issus d'installations industrielles (en m3 par an)
-  ++units
-    en = m3/year
-    de = m3/Jahr
-    fr = m3/an 
-  ++description
-    Amount of liquid digestate in m3 /a.
-  ++formula
-    In(liquid_digestate);
-
 +nh3_ncompost
-  format = %.0f
-  print = PlantProductionDetails
-  ++labels 
-    sort = 113
-    en = compost
-    de = Kompost
-    fr = Compost
+  print = 15
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -213,14 +156,8 @@ Vanderweerden and Jarvis (1997)
   ++formula
     In(compost) * Tech(er_compost);
 
-+nh3_nsolid_digestate
-  format = %.0f
-  print = PlantProductionDetails
-  ++labels 
-    sort = 114
-    en = solid digestate
-    de = Festes Gärgut
-    fr = Digestats solides
++nh3_nsolid_degestate
+  print = 15
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -230,14 +167,8 @@ Vanderweerden and Jarvis (1997)
   ++formula
     In(solid_digestate) * Tech(er_solid_digestate);
 
-+nh3_nliquid_digestate
-  format = %.0f
-  print = PlantProductionDetails
-  ++labels 
-    sort = 115
-    en = liquid digestate
-    de = Flüssiges Gärgut
-    fr = Digestats liquides
++nh3_nliquid_degestate
+  print = 15
   ++units  
     en = kg N/year
     de = kg N/Jahr
@@ -262,7 +193,58 @@ Vanderweerden and Jarvis (1997)
   ++description
     NH3 emission from total recycling fertiliser.
   ++formula
-    Out(nh3_nliquid_digestate) +
-    Out(nh3_nsolid_digestate) +
-    Out(nh3_ncompost);
+    In(liquid_digestate) * Tech(er_liquid_digestate) +
+    In(solid_digestate) * Tech(er_solid_digestate) +
+    In(compost) * Tech(er_compost);
 
+
++compost 
+  format= %.0f
+  print= 15
+  ++labels 
+    sort = 113
+    en = Amount of compost (t fresh matter per year)
+    de = Kompost (t Frischsubstanz pro Jahr)
+    fr = Compost (en t matière fraîche par an)
+  ++units  
+    en = t/year
+    de = t/Jahr
+    fr = t/an 
+  ++description
+    Amount of compost in t /a.
+  ++formula
+    In(compost);
+ 
++solid_digestate 
+  format= %.0f
+  print= 15
+  ++labels 
+    sort = 114
+    en = Amount of solid digestate (t fresh matter per year)
+    de = Festes Gärgut (t Frischsubstanz pro Jahr)
+    fr = Quantité de digestats solides issus d'installations industrielles (en t matière fraîche par an)
+  ++units  
+    en = t/year
+    de = t/Jahr
+    fr = t/an
+  ++description
+    Amount of Solid digestate in t /a.
+  ++formula
+    In(solid_digestate);
+
++liquid_digestate 
+  format= %.0f
+  print= 15
+  ++labels 
+    sort = 115
+    en = Amount of liquid digestate (m3 per year)
+    de = Flüssiges Gärgut (m3 pro Jahr)
+    fr = Quantité de digestats liquides issus d'installations industrielles (en m3 par an)
+  ++units
+    en = m3/year
+    de = m3/Jahr
+    fr = m3/an 
+  ++description
+    Amount of liquid digestate in m3 /a.
+  ++formula
+    In(liquid_digestate);

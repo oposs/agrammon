@@ -89,26 +89,37 @@ is applied.
 
 *** technical ***
 
++c_summer
+  value = 0.15
+  ++units 
+    en = -
+  ++description
+    Correction factor for the application of slurry in summer (June to
+    August): Model calculation according to the model of Katz (Menzi et
+    al. 1997b) with meteorological data from Liebefeld 1993-2002:
+    average from March to November 12°C, 70% relative air humidity, 1.15
+    kg/m3 TAN, 30 m3/ha resulting in a loss of 50.6% TAN; summer 17.8°C
+    resulting in a loss of 56.7% TAN (+12%). Value chosen for
+    cal-culation: +15%
+      
+ 
++c_autumn_winter_spring
+  value = -0.05
+  ++units 
+    en = -
+  ++description
+    Correction factor for the application of slurry in autumn, winter and spring (Sept to May): Model calculation according to the model of Katz (Menzi et
+    al. 1997b) with meteorological data from Liebefeld 1993-2002: average
+    from March to November 12°C, 70% relative air humidity, 1.15 kg/m3
+    TAN, 30 m3/ha resulting in a loss of 50.6% TAN; spring/autumn/winter 9°C
+    resulting in a loss of 48.1% TAN (-4.8%). Value chosen for
+    calculation: -5%
+
+
 *** external ***
 
 
 *** output ***
-
-+appl_season_sum
-  print = 22
-  ++units
-    en = -
-  ++description
-    .
-  ++formula
-    my $season_sum = In(appl_summer) + In(appl_autumn_winter_spring);
-    if( abs( $season_sum - 100)  > 1e-6 )
-    {
-	writeLog({en => "Please correct accordingly: the categories 'share of slurry applied June to August' and 'share of slurry applied September to May' must add up to 100 \%!\n",
-		  de => "Bitte korrigieren: Die Summe der Kategorien Ausbringung von Gülle im Sommer (Juni, Juli, August) und Ausbringung von Gülle von September bis und mit Mai muss 100\% geben!\n",
-		  fr => "Veuillez corriger: la somme des catégories‚ «Part de lisier épandu en été (de juin à août)» et «Part de lisier épandu de septembre à mai y c.» doit donner 100%!\n"});
-    }
-    return $season_sum;
 
 +appl_summer
   print = 22
@@ -121,12 +132,12 @@ is applied.
     0.5;
 ?else
   ++formula
-    Out(appl_season_sum) > 0 ? In(appl_summer) / Out(appl_season_sum) : 0;
+    In(appl_summer) / 100;
 ?endif
 
 +appl_autumn_winter_spring
   print = 22
-  ++units
+  ++units 
     en = -
   ++description
     .
@@ -135,6 +146,31 @@ is applied.
     0.5;
 ?else
   ++formula
-    Out(appl_season_sum) > 0 ? In(appl_autumn_winter_spring) / Out(appl_season_sum) : 0;
+    In(appl_autumn_winter_spring) / 100;
 ?endif
 
++c_season
+  print = 15
+  ++units 
+    en = -
+  ++description
+    Correction factor of the standard emission rate depending on season of 
+    application.
+  ++formula
+    if( abs(Out(appl_summer)+Out(appl_autumn_winter_spring)-1) < 0.000001 ){
+    	return (1 + ( Out(appl_summer) * Tech(c_summer) +
+   	            Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
+    }
+    else {
+        writeLog({en => "Please correct accordingly: the categories of \"share of slurry application from June to August\" "
+		        . "and \"share of slurry application from September to May\" do not add up to 100\%!",
+                  de => "Bitte korrigieren: die Summe der Kategorien Ausbringung von Gülle im Sommer und von "
+                        . "September bis Mai ist nicht gleich 100\%\n",
+                  fr => "Veuillez corriger: la somme des catégories «Part de lisier épandu en été» et «de "
+ 		        . "septembre à mai» n'est pas égale à 100% !\n"
+                  });
+        # Warning!
+    	return (1 + ( Out(appl_summer) * Tech(c_summer) +
+         	Out(appl_autumn_winter_spring) * Tech(c_autumn_winter_spring)));
+    }
+    
