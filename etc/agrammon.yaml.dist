@@ -26,6 +26,13 @@ Model:
     technical: technical.cfg
     variant:   SHL
     version:   "6.0 - #REV#"
+    # Other Model.version strings whose datasets this deployment will
+    # claim (promote to this Model.version) on first open. Use sparingly
+    # — promotion is one-way per dataset. Leave empty (or omit) for
+    # strict mode.
+    # compatibleVersions:
+    #     - '6.5.2'
+    #     - '6.6.0'
 
 # Sibling model versions reachable from this deployment.
 # Each entry: { guiVersion, url, version, title }

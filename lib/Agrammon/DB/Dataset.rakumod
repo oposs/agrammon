@@ -341,7 +341,31 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         }
     }
 
+    # Promote a `(user, name, guivariant, modelvariant)` row whose
+    # dataset_version is in compatibleVersions (but not the current
+    # Model.version) to the current Model.version. After this UPDATE,
+    # the existing strict-version queries find the row normally.
+    # No-op if no row matches, or if compatibleVersions is empty.
+    method !ensure-version-match {
+        my @compat = self!compatible-versions;
+        return unless @compat;
+        my (Str $version, Str $gui, Str $model) = self!variant;
+        self.with-db: -> $db {
+            $db.query(q:to/SQL/, $version, $!user.username, $!name, $gui, $model, @compat);
+                UPDATE dataset
+                   SET dataset_version = $1
+                 WHERE dataset_pers         = pers_email2id($2)
+                   AND dataset_name         = $3
+                   AND dataset_guivariant   = $4
+                   AND dataset_modelvariant = $5
+                   AND dataset_version      = ANY($6)
+                   AND dataset_version     != $1
+            SQL
+        }
+    }
+
     method load {
+        self!ensure-version-match;
         self.with-db: -> $db {
             my $username = $!user.username;
             my $results = $db.query(q:to/DATASET/, $username, $!name,  |self!variant);

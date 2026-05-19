@@ -15,6 +15,14 @@
     migration, legacy datasets can be listed but not modified by the
     running deployment, because the `(user, name, variant)` lookup
     in store-variable won't find them.
+  - New optional `Model.compatibleVersions` list — Model.version
+    strings whose datasets this deployment will claim (promote to its
+    own Model.version) on first open. Lets two sibling deployments
+    share datasets without a manual migration step: opening a foreign-
+    version dataset in the other deployment silently rewrites its
+    `dataset_version`, making subsequent edits work normally. Set
+    on both sides for round-trip editing. Empty/omitted = strict mode
+    (only own version).
   - Fix DatasetVersion row renderer: themed font (was browser default),
     accessible mismatch color (was opacity-based, failed WCAG AA).
 
