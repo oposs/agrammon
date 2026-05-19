@@ -89,6 +89,7 @@ transactionally {
                     },
             variant => "Base",
             version => "6.0",
+            guiVersion => "6.0",
             versions => [],
         );
         is-deeply $cfg = $ws.get-cfg, %cfg-expected, "Config as expected";

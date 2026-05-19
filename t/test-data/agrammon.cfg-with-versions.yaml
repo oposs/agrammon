@@ -30,14 +30,14 @@ Model:
     version:   '6.0'
 
 Versions:
-    - label:   '7.0'
+    - guiVersion:   '7.0'
       url:     /single/v7
       version: '7.0.0'
       title:
           de: AGRAMMON 7.0 Einzelbetriebsmodell
           en: AGRAMMON 7.0 Single Farm Model
           fr: AGRAMMON 7.0 modèle Exploitation individuelle
-    - label:   '6.0'
+    - guiVersion:   '6.0'
       url:     /single/v6
       version: '6.0'
       title:

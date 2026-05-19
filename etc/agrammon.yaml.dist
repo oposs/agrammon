@@ -28,26 +28,27 @@ Model:
     version:   "6.0 - #REV#"
 
 # Sibling model versions reachable from this deployment.
-# Each entry: { label, url, version, title }
-#   - label    short string shown in the dropdown
-#   - url      where to navigate when this version is picked
-#   - version  matches the Model.version of the sibling instance;
-#              the entry whose version equals THIS process's
-#              Model.version is the active one. Switching to a strictly
-#              older version triggers a confirm dialog in the GUI.
-#   - title    per-locale title shown in the GUI header for THIS version.
-#              The active entry's title overrides GUI.title.
+# Each entry: { guiVersion, url, version, title }
+#   - guiVersion  short user-facing label shown in the dropdown
+#                 (matches the sibling's GUI.version)
+#   - url         where to navigate when this version is picked
+#   - version     matches the Model.version of the sibling instance;
+#                 the entry whose version equals THIS process's
+#                 Model.version is the active one. Switching to a strictly
+#                 older version triggers a confirm dialog in the GUI.
+#   - title       per-locale title shown in the GUI header for THIS version.
+#                 The active entry's title overrides GUI.title.
 # Order should be newest first.
 # Leave the block out (or empty) to hide the dropdown.
 Versions:
-    - label:   '7.0'
+    - guiVersion:   '7.0'
       url:     /single/v7
       version: '7.0.0'
       title:
           de: AGRAMMON 7.0 Einzelbetriebsmodell
           en: AGRAMMON 7.0 Single Farm Model
           fr: AGRAMMON 7.0 modèle Exploitation individuelle
-    - label:   '6.6'
+    - guiVersion:   '6.6'
       url:     /single/v6
       version: '6.6.0'
       title:

@@ -40,6 +40,13 @@ class Agrammon::Config {
         %!gui<title>;
     }
 
+    # User-visible short version label (e.g. '7.0'). Distinct from
+    # Model.version (internal identifier). Optional; falls through to
+    # Model.version when not set so existing deployments keep working.
+    method gui-version {
+        %!gui<version> // %!model<version>;
+    }
+
     method model-variant {
         %!model<variant>;
     }
