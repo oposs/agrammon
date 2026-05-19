@@ -1,3 +1,23 @@
+- Unreleased
+
+  - Clean up version-related YAML fields.
+    - `Database.version` is removed; `dataset.dataset_version` is now
+      sourced from `Model.version` (the same identifier the version
+      switcher matches against in `Versions[].version`). Frontend fade
+      now compares like-with-like.
+    - `Model.model` is removed (was never read by any code path).
+    - New optional `GUI.version` field for the short user-visible
+      version label (e.g. '7.0'). Exposed in `get_cfg` as `guiVersion`.
+      Falls through to `Model.version` when not set.
+    - `Versions[].label` is renamed to `Versions[].guiVersion`.
+  - **Migration required** if you have datasets from before this
+    change: see `db/migrate-dataset-version-source.sql`. Without
+    migration, legacy datasets can be listed but not modified by the
+    running deployment, because the `(user, name, variant)` lookup
+    in store-variable won't find them.
+  - Fix DatasetVersion row renderer: themed font (was browser default),
+    accessible mismatch color (was opacity-based, failed WCAG AA).
+
 - 6.6.1, 2026-03-05, fritz.zaucker@oetiker.ch
 
   - Add bulk account creation via CSV file upload
