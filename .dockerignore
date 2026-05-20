@@ -1,0 +1,23 @@
+# Speed up build context — exclude things the spike doesn't need.
+.git
+.planning
+.claude
+TODO
+Support
+t/
+test/
+frontend/node_modules
+frontend/cache
+frontend/compiled/source
+frontend/compiled/build
+frontend/.qx-builds
+*.bak
+*.tar.gz
+runWeb*.sh
+runSingle*.sh
+runRegional*.sh
+runKantonal*.sh
+runExcelTest.sh
+runFrontendTests.sh
+Dockerfile.spike
+.dockerignore
