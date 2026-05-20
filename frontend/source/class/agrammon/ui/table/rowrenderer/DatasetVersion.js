@@ -1,7 +1,11 @@
 /* ************************************************************************
 
-    Row renderer for the dataset table that greys out rows whose dataset
-    version doesn't match the active model version of THIS process.
+    Row renderer for the dataset table.  Highlights the currently selected
+    row with the theme's selected background + text colors.  The historical
+    grey/italic styling for rows whose dataset_version didn't match the
+    active model version was removed in 2026-05; the activeVersion property
+    is kept as a no-op setter so external callsites (Application.js,
+    DatasetTable.js) don't need to change.
 
     The row data layout is the one produced by Agrammon::DB::Datasets.list:
         [name, mod-date, records, read-only, version, tags, comment, model, is-demo]
@@ -14,7 +18,6 @@ qx.Class.define('agrammon.ui.table.rowrenderer.DatasetVersion', {
 
     construct: function(versionColumn) {
         this.base(arguments);
-        this.__versionColumn = versionColumn;
 
         // Resolve the THEME's default font so cells render in the same
         // typeface as the rest of the app. qx.bom.Font.getDefaultStyles()
@@ -26,59 +29,52 @@ qx.Class.define('agrammon.ui.table.rowrenderer.DatasetVersion', {
         this.__fontStyleString = qx.bom.element.Style.compile(this.__fontStyle).replace(/"/g, "'");
 
         var colorMgr = qx.theme.manager.Color.getInstance();
-        // Mismatch rows use a muted color rather than opacity: opacity
-        // stacking drops effective contrast below WCAG AA (DevTools
-        // flags it), but a real gray that still meets 4.5:1 on the row
-        // background passes the contrast check. #555 = ~7.5:1 on white.
         this._colors = {
-            bgcolFocused: colorMgr.resolve("table-row-background-focused"),
-            bgcolEven:    colorMgr.resolve("table-row-background-even"),
-            bgcolOdd:     colorMgr.resolve("table-row-background-odd"),
-            colNormal:    colorMgr.resolve("table-row"),
-            colMismatch:  "#555",
-            horLine:      colorMgr.resolve("table-row-line")
+            bgcolSelected: colorMgr.resolve("table-row-background-selected"),
+            bgcolFocused:  colorMgr.resolve("table-row-background-focused"),
+            bgcolEven:     colorMgr.resolve("table-row-background-even"),
+            bgcolOdd:      colorMgr.resolve("table-row-background-odd"),
+            colSelected:   colorMgr.resolve("table-row-selected"),
+            colNormal:     colorMgr.resolve("table-row"),
+            horLine:       colorMgr.resolve("table-row-line")
         };
     },
 
     properties: {
         highlightFocusRow: { check: "Boolean", init: true },
+        // No-op setter retained for callers in Application.js / DatasetTable.js.
+        // Drove the mismatch grey/italic styling before that was removed.
         activeVersion:     { check: "String",  init: "", nullable: true }
     },
 
     members: {
-        __versionColumn:   null,
         __fontStyle:       null,
         __fontStyleString: null,
         _colors:           null,
         _insetY:           1,
-
-        __isMismatch: function(rowData) {
-            var v = this.getActiveVersion();
-            if (!v || !rowData) return false;
-            var rowVersion = rowData[this.__versionColumn];
-            return rowVersion != null && rowVersion !== '' && rowVersion !== v;
-        },
 
         // interface implementation
         updateDataRowElement: function(rowInfo, rowElem) {
             var style = rowElem.style;
             qx.bom.element.Style.setStyles(rowElem, this.__fontStyle);
 
-            if (rowInfo.focusedRow && this.getHighlightFocusRow()) {
+            if (rowInfo.selected) {
+                style.backgroundColor = this._colors.bgcolSelected;
+                style.color           = this._colors.colSelected;
+            }
+            else if (rowInfo.focusedRow && this.getHighlightFocusRow()) {
                 style.backgroundColor = this._colors.bgcolFocused;
+                style.color           = this._colors.colNormal;
             }
             else {
                 style.backgroundColor = (rowInfo.row % 2 == 0)
                     ? this._colors.bgcolEven
                     : this._colors.bgcolOdd;
+                style.color = this._colors.colNormal;
             }
-
-            style.color = this.__isMismatch(rowInfo.rowData)
-                ? this._colors.colMismatch
-                : this._colors.colNormal;
             style.borderBottom = "1px solid " + this._colors.horLine;
-            style.fontStyle = this.__isMismatch(rowInfo.rowData) ? "italic" : "normal";
-            style.opacity = "1";
+            style.fontStyle    = "normal";
+            style.opacity      = "1";
         },
 
         getRowHeightStyle: function(height) {
@@ -91,24 +87,26 @@ qx.Class.define('agrammon.ui.table.rowrenderer.DatasetVersion', {
         // interface implementation
         createRowStyle: function(rowInfo) {
             var rowStyle = [";", this.__fontStyleString, "background-color:"];
-            if (rowInfo.focusedRow && this.getHighlightFocusRow()) {
+            var textColor;
+            if (rowInfo.selected) {
+                rowStyle.push(this._colors.bgcolSelected);
+                textColor = this._colors.colSelected;
+            }
+            else if (rowInfo.focusedRow && this.getHighlightFocusRow()) {
                 rowStyle.push(this._colors.bgcolFocused);
+                textColor = this._colors.colNormal;
             }
             else {
                 rowStyle.push((rowInfo.row % 2 == 0) ? this._colors.bgcolEven
                                                     : this._colors.bgcolOdd);
+                textColor = this._colors.colNormal;
             }
-            var mismatch = this.__isMismatch(rowInfo.rowData);
-            rowStyle.push(';color:', mismatch ? this._colors.colMismatch
-                                              : this._colors.colNormal);
+            rowStyle.push(';color:', textColor);
             rowStyle.push(';border-bottom: 1px solid ', this._colors.horLine);
-            if (mismatch) {
-                rowStyle.push(';font-style:italic');
-            }
             return rowStyle.join("");
         },
 
-        getRowClass: function(rowInfo) { return ""; },
+        getRowClass:      function(rowInfo) { return ""; },
         getRowAttributes: function(rowInfo) { return ""; }
     },
 
