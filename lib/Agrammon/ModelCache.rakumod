@@ -20,8 +20,14 @@ sub load-model-using-cache(IO() $cache-dir, IO() $path, $module, %preprocessor-o
             {set-formulas-code($m)}
             MODULE
     }
+    # Load the cached compunit. The cache directory MUST already be in the
+    # repo chain; bin/agrammon.raku achieves this with a `use lib %*ENV<HOME>
+    # ~ '/.agrammon';` early in startup. Adding the repo at runtime here
+    # (via CompUnit::RepositoryRegistry.use-repository) triggers a Rakudo
+    # 2026.04 compunit-identity drift that crashes the subsequent load with
+    # "Merging GLOBAL symbols failed: duplicate definition of symbol Died".
     use MONKEY-SEE-NO-EVAL;
-    return EVAL "use lib '$cache-dir.absolute()'; use $hash; {$hash}::<\$model>";
+    return EVAL "use $hash; {$hash}::<\$model>";
 }
 
 sub hash-model($base, %preprocessor-options) {
