@@ -18,6 +18,44 @@
 #   --build-arg RAKUDO_VERSION=2026.04-01
 #   --build-arg TYPST_VERSION=0.14.2
 
+# ─────────────────────────── Stage 0: fe-builder ────────────────────────
+# Compiles the Qooxdoo frontend (target=build) into /work/frontend/compiled/build,
+# which the runtime stage copies to /app/public. Independent of the Raku
+# builder below; the two run in parallel.
+FROM node:20-bookworm-slim AS fe-builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Activate the pnpm version that frontend/package.json pins.
+RUN corepack enable && corepack prepare pnpm@10.4.1 --activate
+
+WORKDIR /work/frontend
+
+# Manifest + lockfile first → dependency layer caches across source edits.
+COPY frontend/package.json frontend/pnpm-lock.yaml /work/frontend/
+RUN pnpm install --frozen-lockfile
+
+# Now the rest of the frontend tree (sources, compile.json, qx_packages
+# manifest, translations, resources).
+COPY frontend/ /work/frontend/
+
+# qx compile does a plain `mkdir` (not -p) for the output, so the parent
+# directory must exist; the .dockerignore strips compiled/{source,build}
+# but doesn't recreate compiled/ itself if the local checkout had it
+# populated.  Just create it.
+RUN mkdir -p /work/frontend/compiled
+
+# Production build into compiled/build/. --feedback=false silences the
+# progress UI; --update-po-files keeps translation timestamps in sync so
+# the layer is reproducible.
+RUN pnpm exec qx compile --target=build --feedback=false --update-po-files
+
+# Reality check — index.html must end up at the root of compiled/build
+# for the Cro route `static "$root/index.html"` (lib/Agrammon/Web/Routes.rakumod
+# build-mode branch) to find it.
+RUN test -f /work/frontend/compiled/build/index.html
+
+
 # ─────────────────────────── Stage 1: builder ───────────────────────────
 FROM debian:bookworm-slim AS builder
 
@@ -111,8 +149,6 @@ RUN git clone --depth 1 https://github.com/croservices/cro-openapi-routes-from-d
 COPY lib/    /app/lib/
 COPY bin/    /app/bin/
 COPY share/  /app/share/
-# public/ is empty in this image; the multi-stage frontend builder is a
-# separate concern (see customers/oep/services/agrammon/OPEN-DECISIONS.md §1d).
 RUN mkdir -p /app/public
 
 # Build-time smoke — catches Raku compile errors inside lib/ before runtime.
@@ -159,8 +195,13 @@ COPY --from=builder /opt/perl5 /opt/perl5
 # typst binary.
 COPY --from=builder /usr/local/bin/typst /usr/local/bin/typst
 
-# App tree.
+# App tree (Raku source, share/, empty public/).
 COPY --from=builder /app /app
+
+# Qooxdoo build output. Routes.rakumod's build-mode branch serves
+# /index.html, /agrammon/*, /resource/* directly out of /app/public.
+COPY --from=fe-builder /work/frontend/compiled/build /app/public
+
 WORKDIR /app
 
 ENV PERL5LIB=/opt/perl5/lib/perl5:/app/Inline/perl5

@@ -8,8 +8,10 @@ t/
 test/
 frontend/node_modules
 frontend/cache
-frontend/compiled/source
-frontend/compiled/build
+# Exclude the whole `compiled` entry — on the dev host this is a symlink
+# to /scratch/... and Docker copies the dangling link into the context,
+# breaking mkdir -p in the frontend builder stage.
+frontend/compiled
 frontend/.qx-builds
 *.bak
 *.tar.gz
