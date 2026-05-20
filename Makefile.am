@@ -213,8 +213,8 @@ dev-db-reset: dev-db-stop
 #   podman login harbor.oetiker.ch
 
 CONTAINER_REGISTRY ?= harbor.oetiker.ch
-CONTAINER_PROJECT  ?= oep
-CONTAINER_IMAGE    ?= $(CONTAINER_REGISTRY)/$(CONTAINER_PROJECT)/agrammon
+CONTAINER_PROJECT  ?= bfh
+CONTAINER_IMAGE    ?= $(CONTAINER_REGISTRY)/$(CONTAINER_PROJECT)/agrammon-model
 CONTAINER_VERSION  ?= $(shell cat VERSION 2>/dev/null || echo dev)
 CONTAINER_ENV      ?= test
 CONTAINER_TAG      ?= $(CONTAINER_ENV)-$(CONTAINER_VERSION)
