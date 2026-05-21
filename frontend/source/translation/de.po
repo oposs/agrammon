@@ -22,7 +22,7 @@ msgstr "Benutzerwechsel beendet"
 msgid "Returning from %1 to %2"
 msgstr "Zurück von %1 zu %2"
 
-#: agrammon/Application.js
+#: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr "Bitte melden Sie sich an"
 
@@ -1003,8 +1003,8 @@ msgid "Switch to older model version?"
 msgstr "Zu älterer Modell Version wechseln?"
 
 #: agrammon/ui/menu/OptionMenu.js
-msgid "You are about to switch from version %1 to the older version %2. Older model versions may not understand datasets created in a newer one. Continue?"
-msgstr "Sie wechseln von Modell Version %1 zur älteren Version %2. Ältere Modell Versionen können eventuell Datensätze, die in einer neueren Version erstellt wurden, nicht vollständig laden."
+msgid "You are about to switch from version %1 to the older version %2. Input data, that are not used in the older model version, will be ignored. Continue?"
+msgstr "Sie wechseln von Modell Version %1 zur älteren Version %2. Eingabedaten des Datensatzes, die im älteren Modell nicht genutzt werden, werden automatisch ignoriert."
 
 #: agrammon/ui/menu/OptionMenu.js
 msgid "Set model version ..."

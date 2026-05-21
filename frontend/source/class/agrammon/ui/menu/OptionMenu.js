@@ -211,7 +211,7 @@ qx.Class.define('agrammon.ui.menu.OptionMenu', {
                 var prevActive = this.__activeVersion;
                 var dialog = new agrammon.ui.dialog.Confirm(
                     this.tr("Switch to older model version?"),
-                    this.tr("You are about to switch from version %1 to the older version %2. Older model versions may not understand datasets created in a newer one. Continue?",
+                    this.tr("You are about to switch from version %1 to the older version %2. Input data, that are not used in the older model version, will be ignored. Continue?",
                             prevActive, entry.version),
                     function () {
                         dialog.close();
