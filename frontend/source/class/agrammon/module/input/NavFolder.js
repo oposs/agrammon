@@ -505,16 +505,18 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                             }
                             else {
                                 this.debug('No match: key='+key+', var='+this.__propData[i].getName());
-                                msg = this.__propData[i].getName() + ': ';
-                                if (value == '') {
-                                    msg += ' empty variable,';
+                                if (agrammon.Info.getInstance().isAdmin()) {
+                                    msg = this.__propData[i].getName() + ': ';
+                                    if (value == '') {
+                                        msg += ' empty variable,';
+                                    }
+                                    else {
+                                        msg += ' no match for >' + value + '< in'
+                                            + ' >' + options + '<';
+                                    }
+                                    msg += ', should be removed from dataset.';
+                                    alert(msg);
                                 }
-                                else {
-                                    msg += ' no match for >' + value + '< in'
-                                         + ' >' + options + '<';
-                                }
-                                msg += ', should be removed from dataset.';
-                                alert(msg);
                                 qx.event.message.Bus.dispatchByName('agrammon.NavBar.deleteInstanceData', this.__propData[i].getName());
                             }
                         }
