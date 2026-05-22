@@ -211,7 +211,7 @@ qx.Class.define('agrammon.ui.menu.OptionMenu', {
                 var prevActive = this.__activeVersion;
                 var dialog = new agrammon.ui.dialog.Confirm(
                     this.tr("Switch to older model version?"),
-                    this.tr("You are about to switch from the current version %1 to the older version %2. Input data, that are not used in the older model version, will be ignored. Continue?",
+                    this.tr("You are switching from the current model version %1 to the older version %2. Inputs from %1 that did not exist yet in %2 will either be converted and displayed in orange, or in certain instances, hidden entirely. You find information about the changes between model versions in the documents “Information on the version of Agrammon” at https://agrammon.ch/en/downloads/",
                             prevActive, entry.version),
                     function () {
                         dialog.close();

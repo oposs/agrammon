@@ -22,7 +22,7 @@ msgstr "Benutzerwechsel beendet"
 msgid "Returning from %1 to %2"
 msgstr "Zurück von %1 zu %2"
 
-#: agrammon/io/remote/Rpc.js
+#: agrammon/Application.js
 msgid "Please authenticate yourself"
 msgstr "Bitte melden Sie sich an"
 
@@ -50,7 +50,7 @@ msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/ui/About.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -1003,8 +1003,8 @@ msgid "Switch to older model version?"
 msgstr "Zu älterer Modell Version wechseln?"
 
 #: agrammon/ui/menu/OptionMenu.js
-msgid "You are about to switch from version %1 to the older version %2. Input data, that are not used in the older model version, will be ignored. Continue?"
-msgstr "Sie wechseln von Modell Version %1 zur älteren Version %2. Eingabedaten des Datensatzes, die im älteren Modell nicht genutzt werden, werden automatisch ignoriert."
+msgid "You are switching from the current model version %1 to the older version %2. Inputs from %1 that did not exist yet in %2 will either be converted and displayed in orange, or in certain instances, hidden entirely. You find information about the changes between model versions in the documents “Information on the version of Agrammon” at https://agrammon.ch/en/downloads/"
+msgstr "Sie wechseln von der aktuellen Modellversion %1 zur älteren Version %2. Eingaben von %1, die in %2 noch nicht vorhanden waren, werden entweder umgewandelt und in Orange oder in einzelnen Fällen gar nicht angezeigt. Sie können sich über die Änderungen der Modellversionen in den Dokumenten «Informationen zur neuen Version Agrammon» auf https://agrammon.ch/de/downloads/ informieren."
 
 #: agrammon/ui/menu/OptionMenu.js
 msgid "Set model version ..."

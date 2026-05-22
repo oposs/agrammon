@@ -1003,7 +1003,7 @@ msgid "Switch to older model version?"
 msgstr ""
 
 #: agrammon/ui/menu/OptionMenu.js
-msgid "You are about to switch from version %1 to the older version %2. Older model versions may not understand datasets created in a newer one. Continue?"
+msgid "You are switching from the current model version %1 to the older version %2. Inputs from %1 that did not exist yet in %2 will either be converted and displayed in orange, or in certain instances, hidden entirely. You find information about the changes between model versions in the documents “Information on the version of Agrammon” at https://agrammon.ch/en/downloads/"
 msgstr ""
 
 #: agrammon/ui/menu/OptionMenu.js
