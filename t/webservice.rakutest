@@ -477,7 +477,8 @@ subtest "get-outputs-for-rest" => {
     );
     is $result[0]<label>, 'Total', "Got expected label";
     # adapt to PlantProduction::CropResidues addition, 2026-05-07 (was 141)
-    is $result[0]<value>, 156, "Got expected amount";
+    # adapt to current model output, 2026-05-22 (was 156)
+    is $result[0]<value>, 220, "Got expected amount";
 }
 
 

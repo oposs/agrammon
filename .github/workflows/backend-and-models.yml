@@ -73,12 +73,12 @@ jobs:
             /var/cache/apt/archives
             /var/lib/apt/lists
           # Bump the suffix manually when the apt package list below changes.
-          key: ${{ matrix.os }}-apt-v1
+          key: ${{ matrix.os }}-apt-v2
 
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt-get install -y libperl-dev texlive texlive-luatex texlive-latex-recommended texlive-science texlive-latex-extra
+          sudo apt-get install -y libperl-dev texlive texlive-luatex texlive-latex-recommended texlive-science texlive-latex-extra fonts-liberation
 
       - name: Install typst
         run: |
