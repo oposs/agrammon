@@ -25,6 +25,14 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 *** input ***
 
+# 7.0.0 split +++beef_cattle into 'beef_cattle' (whole fattening period),
+# 'beef_cattle_grower' (<= 160 days), and 'beef_cattle_finisher' (> 160 days).
+# 6.5.2 keeps only the combined 'beef_cattle', so declare the two v7 sub-
+# categories as aliases on +++beef_cattle here. A v7-tagged dataset opened
+# on this 6.5.2 deployment (via Model.compatibleVersions promotion) will
+# validate and canonicalize both foreign values to the local 'beef_cattle'
+# for formula evaluation. (Stored data_val is not rewritten; reopening in
+# v7.0.0 restores the native value.)
 +animalcategory
   type = enum
   filter = true
@@ -74,6 +82,8 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
        de = Masttiere_Rindviehmast
        fr = Bovins_à_l'engrais
        it = beef_cattle
+       accepts = beef_cattle_grower
+       accepts = beef_cattle_finisher
   ++labels
     en = Animal category
     de = Tierkategorie

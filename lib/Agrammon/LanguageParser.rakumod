@@ -12,8 +12,12 @@ sub parse-lang-values(Str $value, Str $context --> Hash) is export {
         # `accepts` is a comma-separated list of foreign enum keys this
         # option accepts as aliases (cross-version migration). Preserve
         # underscores and split on commas; do not treat as language text.
+        # Multiple `accepts =` lines accumulate (each line's aliases are
+        # appended), so authors can list one alias per line or comma-join
+        # them on a single line — both forms work.
         if $l eq 'accepts' {
-            %opt-lang{$l} = $o.split(/\s* ',' \s*/).grep(*.chars).list;
+            my @new = $o.split(/\s* ',' \s*/).grep(*.chars).list;
+            %opt-lang{$l} = (|(%opt-lang{$l} // ()), |@new).list;
         }
         else {
             $o ~~ s:g/_/ /;

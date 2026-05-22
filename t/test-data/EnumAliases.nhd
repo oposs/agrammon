@@ -19,6 +19,7 @@ description = Test fixture for enum alias support.
      +++yes
         en = yes
         accepts = fix, mobile
+        accepts = old_yes
      +++no
         en = no
    ++units

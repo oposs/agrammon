@@ -3,7 +3,7 @@ use Agrammon::ModuleBuilder;
 use Agrammon::ModuleParser;
 use Test;
 
-plan 14;
+plan 16;
 
 my $test-root = $*PROGRAM.parent.add('test-data');
 my $module-file = "$test-root/EnumAliases.nhd";
@@ -31,11 +31,14 @@ ok $input.is-valid-enum-value('yes'),    'local "yes" valid';
 ok $input.is-valid-enum-value('no'),     'local "no" valid';
 ok $input.is-valid-enum-value('fix'),    'alias "fix" valid';
 ok $input.is-valid-enum-value('mobile'), 'alias "mobile" valid';
+# Aliases from a second `accepts =` line must also be honored (multi-line form).
+ok $input.is-valid-enum-value('old_yes'), 'alias "old_yes" valid (multi-line accepts)';
 nok $input.is-valid-enum-value('bogus'), 'unknown value rejected';
 
 # Canonicalization: aliases map to their local key; local keys pass through.
 is $input.canonical-enum-value('fix'),    'yes', 'fix → yes';
 is $input.canonical-enum-value('mobile'), 'yes', 'mobile → yes';
+is $input.canonical-enum-value('old_yes'), 'yes', 'old_yes → yes (multi-line accepts)';
 
 # Ensure module-level canonicalization rewrites alias values for formula eval
 # but leaves non-enum and unmapped values intact.
