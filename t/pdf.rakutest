@@ -5,53 +5,56 @@ use Agrammon::OutputFormatter::PDF;
 use Test;
 plan 6;
 
+# Each map is { input => expected-typst-output }. Derived by running the
+# typst-* helper directly; see lib/Agrammon/OutputFormatter/PDF.rakumod
+# for the substitution rules.
 my %chemify-map = %(
-    'NH3'     => '\\ce{NH3}',
-    'N2O'     => '\\ce{N2O}',
-    'NO2'     => '\\ce{NO2}',
-    'N2'      => '\\ce{N2}',
-    'N2,N2O'  => '\\ce{N2},\\ce{N2O}',
-    'N2O,N2'  => '\\ce{N2O},\\ce{N2}',
-    'NOx'     => '\\ce{NO_{(x)}}',
+    'NH3'     => '$ "NH"_3 $',
+    'N2O'     => '$ "N"_2 "O" $',
+    'NO2'     => '$ "NO"_2 $',
+    'N2'      => '$ "N"_2 $',
+    'N2,N2O'  => '$ "N"_2 $,$ "N"_2 "O" $',
+    'N2O,N2' => '$ "N"_2 "O" $,$ "N"_2 $',
+    'NOx'     => '$ "NO"_x $',
 );
 
 my %escape-map = %(
-    '__' => '\hspace{2em}',
-    '\\' => '\backslash',
-    '_'  => '\_',
-    '%'  => '\%',
-    '}'  =>  '\}',
-    '{'  => '\{',
-    '$'  => '\$',
-    '&'  => '\amp{}',
-    '^'  => '\^{}',
-    '~'  => '\~{}',
-    '#'  => '\#',
-    '|'  => '\|',
+    '__' => '#h(2em)',     # double underscore → 2em indent (special-case)
+    '\\' => '\\\\',         # backslash → escaped backslash
+    '_'  => '\\_',
+    '$'  => '\\$',
+    '~'  => '\\~',
+    '#'  => '\\#',
+    '*'  => '\\*',
+    '['  => '\\[',
+    ']'  => '\\]',
+    # pass-through (not typst-special): %, {, }, &, ^, |
+    '%'  => '%',
+    '&'  => '&',
 );
 
 my %spaces-map = %(
-    'kg / yr' => 'kg\\,/\\,yr',
+    'kg / yr' => 'kg#h(0.3em)/#h(0.3em)yr',
 );
 
-subtest "latex prettify" => {
-    subtest "latex-escape" => {
+subtest "typst prettify" => {
+    subtest "typst-escape" => {
         for %escape-map.kv -> $plain, $expected {
-            my $escaped = latex-escape($plain);
+            my $escaped = typst-escape($plain);
             is $escaped, $expected, "$plain -> $escaped";
         }
     }
 
-    subtest "latex-chemify" => {
+    subtest "typst-chemify" => {
         for %chemify-map.kv -> $plain, $expected {
-            my $escaped = latex-chemify($plain);
+            my $escaped = typst-chemify($plain);
             is $escaped, $expected, "$plain -> $escaped";
         }
     }
 
-    subtest "latex-spaces" => {
+    subtest "typst-spaces" => {
         for %spaces-map.kv -> $plain, $expected {
-            my $escaped = latex-small-spaces($plain);
+            my $escaped = typst-small-spaces($plain);
             is $escaped, $expected, "$plain -> $escaped";
         }
     }
@@ -84,35 +87,42 @@ my %data = %(
     ],
     outputs => [
         %( :section('Module'), :first ),
-        %( :label('Weide NH3-Emission'), :value(5), :unit('kg\,N\,/\,Jahr') ),
-        %( :label('Stall und Laufhof NH3-Emission'), :value(50), :unit('kg\,N\,/\,Jahr') ),
+        %( :label('Weide NH3-Emission'), :value(5), :unit('kg N / yr') ),
+        %( :label('Stall und Laufhof NH3-Emission'), :value(50), :unit('kg N / yr') ),
     ],
     log => [
         %( :gui('Module'), :instance(), :message('comment 1') ),
         %( :gui('Module'), :instance(), :message('comment 2') ),
     ],
 );
-my $pdf-program  = $cfg.general<pdflatex>;
+my $pdf-program  = $cfg.general<typst>;
+my $timeout      = $cfg.general<pdfTimeout> // 30;
 my $dataset-name = 'TestDataset';
 my $temp-dir   = $cfg.general<tempDir>;
 my constant $source-dir = $*PROGRAM.parent.add('test-data');
 my $pdf-file-expected   = "$source-dir/agrammon_export.pdf".IO;
-my $latex-file-expected = "$source-dir/agrammon_export.tex".IO;
+my $typ-file-expected   = "$source-dir/agrammon_export.typ".IO;
 
-is create-latex('pdfexport', %data), $latex-file-expected.slurp, 'Create LaTeX document';
+is create-pdf-source('pdfexport', %data), $typ-file-expected.slurp, 'Create typst source';
 
-my $pdf-created;
-lives-ok { $pdf-created = create-pdf($temp-dir, $pdf-program, $cfg.general<latexTimeout>, $username, $dataset-name, %data) }, "Create PDF";
+if $pdf-program && $pdf-program.IO.x {
+    my $pdf-created;
+    lives-ok { $pdf-created = create-pdf($temp-dir, $pdf-program, $timeout, $username, $dataset-name, %data) }, "Create PDF";
 
-if not %*ENV<GITHUB_ACTIONS> {
-    is $pdf-created.bytes, $pdf-file-expected.s, "PDF file $pdf-file-expected size as expected";
+    if not %*ENV<GITHUB_ACTIONS> {
+        is $pdf-created.bytes, $pdf-file-expected.s, "PDF file $pdf-file-expected size as expected";
+    }
+    else {
+        skip "PDF size check not stable on GitHub Actions", 1;
+    }
+
+    # Inject text that violates typst syntax (unterminated function call).
+    %data<log>.push(%( :gui('Module'), :instance(), :message('#unterminated(')));
+    throws-like {create-pdf($temp-dir, $pdf-program, $timeout, $username, $dataset-name ~ '_broken', %data)},
+            X::Agrammon::OutputFormatter::PDF::Failed, "Create PDF from invalid typst source dies";
 }
 else {
-    skip "PDF size check not working on GitHub Actions for unknown reason", 1;
+    skip "typst binary not found at '$pdf-program' — skipping create-pdf checks", 3;
 }
-
-%data<log>.push(%( :gui('Module'), :instance(), :message('\invalidLatex')));
-throws-like {create-pdf($temp-dir, $pdf-program, $cfg.general<latexTimeout>, $username, $dataset-name ~ '_broken', %data)},
-        X::Agrammon::OutputFormatter::PDF::Failed, "Create PDF from invalid LaTeX file dies";
 
 done-testing;

@@ -80,6 +80,15 @@ jobs:
           sudo apt update
           sudo apt-get install -y libperl-dev texlive texlive-luatex texlive-latex-recommended texlive-science texlive-latex-extra
 
+      - name: Install typst
+        run: |
+          TYPST_VERSION=v0.13.0
+          curl -sSL -o /tmp/typst.tar.xz \
+            "https://github.com/typst/typst/releases/download/${TYPST_VERSION}/typst-x86_64-unknown-linux-musl.tar.xz"
+          tar -xJf /tmp/typst.tar.xz -C /tmp
+          sudo install -m 0755 /tmp/typst-x86_64-unknown-linux-musl/typst /usr/local/bin/typst
+          /usr/local/bin/typst --version
+
       - name: Setup Perl modules cache
         uses: actions/cache@v4
         id: perlCache
