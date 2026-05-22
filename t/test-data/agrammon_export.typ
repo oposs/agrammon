@@ -16,7 +16,7 @@
     #grid(
       columns: (1fr, auto),
       align: (left, right),
-      [fritz.zaucker@oetiker.ch --- TestDataset \
+      [fritz.zaucker\@oetiker.ch --- TestDataset \
        Agrammon 6.0 --- Timestamp],
       context counter(page).display(),
     )
@@ -44,7 +44,7 @@
   inset: (x: 3pt, y: 2pt),
   align: (left, left),
   [*Dataset:*], [TestDataset],
-  [*Username:*], [fritz.zaucker@oetiker.ch],
+  [*Username:*], [fritz.zaucker\@oetiker.ch],
   [*Version:*], [Single],
 )
 

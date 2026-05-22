@@ -80,7 +80,10 @@ my %data = %(
     ),
     :version('Agrammon 6.0'),
     :timestamp('Timestamp'),
-    :dataset('TestDataset'), :username('fritz.zaucker@oetiker.ch'), :model('Single'),
+    # input-output-as-pdf typst-escapes username/dataset before they reach
+    # the template; mirror that here so the @ in the email doesn't trip
+    # typst's label-reference syntax (`@label`).
+    :dataset('TestDataset'), :username(typst-escape('fritz.zaucker@oetiker.ch')), :model('Single'),
     inputs => [
         %( :module('Module'), :first-module ),
         %( :value(42), :unit('Unit'), :label('Input'), :first-line ),
