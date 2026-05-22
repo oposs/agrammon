@@ -1,4 +1,9 @@
 use v6;
+# Register the model cache dir in the repo chain before any Agrammon::* load.
+# Required by load-model-using-cache; see lib/Agrammon/ModelCache.rakumod for
+# the 2026.04 compunit-identity gotcha that drove this.
+use lib %*ENV<HOME> ~ '/.agrammon';
+
 use Test;
 use Data::Dump::Tree;
 use Agrammon::DataSource::CSV;
@@ -11,7 +16,7 @@ use Agrammon::OutputFormatter::Text;
 use Agrammon::TechnicalParser;
 use Agrammon::Validation;
 
-my $temp-dir = $*TMPDIR.add('agrammon_testing');
+my $temp-dir = $*HOME.add('.agrammon');
 
 for <hr-inclNOxExtendedWithFilters hr-inclNOxExtended> -> $model-version {
     subtest "Model $model-version" => {
