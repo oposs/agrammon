@@ -3,7 +3,7 @@
 author   = Agrammon Group
 date     = 2020-02-10
 taxonomy = PlantProduction::MineralFertiliser
-gui      = PlantProduction::Mineral Fertiliser,Pflanzenbau::Mineralische Stickstoffdünger,Production végétale::Engrais minéraux azotés,Plant production::Mineral fertiliser
+gui      = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Stickstoffdünger,Production végétale::Engrais minéraux azotés,Plant production::Mineral fertiliser
 
 +short
 
