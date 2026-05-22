@@ -68,10 +68,12 @@ sub create-pdf($temp-dir-name, $pdf-prog, $timeout, $username, $dataset-name, %d
             "$source-file",
             "$pdf-file";
 
+    my $stderr-buf = '';
     react {
         whenever $proc.stdout.lines {
         }
-        whenever $proc.stderr {
+        whenever $proc.stderr.lines {
+            $stderr-buf ~= $_ ~ "\n";
         }
         whenever $proc.start {
             $exit-code = .exitcode;
@@ -91,6 +93,7 @@ sub create-pdf($temp-dir-name, $pdf-prog, $timeout, $username, $dataset-name, %d
 
     if $exit-code {
         note "$pdf-prog failed for $source-file, exit-code=$exit-code";
+        note "$pdf-prog stderr:\n$stderr-buf" if $stderr-buf.chars;
         die X::Agrammon::OutputFormatter::PDF::Failed.new: :$exit-code;
     }
     if $signal {
