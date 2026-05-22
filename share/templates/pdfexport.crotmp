@@ -1,146 +1,145 @@
-\nonstopmode
-%\documentclass[10pt,a4paper,landscape,twocolumn]{article}
-\documentclass[10pt,a4paper]{article}
-\usepackage{a4wide}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-%\usepackage{pgfplots}
-\usepackage{booktabs}
-\usepackage[version=4]{mhchem}
-\usepackage[table,svgnames]{xcolor}
-\usepackage{verbdef}
-%\usepackage{longtable}
-\usepackage{tabularx}
-\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}} % rechtsbuendig mit Breitenangabe
+// =============================================================================
+// Agrammon PDF export — typst template (DRAFT, side-by-side with pdfexport.crotmp)
+// Rendered by Cro::WebApp::Template; output piped to `typst compile`.
+//
+// Cro tags use METHOD calls on the iteration item, so field names that
+// collide with Raku built-ins (`.first` and `.head` on Hash) must use the
+// explicit subscript form. This template hits one such case, on the
+// section-marker key `first` (see the outputs loop below).
+// =============================================================================
 
+#set page(
+  paper: "a4",
+  margin: (top: 1.8cm, bottom: 2.5cm, x: 1.5cm),
+  footer: [
+    #set text(size: 8pt)
+    #grid(
+      columns: (1fr, auto),
+      align: (left, right),
+      [<.username> --- <.dataset> \
+       <.version> --- <.timestamp>],
+      context counter(page).display(),
+    )
+  ],
+)
+#set text(font: "Liberation Sans", size: 10pt)
+#set par(justify: false, leading: 0.5em)
+#set heading(numbering: "1.")
+#show heading.where(level: 1): set text(size: 14pt, weight: "bold")
+#show heading.where(level: 2): set text(size: 12pt, weight: "bold")
+#show heading.where(level: 3): set text(size: 10pt, weight: "bold")
 
-\pagestyle{empty}
-%\usepackage[sc]{mathpazo}
-%\usepackage[sc]{arial}
-%\usepackage{amsmath,amsgen,amscd,amsrefs,amsthm,amsopn,amssymb,amsfonts}
-\renewcommand{\rmdefault}{phv} % Arial
-\renewcommand{\sfdefault}{phv} % Arial
-\usepackage[scaled]{helvet}
-\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
-\newcommand\gt{>}
-\newcommand\lt{<&HTML('<')>}
-\newcommand\amp{\&}
+// ── Title (no number — matches LaTeX `\section*{}`). Rendered as
+// styled text rather than a heading so it doesn't increment the
+// level-1 counter (would make subsequent sections start at "0.1.").
+#align(left)[#text(size: 14pt, weight: "bold")[<.titles.report>]]
+#v(0.5em)
 
-\addtolength{\topmargin}{-2cm}
-\addtolength{\textheight}{2cm}
-\addtolength{\oddsidemargin}{-1cm}
-\addtolength{\evensidemargin}{-1cm}
-\addtolength{\textwidth}{1cm}
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhead{}
-\fancyfoot[C]{}
-\fancyfoot[L]{<.username> --- <.dataset>\newline <.version> --- <.timestamp>}
-\fancyfoot[R]{\mbox{}\newline\thepage}
-\renewcommand{\headrulewidth}{0pt}
+// ── Dataset metadata block ────────────────────────────────────────
+= <.titles.data.section>
 
-%\pgfplotsset{every axis legend/.append style={cells={anchor=west} }}
-\begin{document}
-
-\section*{<.titles.report>}
-\section{<.titles.data.section>}
-\begin{tabular}[t]{@{}l@{\hspace{2em}}p{7cm}}
+#table(
+  columns: (auto, 1fr),
+  stroke: none,
+  inset: (x: 3pt, y: 2pt),
+  align: (left, left),
 <?.submission>
-\textbf{<.titles.submission.farm>:} & <.submission.farm-number>\\
-\textbf{<.titles.submission.situation>:} & <.submission.farm-situation>\\
-\textbf{<.titles.submission.sender>:} & <.submission.sender-name>\\
+  [*<.titles.submission.farm>:*], [<.submission.farm-number>],
+  [*<.titles.submission.situation>:*], [<.submission.farm-situation>],
+  [*<.titles.submission.sender>:*], [<.submission.sender-name>],
 </?>
-\textbf{<.titles.data.dataset>:} & <.dataset>\\
-\textbf{<.titles.data.user>:} & <.username>\\
-\textbf{Version:} & <.model>\\
+  [*<.titles.data.dataset>:*], [<.dataset>],
+  [*<.titles.data.user>:*], [<.username>],
+  [*Version:*], [<.model>],
 <?.submission>
-\textbf{<.titles.submission.recipient>:} & <.submission.recipient-name>\\
-\textbf{<.titles.submission.comment>:} & <.submission.comment>\\
+  [*<.titles.submission.recipient>:*], [<.submission.recipient-name>],
+  [*<.titles.submission.comment>:*], [<.submission.comment>],
 </?>
-\end{tabular}
+)
 
 <?.submission>
-\vspace{1ex}
-\begin{small}
-\noindent
-<.titles.submission.info>
-\end{small}
+#text(size: 9pt)[<.titles.submission.info>]
 </?>
 
-\section{<.titles.outputs>}
+// ── Outputs section ───────────────────────────────────────────────
+// Streaming-table trick (mirrors the LaTeX template):
+//   * each section header opens `#table( … `
+//   * each data row appends a cell tuple
+//   * the closing `)` is emitted by the NEXT section header (when not the
+//     first) and once at the end of the @outputs loop
+= <.titles.outputs>
+
 <@outputs>
 <?.section>
-<!.first>
-\bottomrule
-\end{tabular}
+<!{ .<first> }>
+)
+#v(1em)
 </!>
-\subsection{<.section>}
-\noindent
-\rowcolors{1}{LightGrey}{White}
-\begin{tabular}[t]{lllrl}
-\toprule
+== <.section>
+#table(
+  columns: (auto, 1fr, auto, auto),
+  stroke: none,
+  fill: (_, y) => if calc.odd(y) { rgb("#eaeaea") },
+  inset: (x: 4pt, y: 3pt),
+  align: (col, _) => if col == 2 { right } else { left },
 </?>
 <!.section>
-&  & <.label> & <.value> & <.unit>\\
+  [], [<.label>], [<.value>], [<.unit>],
 </!>
 </@>
-\bottomrule
-\end{tabular}
+)
 
 <?.log>
-\subsection*{<.titles.outputLog>}
-\begin{small}
-\begin{description}
+== <.titles.outputLog>
+
+#text(size: 9pt)[
 <@log>
-\item[{<.gui>[<.instance>]}] <.message>
+- *<.gui>[<.instance>]*: <.message>
 </@>
-\end{description}
-\end{small}
+]
 </?>
 
-\newpage
-\section{<.titles.inputs>}
+// ── Inputs section ────────────────────────────────────────────────
+// Same streaming-table pattern, but with module+instance nesting
+// (each instance opens a new table; module headers close+open).
+#pagebreak()
+= <.titles.inputs>
+
+#set text(size: 8pt)
+
 <@inputs>
 <?.module>
 <!{ .first-module || .first-instance }>
-\bottomrule % not first-module
-\end{tabular}
-\end{scriptsize}
-\vspace{2ex}
-
+)
+#v(1em)
 </!>
-\subsection{<.module>}
+== <.module>
 </?>
 
 <?.instance>
 <!.first-instance>
-\bottomrule % not first-instance
-\end{tabular}
-\end{scriptsize}
-\vspace{2ex}
-
+)
+#v(1em)
 </!>
-\noindent % first-instance
-\begin{scriptsize}
-\rowcolors{1}{LightGrey}{White}
-\begin{tabular}[t]{lllrl}
-\toprule
-\multicolumn{5}{l}{\textbf{\emph{<.instance>}}}\\
+#table(
+  columns: (auto, auto, 1fr, auto, auto),
+  stroke: none,
+  fill: (_, y) => if calc.odd(y) { rgb("#eaeaea") },
+  inset: (x: 4pt, y: 2pt),
+  align: (col, _) => if col == 3 { right } else { left },
+  table.cell(colspan: 5)[#text(weight: "bold")[<.instance>]],
 </?>
 
 <!{ .module || .instance }>
 <?.first-line>
-\noindent % first-line
-\begin{scriptsize}
-\rowcolors{1}{LightGrey}{White}
-\begin{tabular}[t]{lllrl}
-\toprule
+#table(
+  columns: (auto, auto, 1fr, auto, auto),
+  stroke: none,
+  fill: (_, y) => if calc.odd(y) { rgb("#eaeaea") },
+  inset: (x: 4pt, y: 2pt),
+  align: (col, _) => if col == 3 { right } else { left },
 </?>
- &  & <.label> & <.value> & <.unit>\\
+  [], [], [<.label>], [<.value>], [<.unit>],
 </!>
 </@>
-\bottomrule % done inputs
-\end{tabular}
-\end{scriptsize}
-
-\end{document}
+)
