@@ -11,11 +11,12 @@ class Agrammon::DB::Datasets does Agrammon::DB::Variant {
     method load {
         self.with-db: -> $db {
             my $username = $!user.username;
-            # Cross-version listing: don't filter by dataset_version here so
-            # the GUI can show datasets from sibling model versions and
-            # grey out the ones that don't match the active version.
-            my @gui-model = %!agrammon-variant<gui model>;
-            my $results = $db.query(q:to/DATASETS/, ~$username, |@gui-model);
+            # Filter datasets to the active Model.version and anything in
+            # Model.compatibleVersions; compat rows are promoted to the
+            # active version on first open by Dataset!ensure-version-match.
+            my @versions = (%!agrammon-variant<version>, |self!compatible-versions);
+            my (Str $gui, Str $model) = %!agrammon-variant<gui model>;
+            my $results = $db.query(q:to/DATASETS/, ~$username, @versions, $gui, $model);
                 SELECT dataset_id AS id,
                        dataset_name AS name,
                        date_trunc('seconds', dataset_mod_date) AS "mod-date",
@@ -30,7 +31,8 @@ class Agrammon::DB::Datasets does Agrammon::DB::Variant {
                        dataset_model   AS model,
                        dataset_pers != pers_email2id($1) AS "is-demo"
                   FROM dataset
-                 WHERE (dataset_model  = 'UNKNOWN' OR dataset_guivariant= $2 AND dataset_modelvariant = $3)
+                 WHERE dataset_version  = ANY($2)
+                   AND (dataset_model  = 'UNKNOWN' OR dataset_guivariant= $3 AND dataset_modelvariant = $4)
                    AND dataset_name    NOT LIKE '%_expanded'
                    AND (dataset_pers=pers_email2id($1) OR dataset_pers=pers_email2id('default')
                                                        OR dataset_pers=pers_email2id('default2'))
