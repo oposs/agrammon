@@ -17,6 +17,20 @@ PM := $(shell find lib -name "*.pm")
 
 EXTRA_DIST = META6.json README.md VERSION cpanfile COPYRIGHT CHANGELOG.md bootstrap $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) bin lib
 
+# Default gzip --best is ~6× slower than -6 for marginal size gain on
+# our 250 MB tree. Override automake's default so `make dist` finishes
+# in seconds rather than minutes.
+GZIP_ENV = -6
+
+# Strip dev-host caches from the dist tarball. `lib/.precomp` is a
+# symlink to /scratch/.../lib/precomp on the developer host; automake's
+# `tar -ch` follows it, pulling in ~250 MB of stale .moarvm files that
+# only confuse Rakudo on prod (different compunit identity, different
+# Rakudo version — exact cause of the 2026-05-24 SIGSEGV episode).
+# Prod wipes ~/.agrammon/.precomp on every deploy anyway.
+dist-hook:
+	find $(distdir) -name .precomp -prune -exec rm -rf {} +
+
 .PHONY: help
 
 help:
