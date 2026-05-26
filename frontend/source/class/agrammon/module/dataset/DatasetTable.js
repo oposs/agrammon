@@ -551,7 +551,7 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 this.tr("Last change"),
                 this.tr("Parameters"),
                 this.tr("Read-only"),
-                this.tr("Model Version"),
+                this.tr("Version"),
                 this.tr("Tags"),
                 this.tr("Comment")
                 // Model Variant (column 7 in the data array) intentionally
@@ -587,11 +587,11 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
             var tcm = table.getTableColumnModel();
             var tcmb = tcm.getBehavior();
             tcmb.setWidth(0,'1*');
-            tcmb.setWidth(1,130);
-            tcmb.setWidth(2,90);
-            tcmb.setWidth(3,110);
-            tcmb.setWidth(4,100);
-            tcmb.setWidth(this.__commentColumn,70);
+            tcmb.setWidth(1,160);   // Last change ("Zuletzt geändert am" in DE)
+            tcmb.setWidth(2,90);    // Parameters (kept)
+            tcmb.setWidth(3,130);   // Read-only ("schreibgeschützt" in DE)
+            tcmb.setWidth(4,80);    // Version (header is now short)
+            tcmb.setWidth(this.__commentColumn,100);  // Comment ("Kommentar" in DE)
 
             tcm.setColumnVisible(3,true);
             // Version column is visible so users can see which model

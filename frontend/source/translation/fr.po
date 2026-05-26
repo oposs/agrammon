@@ -79,7 +79,7 @@ msgstr "Paramètres"
 msgid "Read-only"
 msgstr "Lecture seule"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#. NO LONGER USED
 msgid "Model Version"
 msgstr "Version du modèle"
 
@@ -1010,3 +1010,7 @@ msgstr "Vous rétrogradez de la version 7.0.0 vers la version 6.5.2. Les donnée
 #: agrammon/ui/menu/OptionMenu.js
 msgid "Set model version ..."
 msgstr "Sélectionner la version du modèle ..."
+
+#: agrammon/module/dataset/DatasetCreate.js
+msgid "Version"
+msgstr "Version"

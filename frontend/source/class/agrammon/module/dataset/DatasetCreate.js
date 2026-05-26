@@ -210,7 +210,7 @@ qx.Class.define('agrammon.module.dataset.DatasetCreate', {
 		 		                    this.tr("Last change"),
 				                    this.tr("Parameters"),
                                     this.tr("Read-only"),
-                                    this.tr("Model Version"),
+                                    this.tr("Version"),
                                     this.tr("Tags")
                                   ]);
 

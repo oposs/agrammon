@@ -591,10 +591,12 @@ qx.Class.define('agrammon.module.dataset.DatasetTool', {
 
     members :
     {
-        __ALLWITHTAGS:    1150,
-        __ALLWITHOUTTAGS:  950,
-        __WITHTAGS:        950,
-        __WITHOUTTAGS:     750,
+        // Bumped 2026-05 to give the wider Last change / Read-only / Comment
+        // columns room to show their full headers in German.
+        __ALLWITHTAGS:    1210,
+        __ALLWITHOUTTAGS: 1010,
+        __WITHTAGS:       1010,
+        __WITHOUTTAGS:     810,
         __commentEditor: null,
         __commentColumn: null,
         __datasetCache: null,

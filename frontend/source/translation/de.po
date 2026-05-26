@@ -22,7 +22,7 @@ msgstr "Benutzerwechsel beendet"
 msgid "Returning from %1 to %2"
 msgstr "Zurück von %1 zu %2"
 
-#: agrammon/Application.js
+#: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr "Bitte melden Sie sich an"
 
@@ -74,7 +74,7 @@ msgstr "Parameter"
 msgid "Read-only"
 msgstr "schreibgeschützt"
 
-#: agrammon/module/dataset/DatasetCreate.js
+#. NO LONGER USED
 msgid "Model Version"
 msgstr "Modell Version"
 
@@ -182,7 +182,7 @@ msgstr "Neuer Name"
 msgid "Comment"
 msgstr "Kommentar"
 
-#: agrammon/module/dataset/DatasetTable.js
+#. NO LONGER USED
 msgid "Model Variant"
 msgstr "Modell Variante"
 
@@ -1009,3 +1009,7 @@ msgstr "Sie wechseln von der aktuellen Modellversion %1 zur älteren Version %2.
 #: agrammon/ui/menu/OptionMenu.js
 msgid "Set model version ..."
 msgstr "Modell Version wählen ..."
+
+#: agrammon/module/dataset/DatasetCreate.js
+msgid "Version"
+msgstr "Version"

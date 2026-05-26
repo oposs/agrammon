@@ -78,7 +78,7 @@ msgstr ""
 msgid "Read-only"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetCreate.js
+#. NO LONGER USED
 msgid "Model Version"
 msgstr ""
 
@@ -1008,4 +1008,8 @@ msgstr ""
 
 #: agrammon/ui/menu/OptionMenu.js
 msgid "Set model version ..."
+msgstr ""
+
+#: agrammon/module/dataset/DatasetCreate.js
+msgid "Version"
 msgstr ""
