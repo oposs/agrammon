@@ -208,13 +208,29 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             if $old-dataset eq $new-dataset and $old-username eq $new-username;
 
         my $ds = self!create-dataset( $new-dataset, $new-username);
+        my (Str $version, Str $gui, Str $model) = self!variant;
+        # Accept source datasets at the active version or any compatible
+        # version (e.g. copying a 6.0/6.5.2 dataset on a 6.5.2/7.0.0
+        # deployment). The destination row is always at the active version
+        # via !create-dataset above; here we just relax the SOURCE lookup
+        # so the data + branches actually get copied. Without this, the
+        # destination row is created but no data_new rows are inserted.
+        my @versions = ($version, |self!compatible-versions);
         self.with-db: -> $db {
             # clone inputs
-            $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset, |self!variant);
+            $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset, $gui, $model, @versions);
                 INSERT INTO data_new (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
                      SELECT $1, data_var, data_instance, data_val, data_instance_order, data_comment
                        FROM data_new
-                      WHERE data_dataset = dataset_name2id($2, $3, $4, $5, $6)
+                      WHERE data_dataset = (
+                          SELECT dataset_id FROM dataset
+                           WHERE dataset_pers         = pers_email2id($2)
+                             AND dataset_name         = $3
+                             AND dataset_guivariant   = $4
+                             AND dataset_modelvariant = $5
+                             AND dataset_version      = ANY($6)
+                           LIMIT 1
+                      )
             SQL
 
             # get branched inputs from new dataset
@@ -227,10 +243,19 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             SQL
 
             # get branch data from old dataset
-            my @data = $db.query(q:to/SQL/, $old-username, $old-dataset, |self!variant).arrays;
+            my @data = $db.query(q:to/SQL/, $old-username, $old-dataset, $gui, $model, @versions).arrays;
                 SELECT branches_data, branches_options, data_var
                   FROM data_new LEFT JOIN branches ON (branches_var=data_id)
-                 WHERE data_dataset = dataset_name2id($1,$2,$3,$4,$5) AND branches_data is not null
+                 WHERE data_dataset = (
+                       SELECT dataset_id FROM dataset
+                        WHERE dataset_pers         = pers_email2id($1)
+                          AND dataset_name         = $2
+                          AND dataset_guivariant   = $3
+                          AND dataset_modelvariant = $4
+                          AND dataset_version      = ANY($5)
+                        LIMIT 1
+                   )
+                   AND branches_data is not null
               ORDER BY data_instance, data_id -- don't change sort order!!!
             SQL
 
