@@ -553,8 +553,10 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
                 this.tr("Read-only"),
                 this.tr("Model Version"),
                 this.tr("Tags"),
-                this.tr("Comment"),
-                this.tr("Model Variant")
+                this.tr("Comment")
+                // Model Variant (column 7 in the data array) intentionally
+                // not exposed — not user-relevant. The backend still ships
+                // it; trailing array elements are ignored by qx.
             ]);
             this.__commentColumn = 6;
 
@@ -589,7 +591,6 @@ qx.Class.define('agrammon.module.dataset.DatasetTable', {
             tcmb.setWidth(2,90);
             tcmb.setWidth(3,110);
             tcmb.setWidth(4,100);
-            tcmb.setWidth(7,90);
             tcmb.setWidth(this.__commentColumn,70);
 
             tcm.setColumnVisible(3,true);

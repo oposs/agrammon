@@ -186,7 +186,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: agrammon/module/dataset/DatasetTable.js
+#. NO LONGER USED
 msgid "Model Variant"
 msgstr ""
 
