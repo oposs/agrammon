@@ -633,6 +633,58 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         }
     }
 
+    # Delete a list of variables that no longer match the current model.
+    # Each entry comes from the frontend in data_view form, i.e. instance
+    # variables are spelled like `Module::Sub[instanceName]::variable` and
+    # non-instance variables like `Module::variable`. We translate back to
+    # the storage form (data_var with `[]`, data_instance separately) and
+    # delete by (data_var, data_instance) pair.
+    method delete-variables(@variables --> Int) {
+        return 0 unless @variables;
+        my $username = $!user.username;
+        my $deleted  = 0;
+
+        self.with-db: -> $db {
+            for @variables -> $variable {
+                my $var      = $variable;
+                my $instance = Str;
+                if $var ~~ s/\[(.+)\]/[]/ {
+                    $instance = ~$0;
+                }
+
+                my $ret;
+                if $instance.defined {
+                    $ret = $db.query(q:to/SQL/, $username, $!name, |self!variant, $var, $instance);
+                        DELETE FROM data_new
+                         WHERE data_dataset = dataset_name2id($1,$2,$3,$4,$5)
+                           AND data_var      = $6
+                           AND data_instance = $7
+                        RETURNING data_val
+                    SQL
+                }
+                else {
+                    $ret = $db.query(q:to/SQL/, $username, $!name, |self!variant, $var);
+                        DELETE FROM data_new
+                         WHERE data_dataset = dataset_name2id($1,$2,$3,$4,$5)
+                           AND data_var      = $6
+                           AND data_instance IS NULL
+                        RETURNING data_val
+                    SQL
+                }
+                $deleted += $ret.rows;
+            }
+
+            # bump mod date if we actually deleted anything
+            if $deleted {
+                $db.query(q:to/SQL/, $username, $!name, |self!variant);
+                        UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                         WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
+                SQL
+            }
+        }
+        return $deleted;
+    }
+
     method delete-instance($variable-pattern, $instance --> Nil) {
         my $username = $!user.username;
 

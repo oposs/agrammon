@@ -461,6 +461,13 @@ sub dataset-routes(Agrammon::Web::Service $ws) {
             }
         }
 
+        post -> LoggedIn $user, 'delete_dataset_variables' {
+            request-body -> (:name($dataset)!, :@variables!) {
+                my $deleted = $ws.delete-dataset-variables($user, $dataset, @variables);
+                content 'application/json', { :$deleted };
+            }
+        }
+
         # working
         post -> LoggedIn $user, 'store_dataset_comment' {
             request-body -> (:dataset($dataset-name)!, :$comment!) {

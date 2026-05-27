@@ -1014,3 +1014,23 @@ msgstr "Sélectionner la version du modèle ..."
 #: agrammon/module/dataset/DatasetCreate.js
 msgid "Version"
 msgstr "Version"
+
+#: agrammon/ui/dialog/MissingVariables.js
+msgid "Obsolete variables in dataset"
+msgstr "Variables obsolètes dans le jeu de données"
+
+#: agrammon/ui/dialog/MissingVariables.js
+msgid "This dataset contains %1 variable(s) that no longer match the current model (unknown variables or invalid enum values). They will not be used in any calculation. Do you want to delete them from the dataset?"
+msgstr "Ce jeu de données contient %1 variable(s) qui ne correspondent plus au modèle actuel (variables inconnues ou valeurs d’énumération invalides). Elles ne seront pas utilisées dans le calcul. Voulez-vous les supprimer du jeu de données ?"
+
+#: agrammon/ui/dialog/MissingVariables.js
+msgid "Keep"
+msgstr "Conserver"
+
+#: agrammon/ui/dialog/MissingVariables.js
+msgid "Delete from dataset"
+msgstr "Supprimer du jeu de données"
+
+#: agrammon/module/input/NavBar.js
+msgid "Could not delete obsolete variables: "
+msgstr "Impossible de supprimer les variables obsolètes : "

@@ -504,20 +504,14 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                                 this.__propData[i].setValue(value);
                             }
                             else {
-                                this.debug('No match: key='+key+', var='+this.__propData[i].getName());
-                                if (agrammon.Info.getInstance().isAdmin()) {
-                                    msg = this.__propData[i].getName() + ': ';
-                                    if (value == '') {
-                                        msg += ' empty variable,';
-                                    }
-                                    else {
-                                        msg += ' no match for >' + value + '< in'
-                                            + ' >' + options + '<';
-                                    }
-                                    msg += ', should be removed from dataset.';
-                                    alert(msg);
-                                }
-                                qx.event.message.Bus.dispatchByName('agrammon.NavBar.deleteInstanceData', this.__propData[i].getName());
+                                // invalid enum value: surface to NavBar
+                                // via the same "missing" path so the user
+                                // can decide whether to delete it. Return
+                                // the bad value so NavBar can display it.
+                                this.debug('Invalid enum value: key=' + key
+                                    + ', value=>' + value + '<,'
+                                    + ' options=>' + options + '<');
+                                return { invalidValue: value };
                             }
                         }
                     } // selector

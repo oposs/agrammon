@@ -421,7 +421,7 @@ qx.Class.define('agrammon.module.input.NavBar', {
             // and set propData values;
             // complain about variables in dataset not present in propData
             // (incompatible model/dataset)
-            var msg = '';
+            var missing = [];
             var isInstance, instanceName, comment;
             for (i=0; i<len; i++) {
                 varName = data[i][0];
@@ -473,33 +473,28 @@ qx.Class.define('agrammon.module.input.NavBar', {
                             }
                         }
                     }
-                    else if (folder.setData(varName, value, comment, noCheck, branch_values)) {
-                        nset++;
-                    }
-                    else { // not found
-                        this.debug('_loadDatasetFunction(): couldn\'t set ' + varName + ' / ' + folderName);
-                        // FIX ME: better ask before deleting ...
-                        // qx.event.message.Bus.dispatchByName(
-                        //    'agrammon.NavBar.deleteInstanceData',
-                        //    { pattern: varName,
-                        //      instance: instanceName
-                        //    }) ;
-                        msg = '\t' + msg + varName + '\n';
-                        no++;
+                    else {
+                        var res = folder.setData(varName, value, comment, noCheck, branch_values);
+                        if (res === true) {
+                            nset++;
+                        }
+                        else { // not found or invalid enum value
+                            this.debug('_loadDatasetFunction(): couldn\'t set ' + varName + ' / ' + folderName);
+                            var entry = { varName: varName };
+                            if (res && res.invalidValue !== undefined) {
+                                entry.invalidValue = res.invalidValue;
+                            }
+                            missing.push(entry);
+                        }
                     }
                 }
                 else {
                     this.debug('_loadDatasetFunction(): couldn\'t find folder for ' + varName);
-                    msg = '\t' + msg + varName + '\n';
-                    no++;
+                    missing.push({ varName: varName });
                }
             }
-            if (no != 0) {
-                msg = 'No match for ' + no + ' variables:\n'
-                      + msg
-                      + '\nVariables should be deleted from dataset.';
-                this.debug('ERROR: '+msg);
-                qx.event.message.Bus.dispatchByName('error', [this.tr("Error"), msg]);
+            if (missing.length != 0) {
+                this.__handleMissingVariables(missing);
             }
             this.__rootFolder.isComplete(nset);
             // FIX ME: where should this really be
@@ -522,6 +517,118 @@ qx.Class.define('agrammon.module.input.NavBar', {
             qx.event.message.Bus.dispatchByName('agrammon.input.select');
             qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
             qx.event.message.Bus.dispatchByName('agrammon.NavBar.getInput', dataset);
+        },
+
+        // Translate a missing-variable entry { varName, invalidValue? }
+        // into a breadcrumb of GUI labels in the active locale, e.g.
+        //   "Livestock::DairyCow[Test]::Housing::Type::housing_type"
+        //   → "Livestock › Dairy cows [Test] › Housing › Type › Housing type"
+        // For invalid enum values, the bad value is appended as
+        //   "… › Housing type = «BAD_VALUE»".
+        // Falls back to the raw variable name if no folder/label matches.
+        __translateVarName: function(entry) {
+            var varName      = entry.varName;
+            var invalidValue = entry.invalidValue;
+
+            var lang = qx.locale.Manager.getInstance().getLocale().replace(/_.+/, '');
+            // Hack mirroring NavFolder: model only ships 'it' for some labels
+            var pickLabel = function(labels) {
+                if (!labels) return null;
+                if (lang === 'en' && labels.it) return labels.it;
+                return labels[lang] || labels.en || labels.de || labels.fr || labels.it;
+            };
+
+            var appendInvalid = function(s) {
+                if (invalidValue === undefined) {
+                    return s;
+                }
+                return s + ' = «' + invalidValue + '»';
+            };
+
+            // Split into parent path + leaf variable name.
+            var m = varName.match(/^(.+)::([^:]+)$/);
+            if (!m) {
+                return appendInvalid(varName);
+            }
+            var parentPath = m[1];
+            var leaf       = m[2];
+
+            // Walk up parent path until a folder matches.
+            var folder = null;
+            var matched = parentPath;
+            while (matched) {
+                if (this.__navHash[matched] && this.__navHash[matched]['folder']) {
+                    folder = this.__navHash[matched]['folder'];
+                    break;
+                }
+                var p = matched.match(/^(.+)::[^:]+$/);
+                if (!p) break;
+                matched = p[1];
+            }
+            if (!folder) {
+                return appendInvalid(varName);
+            }
+
+            // Build breadcrumb of localized folder labels (root excluded).
+            var crumbs = [];
+            var f = folder;
+            while (f && !f.isRoot()) {
+                crumbs.unshift(f.getLabel());
+                f = f.getParentNavFolder();
+            }
+
+            // The instance-level folder carries a flattened propData of all
+            // descendant variables, so check it regardless of whether we
+            // matched the exact parent path.
+            var ds = folder.getDataset();
+            for (var i = 0; i < ds.length; i++) {
+                if (ds[i].getName() === varName) {
+                    var leafLabel = pickLabel(ds[i].getLabels()) || leaf;
+                    crumbs.push(leafLabel);
+                    return appendInvalid(crumbs.join(' › '));
+                }
+            }
+
+            // Leaf is not in the model — append the raw leaf so the user
+            // still sees something specific.
+            crumbs.push(leaf);
+            return appendInvalid(crumbs.join(' › '));
+        },
+
+        // Called when a freshly loaded dataset contains variables that no
+        // longer fit the current model (unknown name or invalid enum
+        // value). Always prompts the user whether to delete them.
+        // `missing` is an array of { varName, invalidValue? } entries.
+        __handleMissingVariables: function(missing) {
+            var datasetName = this.__info.getDatasetName();
+            var rawNames    = missing.map(function(e) { return e.varName; });
+            this.debug('Missing variables in dataset ' + datasetName + ': '
+                       + rawNames.join(', '));
+
+            var displayList = missing.map(function(e) {
+                return this.__translateVarName(e);
+            }, this);
+
+            new agrammon.ui.dialog.MissingVariables(
+                displayList,
+                qx.lang.Function.bind(function(deleted) {
+                    if (!deleted) {
+                        return;
+                    }
+                    this.__rpc.callAsyncSmart(
+                        function(data, exc) {
+                            if (exc) {
+                                qx.event.message.Bus.dispatchByName('error',
+                                    [qx.locale.Manager.tr("Error"),
+                                     qx.locale.Manager.tr("Could not delete obsolete variables: ")
+                                     + (exc.message || exc)]);
+                            }
+                        },
+                        'delete_dataset_variables',
+                        { name: datasetName, variables: rawNames }
+                    );
+                }, this)
+            );
         },
 
         /**

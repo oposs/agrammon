@@ -556,6 +556,16 @@ class Agrammon::Web::Service {
         $!outputs-cache.invalidate($user.username, $dataset-name);
     }
 
+    method delete-dataset-variables(Agrammon::Web::SessionUser $user, Str $dataset-name, @variables --> Int) {
+        my $deleted = Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :name($dataset-name)
+        ).delete-variables(@variables);
+        $!outputs-cache.invalidate($user.username, $dataset-name) if $deleted;
+        return $deleted;
+    }
+
     method load-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
         return Agrammon::DB::Dataset.new(
             :$user,
