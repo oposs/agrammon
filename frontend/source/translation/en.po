@@ -1032,4 +1032,4 @@ msgstr ""
 
 #: agrammon/module/input/NavBar.js
 msgid "Could not delete obsolete variables: "
-msgstr ""
+msgstr "Could not delete obsolete variables."

@@ -1032,4 +1032,4 @@ msgstr "Aus Datensatz löschen"
 
 #: agrammon/module/input/NavBar.js
 msgid "Could not delete obsolete variables: "
-msgstr "Veraltete Eingabe-Parameter konnten nicht gelöscht werden: "
+msgstr "Veraltete Eingabe-Parameter konnten nicht gelöscht werden."

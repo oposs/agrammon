@@ -1033,4 +1033,4 @@ msgstr "Supprimer du set de données"
 
 #: agrammon/module/input/NavBar.js
 msgid "Could not delete obsolete variables: "
-msgstr "Impossible de supprimer les paramètres d’entrée obsolètes : "
+msgstr "Impossible de supprimer les paramètres d’entrée obsolètes."
