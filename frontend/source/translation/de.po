@@ -22,6 +22,7 @@ msgstr "Benutzerwechsel beendet"
 msgid "Returning from %1 to %2"
 msgstr "Zurück von %1 zu %2"
 
+#: agrammon/Application.js
 #: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr "Bitte melden Sie sich an"
@@ -43,14 +44,23 @@ msgid "Comment on dataset"
 msgstr "Kommentar zum Datensatz"
 
 #: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Incremental filter on dataset name"
 msgstr "Inkrementeller Filter auf den Datensatz-Namen"
 
 #: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Filter on dataset name"
 msgstr "Filter auf den Datensatz Namen"
 
+#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/output/SubmitWindow.js
 #: agrammon/ui/About.js
+#: agrammon/ui/dialog/DocWindow.js
+#: agrammon/ui/dialog/Help.js
+#: agrammon/ui/dialog/Log.js
+#: agrammon/ui/dialog/News.js
 msgid "Close"
 msgstr "Schliessen"
 
@@ -63,14 +73,17 @@ msgid "Sample datasets"
 msgstr "Beispiel-Datensätze"
 
 #: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Last change"
 msgstr "Zuletzt geändert am"
 
 #: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Parameters"
 msgstr "Parameter"
 
 #: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Read-only"
 msgstr "schreibgeschützt"
 
@@ -79,10 +92,12 @@ msgid "Model Version"
 msgstr "Modell Version"
 
 #: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Tags"
 msgstr "Marker"
 
 #: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Dataset name"
 msgstr "Datensatz"
 
@@ -102,6 +117,9 @@ msgstr "Datensatz"
 msgid "datasets"
 msgstr "Datensätze"
 
+#: agrammon/Info.js
+#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/NavBar.js
 #: agrammon/ui/menu/OptionMenu.js
 msgid "Info"
 msgstr "Info"
@@ -122,6 +140,7 @@ msgstr "Empfänger der ausgewählten Datensätze"
 msgid "sent"
 msgstr "gesendet"
 
+#: agrammon/module/dataset/DatasetTable.js
 #: agrammon/module/dataset/DatasetTool.js
 msgid "Rename"
 msgstr "Umbenennen"
@@ -138,14 +157,17 @@ msgstr "Senden"
 msgid "Send selected dataset(s) to other Agrammon user"
 msgstr "Ausgewählte Datensätze an anderen Agrammon Benutzer schicken"
 
+#: agrammon/module/dataset/DatasetTable.js
 #: agrammon/module/dataset/DatasetTool.js
 msgid "New"
 msgstr "Neu"
 
+#: agrammon/module/dataset/DatasetTable.js
 #: agrammon/ui/menu/FileMenu.js
 msgid "Create new dataset"
 msgstr "Neuen (leeren) Datensatz anlegen"
 
+#: agrammon/module/dataset/DatasetTable.js
 #: agrammon/module/dataset/DatasetTool.js
 msgid "Delete"
 msgstr "Löschen"
@@ -154,6 +176,8 @@ msgstr "Löschen"
 msgid "Delete selected dataset(s)"
 msgstr "Ausgewählte Datensätze löschen"
 
+#: agrammon/Info.js
+#: agrammon/module/dataset/DatasetTable.js
 #: agrammon/ui/menu/FileMenu.js
 msgid "Dataset"
 msgstr "Datensatz"
@@ -162,11 +186,22 @@ msgstr "Datensatz"
 msgid "renamed to"
 msgstr "umbenannt in"
 
+#: agrammon/io/remote/Rest.js
+#: agrammon/io/remote/Rpc.js
+#: agrammon/module/dataset/DatasetTable.js
 #: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/input/NavBar.js
+#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/ui/dialog/Error.js
+#: agrammon/ui/menu/AdminMenu.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Error"
 msgstr "Fehler"
 
+#: agrammon/module/dataset/DatasetTable.js
 #: agrammon/module/dataset/DatasetTool.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "already exists"
 msgstr "existiert bereits."
 
@@ -175,10 +210,12 @@ msgid "Rename dataset"
 msgstr "Datensatz umbenennen"
 
 #: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/NavBar.js
 msgid "New name"
 msgstr "Neuer Name"
 
 #: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/PropTable.js
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -219,10 +256,12 @@ msgid "Connect"
 msgstr "Verbinden"
 
 #: agrammon/module/dataset/DatasetTool.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Cloning dataset"
 msgstr "Datensatz duplizieren"
 
 #: agrammon/module/dataset/DatasetTool.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "New dataset name"
 msgstr "Neuer Datensatz"
 
@@ -270,6 +309,7 @@ msgstr "Filter auf Marker Name"
 msgid "Input"
 msgstr "Eingabe"
 
+#: agrammon/module/input/NavBar.js
 #: agrammon/module/input/regional/ConfigInstance.js
 msgid "Instance name must not be empty."
 msgstr "Der Kategorie-Name darf nicht leer sein."
@@ -290,14 +330,18 @@ msgstr "Umbenennen Kategorie "
 msgid "Duplicate instance "
 msgstr "Duplizieren Kategorie "
 
+#: agrammon/module/input/NavBar.js
 #: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr "Kategorie hinzufügen"
 
+#: agrammon/module/input/PropTable.js
 #: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Variable"
 msgstr "Variable"
 
+#: agrammon/module/input/PropTable.js
 #: agrammon/module/input/regional/ConfigEditor.js
 msgid "Input Parameter"
 msgstr "Eingabe-Parameter"
@@ -314,10 +358,14 @@ msgstr ""
 msgid "Click to edit"
 msgstr "Zum Editieren anklicken"
 
+#: agrammon/module/input/PropTable.js
 #: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Unit"
 msgstr "Einheit"
 
+#: agrammon/module/input/PropTable.js
+#: agrammon/module/user/Login.js
 #: agrammon/ui/menu/MainMenu.js
 msgid "Help"
 msgstr "Hilfe"
@@ -338,7 +386,9 @@ msgstr "Einheit Deutsch"
 msgid "Unit French"
 msgstr "Einheit Französisch"
 
+#: agrammon/module/input/PropTable.js
 #: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Order"
 msgstr "Sortierung"
 
@@ -354,10 +404,23 @@ msgstr "Total"
 msgid "Branch configuration"
 msgstr "Branch-Konfiguration"
 
+#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/output/SubmitWindow.js
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
+#: agrammon/module/user/SelfService.js
+#: agrammon/ui/dialog/Comment.js
+#: agrammon/ui/dialog/Confirm.js
+#: agrammon/ui/dialog/Dialog.js
+#: agrammon/ui/dialog/MsgBox.js
+#: agrammon/ui/menu/AdminMenu.js
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Cancel"
 msgstr "Abbrechen"
 
+#: agrammon/module/input/regional/BranchEditor.js
 #: agrammon/ui/dialog/Comment.js
 msgid "Clear"
 msgstr "Löschen"
@@ -382,6 +445,7 @@ msgstr ""
 msgid "Configure instance"
 msgstr "Kategorie konfigurieren"
 
+#: agrammon/module/input/NavBar.js
 #: agrammon/module/input/regional/ConfigInstance.js
 msgid "Name"
 msgstr "Name"
@@ -395,18 +459,29 @@ msgid "Instance name"
 msgstr "Kategorie-Name"
 
 #: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/ui/dialog/Confirm.js
+#: agrammon/ui/dialog/Dialog.js
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Ok"
 msgstr "Ok"
 
+#: agrammon/module/output/Graphs.js
 #: agrammon/module/output/Reports.js
 msgid "Choose table: "
 msgstr "Tabelle auswählen"
 
+#: agrammon/module/output/Graphs.js
 #: agrammon/module/output/Reports.js
 msgid "Simulation log"
 msgstr "Mitteilungen zu den Resultaten"
 
+#: agrammon/module/input/NavBar.js
+#: agrammon/module/input/NavFolder.js
+#: agrammon/module/input/PropTable.js
+#: agrammon/module/input/regional/ConfigEditor.js
 #: agrammon/module/output/OutputSelector.js
+#: agrammon/ui/table/cellrenderer/input/Replace.js
+#: agrammon/ui/table/rowrenderer/Fancy.js
 msgid "*** Select ***"
 msgstr "*** Auswählen ***"
 
@@ -415,22 +490,28 @@ msgid "Tabular Results"
 msgstr "Resultate als Tabelle"
 
 #: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Module"
 msgstr "Modul"
 
+#: agrammon/Info.js
 #: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Reference"
 msgstr "Referenz"
 
 #: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Value"
 msgstr "Wert"
 
 #: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Change"
 msgstr "Änderung"
 
 #: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Print"
 msgstr "Druck"
 
@@ -446,6 +527,7 @@ msgstr "Mit Excel öffnen"
 msgid "Create PDF"
 msgstr "PDF Report"
 
+#: agrammon/module/output/Reports.js
 #: agrammon/module/output/SubmitWindow.js
 msgid "Submission"
 msgstr "Einreichung"
@@ -527,6 +609,7 @@ msgid "Report submission failed."
 msgstr "Report konnte nicht geschickt werden."
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "eMail (your username)"
 msgstr "eMail (Ihr Benutzername)"
 
@@ -535,38 +618,48 @@ msgid "eMail (username) for reset"
 msgstr "eMail (Benutzername) zum Zurücksetzen"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "eMail (will be your username)"
 msgstr "eMail (wird Ihr Benutzername sein)"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "Password (minimum 8 characters)"
 msgstr "Passwort (mindestens 8 Zeichen)"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "Repeat Password"
 msgstr "Passwort wiederholen"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "First name (optional)"
 msgstr "Vorname (optional)"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "Last name (optional)"
 msgstr "Nachname (optional)"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "Organisation (optional)"
 msgstr "Organisation (optional)"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "Create Account"
 msgstr "Konto erstellen"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
+#: agrammon/module/user/SelfService.js
 msgid "Reset Password"
 msgstr "Passwort neu setzen"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "Passwords must be equal."
 msgstr "Die Passwort-Eingaben müssen identisch sein."
 
@@ -587,10 +680,14 @@ msgid "Password reset."
 msgstr "Passwort zurück setzen"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
 msgid "Login"
 msgstr "Anmelden"
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
+#: agrammon/module/user/SelfService.js
+#: agrammon/ui/menu/AdminMenu.js
 msgid "Reset password"
 msgstr "Passwort zurücksetzen"
 
@@ -602,6 +699,7 @@ msgstr "Konto neu aktivieren"
 msgid "Activate Account"
 msgstr "Konto aktivieren"
 
+#: agrammon/module/user/Account.js
 #: agrammon/module/user/Login.js
 msgid "Username"
 msgstr "Benutzername"
@@ -619,6 +717,7 @@ msgid "Create new account"
 msgstr "Neues Konto erstellen"
 
 #: agrammon/ui/About.js
+#: agrammon/ui/menu/HelpMenu.js
 msgid "About AGRAMMON"
 msgstr "Über AGRAMMON"
 
@@ -658,6 +757,9 @@ msgstr "Keine Mitteilungen."
 msgid "Apply"
 msgstr "Anwenden"
 
+#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/dialog/Error.js
+#: agrammon/ui/dialog/MsgBox.js
 #: agrammon/ui/menu/AdminMenu.js
 msgid "OK"
 msgstr "OK"
@@ -939,6 +1041,7 @@ msgid "No valid lines found in uploaded file."
 msgstr ""
 
 #: agrammon/module/user/Account.js
+#: agrammon/module/user/SelfService.js
 msgid "Password must have at least 8 characters."
 msgstr "Das Passwort muss mindestens 8 Zeichen enthalten."
 
@@ -986,6 +1089,7 @@ msgstr ""
 msgid "Errors (%1):"
 msgstr ""
 
+#: agrammon/io/remote/Rest.js
 #: agrammon/ui/menu/AdminMenu.js
 msgid "Warning"
 msgstr ""
@@ -1006,11 +1110,13 @@ msgstr "Zu älterer Modell Version wechseln?"
 msgid "You are switching from the current model version %1 to the older version %2. Inputs from %1 that did not exist yet in %2 will either be converted and displayed in orange, or in certain instances, hidden entirely. You find information about the changes between model versions in the documents “Information on the version of Agrammon” at https://agrammon.ch/en/downloads/"
 msgstr "Sie wechseln von der aktuellen Modellversion %1 zur älteren Version %2. Eingaben von %1, die in %2 noch nicht vorhanden waren, werden entweder umgewandelt und in Orange oder in einzelnen Fällen gar nicht angezeigt. Sie können sich über die Änderungen der Modellversionen in den Dokumenten «Informationen zur neuen Version Agrammon» auf https://agrammon.ch/de/downloads/ informieren."
 
+#: agrammon/ui/menu/MainMenu.js
 #: agrammon/ui/menu/OptionMenu.js
 msgid "Set model version ..."
 msgstr "Modell Version wählen ..."
 
 #: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Version"
 msgstr "Version"
 

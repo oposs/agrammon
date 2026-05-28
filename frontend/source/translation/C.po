@@ -23,26 +23,25 @@ msgstr ""
 msgid "Dataset: "
 msgstr ""
 
-#: source/class/Agrammon/Application.js:120
+#: agrammon/ui/menu/MainMenu.js
 msgid "File"
 msgstr ""
 
-#: source/class/Agrammon/Application.js:126
+#: agrammon/ui/menu/MainMenu.js
 msgid "Edit"
 msgstr ""
 
-#: source/class/Agrammon/Application.js:132
+#: agrammon/ui/menu/MainMenu.js
 msgid "Options"
 msgstr ""
 
-#: source/class/Agrammon/Application.js:138
-#: source/class/Agrammon/ui/HelpMenu.js:22
-#: source/class/Agrammon/ui/HelpMenu.js:32
-#: source/class/Agrammon/ui/Login.js:56 source/class/Agrammon/ui/Login.js:74
+#: agrammon/module/input/PropTable.js
+#: agrammon/module/user/Login.js
+#: agrammon/ui/menu/MainMenu.js
 msgid "Help"
 msgstr ""
 
-#: source/class/Agrammon/Application.js:164
+#: agrammon/module/input/Input.js
 msgid "Input"
 msgstr ""
 
@@ -54,12 +53,13 @@ msgstr ""
 msgid "Graphs"
 msgstr ""
 
-#: source/class/Agrammon/Application.js:345
+#: agrammon/Application.js
+#: agrammon/io/remote/Rpc.js
 msgid "Please authenticate yourself"
 msgstr ""
 
-#: source/class/Agrammon/ui/DatasetTool.js:43
-#: source/class/Agrammon/ui/Datasets.js:59
+#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTable.js
 msgid "Dataset name"
 msgstr ""
 
@@ -73,13 +73,24 @@ msgstr ""
 msgid "Number of parameters"
 msgstr ""
 
-#: source/class/Agrammon/ui/DatasetTool.js:59
-#: source/class/Agrammon/ui/Login.js:58
-#: source/class/Agrammon/ui/OptionMenu.js:85
+#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/input/regional/BranchEditor.js
+#: agrammon/module/input/regional/ConfigInstance.js
+#: agrammon/module/output/SubmitWindow.js
+#: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
+#: agrammon/module/user/SelfService.js
+#: agrammon/ui/dialog/Comment.js
+#: agrammon/ui/dialog/Confirm.js
+#: agrammon/ui/dialog/Dialog.js
+#: agrammon/ui/dialog/MsgBox.js
+#: agrammon/ui/menu/AdminMenu.js
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Cancel"
 msgstr ""
 
-#: source/class/Agrammon/ui/DatasetTool.js:66
+#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Rename"
 msgstr ""
 
@@ -87,17 +98,24 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: source/class/Agrammon/ui/DatasetTool.js:80
+#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/module/dataset/DatasetTool.js
 msgid "Delete"
 msgstr ""
 
-#: source/class/Agrammon/ui/Datasets.js:40
-#: source/class/Agrammon/ui/DocWindow.js:42
+#: agrammon/module/dataset/DatasetCreate.js
+#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/module/output/SubmitWindow.js
+#: agrammon/ui/About.js
+#: agrammon/ui/dialog/DocWindow.js
+#: agrammon/ui/dialog/Help.js
+#: agrammon/ui/dialog/Log.js
+#: agrammon/ui/dialog/News.js
 msgid "Close"
 msgstr ""
 
-#: source/class/Agrammon/ui/Datasets.js:47
-#: source/class/Agrammon/ui/FileMenu.js:50
+#: agrammon/module/dataset/DatasetTable.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Create new dataset"
 msgstr ""
 
@@ -105,8 +123,8 @@ msgstr ""
 msgid "Creating new (empty) dataset"
 msgstr ""
 
-#: source/class/Agrammon/ui/FileMenu.js:45
-#: source/class/Agrammon/ui/FileMenu.js:90
+#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "New dataset name"
 msgstr ""
 
@@ -115,23 +133,24 @@ msgstr ""
 msgid "Datasets of user "
 msgstr ""
 
-#: source/class/Agrammon/ui/FileMenu.js:66
+#: agrammon/ui/menu/FileMenu.js
 msgid "Connect to dataset"
 msgstr ""
 
-#: source/class/Agrammon/ui/FileMenu.js:89
+#: agrammon/module/dataset/DatasetTool.js
+#: agrammon/ui/menu/FileMenu.js
 msgid "Cloning dataset"
 msgstr ""
 
-#: source/class/Agrammon/ui/FileMenu.js:95
+#: agrammon/ui/menu/FileMenu.js
 msgid "Clone dataset"
 msgstr ""
 
-#: source/class/Agrammon/ui/FileMenu.js:111
+#: agrammon/ui/menu/FileMenu.js
 msgid "Manage datasets"
 msgstr ""
 
-#: source/class/Agrammon/ui/FileMenu.js:123
+#: agrammon/ui/menu/FileMenu.js
 msgid "Logout"
 msgstr ""
 
@@ -152,8 +171,7 @@ msgstr ""
 msgid "Bar"
 msgstr ""
 
-#: source/class/Agrammon/ui/HelpMenu.js:36
-#: source/class/Agrammon/ui/HelpMenu.js:46
+#: agrammon/ui/About.js
 msgid "Documentation"
 msgstr ""
 
@@ -165,31 +183,33 @@ msgstr ""
 msgid "Change Log"
 msgstr ""
 
-#: source/class/Agrammon/ui/Login.js:38
+#: agrammon/module/user/Account.js
+#: agrammon/module/user/Login.js
 msgid "Username"
 msgstr ""
 
-#: source/class/Agrammon/ui/Login.js:44
+#: agrammon/module/user/Login.js
 msgid "Password"
 msgstr ""
 
-#: source/class/Agrammon/ui/NavMenu.js:53
+#: agrammon/module/input/NavBar.js
+#: agrammon/ui/menu/NavMenu.js
 msgid "Add instance"
 msgstr ""
 
-#: source/class/Agrammon/ui/NavMenu.js:56
+#: agrammon/ui/menu/NavMenu.js
 msgid "Duplicate instance"
 msgstr ""
 
-#: source/class/Agrammon/ui/NavMenu.js:59
+#: agrammon/ui/menu/NavMenu.js
 msgid "Rename instance"
 msgstr ""
 
-#: source/class/Agrammon/ui/NavMenu.js:62
+#: agrammon/ui/menu/NavMenu.js
 msgid "Delete instance"
 msgstr ""
 
-#: source/class/Agrammon/ui/NavMenu.js:65
+#: agrammon/ui/menu/NavMenu.js
 msgid "Check instance"
 msgstr ""
 
@@ -197,12 +217,11 @@ msgstr ""
 msgid "Set language..."
 msgstr ""
 
-#: source/class/Agrammon/ui/OptionMenu.js:36
-#: source/class/Agrammon/ui/OptionMenu.js:133
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Changing password for "
 msgstr ""
 
-#: source/class/Agrammon/ui/OptionMenu.js:61
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Current password"
 msgstr ""
 
@@ -210,24 +229,26 @@ msgstr ""
 msgid "New password"
 msgstr ""
 
-#: source/class/Agrammon/ui/OptionMenu.js:74
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Confirm password"
 msgstr ""
 
-#: source/class/Agrammon/ui/OptionMenu.js:109
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Passwords did not match. Please try again."
 msgstr ""
 
-#: source/class/Agrammon/ui/OptionMenu.js:142
+#: agrammon/ui/menu/OptionMenu.js
 msgid "Change password"
 msgstr ""
 
-#: source/class/Agrammon/ui/PropTable.js:179
-#: source/class/Agrammon/ui/Reports.js:92
+#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Variable"
 msgstr ""
 
-#: source/class/Agrammon/ui/PropTable.js:180
+#: agrammon/module/input/PropTable.js
+#: agrammon/module/input/regional/ConfigEditor.js
 msgid "Input Parameter"
 msgstr ""
 
@@ -247,12 +268,15 @@ msgstr ""
 msgid "Doubleclick to edit"
 msgstr ""
 
-#: source/class/Agrammon/ui/PropTable.js:188
-#: source/class/Agrammon/ui/Reports.js:94
+#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Unit"
 msgstr ""
 
-#: source/class/Agrammon/ui/PropTable.js:189
+#: agrammon/module/input/PropTable.js
+#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Order"
 msgstr ""
 
@@ -292,18 +316,21 @@ msgstr ""
 msgid "All results and intermediate results"
 msgstr ""
 
-#: source/class/Agrammon/ui/Reports.js:91
+#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Module"
 msgstr ""
 
-#: source/class/Agrammon/ui/Reports.js:93
+#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Value"
 msgstr ""
 
-#: source/class/Agrammon/ui/Reports.js:95
+#: agrammon/module/output/Reports.js
+#: agrammon/module/output/Results.js
 msgid "Print"
 msgstr ""
 
-#: source/class/Agrammon/ui/Reports.js:144
+#: agrammon/module/output/Reports.js
 msgid "Open in Excel"
 msgstr ""
