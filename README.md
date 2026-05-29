@@ -35,6 +35,30 @@ You'll need to:
 4. Install the `lualatex` program and Latex packages needed (`sudo apt install
    texlive-luatex texlive-latex-extra texlive-fonts-recommended texlive-science`)
 
+### Patched Cro dependencies (temporary)
+
+`zef install --deps-only .` pulls the **stock** Cro modules, which currently
+carry two bugs affecting Agrammon. Until the upstream fixes are merged and
+released, install the patched builds over the stock ones (e.g. clone the fork
+branch and `zef install --force-install <clone-dir>`):
+
+- **Cro::HTTP** — unbounded memory growth:
+  `Cro::HTTP::Middleware::Conditional` never completes its per-connection
+  `early-responses` Supplier, so RSS leaks on every request through any
+  `before`/`after` route block or token-auth middleware.
+  Fix: <https://github.com/croservices/cro-http/pull/214>
+  (branch `fix/conditional-middleware-early-responses-leak` on
+  <https://github.com/zaucker/cro-http>).
+- **Cro::OpenAPI::RoutesFromDefinition** — under Cro::HTTP::Router 0.8.12+ the
+  OpenAPI route `include` crashes with "No such method 'name'" because
+  `OperationHandler` lacks `.name`/`.url-prefix`.
+  Fix: <https://github.com/croservices/cro-openapi-routes-from-definition/pull/15>
+  (branch `add-name-attr-to-operationhandler` on
+  <https://github.com/zaucker/cro-openapi-routes-from-definition>).
+
+Once both PRs are released, a normal `zef` upgrade suffices and the
+force-installs can be dropped.
+
 ## Running tests
 
 Run tests using `prove6 -l t/`. If missing `prove6`, you can install it with
