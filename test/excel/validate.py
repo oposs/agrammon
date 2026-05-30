@@ -18,9 +18,12 @@ wb = openpyxl.load_workbook(fn)
 print("sheets:", wb.sheetnames)
 ws = wb["Eingaben"]
 print("Eingaben row6:", [ws.cell(6, c).value for c in range(1, 6)])
-print("  C6 numfmt:", ws.cell(6, 3).number_format,
-      "| align:", ws.cell(6, 3).alignment.horizontal,
-      "| colA width:", ws.column_dimensions["A"].width)
+# D6 (col index 4) is the numeric value, written with num-format 0.000 + right align
+print("  D6 value:", ws.cell(6, 4).value,
+      "| numfmt:", ws.cell(6, 4).number_format,
+      "| align:", ws.cell(6, 4).alignment.horizontal)
+print("  colA width:", ws.column_dimensions["A"].width,
+      "| colD width:", ws.column_dimensions["D"].width)
 wif = wb["Eingaben formatiert"]
 print("EinFmt A6:", repr(wif["A6"].value), "| bold:", wif["A6"].font.bold)
 erf = wb["Ergebnisse formatiert"]
