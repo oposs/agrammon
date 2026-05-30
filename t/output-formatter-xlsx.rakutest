@@ -9,7 +9,7 @@ use Agrammon::OutputFormatter::XLSXWriter;
 # and assert on the produced parts and their XML — exactly what ships to the
 # client, without depending on LibXML / Spreadsheet::XLSX.
 
-plan 6;
+plan 7;
 
 # --- col-name (A1 column letters) ---
 subtest 'col-name' => {
@@ -101,4 +101,25 @@ subtest 'cell content, escaping, formats' => {
     my $styles = %part{'xl/styles.xml'};
     like $styles, /'<b/>' | '<b></b>'/,        'bold font present in styles';
     like $styles, /'formatCode="0.000"'/,      'custom number format present in styles';
+}
+
+# --- allomorph dispatch (regression: collect-data yields IntStr/RatStr/NumStr) ---
+# These values do BOTH Real and Str; write() must treat them as numbers, not text,
+# and must not throw an "Ambiguous call" (the bug the live smoke test caught).
+subtest 'allomorph values dispatch to number cells' => {
+    plan 6;
+    my $w  = Workbook.new;
+    my $sh = $w.add-worksheet('Allo');
+    lives-ok { $sh.write(0, 0, IntStr.new(42, '42')) },     'IntStr write lives';
+    lives-ok { $sh.write(1, 0, RatStr.new(1.5, '1.5')) },   'RatStr write lives';
+    lives-ok { $sh.write(2, 0, NumStr.new(2.5e0, '2.5')) }, 'NumStr write lives';
+    lives-ok { $sh.write(3, 0, Str) },                       'undefined write lives';
+    my %p;
+    for archive-read($w.to-blob, format => 'zip') {
+        %p{ .pathname } = .data.decode('utf-8') if .is-file;
+    }
+    my $xml = %p{'xl/worksheets/sheet1.xml'};
+    # numeric allomorphs become <v> number cells …
+    like $xml, /'<v>42</v>'/,   'IntStr stored as numeric <v>';
+    like $xml, /'<v>1.5</v>'/,  'RatStr stored as numeric <v>';
 }
