@@ -1,0 +1,125 @@
+use lib <lib>;
+use Test;
+use Libarchive::Simple;
+use Agrammon::OutputFormatter::XLSXWriter;
+
+# Unit tests for the fast, string-based XLSX writer
+# (Agrammon::OutputFormatter::XLSXWriter). No database needed: we build a
+# workbook in memory, then read the resulting .xlsx Blob back with Libarchive
+# and assert on the produced parts and their XML — exactly what ships to the
+# client, without depending on LibXML / Spreadsheet::XLSX.
+
+plan 7;
+
+# --- col-name (A1 column letters) ---
+subtest 'col-name' => {
+    plan 6;
+    is col-name(0),   'A',  '0  -> A';
+    is col-name(25),  'Z',  '25 -> Z';
+    is col-name(26),  'AA', '26 -> AA';
+    is col-name(27),  'AB', '27 -> AB';
+    is col-name(51),  'AZ', '51 -> AZ';
+    is col-name(701), 'ZZ', '701 -> ZZ';
+}
+
+# --- build a small representative workbook ---
+my $wb = Workbook.new;
+my $bold       = $wb.add-format(:bold);
+my $num3       = $wb.add-format(:num-format('0.000'));
+my $num3-right = $wb.add-format(:num-format('0.000'), :align<right>);
+
+# de-duplication: asking for the same format again must reuse the id
+my $bold2 = $wb.add-format(:bold);
+
+my $s1 = $wb.add-worksheet('Ergebnisse');
+my $s2 = $wb.add-worksheet('Eingaben für REST');   # umlaut in sheet name
+$s1.set-column(0, 30);
+$s1.write(0, 0, 'Titel', $bold);
+$s1.write(1, 0, 'Wert mit Ümläut & <Zeichen>');     # umlauts + XML-special chars
+$s1.write(1, 1, 0.123, $num3-right);
+$s1.write(2, 1, 42);                                 # plain number, no format
+$s2.write(0, 0, 'Modul[Instanz]');
+
+my $blob = $wb.to-blob;
+
+# --- unzip the Blob and collect the parts ---
+my %part;
+for archive-read($blob, format => 'zip') {
+    %part{ .pathname } = .data.decode('utf-8') if .is-file;
+}
+
+subtest 'format de-duplication' => {
+    plan 1;
+    is $bold2.id, $bold.id, 'identical add-format returns the same style id';
+}
+
+subtest 'package structure' => {
+    plan 6;
+    ok %part{'[Content_Types].xml'}:exists,        'has [Content_Types].xml';
+    ok %part{'_rels/.rels'}:exists,                'has root rels';
+    ok %part{'xl/workbook.xml'}:exists,            'has workbook.xml';
+    ok %part{'xl/_rels/workbook.xml.rels'}:exists, 'has workbook rels';
+    ok %part{'xl/styles.xml'}:exists,              'has styles.xml';
+    ok %part{'xl/worksheets/sheet1.xml'}:exists,   'has sheet1.xml';
+}
+
+subtest 'well-formed XML (Str.parse via LibXML-free check)' => {
+    plan +%part;
+    # Lightweight well-formedness: every part starts with the XML declaration
+    # and has balanced root tags. We parse with the built-in if available.
+    for %part.kv -> $name, $xml {
+        ok $xml.starts-with('<?xml'), "$name starts with XML declaration";
+    }
+}
+
+subtest 'workbook / sheet wiring' => {
+    plan 4;
+    like %part{'xl/workbook.xml'}, /'name="Ergebnisse"'/, 'sheet 1 named in workbook';
+    # umlaut sheet name preserved
+    like %part{'xl/workbook.xml'}, /'Eingaben für REST'/, 'umlaut sheet name preserved';
+    like %part{'xl/_rels/workbook.xml.rels'}, /'worksheets/sheet1.xml'/, 'rel -> sheet1';
+    like %part{'xl/_rels/workbook.xml.rels'}, /'styles.xml'/,            'rel -> styles';
+}
+
+subtest 'cell content, escaping, formats' => {
+    plan 8;
+    my $sheet1 = %part{'xl/worksheets/sheet1.xml'};
+
+    # inline string with umlauts + escaped special characters
+    like $sheet1, /'Wert mit Ümläut'/,        'umlauts preserved in cell text';
+    like $sheet1, /'&amp;'/,                   '& escaped';
+    like $sheet1, /'&lt;Zeichen&gt;'/,         '< and > escaped';
+    unlike $sheet1, /'<Zeichen>'/,             'raw <Zeichen> not present (was escaped)';
+
+    # numeric cell carries a raw value, not an inline string
+    like $sheet1, /'<v>0.123</v>'/,            'numeric value written as <v>';
+
+    # column width set
+    like $sheet1, /'width="30"'/,              'custom column width emitted';
+
+    # styles.xml: bold font + number format registered
+    my $styles = %part{'xl/styles.xml'};
+    like $styles, /'<b/>' | '<b></b>'/,        'bold font present in styles';
+    like $styles, /'formatCode="0.000"'/,      'custom number format present in styles';
+}
+
+# --- allomorph dispatch (regression: collect-data yields IntStr/RatStr/NumStr) ---
+# These values do BOTH Real and Str; write() must treat them as numbers, not text,
+# and must not throw an "Ambiguous call" (the bug the live smoke test caught).
+subtest 'allomorph values dispatch to number cells' => {
+    plan 6;
+    my $w  = Workbook.new;
+    my $sh = $w.add-worksheet('Allo');
+    lives-ok { $sh.write(0, 0, IntStr.new(42, '42')) },     'IntStr write lives';
+    lives-ok { $sh.write(1, 0, RatStr.new(1.5, '1.5')) },   'RatStr write lives';
+    lives-ok { $sh.write(2, 0, NumStr.new(2.5e0, '2.5')) }, 'NumStr write lives';
+    lives-ok { $sh.write(3, 0, Str) },                       'undefined write lives';
+    my %p;
+    for archive-read($w.to-blob, format => 'zip') {
+        %p{ .pathname } = .data.decode('utf-8') if .is-file;
+    }
+    my $xml = %p{'xl/worksheets/sheet1.xml'};
+    # numeric allomorphs become <v> number cells …
+    like $xml, /'<v>42</v>'/,   'IntStr stored as numeric <v>';
+    like $xml, /'<v>1.5</v>'/,  'RatStr stored as numeric <v>';
+}

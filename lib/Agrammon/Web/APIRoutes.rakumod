@@ -121,7 +121,9 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
                     }
                     elsif $accept eq 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' {
                         header 'Content-disposition', qq{attachment; filename="excelReport.xlsx"};
-                        content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $results.to-blob;
+                        # $results is already the xlsx Blob from input-output-as-excel
+                        # (the old Spreadsheet::XLSX path returned a workbook needing .to-blob)
+                        content 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $results;
                     }
                     else {
                         content $accept, $results
