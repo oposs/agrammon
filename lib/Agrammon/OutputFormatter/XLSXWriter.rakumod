@@ -88,16 +88,22 @@ class Worksheet {
         self!put($row, $col, %( kind => 'num', :$value, fmt => ($format ?? $format.id !! 0) ));
     }
 
-    #| Polymorphic convenience, matching Excel::Writer::XLSX.write.
-    multi method write(Int:D $row, Int:D $col, Real:D $value, Format $format? --> Nil) {
-        self.write-number($row, $col, $value, :$format);
-    }
-    multi method write(Int:D $row, Int:D $col, Str:D $value, Format $format? --> Nil) {
-        self.write-string($row, $col, $value, :$format);
-    }
-    multi method write(Int:D $row, Int:D $col, $value, Format $format? --> Nil) {
-        # Undefined / other: emit empty string cell to keep layout stable.
-        self.write-string($row, $col, ($value // '').Str, :$format);
+    #| Polymorphic convenience, matching Excel::Writer::XLSX.write — auto-detects
+    #| numbers vs text. Single method (not multi) so allomorphs from collect-data
+    #| (IntStr/RatStr/NumStr, which do BOTH Real and Str) dispatch unambiguously:
+    #| anything Real-typed and numeric-looking becomes a number cell, everything
+    #| else a text cell.
+    method write(Int:D $row, Int:D $col, $value, Format $format? --> Nil) {
+        if !$value.defined {
+            self.write-string($row, $col, '', :$format);
+        }
+        elsif $value ~~ Real && $value !~~ Bool {
+            # plain numbers and numeric allomorphs (IntStr "42", RatStr "1.5", …)
+            self.write-number($row, $col, $value.Real, :$format);
+        }
+        else {
+            self.write-string($row, $col, $value.Str, :$format);
+        }
     }
 
     method !cols-xml(--> Str) {
