@@ -15,6 +15,7 @@ use Agrammon::Web::Service;
 use Agrammon::Web::SessionUser;
 use JSON::Fast;
 use DB::Pg;
+use Libarchive::Simple;
 use Test;
 
 use lib 't/lib';
@@ -543,16 +544,27 @@ subtest "get-excel-export" => {
         :language('de'),
         :reportSelected(0),
     );
-    ok my $workbook = $ws.get-excel-export($user, %params), "Create workbook";
+    # get-excel-export now returns the .xlsx as a Blob (built by the native
+    # XLSXWriter), not a Spreadsheet::XLSX workbook object. Unpack the zip and
+    # assert on the produced parts.
+    ok my $blob = $ws.get-excel-export($user, %params), "Create xlsx blob";
+    isa-ok $blob, Blob, "export is a Blob";
 
-    is $workbook.worksheets[0;0].name,  'Ergebnisse',            "Excel workbook has correct name";
-    is $workbook.worksheets[1;0].name,  'Ergebnisse formatiert', "Excel workbook has correct name";
-    is $workbook.worksheets[2;0].name,  'Eingaben',              "Excel workbook has correct name";
-    is $workbook.worksheets[3;0].name,  'Eingaben formatiert',   "Excel workbook has correct name";
+    my %part;
+    for archive-read($blob, format => 'zip') {
+        %part{ .pathname } = .data.decode('utf-8') if .is-file;
+    }
+    ok %part{'xl/workbook.xml'}:exists, "workbook.xml present in archive";
 
-    # TODO: add real tests once implementation is complete
-    my $cells = $workbook.worksheets[1].cells;
-    is $cells[0;0].value,  $dataset-name, "A1 has correct value";
+    my $workbook-xml = %part{'xl/workbook.xml'};
+    like $workbook-xml, /'name="Ergebnisse"'/,            "has 'Ergebnisse' sheet";
+    like $workbook-xml, /'name="Ergebnisse formatiert"'/, "has 'Ergebnisse formatiert' sheet";
+    like $workbook-xml, /'name="Eingaben"'/,              "has 'Eingaben' sheet";
+    like $workbook-xml, /'name="Eingaben formatiert"'/,   "has 'Eingaben formatiert' sheet";
+    like $workbook-xml, /'Eingaben für REST'/,            "has 'Eingaben für REST' sheet";
+
+    # dataset name is written into the header block of the formatted sheets
+    like %part{'xl/worksheets/sheet2.xml'}, /$dataset-name/, "dataset name present in formatted output sheet";
 }
 
 done-testing;
