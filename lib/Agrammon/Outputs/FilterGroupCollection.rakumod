@@ -16,8 +16,14 @@ class Agrammon::Outputs::FilterGroupCollection {
             $!WHICH
         }
 
+        # The empty filter key is by far the most common: every scalar value
+        # flowing through the model is wrapped into a single-group collection
+        # keyed by it (via from-scalar). It is an immutable value object
+        # compared purely by its WHICH, so we share one instance instead of
+        # reallocating it (and recomputing its WHICH) thousands of times per run.
+        my $empty;
         method empty() {
-            self.new(:filters{})
+            $empty //= self.new(:filters{})
         }
     }
 
