@@ -4,17 +4,18 @@ use Libarchive::Simple;
 # A small, fast, write-only XLSX generator.
 #
 # It builds the worksheet XML as strings (no DOM, no per-node FFI) with a shared
-# style table referenced by index — the way Excel itself and Excel::Writer::XLSX
+# style table referenced by index — the way Excel itself and Perl5's Excel::Writer::XLSX
 # store workbooks — then packs the parts into the .xlsx zip with Libarchive (the
 # same library Spreadsheet::XLSX already uses for zipping).
 #
 # Why this exists: the DOM-based Spreadsheet::XLSX path is ~30x slower than the
-# Perl Excel::Writer::XLSX path because it makes several LibXML/FFI calls per
-# cell. This writer is ~7x faster than even the Perl path on a realistic report,
+# Perl5 Excel::Writer::XLSX path (used with Inline::Perl5 in Agrammon)
+# because it makes several LibXML/FFI calls per cell.
+# This writer is ~7x faster than the Perl5 path on a realistic report,
 # because it pays neither per-node FFI nor Inline::Perl5 marshalling.
 #
 # The API intentionally mirrors the subset of Excel::Writer::XLSX that
-# Agrammon's exporter uses (add_worksheet/set_column/add_format/write), so
+# Agrammon's exporter used (add_worksheet/set_column/add_format/write), so
 # swapping the production formatter over is close to mechanical.
 
 unit module Agrammon::OutputFormatter::XLSXWriter;
