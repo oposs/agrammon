@@ -89,6 +89,7 @@ taxonomy = Application::Slurry::Applrate
     todo
 ?if Kantonal_LU
   ++formula
+    # dilution_parts_water = 1:
     1;
 ?else
   ++formula
