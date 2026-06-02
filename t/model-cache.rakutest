@@ -1,25 +1,33 @@
 use v6;
+# Agrammon::ModelCache spurts a precompiled <hash>.rakumod into the cache dir
+# and loads it with `use $hash`. For that to resolve -- and to avoid the Rakudo
+# 2026.04 compunit-identity drift ("Merging GLOBAL symbols failed: duplicate
+# definition of symbol Died") -- the cache dir MUST be on the module search path
+# at COMPILE time, before any Agrammon module is loaded. This is the same
+# contract bin/agrammon.raku satisfies with `use lib %*ENV<HOME> ~ '/.agrammon'`.
+# We therefore exercise the real cache dir (the cache is content-hashed, so this
+# is safe) and must put it on the path *before* the `use Agrammon::*` lines.
+use lib %*ENV<HOME> ~ '/.agrammon';
+
 use Agrammon::DataSource::CSV;
 use Agrammon::Model;
 use Agrammon::ModelCache;
 use Agrammon::Model::Parameters;
 use Agrammon::OutputFormatter::CSV;
 use Agrammon::TechnicalParser;
-use Shell::Command;
 use Test;
 
-my $temp-dir = $*TMPDIR.add(('A'..'Z').roll(20).join);
-mkdir $temp-dir;
-END rm_rf $temp-dir;
+my $cache-dir = (%*ENV<HOME> ~ '/.agrammon').IO;
+$cache-dir.mkdir;
 
 my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
 my $model;
 
-lives-ok { $model = load-model-using-cache($temp-dir, $path, 'Total') },
+lives-ok { $model = load-model-using-cache($cache-dir, $path, 'Total') },
         'Can load model via the cache';
 isa-ok $model, Agrammon::Model, 'Loaded model has correct type';
 
-lives-ok { $model = load-model-using-cache($temp-dir, $path, 'Total') },
+lives-ok { $model = load-model-using-cache($cache-dir, $path, 'Total') },
         'Can load model via the cache a second time';
 isa-ok $model, Agrammon::Model, 'Loaded again model has correct type';
 
