@@ -3,7 +3,6 @@
 $*OUT.out-buffer = False;
 $*ERR.out-buffer = False;
 use lib $*PROGRAM.resolve.parent(2) ~ '/lib';
-use lib:from<Perl5> $*PROGRAM.resolve.parent(2) ~ '/Inline/perl5';
 # ModelCache spurts ~/.agrammon/<hash>.rakumod and then loads it. The
 # cache-dir MUST be in the repo chain BEFORE any agrammon module is
 # loaded, otherwise (on Rakudo 2026.04+ with fresh precomp state) the

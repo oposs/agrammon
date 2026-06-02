@@ -1,4 +1,11 @@
-- 7.0.0, 2026-05-19, fritz.zaucker@oetiker.ch
+
+
+- 7.0.0, 2026-05-19 and 2026-06-02, fritz.zaucker@oetiker.ch
+
+  - Replace Spreadsheet::XLSX, LibXML and Inline::Perl5 based
+    Excel exporter with custom native Raku exporter
+
+  - Replaced LaTeX based PDF generator with Typst generator
 
   - Clean up version-related YAML fields.
     - `Database.version` is removed; `dataset.dataset_version` is now

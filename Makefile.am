@@ -3,7 +3,7 @@
 AUTOMAKE_OPTIONS =  foreign
 
 # SUBDIRS = thirdparty etc frontend
-SUBDIRS = frontend Inline
+SUBDIRS = frontend
 
 PUB := $(shell find -L public -type d \( -name ".??*" -o -name transpiled \) -prune -o -not -name "*db.json" -a -not -name "*.map" -a -not -name "*~" -a -not -name transpiled -a -not -name "*.tmp"  -a -type f -print )
 
@@ -15,7 +15,7 @@ PM := $(shell find lib -name "*.pm")
 
 # EXTRA_DIST = VERSION cpanfile COPYRIGHT LICENSE CHANGELOG AUTHORS bootstrap $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) Dockerfile
 
-EXTRA_DIST = META6.json README.md VERSION cpanfile COPYRIGHT CHANGELOG.md bootstrap $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) bin lib
+EXTRA_DIST = META6.json README.md VERSION COPYRIGHT CHANGELOG.md bootstrap install-patched-deps.sh $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) bin lib
 
 # Default gzip --best is ~6× slower than -6 for marginal size gain on
 # our 250 MB tree. Override automake's default so `make dist` finishes
@@ -37,7 +37,8 @@ help:
 	@echo "Agrammon — Makefile targets"
 	@echo ""
 	@echo "Setup:"
-	@echo "  deps              Install Raku (zef) and Perl (cpanm) dependencies"
+	@echo "  deps              Install Raku (zef) dependencies"
+	@echo "  install-modules   Install Agrammon modules + deps into local Raku (zef)"
 	@echo ""
 	@echo "Build / dist (automake):"
 	@echo "  all               Build everything (default automake target)"
@@ -66,8 +67,9 @@ help:
 	@echo "  dev-db-psql       Open psql against the dev DB"
 	@echo "  dev-db-reset      Wipe dev DB data dir so init scripts re-run on next start"
 	@echo ""
-	@echo "Deployment (tarball → web-volki-01):"
-	@echo "  deploy            Copy release tarball to deploy host and unpack"
+	@echo "Deployment (bare-metal web-volki-01, no k8s):"
+	@echo "  deploy            Build + swap app code on the server, wipe precomp, restart units"
+	@echo "  deploy-deps       Refresh Raku deps on the server (incl. pinned patched Cro), restart"
 	@echo ""
 	@echo "Container image (multi-stage Dockerfile → $(CONTAINER_REGISTRY)):"
 	@echo "  image             Build the container image locally"
@@ -88,12 +90,63 @@ help:
 	@echo "  CONTAINER_TAG=$(CONTAINER_TAG)"
 
 deps:
+		./install-patched-deps.sh
 		zef --debug --/test --deps-only --test-depends install .
-		cpanm --installdeps .
 
-deploy:
-	scp agrammon-`cat VERSION`.tar.gz agrammon@web-volki-01-adm:src/
-	ssh camas@web-volki-01-adm mkdir opt/releases/agrammon-`cat VERSION` && cd opt/releases/agrammon-`cat VERSION` && tar zxf $HOME/src/agrammon-`cat VERSION`
+.PHONY: install-modules
+
+# Install Agrammon's own modules (and their dependencies) into the user's
+# local Raku installation. install-patched-deps.sh first installs the pinned
+# patched Cro builds so the stock ones are not pulled over them.
+# --force-install allows re-installing over an existing same-version copy.
+install-modules:
+		./install-patched-deps.sh
+		zef install --/test --force-install .
+
+# --- Deployment to web-volki-01 (bare-metal, no k8s) --------------------------
+#
+# make deploy       Build a release tarball and swap the APP CODE on the server,
+#                   wipe the precomp cache (stale precomp SIGSEGVs after a swap),
+#                   and restart the target units. Build the frontend first if it
+#                   changed: (cd frontend && make build).
+# make deploy-deps  Refresh the Raku deps on the server INCLUDING the pinned
+#                   patched Cro builds (install-patched-deps.sh), then restart.
+#                   Run when META6.json or install-patched-deps.sh changed; the
+#                   release must already be unpacked (run `make deploy` first).
+#
+# Defaults target the TEST single siblings. Override for prod / other instances:
+#   make deploy DEPLOY_UNITS='agrammon.prod.SingleVersion6.5.2.service agrammon.prod.SingleVersion7.0.0.service'
+DEPLOY_HOST    ?= agrammon@web-volki-01-adm
+DEPLOY_VERSION ?= $(shell cat VERSION)
+DEPLOY_RELEASE ?= agrammon-$(DEPLOY_VERSION)
+RELEASES_DIR   ?= opt/releases
+DEPLOY_UNITS   ?= agrammon.test.SingleVersion6.5.2.service agrammon.test.SingleVersion7.0.0.service
+
+.PHONY: deploy deploy-deps
+
+deploy: dist
+	scp $(DEPLOY_RELEASE).tar.gz $(DEPLOY_HOST):src/
+	ssh $(DEPLOY_HOST) 'set -e; \
+	  systemctl --user stop $(DEPLOY_UNITS); \
+	  cd "$$HOME/$(RELEASES_DIR)"; \
+	  rm -rf "$(DEPLOY_RELEASE).bak"; \
+	  [ ! -d "$(DEPLOY_RELEASE)" ] || mv "$(DEPLOY_RELEASE)" "$(DEPLOY_RELEASE).bak"; \
+	  tar zxf "$$HOME/src/$(DEPLOY_RELEASE).tar.gz"; \
+	  rm -rf "$$HOME/.agrammon/.precomp" "$$HOME/.agrammon"/*.rakumod; \
+	  systemctl --user reset-failed $(DEPLOY_UNITS) 2>/dev/null || true; \
+	  systemctl --user start $(DEPLOY_UNITS)'
+	@echo "Deployed $(DEPLOY_RELEASE) to $(DEPLOY_HOST) [units: $(DEPLOY_UNITS)]"
+
+deploy-deps:
+	ssh $(DEPLOY_HOST) 'set -e; \
+	  cd "$$HOME/$(RELEASES_DIR)/$(DEPLOY_RELEASE)"; \
+	  ./install-patched-deps.sh; \
+	  zef install --/test --deps-only .; \
+	  systemctl --user stop $(DEPLOY_UNITS); \
+	  rm -rf "$$HOME/.agrammon/.precomp" "$$HOME/.agrammon"/*.rakumod; \
+	  systemctl --user reset-failed $(DEPLOY_UNITS) 2>/dev/null || true; \
+	  systemctl --user start $(DEPLOY_UNITS)'
+	@echo "Refreshed deps (incl. patched Cro) for $(DEPLOY_RELEASE) on $(DEPLOY_HOST)"
 
 # --- Test database (podman) and test targets ----------------------------------
 
@@ -135,7 +188,7 @@ db-psql:
 # Run the full suite (DB-backed integration tests included).
 # Caller must ensure the test DB is running (e.g. `make db-start`).
 test:
-	PERL5LIB=Inline/perl5 AGRAMMON_CFG=t/test-data/agrammon.cfg.yaml prove6 -l t/
+	AGRAMMON_CFG=t/test-data/agrammon.cfg.yaml prove6 -l t/
 
 # Skip DB-backed tests (those that honor AGRAMMON_UNIT_TEST=1).
 unit-test:

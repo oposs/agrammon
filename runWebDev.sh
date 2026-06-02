@@ -11,7 +11,6 @@ if ! podman container exists agrammon-dev-db 2>/dev/null; then
     exit 1
 fi
 
-export PERL5LIB=Inline/perl5
 # SOURCE_MODE=1 makes the Cro static-content routes serve the qooxdoo
 # source target (frontend/compiled/source/) instead of the production
 # build target (public/). Frontend edits then pick up after a single

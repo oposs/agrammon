@@ -3,16 +3,14 @@
 # Multi-stage build for Agrammon.
 #
 # Stage 1 (builder): debian:bookworm-slim + all *-dev headers, build-essential,
-# cpanminus, git. Installs Rakudo 2026.04 (rakudo.org prebuild), zef, all Raku
-# deps, Excel::Writer::XLSX via cpanm into a private --local-lib at /opt/perl5,
-# patches Cro::OpenAPI::RoutesFromDefinition with upstream PR #15 (not yet
-# merged), and runs a compile-check against lib/Agrammon/Model.rakumod.
+# git. Installs Rakudo 2026.04 (rakudo.org prebuild), zef, the pinned patched
+# Cro builds (install-patched-deps.sh — merged-but-unreleased fixes), all other
+# Raku deps, and runs a compile-check against lib/Agrammon/Model.rakumod.
 #
-# Stage 2 (runtime): debian:bookworm-slim + runtime libs only (libperl, libxml2,
-# libarchive13, libuuid1, libssl3, libpq5, Perl XML/IO/Archive deps,
-# ghostscript, fonts-liberation, ca-certificates). Copies /opt/rakudo, the
-# zef-installed site repo state under /root/.raku, /opt/perl5, /usr/local/bin/typst,
-# and the /app tree from the builder.
+# Stage 2 (runtime): debian:bookworm-slim + runtime libs only (libarchive13,
+# libuuid1, libssl3, libpq5, ghostscript, fonts-liberation, ca-certificates).
+# Copies /opt/rakudo, the zef-installed site repo state under /root/.raku,
+# /usr/local/bin/typst, and the /app tree from the builder.
 #
 # Build-arg pins are fixed but overridable for one-off bumps:
 #   --build-arg RAKUDO_VERSION=2026.04-01
@@ -61,16 +59,14 @@ FROM debian:bookworm-slim AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-#   - libperl-dev, cpanminus, build-essential, pkg-config →
-#       Inline::Perl5 + Excel::Writer::XLSX + native Raku module compile
-#   - libxml2-dev libarchive-dev uuid-dev libssl-dev libpq-dev →
-#       C headers for Raku native modules (LibXML, Libarchive, LibUUID,
+#   - build-essential, pkg-config → native Raku module compile
+#   - libarchive-dev uuid-dev libssl-dev libpq-dev →
+#       C headers for Raku native modules (Libarchive, LibUUID,
 #       OpenSSL, DB::Pg)
 #   - ca-certificates, curl, xz-utils, git → fetch Rakudo + typst tarballs
 #                                            + clone zef + patch Cro::OpenAPI
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        perl libperl-dev cpanminus \
-        libxml2-dev libarchive-dev uuid-dev libssl-dev libpq-dev \
+        libarchive-dev uuid-dev libssl-dev libpq-dev \
         build-essential pkg-config \
         ca-certificates curl xz-utils git \
     && rm -rf /var/lib/apt/lists/*
@@ -103,47 +99,22 @@ RUN curl -fsSL "https://github.com/typst/typst/releases/download/v${TYPST_VERSIO
     && rm -rf /tmp/typst.tar.xz /tmp/typst-x86_64-unknown-linux-musl \
     && typst --version
 
-# Excel::Writer::XLSX — not a Debian package. Installed into a private
-# --local-lib so the runtime stage can COPY a single /opt/perl5 tree
-# instead of merging with the system Perl module path.
-RUN cpanm --local-lib /opt/perl5 --notest --quiet Excel::Writer::XLSX \
-    && rm -rf /root/.cpanm
-
 WORKDIR /app
 
-# Build context optimisation: META6.json first → unchanged when only source
-# files change → zef cache hit on rebuild.
-COPY META6.json /app/
+# Build context optimisation: META6.json + the patched-deps pin first → these
+# layers cache across app source edits.
+COPY META6.json install-patched-deps.sh /app/
 
-# Inline/perl5 must be in place before zef install (Inline::Perl5 looks at
-# PERL5LIB at compile time).
-COPY Inline/ /app/Inline/
-ENV PERL5LIB=/opt/perl5/lib/perl5:/app/Inline/perl5
-
-# Pin Text::CSV 0.015 — Spreadsheet::XLSX hard-pins it. Without the explicit
-# pre-install, zef also pulls 0.022 to satisfy the unpinned project dep;
-# having both installed is cosmetic only (single-version tree is cleaner).
-RUN zef install --/test 'Text::CSV:ver<0.015>:auth<zef:Tux>'
+# Patched upstream Cro deps (merged but unreleased), pinned to their merge
+# commits. Installed BEFORE deps-only so the stock (unfixed) builds are not
+# pulled over them. Fixes the Cro::HTTP::Middleware::Conditional memory leak
+# (#214) and the Cro::OpenAPI::RoutesFromDefinition Router-compat crash (#15).
+# See install-patched-deps.sh; drop it once the fixes are released.
+RUN ./install-patched-deps.sh && rm -rf ~/.zef
 
 # All other Raku deps from META6.json.
 RUN zef install --/test --deps-only . \
     && rm -rf ~/.zef
-
-# Cro::OpenAPI::RoutesFromDefinition compatibility patch (upstream PR #15,
-# unmerged as of 2026-05). Without it, agrammon's `route { include … }`
-# block crashes at compile time with:
-#   No such method 'name' for invocant of type
-#   'Cro::OpenAPI::RoutesFromDefinition::OperationSet::OperationHandler'
-# This is a Cro::HTTP::Router 0.8.12+ regression that affects every
-# OpenAPI-based Cro app. Drop this RUN when the PR merges.
-# https://github.com/croservices/cro-openapi-routes-from-definition/pull/15
-RUN git clone --depth 1 https://github.com/croservices/cro-openapi-routes-from-definition /tmp/cro-openapi \
-    && cd /tmp/cro-openapi \
-    && curl -fsSL https://github.com/croservices/cro-openapi-routes-from-definition/pull/15.patch \
-        -o /tmp/pr15.patch \
-    && git apply --whitespace=nowarn /tmp/pr15.patch \
-    && zef install --/test --force-install . \
-    && cd / && rm -rf /tmp/cro-openapi /tmp/pr15.patch ~/.zef
 
 # App code — last so frequent edits don't bust the dep-install cache.
 COPY lib/    /app/lib/
@@ -160,18 +131,13 @@ FROM debian:bookworm-slim AS runtime
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Runtime-only set — no compilers, no headers, no cpanm/git/curl/build tools.
-#   - perl + libperl5.36 → host Perl + libperl.so for Inline::Perl5
-#   - libxml-libxml-perl libio-stringy-perl libarchive-zip-perl →
-#       Excel::Writer::XLSX Perl-side runtime deps
-#   - libxml2 libarchive13 libuuid1 libssl3 libpq5 →
+#   - libarchive13 libuuid1 libssl3 libpq5 →
 #       shared libs the Raku native modules linked against in stage 1
 #   - ghostscript → optional typst PDF re-compression (General.ghostscript:)
 #   - fonts-liberation → "Liberation Sans" used by pdfexport.crotmp
 #   - ca-certificates → outbound TLS (e.g. to API consumers, future SMTP)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        perl libperl5.36 \
-        libxml-libxml-perl libio-stringy-perl libarchive-zip-perl \
-        libxml2 libarchive13 libuuid1 libssl3 libpq5 \
+        libarchive13 libuuid1 libssl3 libpq5 \
         ghostscript fonts-liberation \
         ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
@@ -189,9 +155,6 @@ ENV PATH=/opt/rakudo/bin:/opt/rakudo/share/perl6/site/bin:/opt/rakudo/share/perl
 # anything site-scope couldn't precompile at install time).
 COPY --from=builder /root/.raku /root/.raku
 
-# cpanm --local-lib output (Excel::Writer::XLSX + its Perl deps).
-COPY --from=builder /opt/perl5 /opt/perl5
-
 # typst binary.
 COPY --from=builder /usr/local/bin/typst /usr/local/bin/typst
 
@@ -204,7 +167,6 @@ COPY --from=fe-builder /work/frontend/compiled/build /app/public
 
 WORKDIR /app
 
-ENV PERL5LIB=/opt/perl5/lib/perl5:/app/Inline/perl5
 ENV AGRAMMON_PORT=8080
 
 EXPOSE 8080

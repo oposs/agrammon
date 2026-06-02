@@ -4,8 +4,6 @@ General:
     log_level:  warn
     mojo_secret: MyCookieSecret
     tmpDir     : agrammon
-    latexTimeout : 30
-    pdflatex   : /usr/bin/lualatex
     translationDir : share/translations
     
 Database:

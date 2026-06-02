@@ -4,4 +4,4 @@ dist_bin_SCRIPTS = $(MJ_SCRIPT).raku
 # pre-compile
 install-exec-hook:
 	zef --/test --deps-only install ..
-	PERL5LIB=$(prefix)/Inline/perl5 raku -I$(libdir) -c $(bindir)/$(MJ_SCRIPT).raku
+	raku -I$(libdir) -c $(bindir)/$(MJ_SCRIPT).raku

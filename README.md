@@ -29,35 +29,33 @@ finished by Christmas.
 
 You'll need to:
 
-1. Install `rakudo` and `zef`
-2. Install the Raku dependencies: `zef install --deps-only .`
-3. Install the Perl dependencies: `cpanm --installdeps .`
-4. Install the `lualatex` program and Latex packages needed (`sudo apt install
-   texlive-luatex texlive-latex-extra texlive-fonts-recommended texlive-science`)
+1. Install `rakudo` and `zef`.
+2. Install the Raku dependencies — this also installs the pinned patched Cro
+   builds (see below): `make deps`
+   (equivalently: `./install-patched-deps.sh && zef install --deps-only .`).
+3. Install `typst` for PDF export — a single static binary from
+   <https://github.com/typst/typst/releases>; optionally `ghostscript` for PDF
+   stream re-compression. Point `General.typst` in the YAML config at it.
 
 ### Patched Cro dependencies (temporary)
 
-`zef install --deps-only .` pulls the **stock** Cro modules, which currently
-carry two bugs affecting Agrammon. Until the upstream fixes are merged and
-released, install the patched builds over the stock ones (e.g. clone the fork
-branch and `zef install --force-install <clone-dir>`):
+Two upstream Cro fixes Agrammon needs are **merged but not yet released**, so
+`zef install --deps-only .` on its own would pull the stock (unfixed) builds.
+`install-patched-deps.sh` — run by `make deps` / `make install-modules`, the
+Docker build, and `make deploy-deps` — installs them first, pinned to their
+merge commits, so the stock builds are not pulled over them:
 
-- **Cro::HTTP** — unbounded memory growth:
-  `Cro::HTTP::Middleware::Conditional` never completes its per-connection
-  `early-responses` Supplier, so RSS leaks on every request through any
-  `before`/`after` route block or token-auth middleware.
-  Fix: <https://github.com/croservices/cro-http/pull/214>
-  (branch `fix/conditional-middleware-early-responses-leak` on
-  <https://github.com/zaucker/cro-http>).
+- **Cro::HTTP** — `Cro::HTTP::Middleware::Conditional` never completes its
+  per-connection `early-responses` Supplier, leaking RSS on every request
+  through any `before`/`after` route block or token-auth middleware.
+  Fix merged: <https://github.com/croservices/cro-http/pull/214>.
 - **Cro::OpenAPI::RoutesFromDefinition** — under Cro::HTTP::Router 0.8.12+ the
-  OpenAPI route `include` crashes with "No such method 'name'" because
-  `OperationHandler` lacks `.name`/`.url-prefix`.
-  Fix: <https://github.com/croservices/cro-openapi-routes-from-definition/pull/15>
-  (branch `add-name-attr-to-operationhandler` on
-  <https://github.com/zaucker/cro-openapi-routes-from-definition>).
+  OpenAPI route `include` crashes with "No such method 'name'".
+  Fix merged: <https://github.com/croservices/cro-openapi-routes-from-definition/pull/15>.
 
-Once both PRs are released, a normal `zef` upgrade suffices and the
-force-installs can be dropped.
+Once each fix is released to the Raku ecosystem, drop its line from
+`install-patched-deps.sh` and rely on normal `zef` resolution (plus the
+META6.json version bound).
 
 ## Running tests
 

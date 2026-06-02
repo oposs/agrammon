@@ -3,8 +3,6 @@ General:
     log_file:   /tmp/agrammon.log
     log_level:  warn
     tempDir: agrammon
-    pdflatex: /usr/bin/lualatex
-    latexTimeout: 30
     translationDir : share/translations
 Database:
     name:     agrammon_test
