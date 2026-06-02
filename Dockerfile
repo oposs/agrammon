@@ -3,9 +3,9 @@
 # Multi-stage build for Agrammon.
 #
 # Stage 1 (builder): debian:bookworm-slim + all *-dev headers, build-essential,
-# git. Installs Rakudo 2026.04 (rakudo.org prebuild), zef, all Raku deps,
-# patches Cro::OpenAPI::RoutesFromDefinition with upstream PR #15 (not yet
-# merged), and runs a compile-check against lib/Agrammon/Model.rakumod.
+# git. Installs Rakudo 2026.04 (rakudo.org prebuild), zef, the pinned patched
+# Cro builds (install-patched-deps.sh — merged-but-unreleased fixes), all other
+# Raku deps, and runs a compile-check against lib/Agrammon/Model.rakumod.
 #
 # Stage 2 (runtime): debian:bookworm-slim + runtime libs only (libarchive13,
 # libuuid1, libssl3, libpq5, ghostscript, fonts-liberation, ca-certificates).
@@ -101,29 +101,20 @@ RUN curl -fsSL "https://github.com/typst/typst/releases/download/v${TYPST_VERSIO
 
 WORKDIR /app
 
-# Build context optimisation: META6.json first → unchanged when only source
-# files change → zef cache hit on rebuild.
-COPY META6.json /app/
+# Build context optimisation: META6.json + the patched-deps pin first → these
+# layers cache across app source edits.
+COPY META6.json install-patched-deps.sh /app/
 
-# All Raku deps from META6.json.
+# Patched upstream Cro deps (merged but unreleased), pinned to their merge
+# commits. Installed BEFORE deps-only so the stock (unfixed) builds are not
+# pulled over them. Fixes the Cro::HTTP::Middleware::Conditional memory leak
+# (#214) and the Cro::OpenAPI::RoutesFromDefinition Router-compat crash (#15).
+# See install-patched-deps.sh; drop it once the fixes are released.
+RUN ./install-patched-deps.sh && rm -rf ~/.zef
+
+# All other Raku deps from META6.json.
 RUN zef install --/test --deps-only . \
     && rm -rf ~/.zef
-
-# Cro::OpenAPI::RoutesFromDefinition compatibility patch (upstream PR #15,
-# unmerged as of 2026-05). Without it, agrammon's `route { include … }`
-# block crashes at compile time with:
-#   No such method 'name' for invocant of type
-#   'Cro::OpenAPI::RoutesFromDefinition::OperationSet::OperationHandler'
-# This is a Cro::HTTP::Router 0.8.12+ regression that affects every
-# OpenAPI-based Cro app. Drop this RUN when the PR merges.
-# https://github.com/croservices/cro-openapi-routes-from-definition/pull/15
-RUN git clone --depth 1 https://github.com/croservices/cro-openapi-routes-from-definition /tmp/cro-openapi \
-    && cd /tmp/cro-openapi \
-    && curl -fsSL https://github.com/croservices/cro-openapi-routes-from-definition/pull/15.patch \
-        -o /tmp/pr15.patch \
-    && git apply --whitespace=nowarn /tmp/pr15.patch \
-    && zef install --/test --force-install . \
-    && cd / && rm -rf /tmp/cro-openapi /tmp/pr15.patch ~/.zef
 
 # App code — last so frequent edits don't bust the dep-install cache.
 COPY lib/    /app/lib/
