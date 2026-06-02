@@ -97,8 +97,13 @@ taxonomy = Application::Slurry::Csoft
     en = -
   ++description
     Fraction applied after 6pm.
+?if Kantonal_LU
+  ++formula
+    0;
+?else
   ++formula
     In(appl_evening) / 100;
+?endif
 
 +appl_hotdays
   print = 15
@@ -106,5 +111,10 @@ taxonomy = Application::Slurry::Csoft
     en = -
   ++description
     .
+?if Kantonal_LU
+  ++formula
+    'sometimes';
+?else
   ++formula
     In(appl_hotdays);
+?endif

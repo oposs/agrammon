@@ -100,6 +100,10 @@ is applied.
     en = -
   ++description
     .
+?if Kantonal_LU
+  ++formula
+  1;
+?else
   ++formula
     my $season_sum = In(appl_summer) + In(appl_autumn_winter_spring);
     if( abs( $season_sum - 100)  > 1e-6 )
@@ -109,6 +113,7 @@ is applied.
 		  fr => "Veuillez corriger: la somme des catégories‚ «Part de lisier épandu en été (de juin à août)» et «Part de lisier épandu de septembre à mai y c.» doit donner 100%!\n"});
     }
     return $season_sum;
+?endif
 
 +appl_summer
   print = 22
