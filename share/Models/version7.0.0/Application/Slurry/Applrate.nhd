@@ -87,6 +87,11 @@ taxonomy = Application::Slurry::Applrate
     en = -
   ++description
     todo
+?if Kantonal_LU
+  ++formula
+    1;
+?else
   ++formula
     1 / (In(dilution_parts_water) + 1);
+?endif
 
