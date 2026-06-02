@@ -66,14 +66,26 @@ help:
 	@echo "  dev-db-psql       Open psql against the dev DB"
 	@echo "  dev-db-reset      Wipe dev DB data dir so init scripts re-run on next start"
 	@echo ""
-	@echo "Deployment:"
+	@echo "Deployment (tarball → web-volki-01):"
 	@echo "  deploy            Copy release tarball to deploy host and unpack"
+	@echo ""
+	@echo "Container image (multi-stage Dockerfile → $(CONTAINER_REGISTRY)):"
+	@echo "  image             Build the container image locally"
+	@echo "  image-push        Build and push to $(CONTAINER_REGISTRY) (login required)"
+	@echo "  image-test        Build + push with CONTAINER_ENV=test  (= $(CONTAINER_IMAGE):test-…)"
+	@echo "  image-prod        Build + push with CONTAINER_ENV=prod  (= $(CONTAINER_IMAGE):prod-…)"
+	@echo "  image-print       Show what \`image\` would build (resolves tag etc.)"
 	@echo ""
 	@echo "Variables (override on command line, e.g. make db-start DB_PORT=5555):"
 	@echo "  PODMAN=$(PODMAN)"
 	@echo "  DB_IMAGE=$(DB_IMAGE)  DB_CONTAINER=$(DB_CONTAINER)  DB_PORT=$(DB_PORT)"
 	@echo "  DEV_DB_CONTAINER=$(DEV_DB_CONTAINER)  DEV_DB_PORT=$(DEV_DB_PORT)"
 	@echo "  DEV_DB_DATA=$(DEV_DB_DATA)"
+	@echo "  CONTAINER_REGISTRY=$(CONTAINER_REGISTRY)"
+	@echo "  CONTAINER_PROJECT=$(CONTAINER_PROJECT)"
+	@echo "  CONTAINER_IMAGE=$(CONTAINER_IMAGE)"
+	@echo "  CONTAINER_ENV=$(CONTAINER_ENV)  CONTAINER_VERSION=$(CONTAINER_VERSION)"
+	@echo "  CONTAINER_TAG=$(CONTAINER_TAG)"
 
 deps:
 		zef --debug --/test --deps-only --test-depends install .
@@ -186,3 +198,50 @@ dev-db-reset: dev-db-stop
 	    */dev/db-data) rm -rf $(DEV_DB_DATA); echo "Wiped $(DEV_DB_DATA)";; \
 	    *) echo "Refusing to wipe DEV_DB_DATA=$(DEV_DB_DATA): not a */dev/db-data path"; exit 1;; \
 	esac
+
+# --- Container image (multi-stage Dockerfile → harbor.oetiker.ch) --------------
+#
+# Tag convention: <env>-<version>.  Customer overlay
+# (oep-k8s/customers/oep/services/agrammon/values.yaml) picks images.test.tag
+# or images.prod.tag depending on per-instance `env:`.
+#
+# Override on the command line, e.g.:
+#   make image-push CONTAINER_VERSION=2026.05.20 CONTAINER_ENV=prod
+#   make image      CONTAINER_BUILD_ARGS="--build-arg TYPST_VERSION=0.14.3"
+#
+# Login (one-time per session) before pushing:
+#   podman login harbor.oetiker.ch
+
+CONTAINER_REGISTRY ?= harbor.oetiker.ch
+CONTAINER_PROJECT  ?= agrammon
+CONTAINER_IMAGE    ?= $(CONTAINER_REGISTRY)/$(CONTAINER_PROJECT)/model
+CONTAINER_VERSION  ?= $(shell cat VERSION 2>/dev/null || echo dev)
+CONTAINER_ENV      ?= test
+CONTAINER_TAG      ?= $(CONTAINER_ENV)-$(CONTAINER_VERSION)
+CONTAINER_BUILD_ARGS ?=
+
+.PHONY: image image-push image-test image-prod image-print
+
+image-print:
+	@echo "Image:    $(CONTAINER_IMAGE):$(CONTAINER_TAG)"
+	@echo "Registry: $(CONTAINER_REGISTRY)  (project: $(CONTAINER_PROJECT))"
+	@echo "Env:      $(CONTAINER_ENV)"
+	@echo "Version:  $(CONTAINER_VERSION)  (from VERSION file or 'dev' fallback)"
+	@echo ""
+	@echo "Build args: $(CONTAINER_BUILD_ARGS)"
+
+image:
+	$(PODMAN) build $(CONTAINER_BUILD_ARGS) -f Dockerfile -t $(CONTAINER_IMAGE):$(CONTAINER_TAG) .
+
+# Push depends on image — rebuilds if Dockerfile/COPY targets changed; podman
+# layer cache makes subsequent pushes fast when nothing changed.
+image-push: image
+	@echo "Pushing $(CONTAINER_IMAGE):$(CONTAINER_TAG) ..."
+	@echo "(Run 'podman login $(CONTAINER_REGISTRY)' first if you haven't.)"
+	$(PODMAN) push $(CONTAINER_IMAGE):$(CONTAINER_TAG)
+
+image-test:
+	$(MAKE) image-push CONTAINER_ENV=test
+
+image-prod:
+	$(MAKE) image-push CONTAINER_ENV=prod
