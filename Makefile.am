@@ -117,6 +117,10 @@ DEPLOY_VERSION ?= $(shell cat VERSION)
 DEPLOY_RELEASE ?= agrammon-$(DEPLOY_VERSION)
 RELEASES_DIR   ?= opt/releases
 DEPLOY_UNITS   ?= agrammon.test.SingleVersion6.5.2.service agrammon.test.SingleVersion7.0.0.service
+# zef/rakudo live on the deploy user's login PATH only; a non-login ssh does not
+# source the profile, so deploy-deps exports it explicitly. Override if rakudo
+# is installed elsewhere on the target.
+DEPLOY_RAKU_BIN ?= $$HOME/opt/rakudo/bin:$$HOME/opt/rakudo/share/perl6/site/bin
 
 .PHONY: deploy deploy-deps
 
@@ -135,6 +139,7 @@ deploy: dist
 
 deploy-deps:
 	ssh $(DEPLOY_HOST) 'set -e; \
+	  export PATH="$(DEPLOY_RAKU_BIN):$$PATH"; \
 	  cd "$$HOME/$(RELEASES_DIR)/$(DEPLOY_RELEASE)"; \
 	  zef install --/test --deps-only .; \
 	  systemctl --user stop $(DEPLOY_UNITS); \
