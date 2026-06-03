@@ -3,9 +3,8 @@
 # Multi-stage build for Agrammon.
 #
 # Stage 1 (builder): debian:bookworm-slim + all *-dev headers, build-essential,
-# git. Installs Rakudo 2026.04 (rakudo.org prebuild), zef, the pinned patched
-# Cro builds (install-patched-deps.sh — merged-but-unreleased fixes), all other
-# Raku deps, and runs a compile-check against lib/Agrammon/Model.rakumod.
+# git. Installs Rakudo 2026.04 (rakudo.org prebuild), zef, all Raku deps, and
+# runs a compile-check against lib/Agrammon/Model.rakumod.
 #
 # Stage 2 (runtime): debian:bookworm-slim + runtime libs only (libarchive13,
 # libuuid1, libssl3, libpq5, ghostscript, fonts-liberation, ca-certificates).
@@ -101,18 +100,14 @@ RUN curl -fsSL "https://github.com/typst/typst/releases/download/v${TYPST_VERSIO
 
 WORKDIR /app
 
-# Build context optimisation: META6.json + the patched-deps pin first → these
-# layers cache across app source edits.
-COPY META6.json install-patched-deps.sh /app/
+# Build context optimisation: META6.json first → unchanged when only source
+# files change → zef cache hit on rebuild.
+COPY META6.json /app/
 
-# Patched upstream Cro deps (merged but unreleased), pinned to their merge
-# commits. Installed BEFORE deps-only so the stock (unfixed) builds are not
-# pulled over them. Fixes the Cro::HTTP::Middleware::Conditional memory leak
-# (#214) and the Cro::OpenAPI::RoutesFromDefinition Router-compat crash (#15).
-# See install-patched-deps.sh; drop it once the fixes are released.
-RUN ./install-patched-deps.sh && rm -rf ~/.zef
-
-# All other Raku deps from META6.json.
+# All Raku deps from META6.json. The Cro::HTTP (>=0.8.13) and
+# Cro::OpenAPI::RoutesFromDefinition (>=1.0.5) version bounds pull the released
+# builds carrying the fixes Agrammon needs (Conditional-middleware memory leak,
+# Router 0.8.12+ compat crash).
 RUN zef install --/test --deps-only . \
     && rm -rf ~/.zef
 
