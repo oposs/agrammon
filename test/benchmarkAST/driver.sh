@@ -29,9 +29,9 @@ bench() {  # $1=raku-bin $2=label $3=env-assign-or-empty
   cd "$REPO"
   rm -rf ~/.agrammon/*.rakumod ~/.agrammon/.precomp 2>/dev/null
   local out
-  out=$(env ${3:+$3} "$1" -Ilib TODO/bench/bench.raku --n=30 2>/dev/null | grep LOAD)
+  out=$(env ${3:+$3} "$1" -Ilib test/benchmarkAST/bench.raku --n=30 2>/dev/null | grep LOAD)
   echo "RESULT | $2 | ${out:-FAILED (no result — see below)}" >> "$RES"
-  [ -z "$out" ] && { env ${3:+$3} "$1" -Ilib TODO/bench/bench.raku --n=3 2>&1 | grep -iE 'SORRY|MVMContext|error|No such' | head -2 >> "$RES"; }
+  [ -z "$out" ] && { env ${3:+$3} "$1" -Ilib test/benchmarkAST/bench.raku --n=3 2>&1 | grep -iE 'SORRY|MVMContext|error|No such' | head -2 >> "$RES"; }
 }
 
 build 2026.05     ~/opt/rk-2605-self s2605 || true
