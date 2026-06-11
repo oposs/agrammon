@@ -13,7 +13,6 @@ use Agrammon::Documentation;
 use Agrammon::ModelCache;
 use Agrammon::OutputFormatter::CSV;
 use Agrammon::OutputFormatter::ExcelNative;
-#use Agrammon::OutputFormatter::Excel;
 use Agrammon::OutputFormatter::JSON;
 use Agrammon::OutputFormatter::Text;
 use Agrammon::OutputFormatter::Util;

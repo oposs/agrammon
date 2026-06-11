@@ -7,10 +7,9 @@ use Agrammon::Timestamp;
 use Agrammon::Web::SessionUser;
 use Agrammon::OutputFormatter::XLSXWriter;
 
-# Native (pure-Raku) Excel exporter. Drop-in replacement for
-# Agrammon::OutputFormatter::ExcelFast: same `input-output-as-excel` signature
-# and the same workbook layout (5 sheets, column widths, header block, bold
-# module/group headers, 0.000/0.0 number formats, right-aligned values), but
+# Native (pure-Raku) Excel exporter. Provides `input-output-as-excel` and the
+# Agrammon workbook layout (5 sheets, column widths, header block, bold
+# module/group headers, 0.000/0.0 number formats, right-aligned values),
 # produced with Agrammon::OutputFormatter::XLSXWriter (string-built XLSX, no
 # LibXML DOM and no Excel::Writer::XLSX / Inline::Perl5 round-trip).
 #

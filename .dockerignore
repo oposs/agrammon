@@ -20,6 +20,5 @@ runSingle*.sh
 runRegional*.sh
 runKantonal*.sh
 runExcelTest.sh
-runFrontendTests.sh
 Dockerfile.spike
 .dockerignore
