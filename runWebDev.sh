@@ -17,4 +17,4 @@ fi
 # `npx qx compile` (or live via `npx qx compile --watch`) without
 # needing a full minified rebuild.
 export SOURCE_MODE=1
-exec raku -Ilib bin/agrammon.raku --cfg-file=dev/agrammon.dev.yaml web version6/End.nhd
+exec raku -Ilib bin/agrammon.raku --cfg-file=dev/agrammon.dev.yaml web version6.5.2/End.nhd

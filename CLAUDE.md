@@ -52,17 +52,16 @@ AGRAMMON_CFG=t/test-data/agrammon.cfg.yaml raku -Ilib t/dataset.rakutest
 ### Running the Application
 
 ```bash
-# Web application (edit runWeb.sh to customize config/model path)
-export PERL5LIB=Inline/perl5
-./runWeb.sh
+# Web application — dev server against the local podman dev DB
+# (start it with `make dev-db-start`); SOURCE_MODE serves the qooxdoo source target
+./runWebDev.sh
 
 # Command line interface
-export PERL5LIB=Inline/perl5
-raku -Ilib bin/agrammon.raku --cfg-file=etc/agrammon.single.yaml web version6/End.nhd
+raku -Ilib bin/agrammon.raku --cfg-file=etc/agrammon.single.yaml web version6.5.2/End.nhd
 ```
 
 Different model variants:
-- `./runSingle.sh` - Single farm model
+- `./runSingle6.5.2.sh` / `./runSingle7.sh` - Single farm model (v6.5.2 / v7.0.0; dev ports 20001 / 20002)
 - `./runRegional.sh` - Regional model
 - `./runKantonal.sh` - Cantonal model
 

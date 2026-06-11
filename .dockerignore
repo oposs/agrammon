@@ -19,6 +19,5 @@ runWeb*.sh
 runSingle*.sh
 runRegional*.sh
 runKantonal*.sh
-runExcelTest.sh
 Dockerfile.spike
 .dockerignore
