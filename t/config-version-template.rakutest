@@ -1,0 +1,46 @@
+use v6;
+use Agrammon::Config;
+use Test;
+
+# %VERSION% title templating: Config.gui-title substitutes the placeholder
+# with the deployment's model version, and versions-resolved substitutes each
+# Versions entry's title with that entry's own version. Legacy hardcoded
+# titles (no placeholder) must be untouched.
+
+plan 4;
+
+subtest 'gui-title substitutes %VERSION% with the model version' => {
+    my $cfg = Agrammon::Config.new;
+    $cfg.load('t/test-data/agrammon.cfg-version-template.yaml');
+    is-deeply $cfg.gui-title, {
+        de => 'AGRAMMON 6.0 Einzelbetriebsmodell',
+        en => 'AGRAMMON 6.0 Single Farm Model',
+        fr => 'AGRAMMON 6.0 modèle Exploitation individuelle',
+    }, 'default version (Model.version = 6.0) substituted in all languages';
+    is $cfg.gui-title('7.0.0')<en>, 'AGRAMMON 7.0.0 Single Farm Model',
+        'explicit version argument overrides the default';
+}
+
+subtest 'versions-resolved substitutes each entry with its own version' => {
+    my $cfg = Agrammon::Config.new;
+    $cfg.load('t/test-data/agrammon.cfg-version-template.yaml');
+    my @v = $cfg.versions-resolved;
+    is @v.elems, 2, 'two switcher entries';
+    is @v[0]<title><en>, 'AGRAMMON 7.0.0 Single Farm Model', 'entry 1 uses its own version 7.0.0';
+    is @v[1]<title><en>, 'AGRAMMON 6.0 Single Farm Model',   'entry 2 uses its own version 6.0';
+    is @v[0]<guiVersion>, '7.0', 'non-title fields pass through (guiVersion)';
+    is @v[0]<url>, '/single/v7', 'non-title fields pass through (url)';
+}
+
+subtest 'legacy hardcoded titles are untouched (backward compatible)' => {
+    my $cfg = Agrammon::Config.new;
+    $cfg.load('t/test-data/agrammon.cfg.yaml');   # no %VERSION% placeholder
+    is $cfg.gui-title<en>, 'AGRAMMON 6.0 Single Farm Model',
+        'title with version baked in is returned unchanged';
+}
+
+subtest 'versions-resolved is a no-op when there is no Versions block' => {
+    my $cfg = Agrammon::Config.new;
+    $cfg.load('t/test-data/agrammon.cfg.yaml');
+    is $cfg.versions-resolved.elems, 0, 'empty when no Versions configured';
+}

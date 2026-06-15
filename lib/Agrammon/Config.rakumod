@@ -36,8 +36,23 @@ class Agrammon::Config {
         %!gui<variant>;
     }
 
-    method gui-title {
-        %!gui<title>;
+    # The GUI title hash ({de,en,fr,...}). Any `%VERSION%` placeholder is
+    # replaced with $version (the deployment's model version by default), so a
+    # config can carry one templated title instead of a hardcoded version.
+    # Legacy titles with the version baked in have no placeholder -> no-op.
+    method gui-title($version = self.model-version) {
+        my $v = $version // '';
+        %( %!gui<title>.map({ .key => .value.subst('%VERSION%', $v, :g) }) );
+    }
+
+    # The Versions switcher entries with any `%VERSION%` in each entry's title
+    # resolved to that entry's own version. Other fields pass through.
+    method versions-resolved {
+        @!versions.map(-> $v {
+            $v ~~ Associative && $v<title>
+                ?? %( |$v, title => %( $v<title>.map({ .key => .value.subst('%VERSION%', ~($v<version> // ''), :g) }) ) )
+                !! $v
+        }).list;
     }
 
     # User-visible short version label (e.g. '7.0'). Distinct from

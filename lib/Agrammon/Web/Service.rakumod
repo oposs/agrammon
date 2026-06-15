@@ -41,13 +41,13 @@ class Agrammon::Web::Service {
         my %cfg = (
             guiVariant   => %gui<variant>,
             modelVariant => %model<variant>,
-            title        => %gui<title>,
+            title        => $!cfg.gui-title,
             variant      => %model<variant>,
             version      => %model<version>,
             guiVersion   => $!cfg.gui-version,
             submission   => %gui<submission>,
             baseUrl      => %gui<baseUrl>,
-            versions     => $!cfg.versions,
+            versions     => $!cfg.versions-resolved,
         );
         return %cfg;
     }

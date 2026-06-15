@@ -1,0 +1,45 @@
+General:
+    debugLevel: 0
+    log_file:   /tmp/agrammon.log
+    log_level:  warn
+    tempDir: agrammon
+    translationDir : share/translations
+Database:
+    name:     agrammon_test
+    host:     localhost
+    port:     55432
+    user:     agrammon
+    password: agrammon
+
+GUI:
+    baseUrl: https://model.agrammon.ch/single/test
+    variant: Single
+    # %VERSION% is replaced with the active model version at runtime.
+    title:
+        de: AGRAMMON %VERSION% Einzelbetriebsmodell
+        en: AGRAMMON %VERSION% Single Farm Model
+        fr: AGRAMMON %VERSION% modèle Exploitation individuelle
+
+Model:
+    debugLevel: 0
+    path:      share/Models
+    top:       End.nhd
+    technical: technical.cfg
+    variant:   Base
+    version:   '6.0'
+
+Versions:
+    - guiVersion:   '7.0'
+      url:     /single/v7
+      version: '7.0.0'
+      title:
+          de: AGRAMMON %VERSION% Einzelbetriebsmodell
+          en: AGRAMMON %VERSION% Single Farm Model
+          fr: AGRAMMON %VERSION% modèle Exploitation individuelle
+    - guiVersion:   '6.0'
+      url:     /single/v6
+      version: '6.0'
+      title:
+          de: AGRAMMON %VERSION% Einzelbetriebsmodell
+          en: AGRAMMON %VERSION% Single Farm Model
+          fr: AGRAMMON %VERSION% modèle Exploitation individuelle
