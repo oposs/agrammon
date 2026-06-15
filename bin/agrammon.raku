@@ -14,5 +14,8 @@ use lib $*PROGRAM.resolve.parent(2) ~ '/lib';
 # all the way through the cached-module load. Established installs
 # (Rakudo 2025.12, or 2026.04 with prior precomp) happen to dodge it;
 # fresh container builds hit it every time.
-use lib %*ENV<HOME> ~ '/.agrammon';
+# Honors AGRAMMON_CACHE_DIR (kept in sync with &agrammon-cache-dir in
+# Agrammon::ModelCache) so test/prod instances on one host can isolate
+# their caches; falls back to ~/.agrammon.
+use lib %*ENV<AGRAMMON_CACHE_DIR> // (%*ENV<HOME> ~ '/.agrammon');
 use Agrammon::UI::CommandLine;

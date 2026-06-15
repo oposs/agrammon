@@ -310,7 +310,7 @@ class Agrammon::Web::Service {
             my $module      = $model-path.extension('').basename;
             my $module-path = $model-path.parent;
             $model = timed "Load model variant $variants from $model-path", {
-                load-model-using-cache($*HOME.add('.agrammon'), $module-path, $module);
+                load-model-using-cache(agrammon-cache-dir(), $module-path, $module);
             };
         }
         else {

@@ -3,6 +3,15 @@ use Agrammon::Formula::Compiler;
 use Agrammon::Model;
 use Digest::SHA1::Native;
 
+#| Directory where ModelCache reads/writes compiled model artifacts.
+#| Honors AGRAMMON_CACHE_DIR so test and prod instances sharing one HOME
+#| on a host can use separate caches; falls back to ~/.agrammon.
+#| MUST stay in sync with the `use lib` in bin/agrammon.raku, which puts
+#| this same directory on the repo chain at startup.
+sub agrammon-cache-dir(--> IO::Path) is export {
+    (%*ENV<AGRAMMON_CACHE_DIR> // (%*ENV<HOME> ~ '/.agrammon')).IO
+}
+
 sub load-model-using-cache(IO() $cache-dir, IO() $path, $module, %preprocessor-options?) is export {
     my $hash = hash-model($path, %preprocessor-options).trans('0'..'9' => 'A'..'J');
     my $cached = $cache-dir.IO.add("$hash.rakumod");

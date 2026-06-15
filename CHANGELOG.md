@@ -1,3 +1,17 @@
+- 7.0.2, 2026-06-15, fritz.zaucker@oetiker.ch
+
+  - Isolate the model precompilation cache per instance: ModelCache and
+    the bin/agrammon.raku repo chain now honor `AGRAMMON_CACHE_DIR`
+    (falling back to `~/.agrammon`), so test and prod instances sharing a
+    HOME on one host can use separate caches and not perturb each other on
+    deploy.
+
+  - Build: keep the package version in sync with META6.json. Enable
+    maintainer-mode so `make dist` re-runs autoconf when META6.json
+    changes, plus a `check-version` guard that fails `make dist` if the
+    configured version is stale.
+
+
 - 7.0.1, 2026-06-15, fritz.zaucker@oetiker.ch
 
   - Fix crash when distributing a multi-instance livestock module

@@ -14,7 +14,10 @@ AC_SUBST(QX_CLASS)
 
 # need this to allow long path names
 AM_INIT_AUTOMAKE([1.9 tar-ustar foreign])
-AM_MAINTAINER_MODE
+# Default-on so `make` re-runs autoconf when a configure dependency changes
+# (e.g. META6.json, the version source for AC_INIT). Release tarballs can
+# still build with --disable-maintainer-mode.
+AM_MAINTAINER_MODE([enable])
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 

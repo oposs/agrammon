@@ -269,7 +269,7 @@ sub load-model($cfg-file, $model-filename, $variants? is copy ) {
     my $module     = $module-path.extension('').basename;
     my $model-path = $module-path.parent;
     my $model = timed "Load model variant $variants from $module-path", {
-        load-model-using-cache($*HOME.add('.agrammon'), $model-path, $module, preprocessor-options($variants));
+        load-model-using-cache(agrammon-cache-dir(), $model-path, $module, preprocessor-options($variants));
     };
     return ($model, $module-path, $cfg, $db);
 }

@@ -31,6 +31,31 @@ GZIP_ENV = -6
 dist-hook:
 	find $(distdir) -name .precomp -prune -exec rm -rf {} +
 
+# Keep the build's version in sync with META6.json (the source of truth;
+# AC_INIT pulls it via m4_esyscmd at autoconf time). Two safeguards:
+#  1. Auto-rebuild: make CONFIGURE/CONFIG_STATUS depend on META6.json so
+#     `make` re-runs autoconf + config.status --recheck when it changes
+#     (needs maintainer-mode, enabled in configure.ac). m4_esyscmd's result
+#     is cached in autom4te.cache, so the AUTOCONF override clears it first;
+#     otherwise the re-read would keep serving the stale version.
+#  2. check-version fails `make dist` loudly if the configured version is
+#     still stale (e.g. built with --disable-maintainer-mode), turning the
+#     silent "shipped the old version" footgun into a clear error.
+CONFIGURE_DEPENDENCIES = $(top_srcdir)/META6.json
+CONFIG_STATUS_DEPENDENCIES = $(top_srcdir)/META6.json
+AUTOCONF = rm -rf $(top_srcdir)/autom4te.cache && $(SHELL) $(top_srcdir)/conftools/missing autoconf
+
+.PHONY: check-version
+check-version:
+	@src=`jq -r .version < $(top_srcdir)/META6.json`; \
+	if test "x$$src" != "x$(PACKAGE_VERSION)"; then \
+	  echo "*** META6.json version ($$src) != configured ($(PACKAGE_VERSION))"; \
+	  echo "*** run ./bootstrap && ./configure before make dist"; \
+	  exit 1; \
+	fi
+
+dist: check-version
+
 .PHONY: help
 
 help:
