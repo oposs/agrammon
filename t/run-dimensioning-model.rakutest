@@ -1,0 +1,70 @@
+use v6;
+use Agrammon::Inputs;
+use Agrammon::Model;
+use Test;
+
+# Regression test for the dimensioning_barn warning logic (Livestock Excretion):
+# `dimensioning_check` must warn whenever the number of available animal places
+# is strictly less than the number of animals. The minimal model in
+# test-data/Models/run-test-dimensioning mirrors the real Excretion formulas.
+
+my $path = $*PROGRAM.parent.add('test-data/Models/run-test-dimensioning');
+my $model = Agrammon::Model.new(:$path);
+$model.load('Barn');
+
+sub run-barn($animals, $barn) {
+    my $input = Agrammon::Inputs.new;
+    $input.add-single-input('Barn', 'animals', $animals);
+    $input.add-single-input('Barn', 'dimensioning_barn', $barn) if $barn.defined;
+    $input.apply-defaults($model, {});   # fills dimensioning_barn = "Standard" when unset
+    my $outputs = $model.run(:$input);
+    return {
+        o => $outputs.get-outputs-hash()<Barn>,
+        w => $outputs.log-collector.messages-for-lang('en').flat.grep(*.defined).Array,
+    };
+}
+
+sub warned(%r) { %r<w>.grep(*.contains('must be equal or higher')).elems }
+
+subtest 'barn < animals raises the warning' => {
+    my %r = run-barn(100, 60);
+    is %r<o><dimensioning_barn>, 60, 'dimensioning_barn output is the entered number';
+    is %r<o><dimensioning_check>, 'barn dimensioning too small', 'check reports too small';
+    is %r<o><area_increase>, 0.0, 'area_increase floored at 0 when undersized';
+    ok warned(%r) >= 1, 'warning was written to the log';
+}
+
+subtest 'barn == animals: no warning (exact fit)' => {
+    my %r = run-barn(100, 100);
+    is %r<o><dimensioning_check>, 'barn dimensioning ok', 'check reports ok';
+    is %r<o><area_increase>, 0.0, 'no area increase';
+    is warned(%r), 0, 'no warning written';
+}
+
+subtest 'barn == animals via Standard default: no warning' => {
+    # dimensioning_barn left unset -> default_calc "Standard" -> Out = animals
+    my %r = run-barn(100, Nil);
+    is %r<o><dimensioning_barn>, 100, 'Standard resolves to the animal count';
+    is %r<o><dimensioning_check>, 'barn dimensioning ok', 'check reports ok';
+    is warned(%r), 0, 'no warning written';
+}
+
+subtest 'barn > animals: area increase, no warning' => {
+    my %r50 = run-barn(100, 150);          # >= 1.5x -> capped at 0.5
+    is %r50<o><area_increase>, 0.5, 'area_increase capped at 0.5 for barn >= 1.5*animals';
+    is %r50<o><dimensioning_check>, 'barn dimensioning ok', 'check reports ok';
+    is warned(%r50), 0, 'no warning written';
+
+    my %r20 = run-barn(100, 120);          # ratio-1 below the cap
+    is %r20<o><area_increase>, 0.2, 'area_increase = barn/animals - 1 below the cap';
+    is %r20<o><dimensioning_check>, 'barn dimensioning ok', 'check reports ok';
+}
+
+subtest 'barn = 0 with animals > 0 raises the warning' => {
+    my %r = run-barn(100, 0);
+    is %r<o><dimensioning_barn>, 0, 'zero is a valid numeric value, not the Standard sentinel';
+    is %r<o><dimensioning_check>, 'barn dimensioning too small', 'check reports too small';
+    ok warned(%r) >= 1, 'warning was written to the log';
+}
+
+done-testing;

@@ -367,7 +367,9 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         my class DistributableValue {
             has Str $.dist-name is required;
             has Str $.dist-sub-taxonomy is required;
-            has Numeric $.dist-total is required;
+            # May hold a numeric total to be split proportionally, or a non-numeric
+            # sentinel (e.g. the string "Standard") that must be passed through unchanged.
+            has $.dist-total is required;
         }
         my @distributable-values;
         for @distribute-over -> $dist-over {
@@ -392,8 +394,13 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
             my $dist-instance-id = "$instance-id {$instance-number++}";
             my $comp-percentage = [*] $products.map(*.percentage / 100);
             for @distributable-values {
+                # Split numeric totals proportionally; copy a non-numeric sentinel
+                # (e.g. "Standard") unchanged so the module's formula resolves it per instance.
+                my $value = (try +.dist-total).defined
+                        ?? ($comp-percentage * .dist-total).narrow
+                        !! .dist-total;
                 $target.add-multi-input($taxonomy, $dist-instance-id, .dist-sub-taxonomy, .dist-name,
-                        ($comp-percentage * .dist-total).narrow);
+                        $value);
             }
             for flat $products.map(*.values) {
                 $target.add-multi-input($taxonomy, $dist-instance-id, .sub-taxonomy,

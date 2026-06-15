@@ -1,4 +1,11 @@
+- 7.0.1, 2026-06-15, fritz.zaucker@oetiker.ch
 
+  - Fix crash when distributing a multi-instance livestock module
+    (branching/flattening) while `dimensioning_barn` was left at its
+    `Standard` default. Distribution now splits numeric totals
+    proportionally (as before) and passes non-numeric sentinel values
+    such as "Standard" through to each instance unchanged, where the
+    module formula resolves them per instance.
 
 - 7.0.0, 2026-05-19 and 2026-06-02, fritz.zaucker@oetiker.ch
 

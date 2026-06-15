@@ -1,0 +1,95 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2026-06-15
+taxonomy = Barn
+
++short
+
+  Barn dimensioning test module.
+
++description
+
+  Self-contained module mirroring the real Livestock Excretion
+  dimensioning_barn / area_increase / dimensioning_check logic, used to
+  test that the "places < animals" warning fires.
+
+*** input ***
+
++animals
+  type = float
+  validator = ge(0)
+  ++labels
+    en = Number of animals
+  ++units
+    en = -
+
++dimensioning_barn
+  type = float
+  default_calc = Standard
+  default_gui  = Standard
+  ++labels
+    en = Number of available animal places
+  ++units
+    en = -
+
+*** output ***
+
++animals
+  print = 7
+  ++units
+    en = -
+  ++description
+    Number of animals.
+  ++formula
+    In(animals);
+
++dimensioning_barn
+  print = 7
+  ++units
+    en = -
+  ++description
+    barn size (number of animal places)
+  ++formula
+    if ( lc In(dimensioning_barn) eq 'standard' ) {
+        In(animals);
+    } else {
+        In(dimensioning_barn);
+    }
+
++area_increase
+  print = 7
+  ++units
+    en = -
+  ++description
+    Factor on what barn size does increase the regularized minimal, limited to 0.5
+  ++formula
+    if ( (Out(animals) < Out(dimensioning_barn) ) and (Out(animals) != 0) ) {
+      if ( Out(dimensioning_barn) >= (Out(animals) * 1.5) ) {
+        0.5;
+      }
+      else {
+        Out(dimensioning_barn) / Out(animals) - 1;
+      }
+    }
+    else {
+      0.0;
+    }
+
++dimensioning_check
+  print = 7
+  ++units
+    en = -
+  ++description
+    Check if number of animals <= number of animal places.
+  ++formula
+    if ( Out(dimensioning_barn) < Out(animals) ) {
+      writeLog({
+        en => "The number of available animal places must be equal or higher than the number of animals.",
+        de => "Anzahl Tierplätze muss grösser oder gleich der Anzahl der Tiere sein.",
+      });
+      return "barn dimensioning too small";
+    }
+    else {
+      return "barn dimensioning ok";
+    }

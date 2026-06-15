@@ -241,4 +241,48 @@ subtest 'Non-flattened instances and non-instance data exist in produced model' 
     }
 }
 
+subtest 'Non-numeric distributable value passes through unchanged (regression: "Standard")' => {
+    # Mirrors the real config: animals (numeric) and dimensioning_barn (the
+    # "Standard" sentinel) are BOTH distribute=true. Distributing must split the
+    # numeric value while copying the sentinel verbatim, instead of crashing with
+    # `expected Numeric but got Str("Standard")`.
+    given Agrammon::Inputs::Distribution.new -> $dist {
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'animals', 1000);
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'dimensioning_barn', 'Standard');
+        $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-a',
+                {x => 30, y => 70});
+        my $inputs;
+        lives-ok {
+            $inputs = $dist.to-inputs({ 'Test::Base' =>
+                    ['Test::Base::Sub::animals', 'Test::Base::Sub::dimensioning_barn'] });
+        }, 'Distributing a non-numeric sentinel value does not crash';
+        my @instances = $inputs.inputs-list-for('Test::Base')\
+                .sort(*.input-hash-for('Test::Base::AnotherSub').<flat-a>);
+        is @instances.elems, 2, 'Produced 2 instances from the distribution';
+        is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
+                { animals => 300, dimensioning_barn => 'Standard' },
+                'Numeric split (300); sentinel "Standard" copied unchanged (x)';
+        is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
+                { animals => 700, dimensioning_barn => 'Standard' },
+                'Numeric split (700); sentinel "Standard" copied unchanged (y)';
+    }
+}
+
+subtest 'Numeric zero distributable splits to zero (not mistaken for the sentinel)' => {
+    given Agrammon::Inputs::Distribution.new -> $dist {
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'animals', 1000);
+        $dist.add-multi-input('Test::Base', 'Instance A', 'Sub', 'dimensioning_barn', 0);
+        $dist.add-multi-input-flattened('Test::Base', 'Instance A', 'AnotherSub', 'flat-a',
+                {x => 30, y => 70});
+        my $inputs = $dist.to-inputs({ 'Test::Base' =>
+                ['Test::Base::Sub::animals', 'Test::Base::Sub::dimensioning_barn'] });
+        my @instances = $inputs.inputs-list-for('Test::Base')\
+                .sort(*.input-hash-for('Test::Base::AnotherSub').<flat-a>);
+        is-deeply @instances[0].input-hash-for('Test::Base::Sub'),
+                { animals => 300, dimensioning_barn => 0 }, 'Zero stays numeric and splits to 0 (x)';
+        is-deeply @instances[1].input-hash-for('Test::Base::Sub'),
+                { animals => 700, dimensioning_barn => 0 }, 'Zero stays numeric and splits to 0 (y)';
+    }
+}
+
 done-testing;
