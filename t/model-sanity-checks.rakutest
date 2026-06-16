@@ -34,4 +34,11 @@ throws-like
     from => 'Some::Unknown::Module',
     symbol => 'some_sym';
 
+# An input may not declare both default_calc and default_formula (#515).
+throws-like
+    { Agrammon::Model.new(:$path).load('DefaultCalcAndFormula') },
+    X::Agrammon::Model::DefaultCalcAndFormula,
+    module => 'DefaultCalcAndFormula',
+    input => 'amount';
+
 done-testing;

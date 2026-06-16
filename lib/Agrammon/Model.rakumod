@@ -70,6 +70,18 @@ class X::Agrammon::Model::InvalidOutputModule does X::Agrammon::Model::BadFormul
     }
 }
 
+#| An input declares both a static `default_calc` and a `default_formula`.
+#| These are two conflicting ways to default the same input; only one may
+#| be given. (issue #515)
+class X::Agrammon::Model::DefaultCalcAndFormula is Exception {
+    has $.module;
+    has $.input;
+    method message() {
+        "Input '$!input' in module '$!module' has both default_calc and "
+        ~ "default_formula set; only one default mechanism may be used"
+    }
+}
+
 class Agrammon::Model {
     #| An annotated input brings together the static (from the model) and
     #| dynamic (from the data source) aspects of an input, for situations
@@ -314,6 +326,17 @@ class Agrammon::Model {
             my %known-technical := set $module.technical.map(*.name);
             my $tax = $module.taxonomy;
             %known-outputs{$tax} = {};
+
+            for $module.input -> $input {
+                # An input must not declare both a static default_calc and a
+                # default_formula — two conflicting ways to default it. (#515)
+                if $input.default-calc.defined && $input.default-formula.defined {
+                    die X::Agrammon::Model::DefaultCalcAndFormula.new(
+                            module => $tax,
+                            input  => $input.name,
+                            );
+                }
+            }
 
             for $module.output -> $output (:$name, :$formula, *%) {
                 with $formula.input-used.first(* !(elem) %known-input) {
