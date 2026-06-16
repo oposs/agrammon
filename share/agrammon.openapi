@@ -703,10 +703,6 @@ components:
                             anyOf:
                                 - type: string
                                 - type: number
-                enum:
-                    description: Elements of select box
-                    type: object
-                    additionalProperties: true
                 gui:
                     description: GUI navigation label
                     $ref: '#/components/schemas/LanguageLabels'

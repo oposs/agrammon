@@ -140,7 +140,10 @@ class Agrammon::Model::Input {
                 gui => $.default-gui,
                 hasFormula => $.default-formula.defined,
             )),
-            :enum(%!enum-lookup),
+            # NB: the enum value set is sent as @options (keys + neutral labels)
+            # + optionsLang (per-language labels); the old `enum` lookup hash
+            # duplicated that and was unused by the GUI (#301). enumAliases stays
+            # — it serves a different purpose (cross-version value mapping).
             :enumAliases(%!enum-aliases),
             :$!filter,
             :%!help,
