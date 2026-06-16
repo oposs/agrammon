@@ -566,6 +566,10 @@ qx.Class.define('agrammon.module.input.PropTable', {
             var tm = this.__propertyEditor.getTableModel();
             if (col == this.__commentColumn ) {
                 var varName = tm.getValue(4, row);
+                // #420: the comment editor reads the (now instance-free)
+                // variable from column 0; give it the current folder so it can
+                // resolve back to the folder's current instance for the RPC.
+                this.__commentEditor.setFolder(this.__currentFolder);
                 this.__commentEditor.open(varName);
                 return;
             }
@@ -602,7 +606,12 @@ qx.Class.define('agrammon.module.input.PropTable', {
                         metaData.optionsLang['key'] = opt;
                         options.push(metaData.optionsLang);
                         labels.push(tm.getValue(4, i));
-                        vars.push(tm.getValue(0, i));
+                        // #420: column 0 is now the instance-free variable name;
+                        // BranchEditor needs the instance-qualified name (it
+                        // extracts the instance via regex), so resolve it back
+                        // through the current folder.
+                        var bareVar = tm.getValue(0, i);
+                        vars.push(this.__currentFolder.resolveVariable(bareVar) || bareVar);
                     }
                 }
                 var branchEditor = new agrammon.module.input.regional.BranchEditor(

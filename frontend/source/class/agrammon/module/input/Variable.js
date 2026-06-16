@@ -55,7 +55,12 @@ qx.Class.define('agrammon.module.input.Variable', {
             var rec = new Array;
             var locale = qx.locale.Manager.getInstance().getLocale();
             locale = locale.replace(/_.+/,'');
-            rec.push(this.getName());
+            // #420: the PropTable variable column no longer carries the
+            // [instance] marker — the instance lives only in the NavFolder.
+            // Persistence resolves the bare name back to the folder's current
+            // instance via NavFolder.resolveVariable(), so an instance rename
+            // can never leave a stale instance in this column.
+            rec.push(this.getName().replace(/\[[^\]]*\]/, ''));
             rec.push(this.getLabels().en);
             rec.push(this.getLabels().de);
             rec.push(this.getLabels().fr);
