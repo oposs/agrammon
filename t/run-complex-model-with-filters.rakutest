@@ -20,7 +20,7 @@ my $temp-dir = $*HOME.add('.agrammon');
 # The same input CSV is run against both currently shipped models. The
 # emission results differ between model versions (e.g. v7.0.0 added
 # PlantProduction::CropResidues), so expected values are per-version.
-my $input-csv = 'hr-inclNOxExtendedWithFilters-model-input.csv';
+my $input-csv = 'complex-model-run-input.csv';
 
 #| Expected results, per shipped model version
 my %expected-results =

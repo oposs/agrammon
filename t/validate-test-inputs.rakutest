@@ -18,7 +18,7 @@ use Agrammon::Validation;
 
 my $temp-dir = $*HOME.add('.agrammon');
 
-my $input-csv = 'hr-inclNOxExtendedWithFilters-model-input.csv';
+my $input-csv = 'complex-model-run-input.csv';
 
 for <version6.5.2 version7.0.0> -> $model-version {
     subtest "Model $model-version" => {

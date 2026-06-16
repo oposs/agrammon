@@ -31,7 +31,7 @@ lives-ok { $model = load-model-using-cache($cache-dir, $path, 'Total') },
         'Can load model via the cache a second time';
 isa-ok $model, Agrammon::Model, 'Loaded again model has correct type';
 
-my $fh = open $*PROGRAM.parent.add('test-data/hr-inclNOxExtendedWithFilters-model-input.csv');
+my $fh = open $*PROGRAM.parent.add('test-data/complex-model-run-input.csv');
 my @datasets = Agrammon::DataSource::CSV.new().read($fh);
 is @datasets.elems, 1, 'Got the one expected data set to run';
 $fh.close;

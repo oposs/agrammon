@@ -56,7 +56,7 @@ my %expected-results =
         'tan_into_application' => 3224.344
     };
 
-my $filename = 'hr-inclNOxExtendedWithFilters-model-input.csv';
+my $filename = 'complex-model-run-input.csv';
 my $fh = open $*PROGRAM.parent.add("test-data/$filename");
 my @datasets = Agrammon::DataSource::CSV.new().read($fh);
 is @datasets.elems, 1, "Got the one expected data set from $filename to run";
