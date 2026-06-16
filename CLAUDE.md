@@ -14,7 +14,7 @@ The system processes agricultural input data through hierarchical model modules 
 - **Frontend**: Qooxdoo (JavaScript framework)
 - **Database**: PostgreSQL
 - **Web Framework**: Cro (HTTP server, routing, sessions)
-- **Perl Interop**: Uses Inline::Perl5 for legacy Perl modules (primarily Excel generation via Excel::Writer::XLSX)
+- **Excel generation**: Native Raku XLSX writer (`Agrammon::OutputFormatter::XLSXWriter` / `ExcelNative`)
 
 ## Development Commands
 
@@ -123,17 +123,13 @@ The core innovation is the `.nhd` (Agrammon module) file format for defining cal
 
 **Output Formatters** (`lib/Agrammon/OutputFormatter/`):
 - Multiple output formats: CSV, JSON, Text, PDF, Excel
-- Excel generation uses Perl 5 modules via `Inline::Perl5`
+- Excel generation uses a native Raku XLSX writer (`XLSXWriter` / `ExcelNative`) — no external dependencies
 
 ### Database Schema
 
 PostgreSQL tables for users, datasets, tags, variants, and session management. Connection managed via `Agrammon::DB` and Cro's session store.
 
 Database connection uses a dynamic variable: `$*AGRAMMON-DB-CONNECTION`
-
-### Perl 5 Integration
-
-The `Inline/perl5/` directory contains Perl 5 modules (primarily `Excel::Writer::XLSX`) loaded via `Inline::Perl5`. Always set `PERL5LIB=Inline/perl5` when running the application.
 
 ## Testing Conventions
 
