@@ -107,12 +107,20 @@ sub add-filters(@records, $module, $model, Agrammon::Outputs::FilterGroupCollect
     my @results = $collection.results-by-filter-group(:all($all-filters));
     for @results {
         my %keyFilters := .key;
-        my %filters    := translate-filter-keys($model, %keyFilters);
         my $value      := .value;
-#        we might need the %label for multiple filter groups later
-#        for %filters.kv -> %label, %enum {
-        for %filters.values -> %enum {
-            my $label = %enum{$language};
+        if %keyFilters {
+            my %filters := translate-filter-keys($model, %keyFilters);
+#           we might need the %label for multiple filter groups later
+#           for %filters.kv -> %label, %enum {
+            for %filters.values -> %enum {
+                my $label = %enum{$language};
+                @records.push( %( :$module, :label('....' ~ $label), :$value, :$unit, :$order) );
+            }
+        }
+        else {
+            # empty filter key: scalar upgraded to a filter group (see #209).
+            # Show the uncategorized remainder so the breakdown adds up to the total.
+            my $label = uncategorized-filter-label(){$language} // uncategorized-filter-label()<en>;
             @records.push( %( :$module, :label('....' ~ $label), :$value, :$unit, :$order) );
         }
     }

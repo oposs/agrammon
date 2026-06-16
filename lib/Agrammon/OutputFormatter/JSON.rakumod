@@ -130,7 +130,18 @@ sub add-filters(@records, $fq-name, $output, $model,
                 $var, $order, $sort, :@print-set) {
     for $collection.results-by-filter-group {
         my %keyFilters := .key;
-        my @filters = translate-filter-keys($model, %keyFilters).map: -> $trans { %( label => $trans.key, enum => $trans.value ) };
+        my @filters;
+        if %keyFilters {
+            @filters = translate-filter-keys($model, %keyFilters).map: -> $trans { %( label => $trans.key, enum => $trans.value ) };
+        }
+        else {
+            # empty filter key: scalar upgraded to a filter group (see #209).
+            # Tag it so the breakdown shows the uncategorized remainder and totals add up.
+            # NB: push the hash as a single element — both `= %(...)` and `= [ %(...) ]`
+            # flatten the hash into Pairs, which would split it into two bad filter entries.
+            my %uncat = uncategorized-filter-label();
+            @filters.push: %( label => %uncat, enum => %uncat );
+        }
         my $value := .value;
         push @records, make-record($fq-name, $output, $model, $value, $var, $order, $sort, :@print-set, :@filters);
     }
