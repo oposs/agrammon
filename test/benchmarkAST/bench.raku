@@ -4,7 +4,7 @@ use Agrammon::TechnicalParser;
 use Agrammon::DataSource::CSV;
 
 sub MAIN(Str :$dir = 'share/Models/version7.0.0', Str :$mod = 'End',
-         Str :$input = 't/test-data/hr-inclNOxExtended-model-input.csv', Int :$n = 50) {
+         Str :$input = 't/test-data/complex-model-benchmark-input.csv', Int :$n = 50) {
     my $cache = $*HOME.add('.agrammon');
     my $t0 = now;
     my $model = load-model-using-cache($cache, $dir.IO, $mod, set('Base'));

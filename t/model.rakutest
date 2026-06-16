@@ -49,7 +49,7 @@ subtest "loadModule()" => {
                     "Cannot load module $module-name from none-existing file";
     }
 
-    $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
+    $path = $*PROGRAM.parent.add('../share/Models/version7.0.0/');
     given 'Livestock' -> $module-name {
         ok my $model = Agrammon::Model.new(:$path);
         my $module = $model.load-module($module-name);
@@ -107,9 +107,9 @@ subtest 'load()' => {
         }
     }
 
-    subtest 'hr-inclNOx model partial loading' => {
-        diag "Testing hr-inclNOx partial";
-        my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
+    subtest 'version7.0.0 model partial loading' => {
+        diag "Testing version7.0.0 partial";
+        my $path = $*PROGRAM.parent.add('../share/Models/version7.0.0/');
         my @expected = qw|
             Livestock::DairyCow::Excretion::CMilk
             Livestock::DairyCow::Excretion::CFeedSummerRatio
@@ -127,9 +127,9 @@ subtest 'load()' => {
         }
     }
 
-    subtest 'hr-inclNOx model full loading' => {
-        diag "Testing hr-inclNOx full";
-        my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOx/');
+    subtest 'version7.0.0 model full loading' => {
+        diag "Testing version7.0.0 full";
+        my $path = $*PROGRAM.parent.add('../share/Models/version7.0.0/');
         my @expected = qw|
             Livestock::DairyCow::Excretion::CMilk
             Livestock::DairyCow::Excretion::CFeedSummerRatio
@@ -144,13 +144,13 @@ subtest 'load()' => {
             Livestock::DairyCow::Housing::Type::Loose_Housing_Deep_Litter
             Livestock::DairyCow::Housing::Type
             Livestock::DairyCow::Housing::Floor
-            Livestock::DairyCow::Housing::ClimateAir
             Livestock::DairyCow::Housing::CFreeFactor
-            Livestock::DairyCow::GrazingInput
+            Livestock::DairyCow::Outdoor
+            Livestock::DairyCow::Housing::KGrazing
             Livestock::DairyCow::Yard
             Livestock::DairyCow::Grazing
-            Livestock::DairyCow::Housing::KGrazing
             Livestock::DairyCow::Housing
+            Livestock::DairyCow::NxOx
             Livestock::DairyCow
             Livestock::OtherCattle::Excretion
             Livestock::OtherCattle::Housing::Type::Tied_Housing_Slurry
@@ -160,13 +160,13 @@ subtest 'load()' => {
             Livestock::OtherCattle::Housing::Type::Loose_Housing_Deep_Litter
             Livestock::OtherCattle::Housing::Type
             Livestock::OtherCattle::Housing::Floor
-            Livestock::OtherCattle::Housing::ClimateAir
             Livestock::OtherCattle::Housing::CFreeFactor
-            Livestock::OtherCattle::GrazingInput
+            Livestock::OtherCattle::Outdoor
+            Livestock::OtherCattle::Housing::KGrazing
             Livestock::OtherCattle::Yard
             Livestock::OtherCattle::Grazing
-            Livestock::OtherCattle::Housing::KGrazing
             Livestock::OtherCattle::Housing
+            Livestock::OtherCattle::NxOx
             Livestock::OtherCattle
             Livestock::Pig::Excretion
             Livestock::Pig::Housing::Type::Slurry_Conventional
@@ -175,11 +175,12 @@ subtest 'load()' => {
             Livestock::Pig::Housing::Type::Deep_Litter
             Livestock::Pig::Housing::Type::Outdoor
             Livestock::Pig::Housing::Type
-            Livestock::Pig::Grazing
             Livestock::Pig::Housing::AirScrubber
             Livestock::Pig::Housing::MitigationOptions
             Livestock::Pig::Housing::CFreeFactor
+            Livestock::Pig::Grazing
             Livestock::Pig::Housing
+            Livestock::Pig::NxOx
             Livestock::Pig
             Livestock::FatteningPigs::Excretion
             Livestock::FatteningPigs::Housing::Type::Slurry_Conventional
@@ -188,34 +189,43 @@ subtest 'load()' => {
             Livestock::FatteningPigs::Housing::Type::Deep_Litter
             Livestock::FatteningPigs::Housing::Type::Outdoor
             Livestock::FatteningPigs::Housing::Type
-            Livestock::FatteningPigs::Grazing
             Livestock::FatteningPigs::Housing::AirScrubber
             Livestock::FatteningPigs::Housing::MitigationOptions
             Livestock::FatteningPigs::Housing::CFreeFactor
+            Livestock::FatteningPigs::Grazing
             Livestock::FatteningPigs::Housing
+            Livestock::FatteningPigs::NxOx
             Livestock::FatteningPigs
             Livestock::Poultry::Excretion
-            Livestock::Poultry::Outdoor
+            Livestock::Poultry::Grazing
             Livestock::Poultry::Housing::Type
             Livestock::Poultry::Housing::AirScrubber
             Livestock::Poultry::Housing::CFreeFactor
             Livestock::Poultry::Housing
+            Livestock::Poultry::NxOx
             Livestock::Poultry
             Livestock::Equides::Excretion
+            Livestock::Equides::Housing::CFreeFactor
+            Livestock::Equides::Outdoor
             Livestock::Equides::Grazing
             Livestock::Equides::Housing::KGrazing
             Livestock::Equides::Yard
             Livestock::Equides::Housing
+            Livestock::Equides::NxOx
             Livestock::Equides
             Livestock::SmallRuminants::Excretion
+            Livestock::SmallRuminants::Housing::CFreeFactor
             Livestock::SmallRuminants::Grazing
             Livestock::SmallRuminants::Housing::KGrazing
             Livestock::SmallRuminants::Housing
+            Livestock::SmallRuminants::NxOx
             Livestock::SmallRuminants
             Livestock::RoughageConsuming::Excretion
+            Livestock::RoughageConsuming::Housing::CFreeFactor
             Livestock::RoughageConsuming::Grazing
             Livestock::RoughageConsuming::Housing::KGrazing
             Livestock::RoughageConsuming::Housing
+            Livestock::RoughageConsuming::NxOx
             Livestock::RoughageConsuming
             Livestock
             Storage::SolidManure::Poultry
@@ -229,6 +239,7 @@ subtest 'load()' => {
             Application::Slurry::Csoft
             Application::Slurry::Cseason
             Application::Slurry::Cfermented
+            Application::Slurry::Alfam2
             Application::Slurry::CfreeFactor
             Application::Slurry
             Application::SolidManure::CincorpTime
@@ -240,13 +251,11 @@ subtest 'load()' => {
             Application::SolidManure::Poultry
             Application::SolidManure
             Application
-            SummaryByAnimalCategory
-            PlantProduction::AgriculturalArea
             PlantProduction::MineralFertiliser
             PlantProduction::RecyclingFertiliser
+            PlantProduction::CropResidues
             PlantProduction
             Total
-            SharesByAnimalCategory
             End
         |;
         given 'End' -> $module-name {

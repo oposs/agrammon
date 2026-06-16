@@ -18,16 +18,17 @@ use Agrammon::Validation;
 
 my $temp-dir = $*HOME.add('.agrammon');
 
-for <hr-inclNOxExtendedWithFilters hr-inclNOxExtended> -> $model-version {
+my $input-csv = 'complex-model-run-input.csv';
+
+for <version6.5.2 version7.0.0> -> $model-version {
     subtest "Model $model-version" => {
-        my $filename = $model-version ~ '-model-input.csv';
-        my $fh = open $*PROGRAM.parent.add("test-data/$filename");
+        my $fh = open $*PROGRAM.parent.add("test-data/$input-csv");
         my @datasets = Agrammon::DataSource::CSV.new().read($fh);
-        is @datasets.elems, 1, "Got the one expected data set from $filename to run";
+        is @datasets.elems, 1, "Got the one expected data set from $input-csv to run";
         my $dataset = @datasets[0];
         $fh.close;
 
-        my $path = $*PROGRAM.parent.add("test-data/Models/$model-version/");
+        my $path = $*PROGRAM.parent.add("../share/Models/$model-version/");
         my $model;
         lives-ok { $model = load-model-using-cache($temp-dir, $path, 'Total') },
                 "Load module Total from $path";
