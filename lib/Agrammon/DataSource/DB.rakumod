@@ -49,6 +49,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                 my $module-var = @row[0];
                 my $value      = maybe-numify(@row[1]);
                 my $instance   = @row[2] // '';
+                my $comment    = @row[5];
                 state $flattend-prefix = '';
                 state Flattened $current-flattened;
                 state Branched $current-branched;
@@ -106,7 +107,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             }
                         }
                         else {
-                            $dist-input.add-multi-input($tax, $instance, $sub-tax, $var, $value);
+                            $dist-input.add-multi-input($tax, $instance, $sub-tax, $var, $value, :$comment);
                             $flattend-prefix = '';
                         }
                     }
@@ -119,7 +120,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                     $module-var ~~ m/(.+)'::'(.+)/;
                     my $tax     = "$0";
                     my $var     = "$1";
-                    $dist-input.add-single-input($tax, $var, $value);
+                    $dist-input.add-single-input($tax, $var, $value, :$comment);
                 }
             }
 

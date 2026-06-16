@@ -36,20 +36,24 @@ role Agrammon::Inputs::Storage {
     has Str $.dataset-id;
     has Str $.instance-id;
     has %!single-inputs;
+    has %!single-input-comments;
     has %!multi-input-lists;
     has %!multi-input-lookup;
 
-    #| Adds an input for a single-instance module.
-    method add-single-input(Str $taxonomy, Str $input-name, Any $value --> Nil) {
+    #| Adds an input for a single-instance module. An optional free-text
+    #| C<comment> (entered per input variable in the GUI) is kept alongside
+    #| the value so it can be shown in reports.
+    method add-single-input(Str $taxonomy, Str $input-name, Any $value, :$comment --> Nil) {
         with %!multi-input-lists{$taxonomy} {
             die X::Agrammon::Inputs::AlreadyMulti.new(:$taxonomy);
         }
         %!single-inputs{$taxonomy}{$input-name} = $value;
+        %!single-input-comments{$taxonomy}{$input-name} = $comment if $comment;
     }
 
     #| Adds an input for a multi-instance module.
     method add-multi-input(Str $taxonomy, Str $instance-id, Str $sub-taxonomy,
-            Str $input-name, Any $value --> Nil) {
+            Str $input-name, Any $value, :$comment --> Nil) {
         with %!single-inputs{$taxonomy} {
             die X::Agrammon::Inputs::AlreadySingle.new(:$taxonomy);
         }
@@ -63,7 +67,7 @@ role Agrammon::Inputs::Storage {
             push %!multi-input-lists{$taxonomy}, $input;
         }
         my $qualified = $taxonomy ~ ("::$sub-taxonomy" if $sub-taxonomy);
-        $input.add-single-input($qualified, $input-name, $value);
+        $input.add-single-input($qualified, $input-name, $value, :$comment);
     }
 
     #| Applies default values for the model.
@@ -103,6 +107,12 @@ class Agrammon::Inputs does Agrammon::Inputs::Storage {
             die X::Agrammon::Inputs::Multi.new(:$taxonomy);
         }
         %!single-inputs{$taxonomy} // {}
+    }
+
+    #| Gets a hash of per-input comments for a single-instance module,
+    #| keyed by input name. Only inputs that actually have a comment appear.
+    method comment-hash-for(Str $taxonomy --> Hash) {
+        %!single-input-comments{$taxonomy} // {}
     }
 
     #| Gets a list of Agrammon::Input objects for a multi-instance module.
@@ -342,12 +352,14 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         }
         for %!multi-input-lookup.kv -> $taxonomy, %instances {
             for %instances.kv -> $instance-id, $instance {
-                self!copy-instance-input($taxonomy, $instance-id, $instance!input-hash(), $inputs);
+                self!copy-instance-input($taxonomy, $instance-id, $instance!input-hash(),
+                        $instance!comment-hash(), $inputs);
             }
         }
         for %!single-inputs.kv -> $taxonomy, %inputs {
             for %inputs.kv -> $input-name, $value {
-                $inputs.add-single-input($taxonomy, $input-name, $value);
+                my $comment = %!single-input-comments{$taxonomy}{$input-name};
+                $inputs.add-single-input($taxonomy, $input-name, $value, :$comment);
             }
         }
         return $inputs;
@@ -358,6 +370,7 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
         # Get instance input data, and remove the instance we'll distribute.
         my $dist-instance = %!multi-input-lookup{$taxonomy}{$instance-id};
         my %instance-input := $dist-instance ?? $dist-instance!input-hash !! {};
+        my %instance-comment := $dist-instance ?? $dist-instance!comment-hash !! {};
         %!multi-input-lookup{$taxonomy}{$instance-id}:delete;
         if %!multi-input-lists{$taxonomy} -> @filter {
             @filter .= grep(* !=== $dist-instance);
@@ -406,22 +419,28 @@ class Agrammon::Inputs::Distribution does Agrammon::Inputs::Storage {
                 $target.add-multi-input($taxonomy, $dist-instance-id, .sub-taxonomy,
                         .input-name, .value);
             }
-            self!copy-instance-input($taxonomy, $dist-instance-id, %instance-input, $target);
+            self!copy-instance-input($taxonomy, $dist-instance-id, %instance-input,
+                    %instance-comment, $target);
         }
     }
 
-    method !copy-instance-input($base-taxonomy, $instance-id, %input, $target) {
+    method !copy-instance-input($base-taxonomy, $instance-id, %input, %comment, $target) {
         for %input.kv -> $taxonomy, %taxonomy-inputs {
             my $sub-taxonomy = $taxonomy eq $base-taxonomy
                     ?? ''
                     !! $taxonomy.substr($base-taxonomy.chars + 2);
             for %taxonomy-inputs.kv -> $name, $value {
-                $target.add-multi-input($base-taxonomy, $instance-id, $sub-taxonomy, $name, $value);
+                my $comment = %comment{$taxonomy}{$name};
+                $target.add-multi-input($base-taxonomy, $instance-id, $sub-taxonomy, $name, $value, :$comment);
             }
         }
     }
 
     method !input-hash() {
         %!single-inputs
+    }
+
+    method !comment-hash() {
+        %!single-input-comments
     }
 }

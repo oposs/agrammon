@@ -50,6 +50,42 @@ subtest 'Multi-instance modules', {
         'Correct dependent module input for first multi input';
 }
 
+subtest 'Per-input comments (single-instance)', {
+    my $ai = Agrammon::Inputs.new;
+    is-deeply $ai.comment-hash-for('Foo::Bar'), {},
+        'No comments returns empty hash';
+
+    $ai.add-single-input('Foo::Bar', 'answer', 42, :comment('the ultimate answer'));
+    $ai.add-single-input('Foo::Bar', 'beer', 'Yeti');   # no comment
+    $ai.add-single-input('Foo', 'steak', 'beef', :comment('well done'));
+    is-deeply $ai.comment-hash-for('Foo::Bar'),
+        { answer => 'the ultimate answer' },
+        'Only inputs with a comment appear in the comment hash';
+    is-deeply $ai.comment-hash-for('Foo'),
+        { steak => 'well done' },
+        'Comment collected for module Foo';
+    # values still collected as before
+    is-deeply $ai.input-hash-for('Foo::Bar'),
+        { answer => 42, beer => 'Yeti' },
+        'Values unaffected by comments';
+}
+
+subtest 'Per-input comments (multi-instance)', {
+    my $ai = Agrammon::Inputs.new;
+    $ai.add-multi-input('Foo::Bar', 'Cow 1', '', 'age', 10, :comment('born in spring'));
+    $ai.add-multi-input('Foo::Bar', 'Cow 1', 'Excretion', 'kilos', 20, :comment('measured'));
+    $ai.add-multi-input('Foo::Bar', 'Cow 2', '', 'age', 6);   # no comment
+    my @inputs = $ai.inputs-list-for('Foo::Bar');
+    is-deeply @inputs[0].comment-hash-for('Foo::Bar'),
+        { age => 'born in spring' },
+        'Comment on multi-instance module input';
+    is-deeply @inputs[0].comment-hash-for('Foo::Bar::Excretion'),
+        { kilos => 'measured' },
+        'Comment on dependent multi-instance module input';
+    is-deeply @inputs[1].comment-hash-for('Foo::Bar'), {},
+        'No comment hash for instance without comments';
+}
+
 subtest 'Cannot add multi input for taxonomy that has single input', {
     my $ai = Agrammon::Inputs.new;
     $ai.add-single-input('Foo::Bar', 'answer', 42);

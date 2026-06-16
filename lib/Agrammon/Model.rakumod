@@ -79,6 +79,7 @@ class Agrammon::Model {
         has Str $.instance-id;
         has Agrammon::Model::Input $.input is required;
         has $.value is required;
+        has $.comment;
         has %.gui-root is required;
     }
 
@@ -195,10 +196,12 @@ class Agrammon::Model {
                 $dep!annotate-inputs-internal($input-data, %run-already, @result, $instance-id);
             }
             my %input-data := $input-data.input-hash-for($!module.taxonomy);
+            my %comment-data := $input-data.comment-hash-for($!module.taxonomy);
             for $!module.input -> Agrammon::Model::Input $input {
                 my $key = $input.name;
                 my $value = %input-data{$key};
-                @result.push: AnnotatedInput.new: :$!module, :$input, :$instance-id, :$value, :%gui-root;
+                my $comment = %comment-data{$key};
+                @result.push: AnnotatedInput.new: :$!module, :$input, :$instance-id, :$value, :$comment, :%gui-root;
             }
         }
 

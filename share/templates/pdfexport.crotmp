@@ -140,6 +140,9 @@
   align: (col, _) => if col == 3 { right } else { left },
 </?>
   [], [], [<.label>], [<.value>], [<.unit>],
+<?.comment>
+  table.cell(colspan: 5)[#text(size: 7pt, style: "italic", fill: rgb("#555555"))[#h(1.2em)<.comment>]],
+</?>
 </!>
 </@>
 )

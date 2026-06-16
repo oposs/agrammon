@@ -7,7 +7,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 21;
+plan 22;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -204,6 +204,54 @@ transactionally {
                 { flat-b => 'b' }, 'Correct enum value for sixth branched input from second submodule';
     }
 };
+
+transactionally {
+    subtest 'Per-input comments round-trip from DB' => {
+        lives-ok { prepare-test-db-commented-data($ag-user, $ag-dataset, %single) },
+            'Commented test database prepared';
+
+        my $ds = Agrammon::DataSource::DB.new;
+        my $inputs = $ds.read($ag-user, $ag-dataset, %single).to-inputs({});
+        isa-ok $inputs, Agrammon::Inputs, 'Converted to Agrammon::Inputs';
+
+        is-deeply $inputs.comment-hash-for('PlantProduction::AgriculturalArea'),
+            { agricultural_area => 'measured by GPS' },
+            'Comment on a single input is read from DB and exposed';
+        is-deeply $inputs.comment-hash-for('PlantProduction::MineralFertiliser'),
+            { mineral_nitrogen_fertiliser_urea => 'estimated' },
+            'Only commented inputs appear; uncommented sibling is absent';
+        # value still loaded correctly alongside the comment
+        is $inputs.input-hash-for('PlantProduction::AgriculturalArea')<agricultural_area>, 22,
+            'Value loaded correctly alongside comment';
+    }
+}
+
+sub prepare-test-db-commented-data($user, $dataset, %variant) {
+    my $db = $*AGRAMMON-DB-HANDLE;
+
+    my $userId = $db.query(q:to/STATEMENT/, $user).value;
+    SELECT pers_email2id($1)
+    STATEMENT
+
+    $db.query(q:to/STATEMENT/, $dataset, $userId, %variant<version>, %variant<gui>, %variant<model>);
+    INSERT INTO dataset (dataset_name, dataset_pers, dataset_version, dataset_guivariant, dataset_modelvariant)
+    VALUES ($1, $2, $3, $4, $5);
+    STATEMENT
+
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset, %variant<version>, %variant<gui>, %variant<model>).value;
+    SELECT dataset_name2id($1, $2, $3, $4, $5)
+    STATEMENT
+
+    my $sth = $db.prepare(q:to/STATEMENT/);
+    INSERT INTO data_new (data_dataset, data_var, data_val, data_comment)
+    VALUES ($1, $2, $3, $4)
+    STATEMENT
+
+    $sth.execute($datasetId, 'PlantProduction::AgriculturalArea::agricultural_area', 22, 'measured by GPS');
+    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_urea', 0, 'estimated');
+    # sibling input without a comment must not appear in the comment hash
+    $sth.execute($datasetId, 'PlantProduction::MineralFertiliser::mineral_nitrogen_fertiliser_except_urea', 400, Str);
+}
 
 sub prepare-test-db-single-data($user, $dataset, %variant) {
     my $db = $*AGRAMMON-DB-HANDLE;

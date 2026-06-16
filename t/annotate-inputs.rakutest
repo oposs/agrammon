@@ -9,13 +9,13 @@ $model.load('Test');
 
 # Set up a bunch of inputs.
 my $input = Agrammon::Inputs.new;
-$input.add-multi-input('Test::SubModule', 'Monkey A', '', 'monkeys', 42);
+$input.add-multi-input('Test::SubModule', 'Monkey A', '', 'monkeys', 42, :comment('the troop leader'));
 $input.add-multi-input('Test::SubModule', 'Monkey B', '', 'monkeys', 15);
 $input.add-multi-input('Test::SubModule', 'Monkey C', '', 'monkeys', 98);
-$input.add-multi-input('Test::SubModule', 'Monkey A', 'SubTest', 'kids', 5);
+$input.add-multi-input('Test::SubModule', 'Monkey A', 'SubTest', 'kids', 5, :comment('young ones'));
 $input.add-multi-input('Test::SubModule', 'Monkey B', 'SubTest', 'kids', 3);
 $input.add-multi-input('Test::SubModule', 'Monkey C', 'SubTest', 'kids', 7);
-$input.add-single-input('Test', 'final_add', 10);
+$input.add-single-input('Test', 'final_add', 10, :comment('grand total'));
 
 # Obtain and check annotated inputs.
 my @annotated = $model.annotate-inputs($input);
@@ -29,6 +29,8 @@ given @annotated[0] {
             'Correct instance ID in first annotated result';
     is-deeply .value, 5,
             'Correct value in first annotated result';
+    is-deeply .comment, 'young ones',
+            'Correct comment in first annotated result';
 }
 given @annotated[1] {
     is-deeply .module, $model.get-module('Test::SubModule'),
@@ -39,6 +41,8 @@ given @annotated[1] {
             'Correct instance ID in second annotated result';
     is-deeply .value, 42,
             'Correct value in second annotated result';
+    is-deeply .comment, 'the troop leader',
+            'Correct comment in second annotated result';
 }
 given @annotated[*-1] {
     is-deeply .module, $model.get-module('Test'),
@@ -49,6 +53,14 @@ given @annotated[*-1] {
             'No instance ID in final annotated result';
     is-deeply .value, 10,
             'Correct value in final annotated result';
+    is-deeply .comment, 'grand total',
+            'Correct comment in final annotated result';
+}
+
+# An input without a comment has an undefined comment.
+given @annotated[2] {
+    nok .comment.defined,
+            'No comment for an input that was not commented';
 }
 
 done-testing;

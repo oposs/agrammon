@@ -321,6 +321,7 @@ sub input-output-as-pdf(
             :unit(typst-small-spaces(typst-escape(%rec<unit>))),
             :label(typst-chemify(typst-escape(%rec<input-translated> // %rec<input>))),
             :value(format-value(%rec<value-translated>)),
+            :comment(typst-escape(%rec<comment> // '')),
             :$first-line));
     }
 

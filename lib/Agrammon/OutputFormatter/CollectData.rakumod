@@ -28,6 +28,7 @@ sub collect-data(
             :$value,
             :$value-translated,
             :unit($ai.input.units{$language} // $ai.input.units<en> // ''),
+            :comment($ai.comment // ''),
             :$gui-translated,
             :gui($ai.gui-root{'raw'}),
         ));
