@@ -68,7 +68,7 @@ transactionally {
     $user = Agrammon::Web::SessionUser.new(:$username);
     ok $user.load, "Load user $username";
 
-    my $path = $*PROGRAM.parent.add('test-data/Models/hr-inclNOxExtendedWithFilters/');
+    my $path = $*PROGRAM.parent.add('../share/Models/version6.5.2/');
     my $top = 'End';
     my $model;
     lives-ok { $model = load-model-using-cache($*HOME.add('.agrammon'), $path, $top) },

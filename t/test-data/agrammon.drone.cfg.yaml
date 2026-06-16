@@ -20,7 +20,7 @@ GUI:
 Model:
     debugLevel: 0
     home:      /home/zaucker/Agrammon
-    path:      Models/branches/hr-inclNOxExtendedWithFilters
+    path:      share/Models/version6.5.2
     root:      End.nhd
     technical: technical.cfg
     variant:   SHL
