@@ -79,6 +79,9 @@ class Agrammon::Web::Service {
             my $subject = $sent == 1 ?? %lx{'new dataset'}[0]  !! %lx{'new dataset'}[1];
             my $format  = $sent == 1 ?? %lx{'dataset sent'}[0] !! %lx{'dataset sent'}[1];
             my $msg     = sprintf $format, @datasets.join(', '), $sender;
+            # #571: name the source model variant + URL so the recipient knows
+            # which Agrammon instance the dataset came from.
+            $msg ~= "\n\n" ~ self!model-info-line($language);
             Agrammon::Email.new(
                 :to($recipient),
                 :from('support@agrammon.ch'),
@@ -143,6 +146,9 @@ class Agrammon::Web::Service {
             my $subject = %lx<dataset> ~ ": $new-dataset";
             my $format = %lx{'dataset sent'}[0];
             my $msg = sprintf $format, $new-dataset, %params<username>;
+            # #571: name the source model variant + URL so the recipient knows
+            # which Agrammon instance the dataset came from.
+            $msg ~= "\n\n" ~ self!model-info-line(%params<language> // 'de');
             Agrammon::Email.new(
                 :to($recipientMail),
                 :from('support@agrammon.ch'),
@@ -152,6 +158,17 @@ class Agrammon::Web::Service {
                 :filename($new-dataset.subst(/<-[\w_.-]>/, '', :g) ~ '.pdf')
             ).send;
         }
+    }
+
+    #| #571: one localized line naming the source model variant and its URL,
+    #| appended to dataset-sent emails so the recipient can tell which Agrammon
+    #| instance (Single/Regional/Kantonal, version) a dataset came from.
+    method !model-info-line(Str $language) {
+        my %lx     = $!cfg.translations{$language} // $!cfg.translations<en>;
+        my %titles = $!cfg.gui-title;
+        my $title  = %titles{$language} // %titles<en> // $!cfg.gui-variant;
+        my $url    = $!cfg.gui-url // '';
+        return sprintf %lx{'dataset model info'}, $title, $url;
     }
 
     method store-dataset-comment(Agrammon::Web::SessionUser $user, Str $name, $comment) {

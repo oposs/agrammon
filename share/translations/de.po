@@ -3,6 +3,9 @@ msgid_plural "datasets sent"
 msgstr[0] "Der Datensatz %s von %s wurde Ihnen in Ihrem Agrammon Konto bereit gestellt"
 msgstr[1] "Die Datensätze %s von %s wurden Ihnen in Ihrem Agrammon Konto bereit gestellt"
 
+msgid "dataset model info"
+msgstr "Dieser Datensatz stammt von %s (%s)."
+
 msgid "new dataset"
 msgid_plural "new datasets"
 msgstr[0] "Neuer Agrammon Datensatz"
