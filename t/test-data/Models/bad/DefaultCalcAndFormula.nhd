@@ -1,0 +1,36 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2026-06-16
+taxonomy = DefaultCalcAndFormula
+
++short
+
+  Input declaring both default_calc and default_formula. These are two
+  conflicting ways to default the same input and must be rejected by the
+  model sanity check (issue #515).
+
+*** input ***
+
++amount
+  type = integer
+  default_calc = 5
+  ++default_formula
+    10
+  ++labels
+    en = Amount
+    de = Menge
+    fr = Quantité
+  ++units
+    en = -
+
+*** output ***
+
++result
+  print = 7
+  ++units
+    en = -
+  ++formula
+    In(amount) * 2
+  ++description
+    Final result

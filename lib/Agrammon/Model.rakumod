@@ -70,6 +70,18 @@ class X::Agrammon::Model::InvalidOutputModule does X::Agrammon::Model::BadFormul
     }
 }
 
+#| An input declares both a static `default_calc` and a `default_formula`.
+#| These are two conflicting ways to default the same input; only one may
+#| be given. (issue #515)
+class X::Agrammon::Model::DefaultCalcAndFormula is Exception {
+    has $.module;
+    has $.input;
+    method message() {
+        "Input '$!input' in module '$!module' has both default_calc and "
+        ~ "default_formula set; only one default mechanism may be used"
+    }
+}
+
 #| A multi-option enum input (a SelectBox in the GUI) whose `default_calc`
 #| diverges from its `default_gui`: the GUI pre-selects one value while the
 #| calculation silently falls back to another, so the result no longer
@@ -333,6 +345,15 @@ class Agrammon::Model {
             %known-outputs{$tax} = {};
 
             for $module.input -> $input {
+                # An input must not declare both a static default_calc and a
+                # default_formula — two conflicting ways to default it. (#515)
+                if $input.default-calc.defined && $input.default-formula.defined {
+                    die X::Agrammon::Model::DefaultCalcAndFormula.new(
+                            module => $tax,
+                            input  => $input.name,
+                            );
+                }
+
                 # Reject a multi-option enum (SelectBox) whose default_calc
                 # diverges from its default_gui: the GUI pre-selects one value
                 # while the calculation silently falls back to another. Only
