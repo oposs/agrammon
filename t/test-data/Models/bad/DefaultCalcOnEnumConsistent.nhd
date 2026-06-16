@@ -1,0 +1,44 @@
+*** general ***
+
+author   = Agrammon Group
+date     = 2024-01-01
+taxonomy = DefaultCalcOnEnumConsistent
+
++short
+
+  Multi-option enum (SelectBox) whose default_calc EQUALS default_gui.
+  This is the legitimate case (e.g. an "unknown" fallback the GUI also
+  pre-selects) and must load without error.
+
+*** input ***
+
++category
+  type = enum
+  default_calc = option_a
+  default_gui  = option_a
+  ++enum
+    +++option_a
+       en = Option A
+       de = Option A
+       fr = Option A
+    +++option_b
+       en = Option B
+       de = Option B
+       fr = Option B
+  ++labels
+    en = Category
+    de = Kategorie
+    fr = Catégorie
+  ++units
+    en = -
+
+*** output ***
+
++result
+  print = 7
+  ++units
+    en = -
+  ++formula
+    In(category) eq 'option_a' ? 1 : 2
+  ++description
+    Final result
