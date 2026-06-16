@@ -354,7 +354,7 @@ qx.Class.define('agrammon.module.output.Reports', {
             }
 
             if ( !(this.__outputData.isValid()
-                   && this.__referenceData.isValid) ) {
+                   && this.__referenceData.isValid()) ) {
                 return;
             }
 
@@ -384,14 +384,11 @@ qx.Class.define('agrammon.module.output.Reports', {
             showFilterGroups = this.resultData[this.reportIndex].type == 'reportDetailed' ? true : false;
             let reports = this.resultData[this.reportIndex].data;
 
-            let data    = this.__outputData.getDataset();;
+            let data    = this.__outputData.getDataset();
             let refData = this.__referenceData.getDataset();
-            if (refData == null) {
-                this.__showReference(false);
-            }
-            else {
-                this.__showReference(true);
-            }
+            // refData is null when no reference dataset is selected (see Output.js);
+            // show the reference column only when we actually have reference data.
+            this.__showReference(refData != null);
 
             let currentTitle='';
             let printTag = '';
@@ -427,12 +424,7 @@ qx.Class.define('agrammon.module.output.Reports', {
                 for (let i=0; i<len; i++) { // variables
                     let varName, rec, refRec, value, refValue, refDiff, printMe;
                     rec = data[i];
-                    if (refData != null) {
-                        refRec = refData[i];
-                    }
-                    else {
-                        refRec = null;
-                    }
+                    refRec = refData != null ? refData[i] : null;
                     printMe = false;
                     printTag = String(rec.print);
                     let tags = printTag.split(',');

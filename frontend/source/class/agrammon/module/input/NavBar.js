@@ -270,9 +270,6 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 if (data['reports'] != null) {
                     qx.event.message.Bus.dispatchByName('agrammon.Reports.createMenu', data['reports']);
                 }
-                if (data['graphs'] != null) {
-                    qx.event.message.Bus.dispatchByName('agrammon.Graphs.createMenu',  data['graphs']);
-                }
                 this.__getInputVariables(data['inputs']); // build NavTree structur
 
                 if (dataset != null ) {

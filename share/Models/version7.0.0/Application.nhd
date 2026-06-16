@@ -212,8 +212,33 @@ gui      = Application,Hofdüngerausbringung,Epandage,Application
   ++description
     Annual NH3 emission from manure application.
   ++formula
-    Out(nh3_napplication_solid) P+ 
+    Out(nh3_napplication_solid) P+
     Out(nh3_napplication_liquid);
+
+# Example output for GitHub issue #209, kept commented out. A scalar mixed
+# into a filter-group output (here scalar(Out(nh3_napplication)) P+ the
+# grouped Out(nh3_napplication)) lands under the empty filter key, so the
+# detailed-report breakdown shows an "(uncategorized)" remainder row and the
+# rows sum to the total. Uncomment to reproduce the #209 behaviour in the
+# detailed NH3 report. NB: every comment line must start with '#' in column 0
+# — an indented '#' breaks the .nhd parser.
+# +demo_209_uncategorized
+#   format = %.2f
+#   print = LivestockNH3
+#   ++labels
+#     sort = 071
+#     en = #209 demo: scalar mixed into filter group
+#     de = #209 Demo: Skalar in Filtergruppe
+#     fr = #209 démo: scalaire dans un groupe de filtres
+#   ++units
+#     en = kg N/year
+#     de = kg N/Jahr
+#     fr = kg N/an
+#   ++description
+#     Temporary demonstration output for issue #209.
+#   ++formula
+#     scalar( Out(nh3_napplication) ) P+
+#     Out(nh3_napplication);
 
 ####################################################
 

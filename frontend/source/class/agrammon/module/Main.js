@@ -19,10 +19,6 @@ qx.Class.define('agrammon.module.Main',
         this.add(input);
         this.add(report);
 
-// Thomas Kupper: not needed
-//        let graph  = new agrammon.module.output.Graphs(output, reference);
-//        this.add(graph);
-
     }, // construct
 
     members :

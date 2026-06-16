@@ -126,7 +126,6 @@ qx.Class.define('agrammon.module.output.Output', {
         __setInValid: function() {
             this.__running = false;
             this.outputIsValid = false;
-            qx.event.message.Bus.dispatchByName('agrammon.Graphs.clear');
             qx.event.message.Bus.dispatchByName('agrammon.Reports.clear');
             this.__outputLog = null;
         },
@@ -161,8 +160,11 @@ qx.Class.define('agrammon.module.output.Output', {
                 datasetName = this.__info.getDatasetName();
             }
             if (datasetName == '-' || datasetName == undefined) {
+                // No (reference) dataset selected: don't calculate anything on the
+                // backend. We still mark the data as "valid" with a null dataset so
+                // consumers treat "no reference" as a settled state (empty, not
+                // pending) rather than waiting for a calculation that never comes.
                 this.outputData = null;
-                // FIX ME: this is a bit counter intuitive
                 this.outputIsValid = true;
                 if (this.__reference) {
                     msg = 'reference';
