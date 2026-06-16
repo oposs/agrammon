@@ -3,6 +3,9 @@ msgid_plural "datasets sent"
 msgstr[0] "The dataset %s of %s was copied into your Agrammon account"
 msgstr[1] "The dataset %s of %s were copied into your Agrammon account"
 
+msgid "dataset model info"
+msgstr "This dataset is from %s (%s)."
+
 msgid "new dataset"
 msgid_plural "new datasets"
 msgstr[0] "New Agrammon dataset"

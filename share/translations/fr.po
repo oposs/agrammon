@@ -3,6 +3,8 @@ msgid_plural "datasets sent"
 msgstr[0] "Le sete de données %s de %s ont été copiés dans votre compte".
 msgstr[1] "Les setes de données %s de %s a été copiés dans votre compte".
 
+msgid "dataset model info"
+msgstr "Ce jeu de données provient de %s (%s)."
 
 msgid "new dataset"
 msgid_plural "new datasets"
