@@ -383,6 +383,15 @@ qx.Class.define('agrammon.module.input.PropTable', {
             }
             var tableModel = this.__propertyEditor.getTableModel();
             var varname = tableModel.getValue(0, fR);
+            // #420: resolve against the current folder's authoritative instance
+            // so a value edit always saves to the folder's *current* instance,
+            // even if the table cell still carries a pre-rename [instance].
+            // Without this, "rename instance, then immediately change a value"
+            // wrote to the old name and spawned a phantom instance in the DB.
+            var resolved = this.__currentFolder.resolveVariable(varname);
+            if (resolved) {
+                varname = resolved;
+            }
             var value   = tableModel.getValue(this.__valueColumn, fR);
             var comment = tableModel.getValue(this.__commentColumn, fR);
             if (value != null) {
