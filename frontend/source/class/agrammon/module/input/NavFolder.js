@@ -434,6 +434,24 @@ qx.Class.define('agrammon.module.input.NavFolder', {
           * @return {var} TODOC
           * @lint ignoreDeprecated(alert)
           */
+        // #420: return the authoritative, instance-qualified variable name for
+        // `name` within this folder, matched on the instance-independent part
+        // (the name with any [instance] marker stripped). The folder's propData
+        // carries the current instance (this folder is the single source of
+        // truth for it), so a caller can pass a name whose [instance] is stale
+        // — e.g. a table cell that lags an instance rename — and still get the
+        // name pointing at this folder's *current* instance. Returns null if no
+        // variable matches. Singletons (no [instance]) round-trip unchanged.
+        resolveVariable: function(name) {
+            var bare = ('' + name).replace(/\[[^\]]*\]/, '');
+            for (var i = 0; i < this.__propData.length; i++) {
+                if (this.__propData[i].getName().replace(/\[[^\]]*\]/, '') === bare) {
+                    return this.__propData[i].getName();
+                }
+            }
+            return null;
+        }, // resolveVariable
+
         setData: function(key, value, comment, noCheck, branch_values) {
             var i, ii, len, len2, option, found,
                 options, metaData, msg;
