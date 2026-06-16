@@ -82,6 +82,23 @@ class X::Agrammon::Model::DefaultCalcAndFormula is Exception {
     }
 }
 
+#| A multi-option enum input (a SelectBox in the GUI) whose `default_calc`
+#| diverges from its `default_gui`: the GUI pre-selects one value while the
+#| calculation silently falls back to another, so the result no longer
+#| matches what the user sees. (An absent `default_gui`, or one equal to
+#| `default_calc`, is fine — e.g. an "unknown" option both default to.)
+class X::Agrammon::Model::DefaultCalcOnEnum is Exception {
+    has $.module;
+    has $.input;
+    has $.default-calc;
+    has $.default-gui;
+    method message() {
+        "Input '$!input' in module '$!module' is a multi-option enum (SelectBox) "
+        ~ "with default_calc='$!default-calc' that diverges from default_gui='$!default-gui'; "
+        ~ "the calculated default would bypass the user's selection"
+    }
+}
+
 class Agrammon::Model {
     #| An annotated input brings together the static (from the model) and
     #| dynamic (from the data source) aspects of an input, for situations
@@ -334,6 +351,24 @@ class Agrammon::Model {
                     die X::Agrammon::Model::DefaultCalcAndFormula.new(
                             module => $tax,
                             input  => $input.name,
+                            );
+                }
+
+                # Reject a multi-option enum (SelectBox) whose default_calc
+                # diverges from its default_gui: the GUI pre-selects one value
+                # while the calculation silently falls back to another. Only
+                # fires when BOTH are set and differ — an absent default_gui,
+                # or one equal to default_calc, is the legitimate case.
+                if ($input.type // '') eq 'enum'
+                        && $input.default-calc.defined
+                        && $input.default-gui.defined
+                        && $input.enum-ordered.elems > 1
+                        && $input.default-gui ne $input.default-calc {
+                    die X::Agrammon::Model::DefaultCalcOnEnum.new(
+                            module       => $tax,
+                            input        => $input.name,
+                            default-calc => $input.default-calc,
+                            default-gui  => $input.default-gui,
                             );
                 }
             }

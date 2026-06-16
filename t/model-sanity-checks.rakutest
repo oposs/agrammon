@@ -41,4 +41,18 @@ throws-like
     module => 'DefaultCalcAndFormula',
     input => 'amount';
 
+# A multi-option enum whose default_calc diverges from default_gui
+# (here calc=option_a, gui=option_b) silently bypasses the SelectBox.
+throws-like
+    { Agrammon::Model.new(:$path).load('DefaultCalcOnEnum') },
+    X::Agrammon::Model::DefaultCalcOnEnum,
+    module => 'DefaultCalcOnEnum',
+    input => 'category';
+
+# But a multi-option enum whose default_calc EQUALS default_gui is the
+# legitimate case (GUI pre-selects exactly the calc fallback) and loads fine.
+lives-ok
+    { Agrammon::Model.new(:$path).load('DefaultCalcOnEnumConsistent') },
+    'Multi-option enum with default_calc == default_gui loads without error';
+
 done-testing;
