@@ -49,8 +49,7 @@ sub prepare-test-db($uid) is export {
         dataset_comment  TEXT,
         dataset_readonly BOOLEAN DEFAULT False,
         dataset_created TIMESTAMP DEFAULT now(),
-        dataset_mod_date TIMESTAMP DEFAULT now(),
-        dataset_readonly BOOLEAN DEFAULT false
+        dataset_mod_date TIMESTAMP DEFAULT now()
     )
     SQL
 
