@@ -1,6 +1,7 @@
 use v6;
 use Agrammon::Config;
 use Agrammon::DB::Dataset;
+use Agrammon::DB::Datasets;
 use Agrammon::DB::User;
 use Agrammon::Web::SessionUser;
 use DB::Pg;
@@ -9,7 +10,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 14;
+plan 16;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -254,6 +255,58 @@ transactionally {
         );
         is-deeply $results<options>,   @options-expected,   "Got correct options";
         is-deeply $results<fractions>, @fractions-expected, "Got correct fractions";
+    }
+
+    # Regression: Agrammon::DB::Datasets.delete must scope by the active
+    # variant, not just (pers, name). Datasets are unique per
+    # (name, pers, version, modelvariant, guivariant), so a user may hold
+    # same-named datasets in different GUI variants; the Regional GUI filters
+    # by guivariant on load, but delete used to key on (pers, name) only and
+    # silently wiped the same-named datasets in *other* variants the GUI never
+    # showed. See Agrammon::DB::Datasets.delete / .load.
+    sub names-for($user, %variant, $name) {
+        Agrammon::DB::Datasets.new(:$user, :agrammon-variant(%variant))
+            .load.collection.grep(*.name eq $name).elems;
+    }
+
+    subtest 'delete() is scoped to guivariant (no cross-variant deletion)' => {
+        plan 4;
+        my %single   = (version => '6.0', gui => 'Single',   model => 'Base');
+        my %regional = (version => '6.0', gui => 'Regional', model => 'Base');
+        my $name = 'ScopeVariant';
+
+        Agrammon::DB::Dataset.new(:$name, :$user, :agrammon-variant(%single)).create;
+        Agrammon::DB::Dataset.new(:$name, :$user, :agrammon-variant(%regional)).create;
+
+        is names-for($user, %single,   $name), 1, 'Single-variant dataset exists before delete';
+        is names-for($user, %regional, $name), 1, 'Regional-variant dataset exists before delete';
+
+        my $deleted = Agrammon::DB::Datasets.new(:$user, :agrammon-variant(%single)).delete([$name]);
+        is $deleted, 1, 'Exactly one dataset deleted — only the active (Single) variant';
+
+        is names-for($user, %regional, $name), 1,
+            'Same-named dataset in another guivariant is NOT deleted';
+    }
+
+    subtest 'delete() is scoped to owner (no cross-user deletion)' => {
+        plan 3;
+        my %variant = (version => '6.0', gui => 'Single', model => 'Base');
+        my $name = 'ScopeOwner';
+
+        my $user2 = Agrammon::DB::User.new(
+            :username<agtest2>, :firstname<YF>, :lastname<YL>,
+            :organisation<YO>, :password<YP123456>,
+        );
+        $user2.activate-account($user2.create-account('user'));
+
+        Agrammon::DB::Dataset.new(:$name, :user($user),  :agrammon-variant(%variant)).create;
+        Agrammon::DB::Dataset.new(:$name, :user($user2), :agrammon-variant(%variant)).create;
+
+        my $deleted = Agrammon::DB::Datasets.new(:user($user), :agrammon-variant(%variant)).delete([$name]);
+        is $deleted, 1, "Exactly one dataset deleted — only the requesting user's";
+
+        is names-for($user,  %variant, $name), 0, "Requesting user's dataset is deleted";
+        is names-for($user2, %variant, $name), 1, "Other user's same-named dataset is NOT deleted";
     }
 
 # TODO

@@ -74,17 +74,26 @@ class Agrammon::DB::Datasets does Agrammon::DB::Variant {
     }
 
     method delete(@datasets) {
-        my $deleted;
+        my $deleted = 0;
         my $user = $!user.id;
+        # Scope the delete to the active variant exactly like `load` above:
+        # dataset names are only unique per (name, pers, version, modelvariant,
+        # guivariant), so deleting by (pers, name) alone wipes same-named
+        # datasets in *other* variants/versions that the GUI never showed.
+        my @versions = (%!agrammon-variant<version>, |self!compatible-versions);
+        my (Str $gui, Str $model) = %!agrammon-variant<gui model>;
         for @datasets -> $ds {
             self.with-db: -> $db {
-                my $results = $db.query(q:to/DATASET/, $user, $ds);
+                my $results = $db.query(q:to/DATASET/, $user, $ds, @versions, $gui, $model);
                     DELETE FROM dataset
-                     WHERE dataset_pers = $1
-                       AND dataset_name = $2
+                     WHERE dataset_pers      = $1
+                       AND dataset_name      = $2
+                       AND dataset_version   = ANY($3)
+                       AND (dataset_model = 'UNKNOWN'
+                            OR dataset_guivariant = $4 AND dataset_modelvariant = $5)
                     RETURNING dataset_id
                 DATASET
-                $deleted++ if $results.value;
+                $deleted += $results.rows;
             }
         }
         return $deleted;
