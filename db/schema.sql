@@ -58,11 +58,43 @@ CREATE TABLE public.data (
     data_id integer NOT NULL,
     data_dataset integer NOT NULL,
     data_var text NOT NULL,
-    data_instance text,
     data_val text,
-    data_instance_order integer,
+    data_instance_id integer,
     data_comment text
 );
+
+
+--
+-- Name: data_instance; Type: TABLE; Schema: public; Owner: agrammon
+--
+
+CREATE TABLE public.data_instance (
+    data_instance_id integer NOT NULL,
+    data_instance_dataset integer NOT NULL,
+    data_instance_name text NOT NULL,
+    data_instance_order integer
+);
+ALTER TABLE public.data_instance OWNER TO agrammon;
+
+CREATE SEQUENCE public.data_instance_data_instance_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE public.data_instance_data_instance_id_seq OWNER TO agrammon;
+ALTER SEQUENCE public.data_instance_data_instance_id_seq OWNED BY public.data_instance.data_instance_id;
+ALTER TABLE ONLY public.data_instance
+    ALTER COLUMN data_instance_id SET DEFAULT nextval('public.data_instance_data_instance_id_seq'::regclass);
+ALTER TABLE ONLY public.data_instance
+    ADD CONSTRAINT data_instance_pkey PRIMARY KEY (data_instance_id);
+ALTER TABLE ONLY public.data_instance
+    ADD CONSTRAINT data_instance_dataset_name_key UNIQUE (data_instance_dataset, data_instance_name);
+ALTER TABLE ONLY public.data_instance
+    ADD CONSTRAINT data_instance_dataset_fkey FOREIGN KEY (data_instance_dataset) REFERENCES public.dataset(dataset_id) ON DELETE CASCADE;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.data_instance TO agrammon_user;
+GRANT SELECT,UPDATE ON SEQUENCE public.data_instance_data_instance_id_seq TO agrammon_user;
 
 
 ALTER TABLE public.data OWNER TO agrammon;
@@ -200,14 +232,15 @@ ALTER SEQUENCE public.data_data_id_seq OWNED BY public.data.data_id;
 --
 
 CREATE VIEW public.data_view AS
- SELECT data.data_id,
-    data.data_dataset,
-    COALESCE(replace(data.data_var, '[]'::text, (('['::text || data.data_instance) || ']'::text)), data.data_var) AS data_var,
-    data.data_val,
-    data.data_instance_order,
-    data.data_comment
-   FROM public.data data
-  ORDER BY data.data_dataset, COALESCE(replace(data.data_var, '[]'::text, (('['::text || data.data_instance) || ']'::text)), data.data_var);
+ SELECT d.data_id,
+    d.data_dataset,
+    COALESCE(replace(d.data_var, '[]'::text, (('['::text || i.data_instance_name) || ']'::text)), d.data_var) AS data_var,
+    d.data_val,
+    i.data_instance_order,
+    d.data_comment
+   FROM (public.data d
+     LEFT JOIN public.data_instance i ON ((d.data_instance_id = i.data_instance_id)))
+  ORDER BY d.data_dataset, COALESCE(replace(d.data_var, '[]'::text, (('['::text || i.data_instance_name) || ']'::text)), d.data_var);
 
 
 ALTER TABLE public.data_view OWNER TO agrammon;
@@ -507,7 +540,7 @@ ALTER TABLE ONLY public.branches
 --
 
 ALTER TABLE ONLY public.data
-    ADD CONSTRAINT data_data_var_key UNIQUE (data_var, data_instance, data_dataset);
+    ADD CONSTRAINT data_data_var_key UNIQUE (data_var, data_instance_id, data_dataset);
 
 
 --
@@ -640,6 +673,14 @@ ALTER TABLE ONLY public.branches
 
 ALTER TABLE ONLY public.data
     ADD CONSTRAINT data_data_dataset_fkey FOREIGN KEY (data_dataset) REFERENCES public.dataset(dataset_id) ON DELETE CASCADE;
+
+
+--
+-- Name: data data_data_instance_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.data
+    ADD CONSTRAINT data_data_instance_id_fkey FOREIGN KEY (data_instance_id) REFERENCES public.data_instance(data_instance_id) ON DELETE CASCADE;
 
 
 --

@@ -2,8 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.6 (Ubuntu 16.6-1.pgdg22.04+1)
--- Dumped by pg_dump version 16.6 (Ubuntu 16.6-1.pgdg22.04+1)
+\restrict Z62BJFSuh8U4RR3h0penkQ1SWRTq1fpor81d4ZgMJRRY4NCnDb279RtrJHS2NL3
+
+-- Dumped from database version 16.14
+-- Dumped by pg_dump version 16.14
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -619,10 +621,9 @@ CREATE TABLE public.data (
     data_id integer NOT NULL,
     data_dataset integer NOT NULL,
     data_var text NOT NULL,
-    data_instance text,
     data_val text,
-    data_instance_order integer,
-    data_comment text
+    data_comment text,
+    data_instance_id integer
 );
 
 
@@ -801,18 +802,55 @@ ALTER SEQUENCE public.data_data_id_seq OWNED BY public.data.data_id;
 
 
 --
+-- Name: data_instance; Type: TABLE; Schema: public; Owner: agrammon
+--
+
+CREATE TABLE public.data_instance (
+    data_instance_id integer NOT NULL,
+    data_instance_dataset integer NOT NULL,
+    data_instance_name text NOT NULL,
+    data_instance_order integer
+);
+
+
+ALTER TABLE public.data_instance OWNER TO agrammon;
+
+--
+-- Name: data_instance_data_instance_id_seq; Type: SEQUENCE; Schema: public; Owner: agrammon
+--
+
+CREATE SEQUENCE public.data_instance_data_instance_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.data_instance_data_instance_id_seq OWNER TO agrammon;
+
+--
+-- Name: data_instance_data_instance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agrammon
+--
+
+ALTER SEQUENCE public.data_instance_data_instance_id_seq OWNED BY public.data_instance.data_instance_id;
+
+
+--
 -- Name: data_view; Type: VIEW; Schema: public; Owner: agrammon
 --
 
 CREATE VIEW public.data_view AS
- SELECT data_id,
-    data_dataset,
-    COALESCE(replace(data_var, '[]'::text, (('['::text || data_instance) || ']'::text)), data_var) AS data_var,
-    data_val,
-    data_instance_order,
-    data_comment
-   FROM public.data data
-  ORDER BY data_dataset, COALESCE(replace(data_var, '[]'::text, (('['::text || data_instance) || ']'::text)), data_var);
+ SELECT d.data_id,
+    d.data_dataset,
+    COALESCE(replace(d.data_var, '[]'::text, (('['::text || i.data_instance_name) || ']'::text)), d.data_var) AS data_var,
+    d.data_val,
+    i.data_instance_order,
+    d.data_comment
+   FROM (public.data d
+     LEFT JOIN public.data_instance i ON ((d.data_instance_id = i.data_instance_id)))
+  ORDER BY d.data_dataset, COALESCE(replace(d.data_var, '[]'::text, (('['::text || i.data_instance_name) || ']'::text)), d.data_var);
 
 
 ALTER VIEW public.data_view OWNER TO agrammon;
@@ -1120,6 +1158,13 @@ ALTER TABLE ONLY public.data ALTER COLUMN data_id SET DEFAULT nextval('public.da
 
 
 --
+-- Name: data_instance data_instance_id; Type: DEFAULT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.data_instance ALTER COLUMN data_instance_id SET DEFAULT nextval('public.data_instance_data_instance_id_seq'::regclass);
+
+
+--
 -- Name: dataset dataset_id; Type: DEFAULT; Schema: public; Owner: agrammon
 --
 
@@ -1212,7 +1257,23 @@ ALTER TABLE ONLY public.branches
 --
 
 ALTER TABLE ONLY public.data
-    ADD CONSTRAINT data_data_var_key UNIQUE (data_var, data_instance, data_dataset);
+    ADD CONSTRAINT data_data_var_key UNIQUE (data_var, data_instance_id, data_dataset);
+
+
+--
+-- Name: data_instance data_instance_dataset_name_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.data_instance
+    ADD CONSTRAINT data_instance_dataset_name_key UNIQUE (data_instance_dataset, data_instance_name);
+
+
+--
+-- Name: data_instance data_instance_pkey; Type: CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.data_instance
+    ADD CONSTRAINT data_instance_pkey PRIMARY KEY (data_instance_id);
 
 
 --
@@ -1490,6 +1551,22 @@ ALTER TABLE ONLY public.data
 
 
 --
+-- Name: data data_data_instance_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.data
+    ADD CONSTRAINT data_data_instance_id_fkey FOREIGN KEY (data_instance_id) REFERENCES public.data_instance(data_instance_id) ON DELETE CASCADE;
+
+
+--
+-- Name: data_instance data_instance_data_instance_dataset_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.data_instance
+    ADD CONSTRAINT data_instance_data_instance_dataset_fkey FOREIGN KEY (data_instance_dataset) REFERENCES public.dataset(dataset_id) ON DELETE CASCADE;
+
+
+--
 -- Name: dataset dataset_dataset_pers_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
 --
 
@@ -1595,6 +1672,20 @@ GRANT SELECT,UPDATE ON SEQUENCE public.data_data_id_seq TO agrammon_user;
 
 
 --
+-- Name: TABLE data_instance; Type: ACL; Schema: public; Owner: agrammon
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.data_instance TO agrammon_user;
+
+
+--
+-- Name: SEQUENCE data_instance_data_instance_id_seq; Type: ACL; Schema: public; Owner: agrammon
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.data_instance_data_instance_id_seq TO agrammon_user;
+
+
+--
 -- Name: TABLE data_view; Type: ACL; Schema: public; Owner: agrammon
 --
 
@@ -1667,4 +1758,6 @@ GRANT ALL ON SEQUENCE public.tagds_tagds_id_seq TO agrammon_user;
 --
 -- PostgreSQL database dump complete
 --
+
+\unrestrict Z62BJFSuh8U4RR3h0penkQ1SWRTq1fpor81d4ZgMJRRY4NCnDb279RtrJHS2NL3
 

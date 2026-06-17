@@ -226,6 +226,16 @@ transactionally {
     }
 }
 
+sub test-instance-id($db, $datasetId, $name) {
+    $db.query(q:to/STATEMENT/, $datasetId, $name).value;
+    INSERT INTO data_instance (data_instance_dataset, data_instance_name)
+         VALUES ($1, $2)
+    ON CONFLICT (data_instance_dataset, data_instance_name) DO
+         UPDATE SET data_instance_name = EXCLUDED.data_instance_name
+    RETURNING data_instance_id
+    STATEMENT
+}
+
 sub prepare-test-db-commented-data($user, $dataset, %variant) {
     my $db = $*AGRAMMON-DB-HANDLE;
 
@@ -302,31 +312,34 @@ sub prepare-test-db-flattened-data($user, $dataset, %variant) {
     SELECT dataset_name2id($1, $2, $3, $4, $5)
     STATEMENT
 
+    my $iidA = test-instance-id($db, $datasetId, 'Instance A');
+    my $iidB = test-instance-id($db, $datasetId, 'Instance B');
+
     my $sth = $db.prepare(q:to/STATEMENT/);
-    INSERT INTO data (data_dataset, data_instance, data_var, data_val)
+    INSERT INTO data (data_dataset, data_instance_id, data_var, data_val)
     VALUES ($1, $2, $3, $4)
     STATEMENT
 
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Sub::dist-me', 1000);
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Sub::simple', 42);
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a', 'flattened');
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened00_x', 30);
+    $sth.execute($datasetId, $iidA, 'Test::Base[]::Sub::dist-me', 1000);
+    $sth.execute($datasetId, $iidA, 'Test::Base[]::Sub::simple', 42);
+    $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a', 'flattened');
+    $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a_flattened00_x', 30);
     # enum value with _
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened01_y_y', 20);
+    $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a_flattened01_y_y', 20);
     # enum value with space
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a_flattened02_z z', 50);
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::simple', 101);
-    $sth.execute($datasetId, 'Instance A', 'Test::Base[]::Retained::simple', 13);
+    $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a_flattened02_z z', 50);
+    $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::simple', 101);
+    $sth.execute($datasetId, $iidA, 'Test::Base[]::Retained::simple', 13);
 
-    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::Sub::dist-meA', 1000);
-    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::Sub::dist-meB', 2000);
-    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::Sub::simple', 42);
-    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::flat-a', 'flattened');
-    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::flat-a_flattened00_x', 30);
-    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::flat-a_flattened01_y_y', 20);
-    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::flat-a_flattened01_z z', 50);
-    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::AnotherSub::simple', 101);
-    $sth.execute($datasetId, 'Instance B', 'Test::Base2[]::Retained::simple', 13);
+    $sth.execute($datasetId, $iidB, 'Test::Base2[]::Sub::dist-meA', 1000);
+    $sth.execute($datasetId, $iidB, 'Test::Base2[]::Sub::dist-meB', 2000);
+    $sth.execute($datasetId, $iidB, 'Test::Base2[]::Sub::simple', 42);
+    $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::flat-a', 'flattened');
+    $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::flat-a_flattened00_x', 30);
+    $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::flat-a_flattened01_y_y', 20);
+    $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::flat-a_flattened01_z z', 50);
+    $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::simple', 101);
+    $sth.execute($datasetId, $iidB, 'Test::Base2[]::Retained::simple', 13);
 }
 
 sub prepare-test-db-branched-data($user, $dataset, %variant) {
@@ -347,8 +360,11 @@ sub prepare-test-db-branched-data($user, $dataset, %variant) {
     SELECT dataset_name2id($1, $2, $3, $4, $5)
     STATEMENT
 
+    my $iidA = test-instance-id($db, $datasetId, 'Instance A');
+    my $iidB = test-instance-id($db, $datasetId, 'Instance B');
+
     my $sth-data = $db.prepare(q:to/STATEMENT/);
-    INSERT INTO data (data_dataset, data_instance, data_var, data_val)
+    INSERT INTO data (data_dataset, data_instance_id, data_var, data_val)
     VALUES ($1, $2, $3, $4)
     RETURNING data_id;
     STATEMENT
@@ -359,26 +375,26 @@ sub prepare-test-db-branched-data($user, $dataset, %variant) {
     STATEMENT
 
     # branch over inputs from same submodule
-    $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::Sub::dist-me', 1000);
-    $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::Sub::simple', 42);
-    given $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-a', 'branched').value -> $id {
+    $sth-data.execute($datasetId, $iidA, 'Test::Base[]::Sub::dist-me', 1000);
+    $sth-data.execute($datasetId, $iidA, 'Test::Base[]::Sub::simple', 42);
+    given $sth-data.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a', 'branched').value -> $id {
         $sth-branch.execute($id, '{12,18,8,12,20,30}', '{x,y,z}');
     };
-    given $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::flat-b', 'branched').value -> $id {
+    given $sth-data.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-b', 'branched').value -> $id {
         $sth-branch.execute($id, '{12,18,8,12,20,30}', '{a,b}');
     };
-    $sth-data.execute($datasetId, 'Instance A', 'Test::Base[]::AnotherSub::simple', 101);
+    $sth-data.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::simple', 101);
 
     # branch over inputs from different submodules
-    $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::Sub::dist-me', 1000);
-    $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::Sub::simple', 42);
-    given $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSubA::flat-a', 'branched').value -> $id {
+    $sth-data.execute($datasetId, $iidB, 'Test::Base[]::Sub::dist-me', 1000);
+    $sth-data.execute($datasetId, $iidB, 'Test::Base[]::Sub::simple', 42);
+    given $sth-data.execute($datasetId, $iidB, 'Test::Base[]::AnotherSubA::flat-a', 'branched').value -> $id {
         $sth-branch.execute($id, '{12,18,8,12,20,30}', '{x,y,z}');
     };
-    given $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSubB::flat-b', 'branched').value -> $id {
+    given $sth-data.execute($datasetId, $iidB, 'Test::Base[]::AnotherSubB::flat-b', 'branched').value -> $id {
         $sth-branch.execute($id, '{12,18,8,12,20,30}', '{a,b}');
     };
-    $sth-data.execute($datasetId, 'Instance B', 'Test::Base[]::AnotherSubA::simple', 101);
+    $sth-data.execute($datasetId, $iidB, 'Test::Base[]::AnotherSubA::simple', 101);
 }
 
 sub prepare-test-db-schema($db) {
@@ -403,14 +419,24 @@ sub prepare-test-db-schema($db) {
     STATEMENT
 
     $db.query(q:to/STATEMENT/);
+    CREATE TABLE IF NOT EXISTS data_instance (
+        data_instance_id      SERIAL NOT NULL PRIMARY KEY,
+        data_instance_dataset INT4 NOT NULL REFERENCES dataset(dataset_id) ON DELETE CASCADE,
+        data_instance_name    TEXT NOT NULL,
+        data_instance_order   INTEGER,
+        UNIQUE (data_instance_dataset, data_instance_name)
+    )
+    STATEMENT
+
+    $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS data (
         data_id SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
         data_dataset  INT4 REFERENCES dataset NOT NULL,
         data_var        TEXT NOT NULL,                           -- Agrammon variable name
-        data_instance TEXT,
         data_val        TEXT,                                    -- Value of Agrammon variable
-        data_instance_order integer,
-        data_comment  TEXT
+        data_instance_id INT4 REFERENCES data_instance(data_instance_id) ON DELETE CASCADE,
+        data_comment  TEXT,
+        UNIQUE (data_var, data_instance_id, data_dataset)
     )
     STATEMENT
 
