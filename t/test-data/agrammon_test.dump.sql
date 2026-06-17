@@ -230,9 +230,14 @@ ALTER SEQUENCE public.api_tokens_id_seq OWNED BY public.api_tokens.id;
 
 CREATE TABLE public.branches (
     branches_id integer NOT NULL,
-    branches_var integer NOT NULL,
-    branches_data numeric[],
-    branches_options text[]
+    branches_row_var integer NOT NULL,
+    branches_col_var integer NOT NULL,
+    branches_row_options text[] NOT NULL,
+    branches_col_options text[] NOT NULL,
+    branches_matrix numeric[] NOT NULL,
+    CONSTRAINT branches_matrix_2d CHECK ((array_ndims(branches_matrix) = 2)),
+    CONSTRAINT branches_matrix_rows CHECK ((array_length(branches_matrix, 1) = cardinality(branches_row_options))),
+    CONSTRAINT branches_matrix_cols CHECK ((array_length(branches_matrix, 2) = cardinality(branches_col_options)))
 );
 
 
@@ -647,21 +652,14 @@ COPY public.api_tokens (id, token, expiration, metadata, revoked) FROM stdin;
 -- Data for Name: branches; Type: TABLE DATA; Schema: public; Owner: agrammon
 --
 
-COPY public.branches (branches_id, branches_var, branches_data, branches_options) FROM stdin;
-38869	85014781	{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}
-38870	85014782	{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}
-38871	85014767	{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}
-38872	85014769	{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}
-38877	85035421	{10,0,0,0,0,0,0,20,0,0,5,20,0,0,0,0,0,15,20,10}	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}
-38878	85035422	{10,0,0,0,0,0,0,20,0,0,5,20,0,0,0,0,0,15,20,10}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,no_manure_belt}
-39179	85246055	{0,55,45,0,0,0,0,0,0,0}	{Slurry_Conventional,Slurry_Label,Slurry_Label_Open,Deep_Litter,Outdoor}
-39180	85246060	{0,55,45,0,0,0,0,0,0,0}	{none,low_impuls_air_supply}
-39181	85246071	{0,55,45,0,0,0,0,0,0,0}	{Slurry_Conventional,Slurry_Label,Slurry_Label_Open,Deep_Litter,Outdoor}
-39182	85246078	{0,55,45,0,0,0,0,0,0,0}	{none,low_impuls_air_supply}
-39216	85253539	{0,0,0,0,0,0,15.9,31.4,33.6,0,0,0,0,0,2.2,0,0,0,0,16.9}	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}
-39217	85253545	{0,0,0,0,0,0,15.9,31.4,33.6,0,0,0,0,0,2.2,0,0,0,0,16.9}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,no_manure_belt}
-39218	85253530	{10,0,0,0,0,0,0,20,0,0,5,20,0,0,0,0,0,15,20,10}	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}
-39219	85253531	{10,0,0,0,0,0,0,20,0,0,5,20,0,0,0,0,0,15,20,10}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,no_manure_belt}
+COPY public.branches (branches_id, branches_row_var, branches_col_var, branches_row_options, branches_col_options, branches_matrix) FROM stdin;
+38869	85014781	85014782	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}	{{0,0,0,0,0,0},{0,15.9,31.5,33.5,0,0},{0,0,0,0,0,2.2},{0,0,0,0,0,16.9}}
+39179	85246055	85246060	{Slurry_Conventional,Slurry_Label,Slurry_Label_Open,Deep_Litter,Outdoor}	{none,low_impuls_air_supply}	{{0,55},{45,0},{0,0},{0,0},{0,0}}
+39216	85253539	85253545	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,no_manure_belt}	{{0,0,0,0,0},{0,15.9,31.4,33.6,0},{0,0,0,0,2.2},{0,0,0,0,16.9}}
+39181	85246071	85246078	{Slurry_Conventional,Slurry_Label,Slurry_Label_Open,Deep_Litter,Outdoor}	{none,low_impuls_air_supply}	{{0,55},{45,0},{0,0},{0,0},{0,0}}
+38877	85035421	85035422	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,no_manure_belt}	{{10,0,0,0,0},{0,0,20,0,0},{5,20,0,0,0},{0,0,15,20,10}}
+39218	85253530	85253531	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,no_manure_belt}	{{10,0,0,0,0},{0,0,20,0,0},{5,20,0,0,0},{0,0,15,20,10}}
+38871	85014767	85014769	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}	{{0,0,0,0,0,0},{0,15.9,31.5,33.5,0,0},{0,0,0,0,0,2.2},{0,0,0,0,0,16.9}}
 \.
 
 
@@ -1652,11 +1650,19 @@ ALTER TABLE ONLY public.api_tokens
 
 
 --
--- Name: branches branches_branches_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
+-- Name: branches branches_row_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
 --
 
 ALTER TABLE ONLY public.branches
-    ADD CONSTRAINT branches_branches_var_key UNIQUE (branches_var);
+    ADD CONSTRAINT branches_row_var_key UNIQUE (branches_row_var);
+
+
+--
+-- Name: branches branches_col_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_col_var_key UNIQUE (branches_col_var);
 
 
 --
@@ -1822,11 +1828,19 @@ CREATE UNIQUE INDEX tagds_tagds_tag_tagds_dataset_idx ON public.tagds USING btre
 
 
 --
--- Name: branches branches_branches_var_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+-- Name: branches branches_row_var_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
 --
 
 ALTER TABLE ONLY public.branches
-    ADD CONSTRAINT branches_branches_var_fkey FOREIGN KEY (branches_var) REFERENCES public.data(data_id) ON DELETE CASCADE;
+    ADD CONSTRAINT branches_row_var_fkey FOREIGN KEY (branches_row_var) REFERENCES public.data(data_id) ON DELETE CASCADE;
+
+
+--
+-- Name: branches branches_col_var_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_col_var_fkey FOREIGN KEY (branches_col_var) REFERENCES public.data(data_id) ON DELETE CASCADE;
 
 
 --
