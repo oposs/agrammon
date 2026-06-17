@@ -479,22 +479,36 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         }
     }
 
+    # Resolve (this dataset, $instance name) to a data_instance id, creating the
+    # instance row if it does not exist yet (instances are implicit: they exist
+    # exactly as long as some variable references them).
+    method !instance-id($db, $username, $instance) {
+        my $ret = $db.query(q:to/SQL/, $username, $!name, |self!variant, $instance);
+            INSERT INTO data_instance (data_instance_dataset, data_instance_name)
+                 VALUES (dataset_name2id($1,$2,$3,$4,$5), $6)
+            ON CONFLICT (data_instance_dataset, data_instance_name) DO
+                 UPDATE SET data_instance_name = EXCLUDED.data_instance_name
+            RETURNING data_instance_id
+        SQL
+        return $ret.value;
+    }
+
     method !store-instance-variable-comment($variable, $instance, $comment) {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable, $instance);
+            my $instance-id = self!instance-id($db, $username, $instance);
+
+            my $ret = $db.query(q:to/SQL/, $comment, $instance-id, $variable);
                 UPDATE data SET data_comment = $1
-                 WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6)
-                   AND data_var      = $7
-                   AND data_instance = $8
+                 WHERE data_instance_id = $2 AND data_var = $3
                 RETURNING data_comment
             SQL
             return $ret.rows if $ret.rows;
 
-            $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable, $instance);
-                INSERT INTO data (data_dataset, data_var, data_comment, data_instance)
-                              VALUES (dataset_name2id($2,$3,$4,$5,$6), $7, $1, $8)
+            $ret = $db.query(q:to/SQL/, $comment, $instance-id, $variable);
+                INSERT INTO data (data_dataset, data_var, data_comment, data_instance_id)
+                     VALUES ((SELECT data_instance_dataset FROM data_instance WHERE data_instance_id = $2), $3, $1, $2)
                 RETURNING data_comment
             SQL
 
@@ -561,16 +575,17 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         my $username = $!user.username;
 
         self.with-db: -> $db {
-            my $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable, $instance);
+            my $instance-id = self!instance-id($db, $username, $instance);
+
+            my $ret = $db.query(q:to/SQL/, $value, $instance-id, $variable);
                 UPDATE data SET data_val = $1
-                 WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6) AND data_var = $7
-                                                                    AND data_instance = $8
+                 WHERE data_instance_id = $2 AND data_var = $3
                 RETURNING data_id
             SQL
 
-            $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable, $instance) unless $ret.rows;
-                INSERT INTO data (data_dataset, data_var, data_val, data_instance)
-                     VALUES (dataset_name2id($2,$3,$4,$5,$6), $7, $1, $8)
+            $ret = $db.query(q:to/SQL/, $value, $instance-id, $variable) unless $ret.rows;
+                INSERT INTO data (data_dataset, data_var, data_val, data_instance_id)
+                     VALUES ((SELECT data_instance_dataset FROM data_instance WHERE data_instance_id = $2), $3, $1, $2)
                 RETURNING data_id
             SQL
 
