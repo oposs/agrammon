@@ -47,6 +47,12 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         }
         this.__type         = type;
         this.__folderName   = folderName;
+        // #420: the instance name is the single source of truth for this
+        // folder's instance. Derive it from the folderName here (e.g.
+        // "Module[Stall 1]" -> "Stall 1"); updated on rename in setName.
+        // null for singleton / non-instance folders.
+        var instMatch = ('' + folderName).match(/\[(.*)\]/);
+        this.__instanceName = instMatch ? instMatch[1] : null;
         this.__propData     = new Array;
         this.__childrenHash = new Object;
         this.__instanceOrder = instanceOrder;
@@ -62,6 +68,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         __type: null,
         __parent: null,
         __folderName: null,
+        __instanceName: null,
         __labels: null,
         __propData: null,
         __childrenHash: null,
@@ -134,19 +141,15 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             return this.__folderName;
         }, // getName
 
-        __updateVariableNames : function(newInstanceName) {
-            var data = this.__propData;
-            for (let row of data) {
-                let oldName = row.getName();
-                let newName = oldName.replace(/\[.+\]/, '[' + newInstanceName + ']');
-                row.setName(newName);
-            }
-        },
-
         setName: function(newName, propEditor) {
             this.__folderName = newName;
-            this.__updateVariableNames(newName);
-            // set this folders data in propEditor table
+            // #420: the folder is the single source of truth for its instance.
+            // Record the new instance here; resolveVariable() re-qualifies the
+            // (instance-free) variable names against it on demand, so we no
+            // longer rewrite the [instance] into every variable name on rename
+            // (the old __updateVariableNames workaround).
+            this.__instanceName = newName;
+            // rebuild this folder's data in the propEditor table
             propEditor.setData(this, this.__propData);
             this.setLabel(newName);
         }, // setName
@@ -445,8 +448,15 @@ qx.Class.define('agrammon.module.input.NavFolder', {
         resolveVariable: function(name) {
             var bare = ('' + name).replace(/\[[^\]]*\]/, '');
             for (var i = 0; i < this.__propData.length; i++) {
-                if (this.__propData[i].getName().replace(/\[[^\]]*\]/, '') === bare) {
-                    return this.__propData[i].getName();
+                var full = this.__propData[i].getName();
+                if (full.replace(/\[[^\]]*\]/, '') === bare) {
+                    // Re-qualify using this folder's current instance (single
+                    // source of truth). The stored name supplies only the
+                    // [instance] *position*; its value may be stale after a
+                    // rename since we no longer rewrite it eagerly.
+                    return this.__instanceName != null
+                        ? full.replace(/\[[^\]]*\]/, '[' + this.__instanceName + ']')
+                        : full;
                 }
             }
             return null;
@@ -462,7 +472,13 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             }
             for (i=0; i<len ; i++) {
                 var varName = this.__propData[i].getName();
-                if (varName == key) {
+                // #420: match on the instance-independent name. The stored
+                // variable name's [instance] may be stale after a rename (we no
+                // longer rewrite it), and callers may pass either the bare name
+                // or a freshly re-qualified one — compare with the marker
+                // stripped from both sides. Bare names are unique within a
+                // folder, so this stays unambiguous.
+                if (('' + varName).replace(/\[[^\]]*\]/, '') == ('' + key).replace(/\[[^\]]*\]/, '')) {
 
                     // check for enum changes between dataset and model
                     metaData = null;
