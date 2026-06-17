@@ -56,14 +56,24 @@ sub prepare-test-db($uid) is export {
 
 
     $db.query(q:to/SQL/);
+    CREATE TABLE IF NOT EXISTS data_instance (
+        data_instance_id      SERIAL NOT NULL PRIMARY KEY,
+        data_instance_dataset INTEGER NOT NULL REFERENCES dataset(dataset_id) ON DELETE CASCADE,
+        data_instance_name    TEXT NOT NULL,
+        data_instance_order   INTEGER,
+        UNIQUE (data_instance_dataset, data_instance_name)
+    )
+    SQL
+
+    $db.query(q:to/SQL/);
     CREATE TABLE IF NOT EXISTS data (
-        data_id             SERIAL NOT NULL PRIMARY KEY,
-        data_dataset        INTEGER NOT NULL REFERENCES dataset(dataset_id) ON DELETE CASCADE,
-        data_var            TEXT NOT NULL,
-        data_instance       TEXT,
-        data_val            TEXT,
-        data_instance_order INTEGER,
-        data_comment        TEXT
+        data_id          SERIAL NOT NULL PRIMARY KEY,
+        data_dataset     INTEGER NOT NULL REFERENCES dataset(dataset_id) ON DELETE CASCADE,
+        data_var         TEXT NOT NULL,
+        data_val         TEXT,
+        data_instance_id INTEGER REFERENCES data_instance(data_instance_id) ON DELETE CASCADE,
+        data_comment     TEXT,
+        UNIQUE (data_var, data_instance_id, data_dataset)
     )
     SQL
 
@@ -87,9 +97,14 @@ sub prepare-test-db($uid) is export {
     SQL
 
     $db.query(q:to/SQL/);
-    INSERT INTO data (data_id, data_dataset, data_var, data_instance, data_val)
-                 VALUES (-76315980, -42000, 'Livestock::Poultry[]::Housing::Type::housing_type',             'Branched', 'branched'),
-                        (-76315982, -42000, 'Livestock::Poultry[]::Housing::Type::manure_removal_interval',  'Branched', 'branched')
+    INSERT INTO data_instance (data_instance_id, data_instance_dataset, data_instance_name)
+                       VALUES (-91000, -42000, 'Branched')
+    SQL
+
+    $db.query(q:to/SQL/);
+    INSERT INTO data (data_id, data_dataset, data_var, data_instance_id, data_val)
+                 VALUES (-76315980, -42000, 'Livestock::Poultry[]::Housing::Type::housing_type',            -91000, 'branched'),
+                        (-76315982, -42000, 'Livestock::Poultry[]::Housing::Type::manure_removal_interval', -91000, 'branched')
     SQL
 
     $db.query(q:to/SQL/);
