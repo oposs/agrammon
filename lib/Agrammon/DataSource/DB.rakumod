@@ -12,31 +12,35 @@ class Agrammon::DataSource::DB does Agrammon::DB {
         has %.value-percentages;
     }
 
-    my class Branched {
-        has Str $.taxonomy;
-        has Str $.instance-id;
-        has Str $.sub-taxonomy-a;
-        has Str $.input-name-a;
-        has Str @.input-values-a;
-        has Str $.sub-taxonomy-b is rw;
-        has Str $.input-name-b is rw;
-        has Str @.input-values-b is rw;
-        has @.matrix is rw;
+    # Parse a stored branched var name `Taxonomy[]::SubTax::var` (or
+    # `Taxonomy[]::var` with no sub-taxonomy) into (taxonomy, sub-taxonomy, var).
+    sub parse-branch-var(Str $module-var) {
+        $module-var ~~ m/(.+)'[]'(.+)/ or die "Malformed branched var: $module-var";
+        my $tax     = "$0";
+        my $sub-var = "$1";
+        my ($sub-tax, $var);
+        if $sub-var ~~ m/'::'(.+)'::'(.+)/ {
+            $sub-tax = "$0";
+            $var     = "$1";
+        }
+        else {
+            $sub-tax = '';
+            $sub-var ~~ s/'::'//;
+            $var = $sub-var;
+        }
+        return ($tax, $sub-tax, $var);
     }
 
     # TODO: remove ignore condition after DB cleanup
     method read($user, Str $dataset, %variant) {
         self.with-db: -> $db {
             my $results = $db.query(q:to/STATEMENT/, $user, $dataset, %variant<version>, %variant<gui>, %variant<model>);
-                SELECT data_var, data_val, i.data_instance_name,
-                       branches_data, branches_options,
-                       data_comment
+                SELECT data_var, data_val, i.data_instance_name, data_comment
                 FROM data
                 LEFT JOIN data_instance i ON (data.data_instance_id = i.data_instance_id)
-                LEFT JOIN branches ON (data_id=branches_var)
                 WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
                     AND data_var not like '%ignore'
-                ORDER BY i.data_instance_name, branches_var, data_var, data_val
+                ORDER BY i.data_instance_name, data_var, data_val
             STATEMENT
             my @rows = $results.arrays;
             my $dist-input = Agrammon::Inputs::Distribution.new(
@@ -45,16 +49,18 @@ class Agrammon::DataSource::DB does Agrammon::DB {
             );
 
             my @flattend-to-add;
-            my @branched-to-add;
 
             for @rows -> @row {
                 my $module-var = @row[0];
                 my $value      = maybe-numify(@row[1]);
                 my $instance   = @row[2] // '';
-                my $comment    = @row[5];
+                my $comment    = @row[3];
                 state $flattend-prefix = '';
                 state Flattened $current-flattened;
-                state Branched $current-branched;
+
+                # branched data rows carry no value of their own; their matrix is
+                # rebuilt from the dedicated branches query below.
+                next if $value && $value eq 'branched';
 
                 if $instance {
                     if $module-var ~~ m/(.+)'[]'(.+)/ {
@@ -69,10 +75,6 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $sub-tax = '';
                             $sub-var ~~ s/'::'//;
                             $var = $sub-var;
-                        }
-
-                        if $current-branched && $value ne 'branched' {
-                            die "Missing second step of branched input";
                         }
 
                         if $value and $value eq 'flattened' {
@@ -90,24 +92,6 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $key ~~ s:g/ ' ' /_/;
                             $current-flattened.value-percentages{$key} = $value;
                         }
-                        elsif $value and $value eq 'branched' {
-                            with $current-branched {
-                                .sub-taxonomy-b = $sub-tax;
-                                .input-name-b = $var;
-                                .input-values-b = @row[4].list;
-                                .matrix = @row[3].rotor(@row[4].elems);
-                                push @branched-to-add, $_;
-                                $_ = Nil;
-                            }
-                            else {
-                                $current-branched = Branched.new:
-                                        taxonomy => $tax,
-                                        instance-id => $instance,
-                                        sub-taxonomy-a => $sub-tax,
-                                        input-name-a => $var,
-                                        input-values-a => @row[4].list;
-                            }
-                        }
                         else {
                             $dist-input.add-multi-input($tax, $instance, $sub-tax, $var, $value, :$comment);
                             $flattend-prefix = '';
@@ -118,7 +102,6 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                     }
                 }
                 else {
-                    die "Missing second step of branched input" if $current-branched;
                     $module-var ~~ m/(.+)'::'(.+)/;
                     my $tax     = "$0";
                     my $var     = "$1";
@@ -130,12 +113,29 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                 $dist-input.add-multi-input-flattened(.taxonomy, .instance-id, .sub-taxonomy,
                         .input-name, .value-percentages);
             }
-            for @branched-to-add {
-                $dist-input.add-multi-input-branched(.taxonomy, .instance-id,
-                         .sub-taxonomy-a, .input-name-a, .input-values-a,
-                         .sub-taxonomy-b, .input-name-b, .input-values-b,
-                         .matrix);
+
+            # Branched inputs: one self-describing row each, joined to both data
+            # rows to recover variable names + instance. No ordering reliance.
+            my @branches = $db.query(q:to/STATEMENT/, $user, $dataset, %variant<version>, %variant<gui>, %variant<model>).arrays;
+                SELECT rv.data_var, cv.data_var, ri.data_instance_name,
+                       b.branches_row_options, b.branches_col_options, b.branches_matrix
+                FROM branches b
+                JOIN data rv ON (b.branches_row_var = rv.data_id)
+                JOIN data cv ON (b.branches_col_var = cv.data_id)
+                LEFT JOIN data_instance ri ON (rv.data_instance_id = ri.data_instance_id)
+                WHERE rv.data_dataset = dataset_name2id($1,$2,$3,$4,$5)
+            STATEMENT
+
+            for @branches -> @b {
+                my ($row-tax, $row-sub, $row-var) = parse-branch-var(@b[0]);
+                my ($col-tax, $col-sub, $col-var) = parse-branch-var(@b[1]);
+                $dist-input.add-multi-input-branched(
+                    $row-tax, @b[2],
+                    $row-sub, $row-var, @b[3].list,
+                    $col-sub, $col-var, @b[4].list,
+                    @b[5]);
             }
+
             return $dist-input;
         }
     }
