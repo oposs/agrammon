@@ -932,7 +932,15 @@ qx.Class.define('agrammon.module.input.NavBar', {
             Object.values(this.__navHash).forEach(entry => {
                 let navFolder = entry.folder;
                 if (navFolder.getName() != 'root') {
-                    this.removeOwnedQxObject(navFolder);
+                    // Folders added outside __createNavFolder — e.g. regional
+                    // instance folders created in ConfigInstance via
+                    // `new NavFolder` + the agrammon.NavBar.addFolder message —
+                    // were never addOwnedQxObject'd and have no qxObjectId.
+                    // Calling removeOwnedQxObject on them throws "not owned by
+                    // this", so only release the ones we actually own.
+                    if (navFolder.getQxObjectId() != null) {
+                        this.removeOwnedQxObject(navFolder);
+                    }
                     navFolder.destroy();
                 }
             });
