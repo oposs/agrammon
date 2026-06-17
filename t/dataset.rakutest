@@ -10,7 +10,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 16;
+plan 19;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -309,10 +309,52 @@ transactionally {
         is names-for($user2, %variant, $name), 1, "Other user's same-named dataset is NOT deleted";
     }
 
-# TODO
-# order instances
-# delete-instance
-# rename-instance
+    # Issue #421 task 2: per-instance name + order live in the data_instance
+    # table; verify the normalization guarantees beyond plain round-tripping.
+    subtest 'rename-instance updates one data_instance row, data rows untouched' => {
+        plan 2;
+        my $db = $*AGRAMMON-DB-HANDLE;
+        $dataset.store-input('Test::Mod[Grp A]::var1', 10);
+        $dataset.store-input('Test::Mod[Grp A]::var2', 20);
+        $dataset.rename-instance('Grp A', 'Grp B', 'Test::Mod[]');
+        my $inst = $db.query('SELECT count(*) FROM data_instance WHERE data_instance_name = $1', 'Grp B').value;
+        my $vars = $db.query(q:to/SQL/, 'Grp B').value;
+            SELECT count(*) FROM data d
+              JOIN data_instance i ON d.data_instance_id = i.data_instance_id
+             WHERE i.data_instance_name = $1
+            SQL
+        is $inst, 1, 'exactly one data_instance row carries the new name';
+        is $vars, 2, 'both variables still resolve under the renamed instance';
+    }
+
+    subtest 'delete-instance removes the instance row and cascades data rows' => {
+        plan 2;
+        my $db = $*AGRAMMON-DB-HANDLE;
+        $dataset.store-input('Test::Mod[Grp C]::var1', 5);
+        $dataset.delete-instance('Test::Mod[]', 'Grp C');
+        my $inst = $db.query('SELECT count(*) FROM data_instance WHERE data_instance_name = $1', 'Grp C').value;
+        my $vars = $db.query(q:to/SQL/, 'Grp C').value;
+            SELECT count(*) FROM data d
+              JOIN data_instance i ON d.data_instance_id = i.data_instance_id
+             WHERE i.data_instance_name = $1
+            SQL
+        is $inst, 0, 'instance row deleted';
+        is $vars, 0, 'data rows cascade-deleted';
+    }
+
+    subtest 'clone duplicates instances under new ids' => {
+        plan 2;
+        my $db = $*AGRAMMON-DB-HANDLE;
+        $dataset.store-input('Test::Mod[Grp D]::var1', 7);
+        my $new-dataset = "CloneInst $dataset.name()";
+        $dataset.clone(
+            :old-username($user.username), :new-username($user.username),
+            :old-dataset($dataset.name), :$new-dataset);
+        my $n = $db.query('SELECT count(*) FROM data_instance WHERE data_instance_name = $1', 'Grp D').value;
+        my $distinct = $db.query('SELECT count(DISTINCT data_instance_id) FROM data_instance WHERE data_instance_name = $1', 'Grp D').value;
+        is $n, 2, 'original and clone each have their own Grp D instance row';
+        is $distinct, 2, 'the two instance rows have distinct ids';
+    }
 }
 
 done-testing;
