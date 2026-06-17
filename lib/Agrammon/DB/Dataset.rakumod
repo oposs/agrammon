@@ -214,14 +214,14 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         # deployment). The destination row is always at the active version
         # via !create-dataset above; here we just relax the SOURCE lookup
         # so the data + branches actually get copied. Without this, the
-        # destination row is created but no data_new rows are inserted.
+        # destination row is created but no data rows are inserted.
         my @versions = ($version, |self!compatible-versions);
         self.with-db: -> $db {
             # clone inputs
             $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset, $gui, $model, @versions);
-                INSERT INTO data_new (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
+                INSERT INTO data (data_dataset, data_var, data_instance, data_val, data_instance_order, data_comment)
                      SELECT $1, data_var, data_instance, data_val, data_instance_order, data_comment
-                       FROM data_new
+                       FROM data
                       WHERE data_dataset = (
                           SELECT dataset_id FROM dataset
                            WHERE dataset_pers         = pers_email2id($2)
@@ -236,7 +236,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             # get branched inputs from new dataset
             my @rows = $db.query(q:to/SQL/, $ds<id>).arrays;
             SELECT data_id
-              FROM data_new LEFT JOIN branches ON (branches_var=data_id)
+              FROM data LEFT JOIN branches ON (branches_var=data_id)
              WHERE data_dataset=$1
                AND data_val = 'branched'
              ORDER BY data_instance, data_id -- don't change sort order!!!
@@ -245,7 +245,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             # get branch data from old dataset
             my @data = $db.query(q:to/SQL/, $old-username, $old-dataset, $gui, $model, @versions).arrays;
                 SELECT branches_data, branches_options, data_var
-                  FROM data_new LEFT JOIN branches ON (branches_var=data_id)
+                  FROM data LEFT JOIN branches ON (branches_var=data_id)
                  WHERE data_dataset = (
                        SELECT dataset_id FROM dataset
                         WHERE dataset_pers         = pers_email2id($1)
@@ -455,7 +455,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         my $username = $!user.username;
         self.with-db: -> $db {
                 my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable);
-                UPDATE data_new SET data_comment = $1
+                UPDATE data SET data_comment = $1
                  WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6) AND data_var = $7
                                                                     AND data_instance IS NULL
                 RETURNING data_comment
@@ -463,7 +463,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             return $ret.rows if $ret.rows;
 
             $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable);
-                INSERT INTO data_new (data_dataset, data_var, data_comment)
+                INSERT INTO data (data_dataset, data_var, data_comment)
                      VALUES          (dataset_name2id($2,$3,$4,$5,$6), $7, $1)
                 RETURNING data_comment
                 SQL
@@ -484,7 +484,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
 
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable, $instance);
-                UPDATE data_new SET data_comment = $1
+                UPDATE data SET data_comment = $1
                  WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6)
                    AND data_var      = $7
                    AND data_instance = $8
@@ -493,7 +493,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             return $ret.rows if $ret.rows;
 
             $ret = $db.query(q:to/SQL/, $comment, $username, $!name, |self!variant, $variable, $instance);
-                INSERT INTO data_new (data_dataset, data_var, data_comment, data_instance)
+                INSERT INTO data (data_dataset, data_var, data_comment, data_instance)
                               VALUES (dataset_name2id($2,$3,$4,$5,$6), $7, $1, $8)
                 RETURNING data_comment
             SQL
@@ -532,7 +532,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
 
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable);
-                UPDATE data_new SET data_val = $1
+                UPDATE data SET data_val = $1
                  WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6) AND data_var = $7
                                                                     AND data_instance IS NULL
                 RETURNING data_val
@@ -540,7 +540,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             return $ret.rows if $ret.rows;
 
             $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable);
-                INSERT INTO data_new (data_dataset, data_var, data_val)
+                INSERT INTO data (data_dataset, data_var, data_val)
                      VALUES          (dataset_name2id($2,$3,$4,$5,$6), $7, $1)
                 RETURNING data_val
             SQL
@@ -562,14 +562,14 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
 
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable, $instance);
-                UPDATE data_new SET data_val = $1
+                UPDATE data SET data_val = $1
                  WHERE data_dataset=dataset_name2id($2,$3,$4,$5,$6) AND data_var = $7
                                                                     AND data_instance = $8
                 RETURNING data_id
             SQL
 
             $ret = $db.query(q:to/SQL/, $value, $username, $!name, |self!variant, $variable, $instance) unless $ret.rows;
-                INSERT INTO data_new (data_dataset, data_var, data_val, data_instance)
+                INSERT INTO data (data_dataset, data_var, data_val, data_instance)
                      VALUES (dataset_name2id($2,$3,$4,$5,$6), $7, $1, $8)
                 RETURNING data_id
             SQL
@@ -623,7 +623,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
 
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $username, $!name, |self!variant, $var);
-            DELETE FROM data_new
+            DELETE FROM data
              WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5) AND data_var=$6
                                                                 AND data_instance IS NULL
             RETURNING data_val
@@ -655,7 +655,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                 my $ret;
                 if $instance.defined {
                     $ret = $db.query(q:to/SQL/, $username, $!name, |self!variant, $var, $instance);
-                        DELETE FROM data_new
+                        DELETE FROM data
                          WHERE data_dataset = dataset_name2id($1,$2,$3,$4,$5)
                            AND data_var      = $6
                            AND data_instance = $7
@@ -664,7 +664,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                 }
                 else {
                     $ret = $db.query(q:to/SQL/, $username, $!name, |self!variant, $var);
-                        DELETE FROM data_new
+                        DELETE FROM data
                          WHERE data_dataset = dataset_name2id($1,$2,$3,$4,$5)
                            AND data_var      = $6
                            AND data_instance IS NULL
@@ -690,7 +690,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
 
         self.with-db: -> $db {
             my $ret = $db.query(q:to/SQL/, $username, $!name, |self!variant, $variable-pattern ~ '%', $instance);
-                DELETE FROM data_new
+                DELETE FROM data
                  WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5) AND data_var LIKE $6
                                                                     AND data_instance = $7
                 RETURNING data_val
@@ -709,7 +709,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             die X::Agrammon::DB::Dataset::InstanceRenameFailed.new(:$old-name, :$new-name) if $old-name eq $new-name;
 
             my $ret = $db.query(q:to/SQL/, $new-name, $username, $!name, |self!variant, "$pattern\%", $old-name);
-                UPDATE data_new set data_instance = $1
+                UPDATE data set data_instance = $1
                  WHERE data_dataset = dataset_name2id($2,$3,$4,$5,$6)
                    AND data_var LIKE $7
                    AND data_instance = $8
@@ -739,7 +739,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                 my $instance = $1;
                 $var         = "$var\[\]%";
                 $db.query(q:to/SQL/, $i, $username, $!name, |self!variant, $var, $instance);
-                UPDATE data_new SET data_instance_order = $1
+                UPDATE data SET data_instance_order = $1
                  WHERE data_dataset = dataset_name2id($2,$3,$4,$5,$6)
                    AND data_var     LIKE $7
                    AND data_instance = $8
@@ -764,7 +764,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             my $username = $!user.username;
             @branch-variables = $db.query(q:to/SQL/, $username, $dataset-name, |self!variant, |@vars, $instance).hashes;
             SELECT data_id, data_var
-                  FROM data_new
+                  FROM data
                  WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
                    AND data_var IN ($6,$7)
                    AND data_instance = $8
@@ -804,7 +804,7 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             my $username = $!user.username;
             my @vars = $db.query(q:to/SQL/, $username, $!name, |self!variant, |@var-names, $instance).arrays;
                 SELECT data_id
-                  FROM data_new
+                  FROM data
                  WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
                    AND data_var IN ($6,$7)
                    AND data_instance = $8

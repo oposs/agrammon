@@ -51,10 +51,10 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: data_new; Type: TABLE; Schema: public; Owner: agrammon
+-- Name: data; Type: TABLE; Schema: public; Owner: agrammon
 --
 
-CREATE TABLE public.data_new (
+CREATE TABLE public.data (
     data_id integer NOT NULL,
     data_dataset integer NOT NULL,
     data_var text NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE public.data_new (
 );
 
 
-ALTER TABLE public.data_new OWNER TO agrammon;
+ALTER TABLE public.data OWNER TO agrammon;
 
 --
 -- Name: dataset; Type: TABLE; Schema: public; Owner: agrammon
@@ -112,12 +112,12 @@ ALTER TABLE public.pers OWNER TO agrammon;
 CREATE VIEW public.all_data AS
  SELECT pers.pers_email,
     dataset.dataset_name,
-    data_new.data_var,
-    data_new.data_val
+    data.data_var,
+    data.data_val
    FROM ((public.pers
      JOIN public.dataset ON ((dataset.dataset_pers = pers.pers_id)))
-     JOIN public.data_new ON ((data_new.data_dataset = dataset.dataset_id)))
-  ORDER BY pers.pers_email, dataset.dataset_name, data_new.data_var;
+     JOIN public.data ON ((data.data_dataset = dataset.dataset_id)))
+  ORDER BY pers.pers_email, dataset.dataset_name, data.data_var;
 
 
 ALTER TABLE public.all_data OWNER TO agrammon;
@@ -175,10 +175,10 @@ ALTER SEQUENCE public.branches_branches_id_seq OWNED BY public.branches.branches
 
 
 --
--- Name: data_new_data_id_seq; Type: SEQUENCE; Schema: public; Owner: agrammon
+-- Name: data_data_id_seq; Type: SEQUENCE; Schema: public; Owner: agrammon
 --
 
-CREATE SEQUENCE public.data_new_data_id_seq
+CREATE SEQUENCE public.data_data_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -186,13 +186,13 @@ CREATE SEQUENCE public.data_new_data_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.data_new_data_id_seq OWNER TO agrammon;
+ALTER TABLE public.data_data_id_seq OWNER TO agrammon;
 
 --
--- Name: data_new_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agrammon
+-- Name: data_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agrammon
 --
 
-ALTER SEQUENCE public.data_new_data_id_seq OWNED BY public.data_new.data_id;
+ALTER SEQUENCE public.data_data_id_seq OWNED BY public.data.data_id;
 
 
 --
@@ -206,7 +206,7 @@ CREATE VIEW public.data_view AS
     data.data_val,
     data.data_instance_order,
     data.data_comment
-   FROM public.data_new data
+   FROM public.data data
   ORDER BY data.data_dataset, COALESCE(replace(data.data_var, '[]'::text, (('['::text || data.data_instance) || ']'::text)), data.data_var);
 
 
@@ -431,10 +431,10 @@ ALTER TABLE ONLY public.branches ALTER COLUMN branches_id SET DEFAULT nextval('p
 
 
 --
--- Name: data_new data_id; Type: DEFAULT; Schema: public; Owner: agrammon
+-- Name: data data_id; Type: DEFAULT; Schema: public; Owner: agrammon
 --
 
-ALTER TABLE ONLY public.data_new ALTER COLUMN data_id SET DEFAULT nextval('public.data_new_data_id_seq'::regclass);
+ALTER TABLE ONLY public.data ALTER COLUMN data_id SET DEFAULT nextval('public.data_data_id_seq'::regclass);
 
 
 --
@@ -503,19 +503,19 @@ ALTER TABLE ONLY public.branches
 
 
 --
--- Name: data_new data_new_data_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
+-- Name: data data_data_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
 --
 
-ALTER TABLE ONLY public.data_new
-    ADD CONSTRAINT data_new_data_var_key UNIQUE (data_var, data_instance, data_dataset);
+ALTER TABLE ONLY public.data
+    ADD CONSTRAINT data_data_var_key UNIQUE (data_var, data_instance, data_dataset);
 
 
 --
--- Name: data_new data_new_pkey; Type: CONSTRAINT; Schema: public; Owner: agrammon
+-- Name: data data_pkey; Type: CONSTRAINT; Schema: public; Owner: agrammon
 --
 
-ALTER TABLE ONLY public.data_new
-    ADD CONSTRAINT data_new_pkey PRIMARY KEY (data_id);
+ALTER TABLE ONLY public.data
+    ADD CONSTRAINT data_pkey PRIMARY KEY (data_id);
 
 
 --
@@ -599,17 +599,17 @@ ALTER TABLE ONLY public.tagds
 
 
 --
--- Name: data_new_data_dataset; Type: INDEX; Schema: public; Owner: agrammon
+-- Name: data_data_dataset; Type: INDEX; Schema: public; Owner: agrammon
 --
 
-CREATE INDEX data_new_data_dataset ON public.data_new USING btree (data_dataset);
+CREATE INDEX data_data_dataset ON public.data USING btree (data_dataset);
 
 
 --
--- Name: data_new_data_id_data_dataset; Type: INDEX; Schema: public; Owner: agrammon
+-- Name: data_data_id_data_dataset; Type: INDEX; Schema: public; Owner: agrammon
 --
 
-CREATE INDEX data_new_data_id_data_dataset ON public.data_new USING btree (data_id, data_dataset);
+CREATE INDEX data_data_id_data_dataset ON public.data USING btree (data_id, data_dataset);
 
 
 --
@@ -631,15 +631,15 @@ CREATE INDEX tagds_tagds_dataset ON public.tagds USING btree (tagds_dataset);
 --
 
 ALTER TABLE ONLY public.branches
-    ADD CONSTRAINT branches_branches_var_fkey FOREIGN KEY (branches_var) REFERENCES public.data_new(data_id) ON DELETE CASCADE;
+    ADD CONSTRAINT branches_branches_var_fkey FOREIGN KEY (branches_var) REFERENCES public.data(data_id) ON DELETE CASCADE;
 
 
 --
--- Name: data_new data_new_data_dataset_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+-- Name: data data_data_dataset_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
 --
 
-ALTER TABLE ONLY public.data_new
-    ADD CONSTRAINT data_new_data_dataset_fkey FOREIGN KEY (data_dataset) REFERENCES public.dataset(dataset_id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.data
+    ADD CONSTRAINT data_data_dataset_fkey FOREIGN KEY (data_dataset) REFERENCES public.dataset(dataset_id) ON DELETE CASCADE;
 
 
 --
@@ -690,7 +690,7 @@ ALTER TABLE ONLY public.tagds
     ADD CONSTRAINT tagds_tagds_tag_fkey FOREIGN KEY (tagds_tag) REFERENCES public.tag(tag_id) ON DELETE CASCADE;
 
 --
--- Name: data_new; Type: TABLE; Schema: public; Owner: agrammon
+-- Name: data; Type: TABLE; Schema: public; Owner: agrammon
 --
 
 CREATE TABLE public.session (
@@ -709,10 +709,10 @@ GRANT ALL ON FUNCTION public.tag_name2id(username text, name text) TO agrammon_u
 
 
 --
--- Name: TABLE data_new; Type: ACL; Schema: public; Owner: agrammon
+-- Name: TABLE data; Type: ACL; Schema: public; Owner: agrammon
 --
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.data_new TO agrammon_user;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.data TO agrammon_user;
 
 
 --
@@ -744,10 +744,10 @@ GRANT SELECT,UPDATE ON SEQUENCE public.branches_branches_id_seq TO agrammon_user
 
 
 --
--- Name: SEQUENCE data_new_data_id_seq; Type: ACL; Schema: public; Owner: agrammon
+-- Name: SEQUENCE data_data_id_seq; Type: ACL; Schema: public; Owner: agrammon
 --
 
-GRANT SELECT,UPDATE ON SEQUENCE public.data_new_data_id_seq TO agrammon_user;
+GRANT SELECT,UPDATE ON SEQUENCE public.data_data_id_seq TO agrammon_user;
 
 
 --

@@ -21,7 +21,7 @@ class Agrammon::DB::Datasets does Agrammon::DB::Variant {
                        dataset_name AS name,
                        date_trunc('seconds', dataset_mod_date) AS "mod-date",
                        (SELECT COUNT(*)
-                        FROM data_new WHERE data_dataset=dataset_id) AS records,
+                        FROM data WHERE data_dataset=dataset_id) AS records,
                        dataset_readonly AS "read-only",
                        dataset_version AS version,
                        dataset_guivariant AS "guivariant",

@@ -31,7 +31,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                 SELECT data_var, data_val, data_instance,
                        branches_data, branches_options,
                        data_comment
-                FROM data_new LEFT JOIN branches ON (data_id=branches_var)
+                FROM data LEFT JOIN branches ON (data_id=branches_var)
                 WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
                     AND data_var not like '%ignore'
                 ORDER BY data_instance, branches_var, data_var, data_val
