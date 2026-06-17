@@ -2,7 +2,7 @@ General:
     debugLevel: 0
     log_file:   /tmp/agrammon.log
     log_level:  warn
-    tempDir: agrammon
+    tmpDir: agrammon
     translationDir : share/translations
 Database:
     name:     agrammon_test

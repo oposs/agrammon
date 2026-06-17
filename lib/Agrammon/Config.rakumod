@@ -1,6 +1,15 @@
 use v6;
 use POFile;
 use YAMLish;
+use Agrammon::JSONSchema;
+
+class X::Agrammon::Config::Invalid is Exception {
+    has $.file;
+    has @.problems;
+    method message() {
+        "Invalid configuration in $!file:\n" ~ @!problems.map('  - ' ~ *).join("\n");
+    }
+}
 
 class Agrammon::Config {
     has %.general;
@@ -11,9 +20,81 @@ class Agrammon::Config {
     has %.translations;
     has $!base-url;
 
+    # Required entries and value types for the config file, checked at load
+    # time so a missing or mistyped key fails fast with a clear message instead
+    # of detonating cryptically later (issue #296). Every key a deployment may
+    # legitimately use must be listed; `additionalProperties: False` makes an
+    # unknown key (e.g. a typo, or a dropped legacy key) an error. Required
+    # string values use `minLength: 1` so they cannot be blank.
+    my %REQ-STR = type => 'string', minLength => 1;
+    my %CONFIG-SCHEMA =
+        type => 'object',
+        required => <General Database GUI Model>.List,
+        additionalProperties => False,
+        properties => {
+            General => {
+                type => 'object',
+                required => <translationDir>.List,
+                additionalProperties => False,
+                properties => {
+                    translationDir => %REQ-STR,
+                    debugLevel     => { type => 'integer' },
+                    log_file       => { type => 'string' },
+                    log_level      => { type => 'string' },
+                    tmpDir         => { type => 'string' },
+                    typst          => { type => 'string' },
+                    ghostscript    => { type => 'string' },
+                    pdfTimeout     => { type => 'integer' },
+                    taxonomy       => { type => 'string' },
+                },
+            },
+            Database => {
+                type => 'object',
+                required => <name host user password>.List,
+                additionalProperties => False,
+                properties => {
+                    name     => %REQ-STR,
+                    host     => %REQ-STR,
+                    user     => %REQ-STR,
+                    password => { type => 'string' },
+                    port     => { type => 'integer' },
+                },
+            },
+            GUI => {
+                type => 'object',
+                required => <baseUrl variant title>.List,
+                additionalProperties => False,
+                properties => {
+                    baseUrl    => %REQ-STR,
+                    variant    => %REQ-STR,
+                    title      => { type => 'object', minProperties => 1 },
+                    version    => { type => 'string' },
+                    submission => { },
+                },
+            },
+            Model => {
+                type => 'object',
+                required => <path top variant version>.List,
+                additionalProperties => False,
+                properties => {
+                    path               => %REQ-STR,
+                    top                => %REQ-STR,
+                    variant            => %REQ-STR,
+                    version            => %REQ-STR,
+                    technical          => { type => 'string' },
+                    debugLevel         => { type => 'integer' },
+                    versions           => { type => 'array' },
+                    compatibleVersions => { type => 'array' },
+                },
+            },
+            Versions => { type => 'array' },
+        };
+
     method load(Str $path) {
         my $yaml = slurp($path);
         my $config = load-yaml($yaml);
+
+        self!validate-config($config, $path);
 
         %!general      = $config<General>;
         %!database     = $config<Database>;
@@ -22,6 +103,34 @@ class Agrammon::Config {
         @!versions     = ($config<Versions> // ()).list;
         %!translations = self!get-translations;
         $!base-url     = $config<GUI><baseUrl>;
+    }
+
+    method !validate-config($config, $file) {
+        my @problems = Agrammon::JSONSchema.new(schema => %CONFIG-SCHEMA)
+            .validate-errors($config)
+            .map({ self!render-problem($_, $config) })
+            .unique;   # one `additionalProperties` failure per unknown key collapses to one message
+        die X::Agrammon::Config::Invalid.new(:$file, :@problems) if @problems;
+    }
+
+    # Turn a JSON-Schema failure into a config-oriented message: drop the
+    # `root`/`properties` noise, and for an unknown-key (`additionalProperties`)
+    # failure name the offending key(s) by diffing against the declared ones.
+    method !render-problem($problem, $config) {
+        my @seg = $problem.path.split('/').grep({ $_ ne 'root' && $_ ne 'properties' });
+        if @seg && @seg.tail eq 'additionalProperties' {
+            my @ctx      = @seg[0 ..^ *-1];
+            my %declared = @ctx ?? (%CONFIG-SCHEMA<properties>{@ctx[0]}<properties> // %())
+                                !! %CONFIG-SCHEMA<properties>;
+            my %actual   = @ctx ?? ($config{@ctx[0]} // %()) !! $config;
+            my @unknown  = (%actual.keys (-) %declared.keys).keys.sort;
+            my $where    = @ctx ?? @ctx[0] !! 'top level';
+            return "unknown key{ @unknown == 1 ?? '' !! 's' } "
+                 ~ @unknown.map({ "'$_'" }).join(', ') ~ " in $where";
+        }
+        my $where  = @seg.join('.') || 'config';
+        my $reason = $problem.reason.subst('String has less than 1 codepoints', 'must not be empty');
+        return "$where: $reason";
     }
 
     method model-path {

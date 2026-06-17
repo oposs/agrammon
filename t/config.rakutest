@@ -2,14 +2,14 @@ use v6;
 use Agrammon::Config;
 
 use Test;
-plan 12;
+plan 13;
 
 my %config-expected = (
     General => {
         debugLevel  => 0,
         log_file    => "/tmp/agrammon.log",
         log_level   => "warn",
-        tempDir     =>  "agrammon",
+        tmpDir      =>  "agrammon",
         typst       => "/usr/local/bin/typst",
         pdfTimeout  => 30,
         translationDir => "share/translations",
@@ -76,6 +76,47 @@ subtest "Versions block parsed" => {
 
     is $vcfg.versions[1]<guiVersion>, '6.0',     'second entry guiVersion';
     is $vcfg.versions[1]<version>,    '6.0',     'second entry version';
+}
+
+subtest "Config validation (#296)" => {
+    my $bad = $*TMPDIR.add('agrammon-bad-cfg.yaml');
+    # Missing Database.password + Model.version; empty Database.host;
+    # non-integer Database.port; unknown key in General.
+    spurt $bad, q:to/YAML/;
+        General:
+            translationDir: share/translations
+            bogusKey: 1
+        Database:
+            name: agrammon_test
+            host: ''
+            user: agrammon
+            port: notanint
+        GUI:
+            baseUrl: http://localhost
+            variant: Single
+            title:
+                de: Titel
+        Model:
+            path: share/Models
+            top: End.nhd
+            variant: Base
+        YAML
+
+    throws-like { Agrammon::Config.new.load($bad.Str) },
+        X::Agrammon::Config::Invalid, 'Invalid config is rejected at load';
+
+    my @p;
+    { Agrammon::Config.new.load($bad.Str); CATCH { default { @p = .problems } } }
+    ok @p.grep({ / "Database" .* "password" / }), 'reports missing Database.password';
+    ok @p.grep({ / "Model" .* "version" / }),     'reports missing Model.version';
+    ok @p.grep({ / "host" .* "empty" / }),        'reports empty Database.host';
+    ok @p.grep({ / "port" .* "integer" / }),      'reports non-integer Database.port';
+    ok @p.grep({ / "unknown key" .* "bogusKey" .* "General" / }), 'names unknown key bogusKey in General';
+
+    unlink $bad;
+
+    lives-ok { Agrammon::Config.new.load('t/test-data/agrammon.cfg.yaml') },
+        'The shipped test config passes validation';
 }
 
 done-testing;
