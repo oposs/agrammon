@@ -54,43 +54,6 @@ qx.Class.define('agrammon.ui.menu.NavMenu', {
                       );
         }, this);
 
-        var that=this;
-        this.testFunc = function(data,exc,id) {
-            if (exc == null) {
-                that.debug('testFunc: data='+data);
-            }
-            else {
-                if (exc.code == qx.io.remote.Rpc.localError.timeout) {
-                    alert('Timeout in testFunc()');
-                }
-                else {
-                    alert(exc);
-                }
-            }
-        };
-
-        var testCmd  = new qx.ui.command.Command;
-        testCmd.addListener("execute", function(e) {
-            var rpc = agrammon.io.remote.Rpc.getInstance();
-            rpc.setTimeout(3000);
-            rpc.addListener('completed', function(e) {
-                var data = e.getData();
-                for (var k in data) {
-                    this.debug('k='+k);
-                }
-                alert('rpc completed: data='+e.getData().result);
-            }, this);
-            rpc.addListener('failed', function(e) {
-                alert('rpc failed, ex='+e.getData().toString());
-            }, this);
-            rpc.addListener('timeout', function(e) {
-                alert('rpc timeout, ex='+e.getData().toString());
-            }, this);
-//            rpc.callAsyncListeners(true, 'timeout', 2);
-//            rpc.callAsyncListeners(false, 'timeout', 2);
-            rpc.callAsync(this.testFunc, 'timeout', 2);
-        }, this);
-
         this.__addButton =
             new qx.ui.menu.Button(this.tr("Add instance"),
                                   null, addCmd);
@@ -106,16 +69,12 @@ qx.Class.define('agrammon.ui.menu.NavMenu', {
 //        this.__checkButton =
 //            new qx.ui.menu.Button(this.tr("Check instance"),
 //                                  null, checkCmd);
-//        this.__testButton =
-//            new qx.ui.menu.Button(this.tr("Test"),
-//                                  null, testCmd);
         this.add(this.__addButton);
         this.add(this.__copyButton);
         this.add(this.__renButton);
         this.add(this.__delButton);
         this.add(new qx.ui.menu.Separator());
 //        this.add(this.__checkButton);
-//        this.add(this.__testButton);
 
         this.addListener("appear",  function(e) {
             var selectedFolder = this.__navTree.getSelection()[0];

@@ -40,7 +40,6 @@ qx.Class.define('agrammon.module.output.Output', {
 
         this.getOutputFunc = function(data,exc,id) {
             that.__running = false;
-            that.__rpc.setTimeout(that.__oldTimeout);
             if (exc == null) {
                 var pid = data.pid;
                 var session = data.sessionid;
@@ -107,7 +106,6 @@ qx.Class.define('agrammon.module.output.Output', {
 
     members : {
         __running: false,
-        __oldTimeout: null,
         getOutputFunc: null,
         outputIsValid: null,
         outputData: null,
@@ -175,8 +173,6 @@ qx.Class.define('agrammon.module.output.Output', {
                 qx.event.message.Bus.dispatchByName('agrammon.Output.dataReady', msg);
                 return;
             }
-            this.__oldTimeout = this.__rpc.getTimeout();
-            this.__rpc.setTimeout(600*1000);  // 10 minutes CPU limit
             this.__rpc.callAsync(this.getOutputFunc, 'get_output_variables', { datasetName: datasetName} );
             return;
         }
