@@ -55,8 +55,12 @@ These were settled during brainstorming (2026-06-17):
 - **Migration: one-time SQL**, consistent with tasks 1 and 2. No read-time
   compatibility shim.
 - **Branching stays 2-variable.** No generalization to N variables.
-- **No frontend change.** The `store_branch_data` / `load_branch_data` external
-  API shapes stay byte-identical (see Boundary contract below).
+- **Branch writes become pair-aware.** A targeted frontend change routes the
+  instance-copy branch persistence through `store_branch_data` (which carries
+  both axes) instead of the per-variable `store_data` path, and the
+  `store-input` + `@branches` persistence is retired. This is what makes the
+  one-row-per-pair model possible and eliminates the square-matrix axis
+  ambiguity at its root (see Second write path below).
 
 ### Driver verification (gated Option B)
 
@@ -69,19 +73,55 @@ The Raku `DB::Pg` driver round-trips `numeric[][]` cleanly (verified
 - Values come back as `Num` (e.g. `20e0`) — identical to the current
   single-dimension `branches_data numeric[]`, so no behavioural regression.
 
-### Boundary contract (why no frontend change is needed)
+### Boundary contract (the primary write path)
 
-The Qooxdoo `BranchEditor` already fixes the axis↔variable binding:
+The Qooxdoo `BranchEditor` already fixes the axis↔variable binding for the
+matrix-editor save path:
 
-- **store** sends `{ instance, vars:[A,B], options:{A:[…], B:[…]}, data:[[…],[…]] }`
-  where `vars[0]` is the **row** variable, `vars[1]` the **column** variable,
-  and `data` is a **2-D row-major** matrix.
-- **load** expects back `{ fractions:<flat row-major array>, options:[A,B] }`.
+- **`store_branch_data`** sends
+  `{ instance, vars:[A,B], options:{A:[…], B:[…]}, data:[[…],[…]] }` where
+  `vars[0]` is the **row** variable, `vars[1]` the **column** variable, and
+  `data` is a **2-D row-major** matrix.
+- **`load_branch_data`** expects back `{ fractions:<flat row-major array>, options:[A,B] }`.
 
 So the row/column identity comes from the frontend payload order, **not** from
 `data_id` ordering. Storage keeps the 2-D matrix natively; `load-branch-data`
-flattens it row-major on the way out to preserve the `fractions` shape. The
-external API is unchanged.
+flattens it row-major on the way out to preserve the `fractions` shape. These
+external shapes are unchanged.
+
+### Second write path (instance copy) — why a frontend change is required
+
+Branches are also written by a **second, per-variable path** that this redesign
+must address:
+
+`store_data` RPC (carrying `branches`/`options`) → `Service.store-data` →
+`store-input` → `!store-instance-variable`, which writes **one `branches` row
+per variable**. It is dispatched **per branched variable** by
+`NavFolder.setDataset(…, storeAll=true)`, reached from `NavBar.copyInstance` and
+`NavBar.__addSingleInstance` — i.e. **duplicating or adding a GUI instance**.
+`store_branch_data` does *not* run in those flows. The block was added in commit
+`d0f2b739` (2021-03-30, "Store branch config copying on instance copy") and is a
+**real feature**, not dead code: it makes a branch matrix survive an instance
+copy. Its round-trip is only `lives-ok`-guarded (`t/dataset.rakutest`), never
+asserted.
+
+The problem: a per-variable call carries one variable name + the full matrix +
+that variable's options, and fires **twice** (once per variable), independently.
+It therefore cannot know whether its variable is the row or column axis — for a
+**square** matrix that is undecidable from a single call. This is the #443 root
+cause; #443 only pinned it with deterministic ordering. A one-row-per-pair model
+cannot be fed by an axis-blind per-variable write.
+
+**Fix (frontend, localized):** in `setDataset`'s `storeAll` loop, stop
+dispatching the per-variable `store_data` for `value==='branched'` variables;
+instead collect the folder's branched variables and issue a **single
+`store_branch_data`** call for the pair. The pairing convention already exists:
+`PropTable` opens `BranchEditor` with "the folder's two `value==='branched'`
+variables, in order" (`vars[0]`=rows, `vars[1]`=cols) — the same instance-scoped
+"exactly two branched vars = the pair" assumption the whole branch UI already
+relies on. The non-branched per-variable replay in the same loop is unchanged.
+With this in place, nothing calls `store-input` with `@branches`, so that
+persistence is retired backend-side.
 
 ## Design
 
@@ -166,9 +206,30 @@ row. The non-branched data read stays as-is (it should now skip
 - **`clone`** — replace the `for flat @data Z @rows` positional zip with a
   single-row copy that remaps `row_var`/`col_var` to the cloned dataset's
   `data_id`s by (instance name, var name). No ordering reliance.
-- **`!store-instance-variable`** — its inline branch INSERT (the `@branches` /
-  `@options` path) updated to the new single-row shape, or routed through the
-  same helper as `store-branch-data`.
+- **`!store-instance-variable` / `store-input`** — the per-variable `@branches`
+  persistence is **retired** (no caller after the frontend change). Drop the
+  inline `branches` INSERT; `store-input` keeps accepting `@branches`/`@options`
+  for signature stability but no longer persists them (the `InvalidBranchData`
+  guard for non-instance vars may stay). Branch persistence is exclusively via
+  `store-branch-data`.
+
+### Frontend (`frontend/source/class/agrammon/module/input/NavFolder.js`)
+
+No user-visible behavior change — this fixes the broken axis-blind per-variable
+branch write. In `setDataset`'s `storeAll` loop:
+
+- For `value==='branched'` variables, **stop** dispatching the per-variable
+  `agrammon.PropTable.storeData` (with `branches`/`options`). Collect them
+  instead.
+- After the loop, if the folder has branched variables, issue **one**
+  `store_branch_data` RPC for the pair, built the same way `BranchEditor` does:
+  `vars=[A,B]` in folder order, `options={A:[…],B:[…]}` from each var's
+  `meta.options` keys, `data` = the 2-D matrix from `meta.branches`.
+- The non-branched per-variable replay in the same loop is unchanged.
+
+The `branches`/`options` fields can then be dropped from the `store_data` RPC
+payloads (`NavFolder` dispatch + `PropTable.__storeData`), and the
+now-unused `store_data` `branches`/`options` plumbing trimmed.
 
 ### Fixtures and tests
 
@@ -187,7 +248,9 @@ row. The non-branched data read stays as-is (it should now skip
 
 ## Out of scope
 
-- Frontend (Qooxdoo) changes — the API contract is preserved.
+- **User-visible** GUI behavior change. The frontend edit fixes the broken,
+  axis-blind per-variable branch write; instance copy keeps behaving the same to
+  the user (branch matrices still survive a copy — now correctly).
 - N-variable branching — remains 2-variable.
 - Touching the `data` / `data_instance` tables from tasks 1 and 2.
 
@@ -196,9 +259,15 @@ row. The non-branched data read stays as-is (it should now skip
 - `db/schema.sql` — `branches` table.
 - `lib/Agrammon/DataSource/DB.rakumod` — `read` (matrix rebuild via `.rotor`).
 - `lib/Agrammon/DB/Dataset.rakumod` — `store-branch-data`, `load-branch-data`,
-  `clone`, `!store-instance-variable`.
+  `clone`, `!store-instance-variable` (per-variable branch write, retired).
 - `lib/Agrammon/Inputs.rakumod` — `Branched` class / `add-multi-input-branched`
   (matrix validation/consumption; unchanged — consumes the same `@matrix`).
 - `frontend/source/class/agrammon/module/input/regional/BranchEditor.js` —
-  the `store_branch_data` / `load_branch_data` payload shapes.
+  the `store_branch_data` / `load_branch_data` payload shapes (the pairing
+  convention the frontend fix reuses).
+- `frontend/source/class/agrammon/module/input/NavFolder.js` — `setDataset`
+  `storeAll` loop (the instance-copy branch write being fixed).
+- `frontend/source/class/agrammon/module/input/PropTable.js` — `__storeData`
+  (drops the now-unused `branches`/`options` `store_data` plumbing).
 - #443 — the deterministic-ordering patch this redesign supersedes.
+- Commit `d0f2b739` — origin of the per-variable instance-copy branch write.
