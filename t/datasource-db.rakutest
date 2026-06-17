@@ -243,7 +243,7 @@ sub prepare-test-db-commented-data($user, $dataset, %variant) {
     STATEMENT
 
     my $sth = $db.prepare(q:to/STATEMENT/);
-    INSERT INTO data_new (data_dataset, data_var, data_val, data_comment)
+    INSERT INTO data (data_dataset, data_var, data_val, data_comment)
     VALUES ($1, $2, $3, $4)
     STATEMENT
 
@@ -272,7 +272,7 @@ sub prepare-test-db-single-data($user, $dataset, %variant) {
     STATEMENT
 
     my $sth = $db.prepare(q:to/STATEMENT/);
-    INSERT INTO data_new (data_dataset, data_var, data_val)
+    INSERT INTO data (data_dataset, data_var, data_val)
     VALUES ($1, $2, $3)
     STATEMENT
 
@@ -303,7 +303,7 @@ sub prepare-test-db-flattened-data($user, $dataset, %variant) {
     STATEMENT
 
     my $sth = $db.prepare(q:to/STATEMENT/);
-    INSERT INTO data_new (data_dataset, data_instance, data_var, data_val)
+    INSERT INTO data (data_dataset, data_instance, data_var, data_val)
     VALUES ($1, $2, $3, $4)
     STATEMENT
 
@@ -348,7 +348,7 @@ sub prepare-test-db-branched-data($user, $dataset, %variant) {
     STATEMENT
 
     my $sth-data = $db.prepare(q:to/STATEMENT/);
-    INSERT INTO data_new (data_dataset, data_instance, data_var, data_val)
+    INSERT INTO data (data_dataset, data_instance, data_var, data_val)
     VALUES ($1, $2, $3, $4)
     RETURNING data_id;
     STATEMENT
@@ -403,7 +403,7 @@ sub prepare-test-db-schema($db) {
     STATEMENT
 
     $db.query(q:to/STATEMENT/);
-    CREATE TABLE IF NOT EXISTS data_new (
+    CREATE TABLE IF NOT EXISTS data (
         data_id SERIAL NOT NULL PRIMARY KEY,             -- Unique ID
         data_dataset  INT4 REFERENCES dataset NOT NULL,
         data_var        TEXT NOT NULL,                           -- Agrammon variable name
@@ -417,7 +417,7 @@ sub prepare-test-db-schema($db) {
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS branches (
         branches_id   SERIAL NOT NULL PRIMARY KEY,       -- Unique ID
-        branches_var  INT4 UNIQUE NOT NULL REFERENCES data_new(data_id) ON DELETE CASCADE, -- variable this data belongs to
+        branches_var  INT4 UNIQUE NOT NULL REFERENCES data(data_id) ON DELETE CASCADE, -- variable this data belongs to
         branches_data NUMERIC[],
         branches_options TEXT[]
     )

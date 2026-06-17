@@ -56,7 +56,7 @@ sub prepare-test-db($uid) is export {
 
 
     $db.query(q:to/SQL/);
-    CREATE TABLE IF NOT EXISTS data_new (
+    CREATE TABLE IF NOT EXISTS data (
         data_id             SERIAL NOT NULL PRIMARY KEY,
         data_dataset        INTEGER NOT NULL REFERENCES dataset(dataset_id) ON DELETE CASCADE,
         data_var            TEXT NOT NULL,
@@ -70,7 +70,7 @@ sub prepare-test-db($uid) is export {
     $db.query(q:to/SQL/);
     CREATE TABLE IF NOT EXISTS branches (
         branches_id      SERIAL NOT NULL PRIMARY KEY,                                            -- Unique ID
-        branches_var     INTEGER NOT NULL UNIQUE REFERENCES data_new(data_id) ON DELETE CASCADE, -- branched variables
+        branches_var     INTEGER NOT NULL UNIQUE REFERENCES data(data_id) ON DELETE CASCADE, -- branched variables
         branches_data    NUMERIC[],                                                              -- branch fractions
         branches_options TEXT[]                                                                  -- branch options
     )
@@ -87,7 +87,7 @@ sub prepare-test-db($uid) is export {
     SQL
 
     $db.query(q:to/SQL/);
-    INSERT INTO data_new (data_id, data_dataset, data_var, data_instance, data_val)
+    INSERT INTO data (data_id, data_dataset, data_var, data_instance, data_val)
                  VALUES (-76315980, -42000, 'Livestock::Poultry[]::Housing::Type::housing_type',             'Branched', 'branched'),
                         (-76315982, -42000, 'Livestock::Poultry[]::Housing::Type::manure_removal_interval',  'Branched', 'branched')
     SQL
