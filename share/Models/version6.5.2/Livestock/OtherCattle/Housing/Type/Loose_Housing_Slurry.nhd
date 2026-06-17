@@ -23,14 +23,12 @@ This process describes the correction factors for the loose housing slurry syste
 *** technical ***
 
 +er
-  value = 0.183
   ++units  
     en = -
   ++description
     Emission rate for the loose housing slurry system for cattle. According to the consensus obtained in the workshop at ART Tänikon 02/11/07: 11% Ntot; converted using Nsol of 60% and the emission rate of 18.3% based on TAN. Reference value UNECE(2007): 11 kg NH3 = 8% TAN.
    
 +share_liquid
-  value = 1
   ++units  
     en = -
   ++description
@@ -38,7 +36,6 @@ This process describes the correction factors for the loose housing slurry syste
     the liquid fraction of the storage/application.
 
 +k_area
-  value = .5
   ++units  
     en = -
   ++description

@@ -5,7 +5,7 @@ use Agrammon::Outputs;
 class Agrammon::Environment {
     has $.input;
     has $.technical;
-    has $.technical-override;
+    has $.taxonomy;
     has Agrammon::Outputs::SingleOutputStorage $.output;
     has %.builtins;
 
@@ -14,7 +14,10 @@ class Agrammon::Environment {
     }
 
     method get-technical($name) {
-        $!technical-override{$name} // $!technical{$name}
+        $!technical{$name} //
+            die "No value for technical parameter '$name'"
+                ~ ($!taxonomy ?? " in module '$!taxonomy'" !! '')
+                ~ ". Technical parameter values must be defined in technical.cfg.";
     }
 
     method find-builtin($name) {

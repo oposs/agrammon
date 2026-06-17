@@ -134,35 +134,30 @@ Computes the annual NH3 emission from crop residues.
 *** technical ***
 
 +er_sugarbeet_leaves
-  value = 5
   ++units  
     en = kg N/ha/year
   ++description
     todo
 
 +er_vegetable_residues
-  value = 4.5
   ++units  
     en = kg N/ha/year
   ++description
     todo
 
 +er_green_manure
-  value = 4
   ++units  
     en = kg N/ha/year
   ++description
     todo
 
 +er_meadow_residues
-  value = 0.75
   ++units  
     en = kg N/ha/year
   ++description
     todo
 
 +er_pasture_mulch
-  value = 0.7
   ++units  
     en = kg N/ha/year
   ++description

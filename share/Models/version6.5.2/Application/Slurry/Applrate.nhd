@@ -77,7 +77,6 @@ taxonomy = Application::Slurry::Applrate
 *** technical ***
 
 +norm_er
-  value = 0.5
   ++units 
     en = -
   ++description

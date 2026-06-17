@@ -19,14 +19,12 @@ Describes correction factors for the tide housing slurry system.
 *** technical ***
 
 +er
-  value = 0.067
   ++units  
     en = -
   ++description
     Emission rate for the tide housing slurry system for cattle. According to the consensus obtained in the workshop at ART Tänikon 02/11/07: 4% Ntot, converted using Nsol of 60% and the emission rate of 6.7% based on TAN.
    
 +share_liquid
-  value = 1
   ++units  
     en = -
   ++description
@@ -34,7 +32,6 @@ Describes correction factors for the tide housing slurry system.
     the liquid fraction of the storage/application.
         
 +k_area
-  value = 0
   ++units  
     en = -
   ++description

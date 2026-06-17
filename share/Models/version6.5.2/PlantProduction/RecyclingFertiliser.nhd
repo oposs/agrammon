@@ -112,7 +112,6 @@ Vanderweerden and Jarvis (1997)
 *** technical ***
 
 +er_compost
-  value = 0.24
   ++units  
     en = kg N/t
   ++description
@@ -121,7 +120,6 @@ Vanderweerden and Jarvis (1997)
   of TAN.
 
 +er_solid_digestate
-  value = 0.24
   ++units  
     en = kg N/t
   ++description
@@ -130,7 +128,6 @@ Vanderweerden and Jarvis (1997)
 
 
 +er_liquid_digestate
-  value = 0.84
   ++units  
     en = kg N/t
   ++description

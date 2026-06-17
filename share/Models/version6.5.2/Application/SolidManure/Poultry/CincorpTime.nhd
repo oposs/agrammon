@@ -36,7 +36,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 *** technical ***
 
 +eff_inc_lw1h
-  value = -0.95	
   ++units
     en = -
   ++description
@@ -44,7 +43,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     UNECE (2007). 
 
 +eff_inc_lw4h
-  value = -0.8	
   ++units
     en = - 
   ++description
@@ -53,7 +51,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
      Mean value between the category incorporation within 1 hour and incorporation within 8 hours.
 
 +eff_inc_lw8h
-  value = -0.7	
   ++units
     en = -
   ++description
@@ -61,7 +58,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
      Values adapted from UNECE (2007) (category Incorporation by plough within 12 h)
 
 +eff_inc_lw1d
-  value = -0.55	
   ++units
     en = - 
   ++description
@@ -70,7 +66,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     Empirical estimate deduced from Menzi et al. (1997).
 
 +eff_inc_lw3d
-  value = -0.3	
   ++units
     en = -
   ++description
@@ -78,7 +73,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     Empirical estimate deduced from Menzi et al. (1997).
 
 +eff_inc_gt3d
-  value = -0.1	
   ++units
     en = - 
   ++description
@@ -86,7 +80,6 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
     Empirical estimate deduced from Menzi et al. (1997).
 
 +eff_inc_none
-  value = 0
   ++units
     en = -
   ++description

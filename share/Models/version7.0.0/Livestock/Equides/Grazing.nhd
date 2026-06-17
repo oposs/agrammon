@@ -44,7 +44,6 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 *** technical ***
 
 +er_equides_grazing
-  value = 0.125
   ++units  
     en = -
   ++description
@@ -52,21 +51,18 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
    (taking into account the generally low fertilization rate of Swiss pastures.)
 
 +er_n2_equides_grazing
-  value = 0.0
   ++units  
     en = -
   ++description
     Emission rate for manure application. Not considerd relevant
 
 +er_no_equides_grazing
-  value = 0.0055
   ++units  
     en = -
   ++description
     Emission rate for manure application. Stehfest, Bouwman 2006
 
 +er_n2o_equides_grazing
-  value = 0.0
   ++units  
     en = -
   ++description

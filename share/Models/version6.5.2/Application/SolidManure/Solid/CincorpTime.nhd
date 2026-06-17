@@ -29,7 +29,6 @@ taxonomy = Application::SolidManure::Solid::CincorpTime
 *** technical ***
 
 +eff_inc_lw1h
-  value = -0.9	
   ++units
     en = -
   ++description
@@ -37,7 +36,6 @@ taxonomy = Application::SolidManure::Solid::CincorpTime
     UNECE (2007). 
 
 +eff_inc_lw4h
-  value = -0.7	
   ++units
     en = -
   ++description
@@ -46,7 +44,6 @@ taxonomy = Application::SolidManure::Solid::CincorpTime
      Mean value between the category incorporation within 1 hour and incorporation within 8 hours.
 
 +eff_inc_lw8h
-  value = -0.5	
   ++units
     en = -
   ++description
@@ -54,7 +51,6 @@ taxonomy = Application::SolidManure::Solid::CincorpTime
      Values adapted from UNECE (2007) (category Incorporation by plough within 12 h)
 
 +eff_inc_lw1d
-  value = -0.35	
   ++units
     en = -
   ++description
@@ -63,7 +59,6 @@ taxonomy = Application::SolidManure::Solid::CincorpTime
     Empirical estimate deduced from Menzi et al. (1997).
 
 +eff_inc_lw3d
-  value = -0.3	
   ++units
     en = - 
   ++description
@@ -71,7 +66,6 @@ taxonomy = Application::SolidManure::Solid::CincorpTime
     Empirical estimate deduced from Menzi et al. (1997).
 
 +eff_inc_gt3d
-  value = -0.1	
   ++units
     en = -
   ++description
@@ -79,7 +73,6 @@ taxonomy = Application::SolidManure::Solid::CincorpTime
     Empirical estimate deduced from Menzi et al. (1997).
 
 +eff_inc_none
-  value = 0
   ++units
     en = -
   ++description

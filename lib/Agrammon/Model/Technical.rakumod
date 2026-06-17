@@ -7,6 +7,6 @@ class Agrammon::Model::Technical {
     has $.value;
 
     submethod TWEAK(:$value) {
-        $!value = val($value);
+        $!value = val($value) with $value;
     }
 }

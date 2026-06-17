@@ -21,7 +21,6 @@ Describes correction factors for the loose housing liquid solid system for dairy
 *** technical ***
 
 +er
-  value = 0.183
   ++units  
     en = -
   ++description
@@ -34,14 +33,12 @@ Monteny, G.J. 2000. Modelling of ammonia emissions from dairy cow houses. PhD Th
     UNECE. 2014. Guidance document for preventing and abating ammonia emissions from agricultural sources. Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Economic Commission for Europe (UNECE).
 
 +share_liquid
-  value = .57
   ++units  
     en = -
   ++description
     For the loose housing liquid-solid system 57% of the N of the  manure goes into the liquid manure storage.
 
 +k_area
-  value = .5
   ++units  
     en = -
   ++description

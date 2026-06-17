@@ -1,0 +1,50 @@
+use v6;
+use Agrammon::Environment;
+use Agrammon::Formula::Compiler;
+use Agrammon::Formula::Parser;
+use Agrammon::Inputs;
+use Agrammon::Model;
+use Test;
+
+# Issue #217: technical parameter values live only in technical.cfg. The
+# .nhd fallback was removed, so a lookup of a parameter that has no value
+# in the technical override must die loudly rather than silently return an
+# undefined value.
+
+subtest 'Missing technical parameter dies with a helpful message' => {
+    my $f = parse-formula('Tech(some_missing_param)', 'Test::Mod');
+    my &compiled = compile-formula($f);
+    throws-like
+        { compiled(Agrammon::Environment.new(taxonomy => 'Test::Mod')) },
+        Exception,
+        message => /'No value for technical parameter' .* "'some_missing_param'" .* "module 'Test::Mod'" .* 'technical.cfg'/,
+        'Lookup of a missing technical parameter dies naming the parameter, module and technical.cfg';
+}
+
+subtest 'A provided technical value resolves without dying' => {
+    my $f = parse-formula('Tech(some_param)', 'Test::Mod');
+    my &compiled = compile-formula($f);
+    my $result = compiled(Agrammon::Environment.new(
+        taxonomy  => 'Test::Mod',
+        technical => { some_param => 42 },
+    ));
+    is $result, 42, 'Technical value from the override is used';
+}
+
+subtest 'A full model run without technical values dies' => {
+    my $path  = $*PROGRAM.parent.add('test-data/Models/run-test-no-multi');
+    my $model = Agrammon::Model.new(:$path);
+    $model.load('Test');
+
+    my $input = Agrammon::Inputs.new;
+    $input.add-single-input('Test::SubModule', 'monkeys', 42);
+    $input.add-single-input('Test', 'final_add', 10);
+
+    throws-like
+        { $model.run(:$input) },
+        Exception,
+        message => /'No value for technical parameter'/,
+        'Running the model with no technical values dies on the first lookup';
+}
+
+done-testing;

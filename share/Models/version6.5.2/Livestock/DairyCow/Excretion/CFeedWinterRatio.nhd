@@ -115,7 +115,6 @@ cow as a function of the winter feed ration.
 *** technical ***
 
 +c_default_hay
-  value = -0.01
   ++units 
     en = -
   ++description
@@ -124,7 +123,6 @@ cow as a function of the winter feed ration.
 
 
 +c_grass_silage_winter
-  value = 0.04
   ++units 
     en = -
   ++description
@@ -132,7 +130,6 @@ cow as a function of the winter feed ration.
     standard ration during winter feeding period.
 
 +c_maize_silage_winter
-  value = -0.02
   ++units 
     en = -
   ++description
@@ -140,7 +137,6 @@ cow as a function of the winter feed ration.
     standard ration during winter feeding period.
 
 +c_maize_pellets_winter
-  value = -0.02
   ++units 
     en = -
   ++description
@@ -148,7 +144,6 @@ cow as a function of the winter feed ration.
     standard ration during winter feeding period.
 
 +c_potatoes_winter
-  value = 0.0
   ++units 
     en = -
   ++description
@@ -156,7 +151,6 @@ cow as a function of the winter feed ration.
     ration during the winter feeding period.
 
 +c_beets_winter
-  value = 0.0
   ++units 
     en = -
   ++description

@@ -77,21 +77,18 @@ Zähner, M., Poteko, J., Zeyer, K., Schrade, S. 2017. Laufflächengestaltung: Em
 *** technical ***
 
 +red_raised_feeding_stands
-  value = 0.1
   ++units 
     en = -
   ++description
     Reduction efficiency as compared to cubicle house (UNECE 2007, paragraph 57, table 4).
 
 +red_floor_with_cross_slope_and_collection_gutter
-  value = 0.2
   ++units 
     en = -
   ++description
     Reduction efficiency as compared to cubicle house (UNECE 2007, paragraph 57, table 4).
 
 +red_floor_with_cross_slope_and_collection_gutter_and_raised_feeding_stands
-  value = 0.3
   ++units 
     en = -
   ++description

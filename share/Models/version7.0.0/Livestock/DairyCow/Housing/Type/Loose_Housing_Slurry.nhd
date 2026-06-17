@@ -22,7 +22,6 @@ Describes correction factors for the loose housing slurry system for dairy cows.
 *** technical ***
 
 +er
-  value = 0.183
   ++units  
     en = -
   ++description
@@ -35,7 +34,6 @@ Monteny, G.J. 2000. Modelling of ammonia emissions from dairy cow houses. PhD Th
     UNECE. 2014. Guidance document for preventing and abating ammonia emissions from agricultural sources. Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Economic Commission for Europe (UNECE).
 
 +share_liquid
-  value = 1
   ++units  
     en = -
   ++description
@@ -43,7 +41,6 @@ Monteny, G.J. 2000. Modelling of ammonia emissions from dairy cow houses. PhD Th
     the liquid fraction of the storage/application.
 
 +k_area
-  value = .5
   ++units  
     en = -
   ++description

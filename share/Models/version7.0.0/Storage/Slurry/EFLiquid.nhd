@@ -205,7 +205,6 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
 
 ## base emission factors
 +ef_liquid_storage_cattle
-  value = 365 * 6
   ++units
     en =  kg N/m2/year
     de =  kg N/m2/Jahr
@@ -215,7 +214,6 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Kupper et al. (2020).
 
 +ef_liquid_storage_pig
-  value = 365 * 8
   ++units
     en =  kg N/m2/year
     de =  kg N/m2/Jahr
@@ -226,7 +224,6 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
 
 # Tank cover correction factors
 +c_liquid_storage_uncovered
-  value =  1.0
   ++units
     en =  -
     de =  -
@@ -235,7 +232,6 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Correction factor for uncovered tanks.
 
 +c_liquid_storage_solid_cover
-  value =  0.1
   ++units
     en =  -
     de =  -
@@ -244,7 +240,6 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Correction factor for solid cover.
 
 +c_liquid_storage_tent
-  value =  0.4
   ++units
     en =  -
     de =  -
@@ -253,7 +248,6 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Correction factor for tent cover.
 
 +c_liquid_storage_floating_cover
-  value =  0.2
   ++units
     en =  -
     de =  -
@@ -262,7 +256,6 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Correction factor for floating cover.
 
 +c_liquid_storage_perforated_cover
-  value =  0.6
   ++units
     en =  -
     de =  -
@@ -271,7 +264,6 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
     Correction factor for perforated cover.
 
 +c_liquid_storage_natural_crust
-  value =  0.6
   ++units
     en =  -
     de =  -

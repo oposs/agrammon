@@ -172,7 +172,6 @@ taxonomy = Application::Slurry::Ctech
 *** technical ***
 
 +red_splash_plate
-  value = 0.0 
   ++units 
     en = -
   ++description
@@ -180,7 +179,6 @@ taxonomy = Application::Slurry::Ctech
     applying slurry all the other methods are compared to.
 
 +red_trailing_hose  
-  value = -0.4 
   ++units 
     en = -
   ++description
@@ -189,7 +187,6 @@ taxonomy = Application::Slurry::Ctech
     and Menzi et al. (1997).
 
 +red_trailing_shoe 
-  value = -0.5
   ++units 
     en = -
   ++description
@@ -198,7 +195,6 @@ taxonomy = Application::Slurry::Ctech
     and Menzi et al. (1997).
 
 +red_shallow_injection 
-  value = -0.6  
   ++units 
     en = -
   ++description
@@ -207,7 +203,6 @@ taxonomy = Application::Slurry::Ctech
     and Menzi et al. (1997).
 
 +red_deep_injection 
-  value = -0.9  
   ++units 
     en = -
   ++description

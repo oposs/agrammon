@@ -703,175 +703,150 @@ gui      = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 *** technical ***
 
 +er_mineral_fertiliser_ammoniumNitrate_low_pH
-  value = 0.012
   ++units  
     en = -
   ++description
   Emission rate for the application of ammonium nitrate, low pH soils.
 
 +er_mineral_fertiliser_ammoniumNitrate_high_pH
-  value = 0.026
   ++units  
     en = -
   ++description
   Emission rate for the application of ammonium nitrate, high pH soils.
 
 +er_mineral_fertiliser_ammoniumNitrate_unknown_pH
-  value = 0.019
   ++units  
     en = -
   ++description
   Emission rate for the application of ammonium nitrate, unknown pH soils.
 
 +er_mineral_fertiliser_calciumAmmoniumNitrate_low_pH
-  value = 0.007
   ++units  
     en = -
   ++description
   Emission rate for the application of calcium ammonium nitrate, low pH soils.
 
 +er_mineral_fertiliser_calciumAmmoniumNitrate_high_pH
-  value = 0.014
   ++units  
     en = -
   ++description
   Emission rate for the application of calcium ammonium nitrate, high pH soils.
 
 +er_mineral_fertiliser_calciumAmmoniumNitrate_unknown_pH
-  value = 0.01
   ++units  
     en = -
   ++description
   Emission rate for the application of calcium ammonium nitrate, unknown pH soils.
 
 +er_mineral_fertiliser_ammoniumSulphate_low_pH
-  value = 0.074
   ++units  
     en = -
   ++description
   Emission rate for the application of ammonium sulphate, low pH soils.
 
 +er_mineral_fertiliser_ammoniumSulphate_high_pH
-  value = 0.136
   ++units  
     en = -
   ++description
   Emission rate for the application of ammonium sulphate, high pH soils.
 
 +er_mineral_fertiliser_ammoniumSulphate_unknown_pH
-  value = 0.103
   ++units  
     en = -
   ++description
   Emission rate for the application of ammonium sulphate, unknown pH soils.
 
 +er_mineral_fertiliser_urea_low_pH
-  value = 0.128
   ++units  
     en = -
   ++description
   Emission rate for the application of urea, low pH soils.
 
 +er_mineral_fertiliser_urea_high_pH
-  value = 0.135
   ++units  
     en = -
   ++description
   Emission rate for the application of urea, high pH soils.
 
 +er_mineral_fertiliser_urea_unknown_pH
-  value = 0.131
   ++units  
     en = -
   ++description
   Emission rate for the application of urea, unknown pH soils.
 
 +er_mineral_fertiliser_sulfamid_low_pH
-  value = 0.128
   ++units  
     en = -
   ++description
   Emission rate for the application of sulfamid, low pH soils.
 
 +er_mineral_fertiliser_sulfamid_high_pH
-  value = 0.135
   ++units  
     en = -
   ++description
   Emission rate for the application of sulfamid, high pH soils.
 
 +er_mineral_fertiliser_sulfamid_unknown_pH
-  value = 0.131
   ++units  
     en = -
   ++description
   Emission rate for the application of sulfamid, unknown pH soils.
 
 +er_mineral_fertiliser_calciumNitrate_low_pH
-  value = 0.007
   ++units  
     en = -
   ++description
   Emission rate for the application of calcium nitrate (Kalksalpeter), low pH soils.
 
 +er_mineral_fertiliser_calciumNitrate_high_pH
-  value = 0.014
   ++units  
     en = -
   ++description
   Emission rate for the application of calcium nitrate (Kalksalpeter), high pH soils.
 
 +er_mineral_fertiliser_calciumNitrate_unknown_pH
-  value = 0.01
   ++units  
     en = -
   ++description
   Emission rate for the application of calcium nitrate (Kalksalpeter), unknown pH soils.
 
 +er_mineral_fertiliser_calciumCyanamid_low_pH
-  value = 0.128
   ++units  
     en = -
   ++description
   Emission rate for the application of calcium cyanamid, low pH soils.
 
 +er_mineral_fertiliser_calciumCyanamid_high_pH
-  value = 0.135
   ++units  
     en = -
   ++description
   Emission rate for the application of calcium cyanamid, high pH soils.
 
 +er_mineral_fertiliser_calciumCyanamid_unknown_pH
-  value = 0.131
   ++units  
     en = -
   ++description
   Emission rate for the application of calcium cyanamid, unknown pH soils.
 
 +er_mineral_fertiliser_entec_low_pH
-  value = 0.074
   ++units  
     en = -
   ++description
   Emission rate for the application of Entec, low pH soils.
 
 +er_mineral_fertiliser_entec_high_pH
-  value = 0.136
   ++units  
     en = -
   ++description
   Emission rate for the application of Entec, high pH soils.
 
 +er_mineral_fertiliser_entec_unknown_pH
-  value = 0.103
   ++units  
     en = -
   ++description
   Emission rate for the application of Entec, unknown pH soils.
 
 +er_mineral_fertiliser_entec2_low_pH
-  value = 0.074
   ++units  
     en = -
   ++description
@@ -879,7 +854,6 @@ gui      = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
   Mg, S, and trace substances, low pH soils.
 
 +er_mineral_fertiliser_entec2_high_pH
-  value = 0.136
   ++units  
     en = -
   ++description
@@ -887,7 +861,6 @@ gui      = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
   Mg, S, and trace substances, high pH soils.
 
 +er_mineral_fertiliser_entec2_unknown_pH
-  value = 0.103
   ++units  
     en = -
   ++description
@@ -895,84 +868,72 @@ gui      = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
   Mg, S, and trace substances, unknown pH soils.
 
 +er_mineral_fertiliser_np_low_pH
-  value = 0.041
   ++units  
     en = -
   ++description
   Emission rate for the application of NP mixtures, low pH soils.
 
 +er_mineral_fertiliser_np_high_pH
-  value = 0.75
   ++units  
     en = -
   ++description
   Emission rate for the application of NP mixtures, high pH soils.
 
 +er_mineral_fertiliser_np_unknown_pH
-  value = 0.057
   ++units  
     en = -
   ++description
   Emission rate for the application of NP mixtures, unknown pH soils.
 
 +er_mineral_fertiliser_nk_low_pH
-  value = 0.012
   ++units  
     en = -
   ++description
   Emission rate for the application of NK mixtures, low pH soils.
 
 +er_mineral_fertiliser_nk_high_pH
-  value = 0.026
   ++units  
     en = -
   ++description
   Emission rate for the application of NK mixtures, high pH soils.
 
 +er_mineral_fertiliser_nk_unknown_pH
-  value = 0.019
   ++units  
     en = -
   ++description
   Emission rate for the application of NK mixtures, unknown pH soils.
 
 +er_mineral_fertiliser_npk_low_pH
-  value = 0.041
   ++units  
     en = -
   ++description
   Emission rate for the application of NPK mixtures, low pH soils.
 
 +er_mineral_fertiliser_npk_high_pH
-  value = 0.075
   ++units  
     en = -
   ++description
   Emission rate for the application of NPK mixtures, high pH soils.
 
 +er_mineral_fertiliser_npk_unknown_pH
-  value = 0.057
   ++units  
     en = -
   ++description
   Emission rate for the application of NPK mixtures, unknown pH soils.
 
 +er_mineral_fertiliser_other_low_pH
-  value = 0.012
   ++units  
     en = -
   ++description
   Emission rate for the application of other fertilizers, low pH soils.
 
 +er_mineral_fertiliser_other_high_pH
-  value = 0.026
   ++units  
     en = -
   ++description
   Emission rate for the application of other fertilizers, high pH soils.
 
 +er_mineral_fertiliser_other_unknown_pH
-  value = 0.019
   ++units  
     en = -
   ++description

@@ -75,35 +75,30 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
 *** technical ***
 
 +er_free_range
-  value = 0.7
   ++units
     en = -
   ++description
     Emission rate for free range poultry, based on Menzi et al. (1997): 70% of TAN or 28% of Ntot
 
 +er_n2_free_range
-  value = 0.0
   ++units
     en = -
   ++description
     Emission rate for manure application. Not considerd relevant
 
 +er_no_free_range
-  value = 0.0055
   ++units
     en = -
   ++description
     Emission rate for manure application. Stehfest, Bouwman 2006
 
 +er_n2o_free_range
-  value = 0.02
   ++units
     en = -
   ++description
     Emission rate for manure application. ICCP 2006: v4_11Ch_11; Tab11.1
 
 +free_range_days_layers
-  value = 280
   ++units
     en = days/year
     de = Tage/Jahr
@@ -112,7 +107,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range days per year.
 
 +free_range_hours_layers
-  value = 2.88
   ++units
     en = hours/day
     de = Stunden/Tag
@@ -121,7 +115,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range hours per day, assumed is 12% of Day
 
 +free_range_share_layers
-  value = -
   ++units
     en = -
     de = -
@@ -130,7 +123,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
 
 +free_range_days_growers
-  value = 280
   ++units
     en = days/year
     de = Tage/Jahr
@@ -139,7 +131,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range days per year.
 
 +free_range_hours_growers
-  value = 2.88
   ++units
     en = hours/day
     de = Stunden/Tag
@@ -148,7 +139,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range hours per day, assumed is 12% of Day
 
 +free_range_share_growers
-  value = -
   ++units
     en = -
     de = -
@@ -157,7 +147,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
 
 +free_range_days_turkeys
-  value = 280
   ++units
     en = days/year
     de = Tage/Jahr
@@ -166,7 +155,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range days per year.
 
 +free_range_hours_turkeys
-  value = 0.96
   ++units
     en = hours/day
     de = Stunden/Tag
@@ -175,7 +163,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range hours per day, assumed is 4% of Day
 
 +free_range_share_turkeys
-  value = -
   ++units
     en = -
     de = -
@@ -184,7 +171,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
 
 +free_range_days_other_poultry
-  value = 280
   ++units
     en = days/year
     de = Tage/Jahr
@@ -193,7 +179,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range days per year.
 
 +free_range_hours_other_poultry
-  value = 2.88
   ++units
     en = hours/day
     de = Stunden/Tag
@@ -202,7 +187,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range hours per day, assumed is 12% of Day
 
 +free_range_share_other_poultry
-  value = -
   ++units
     en = -
     de = -
@@ -211,7 +195,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
 
 +free_range_days_broilers
-  value = 280
   ++units
     en = days/year
     de = Tage/Jahr
@@ -220,7 +203,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range days per year.
 
 +free_range_hours_broilers   
-  value = 0.96
   ++units
     en = hours/day
     de = Stunden/Tag
@@ -229,7 +211,6 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range hours per day, assumed is 4% of Day
 
 +free_range_share_broilers   
-  value = -
   ++units
     en = -
     de = -
@@ -238,14 +219,12 @@ Menzi H, Shariatmadari H, Meierhans D, Wiedmer H 1997: Nähr- und Schadstoffbela
     Average free range animal share per day. This values is corrected for the average excretion fraction during free range time.
 
 +k_grazing_a
-  value = 0.9989
   ++units
     en = -
   ++description
     Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
 
 +k_grazing_b
-  value = 0.0403
   ++units
     en = -
   ++description

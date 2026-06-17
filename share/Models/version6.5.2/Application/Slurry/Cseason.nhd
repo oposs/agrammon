@@ -90,7 +90,6 @@ is applied.
 *** technical ***
 
 +c_summer
-  value = 0.15
   ++units 
     en = -
   ++description
@@ -104,7 +103,6 @@ is applied.
       
  
 +c_autumn_winter_spring
-  value = -0.05
   ++units 
     en = -
   ++description

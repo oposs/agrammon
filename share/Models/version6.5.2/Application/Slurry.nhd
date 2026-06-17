@@ -50,7 +50,6 @@ Sommer S G 2001b. Effect of coposting on nutrient loss and nitrogen availability
 *** technical ***
 
 +er_App_cattle_liquid
-  value = 0.5
   ++units 
     en = -
   ++description
@@ -58,7 +57,6 @@ Sommer S G 2001b. Effect of coposting on nutrient loss and nitrogen availability
     average rate has been derived from Sommer (2001b), Sogaard et al. (2002), Menzi et al. (1998), Menzi et al. (1997a)
  
 +er_App_pigs_liquid
-  value = 0.35
   ++units 
     en = -
   ++description
@@ -68,14 +66,12 @@ Schweinegülle Mast: TAN Gehalt Gülle: 2.1 kg/m3 (Verdünnung 1:1, d.h. 2.5 % T
 Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt Gülle: 1.65 kg/m3; Verdünnung 1:1, d.h. 2.5 % TS gemäss Flisch et al., 2009) Emissionsraten von 32.9 % bzw. 36.2 % TAN.
 
 +er_App_fermented_slurry
-  value = 0.53
   ++units
     en = -
   ++description
     Emission rate for fermented slurry based on TAN of the slurry.
 
 +er_n2_App_liquid
-  value = 0.0
   ++units 
     en = -
   ++description
@@ -83,14 +79,12 @@ Unter den analogen Annahmen resultieren für Schweinegülle Zucht (TAN Gehalt G�
 
 
 +er_no_App_liquid
-  value = 0.0055
   ++units 
     en = -
   ++description
     Emission rate for manure application. Stehfest, Bouwman 2006
 
 +er_n2o_App_liquid
-  value = 0.01
   ++units 
     en = -
   ++description

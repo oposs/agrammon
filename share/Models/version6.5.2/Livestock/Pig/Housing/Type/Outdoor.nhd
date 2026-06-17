@@ -23,14 +23,12 @@ taxonomy = Livestock::Pig::Housing::Type::Outdoor
 *** technical ***
 
 +er
-  value = 0
   ++units  
     en = -
   ++description
     Emission rate for grazing pigs (equal to zero because all emissions are listed under grazing).
 
 +share_liquid
-  value = 0
   ++units  
     en = -
   ++description

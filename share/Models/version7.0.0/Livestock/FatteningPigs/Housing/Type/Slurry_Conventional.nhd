@@ -18,7 +18,6 @@ Describes correction factors for the conventional slurry fattening pig housing s
 *** technical ***
 
 +er
-  value = 0.243
   ++units  
     en = -
   ++description
@@ -26,7 +25,6 @@ Describes correction factors for the conventional slurry fattening pig housing s
     According to the consensus obtained in the workshop at ART Tänikon 02/11/07: 17 % Ntot; converted using Nsol of 70% and the emission rate of 24.3 % based on TAN. 
 
 +share_liquid
-  value = 1
   ++units  
     en = -
   ++description

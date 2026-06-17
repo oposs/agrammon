@@ -75,7 +75,6 @@ taxonomy = Application::SolidManure::Cseason
 *** technical ***
 
 +c_summer
-  value = 0.15
   ++units
     en = -
   ++description
@@ -84,7 +83,6 @@ Model calculation according to the model of Katz (Menzi et al. 1997b) with meteo
     
  
 +c_autumn_winter_spring
-  value = -0.05
   ++units
     en = -
   ++description

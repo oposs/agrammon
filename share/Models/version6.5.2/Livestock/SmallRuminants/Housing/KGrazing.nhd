@@ -22,14 +22,12 @@ taxonomy = Livestock::SmallRuminants::Housing::KGrazing
 *** technical ***
 
 +k_grazing_a
-  value = 0.9989
   ++units  
     en = -
   ++description
     Coefficient a of empirical estimation c = a * exp(b * grazing_hours). 
 
 +k_grazing_b
-  value = 0.0403
   ++units  
     en = -
   ++description

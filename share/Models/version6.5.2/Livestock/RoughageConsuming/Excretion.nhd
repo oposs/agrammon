@@ -216,7 +216,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 
 +standard_N_excretion_fallow_deer
-  value = 20
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -226,7 +225,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Agridea, BLW (2014)
 
 +standard_N_excretion_red_deer
-  value = 40
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -236,7 +234,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Agridea, BLW (2014)
 
 +standard_N_excretion_wapiti
-  value = 80
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -246,7 +243,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Agridea, BLW (2014)
 
 +standard_N_excretion_bison_older_than_3yr
-  value = 60
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -256,7 +252,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Agridea, BLW (2014)
 
 +standard_N_excretion_bison_younger_than_3yr
-  value = 20
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -266,7 +261,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Agridea, BLW (2014)
 
 +standard_N_excretion_lama_older_than_2yr
-  value = 20
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -276,7 +270,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Agridea, BLW (2014)
 
 +standard_N_excretion_lama_younger_than_2yr
-  value = 17
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -286,7 +279,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Agridea, BLW (2014)
 
 +standard_N_excretion_alpaca_older_than_2yr
-  value = 11
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -296,7 +288,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Agridea, BLW (2014)
 
 +standard_N_excretion_alpaca_younger_than_2yr
-  value = 7
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -306,7 +297,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Agridea, BLW (2014)
 
 +standard_N_excretion_rabbit_doe_kits
-  value = 2.6
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -316,7 +306,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Agridea, BLW (2014)
 
 +standard_N_excretion_rabbit_young
-  value = 0.79
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -330,7 +319,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 
 +share_Nsol_fallow_deer
-  value = 0.4
   ++units
     en = -
   ++description
@@ -339,7 +327,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_red_deer
-  value = 0.4
   ++units
     en = -
   ++description
@@ -348,7 +335,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_wapiti
-  value = 0.4
   ++units
     en = -
   ++description
@@ -357,7 +343,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_bison_older_than_3yr
-  value = 0.4
   ++units
     en = -
   ++description
@@ -366,7 +351,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_bison_younger_than_3yr
-  value = 0.4
   ++units
     en = -
   ++description
@@ -375,7 +359,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_lama_older_than_2yr
-  value = 0.4
   ++units
     en = -
   ++description
@@ -384,7 +367,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_lama_younger_than_2yr
-  value = 0.4
   ++units
     en = -
   ++description
@@ -393,7 +375,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_alpaca_older_than_2yr
-  value = 0.4
   ++units
     en = -
   ++description
@@ -402,7 +383,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 	Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_alpaca_younger_than_2yr
-  value = 0.4
   ++units
     en = -
   ++description
@@ -413,7 +393,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 
 +share_Nsol_rabbit_doe_kits
-  value = 0.4
   ++units
     en = -
   ++description
@@ -422,7 +401,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     # ?derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_rabbit_young
-  value = 0.4
   ++units
     en = -
   ++description

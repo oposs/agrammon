@@ -45,7 +45,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 *** technical ***
 
 +standard_milk_yield
-  value = 7500
   ++units
     en = kg/year
     de = kg/Jahr
@@ -54,14 +53,12 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Annual standard milk yield per dairy cow.
 
 +a_high
-  value = 0.02
   ++units  
     en = -
   ++description
     For milk yield > standard milk yield
 
 +a_low
-  value = 0.1
   ++units  
     en = -
   ++description

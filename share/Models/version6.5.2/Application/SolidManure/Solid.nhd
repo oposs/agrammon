@@ -40,7 +40,6 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 *** technical ***
 
 +er_App_manure_dairycows_cattle
-  value = 0.6
   ++units  
     en = -
   ++description
@@ -50,7 +49,6 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   experiments. Emission based on TAN content of solid manure.
 
 +er_App_manure_pigs
-  value = 0.8
   ++units  
     en = -
   ++description
@@ -58,7 +56,6 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
   Webb et al. (2012), Emission based on TAN of slurry.
 
 +er_App_manure_horses_otherequides_smallruminants
-  value = 0.7
   ++units  
     en = -
   ++description
@@ -69,21 +66,18 @@ nach der Anwendung von Mist. Agrarforschung 4:328-331.
 
 
 +er_n2_App_manure
-  value = 0
   ++units  
     en = -
   ++description
     Emission rate for manure application. Not considerd relevant
 
 +er_no_App_manure
-  value = 0.0055
   ++units  
     en = -
   ++description
     Emission rate for manure application. Stehfest, Bouwman 2006
 
 +er_n2o_App_manure
-  value = 0.01
   ++units  
     en = -
   ++description

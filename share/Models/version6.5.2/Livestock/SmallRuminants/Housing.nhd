@@ -34,7 +34,6 @@ taxonomy = Livestock::SmallRuminants::Housing
 *** technical ***
 
 +er_housing
-  value = 0.11
   ++units  
     en = -
   ++description

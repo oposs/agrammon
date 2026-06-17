@@ -162,7 +162,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 
 +standard_N_excretion_goats
-  value = 16
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -172,7 +171,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_fattening_sheep
-  value = 15
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -182,7 +180,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_milksheep
-  value = 21
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -196,7 +193,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 
 +share_Nsol_goats
-  value = 0.4
   ++units
     en = -
   ++description
@@ -204,7 +200,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_fattening_sheep
-  value = 0.4
   ++units
     en = -
   ++description
@@ -212,7 +207,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_milksheep
-  value = 0.4
   ++units
     en = -
   ++description
