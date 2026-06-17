@@ -539,22 +539,20 @@ qx.Class.define('agrammon.module.input.PropTable', {
             var data = msg.getData();
             var varName  = data['var'];
             var value    = data.value;
-            var branches = data.branches;
-            var options  = data.options;
             if (value == '*** Select ***' || value == '***Select***') {
                 return;
             }
             var datasetName = this.__info.getDatasetName();
 
+            // #421: branch matrices are persisted via store_branch_data, not
+            // through the per-variable store_data path.
             this.__rpc.callAsync(
                 this.__store_data_func,
                 'store_data',
                 {
                     datasetName: datasetName,
                     variable:    varName,
-                    value:       value,
-                    branches:    branches,
-                    options:     options
+                    value:       value
                 }
             );
         },
