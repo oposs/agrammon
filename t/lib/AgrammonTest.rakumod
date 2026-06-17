@@ -78,10 +78,15 @@ sub prepare-test-db($uid) is export {
 
     $db.query(q:to/SQL/);
     CREATE TABLE IF NOT EXISTS branches (
-        branches_id      SERIAL NOT NULL PRIMARY KEY,                                            -- Unique ID
-        branches_var     INTEGER NOT NULL UNIQUE REFERENCES data(data_id) ON DELETE CASCADE, -- branched variables
-        branches_data    NUMERIC[],                                                              -- branch fractions
-        branches_options TEXT[]                                                                  -- branch options
+        branches_id          SERIAL NOT NULL PRIMARY KEY,                                             -- Unique ID
+        branches_row_var     INTEGER NOT NULL UNIQUE REFERENCES data(data_id) ON DELETE CASCADE,      -- row-axis branched variable
+        branches_col_var     INTEGER NOT NULL UNIQUE REFERENCES data(data_id) ON DELETE CASCADE,      -- col-axis branched variable
+        branches_row_options TEXT[]    NOT NULL,                                                      -- row-axis option labels
+        branches_col_options TEXT[]    NOT NULL,                                                      -- col-axis option labels
+        branches_matrix      NUMERIC[] NOT NULL,                                                      -- 2-D fraction matrix (rows x cols)
+        CHECK (array_ndims(branches_matrix) = 2),
+        CHECK (array_length(branches_matrix, 1) = cardinality(branches_row_options)),
+        CHECK (array_length(branches_matrix, 2) = cardinality(branches_col_options))
     )
     SQL
 
@@ -106,10 +111,16 @@ sub prepare-test-db($uid) is export {
                         (-76315982, -42000, 'Livestock::Poultry[]::Housing::Type::manure_removal_interval', -91000, 'branched')
     SQL
 
+    # Single self-describing branch row (issue #421 task 3). row-axis = manure
+    # removal interval (6 options), col-axis = housing type (4 options); the
+    # 6x4 matrix is the old flattened 24-value vector reshaped row-major.
     $db.query(q:to/SQL/);
-    INSERT INTO branches
-         VALUES (-30950, -76315980, '{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}', '{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}'),
-                (-30949, -76315982, '{0,0,0,0,0,0,0,15.9,31.5,33.5,0,0,0,0,0,0,0,2.2,0,0,0,0,0,16.9}', '{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}')
+    INSERT INTO branches (branches_id, branches_row_var, branches_col_var,
+                          branches_row_options, branches_col_options, branches_matrix)
+         VALUES (-30950, -76315982, -76315980,
+                 '{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}',
+                 '{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}',
+                 '{{0,0,0,0},{0,0,0,15.9},{31.5,33.5,0,0},{0,0,0,0},{0,2.2,0,0},{0,0,0,16.9}}')
     SQL
 
     return 1;
