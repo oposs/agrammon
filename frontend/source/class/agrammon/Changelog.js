@@ -28,9 +28,9 @@ qx.Class.define("agrammon.Changelog", {
         qxShowdown.Load;
 
         this.addListenerOnce('appear', function() {
-           let req = new qx.io.remote.Request("doc/CHANGELOG.md");
-           req.addListener("completed", function (e) {
-                let md = e.getContent();
+           let req = new qx.io.request.Xhr("doc/CHANGELOG.md");
+           req.addListener("success", function (e) {
+                let md = e.getTarget().getResponseText();
                 let converter = new showdown.Converter();
                 docu.setHtml(converter.makeHtml(md));
             });

@@ -9,27 +9,20 @@
 ************************************************************************ */
 
 /**
- * The Rpc class inherits from {@link qx.io.remote.Rpc}. It knows a bunch about
- * the way we like Rpc to happen in Agrammon context.
+ * Agrammon's RPC helper. It POSTs JSON to per-method endpoints via
+ * {@link qx.io.request.Xhr} and adds the login-retry / error handling we
+ * like in the Agrammon context.
+ *
+ * Historically this extended the deprecated qx.io.remote.Rpc, but callAsync
+ * has long been overridden to use qx.io.request.Xhr directly, so the base
+ * class was only a (qooxdoo 7.x deprecated) dependency. It now extends
+ * qx.core.Object.
  *
  * Derived from Tobi's Nequal Rpc.js
  */
 qx.Class.define('agrammon.io.remote.Rpc', {
-    extend : qx.io.remote.Rpc,
+    extend : qx.core.Object,
     type : 'singleton',
-
-    /**
-     * Create an instance of Rpc.
-     */
-    construct : function() {
-        this.base(arguments);
-
-        this.set({
-            timeout     : 25 * 1000,
-            url         : 'jsonrpc/',
-            serviceName : 'Agrammon'
-        });
-    },
 
     members : {
 
