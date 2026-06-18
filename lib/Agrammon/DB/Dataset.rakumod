@@ -785,29 +785,49 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         }
     }
 
+    # Ensure a branched variable's data row exists for $instance-id with
+    # data_val='branched' and return its data_id. Creating the row here makes
+    # store-branch-data self-contained: a branch configured on a freshly added
+    # instance no longer depends on a prior per-variable store_data having
+    # written the row (issue #421 task 3).
+    method !branched-var-id($db, $instance-id, $variable) {
+        my $ret = $db.query(q:to/SQL/, $instance-id, $variable);
+            UPDATE data SET data_val = 'branched'
+             WHERE data_instance_id = $1 AND data_var = $2
+            RETURNING data_id
+        SQL
+        return $ret.value if $ret.rows;
+
+        $ret = $db.query(q:to/SQL/, $instance-id, $variable);
+            INSERT INTO data (data_dataset, data_var, data_val, data_instance_id)
+                 VALUES ((SELECT data_instance_dataset FROM data_instance WHERE data_instance_id = $1),
+                         $2, 'branched', $1)
+            RETURNING data_id
+        SQL
+        return $ret.value;
+    }
+
     method store-branch-data(@vars, Str $instance, %options, @fractions) {
         my $dataset-name = $!name;
         my $row-var = @vars[0];   # frontend convention: vars[0] = row axis
         my $col-var = @vars[1];   #                      vars[1] = col axis
 
         self.with-db: -> $db {
-            my $username = $!user.username;
-            my @id-rows = $db.query(q:to/SQL/, $username, $dataset-name, |self!variant, $row-var, $col-var, $instance).hashes;
-            SELECT data_id, data_var
-                  FROM data
-                 WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
-                   AND data_var IN ($6,$7)
-                   AND data_instance_id = (SELECT data_instance_id FROM data_instance
-                                            WHERE data_instance_dataset = dataset_name2id($1,$2,$3,$4,$5)
-                                              AND data_instance_name = $8)
-            SQL
-            my %id-of = @id-rows.map({ .<data_var> => .<data_id> });
+            my $username    = $!user.username;
+            my $instance-id = self!instance-id($db, $username, $instance);
+
+            # store-branch-data owns the full persistence of a branch: make sure
+            # the two branched variables exist as data rows (data_val='branched')
+            # and capture their ids, then write the single self-describing
+            # branches row.
+            my $row-id = self!branched-var-id($db, $instance-id, $row-var);
+            my $col-id = self!branched-var-id($db, $instance-id, $col-var);
 
             my @row-options = %options{$row-var}.map(*.subst(' ', '_', :g));
             my @col-options = %options{$col-var}.map(*.subst(' ', '_', :g));
             my @matrix      = @fractions.map({ $_.map(+*).Array }).Array;
 
-            my $ret = $db.query(q:to/SQL/, %id-of{$row-var}, %id-of{$col-var}, @row-options, @col-options, @matrix);
+            my $ret = $db.query(q:to/SQL/, $row-id, $col-id, @row-options, @col-options, @matrix);
                 INSERT INTO branches (branches_row_var, branches_col_var,
                                       branches_row_options, branches_col_options, branches_matrix)
                               VALUES ($1, $2, $3, $4, $5)
@@ -819,10 +839,8 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                                branches_matrix      = EXCLUDED.branches_matrix
                 SQL
             die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new(:variable($row-var)) unless $ret;
-        }
 
-        self.with-db: -> $db {
-            $db.query(q:to/SQL/, $!user.username, $dataset-name, |self!variant);
+            $db.query(q:to/SQL/, $username, $dataset-name, |self!variant);
                     UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
                      WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
                 SQL

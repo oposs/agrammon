@@ -150,8 +150,14 @@ qx.Class.define('agrammon.module.input.regional.ConfigInstance', {
                     newData[i].setMetaData({type: 'integer'});
                 }
             }
+            // #421: newLabel already includes its brackets (set above and used
+            // verbatim by cloneDataset), so substitute it directly into the
+            // parent's empty []. Re-wrapping it as '[' + newLabel + ']' produced
+            // a double-bracketed folder name ([[name]]), which made
+            // resolveVariable() / the BranchEditor emit a bogus '[name]'
+            // instance and break branch saves on freshly created instances.
             var folderName =
-                parentName.replace(/\[\]/, '[' + newLabel + ']');
+                parentName.replace(/\[\]/, newLabel);
             var newFolder =
                 new agrammon.module.input.NavFolder(newLabels, 'isInstance',
                                                     null, folderName);
