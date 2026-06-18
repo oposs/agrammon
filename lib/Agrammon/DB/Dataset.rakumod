@@ -423,7 +423,10 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             SELECT dv.data_var, dv.data_val, dv.data_instance_order,
                    (SELECT array_agg(x ORDER BY ord)
                       FROM unnest(b.branches_matrix) WITH ORDINALITY AS t(x, ord)) AS branches_data,
-                   dv.data_comment
+                   dv.data_comment,
+                   (SELECT jsonb_build_object('options',   f.flattened_options,
+                                              'fractions', f.flattened_fractions)
+                      FROM flattened f WHERE f.flattened_var = dv.data_id) AS flattened_data
               FROM data_view dv
               LEFT JOIN branches b ON (b.branches_row_var = dv.data_id OR b.branches_col_var = dv.data_id)
              WHERE dv.data_dataset=dataset_name2id($1,$2,$3,$4,$5)
