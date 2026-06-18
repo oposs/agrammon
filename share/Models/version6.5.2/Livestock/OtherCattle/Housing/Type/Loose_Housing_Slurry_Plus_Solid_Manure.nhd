@@ -23,14 +23,12 @@ This process describes the correction factors for the loose housing liquid solid
 *** technical ***
 
 +er
-  value = 0.183
   ++units  
     en = -
   ++description
     Emission rate for the loose housing liquid solid system for cattle. According to the consensus obtained in the workshop at ART Tänikon 02/11/07: 11% Ntot; convered using Nsol of 60% and the emission rate of EF 18.3% based on TAN. Reference value UNECE(2007): 11 kg NH3 = 8% TAN.
    
 +share_liquid
-  value = .57
   ++units  
     en = -
   ++description
@@ -38,7 +36,6 @@ This process describes the correction factors for the loose housing liquid solid
     the liquid manure storage.
 
 +k_area
-  value = .5
   ++units  
     en = -
   ++description

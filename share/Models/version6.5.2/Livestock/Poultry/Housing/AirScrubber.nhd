@@ -58,14 +58,12 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 *** technical ***
 
 +red_acid_air_scrubber
-  value = 0.9
   ++units  
     en = -
   ++description
     Reduction efficiency as compared to group-housed on fully and partly slatted floors (UNECE 2007, paragraph 71, table 5).
 
 +red_biotrickling_filter_air_scrubber
-  value = 0.7
   ++units  
     en = -
   ++description

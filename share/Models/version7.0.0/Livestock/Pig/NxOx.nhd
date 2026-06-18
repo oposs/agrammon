@@ -17,28 +17,24 @@ TODO!
 *** technical ***
 
 +er_n2_solid_Slurry
-  value = 0.0
   ++units
     en = -
   ++description
      Emission rate for N2 based on Ntot
 
 +er_n2_solid_Solid
-  value = 0.05
   ++units
     en = -
   ++description
      Emission rate for N2 based on Ntot
 
 +er_n2_liquid_Slurry
-  value = 0.02
   ++units
     en = -
   ++description
      Emission rate for N2 based on Ntot
 
 +er_n2_liquid_Solid
-  value = 0.0
   ++units
     en = -
   ++description
@@ -47,28 +43,24 @@ TODO!
 
 
 +er_no_solid_Slurry
-  value = 0.0
   ++units
     en = -
   ++description
      Emission rate for N2 based on Ntot
 
 +er_no_solid_Solid
-  value = 0.05
   ++units
     en = -
   ++description
      Emission rate for N2 based on Ntot
 
 +er_no_liquid_Slurry
-  value = 0.002
   ++units
     en = -
   ++description
      Emission rate for N2 based on Ntot
 
 +er_no_liquid_Solid
-  value = 0.0
   ++units
     en = -
   ++description
@@ -78,28 +70,24 @@ TODO!
 
 
 +er_n2o_solid_Slurry
-  value = 0.0
   ++units
     en = -
   ++description
      Emission rate for N2 based on Ntot
 
 +er_n2o_solid_Solid
-  value = 0.05
   ++units
     en = -
   ++description
      Emission rate for N2 based on Ntot
 
 +er_n2o_liquid_Slurry
-  value = 0.002
   ++units
     en = -
   ++description
      Emission rate for N2 based on Ntot
 
 +er_n2o_liquid_Solid
-  value = 0.0
   ++units
     en = -
   ++description

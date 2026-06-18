@@ -18,7 +18,6 @@ Describes correction factors for the label deep litter fattening pig housing sys
 *** technical ***
 
 +er
-  value = 0.486
   ++units  
     en = -
   ++description
@@ -27,7 +26,6 @@ Describes correction factors for the label deep litter fattening pig housing sys
     "er" is based on TAN Flux into housing.
 
 +share_liquid
-  value = 0
   ++units  
     en = -
   ++description

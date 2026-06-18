@@ -31,28 +31,24 @@ livestock. Atmospheric Environment 35:5331-5338.
 *** technical ***
 
 +er_yard
-  value = 0.35
   ++units  
     en = -
   ++description	
     Emission rate for TAN on yard. Empirical estimation Kupper/Menzi, Keck(1997, Misselbrook et al. (2001)
 
 +red_floor_properties_unpaved_floor
-  value = 0.5
   ++units  
     en = -
   ++description
     Reduction efficiency according to Reidy and Menzi.
 
 +red_floor_properties_solid_floor
-  value = 0.0
   ++units  
     en = -
   ++description
     Reduction efficiency according to Reidy and Menzi.
 
 +red_floor_properties_paddock_or_pasture_used_as_exercise_yard
-  value = 0.9
   ++units  
     en = -
   ++description

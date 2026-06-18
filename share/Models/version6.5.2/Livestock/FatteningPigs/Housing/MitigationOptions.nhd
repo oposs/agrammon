@@ -87,7 +87,6 @@ Ratschow, J.-P., Schulte-Sutrum, R., Büscher, W., Nannen, C., Feller, B. 2008. 
 *** technical ***
 
 +red_low_impuls_air_supply
-  value = 0.2
   ++units 
     en = -
   ++description

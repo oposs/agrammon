@@ -30,7 +30,6 @@ gui      = Storage,Hofdüngerlager,Stockage,Storage
 *** technical ***
 
 +mineralizationrate_liquid
-  value = 0.1         
   ++units  
     en = -
   ++description

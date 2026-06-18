@@ -40,28 +40,24 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 *** technical ***
 
 +er_roughage_consuming_grazing
-  value = 0.125
   ++units  
     en = -
   ++description
     Emission rate for the calculation of the annual NH3 emission during grazing of other roughage consuming animals ruminants. The emission rate is derived from Bussink et al. (1992, 1994), Jarvis et al. (1989), Peterson et al. (1998) and Ross and Jarvis (2001).
    (taking into account the generally low fertilization rate of Swiss pastures.)
 +er_n2_roughage_consuming_grazing
-  value = 0.0
   ++units  
     en = -
   ++description
     Emission rate for manure application. Not considerd relevant
 
 +er_no_roughage_consuming_grazing
-  value = 0.0055
   ++units  
     en = -
   ++description
     Emission rate for manure application. Stehfest, Bouwman 2006
 
 +er_n2o_roughage_consuming_grazing
-  value = 0.0
   ++units  
     en = -
   ++description

@@ -221,7 +221,6 @@ taxonomy = Storage::SolidManure::Solid
 *** technical ***
 
 +er_tan_pigs
-  value = 0.5
   ++units 
     en = -
   ++description 
@@ -229,21 +228,18 @@ taxonomy = Storage::SolidManure::Solid
 
 +er_tan_cattle_other
   unit = -
-  value = 0.3 
   ++units 
     en = -
   ++description 
   The value has been derived from the Eager workshop, January 2008: (additional explanation following)
 
 +immobilizationrate_solid
-  value = 0.4	      
   ++units 
     en = -
   ++description
     A netto immobilization of 40% from NSol/TAN to Norg is assuemd, according to the GAS_EM Model
   
 +c_covered_basin_cattle_manure
-  value = 0.5
   ++units  
     en = -
   ++description
@@ -251,7 +247,6 @@ taxonomy = Storage::SolidManure::Solid
     (Defra WA 716, 1999).
   
 +c_covered_basin_pig_manure
-  value = 0.75
   ++units  
     en = -
   ++description

@@ -400,7 +400,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 *** technical ***
 
 +standard_N_excretion_fattening_pigs
-  value = 13
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -410,7 +409,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
      Flisch et al. (2009).
 
 +standard_energy_content_fattening_pigs
-  value = 14
   ++units
     en = MJ DE
     de = MJ VES/kg
@@ -420,7 +418,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     fattening pigs (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
 
 +standard_crude_protein_fattening_pigs
-  value = 170
   ++units
      en = g CP/kg
      de = g RP/kg
@@ -430,7 +427,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     fattening pigs (BLW, SRVA, LBL 2003). Agridea, BLW (2010).
 
 +cfeed_fattening_pigs
-  value = 0.009
   ++units
     en = -
   ++description
@@ -440,7 +436,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Agridea, BLW (2010).
 
 +minimal_N_excretion_fattening_pigs
-  value = 9.5
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -450,7 +445,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009). Agridea, BLW (2010).
 
 +share_Nsol
-  value = 0.7
   ++units
     en = -
   ++description
@@ -458,35 +452,30 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Petersen et al. (1998) or Burgos et al. (2005).
 
 +phase_1_3_duration
-  value = 0.151
   ++units
     en = d
   ++description
     Feeding phase 1 of a 3-phase-feeding duration as part of the year.
 
 +phase_2_3_duration
-  value = 0.321
   ++units
     en = d
   ++description
     Feeding phase 2 of a 3-phase-feeding duration as part of the year.
 
 +phase_3_3_duration
-  value = 0.528
   ++units
     en = d
   ++description
     feeding phase 3 of a 3-phase-feeding duration as part of the year.
 
 +phase_1_2_duration
-  value = 0.359
   ++units
     en = d
   ++description
     Feeding phase 1 of a 2-phase-feeding duration as part of the year.
 
 +phase_2_2_duration
-  value = 0.641
   ++units
     en = d
   ++description

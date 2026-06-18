@@ -18,7 +18,6 @@ Describes correction factors for the label slurry open front pig housing system.
 *** technical ***
 
 +er
-  value = 0.34
   ++units  
     en = -
   ++description
@@ -26,7 +25,6 @@ Describes correction factors for the label slurry open front pig housing system.
     According to the consensus obtained in the workshop at ART Tänikon 02/11/07: 34 % Ntot; converted using Nsol of 70% and the emissions rate of  48.6 % based on TAN. 
 
 +share_liquid
-  value = 1
   ++units  
     en = -
   ++description

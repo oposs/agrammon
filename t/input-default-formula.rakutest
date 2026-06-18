@@ -1,18 +1,21 @@
 use Agrammon::Model;
+use Agrammon::TechnicalParser;
 use Test;
 
 my $path = $*PROGRAM.parent.add('test-data/Models/defaults');
 my $model = Agrammon::Model.new(:$path);
 $model.load('Top');
 
+my %technical = load-technical($path, 'technical.cfg');
+
 my $input = Agrammon::Inputs.new;
 $input.add-single-input('Top', 'input1', 42);
 $input.add-multi-input('Sub', 'Instance1', '', 'input1', 10);
 $input.add-multi-input('Sub', 'Instance2', '', 'input1', 20);
-lives-ok { $input.apply-defaults($model, {}) },
+lives-ok { $input.apply-defaults($model, %technical) },
         'Can apply defaults to inputs when there are formulas';
 
-my %outputs = $model.run(:$input).get-outputs-hash();
+my %outputs = $model.run(:$input, :%technical).get-outputs-hash();
 
 subtest 'Single instance module with input defaults' => {
     given %outputs<Top> {

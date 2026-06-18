@@ -168,7 +168,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 ### standard_N_excretion
 
 +standard_N_excretion_horses_younger_than_3yr
-  value = 42
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -178,7 +177,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     than 3 years) according to Flisch et al. (2009).
 
 +standard_N_excretion_horses_older_than_3yr
-  value = 44
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -188,7 +186,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     than 3 years) according to Flisch et al. (2009).
 
 +standard_N_excretion_mules
-  value = 25.10
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -198,7 +195,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_ponies_and_asses
-  value = 15.7
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -211,7 +207,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 ###  share_Nsol
 
 +share_Nsol_horses_younger_than_3yr
-  value = 0.4
   ++units
     en = -
   ++description
@@ -219,7 +214,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_horses_older_than_3yr
-  value = 0.4
   ++units
     en = -
   ++description
@@ -227,7 +221,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_mules
-  value = 0.4
   ++units
     en = -
   ++description
@@ -235,7 +228,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Derived from e.g. Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_ponies_and_asses
-  value = 0.4
   ++units
     en = -
   ++description

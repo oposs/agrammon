@@ -203,7 +203,6 @@ Spezialpublikation, pp. 4/1-4/24.
 ### standard_N_excretion
 
 +standard_N_excretion_layers
-  value = 0.80
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -213,7 +212,6 @@ Spezialpublikation, pp. 4/1-4/24.
     Flisch et al. (2009).
 
 +standard_N_excretion_growers
-  value = 0.31
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -223,7 +221,6 @@ Spezialpublikation, pp. 4/1-4/24.
     a decission of the Group suisse bilanz.
 
 +standard_N_excretion_broilers
-  value = 0.45
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -233,7 +230,6 @@ Spezialpublikation, pp. 4/1-4/24.
     Flisch et al. (2009).
 
 +standard_N_excretion_turkeys
-  value = 1.4
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -243,7 +239,6 @@ Spezialpublikation, pp. 4/1-4/24.
     Flisch et al. (2009).
 
 +standard_N_excretion_other_poultry
-  value = 0.56
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -255,7 +250,6 @@ Spezialpublikation, pp. 4/1-4/24.
 ###
 
 +share_Nsol_layers
-  value = 0.6
   ++units
     en = -
   ++description
@@ -263,7 +257,6 @@ Spezialpublikation, pp. 4/1-4/24.
     TODO
 
 +share_Nsol_growers
-  value = 0.6
   ++units
     en = -
   ++description
@@ -271,7 +264,6 @@ Spezialpublikation, pp. 4/1-4/24.
     TODO
 
 +share_Nsol_broilers
-  value = 0.6
   ++units
     en = -
   ++description
@@ -279,7 +271,6 @@ Spezialpublikation, pp. 4/1-4/24.
     TODO
 
 +share_Nsol_turkeys
-  value = 0.6
   ++units
     en = -
   ++description
@@ -287,7 +278,6 @@ Spezialpublikation, pp. 4/1-4/24.
     TODO
 
 +share_Nsol_other_poultry
-  value = 0.6
   ++units
     en = -
   ++description

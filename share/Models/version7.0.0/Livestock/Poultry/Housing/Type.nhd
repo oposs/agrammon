@@ -195,7 +195,6 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
 *** technical ***
 
 +er_housing_layers_growers_manure_belt_without_manure_belt_drying_system
-  value = 0.15
   ++units  
     en = -
   ++description
@@ -203,7 +202,6 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
 
 
 +er_housing_layers_growers_manure_belt_with_manure_belt_drying_system
-  value = 0.06
   ++units  
     en = -
   ++description
@@ -211,70 +209,60 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
 
 
 +er_housing_layers_growers_deep_pit
-  value = 0.30
   ++units  
     en = -
   ++description
     Emission rate for the poultry housing type, based on EAGER workshop January 2007, UNECE 2007: 30% of Ntot, converted using 60% Nsol and the emission rate of 50% based on TAN.
 
 +er_housing_layers_growers_deep_litter
-  value = 0.30
   ++units  
     en = -
   ++description
     Emission rate for the poultry housing type, based on EAGER workshop January 2007, UNECE 2007: 30% of Ntot, converted using 60% Nsol and the emission rate of 50% based on TAN.
 
 +er_housing_other_deep_litter
-  value = 0.12
   ++units  
     en = -
   ++description
     Emission rate for the poultry housing type, based on Reidy et al. (2009): 12% of Ntot, converted using 60% Nsol and the emission rate of 20% based on TAN.
 
 +c_manure_removal_interval_less_than_twice_a_month
-  value = 1.2
   ++units  
     en = -
   ++description
     Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
 
 +c_manure_removal_interval_twice_a_month
-  value = 1.0
   ++units  
     en = -
   ++description
     Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
 
 +c_manure_removal_interval_3_to_4_times_a_month
-  value = 0.8
   ++units  
     en = -
   ++description
     Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
 
 +c_manure_removal_interval_more_than_4_times_a_month
-  value = 0.6
   ++units  
     en = -
   ++description
     Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
 
 +c_manure_removal_interval_once_a_day
-  value = 0.4
   ++units  
     en = -
   ++description
     Emission rate for the poultry manure removal by droppings belt. Empirical assumption by Reidy/Menzi. 
 
 +c_drinking_nipples
-  value = 1.0
   ++units  
     en = -
   ++description
     Emission rate for the poultry drinking type standard version.
 
 +c_bell_drinkers
-  value = 1.2
   ++units  
     en = -
   ++description
@@ -283,7 +271,6 @@ Reidy B, Webb J, Misselbrook TH, Menzi H, Luesink HH, Hutchings NJ, Eurich-Mende
 
 
 +k_area
-  value = 0.5
   ++units  
     en = -
   ++description

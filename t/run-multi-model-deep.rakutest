@@ -1,13 +1,16 @@
 use v6;
 use Agrammon::Inputs;
 use Agrammon::Model;
+use Agrammon::TechnicalParser;
 use Test;
 
 my $path = $*PROGRAM.parent.add('test-data/Models/run-test-multi-deep');
 my $model = Agrammon::Model.new(:$path);
 $model.load('Test');
 
-subtest 'Run without overriding any technical values' => {
+my %technical = load-technical($path, 'technical.cfg');
+
+subtest 'Run with the model technical values from technical.cfg' => {
     my $input = Agrammon::Inputs.new;
     $input.add-multi-input('Test::SubModule', 'Monkey A', '',        'monkeys', 42);
     $input.add-multi-input('Test::SubModule', 'Monkey B', '',        'monkeys', 15);
@@ -16,7 +19,7 @@ subtest 'Run without overriding any technical values' => {
     $input.add-multi-input('Test::SubModule', 'Monkey B', 'SubTest', 'kids',     3);
     $input.add-multi-input('Test::SubModule', 'Monkey C', 'SubTest', 'kids',     7);
     $input.add-single-input('Test', 'final_add', 10);
-    my %outputs = $model.run(:$input).get-outputs-hash;
+    my %outputs = $model.run(:$input, :%technical).get-outputs-hash;
     is-deeply [%outputs<Test::SubModule>.sort(*.key)],
             [
                 'Monkey A' => { 'Test::SubModule' => { sub_result => 20 * (42+5) },

@@ -43,28 +43,24 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 *** technical ***
 
 +er_fattening_pig_grazing
-  value = 0.2
   ++units  
     en = -
   ++description
     Emission rate for the calculation of the annual NH3 emission during grazing for fattening pigs. Sommer et al. (2001) give a yearly volatilization loss from one sow with piglets of 4.8 kg N resulting in a loss of 20% TAN assuming an N excretion/sow/y of 35 kg N (Flisch et al. (2009)).
 
 +er_n2_fattening_pig_grazing
-  value = 0.0
   ++units  
     en = -
   ++description
     Emission rate for manure application. Not considerd relevant
 
 +er_no_fattening_pig_grazing
-  value = 0.0055
   ++units  
     en = -
   ++description
     Emission rate for manure application. Stehfest, Bouwman 2006
 
 +er_n2o_fattening_pig_grazing
-  value = 0.0
   ++units  
     en = -
   ++description

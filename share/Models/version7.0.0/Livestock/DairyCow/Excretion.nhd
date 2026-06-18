@@ -191,7 +191,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 *** technical ***
 
 +standard_N_excretion
-  value = 112
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -201,14 +200,12 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Richner et al. (2017).
 
 +share_Nsol
-  value = 0.55
   ++units
     en  = -
   ++description
     TAN content of excreta.
 
 +feed_influence_on_Nsol
-  value = 1
   ++units
     en = kg Nsol/kg N
   ++description

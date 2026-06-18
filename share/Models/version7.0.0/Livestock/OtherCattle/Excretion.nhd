@@ -220,7 +220,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 ### standard_N_excretion
 
 +standard_N_excretion_heifers_1st_yr
-  value = 25
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -230,7 +229,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_heifers_2nd_yr
-  value = 40
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -240,7 +238,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_heifers_3rd_yr
-  value = 55
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -250,7 +247,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_beef_cattle
-  value = 33
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -260,7 +256,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_beef_cattle_grower
-  value = 33
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -270,7 +265,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_beef_cattle_finisher
-  value = 33
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -280,7 +274,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_fattening_calves
-  value = 13
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -291,7 +284,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 
 +standard_N_excretion_suckling_cows
-  value = 80
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -301,7 +293,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_suckling_cows_lt600
-  value = 72
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -311,7 +302,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Flisch et al. (2009).
 
 +standard_N_excretion_suckling_cows_gt700
-  value = 95
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -321,7 +311,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     GRUDAF 2017
 
 +standard_N_excretion_calves_suckling_cows
-  value = 34
   ++units
     en = kg N/year
     de = kg N/Jahr
@@ -333,7 +322,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 ###  share_Nsol
 
 +share_Nsol_heifers_1st_yr
-  value = 0.6
   ++units
     en = -
   ++description
@@ -341,7 +329,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_heifers_2nd_yr
-  value = 0.6
   ++units
     en = -
   ++description
@@ -349,7 +336,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_heifers_3rd_yr
-  value = 0.6
   ++units
     en = -
   ++description
@@ -357,7 +343,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_beef_cattle
-  value = 0.6
   ++units
     en = -
   ++description
@@ -365,7 +350,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_beef_cattle_grower
-  value = 0.6
   ++units
     en = -
   ++description
@@ -373,7 +357,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_beef_cattle_finisher
-  value = 0.6
   ++units
     en = -
   ++description
@@ -381,7 +364,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_fattening_calves
-  value = 0.6
   ++units
     en = -
   ++description
@@ -389,7 +371,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_suckling_cows
-  value = 0.6
   ++units
     en = -
   ++description
@@ -397,7 +378,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_suckling_cows_lt600
-  value = 0.6
   ++units
     en = -
   ++description
@@ -405,7 +385,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
     Peterson et al. (1998) or Burgos et al. (2005).
 
 +share_Nsol_suckling_cows_gt700
-  value = 0.6
   ++units
     en = -
   ++description
@@ -414,7 +393,6 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 
 +share_Nsol_calves_suckling_cows
-  value = 0.6
   ++units
     en = -
   ++description

@@ -26,7 +26,6 @@ taxonomy = Livestock::DairyCow::Grazing
 *** technical ***
 
 +er_dairycow_grazing
-  value = 0.083
   ++units  
     en = -
   ++description
@@ -42,21 +41,18 @@ Voglmeier, K., Jocher, M., Häni, C., Ammann, C. 2018. Ammonia emission measurem
 
 
 +er_n2_dairycow_grazing
-  value = 0.0
   ++units  
     en = -
   ++description
     Emission factor for manure application. Not considerd relevant
 
 +er_no_dairycow_grazing
-  value = 0.0055
   ++units  
     en = -
   ++description
     Emission factor for manure application. Stehfest, Bouwman 2006
 
 +er_n2o_dairycow_grazing
-  value = 0.0
   ++units  
     en = -
   ++description

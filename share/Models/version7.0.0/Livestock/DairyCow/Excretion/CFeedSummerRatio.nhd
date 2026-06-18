@@ -77,7 +77,6 @@ cow as a function of the summer feed ration.
 *** technical ***
 
 +c_default_grass
-   value = 0.07
    ++units 
      en = -
    ++description
@@ -85,7 +84,6 @@ cow as a function of the summer feed ration.
      ration during the summer feeding period.
 
 +c_hay_summer
-  value = -0.03
   ++units 
     en = -
   ++description
@@ -93,7 +91,6 @@ cow as a function of the summer feed ration.
     ration during the summer feeding period.
 
 +c_maize_silage_summer
-  value = -0.01
   ++units 
     en = -
   ++description
@@ -101,7 +98,6 @@ cow as a function of the summer feed ration.
     to the standard ration during summer feeding period.
 
 +c_maize_pellets_summer 
-  value = -0.01
   ++units 
     en = -
   ++description

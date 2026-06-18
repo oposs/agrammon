@@ -106,7 +106,6 @@ Selects the emission rate and other correciton factors for the specific housing 
 *** technical ***
 
 +k_area
-  value = 0.5
   ++units  
     en = -
   ++description

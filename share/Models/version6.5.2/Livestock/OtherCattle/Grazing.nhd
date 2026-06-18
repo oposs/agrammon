@@ -43,28 +43,24 @@ Ross CA, Jarvis SC 2001. Measurement of emission and deposition pattern of ammon
 *** technical ***
 
 +er_cattle_grazing
-  value = 0.083
   ++units  
     en = -
   ++description
   Emission rate for the calculation of the annual NH3 emission during grazing for cattle. 5% Ntot (conversion with a portion of Nsol of 60%: EF 8.3% TAN; value based on Table 1 (Mean emission rate of 3.1% N excreted; range: 1.6-5.7% for grazing cows on a sward fertilized with 250 kg N/y) of Bussink (1992) and Table 3 (Mean emission rate of 3.3% N excreted; range: 0.0-7.4% for grazing cows on a sward fertilized with 250 kg N/y) of Bussink (1994). The corresponding value is rather lower for Switzerland since the level of fertilization is lower resulting in a lower level for crude protein. The N level in the fodder of the sward fertilized with 250 kg N/y (31 g/kg d.m.; Table 4) is comparable to values common for Switzerland (Bussink (1994). The EF chosen includes a safety margin.
 
 +er_n2_cattle_grazing
-  value = 0.0
   ++units  
     en = -
   ++description
     Emission rate for manure application. Not considerd relevant
 
 +er_no_cattle_grazing
-  value = 0.0055
   ++units  
     en = -
   ++description
     Emission rate for manure application. Stehfest, Bouwman 2006
 
 +er_n2o_cattle_grazing
-  value = 0.0
   ++units  
     en = -
   ++description

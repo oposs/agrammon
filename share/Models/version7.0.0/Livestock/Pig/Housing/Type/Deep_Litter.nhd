@@ -17,7 +17,6 @@ Describes correction factors for the label deep litter pig housing system.
 
 *** technical ***
 +er
-  value = 0.486
   ++units  
     en = -
   ++description
@@ -27,7 +26,6 @@ Describes correction factors for the label deep litter pig housing system.
      
 
 +share_liquid
-  value = 0
   ++units  
     en = -
   ++description
