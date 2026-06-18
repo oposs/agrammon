@@ -6,6 +6,23 @@ use Agrammon::Inputs;
 class Agrammon::DataSource::JSON {
     method load($simulation-name, $dataset-id, $json-data) {
         my %input-data = from-json $json-data;
+        return self!build-input($simulation-name, $dataset-id, %input-data);
+    }
+
+    #| Parse a multi-dataset JSON *batch* payload into a list of Agrammon::Inputs.
+    #| The payload is an array of objects, each `{ simulation, dataset, data }`,
+    #| where `data` is the usual single-dataset module map. Used by the REST
+    #| batch run; datasets are returned in payload order.
+    method load-data($json-data) {
+        my $parsed = from-json $json-data;
+        die "JSON batch payload must be an array of \{ simulation, dataset, data } objects"
+            unless $parsed ~~ Positional;
+        return $parsed.map(-> %ds {
+            self!build-input(%ds<simulation> // '', %ds<dataset> // '', %ds<data> // %());
+        }).List;
+    }
+
+    method !build-input($simulation-name, $dataset-id, %input-data) {
         my $inputs = Agrammon::Inputs.new(:$simulation-name, :$dataset-id);
         for %input-data.kv -> $full-tax, $module-data {
             if $module-data ~~ Array {

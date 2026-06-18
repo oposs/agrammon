@@ -126,4 +126,21 @@ use Test;
     }
 }
 
+subtest "Parse multi-dataset CSV string (read-data)" => {
+    my $csv-data = 't/test-data/inputPlantproduction.csv'.IO.slurp;
+    my $ds = Agrammon::DataSource::CSV.new;
+    my @datasets = $ds.read-data($csv-data);
+    is @datasets.elems, 2, 'read-data() found 2 datasets in CSV string';
+    isa-ok @datasets[0], Agrammon::Inputs, 'Correct type';
+    is @datasets[0].simulation-name, 'TEST', 'Correct simulation name (ds1)';
+    is @datasets[0].dataset-id, 1, 'Correct dataset id (ds1)';
+    is @datasets[1].dataset-id, 2, 'Correct dataset id (ds2)';
+    is-deeply @datasets[0].input-hash-for('PlantProduction::AgriculturalArea'),
+        { agricultural_area => 20 },
+        'read-data() parsed ds1 module data correctly';
+    is-deeply @datasets[1].input-hash-for('PlantProduction::AgriculturalArea'),
+        { agricultural_area => 40 },
+        'read-data() parsed ds2 module data correctly';
+}
+
 done-testing;

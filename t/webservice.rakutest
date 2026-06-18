@@ -21,7 +21,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 54;
+plan 55;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -480,6 +480,25 @@ subtest "get-outputs-for-rest" => {
     # adapt to PlantProduction::CropResidues addition, 2026-05-07 (was 141)
     # adapt to current model output, 2026-05-22 (was 156)
     is $result[0]<value>, 220, "Got expected amount";
+}
+
+subtest "get-batch-outputs-for-rest" => {
+    # Batch payload: two datasets (each identical to the single-dataset fixture),
+    # run in parallel via the REST batch entry point.
+    my $batch-data = 't/test-data/inputs-batch.json'.IO.slurp;
+    ok $batch-data, "Read JSON batch file";
+    ok my @results = $ws.get-batch-outputs-for-rest(
+        $batch-data, 'application/json',
+        :format('application/json'),
+        :print-only('SummaryTotal'),
+    ), "Run batch";
+    is @results.elems, 2, "Got one result per dataset";
+    is @results[0]<simulation>, 'BatchSim', "Result keeps simulation name";
+    is @results[0]<dataset>, 'DS1', "First result is DS1 (order preserved)";
+    is @results[1]<dataset>, 'DS2', "Second result is DS2 (order preserved)";
+    is @results[0]<data>[0]<label>, 'Total', "Per-dataset output has expected label";
+    is @results[0]<data>[0]<value>, 220, "Per-dataset output has expected amount";
+    is @results[1]<data>[0]<value>, 220, "Both datasets computed identically";
 }
 
 

@@ -143,7 +143,14 @@ paths:
                                 contentType: text/csv
             responses:
                 '200':
-                    description: Simulation results; format depends on request accept header.
+                    description: >
+                        Simulation results; format depends on request accept header. In
+                        batch mode (simulation+dataset omitted) the JSON `outputs` field
+                        is an array of per-dataset results, each `{ simulation, dataset,
+                        data }` on success, `{ simulation, dataset, validationErrors }`
+                        when a dataset fails validation, or `{ simulation, dataset, error }`
+                        when it fails during the run; one bad dataset never aborts the
+                        batch. CSV/text results are concatenated per dataset.
                     content:
                         application/json:
                             schema:
@@ -221,18 +228,25 @@ components:
         Run:
             type: object
             required:
-                - simulation
-                - dataset
                 - inputs
             properties:
                 simulation:
-                    description: Comment to be included in the output.
+                    description: >
+                        Comment to be included in the output. Omit both `simulation`
+                        and `dataset` to run *all* datasets in the payload in parallel
+                        (batch mode); the response is then an array of per-dataset results.
                     type: string
                 dataset:
-                    description: Another comment to be included in the output.
+                    description: >
+                        Another comment to be included in the output. Omit both
+                        `simulation` and `dataset` to enable parallel batch mode.
                     type: string
                 inputs:
-                    description: Input data as CSV string or JSON
+                    description: >
+                        Input data. For a single dataset: CSV (`taxonomy;variable;value`)
+                        or JSON object. For batch mode (simulation+dataset omitted):
+                        multi-dataset CSV (`simulation;dataset;taxonomy;variable;value`)
+                        or a JSON array of `{ simulation, dataset, data }` objects.
                 technical:
                     description: filename of the technical file to use in simulation; defaults to `technical.cfg`
                     type: string
@@ -282,6 +296,12 @@ components:
                     enum:
                         - 'true'
                         - 'false'
+                degree:
+                    description: >
+                        Maximum number of datasets to process concurrently in batch
+                        mode (simulation+dataset omitted). Bounded to 1..16; defaults
+                        to 4. Ignored for single-dataset runs.
+                    type: string
         Error:
             required:
                 - error
