@@ -131,15 +131,19 @@ qx.Class.define('agrammon.module.input.regional.ConfigInstance', {
                         if (oo<10) {
                             oo = '0' + oo;
                         }
+                        // #431: identity is metadata (flattenedOf / flattenedKey),
+                        // not a parsed _flattenedNN_ name. The row name is
+                        // non-semantic.
                         newVar =
                             newData[i].clone(newData[i].getName()
-                                             +'_flattened'+oo+'_'+options[o]);
+                                             + '#flat#' + options[o]);
                         newVar.setLabels({  en: optionsLang[o]['en'],
                                             de: optionsLang[o]['de'],
                                             fr: optionsLang[o]['fr']
                                          });
-//                        newVar.setMetaData({type: 'integer'});
-                        newVar.setMetaData({type: 'percent'});
+                        newVar.setMetaData({ type: 'percent',
+                                             flattenedOf: newData[i].getName(),
+                                             flattenedKey: options[o] });
                         newVar.setValue(null);
                         newVar.setHelpIcon(null);
                         newVar.setHelpFunction(null);
