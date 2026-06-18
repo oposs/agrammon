@@ -1,5 +1,6 @@
 use v6;
 
+use IO::String;
 use Text::CSV;
 use Agrammon::DB::Tag;
 use Agrammon::DB::User;
@@ -442,14 +443,45 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         my $fh = IO::String.new($content);
         my $csv = Text::CSV.new;
         my $i = 0;
+        # Accumulate legacy `_flattenedNN_<key>` rows per (instance, marker var)
+        # and fold them into one store-flattened-data call (issue #431 boundary
+        # translation). Run-input CSV/JSON cannot carry flattening; only dataset
+        # imports can, so this is the sole compat surface.
+        my %flat;   # "$instance\0$base" => { var => …, instance => …, options => […], fractions => […] }
+        sub flush-flat() {
+            for %flat.values -> %g {
+                self.store-flattened-data(%g<var>, %g<instance>, %g<options>, %g<fractions>);
+                $i++;
+            }
+            %flat = ();
+        }
         while (my @row = $csv.getline($fh)) {
             my ($var-name, $value) = @row;
             next unless $var-name;
             # skip comments
             next if $var-name ~~ /^\#/;
+
+            if $var-name ~~ /^ (.+?) '[' (.+?) ']' (.*?) '_flattened' \d ** 1..2 '_' (.+) $/ {
+                my $base     = "$0\[]$2";            # marker var, instance-free
+                my $instance = ~$1;
+                my $key      = (~$3).subst(' ', '_', :g);
+                my $slot     = %flat{"$instance\0$base"} //= {
+                    :var($base), :$instance, :options([]), :fractions([])
+                };
+                $slot<options>.push: $key;
+                $slot<fractions>.push: $value;
+                next;
+            }
+            # A `=flattened` marker line for a var we're folding: skip it (the
+            # flattened row creation sets the marker itself).
+            if $value && $value eq 'flattened' {
+                next;
+            }
+
             self.store-input($var-name, $value);
             $i++;
         }
+        flush-flat();
         CATCH {
             .note;
             when CSV::Diag {
