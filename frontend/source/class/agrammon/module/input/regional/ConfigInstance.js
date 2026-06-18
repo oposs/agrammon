@@ -136,6 +136,11 @@ qx.Class.define('agrammon.module.input.regional.ConfigInstance', {
                         newVar.setMetaData({ type: 'percent',
                                              flattenedOf: newData[i].getName(),
                                              flattenedKey: fkey });
+                        // #431: clear the enum default ('*** Select ***') the
+                        // clone inherited from the marker, so empty percent
+                        // cells render blank instead of the SelectBox placeholder
+                        // (matches buildFlattenedRows on the load path).
+                        newVar.setDefaultValue(null);
                         newVar.setValue(null);
                         newVar.setHelpIcon(null);
                         newVar.setHelpFunction(null);
