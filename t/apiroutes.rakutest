@@ -38,6 +38,15 @@ my $fake-store = mocked(Agrammon::Web::Service,
                                        :$include-filters, :$all-filters, :$compact-output, :$user {
             "Test results"
         },
+        get-batch-outputs-for-rest => -> $input-data, $type,
+                                       :$model-version, :$variants, :$technical-file,
+                                       :$language, :$format, :$print-only, :$report-selected,
+                                       :$include-filters, :$all-filters, :$compact-output, :$degree, :$user {
+            [
+                %( simulation => 'Test', dataset => '1', data => "Batch results 1\n" ),
+                %( simulation => 'Test', dataset => '2', data => "Batch results 2\n" ),
+            ]
+        },
         create-account => -> $email, $password, $firstname, $lastname, $org, $language, $role {
             $email
         },
@@ -121,6 +130,54 @@ sub make-body(%fields?) {
         ),
         |%fields
     ]
+}
+
+sub make-batch-body(%fields?) {
+    [
+        Cro::HTTP::Body::MultiPartFormData::Part.new(
+            headers => [
+                Cro::HTTP::Header.new(
+                    :name('Content-type'),
+                    :value('text/csv')
+                )
+            ],
+            :name('inputs'),
+            :filename('test.csv'),
+            :body-blob("Test;1;Some::Module;var;1\nTest;2;Some::Module;var;2".encode)
+        ),
+        |%fields
+    ]
+}
+
+subtest 'Run simulation (batch)' => {
+    subtest 'Omitting simulation+dataset triggers batch run' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/run', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body(make-batch-body(%{}))
+                ),
+                status => 200,
+            };
+            check-mock $fake-store,
+                *.called('get-batch-outputs-for-rest', times => 1),
+                *.called('get-outputs-for-rest', times => 0);
+        }
+    }
+
+    subtest 'Batch run accepts bounded degree parameter' => {
+        test-service rest-api-routes($schema, $fake-store), :$fake-auth, {
+            test-given '/run', {
+                test post(
+                    :content-type('multipart/form-data'),
+                    :body(make-batch-body(%{ :degree('8') }))
+                ),
+                status => 200,
+            };
+            check-mock $fake-store,
+                *.called('get-batch-outputs-for-rest', times => 2);
+        }
+    }
 }
 
 subtest 'Run simulation' => {

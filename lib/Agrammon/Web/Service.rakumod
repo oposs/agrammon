@@ -386,6 +386,130 @@ class Agrammon::Web::Service {
         return $result;
     }
 
+    #| Run *all* datasets contained in a single REST payload concurrently against
+    #| one shared, read-only model (issue #569). Mirrors the CLI's
+    #| `race ... .race(:degree)` pattern: $model.run is reentrant (fresh Outputs
+    #| per run, per-call dynamic vars), so no extra locking is needed. Returns an
+    #| ordered list of per-dataset result hashes — `{ simulation, dataset, data }`
+    #| on success or `{ simulation, dataset, validationErrors }` when a dataset
+    #| fails validation — so one bad dataset never aborts the whole batch.
+    method get-batch-outputs-for-rest(
+        $input-data, InputFormats $type,
+        :$model-version, :$variants, :$technical-file,
+        :$language = 'de', OutputFormats :$format!, :$print-only, :$report-selected, :$user,
+        :$include-filters = False, :$all-filters = False, :$compact-output, :$degree
+    ) {
+        my @inputs = do given $type {
+            when 'text/csv'         { Agrammon::DataSource::CSV.new.read-data($input-data) }
+            when 'application/json' { Agrammon::DataSource::JSON.new.load-data($input-data) }
+            default { die "Batch run is not supported for input format '$type'"; }
+        }
+
+        my $model;
+        if $model-version {
+            my $model-top   = $!cfg.model-top;
+            my $model-path  = self.model.path.IO.parent.&child-secure($model-version).&child-secure($model-top);
+            my $module      = $model-path.extension('').basename;
+            my $module-path = $model-path.parent;
+            $model = timed "Load model variant $variants from $model-path", {
+                load-model-using-cache(agrammon-cache-dir(), $module-path, $module);
+            };
+        }
+        else {
+            $model = $!model;
+        }
+        my %technical = $technical-file
+            ?? load-technical(self.model.path, $technical-file)
+            !! %!technical-parameters;
+
+        my @print-set = ($print-only).split(',') if $print-only;
+
+        # Bound the concurrency so a single request cannot starve the server.
+        # Coerce defensively: a missing or non-numeric degree falls back to 4.
+        my $degree-bounded = (try { ($degree // 4).Int }) // 4;
+        $degree-bounded = 1  if $degree-bounded < 1;
+        $degree-bounded = 16 if $degree-bounded > 16;
+
+        my @results = Any xx @inputs.elems;   # pre-sized: distinct-index writes are safe
+        return @results unless @inputs;
+
+        # The model + output machinery build several lazy caches on first use
+        # (e.g. the `||=` output-label/format/order caches) that are not safe to
+        # build concurrently. So run the FIRST dataset single-threaded to warm
+        # all of that shared state — its result is kept, not wasted — and only
+        # then race the remaining datasets against the now-warm model. (#569)
+        @results[0] = self!run-one-for-rest(
+            @inputs[0], $model, %technical, $language, $format, @print-set,
+            $include-filters, $all-filters, $compact-output
+        );
+        race for (1 ..^ @inputs.elems).race(:degree($degree-bounded), :1batch) -> $i {
+            @results[$i] = self!run-one-for-rest(
+                @inputs[$i], $model, %technical, $language, $format, @print-set,
+                $include-filters, $all-filters, $compact-output
+            );
+        }
+        return @results;
+    }
+
+    #| Validate, run and format a single dataset for a REST batch. Validation
+    #| and run failures are captured into the result hash (validationErrors /
+    #| error) so that one bad dataset never aborts the whole batch. (#569)
+    method !run-one-for-rest(
+        $input, $model, %technical, $language, $format, @print-set,
+        $include-filters, $all-filters, $compact-output
+    ) {
+        my @validation-errors = validation-errors($model, $input);
+        if @validation-errors {
+            return %(
+                simulation       => $input.simulation-name,
+                dataset          => $input.dataset-id,
+                validationErrors => @validation-errors.map(*.message).List,
+            );
+        }
+        my $data;
+        my $run-error;
+        {
+            $input.apply-defaults($model, %technical);
+            my $outputs = $model.run(:$input, :%technical);
+            $data = self!format-rest-output(
+                $format, $input, $model, $outputs,
+                $language, @print-set, $include-filters, $all-filters, $compact-output
+            );
+            CATCH { default { $run-error = .message } }
+        }
+        return $run-error.defined
+            ?? %( simulation => $input.simulation-name, dataset => $input.dataset-id, error => $run-error )
+            !! %( simulation => $input.simulation-name, dataset => $input.dataset-id, data => $data );
+    }
+
+    #| Format the outputs of one dataset for a REST (batch) response. JSON returns
+    #| the structured records (serialised by the route); CSV/text return a string.
+    method !format-rest-output(
+        $format, $input, $model, $outputs,
+        $language, @print-set, $include-filters, $all-filters, $compact-output
+    ) {
+        given $format {
+            when 'text/csv' {
+                return output-as-csv(
+                    $input.simulation-name, $input.dataset-id, $model,
+                    $outputs, $language, @print-set, $include-filters, :$all-filters
+                ) ~ "\n";
+            }
+            when 'application/json' {
+                return output-as-json(
+                    $model, $outputs, $language, @print-set, $include-filters, :$all-filters,
+                    :compact-output( ($compact-output // '') eq 'true')
+                );
+            }
+            when 'text/plain' {
+                return output-as-text(
+                    $model, $outputs, $language, @print-set, $include-filters, :$all-filters
+                ) ~ "\n";
+            }
+            default { die "Batch run is not supported for output format '$format'"; }
+        }
+    }
+
     method get-output-variables(Agrammon::Web::SessionUser $user, Str $dataset-name) {
         my $outputs = self!get-outputs($user, $dataset-name);
         my $results = $outputs<results>;

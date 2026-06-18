@@ -87,18 +87,56 @@ sub rest-api-routes (Str $schema, Agrammon::Web::Service $ws) is export {
 
         operation 'runSimulation', -> APIUser $user, :$accept is header = 'text/plain' {
             request-body 'multipart/form-data' => -> (
-                :$simulation!,  :$dataset!, :$inputs!, :$technical='',
+                :$simulation = '', :$dataset = '', :$inputs!, :$technical='',
                 :$model = 'version6', :$variants = 'Base', :$language = 'de',
                 :$print-only = '', :$report-selected = 0,
                 :$compact-output = 'true',
-                :$include-filters = 'false', :$all-filters = 'false'
+                :$include-filters = 'false', :$all-filters = 'false',
+                :$degree = ''
             ) {
                 my $type = $inputs.content-type;
+                # Batch mode: when neither simulation nor dataset is given, run *all*
+                # datasets in the payload concurrently and return an array of results.
+                my $batch = (~$simulation eq '' and ~$dataset eq '');
                 if not ($type eq 'application/json' or $type eq 'text/csv' or $type eq 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
                     my $error = "Content type is '$type', must be 'application/json', 'text/csv' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'";
                     $accept eq 'application/json'
                         ?? bad-request 'application/json', %( :$error )
                         !! bad-request 'text/plain', $error ~ "\n";
+                }
+                elsif $batch and $accept eq 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' {
+                    my $error = "Excel output is not supported for batch runs; provide 'simulation' and 'dataset' for a single-dataset Excel run";
+                    bad-request 'text/plain', $error ~ "\n";
+                }
+                elsif $batch {
+                    my $input-data = $inputs.body-text;
+                    my $results = $ws.get-batch-outputs-for-rest(
+                        $input-data, ~$type,
+                        :model-version(~$model), :variants(~$variants), :technical-file(~$technical),
+                        :language(~$language), :format($accept), :print-only(~$print-only), :$user, :report-selected(~$report-selected),
+                        :$compact-output,
+                        :include-filters($include-filters eq 'true'), :all-filters($all-filters eq 'true'),
+                        :degree(~$degree eq '' ?? Int !! ~$degree)
+                    );
+                    if $accept eq 'application/json' {
+                        content $accept, %(
+                            outputs => @($results),
+                            model => %(
+                                version => ~$model,
+                                technical => ~$technical,
+                                variants => ~$variants
+                            )
+                        )
+                    }
+                    else {
+                        # CSV / text: concatenate the per-dataset outputs; report any
+                        # validation or run failures as comment lines so the batch
+                        # is not lost.
+                        content $accept, @($results).map({
+                            .<data> // ("# {.<simulation>}/{.<dataset>}: "
+                                ~ (.<validationErrors> // [.<error> // 'unknown error']).join('; ') ~ "\n")
+                        }).join;
+                    }
                 }
                 else {
                     my $input-data = $inputs.body-text;

@@ -308,7 +308,8 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
     my $rc = Agrammon::ResultCollector.new;
     my atomicint $n = 0;
     my class X::EarlyFinish is Exception {}
-    race for $ds.read($fh).race(:$batch, :$degree) -> $input {
+
+    my sub process-dataset($input) {
         my $my-n = ++⚛$n;
         if validation-errors($model, $input) -> @validation-errors {
             $rc.add-validation-errors($input.simulation-name, $input.dataset-id, @validation-errors);
@@ -361,6 +362,20 @@ sub run (Str $model-filename, IO::Path $input-path, $technical-file, $variants, 
             note "Finished after $my-n datasets";
             die X::EarlyFinish.new;
         };
+    }
+
+    # The shared, read-only model builds several lazy `||=` caches on first use
+    # (output labels/format/order, …) during result formatting, and that build
+    # is not atomic. So process the FIRST dataset single-threaded to warm all
+    # shared state before racing the rest — otherwise the parallel formatters
+    # can race to build those caches and produce wrong results. (issue #569)
+    my $iter := $ds.read($fh).iterator;
+    my $first := $iter.pull-one;
+    unless $first =:= IterationEnd {
+        process-dataset($first);
+        race for Seq.new($iter).race(:$batch, :$degree) -> $input {
+            process-dataset($input);
+        }
     }
     return $rc;
     CATCH {

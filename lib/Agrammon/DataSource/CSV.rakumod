@@ -26,23 +26,49 @@ class Agrammon::DataSource::CSV {
     }
 
     method !group-input(@group) {
-        start {
-            my $input = Agrammon::Inputs.new(simulation-name => @group[0][0], dataset-id => @group[0][1]);
-            for @group {
-                my $full-tax = .[2];
-                if $full-tax.index('[') -> $sub-start {
-                    my $tax = $full-tax.substr(0, $sub-start);
-                    my $sub-end = $full-tax.index(']');
-                    my $instance = $full-tax.substr($sub-start + 1, ($sub-end - $sub-start) - 1);
-                    my $sub-tax = $full-tax.substr($sub-end + 1);
-                    $input.add-multi-input($tax, $instance, $sub-tax ?? $sub-tax.substr(2) !! '', .[3], maybe-numify(.[4]))
-                }
-                else {
-                    $input.add-single-input(.[2], .[3], maybe-numify(.[4]));
-                }
+        start { self!build-input(@group) }
+    }
+
+    #| Build one Agrammon::Inputs from a group of rows in the multi-dataset CSV
+    #| layout (columns: simulation; dataset; taxonomy; variable; value).
+    method !build-input(@group) {
+        my $input = Agrammon::Inputs.new(simulation-name => @group[0][0], dataset-id => @group[0][1]);
+        for @group {
+            my $full-tax = .[2];
+            if $full-tax.index('[') -> $sub-start {
+                my $tax = $full-tax.substr(0, $sub-start);
+                my $sub-end = $full-tax.index(']');
+                my $instance = $full-tax.substr($sub-start + 1, ($sub-end - $sub-start) - 1);
+                my $sub-tax = $full-tax.substr($sub-end + 1);
+                $input.add-multi-input($tax, $instance, $sub-tax ?? $sub-tax.substr(2) !! '', .[3], maybe-numify(.[4]))
             }
-            $input
+            else {
+                $input.add-single-input(.[2], .[3], maybe-numify(.[4]));
+            }
         }
+        $input
+    }
+
+    #| Parse a multi-dataset CSV *string* (same layout as read()) into a list of
+    #| Agrammon::Inputs, one per dataset, in first-seen order. Used by the REST
+    #| batch run; rows are grouped by the dataset column (index 1).
+    method read-data(Str $csv-data) {
+        my @inputs;
+        my @group;
+        my $prev;
+        for $csv-data.split("\n") -> $line {
+            next unless $line.chars;
+            my @row = $line.split(';');
+            next unless @row[1].defined && @row[1].chars;
+            if $prev.defined && @row[1] ne $prev {
+                @inputs.push: self!build-input(@group);
+                @group = [];
+            }
+            @group.push: @row;
+            $prev = @row[1];
+        }
+        @inputs.push: self!build-input(@group) if @group;
+        return @inputs;
     }
 
     method load($simulation-name, $dataset-id, $csv-data) {

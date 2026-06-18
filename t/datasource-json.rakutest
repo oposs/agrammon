@@ -34,4 +34,20 @@ subtest "Multi-instance data" => {
     }
 }
 
+subtest "Load batch payload (load-data)" => {
+    my $batch-data = 't/test-data/inputs-batch.json'.IO.slurp;
+    my $data-source = Agrammon::DataSource::JSON.new;
+    my @datasets = $data-source.load-data($batch-data);
+    is @datasets.elems, 2, "Found 2 datasets in batch payload";
+    isa-ok @datasets[0], Agrammon::Inputs, 'Correct type';
+    is @datasets[0].simulation-name, 'BatchSim', 'Correct simulation name (ds1)';
+    is @datasets[0].dataset-id, 'DS1', 'Correct dataset id (ds1)';
+    is @datasets[1].dataset-id, 'DS2', 'Correct dataset id (ds2)';
+    is @datasets[0].all-inputs<PlantProduction::RecyclingFertiliser><compost>, 10,
+        "Per-dataset module data parsed correctly";
+
+    dies-ok { $data-source.load-data('{ "not": "an array" }') },
+        "Non-array batch payload is rejected";
+}
+
 done-testing;

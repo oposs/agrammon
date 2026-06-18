@@ -1,0 +1,132 @@
+use v6;
+# Register the model cache dir in the repo chain before any Agrammon::* load
+# (see lib/Agrammon/ModelCache.rakumod for the 2026.04 compunit-identity gotcha).
+use lib %*ENV<HOME> ~ '/.agrammon';
+
+use Agrammon::Config;
+use Agrammon::Model;
+use Agrammon::ModelCache;
+use Agrammon::Performance;
+use Agrammon::TechnicalParser;
+use Agrammon::Web::Service;
+use Test;
+
+# Exercises the REST batch entry point get-batch-outputs-for-rest (issue #569)
+# directly against the shipped v6.5.2 model. No database is involved: the
+# Service is constructed with an already-loaded model + technical parameters,
+# exactly as the web app does, and the batch method only parses, runs and
+# formats — so this runs as a plain unit test.
+
+my $cfg-file = %*ENV<AGRAMMON_CFG> // 't/test-data/agrammon.cfg.yaml';
+
+my $cfg = Agrammon::Config.new;
+lives-ok { $cfg.load($cfg-file) }, "Load config from $cfg-file";
+
+my $path = $*PROGRAM.parent.add('../share/Models/version6.5.2/');
+my $model;
+lives-ok { $model = load-model-using-cache($*HOME.add('.agrammon'), $path, 'End') },
+    "Load v6.5.2 model";
+
+my $tech-input = $path.add('technical.cfg');
+my %technical-parameters = do {
+    my $params = parse-technical($tech-input.IO.slurp);
+    %($params.technical.map(-> %module {
+        %module.keys[0] => %(%module.values[0].map({ .name => .value }))
+    }));
+};
+
+my $ws = Agrammon::Web::Service.new(:$cfg, :$model, :%technical-parameters);
+
+subtest 'JSON batch run (get-batch-outputs-for-rest)' => {
+    my $batch-data = 't/test-data/inputs-batch.json'.IO.slurp;
+    my @results = $ws.get-batch-outputs-for-rest(
+        $batch-data, 'application/json',
+        :format('application/json'),
+        :print-only('SummaryTotal'),
+    );
+    is @results.elems, 2, 'One result per dataset';
+    is @results[0]<simulation>, 'BatchSim', 'Result keeps simulation name';
+    is @results[0]<dataset>, 'DS1', 'First result is DS1 (input order preserved)';
+    is @results[1]<dataset>, 'DS2', 'Second result is DS2 (input order preserved)';
+    is @results[0]<data>[0]<label>, 'Total', 'Per-dataset output has expected label';
+    is @results[0]<data>[0]<value>, 220, 'Per-dataset output has expected amount';
+    is @results[1]<data>[0]<value>, 220, 'Both datasets computed identically';
+}
+
+subtest 'Batch result matches single-dataset run' => {
+    # The same dataset, run singly, must produce the same total — proving the
+    # parallel batch path is numerically identical to the existing single path.
+    my $single-data = 't/test-data/inputs-version6.json'.IO.slurp;
+    my $single = $ws.get-outputs-for-rest(
+        'Agrammon Test', 'Version6', $single-data, 'application/json',
+        :format('application/json'), :print-only('SummaryTotal'),
+    );
+    is $single[0]<value>, 220, 'Single run total is 220';
+
+    my $batch-data = 't/test-data/inputs-batch.json'.IO.slurp;
+    my @batch = $ws.get-batch-outputs-for-rest(
+        $batch-data, 'application/json',
+        :format('application/json'), :print-only('SummaryTotal'),
+    );
+    is @batch[0]<data>[0]<value>, $single[0]<value>,
+        'Batch per-dataset total equals single-run total';
+}
+
+subtest 'Per-dataset validation errors do not abort the batch' => {
+    # Two datasets: the first is the valid fixture; the second is empty, so it
+    # fails validation. The batch must still return both, the bad one carrying
+    # validationErrors rather than crashing the whole request.
+    use JSON::Fast;
+    my $valid = from-json('t/test-data/inputs-version6.json'.IO.slurp);
+    my $payload = to-json([
+        %( simulation => 'S', dataset => 'good', data => $valid ),
+        %( simulation => 'S', dataset => 'bad',  data => %() ),
+    ]);
+    my @results = $ws.get-batch-outputs-for-rest(
+        $payload, 'application/json',
+        :format('application/json'), :print-only('SummaryTotal'),
+    );
+    is @results.elems, 2, 'Both datasets returned';
+    is @results[0]<dataset>, 'good', 'Good dataset first';
+    ok @results[0]<data>:exists, 'Good dataset has data';
+    is @results[0]<data>[0]<value>, 220, 'Good dataset still computed correctly';
+    is @results[1]<dataset>, 'bad', 'Bad dataset second';
+    nok @results[1]<data>:exists, 'Bad dataset has no data';
+    ok (@results[1]<validationErrors>:exists or @results[1]<error>:exists),
+        'Bad dataset reports a per-dataset problem (validationErrors or error)';
+}
+
+subtest 'Concurrency stress: many datasets all compute identically' => {
+    # Regression guard for the first-use lazy-cache race (#569): run many copies
+    # of the same dataset in parallel; every one must yield the same total.
+    use JSON::Fast;
+    my $one = from-json('t/test-data/inputs-version6.json'.IO.slurp);
+    my $payload = to-json((^12).map({ %( simulation => 'S', dataset => "D$_", data => $one ) }).Array);
+    my @results = $ws.get-batch-outputs-for-rest(
+        $payload, 'application/json',
+        :format('application/json'), :print-only('SummaryTotal'), :degree(8),
+    );
+    is @results.elems, 12, 'All 12 datasets returned';
+    my @totals = @results.map(*.<data>[0]<value>);
+    is @totals.unique.elems, 1, 'All datasets produced an identical total (no race)';
+    is @totals[0], 220, 'Total is the expected 220';
+}
+
+subtest 'CSV batch run dispatch' => {
+    # Proves the CSV batch wiring (multi-dataset string -> per-dataset results).
+    # This fixture only carries PlantProduction inputs, so against the full End
+    # model each dataset fails validation — which is exactly what should be
+    # reported per dataset, one entry each, without aborting the batch.
+    my $csv-data = 't/test-data/inputPlantproduction.csv'.IO.slurp;
+    my @results = $ws.get-batch-outputs-for-rest(
+        $csv-data, 'text/csv',
+        :format('text/csv'),
+    );
+    is @results.elems, 2, 'One result per CSV dataset';
+    for @results.kv -> $i, $r {
+        ok ($r<data>:exists or $r<validationErrors>:exists or $r<error>:exists),
+            "CSV dataset $i produced a per-dataset result";
+    }
+}
+
+done-testing;
