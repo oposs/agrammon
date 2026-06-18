@@ -163,6 +163,20 @@ qx.Class.define('agrammon.module.input.Variable', {
             return labels;
         },
 
+        // #431: per-language labels for an option by its canonical enum key
+        // (meta.options[i][2], underscore form), independent of the [0]
+        // underscore->space display label. Returns the {en,de,fr,...} hash or
+        // null if the key is unknown.
+        getOptionLabelsByKey: function(key) {
+            var opts = this.getMetaData()['options'];
+            var lang = this.getMetaData()['optionsLang'];
+            if (!opts || !lang) { return null; }
+            for (var i = 0; i < opts.length; i++) {
+                if (opts[i][2] === key) { return lang[i]; }
+            }
+            return null;
+        },
+
         cloneLabels: function() {
             var newLabels = {};
             for (var key in this.getLabels()) {

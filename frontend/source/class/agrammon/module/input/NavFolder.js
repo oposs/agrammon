@@ -575,9 +575,9 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             }
             if (!marker) { return; }
             for (var j = 0; j < options.length; j++) {
-                var key    = options[j];
+                var key    = options[j];   // canonical underscore enum key
                 var rowName = markerName + '#flat#' + key;   // non-semantic, unique
-                var labels  = marker.getOptionLabels(key);
+                var labels  = marker.getOptionLabelsByKey(key) || {};
                 var v = marker.clone(rowName);
                 v.setType('percent');
                 v.setDefaultValue(null);

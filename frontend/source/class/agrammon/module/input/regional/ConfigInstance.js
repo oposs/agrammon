@@ -118,32 +118,24 @@ qx.Class.define('agrammon.module.input.regional.ConfigInstance', {
                 }
                 else if ( data[i][10] ) {
 //                    this.debug('Flattening '+data[i][4]);
-                    // these are the option keys
-                    var options = newData[i].getMetaOptions();
-                    // these are the multilingual option labels
+                    // #431: options[o][2] is the canonical underscore enum key;
+                    // optionsLang[o] the parallel per-language label hash.
+                    // Identity is metadata (flattenedOf / flattenedKey), not a
+                    // parsed _flattenedNN_ name; the row name is non-semantic.
+                    var options = newData[i].getMetaData()['options'];
                     var optionsLang = newData[i].getMetaOptionsLang();
-                    var newVar, o, oo, olen=options.length;
-                    oo = -1;
+                    var newVar, o, olen=options.length;
                     for (o=0; o<olen; o++) {
-                        // get order of flattened variables right
-//                        oo = olen-1-o;
-                          oo++;
-                        if (oo<10) {
-                            oo = '0' + oo;
-                        }
-                        // #431: identity is metadata (flattenedOf / flattenedKey),
-                        // not a parsed _flattenedNN_ name. The row name is
-                        // non-semantic.
-                        newVar =
-                            newData[i].clone(newData[i].getName()
-                                             + '#flat#' + options[o]);
+                        var fkey = options[o][2];
+                        newVar = newData[i].clone(newData[i].getName() + '#flat#' + fkey);
                         newVar.setLabels({  en: optionsLang[o]['en'],
                                             de: optionsLang[o]['de'],
                                             fr: optionsLang[o]['fr']
                                          });
+                        newVar.setType('percent');
                         newVar.setMetaData({ type: 'percent',
                                              flattenedOf: newData[i].getName(),
-                                             flattenedKey: options[o] });
+                                             flattenedKey: fkey });
                         newVar.setValue(null);
                         newVar.setHelpIcon(null);
                         newVar.setHelpFunction(null);
