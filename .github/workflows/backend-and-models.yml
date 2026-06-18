@@ -73,12 +73,16 @@ jobs:
             /var/cache/apt/archives
             /var/lib/apt/lists
           # Bump the suffix manually when the apt package list below changes.
-          key: ${{ matrix.os }}-apt-v2
+          key: ${{ matrix.os }}-apt-v3
 
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt-get install -y libperl-dev texlive texlive-luatex texlive-latex-recommended texlive-science texlive-latex-extra fonts-liberation
+          # fonts-liberation provides "Liberation Sans", the font the typst PDF
+          # template sets. LaTeX (texlive*) and Inline::Perl5 (libperl-dev) are no
+          # longer used: PDF export moved to typst, Excel export to the native
+          # Raku XLSXWriter.
+          sudo apt-get install -y fonts-liberation
 
       - name: Install typst
         run: |
@@ -88,19 +92,6 @@ jobs:
           tar -xJf /tmp/typst.tar.xz -C /tmp
           sudo install -m 0755 /tmp/typst-x86_64-unknown-linux-musl/typst /usr/local/bin/typst
           /usr/local/bin/typst --version
-
-      - name: Setup Perl modules cache
-        uses: actions/cache@v4
-        id: perlCache
-        with:
-          path: Inline/perl5
-          key: ${{ matrix.os }}-perl-${{ hashFiles('**/cpanfile', '**/cpanfile.snapshot') }}-excel-writer-xlsx-v1
-
-      - name: Install Perl modules
-        if: steps.perlCache.outputs.cache-hit != 'true'
-        run: |
-          sudo apt-get install -y cpanminus
-          cpanm --notest --local-lib=Inline/perl5 Excel::Writer::XLSX
 
       - name: Setup raku
         uses: Raku/setup-raku@v1
@@ -136,4 +127,4 @@ jobs:
 
       - name: Run backend tests
         run: |
-          PERL5LIB=Inline/perl5/lib/perl5 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l t
+          RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l t
