@@ -161,7 +161,7 @@ class Agrammon::Config {
             $v ~~ Associative && $v<title>
                 ?? %( |$v, title => %( $v<title>.map({ .key => .value.subst('%VERSION%', ~($v<version> // ''), :g) }) ) )
                 !! $v
-        }).list;
+        }).Array;
     }
 
     # User-visible short version label (e.g. '7.0'). Distinct from
