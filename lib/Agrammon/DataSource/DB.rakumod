@@ -115,7 +115,8 @@ class Agrammon::DataSource::DB does Agrammon::DB {
 
             for @flattened -> @f {
                 my ($tax, $sub, $var) = parse-branch-var(@f[0]);
-                my %value-percentages = @f[2].list Z=> @f[3].list>>.Numeric;
+                # An unset option (NULL fraction) counts as 0% for the run.
+                my %value-percentages = @f[2].list Z=> @f[3].list.map({ .defined ?? .Numeric !! 0 });
                 $dist-input.add-multi-input-flattened($tax, @f[1], $sub, $var, %value-percentages);
             }
 

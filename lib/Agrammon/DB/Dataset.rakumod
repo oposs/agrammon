@@ -917,7 +917,9 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
 
             my $var-id     = self!flattened-var-id($db, $instance-id, $var);
             my @opt-keys   = @options.map(*.subst(' ', '_', :g));
-            my @fracs      = @fractions.map(+*).Array;
+            # An unset percent arrives as undefined/'' and is stored as a NULL
+            # array element ("not yet set"), distinct from an explicit 0.
+            my @fracs      = @fractions.map({ $_.defined && $_ ne '' ?? +$_ !! Real }).Array;
 
             my $ret = $db.query(q:to/SQL/, $var-id, @opt-keys, @fracs);
                 INSERT INTO flattened (flattened_var, flattened_options, flattened_fractions)

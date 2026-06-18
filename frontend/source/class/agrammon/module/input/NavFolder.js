@@ -726,7 +726,11 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             var options = [], fractions = [];
             for (var i = 0; i < group.rows.length; i++) {
                 options.push(group.rows[i].key);
-                fractions.push(Number(group.rows[i].value) || 0);
+                // #431: keep unset cells empty (null) rather than coercing them
+                // to 0 — an empty percent means "not yet set", not zero. An
+                // explicitly typed 0 is preserved.
+                var rv = group.rows[i].value;
+                fractions.push(rv === '' || rv === null || rv === undefined ? null : Number(rv));
             }
             if (options.length === 0) { return; }
             var datasetName = '' + agrammon.Info.getInstance().getDatasetName();

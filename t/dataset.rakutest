@@ -10,7 +10,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 25;
+plan 26;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -390,6 +390,27 @@ transactionally {
         is-deeply [ %fd<options>.list, %fd<fractions>.list>>.Numeric ],
             [ [< deep_litter aviary floor_housing >], [50, 30, 20] ],
             'marker row carries the flattened distribution';
+    }
+
+    subtest 'store-flattened-data keeps unset percents NULL, not 0 (#431)' => {
+        plan 2;
+        # An empty percent cell (undefined) must round-trip as a NULL array
+        # element ("not yet set"), distinct from an explicit 0.
+        my $var = 'Livestock::Poultry[]::Housing::Type::housing_system';
+        $dataset = Agrammon::DB::Dataset.new(:name<BranchTest>, :$user,
+            :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).load;
+        $dataset.store-flattened-data($var, 'NullFlat',
+            ['deep litter', 'aviary', 'floor housing'], [100, Str, 0]);
+        my $db = $*AGRAMMON-DB-HANDLE;
+        my @row = $db.query(q:to/SQL/, $var).hashes;
+            SELECT f.flattened_fractions AS fr
+              FROM flattened f JOIN data d ON f.flattened_var=d.data_id
+              JOIN data_instance di ON d.data_instance_id=di.data_instance_id
+             WHERE di.data_instance_name='NullFlat' AND d.data_var=$1
+            SQL
+        is @row[0]<fr>[1].defined, False, 'unset percent stored as NULL';
+        is-deeply [ @row[0]<fr>[0].Numeric, @row[0]<fr>[2].Numeric ], [100e0, 0e0],
+            'explicit 100 and 0 preserved around the NULL';
     }
 
     subtest 'upload-data translates legacy _flattenedNN_ rows into the flattened table (#431)' => {
