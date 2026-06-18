@@ -91,6 +91,16 @@ sub prepare-test-db($uid) is export {
     SQL
 
     $db.query(q:to/SQL/);
+    CREATE TABLE IF NOT EXISTS flattened (
+        flattened_id        SERIAL    NOT NULL PRIMARY KEY,
+        flattened_var       INTEGER   NOT NULL UNIQUE REFERENCES data(data_id) ON DELETE CASCADE,
+        flattened_options   TEXT[]    NOT NULL,
+        flattened_fractions NUMERIC[] NOT NULL,
+        CHECK (cardinality(flattened_options) = cardinality(flattened_fractions))
+    )
+    SQL
+
+    $db.query(q:to/SQL/);
     INSERT INTO pers (pers_id, pers_email, pers_password)
               VALUES (-42000, 'foo@agrammon.ch', 'XXX')
     SQL

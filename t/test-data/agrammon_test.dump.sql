@@ -265,6 +265,43 @@ ALTER SEQUENCE public.branches_branches_id_seq OWNED BY public.branches.branches
 
 
 --
+-- Name: flattened; Type: TABLE; Schema: public; Owner: agrammon
+--
+
+CREATE TABLE public.flattened (
+    flattened_id integer NOT NULL,
+    flattened_var integer NOT NULL,
+    flattened_options text[] NOT NULL,
+    flattened_fractions numeric[] NOT NULL,
+    CONSTRAINT flattened_card CHECK ((cardinality(flattened_options) = cardinality(flattened_fractions)))
+);
+
+
+ALTER TABLE public.flattened OWNER TO agrammon;
+
+--
+-- Name: flattened_flattened_id_seq; Type: SEQUENCE; Schema: public; Owner: agrammon
+--
+
+CREATE SEQUENCE public.flattened_flattened_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.flattened_flattened_id_seq OWNER TO agrammon;
+
+--
+-- Name: flattened_flattened_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agrammon
+--
+
+ALTER SEQUENCE public.flattened_flattened_id_seq OWNED BY public.flattened.flattened_id;
+
+
+--
 -- Name: data_data_id_seq; Type: SEQUENCE; Schema: public; Owner: agrammon
 --
 
@@ -578,6 +615,13 @@ ALTER TABLE ONLY public.branches ALTER COLUMN branches_id SET DEFAULT nextval('p
 
 
 --
+-- Name: flattened flattened_id; Type: DEFAULT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.flattened ALTER COLUMN flattened_id SET DEFAULT nextval('public.flattened_flattened_id_seq'::regclass);
+
+
+--
 -- Name: data data_id; Type: DEFAULT; Schema: public; Owner: agrammon
 --
 
@@ -660,6 +704,14 @@ COPY public.branches (branches_id, branches_row_var, branches_col_var, branches_
 38877	85035421	85035422	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,no_manure_belt}	{{10,0,0,0,0},{0,0,20,0,0},{5,20,0,0,0},{0,0,15,20,10}}
 39218	85253530	85253531	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,no_manure_belt}	{{10,0,0,0,0},{0,0,20,0,0},{5,20,0,0,0},{0,0,15,20,10}}
 38871	85014767	85014769	{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}	{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}	{{0,0,0,0,0,0},{0,15.9,31.5,33.5,0,0},{0,0,0,0,0,2.2},{0,0,0,0,0,16.9}}
+\.
+
+
+--
+-- Data for Name: flattened; Type: TABLE DATA; Schema: public; Owner: agrammon
+--
+
+COPY public.flattened (flattened_id, flattened_var, flattened_options, flattened_fractions) FROM stdin;
 \.
 
 
@@ -1579,6 +1631,13 @@ SELECT pg_catalog.setval('public.branches_branches_id_seq', 41412, true);
 
 
 --
+-- Name: flattened_flattened_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agrammon
+--
+
+SELECT pg_catalog.setval('public.flattened_flattened_id_seq', 1, false);
+
+
+--
 -- Name: data_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: agrammon
 --
 
@@ -1671,6 +1730,22 @@ ALTER TABLE ONLY public.branches
 
 ALTER TABLE ONLY public.branches
     ADD CONSTRAINT branches_pkey PRIMARY KEY (branches_id);
+
+
+--
+-- Name: flattened flattened_pkey; Type: CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.flattened
+    ADD CONSTRAINT flattened_pkey PRIMARY KEY (flattened_id);
+
+
+--
+-- Name: flattened flattened_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.flattened
+    ADD CONSTRAINT flattened_var_key UNIQUE (flattened_var);
 
 
 --
@@ -1844,6 +1919,14 @@ ALTER TABLE ONLY public.branches
 
 
 --
+-- Name: flattened flattened_var_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.flattened
+    ADD CONSTRAINT flattened_var_fkey FOREIGN KEY (flattened_var) REFERENCES public.data(data_id) ON DELETE CASCADE;
+
+
+--
 -- Name: data data_data_dataset_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
 --
 
@@ -1955,6 +2038,20 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.branches TO agrammon_user;
 --
 
 GRANT SELECT,UPDATE ON SEQUENCE public.branches_branches_id_seq TO agrammon_user;
+
+
+--
+-- Name: TABLE flattened; Type: ACL; Schema: public; Owner: agrammon
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.flattened TO agrammon_user;
+
+
+--
+-- Name: SEQUENCE flattened_flattened_id_seq; Type: ACL; Schema: public; Owner: agrammon
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.flattened_flattened_id_seq TO agrammon_user;
 
 
 --

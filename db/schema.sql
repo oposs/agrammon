@@ -212,6 +212,43 @@ ALTER SEQUENCE public.branches_branches_id_seq OWNED BY public.branches.branches
 
 
 --
+-- Name: flattened; Type: TABLE; Schema: public; Owner: agrammon
+--
+
+CREATE TABLE public.flattened (
+    flattened_id integer NOT NULL,
+    flattened_var integer NOT NULL,
+    flattened_options text[] NOT NULL,
+    flattened_fractions numeric[] NOT NULL,
+    CONSTRAINT flattened_card CHECK ((cardinality(flattened_options) = cardinality(flattened_fractions)))
+);
+
+
+ALTER TABLE public.flattened OWNER TO agrammon;
+
+--
+-- Name: flattened_flattened_id_seq; Type: SEQUENCE; Schema: public; Owner: agrammon
+--
+
+CREATE SEQUENCE public.flattened_flattened_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.flattened_flattened_id_seq OWNER TO agrammon;
+
+--
+-- Name: flattened_flattened_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: agrammon
+--
+
+ALTER SEQUENCE public.flattened_flattened_id_seq OWNED BY public.flattened.flattened_id;
+
+
+--
 -- Name: data_data_id_seq; Type: SEQUENCE; Schema: public; Owner: agrammon
 --
 
@@ -469,6 +506,13 @@ ALTER TABLE ONLY public.branches ALTER COLUMN branches_id SET DEFAULT nextval('p
 
 
 --
+-- Name: flattened flattened_id; Type: DEFAULT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.flattened ALTER COLUMN flattened_id SET DEFAULT nextval('public.flattened_flattened_id_seq'::regclass);
+
+
+--
 -- Name: data data_id; Type: DEFAULT; Schema: public; Owner: agrammon
 --
 
@@ -546,6 +590,22 @@ ALTER TABLE ONLY public.branches
 
 ALTER TABLE ONLY public.branches
     ADD CONSTRAINT branches_pkey PRIMARY KEY (branches_id);
+
+
+--
+-- Name: flattened flattened_pkey; Type: CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.flattened
+    ADD CONSTRAINT flattened_pkey PRIMARY KEY (flattened_id);
+
+
+--
+-- Name: flattened flattened_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.flattened
+    ADD CONSTRAINT flattened_var_key UNIQUE (flattened_var);
 
 
 --
@@ -689,6 +749,14 @@ ALTER TABLE ONLY public.branches
 
 
 --
+-- Name: flattened flattened_var_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.flattened
+    ADD CONSTRAINT flattened_var_fkey FOREIGN KEY (flattened_var) REFERENCES public.data(data_id) ON DELETE CASCADE;
+
+
+--
 -- Name: data data_data_dataset_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
 --
 
@@ -803,6 +871,20 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.branches TO agrammon_user;
 --
 
 GRANT SELECT,UPDATE ON SEQUENCE public.branches_branches_id_seq TO agrammon_user;
+
+
+--
+-- Name: TABLE flattened; Type: ACL; Schema: public; Owner: agrammon
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.flattened TO agrammon_user;
+
+
+--
+-- Name: SEQUENCE flattened_flattened_id_seq; Type: ACL; Schema: public; Owner: agrammon
+--
+
+GRANT SELECT,UPDATE ON SEQUENCE public.flattened_flattened_id_seq TO agrammon_user;
 
 
 --
