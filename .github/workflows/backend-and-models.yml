@@ -111,19 +111,20 @@ jobs:
           mkdir -p $GITHUB_WORKSPACE/.raku
           zef --install-to=inst#$GITHUB_WORKSPACE/.raku --debug --deps-only --/test --test-depends install .
 
-      - name: Checksum model dir
-        run: |
-          find  t/test-data/Models/hr-inclNOx* -type f -print0 | sort -z | xargs -0 shasum > ./MODEL_MD5
-          cat ./MODEL_MD5
-          mkdir -p $HOME/.agrammon
-          touch $HOME/.agrammon/.gitkeep
+      - name: Prepare model cache dir
+        run: mkdir -p $HOME/.agrammon
 
       - name: Setup model cache
         uses: actions/cache@v4
         id: modelCache
         with:
           path: ~/.agrammon
-          key: AgrammonModels-${{ hashFiles('./MODEL_MD5') }}
+          # Key on the actual model sources the tests compile (the old key
+          # hashed t/test-data/Models/hr-inclNOx*, retired in #642, so it was an
+          # empty/constant hash → the cache was frozen and every model change
+          # forced a cold rebuild). Include os + raku-version because ~/.agrammon
+          # holds platform/compiler-specific precompiled bytecode.
+          key: AgrammonModels-${{ matrix.os }}-${{ matrix.raku-version }}-${{ hashFiles('share/Models/**', 't/test-data/Models/**') }}
 
       - name: Run backend tests
         run: |
