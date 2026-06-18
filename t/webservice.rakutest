@@ -504,7 +504,7 @@ transactionally {
 
                     # These variables should have all the same elements
                     next unless $var ~~ / '::animals' /;
-                    is-deeply $input.keys.sort, qw|branch defaults enum enumAliases filter gui help labels models options optionsLang order type units validator variable|,
+                    is-deeply $input.keys.sort, qw|branch defaults enumAliases filter gui help labels models options optionsLang order type units validator variable|,
                         "$var has expected keys";
                     subtest "$var" => {
                         is $input<branch>, 'false', 'branch is false';
