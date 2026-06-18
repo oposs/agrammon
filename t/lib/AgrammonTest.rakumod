@@ -133,6 +133,20 @@ sub prepare-test-db($uid) is export {
                  '{{0,0,0,0},{0,0,0,15.9},{31.5,33.5,0,0},{0,0,0,0},{0,2.2,0,0},{0,0,0,16.9}}')
     SQL
 
+    # Flattened input fixture (issue #431): one marker data row + one self-
+    # describing flattened row. housing_system distributed over 3 options.
+    $db.query(q:to/SQL/);
+    INSERT INTO data (data_id, data_dataset, data_var, data_instance_id, data_val)
+                 VALUES (-76315990, -42000, 'Livestock::Poultry[]::Housing::Type::housing_system', -91000, 'flattened')
+    SQL
+
+    $db.query(q:to/SQL/);
+    INSERT INTO flattened (flattened_id, flattened_var, flattened_options, flattened_fractions)
+         VALUES (-31000, -76315990,
+                 '{deep_litter,aviary,floor_housing}',
+                 '{50,30,20}')
+    SQL
+
     return 1;
 }
 
