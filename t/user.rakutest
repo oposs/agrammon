@@ -18,6 +18,12 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
 my $*AGRAMMON-DB-CONNECTION;
 my $cfg;
 
+# Unique per test process so DB-backed tests can run in parallel (prove6 -j)
+# without colliding on the globally-unique pers_email.
+my $username  = "agtest_$*PID";
+my $username2 = "agtest2_$*PID";
+my $username3 = "agtest3_$*PID";
+
 subtest 'Connect to database' => {
     my $conninfo;
     my $cfg-file;
@@ -35,13 +41,13 @@ subtest 'Connect to database' => {
 
 subtest 'Create user' => {
     ok my $user = Agrammon::DB::User.new(
-        :username<agtest>,
+        :$username,
         :firstname<XF>,
         :lastname<XL>,
         :organisation<XO>,
         :password<XP123456>,
     ), 'Create new user';
-    is $user.username,     'agtest', 'User has correct username';
+    is $user.username,     $username, 'User has correct username';
     is $user.firstname,    'XF',     'User has correct firstname';
     is $user.lastname,     'XL',     'User has correct lastname';
     is $user.organisation, 'XO',     'User has correct organisation';
@@ -51,9 +57,6 @@ subtest 'Create user' => {
 }
 
 transactionally {
-    my $username  = 'agtest';
-    my $username2 = 'agtest2';
-    my $username3 = 'agtest3';
     my $password = 'XP123456';
     my ($uid, $uid2, $uid3, $key);
 

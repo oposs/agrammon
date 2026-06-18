@@ -126,6 +126,18 @@ jobs:
           # holds platform/compiler-specific precompiled bytecode.
           key: AgrammonModels-${{ matrix.os }}-${{ matrix.raku-version }}-${{ hashFiles('share/Models/**', 't/test-data/Models/**') }}
 
+      # On a model-cache miss, build the shared ~/.agrammon model cache once
+      # single-threaded: the parallel test run below must only ever read it, not
+      # race to build it concurrently. DB tests skip under AGRAMMON_UNIT_TEST, so
+      # this is just the model-loading warm-up. Skipped when the cache restored.
+      - name: Warm model cache (cold runs only)
+        if: steps.modelCache.outputs.cache-hit != 'true'
+        run: |
+          AGRAMMON_UNIT_TEST=1 RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l t
+
       - name: Run backend tests
         run: |
-          RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l t
+          # -j4 matches the GitHub-hosted runner's vCPUs. Tests are parallel-safe:
+          # DB-backed files use per-process-unique usernames, and the model cache
+          # is pre-built (restored or warmed above) so it is read-only here.
+          RAKULIB=inst#$GITHUB_WORKSPACE/.raku $GITHUB_WORKSPACE/.raku/bin/prove6 -l -j4 t

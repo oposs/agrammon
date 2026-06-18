@@ -27,7 +27,9 @@ subtest 'Connect to database' => {
 
 transactionally {
 
-    my $username  = 'agtest';
+    # Unique per test process so DB-backed tests can run in parallel (prove6 -j)
+    # without colliding on the globally-unique pers_email.
+    my $username  = "agtest_$*PID";
     my $password = 'XP123456';
     my ($uid, $key);
 

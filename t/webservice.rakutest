@@ -30,7 +30,10 @@ if %*ENV<AGRAMMON_UNIT_TEST> {
 %*ENV<AGRAMMON_TESTING> = True;
 
 my $cfg-file = %*ENV<AGRAMMON_CFG> // "t/test-data/agrammon.cfg.yaml";
-my $username = 'agtest';
+# Unique per test process so DB-backed tests can run in parallel (prove6 -j)
+# without colliding on the globally-unique pers_email. Datasets/tags are
+# per-user, so they stay as-is once the owning user is unique.
+my $username = "agtest_$*PID";
 
 
 my $*AGRAMMON-DB-CONNECTION;
@@ -53,7 +56,7 @@ transactionally {
             :organisation<XO>,
             :password<XP123456>,
         ), 'Create new user';
-        is $user.username,     'agtest', 'User has correct username';
+        is $user.username,     $username, 'User has correct username';
         is $user.firstname,    'XF',     'User has correct firstname';
         is $user.lastname,     'XL',     'User has correct lastname';
         is $user.organisation, 'XO',     'User has correct organisation';
@@ -134,8 +137,8 @@ transactionally {
     }
 
     subtest "clone-dataset" => {
-        my $old-username = 'agtest';
-        my $new-username = 'agtest';
+        my $old-username = $username;
+        my $new-username = $username;
         my $old-dataset = 'MyTestDataset';
         my $new-dataset = 'MyTestDataset Kopie';
         lives-ok { $ws.clone-dataset($user, $old-username, $new-username, $old-dataset, $new-dataset) }, "Clone own dataset";
@@ -155,7 +158,7 @@ transactionally {
     my $newUser;
     subtest "create-account" => {
         my $key;
-        my $username = 'agtest2';
+        my $username = "agtest2_$*PID";
         ok $key = $ws.create-account(
             $username, 'myPassword',
             'Erika', 'Mustermann', 'MyOrg', 'user'
@@ -164,7 +167,7 @@ transactionally {
         ok $ws.activate-account($key), "Activate new user account";
         is $newUser.username, $username, "New user has right username=$username";
 
-        $username = 'agtest3';
+        $username = "agtest3_$*PID";
         ok $key= $ws.create-account(
             $username, 'myPassword',
             Any, Any, Any, 'user'
@@ -172,7 +175,7 @@ transactionally {
         $newUser = Agrammon::Web::SessionUser.new(:$username).load;
         is $newUser.username, $username, "New user has right username=$username";
 
-        $username = 'agtest4';
+        $username = "agtest4_$*PID";
         ok $key = $ws.create-account(
             $username, 'myPassword',
             Any, Any, Any, Any
