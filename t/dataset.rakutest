@@ -75,6 +75,11 @@ subtest 'Create dataset' => {
 }
 
 transactionally {
+    # Unique per test process so DB-backed tests can run in parallel (prove6 -j)
+    # without colliding on the globally-unique pers_email. (Dataset/tag names are
+    # per-user, so they stay as-is once the owner is unique.)
+    my $username  = "agtest_$*PID";
+    my $username2 = "agtest2_$*PID";
     my $dataset-name = 'agtest';
     my $password = 'XP123456';
     my $uid;
@@ -85,7 +90,7 @@ transactionally {
     subtest 'create-account()' => {
         plan 3;
         ok $user = Agrammon::DB::User.new(
-                :username<agtest>,
+                :username($username),
                 :firstname<XF>,
                 :lastname<XL>,
                 :organisation<XO>,
@@ -477,7 +482,7 @@ transactionally {
         my $name = 'ScopeOwner';
 
         my $user2 = Agrammon::DB::User.new(
-            :username<agtest2>, :firstname<YF>, :lastname<YL>,
+            :username($username2), :firstname<YF>, :lastname<YL>,
             :organisation<YO>, :password<YP123456>,
         );
         $user2.activate-account($user2.create-account('user'));
