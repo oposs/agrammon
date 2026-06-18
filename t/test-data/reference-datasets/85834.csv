@@ -1,0 +1,99 @@
+# Agrammon reference dataset 85834 — Milchwirtschaftsbetrieb (Beispiel)
+# Extracted from production DB (data_new), model 7.0.0, variant Base. Format: taxonomy;variable;value (DataSource::CSV.load).
+Storage::Slurry[Güllelager];volume;550
+Storage::SolidManure::Solid;share_covered_basin_pig_manure;0
+Storage::SolidManure::Solid;share_applied_direct_pig_manure;0
+Storage::SolidManure::Solid;share_covered_basin_cattle_manure;0
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Outdoor;grazing_days;205
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Outdoor;grazing_days;210
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Outdoor;grazing_days;190
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Outdoor;grazing_hours;24
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Outdoor;grazing_hours;24
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Outdoor;grazing_hours;12
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Outdoor;yard_days;160
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Outdoor;yard_days;155
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Outdoor;yard_days;165
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Outdoor;free_correction_factor;0
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Outdoor;free_correction_factor;0
+Livestock::DairyCow[Stall Milchkühe]::Outdoor;free_correction_factor;0
+Livestock::DairyCow[Stall Milchkühe]::Excretion;dimensioning_barn;30
+Livestock::DairyCow[Stall Milchkühe]::Housing::Floor;mitigation_housing_floor;none
+Livestock::DairyCow[Stall Milchkühe]::Outdoor;grazing_hours;8.5
+Livestock::DairyCow[Stall Milchkühe]::Outdoor;yard_days;175
+Livestock::DairyCow[Stall Milchkühe]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::DairyCow[Stall Milchkühe]::Outdoor;grazing_days;190
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Excretion;animals;6
+Storage::Slurry[Güllelager]::EFLiquid;contains_cattle_manure;yes
+Storage::Slurry[Güllelager]::EFLiquid;cover_type;solid_cover
+Storage::Slurry[Güllelager];mixing_frequency;7_to_12_times_per_year
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Excretion;animals;8
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+PlantProduction::RecyclingFertiliser;liquid_digestate;0
+PlantProduction::RecyclingFertiliser;solid_digestate;0
+PlantProduction::RecyclingFertiliser;compost;0
+Application::SolidManure::Cseason;appl_autumn_winter_spring;70
+Application::SolidManure::Cseason;appl_summer;30
+Application::SolidManure::CincorpTime;incorp_none;100
+Application::SolidManure::CincorpTime;incorp_gt3d;0
+Application::SolidManure::CincorpTime;incorp_lw3d;0
+Application::SolidManure::CincorpTime;incorp_lw1d;0
+Application::SolidManure::CincorpTime;incorp_lw8h;0
+Application::SolidManure::CincorpTime;incorp_lw4h;0
+Application::SolidManure::CincorpTime;incorp_lw1h;0
+Application::Slurry::Cfermented;fermented_slurry;0
+Application::Slurry::Cseason;appl_autumn_winter_spring;53
+Application::Slurry::Cseason;appl_summer;47
+Application::Slurry::Csoft;appl_hotdays;sometimes
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Excretion;dimensioning_barn;6
+Application::Slurry::Csoft;appl_evening;0
+Application::Slurry::Applrate;appl_rate;25
+Application::Slurry::Applrate;dilution_parts_water;1
+Application::Slurry::Ctech;share_deep_injection;0
+Application::Slurry::Ctech;share_shallow_injection;0
+Application::Slurry::Ctech;share_trailing_shoe;0
+Application::Slurry::Ctech;share_trailing_hose;100
+Storage::Slurry[Güllelager]::EFLiquid;contains_pig_manure;no
+PlantProduction::MineralFertiliser;mineral_fertiliser_ammoniumNitrate_amount;1481.5
+PlantProduction::MineralFertiliser;mineral_fertiliser_urea_amount;0.0
+Storage::Slurry[Güllelager]::EFLiquid;free_correction_factor;0
+Storage::Slurry[Güllelager];depth;2.8
+Storage::SolidManure::Solid;share_applied_direct_cattle_other_manure;0
+Storage::SolidManure::Poultry;share_covered_basin;0
+Storage::SolidManure::Poultry;share_applied_direct_poultry_manure;0
+Livestock::DairyCow[Stall Milchkühe]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Excretion;animalcategory;heifers_3rd_yr
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Excretion;animalcategory;heifers_2nd_yr
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Excretion;animals;6
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Housing::Type;housing_type;Loose_Housing_Deep_Litter
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Excretion;animalcategory;heifers_1st_yr
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Excretion;dimensioning_barn;6
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Excretion;dimensioning_barn;8
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Stall Aufzuchtrinder über 2-jährig]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Stall Aufzuchtrinder 1- bis 2-jährig]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::DairyCow[Stall Milchkühe]::Excretion;animals;30
+Livestock::DairyCow[Stall Milchkühe]::Housing::Type;housing_type;Loose_Housing_Slurry
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;0
+Livestock::DairyCow[Stall Milchkühe]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CConcentrates;amount_winter;2
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;0
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CFeedWinterRatio;share_beets_winter;0
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CConcentrates;amount_summer;1
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CFeedWinterRatio;share_potatoes_winter;0
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CFeedWinterRatio;share_grass_silage_winter;0
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CFeedWinterRatio;share_maize_silage_winter;0
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CFeedSummerRatio;share_hay_summer;0
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CFeedSummerRatio;share_maize_silage_summer;0
+Livestock::DairyCow[Stall Milchkühe]::Excretion::CMilk;milk_yield;7000
+Livestock::OtherCattle[Stall Aufzuchtrinder unter 1-jährig]::Outdoor;free_correction_factor;0
+Application::Slurry::Ctech;share_splash_plate;0
