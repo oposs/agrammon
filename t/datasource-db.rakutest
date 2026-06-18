@@ -370,30 +370,25 @@ sub prepare-test-db-branched-data($user, $dataset, %variant) {
     STATEMENT
 
     my $sth-branch = $db.prepare(q:to/STATEMENT/);
-    INSERT INTO branches (branches_var, branches_data, branches_options)
-    VALUES ($1, $2, $3)
+    INSERT INTO branches (branches_row_var, branches_col_var,
+                          branches_row_options, branches_col_options, branches_matrix)
+    VALUES ($1, $2, $3, $4, $5)
     STATEMENT
 
-    # branch over inputs from same submodule
+    # branch over inputs from same submodule (Instance A): flat-a (3, rows) x flat-b (2, cols)
     $sth-data.execute($datasetId, $iidA, 'Test::Base[]::Sub::dist-me', 1000);
     $sth-data.execute($datasetId, $iidA, 'Test::Base[]::Sub::simple', 42);
-    given $sth-data.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a', 'branched').value -> $id {
-        $sth-branch.execute($id, '{12,18,8,12,20,30}', '{x,y,z}');
-    };
-    given $sth-data.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-b', 'branched').value -> $id {
-        $sth-branch.execute($id, '{12,18,8,12,20,30}', '{a,b}');
-    };
+    my $a-row = $sth-data.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a', 'branched').value;
+    my $a-col = $sth-data.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-b', 'branched').value;
+    $sth-branch.execute($a-row, $a-col, '{x,y,z}', '{a,b}', [[12,18],[8,12],[20,30]]);
     $sth-data.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::simple', 101);
 
-    # branch over inputs from different submodules
+    # branch over inputs from different submodules (Instance B)
     $sth-data.execute($datasetId, $iidB, 'Test::Base[]::Sub::dist-me', 1000);
     $sth-data.execute($datasetId, $iidB, 'Test::Base[]::Sub::simple', 42);
-    given $sth-data.execute($datasetId, $iidB, 'Test::Base[]::AnotherSubA::flat-a', 'branched').value -> $id {
-        $sth-branch.execute($id, '{12,18,8,12,20,30}', '{x,y,z}');
-    };
-    given $sth-data.execute($datasetId, $iidB, 'Test::Base[]::AnotherSubB::flat-b', 'branched').value -> $id {
-        $sth-branch.execute($id, '{12,18,8,12,20,30}', '{a,b}');
-    };
+    my $b-row = $sth-data.execute($datasetId, $iidB, 'Test::Base[]::AnotherSubA::flat-a', 'branched').value;
+    my $b-col = $sth-data.execute($datasetId, $iidB, 'Test::Base[]::AnotherSubB::flat-b', 'branched').value;
+    $sth-branch.execute($b-row, $b-col, '{x,y,z}', '{a,b}', [[12,18],[8,12],[20,30]]);
     $sth-data.execute($datasetId, $iidB, 'Test::Base[]::AnotherSubA::simple', 101);
 }
 
@@ -442,10 +437,12 @@ sub prepare-test-db-schema($db) {
 
     $db.query(q:to/STATEMENT/);
     CREATE TABLE IF NOT EXISTS branches (
-        branches_id   SERIAL NOT NULL PRIMARY KEY,       -- Unique ID
-        branches_var  INT4 UNIQUE NOT NULL REFERENCES data(data_id) ON DELETE CASCADE, -- variable this data belongs to
-        branches_data NUMERIC[],
-        branches_options TEXT[]
+        branches_id          SERIAL NOT NULL PRIMARY KEY,
+        branches_row_var     INT4 NOT NULL UNIQUE REFERENCES data(data_id) ON DELETE CASCADE,
+        branches_col_var     INT4 NOT NULL UNIQUE REFERENCES data(data_id) ON DELETE CASCADE,
+        branches_row_options TEXT[] NOT NULL,
+        branches_col_options TEXT[] NOT NULL,
+        branches_matrix      NUMERIC[] NOT NULL
     )
     STATEMENT
 

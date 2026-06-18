@@ -10,7 +10,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 19;
+plan 22;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -159,16 +159,14 @@ transactionally {
         is @row[4], 'Single input comment', "Input has right comment";
     }
 
-    subtest 'store-input() with branches' => {
+    subtest 'store-input() with branches (per-variable persistence retired)' => {
         plan 2;
+        # Branch matrices are persisted pair-aware via store-branch-data now;
+        # store-input for a branched instance variable just records the data row
+        # and must not die.
         lives-ok {
-            $dataset.store-input(
-                    "my-multi-variable[Branch]::testB",
-                    'branched',
-                    [[0.2, 0.3], [0, 0.5]],
-                    [[< deep_pit deep_litter >], [< less_than_twice_a_month twice_a_month >]],
-                    )
-        }, "Store multi input with branches";
+            $dataset.store-input("my-multi-variable[Branch]::testB", 'branched')
+        }, "Store branched instance variable (no inline branch persistence)";
         throws-like {
             $dataset.store-input(
                     "my-multi-variable::testB",
@@ -255,6 +253,94 @@ transactionally {
         );
         is-deeply $results<options>,   @options-expected,   "Got correct options";
         is-deeply $results<fractions>, @fractions-expected, "Got correct fractions";
+    }
+
+    subtest 'Store and load branch data — non-square matrix' => {
+        plan 2;
+        my @vars = (
+            'Livestock::Poultry[]::Housing::Type::housing_type',
+            'Livestock::Poultry[]::Housing::Type::manure_removal_interval',
+        );
+        my %d = (
+            instance => 'Branched',
+            vars     => @vars,
+            options  => {
+                @vars[0] => ['deep pit', 'deep litter'],                       # 2 rows
+                @vars[1] => ['once a day', 'twice a month', 'no manure belt'], # 3 cols
+            },
+            data     => [[10, 20, 30], [15, 5, 20]],                           # 2x3
+        );
+        $dataset = Agrammon::DB::Dataset.new(:name<BranchTest>, :$user,
+            :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).load;
+        lives-ok { $dataset.store-branch-data(%d<vars>, %d<instance>, %d<options>, %d<data>) },
+            'Store non-square branch data';
+        my $r = $dataset.load-branch-data(%d<vars>, %d<instance>);
+        is-deeply $r<fractions>, [10e0, 20e0, 30e0, 15e0, 5e0, 20e0],
+            'Non-square fractions round-trip row-major';
+    }
+
+    subtest 'clone copies branch matrix (non-square safe)' => {
+        plan 2;
+        my @vars = (
+            'Livestock::Poultry[]::Housing::Type::housing_type',
+            'Livestock::Poultry[]::Housing::Type::manure_removal_interval',
+        );
+        my $src = Agrammon::DB::Dataset.new(:name<BranchTest>, :$user,
+            :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).load;
+        # put a known non-square 2x3 matrix on the source branch first
+        $src.store-branch-data(@vars, 'Branched',
+            { @vars[0] => ['deep pit', 'deep litter'],
+              @vars[1] => ['once a day', 'twice a month', 'no manure belt'] },
+            [[1, 2, 3], [4, 5, 6]]);
+        lives-ok {
+            $src.clone(:new-username($user.username),
+                       :old-dataset<BranchTest>, :new-dataset<BranchClone>)
+        }, 'Clone dataset with branch';
+        my $clone = Agrammon::DB::Dataset.new(:name<BranchClone>, :$user,
+            :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).load;
+        is-deeply $clone.load-branch-data(@vars, 'Branched')<fractions>,
+            [1e0, 2e0, 3e0, 4e0, 5e0, 6e0], 'Cloned branch matrix matches source';
+    }
+
+    subtest 'store-branch-data creates data rows for a fresh instance (#421)' => {
+        plan 4;
+        # Regression: configuring a branch on a freshly-added instance whose
+        # branched-variable data rows do not exist yet must create them
+        # (data_val='branched') instead of INSERTing a NULL branches_row_var.
+        # This is the GUI "create instance -> configure branching" path.
+        my @vars = (
+            'Livestock::Poultry[]::Housing::Type::housing_type',
+            'Livestock::Poultry[]::Housing::Type::manure_removal_interval',
+        );
+        $dataset = Agrammon::DB::Dataset.new(:name<BranchTest>, :$user,
+            :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).load;
+        my %d = (
+            instance => 'FreshBranch',          # no data rows exist for this instance
+            options  => {
+                @vars[0] => ['deep pit', 'deep litter'],
+                @vars[1] => ['once a day', 'twice a month', 'no manure belt'],
+            },
+            data     => [[1, 2, 3], [4, 5, 6]],
+        );
+        lives-ok {
+            $dataset.store-branch-data(@vars, %d<instance>, %d<options>, %d<data>)
+        }, 'store-branch-data on a fresh instance does not die';
+
+        my $db = $*AGRAMMON-DB-HANDLE;
+        my $n = $db.query(q:to/SQL/, @vars[0], @vars[1]).value;
+            SELECT count(*) FROM data d
+              JOIN data_instance di ON d.data_instance_id = di.data_instance_id
+             WHERE di.data_instance_dataset = -42000 AND di.data_instance_name = 'FreshBranch'
+               AND d.data_var IN ($1,$2) AND d.data_val = 'branched'
+            SQL
+        is $n, 2, 'both branched variables persisted with data_val=branched';
+
+        my $r = $dataset.load-branch-data(@vars, %d<instance>);
+        is-deeply $r<fractions>, [1e0, 2e0, 3e0, 4e0, 5e0, 6e0],
+            'fresh-instance branch matrix round-trips';
+        is-deeply $r<options>,
+            [[< deep_pit deep_litter >], [< once_a_day twice_a_month no_manure_belt >]],
+            'fresh-instance branch options round-trip';
     }
 
     # Regression: Agrammon::DB::Datasets.delete must scope by the active

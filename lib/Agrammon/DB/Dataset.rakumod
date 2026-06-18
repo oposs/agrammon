@@ -253,41 +253,34 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                       )
             SQL
 
-            # get branched inputs from new dataset
-            my @rows = $db.query(q:to/SQL/, $ds<id>).arrays;
-            SELECT data_id
-              FROM data LEFT JOIN data_instance ON (data.data_instance_id = data_instance.data_instance_id)
-                        LEFT JOIN branches ON (branches_var=data_id)
-             WHERE data_dataset=$1
-               AND data_val = 'branched'
-             ORDER BY data_instance_name, data_id -- don't change sort order!!!
-            SQL
-
-            # get branch data from old dataset
-            my @data = $db.query(q:to/SQL/, $old-username, $old-dataset, $gui, $model, @versions).arrays;
-                SELECT branches_data, branches_options, data_var
-                  FROM data LEFT JOIN data_instance ON (data.data_instance_id = data_instance.data_instance_id)
-                            LEFT JOIN branches ON (branches_var=data_id)
-                 WHERE data_dataset = (
+            # clone branches: one self-describing row each, remapping the row/col
+            # vars to the new dataset's data rows by (instance name, var name).
+            # No positional zip, no ordering reliance.
+            $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset, $gui, $model, @versions);
+                INSERT INTO branches (branches_row_var, branches_col_var,
+                                      branches_row_options, branches_col_options, branches_matrix)
+                SELECT nrv.data_id, ncv.data_id,
+                       b.branches_row_options, b.branches_col_options, b.branches_matrix
+                  FROM branches b
+                  JOIN data orv ON (b.branches_row_var = orv.data_id)
+                  JOIN data ocv ON (b.branches_col_var = ocv.data_id)
+                  LEFT JOIN data_instance ori ON (orv.data_instance_id = ori.data_instance_id)
+                  JOIN data_instance nri ON (nri.data_instance_dataset = $1
+                                         AND nri.data_instance_name = ori.data_instance_name)
+                  JOIN data nrv ON (nrv.data_dataset = $1 AND nrv.data_var = orv.data_var
+                                AND nrv.data_instance_id = nri.data_instance_id)
+                  JOIN data ncv ON (ncv.data_dataset = $1 AND ncv.data_var = ocv.data_var
+                                AND ncv.data_instance_id = nri.data_instance_id)
+                 WHERE orv.data_dataset = (
                        SELECT dataset_id FROM dataset
-                        WHERE dataset_pers         = pers_email2id($1)
-                          AND dataset_name         = $2
-                          AND dataset_guivariant   = $3
-                          AND dataset_modelvariant = $4
-                          AND dataset_version      = ANY($5)
+                        WHERE dataset_pers         = pers_email2id($2)
+                          AND dataset_name         = $3
+                          AND dataset_guivariant   = $4
+                          AND dataset_modelvariant = $5
+                          AND dataset_version      = ANY($6)
                         LIMIT 1
                    )
-                   AND branches_data is not null
-              ORDER BY data_instance_name, data_id -- don't change sort order!!!
             SQL
-
-            # clone branching data (rows from new and data from old dataset)
-            for flat @data Z @rows -> $data, $row {
-                $db.query(q:to/SQL/, $row, $data[0], $data[1]);
-                    INSERT INTO branches (branches_var, branches_data, branches_options)
-                       VALUES ($1, $2, $3)
-                SQL
-            }
 
             CATCH {
                 .note;
@@ -415,12 +408,19 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         self!ensure-version-match;
         self.with-db: -> $db {
             my $username = $!user.username;
+            # A branched variable's data row carries the (flattened, row-major)
+            # branch matrix in column 4, for both the row and the col variable —
+            # preserving the historical shape the frontend consumes.
             my $results = $db.query(q:to/DATASET/, $username, $!name,  |self!variant);
-            SELECT data_var, data_val, data_instance_order, branches_data, data_comment
-              FROM data_view LEFT JOIN branches ON (branches_var=data_id)
-             WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
-               AND data_var not like '%::ignore'
-             ORDER BY data_instance_order ASC, data_var
+            SELECT dv.data_var, dv.data_val, dv.data_instance_order,
+                   (SELECT array_agg(x ORDER BY ord)
+                      FROM unnest(b.branches_matrix) WITH ORDINALITY AS t(x, ord)) AS branches_data,
+                   dv.data_comment
+              FROM data_view dv
+              LEFT JOIN branches b ON (b.branches_row_var = dv.data_id OR b.branches_col_var = dv.data_id)
+             WHERE dv.data_dataset=dataset_name2id($1,$2,$3,$4,$5)
+               AND dv.data_var not like '%::ignore'
+             ORDER BY dv.data_instance_order ASC, dv.data_var
             DATASET
             $!data = $results.arrays;
         }
@@ -614,17 +614,8 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             # couldn't store variable
             die X::Agrammon::DB::Dataset::StoreDataFailed.new($variable) unless $ret.rows;
 
-            if @branches {
-                my $data-id = $ret.value;
-                $ret = $db.query(q:to/SQL/, $data-id, @branches[*;*], @options);
-                    INSERT INTO branches (branches_var, branches_data, branches_options)
-                         VALUES ($1, $2, $3)
-                    RETURNING branches_id
-                SQL
-
-                die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new($variable) unless $ret.rows;
-            }
-
+            # Branch matrices are persisted pair-aware via store-branch-data
+            # (issue #421 task 3); the per-variable @branches path is retired.
             return $ret.rows;
         }
     }
@@ -794,45 +785,62 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         }
     }
 
+    # Ensure a branched variable's data row exists for $instance-id with
+    # data_val='branched' and return its data_id. Creating the row here makes
+    # store-branch-data self-contained: a branch configured on a freshly added
+    # instance no longer depends on a prior per-variable store_data having
+    # written the row (issue #421 task 3).
+    method !branched-var-id($db, $instance-id, $variable) {
+        my $ret = $db.query(q:to/SQL/, $instance-id, $variable);
+            UPDATE data SET data_val = 'branched'
+             WHERE data_instance_id = $1 AND data_var = $2
+            RETURNING data_id
+        SQL
+        return $ret.value if $ret.rows;
+
+        $ret = $db.query(q:to/SQL/, $instance-id, $variable);
+            INSERT INTO data (data_dataset, data_var, data_val, data_instance_id)
+                 VALUES ((SELECT data_instance_dataset FROM data_instance WHERE data_instance_id = $1),
+                         $2, 'branched', $1)
+            RETURNING data_id
+        SQL
+        return $ret.value;
+    }
+
     method store-branch-data(@vars, Str $instance, %options, @fractions) {
         my $dataset-name = $!name;
-
-        my @branch-variables;
-        # Get variable ids and names
-        self.with-db: -> $db {
-            my $username = $!user.username;
-            @branch-variables = $db.query(q:to/SQL/, $username, $dataset-name, |self!variant, |@vars, $instance).hashes;
-            SELECT data_id, data_var
-                  FROM data
-                 WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
-                   AND data_var IN ($6,$7)
-                   AND data_instance_id = (SELECT data_instance_id FROM data_instance
-                                            WHERE data_instance_dataset = dataset_name2id($1,$2,$3,$4,$5)
-                                              AND data_instance_name = $8)
-                   ORDER BY data_id
-            SQL
-        }
-
-        for @branch-variables -> %var {
-            my $var-id   = %var<data_id>;
-            my $var-name = %var<data_var>;
-
-            my @options = %options{$var-name}.map(*.subst(' ', '_', :g) );
-            self.with-db: -> $db {
-                my $ret = $db.query(q:to/SQL/, $var-id, @fractions[*;*], @options);
-                    INSERT INTO branches (branches_var, branches_data, branches_options)
-                                  VALUES ($1, $2, $3)
-                    ON CONFLICT (branches_var)
-                    DO
-                        UPDATE SET branches_data    = EXCLUDED.branches_data,
-                                   branches_options = EXCLUDED.branches_options
-                    SQL
-                die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new(:variable($var-name)) unless $ret;
-            }
-        }
+        my $row-var = @vars[0];   # frontend convention: vars[0] = row axis
+        my $col-var = @vars[1];   #                      vars[1] = col axis
 
         self.with-db: -> $db {
-            $db.query(q:to/SQL/, $!user.username, $dataset-name, |self!variant);
+            my $username    = $!user.username;
+            my $instance-id = self!instance-id($db, $username, $instance);
+
+            # store-branch-data owns the full persistence of a branch: make sure
+            # the two branched variables exist as data rows (data_val='branched')
+            # and capture their ids, then write the single self-describing
+            # branches row.
+            my $row-id = self!branched-var-id($db, $instance-id, $row-var);
+            my $col-id = self!branched-var-id($db, $instance-id, $col-var);
+
+            my @row-options = %options{$row-var}.map(*.subst(' ', '_', :g));
+            my @col-options = %options{$col-var}.map(*.subst(' ', '_', :g));
+            my @matrix      = @fractions.map({ $_.map(+*).Array }).Array;
+
+            my $ret = $db.query(q:to/SQL/, $row-id, $col-id, @row-options, @col-options, @matrix);
+                INSERT INTO branches (branches_row_var, branches_col_var,
+                                      branches_row_options, branches_col_options, branches_matrix)
+                              VALUES ($1, $2, $3, $4, $5)
+                ON CONFLICT (branches_row_var)
+                DO
+                    UPDATE SET branches_col_var     = EXCLUDED.branches_col_var,
+                               branches_row_options = EXCLUDED.branches_row_options,
+                               branches_col_options = EXCLUDED.branches_col_options,
+                               branches_matrix      = EXCLUDED.branches_matrix
+                SQL
+            die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new(:variable($row-var)) unless $ret;
+
+            $db.query(q:to/SQL/, $username, $dataset-name, |self!variant);
                     UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
                      WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
                 SQL
@@ -843,27 +851,29 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         my $data;
         self.with-db: -> $db {
             my $username = $!user.username;
-            my @vars = $db.query(q:to/SQL/, $username, $!name, |self!variant, |@var-names, $instance).arrays;
-                SELECT data_id
-                  FROM data
-                 WHERE data_dataset=dataset_name2id($1,$2,$3,$4,$5)
-                   AND data_var IN ($6,$7)
-                   AND data_instance_id = (SELECT data_instance_id FROM data_instance
-                                            WHERE data_instance_dataset = dataset_name2id($1,$2,$3,$4,$5)
-                                              AND data_instance_name = $8)
-                 ORDER BY data_id
+            # @var-names[0] is the row variable; branches_row_var is unique, so
+            # the single branch row is found directly (no ordering reliance).
+            my @b = $db.query(q:to/SQL/, $username, $!name, |self!variant, @var-names[0], $instance).hashes;
+                SELECT b.branches_row_options, b.branches_col_options, b.branches_matrix
+                  FROM branches b
+                  JOIN data rv ON (b.branches_row_var = rv.data_id)
+                 WHERE rv.data_dataset = dataset_name2id($1,$2,$3,$4,$5)
+                   AND rv.data_var = $6
+                   AND rv.data_instance_id = (SELECT data_instance_id FROM data_instance
+                                               WHERE data_instance_dataset = dataset_name2id($1,$2,$3,$4,$5)
+                                                 AND data_instance_name = $7)
             SQL
-
-            my $branches = $db.query(q:to/SQL/, |@vars[*;*]).hashes;
-                SELECT branches_data, branches_options
-                  FROM branches
-                 WHERE branches_var in ($1,$2)
-                 ORDER BY branches_id
-            SQL
-            $data = {
-                fractions => $branches[0]<branches_data>,
-                options   => [ $branches[0]<branches_options>, $branches[1]<branches_options> ]
-            };
+            with @b[0] -> %row {
+                $data = {
+                    # flatten the 2-D matrix row-major (DB::Pg nests are itemized,
+                    # so .flat won't recurse — slip each row instead)
+                    fractions => %row<branches_matrix>.map(*.Slip).Array,
+                    options   => [ %row<branches_row_options>, %row<branches_col_options> ],
+                };
+            }
+            else {
+                $data = { fractions => Nil, options => [] };
+            }
         }
         return $data;
     }

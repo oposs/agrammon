@@ -600,6 +600,10 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             // FIX ME
             var noCheck = true;
             var data;
+            // #421: branch matrices are persisted pair-aware (store_branch_data)
+            // after the loop, not per-variable (the per-variable store_data path
+            // was axis-blind). Collect the folder's branched variables here.
+            var branchedVars = [];
             for (i=0; i<len; i++) {
                 data = newData[i];
                 var name = data.getName();
@@ -615,19 +619,15 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                     if (handleIgnore && name.match(/::ignore/)) { // FIX ME
                         this.setData(name, 'ignore', null, noCheck, null);
                         qx.event.message.Bus.dispatchByName('agrammon.PropTable.storeData',
-                                                            { 'var':    name,
-                                                              value:    'ignore',
-                                                              branches: meta.branches,
-                                                              options:  meta.options
-                                                            });
+                                                            { 'var': name, value: 'ignore' });
+                    }
+                    else if (value === 'branched') {
+                        branchedVars.push({ name: name, meta: meta });
+                        this.setData(name, value, comment, noCheck, meta.branches);
                     }
                     else {
                         qx.event.message.Bus.dispatchByName('agrammon.PropTable.storeData',
-                                                            { 'var':    name,
-                                                              value:    value,
-                                                              branches: meta.branches,
-                                                              options:  meta.options
-                                                            });
+                                                            { 'var': name, value: value });
                         this.setData(name, value, comment, noCheck, meta.branches);
                     }
                 }
@@ -635,12 +635,11 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                 if (handleIgnore && name.match(/::ignore/)) { // FIX ME
                     this.setData(name, 'ignore', null, noCheck, null);
                     qx.event.message.Bus.dispatchByName('agrammon.PropTable.storeData',
-                                                        { 'var':    name,
-                                                          value:    'ignore',
-                                                          branches: meta.branches,
-                                                          options:  meta.options
-                                                        });
+                                                        { 'var': name, value: 'ignore' });
                 }
+            }
+            if (storeAll && branchedVars.length === 2) {
+                this.__storeBranchPair(branchedVars);
             }
 
             this.isComplete();
@@ -648,6 +647,45 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             // this.rootFolder.isComplete();
             return this.__propData.length;
         }, // setDataSet
+
+        // #421: persist a branch pair via the pair-aware RPC (used when an
+        // instance is copied/added via setDataset(storeAll)). Mirrors the
+        // BranchEditor payload: vars[0]=rows, vars[1]=cols, options keyed by
+        // var, data = the 2-D row-major matrix. The "two branched vars in a
+        // folder = the pair" convention matches PropTable's BranchEditor open.
+        __storeBranchPair: function(branchedVars) {
+            var regex  = /\[(.+)\]/;
+            var rowVar = branchedVars[0], colVar = branchedVars[1];
+            var m0 = regex.exec(rowVar.name);
+            if (!m0) { return; }
+            var instance = m0[1];
+            var vars = [ rowVar.name.replace(regex, '[]'),
+                         colVar.name.replace(regex, '[]') ];
+            // meta.options entries are [en, de, key] triples; we want the keys
+            var optionKeys = function(meta) {
+                var keys = [], opts = meta.options || [];
+                for (var j=0; j<opts.length; j++) { keys.push(opts[j][2]); }
+                return keys;
+            };
+            var options = {};
+            options[vars[0]] = optionKeys(rowVar.meta);
+            options[vars[1]] = optionKeys(colVar.meta);
+            // meta.branches is the flat row-major matrix; reshape to rows x cols
+            var nRows = options[vars[0]].length, nCols = options[vars[1]].length;
+            var flat = rowVar.meta.branches || [];
+            if (flat.length !== nRows * nCols) { return; } // incomplete; skip
+            var matrix = [], n = 0;
+            for (var r=0; r<nRows; r++) {
+                var row = [];
+                for (var c=0; c<nCols; c++) { row.push(Number(flat[n++]) || 0); }
+                matrix.push(row);
+            }
+            var datasetName = '' + agrammon.Info.getInstance().getDatasetName();
+            agrammon.io.remote.Rpc.getInstance().callAsync(
+                function() {}, 'store_branch_data',
+                { datasetName: datasetName,
+                  data: { instance: instance, vars: vars, options: options, data: matrix } });
+        },
 
         /**
          * Add a tree item to this item before the existing child <code>before</code>.

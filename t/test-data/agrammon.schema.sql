@@ -751,9 +751,14 @@ ALTER SEQUENCE public.api_tokens_id_seq OWNED BY public.api_tokens.id;
 
 CREATE TABLE public.branches (
     branches_id integer NOT NULL,
-    branches_var integer NOT NULL,
-    branches_data numeric[],
-    branches_options text[]
+    branches_row_var integer NOT NULL,
+    branches_col_var integer NOT NULL,
+    branches_row_options text[] NOT NULL,
+    branches_col_options text[] NOT NULL,
+    branches_matrix numeric[] NOT NULL,
+    CONSTRAINT branches_matrix_2d CHECK ((array_ndims(branches_matrix) = 2)),
+    CONSTRAINT branches_matrix_rows CHECK ((array_length(branches_matrix, 1) = cardinality(branches_row_options))),
+    CONSTRAINT branches_matrix_cols CHECK ((array_length(branches_matrix, 2) = cardinality(branches_col_options)))
 );
 
 
@@ -1237,11 +1242,19 @@ ALTER TABLE ONLY public.api_tokens
 
 
 --
--- Name: branches branches_branches_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
+-- Name: branches branches_row_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
 --
 
 ALTER TABLE ONLY public.branches
-    ADD CONSTRAINT branches_branches_var_key UNIQUE (branches_var);
+    ADD CONSTRAINT branches_row_var_key UNIQUE (branches_row_var);
+
+
+--
+-- Name: branches branches_col_var_key; Type: CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_col_var_key UNIQUE (branches_col_var);
 
 
 --
@@ -1535,11 +1548,19 @@ CREATE TRIGGER audit_trigger_stm AFTER TRUNCATE ON public.tagds FOR EACH STATEME
 
 
 --
--- Name: branches branches_branches_var_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+-- Name: branches branches_row_var_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
 --
 
 ALTER TABLE ONLY public.branches
-    ADD CONSTRAINT branches_branches_var_fkey FOREIGN KEY (branches_var) REFERENCES public.data(data_id) ON DELETE CASCADE;
+    ADD CONSTRAINT branches_row_var_fkey FOREIGN KEY (branches_row_var) REFERENCES public.data(data_id) ON DELETE CASCADE;
+
+
+--
+-- Name: branches branches_col_var_fkey; Type: FK CONSTRAINT; Schema: public; Owner: agrammon
+--
+
+ALTER TABLE ONLY public.branches
+    ADD CONSTRAINT branches_col_var_fkey FOREIGN KEY (branches_col_var) REFERENCES public.data(data_id) ON DELETE CASCADE;
 
 
 --
