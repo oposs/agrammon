@@ -600,6 +600,15 @@ class Agrammon::Web::Service {
         $!outputs-cache.invalidate($user.username, $name);
     }
 
+    method store-flattened-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :$name
+        ).lookup.store-flattened-data(%data<var>, %data<instance>, %data<options>, %data<fractions>);
+        $!outputs-cache.invalidate($user.username, $name);
+    }
+
     method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $variable-pattern --> Nil) {
         Agrammon::DB::Dataset.new(
             :$user,

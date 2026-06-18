@@ -136,6 +136,14 @@ class X::Agrammon::DB::Dataset::StoreBranchDataFailed is Exception {
     }
 }
 
+#| Error when flattened data couldn't be saved.
+class X::Agrammon::DB::Dataset::StoreFlattenedDataFailed is Exception {
+    has Str $.variable is required;
+    method message {
+        "Flattened data for variable '$!variable' couldn't be saved."
+    }
+}
+
 #| Error when tag couldn't be set.
 class X::Agrammon::DB::Dataset::SetTagFailed is Exception {
     has Str $.tag-name is required;
@@ -839,6 +847,52 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                                branches_matrix      = EXCLUDED.branches_matrix
                 SQL
             die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new(:variable($row-var)) unless $ret;
+
+            $db.query(q:to/SQL/, $username, $dataset-name, |self!variant);
+                    UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                     WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
+                SQL
+        }
+    }
+
+    # Ensure a flattened variable's marker data row exists for $instance-id with
+    # data_val='flattened' and return its data_id (mirrors !branched-var-id).
+    method !flattened-var-id($db, $instance-id, $variable) {
+        my $ret = $db.query(q:to/SQL/, $instance-id, $variable);
+            UPDATE data SET data_val = 'flattened'
+             WHERE data_instance_id = $1 AND data_var = $2
+            RETURNING data_id
+        SQL
+        return $ret.value if $ret.rows;
+
+        $ret = $db.query(q:to/SQL/, $instance-id, $variable);
+            INSERT INTO data (data_dataset, data_var, data_val, data_instance_id)
+                 VALUES ((SELECT data_instance_dataset FROM data_instance WHERE data_instance_id = $1),
+                         $2, 'flattened', $1)
+            RETURNING data_id
+        SQL
+        return $ret.value;
+    }
+
+    method store-flattened-data(Str $var, Str $instance, @options, @fractions) {
+        my $dataset-name = $!name;
+        self.with-db: -> $db {
+            my $username    = $!user.username;
+            my $instance-id = self!instance-id($db, $username, $instance);
+
+            my $var-id     = self!flattened-var-id($db, $instance-id, $var);
+            my @opt-keys   = @options.map(*.subst(' ', '_', :g));
+            my @fracs      = @fractions.map(+*).Array;
+
+            my $ret = $db.query(q:to/SQL/, $var-id, @opt-keys, @fracs);
+                INSERT INTO flattened (flattened_var, flattened_options, flattened_fractions)
+                              VALUES ($1, $2, $3)
+                ON CONFLICT (flattened_var)
+                DO
+                    UPDATE SET flattened_options   = EXCLUDED.flattened_options,
+                               flattened_fractions = EXCLUDED.flattened_fractions
+                SQL
+            die X::Agrammon::DB::Dataset::StoreFlattenedDataFailed.new(:variable($var)) unless $ret;
 
             $db.query(q:to/SQL/, $username, $dataset-name, |self!variant);
                     UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP

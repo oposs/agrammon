@@ -10,7 +10,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 22;
+plan 23;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -341,6 +341,40 @@ transactionally {
         is-deeply $r<options>,
             [[< deep_pit deep_litter >], [< once_a_day twice_a_month no_manure_belt >]],
             'fresh-instance branch options round-trip';
+    }
+
+    subtest 'store-flattened-data persists a self-describing flattened row (#431)' => {
+        plan 4;
+        # Fresh instance: the marker data row does not exist yet; store must
+        # create it (data_val='flattened') and write the flattened row.
+        my $var = 'Livestock::Poultry[]::Housing::Type::housing_system';
+        $dataset = Agrammon::DB::Dataset.new(:name<BranchTest>, :$user,
+            :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).load;
+        lives-ok {
+            $dataset.store-flattened-data($var, 'FreshFlat',
+                ['deep litter', 'aviary', 'floor housing'], [60, 25, 15])
+        }, 'store-flattened-data on a fresh instance does not die';
+
+        my $db = $*AGRAMMON-DB-HANDLE;
+        my $marker = $db.query(q:to/SQL/, $var).value;
+            SELECT count(*) FROM data d
+              JOIN data_instance di ON d.data_instance_id = di.data_instance_id
+             WHERE di.data_instance_dataset = -42000 AND di.data_instance_name = 'FreshFlat'
+               AND d.data_var = $1 AND d.data_val = 'flattened'
+            SQL
+        is $marker, 1, 'marker data row persisted with data_val=flattened';
+
+        my @row = $db.query(q:to/SQL/, $var).hashes;
+            SELECT f.flattened_options AS opts, f.flattened_fractions AS fracs
+              FROM flattened f
+              JOIN data d ON f.flattened_var = d.data_id
+              JOIN data_instance di ON d.data_instance_id = di.data_instance_id
+             WHERE di.data_instance_name = 'FreshFlat' AND d.data_var = $1
+            SQL
+        is-deeply @row[0]<opts>, [< deep_litter aviary floor_housing >],
+            'option keys stored underscore-form (no space munge)';
+        is-deeply @row[0]<fracs>.map(+*).Array, [60e0, 25e0, 15e0],
+            'fractions stored in option order';
     }
 
     # Regression: Agrammon::DB::Datasets.delete must scope by the active
