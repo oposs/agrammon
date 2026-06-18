@@ -657,14 +657,14 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     var variant = rec.models[m];
                     if (variant && variant != 'all' && variant != modelVariant) {
                         rec.show = false;
-                        rec.value = rec.defaults.calc;
+                        rec.value = rec.defaults.value;
                         break; // no need to search further
                     }
                 }
 
                 // deal with GUI defaults
-                if (rec.defaults.gui !== null && rec.defaults.gui !== undefined) {
-                    defaultValue = rec.defaults.gui;
+                if (rec.defaults.value !== null && rec.defaults.value !== undefined) {
+                    defaultValue = rec.defaults.value;
                 }
                 else {
                     if ( rec.type.match(/enum/) && rec.units.de != '%') { // combobox

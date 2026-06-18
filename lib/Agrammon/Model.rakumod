@@ -70,32 +70,15 @@ class X::Agrammon::Model::InvalidOutputModule does X::Agrammon::Model::BadFormul
     }
 }
 
-#| An input declares both a static `default_calc` and a `default_formula`.
+#| An input declares both a static `default_value` and a `default_formula`.
 #| These are two conflicting ways to default the same input; only one may
 #| be given. (issue #515)
 class X::Agrammon::Model::DefaultCalcAndFormula is Exception {
     has $.module;
     has $.input;
     method message() {
-        "Input '$!input' in module '$!module' has both default_calc and "
+        "Input '$!input' in module '$!module' has both default_value and "
         ~ "default_formula set; only one default mechanism may be used"
-    }
-}
-
-#| A multi-option enum input (a SelectBox in the GUI) whose `default_calc`
-#| diverges from its `default_gui`: the GUI pre-selects one value while the
-#| calculation silently falls back to another, so the result no longer
-#| matches what the user sees. (An absent `default_gui`, or one equal to
-#| `default_calc`, is fine — e.g. an "unknown" option both default to.)
-class X::Agrammon::Model::DefaultCalcOnEnum is Exception {
-    has $.module;
-    has $.input;
-    has $.default-calc;
-    has $.default-gui;
-    method message() {
-        "Input '$!input' in module '$!module' is a multi-option enum (SelectBox) "
-        ~ "with default_calc='$!default-calc' that diverges from default_gui='$!default-gui'; "
-        ~ "the calculated default would bypass the user's selection"
     }
 }
 
@@ -345,30 +328,12 @@ class Agrammon::Model {
             %known-outputs{$tax} = {};
 
             for $module.input -> $input {
-                # An input must not declare both a static default_calc and a
+                # An input must not declare both a static default_value and a
                 # default_formula — two conflicting ways to default it. (#515)
-                if $input.default-calc.defined && $input.default-formula.defined {
+                if $input.default-value.defined && $input.default-formula.defined {
                     die X::Agrammon::Model::DefaultCalcAndFormula.new(
                             module => $tax,
                             input  => $input.name,
-                            );
-                }
-
-                # Reject a multi-option enum (SelectBox) whose default_calc
-                # diverges from its default_gui: the GUI pre-selects one value
-                # while the calculation silently falls back to another. Only
-                # fires when BOTH are set and differ — an absent default_gui,
-                # or one equal to default_calc, is the legitimate case.
-                if ($input.type // '') eq 'enum'
-                        && $input.default-calc.defined
-                        && $input.default-gui.defined
-                        && $input.enum-ordered.elems > 1
-                        && $input.default-gui ne $input.default-calc {
-                    die X::Agrammon::Model::DefaultCalcOnEnum.new(
-                            module       => $tax,
-                            input        => $input.name,
-                            default-calc => $input.default-calc,
-                            default-gui  => $input.default-gui,
                             );
                 }
             }

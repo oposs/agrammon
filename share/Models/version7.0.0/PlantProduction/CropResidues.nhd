@@ -19,8 +19,7 @@ Computes the annual NH3 emission from crop residues.
 +sugarbeet_leaves
   type  = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Sugar beet
     de = Zuckerrüben
@@ -42,8 +41,7 @@ Computes the annual NH3 emission from crop residues.
 +vegetable_residues
   type  = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Open-field vegetables
     de = Freilandgemüse
@@ -65,8 +63,7 @@ Computes the annual NH3 emission from crop residues.
 +green_manure
   type  = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Green manure
     de = Gründüngungen
@@ -88,8 +85,7 @@ Computes the annual NH3 emission from crop residues.
 +meadow_residues
   type  = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Intensive and medium-intensive meadows
     de = Wiese intensiv und mittel intensiv
@@ -111,8 +107,7 @@ Computes the annual NH3 emission from crop residues.
 +pasture_mulch
   type  = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Intensive and medium-intensive pastures (only mulched area)
     de = Weide intensiv und mittel intensiv (nur gemulchte Fläche)

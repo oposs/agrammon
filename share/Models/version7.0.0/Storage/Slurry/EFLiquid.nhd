@@ -148,8 +148,7 @@ Paper ECE/EB.AIR/120, February 7, 2014. Geneva, Switzerland: United Nations Econ
 ?if !Kantonal_LU
   +free_correction_factor
     type = float
-    default_calc = 0
-    default_gui = 0
+    default_value = 0
     validator = between(-100,100);
     ++labels
       en = Additional emission mitigation measure

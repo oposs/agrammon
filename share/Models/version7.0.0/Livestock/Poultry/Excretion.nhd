@@ -97,8 +97,7 @@ Spezialpublikation, pp. 4/1-4/24.
 +dimensioning_barn
   type = float
   distribute = true
-  default_gui  = Standard
-  default_calc = Standard
+  default_value = Standard
   ++labels 
     en = Number of available animal places
     de = Anzahl Tierplätze im Stall
@@ -121,8 +120,7 @@ Spezialpublikation, pp. 4/1-4/24.
 ?if !Kantonal_LU
   +inp_n_excretion
     type = float
-    default_calc = Standard
-    default_gui  = Standard
+    default_value = Standard
     ++labels
       en = N excretion
       de = N Ausscheidung
@@ -173,8 +171,7 @@ Spezialpublikation, pp. 4/1-4/24.
 
   +tan_fraction
     type = percent
-    default_calc = Standard
-    default_gui  = Standard
+    default_value = Standard
     ++labels
       en = TAN fraction of N excretion
       de = TAN Anteil der N Ausscheidung

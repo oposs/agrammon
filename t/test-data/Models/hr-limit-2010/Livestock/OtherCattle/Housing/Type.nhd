@@ -290,7 +290,7 @@ taxonomy = Livestock::OtherCattle::Housing::Type
 +feeding_boxes
   models = LU
   type = enum
-  default_calc = no
+  default_value = no
   ++enum
     +++yes
        en = yes

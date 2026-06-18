@@ -62,8 +62,7 @@ Flisch R, Sinaj S, Charles R, Richner W 2009. Grundlagen für die die Düngung i
         
 +inp_n_excretion
   type = text
-  default_calc = default
-  default_gui  = default
+  default_value = default
   ++labels
     en = Standard N excretion for dairy cows
     de = Standard Ausscheidung für Milchkühe

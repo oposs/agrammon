@@ -14,7 +14,7 @@ taxonomy = DefaultCalcAndFormula
 
 +amount
   type = integer
-  default_calc = 5
+  default_value = 5
   ++default_formula
     10
   ++labels

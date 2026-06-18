@@ -17,7 +17,7 @@ Selects the emission rate and other correciton factors for the specific housing 
 
 +housing_type_SHL
   models = SHL
-  default_calc = ignore
+  default_value = ignore
   type  = enum
   ++enum
     +++ignore
@@ -83,7 +83,7 @@ Pour les truies allaitantes, introduire les catégories suivantes: système conv
 +housing_type_LU
   models = LU
   type  = enum
-  default_calc = ignore
+  default_value = ignore
   ++enum
     +++ignore
        en = Dummy entry LU
@@ -152,7 +152,7 @@ Pour les truies allaitantes, introduire les catégories suivantes: système conv
 +exercise_place
   models = LU
   type  = enum
-  default_calc = none
+  default_value = none
   ++enum
     +++none
        en = none

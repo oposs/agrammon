@@ -40,7 +40,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 +share_hay_summer
   models = SHL
   type = percent
-  default_calc = 0
+  default_value = 0
   ++labels 
     en = Proportion of animals receiving hay in summer
     de = Anteil der Tiere, die im Sommer Heu erhalten
@@ -61,7 +61,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 +share_maize_silage_summer
   models = SHL
   type = percent
-  default_calc = 0
+  default_value = 0
   ++labels 
     en = Proportion of animals receiving maize silage in summer
     de = Anteil der Tiere, die im Sommer Maissilage erhalten
@@ -82,7 +82,7 @@ und Futterbau 2001. Agrarforschung 8:1-80.
 +share_maize_pellets_summer
   models = SHL
   type = percent
-  default_calc = 0
+  default_value = 0
   ++labels 
     en = Proportion of animals receiving maize pellets in summer
     de = Anteil der Tiere, die im Sommer Maiswürfel erhalten

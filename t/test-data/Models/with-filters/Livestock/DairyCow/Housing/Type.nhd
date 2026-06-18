@@ -109,7 +109,7 @@ Selects the emission rate and other correction factors for the specific housing 
 +feeding_boxes
   models = LU
   type = enum
-  default_calc = no
+  default_value = no
   ++enum
     +++yes
        en = yes

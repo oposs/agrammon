@@ -21,7 +21,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 +UNECE_category_1_mitigation_options_for_housing_systems_for_pigs
   models = SHL
   type  = enum
-  default_calc = none
+  default_value = none
   ++enum
     +++none
        en = none
@@ -113,7 +113,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 +mitigation_options_for_housing_systems_for_pigs_slurry_channel
   models = LU
   type  = enum
-  default_calc = none
+  default_value = none
   ++enum
     +++none
        en = none
@@ -194,7 +194,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 +mitigation_options_for_housing_systems_for_pigs_climate
   models = LU
   type  = enum
-  default_calc = none
+  default_value = none
   ++enum
     +++none
        en = none
@@ -248,7 +248,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 +mitigation_options_for_housing_systems_for_pigs_air
   models = LU
   type  = enum
-  default_calc = none
+  default_value = none
   ++enum
     +++none
        en = none

@@ -43,7 +43,7 @@ class Agrammon::Model::FilterSet {
             with $multi-input.input-hash-for($filter.taxonomy){$filter.input-name} {
                 $filter.filter-key => $_
             }
-            orwith $filter.input.default-calc {
+            orwith $filter.input.default-value {
                 $filter.filter-key => $_
             }
             else {

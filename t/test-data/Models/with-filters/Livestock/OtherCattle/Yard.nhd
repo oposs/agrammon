@@ -285,7 +285,7 @@ taxonomy = Livestock::OtherCattle::Yard
 +floor_properties_exercise_yard_SHL
   models = SHL
   type  = enum
-  default_calc = solid_floor
+  default_value = solid_floor
   ++enum
      +++solid_floor
        en = solid_floor
@@ -354,7 +354,7 @@ taxonomy = Livestock::OtherCattle::Yard
 +floor_properties_exercise_yard_LU
   models = LU
   type  = enum
-  default_calc = solid_floor
+  default_value = solid_floor
   ++enum
      +++solid_floor
        en = solid_floor
@@ -426,8 +426,7 @@ taxonomy = Livestock::OtherCattle::Yard
 +free_correction_factor
   models = SHL
   type = float
-  default_calc = 0
-  default_gui = 0
+  default_value = 0
   validator = between(0,100);
   ++labels 
     en = Additional emission mitigation measure for the exercise yard (see column Help)
