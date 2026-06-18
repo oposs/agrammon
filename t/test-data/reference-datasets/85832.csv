@@ -1,0 +1,68 @@
+# Agrammon reference dataset 85832 — Schweinezuchtbetrieb (Beispiel)
+# Extracted from production DB (data_new), model 7.0.0, variant Base. Format: taxonomy;variable;value (DataSource::CSV.load).
+Livestock::Pig[Stall Ferkel abgesetzt bis 25 kg]::Housing::Type;housing_type;Slurry_Conventional
+Livestock::Pig[Stall Galtsauen]::Housing::Type;housing_type;Slurry_Label
+Livestock::Pig[Stall säugende Sauen]::Housing::Type;housing_type;Slurry_Conventional
+Livestock::Pig[Stall Ferkel abgesetzt bis 25 kg]::Excretion;crude_protein;162
+Livestock::Pig[Stall Ferkel abgesetzt bis 25 kg]::Excretion;energy_content;13.9
+Livestock::Pig[Stall Ferkel abgesetzt bis 25 kg]::Excretion;animals;250
+Livestock::Pig[Stall säugende Sauen]::Excretion;animals;20
+Livestock::Pig[Stall Ferkel abgesetzt bis 25 kg]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::Pig[Stall Ferkel abgesetzt bis 25 kg]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::Pig[Stall Ferkel abgesetzt bis 25 kg]::Excretion;animalcategory;weaned_piglets_up_to_25kg
+Livestock::Pig[Stall Ferkel abgesetzt bis 25 kg]::Housing::AirScrubber;air_scrubber;none
+PlantProduction::RecyclingFertiliser;liquid_digestate;0
+PlantProduction::RecyclingFertiliser;solid_digestate;0
+PlantProduction::RecyclingFertiliser;compost;0
+Application::SolidManure::Cseason;appl_autumn_winter_spring;70
+Application::SolidManure::Cseason;appl_summer;30
+Application::SolidManure::CincorpTime;incorp_none;100
+Application::SolidManure::CincorpTime;incorp_gt3d;0
+Application::SolidManure::CincorpTime;incorp_lw3d;0
+PlantProduction::MineralFertiliser;mineral_fertiliser_ammoniumNitrate_amount;0.0
+PlantProduction::MineralFertiliser;mineral_fertiliser_urea_amount;0.0
+Application::SolidManure::CincorpTime;incorp_lw1d;0
+Application::SolidManure::CincorpTime;incorp_lw8h;0
+Application::SolidManure::CincorpTime;incorp_lw4h;0
+Application::SolidManure::CincorpTime;incorp_lw1h;0
+Application::Slurry::Cfermented;fermented_slurry;0
+Application::Slurry::Cseason;appl_autumn_winter_spring;53
+Livestock::Pig[Stall säugende Sauen]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::Pig[Stall Ferkel abgesetzt bis 25 kg]::Housing::MitigationOptions;mitigation_housing_air;none
+Livestock::Pig[Stall säugende Sauen]::Housing::MitigationOptions;mitigation_housing_air;none
+Application::Slurry::Cseason;appl_summer;47
+Application::Slurry::Csoft;appl_hotdays;sometimes
+Application::Slurry::Csoft;appl_evening;0
+Application::Slurry::Applrate;appl_rate;25
+Application::Slurry::Applrate;dilution_parts_water;1
+Application::Slurry::Ctech;share_deep_injection;0
+Application::Slurry::Ctech;share_shallow_injection;0
+Application::Slurry::Ctech;share_trailing_shoe;0
+Application::Slurry::Ctech;share_trailing_hose;100
+Application::Slurry::Ctech;share_splash_plate;0
+Storage::Slurry[Güllelager]::EFLiquid;contains_pig_manure;yes
+Storage::Slurry[Güllelager]::EFLiquid;contains_cattle_manure;no
+Storage::Slurry[Güllelager]::EFLiquid;cover_type;solid_cover
+Storage::Slurry[Güllelager];mixing_frequency;7_to_12_times_per_year
+Storage::Slurry[Güllelager]::EFLiquid;free_correction_factor;0
+Storage::Slurry[Güllelager];depth;2.8
+Storage::Slurry[Güllelager];volume;400
+Storage::SolidManure::Solid;share_covered_basin_pig_manure;0
+Storage::SolidManure::Solid;share_applied_direct_pig_manure;0
+Storage::SolidManure::Solid;share_covered_basin_cattle_manure;0
+Storage::SolidManure::Solid;share_applied_direct_cattle_other_manure;0
+Storage::SolidManure::Poultry;share_covered_basin;0
+Storage::SolidManure::Poultry;share_applied_direct_poultry_manure;0
+Livestock::Pig[Stall säugende Sauen]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::Pig[Stall säugende Sauen]::Housing::AirScrubber;air_scrubber;none
+Livestock::Pig[Stall säugende Sauen]::Excretion;energy_content;13.9
+Livestock::Pig[Stall säugende Sauen]::Excretion;crude_protein;164
+Livestock::Pig[Stall säugende Sauen]::Excretion;animalcategory;nursing_sows
+Livestock::Pig[Stall Galtsauen]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::Pig[Stall Galtsauen]::Excretion;animals;80
+Livestock::Pig[Stall Galtsauen]::Housing::AirScrubber;air_scrubber;none
+Livestock::Pig[Stall Galtsauen]::Excretion;energy_content;12.1
+Livestock::Pig[Stall Galtsauen]::Excretion;crude_protein;128
+Livestock::Pig[Stall Galtsauen]::Excretion;animalcategory;dry_sows
+Livestock::Pig[Stall Galtsauen]::Housing::MitigationOptions;mitigation_housing_floor;none
+Livestock::Pig[Stall Galtsauen]::Housing::MitigationOptions;mitigation_housing_air;none

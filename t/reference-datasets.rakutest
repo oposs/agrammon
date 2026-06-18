@@ -1,0 +1,100 @@
+use v6;
+# Register the model cache dir in the repo chain before any Agrammon::* load
+# (see lib/Agrammon/ModelCache.rakumod for the 2026.04 compunit-identity gotcha).
+use lib %*ENV<HOME> ~ '/.agrammon';
+
+use Agrammon::Model;
+use Agrammon::ModelCache;
+use Agrammon::TechnicalParser;
+use Agrammon::DataSource::CSV;
+use Agrammon::OutputFormatter::JSON;
+use Agrammon::Validation;
+use JSON::Fast;
+use Test;
+
+# Reference-dataset regression test (issue #385).
+#
+# Three real production single-farm datasets (extracted from the prod DB into
+# t/test-data/reference-datasets/<id>.csv) are run through the *current* v7.0.0
+# model and every computed output is compared against a committed snapshot
+# (<id>.expected.json). Any change in the repo that alters a simulation result
+# makes this test fail, pointing at the exact output that moved.
+#
+# When a model change legitimately changes results, regenerate the snapshots:
+#     AGRAMMON_WRITE_REFERENCE=1 raku -Ilib t/reference-datasets.rakutest
+# review the diff, and commit the updated *.expected.json files.
+
+my $ref-dir   = $*PROGRAM.parent.add('test-data/reference-datasets');
+my $model-dir = $*PROGRAM.parent.add('../share/Models/version7.0.0');
+my @datasets  = <85832 85833 85834>;
+
+# Relative tolerance for float comparison: real model changes are far larger
+# than this, while last-ULP float noise across runs/builds stays well below it.
+my constant TOL = 1e-6;
+
+my $model = load-model-using-cache($*HOME.add('.agrammon'), $model-dir, 'End', set('Base'));
+my $params = parse-technical($model-dir.add('technical.cfg').IO.slurp);
+my %technical = %($params.technical.map(-> %m { %m.keys[0] => %(%m.values[0].map({ .name => .value })) }));
+
+#| Run one reference CSV through the model and return a flat { var => value }
+#| map of every output (no print filter, so the whole result set is captured).
+sub compute-outputs(Str $id) {
+    my $csv   = $ref-dir.add("$id.csv").slurp;
+    my $input = Agrammon::DataSource::CSV.new.load('reference', $id, $csv);
+    my @ve    = validation-errors($model, $input);
+    $input.apply-defaults($model, %technical);
+    my $outputs = $model.run(:$input, :%technical);
+    my @records = output-as-json($model, $outputs, 'en', [], False);
+    my %flat;
+    %flat{ .<var> } = .<fullValue> for @records;
+    return %flat, @ve;
+}
+
+my $writing = ?%*ENV<AGRAMMON_WRITE_REFERENCE>;
+
+for @datasets -> $id {
+    subtest "dataset $id" => {
+        my (%got, @ve) := compute-outputs($id);
+        is @ve.elems, 0, "dataset $id has no validation errors"
+            or diag @ve.map(*.message).join("\n");
+        ok %got.elems > 0, "dataset $id produced outputs (%got.elems() variables)";
+
+        my $expected-file = $ref-dir.add("$id.expected.json");
+
+        if $writing {
+            $expected-file.spurt(to-json(%got, :sorted-keys));
+            pass "wrote reference snapshot $expected-file.basename()";
+        }
+        else {
+            unless $expected-file.e {
+                flunk "missing reference snapshot $expected-file.basename() " ~
+                      "(generate with AGRAMMON_WRITE_REFERENCE=1)";
+                next;
+            }
+            my %want = from-json($expected-file.slurp);
+
+            # Same set of output variables.
+            is %got.keys.sort, %want.keys.sort,
+                "dataset $id: same set of output variables as snapshot";
+
+            # Every value matches within tolerance.
+            my @mismatches;
+            for %want.keys.sort -> $var {
+                my $w = %want{$var};
+                my $g = %got{$var};
+                my $ok = do given ($w, $g) {
+                    when $w ~~ Numeric && $g ~~ Numeric {
+                        abs($g - $w) <= TOL * max(1, abs($w));
+                    }
+                    default { ($w // '') eq ($g // '') }
+                }
+                @mismatches.push: "  $var: snapshot=$w.gist() got=$g.gist()" unless $ok;
+            }
+            ok !@mismatches,
+                "dataset $id: all { %want.elems } output values match snapshot"
+                or diag "Deviations from reference results:\n" ~ @mismatches.join("\n");
+        }
+    }
+}
+
+done-testing;

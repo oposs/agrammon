@@ -1,0 +1,99 @@
+# Agrammon reference dataset 85833 — Exploitation laitière (exemple)
+# Extracted from production DB (data_new), model 7.0.0, variant Base. Format: taxonomy;variable;value (DataSource::CSV.load).
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Outdoor;grazing_days;190
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Outdoor;grazing_days;205
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Outdoor;grazing_days;210
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Outdoor;grazing_hours;12
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Outdoor;grazing_hours;24
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Outdoor;grazing_hours;24
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Outdoor;yard_days;165
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Outdoor;yard_days;160
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Outdoor;free_correction_factor;0
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Outdoor;free_correction_factor;0
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CConcentrates;amount_summer;1
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CFeedWinterRatio;share_potatoes_winter;0
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion;dimensioning_barn;30
+Livestock::DairyCow[Stabulation vaches laitières]::Housing::Floor;mitigation_housing_floor;none
+Livestock::DairyCow[Stabulation vaches laitières]::Outdoor;grazing_days;190
+Livestock::DairyCow[Stabulation vaches laitières]::Outdoor;grazing_hours;8.5
+Livestock::DairyCow[Stabulation vaches laitières]::Outdoor;yard_days;175
+Livestock::DairyCow[Stabulation vaches laitières]::Outdoor;free_correction_factor;0
+Storage::Slurry[Fosse à lisier]::EFLiquid;cover_type;solid_cover
+Storage::Slurry[Fosse à lisier]::EFLiquid;contains_pig_manure;no
+Storage::Slurry[Fosse à lisier]::EFLiquid;contains_cattle_manure;yes
+Storage::Slurry[Fosse à lisier];mixing_frequency;7_to_12_times_per_year
+Storage::Slurry[Fosse à lisier]::EFLiquid;free_correction_factor;0
+Storage::Slurry[Fosse à lisier];depth;2.8
+Storage::Slurry[Fosse à lisier];volume;550
+Livestock::DairyCow[Stabulation vaches laitières]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::DairyCow[Stabulation vaches laitières]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Excretion;animalcategory;heifers_1st_yr
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Housing::Type;housing_type;Loose_Housing_Deep_Litter
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Excretion;animals;6
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Excretion;animalcategory;heifers_3rd_yr
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Excretion;animalcategory;heifers_2nd_yr
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Excretion;animals;6
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Excretion;dimensioning_barn;8
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Excretion;dimensioning_barn;6
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Excretion;dimensioning_barn;6
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées de plus de 2 ans]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Housing::Floor;mitigation_housing_floor;none
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Housing::Type;housing_type;Loose_Housing_Slurry_Plus_Solid_Manure
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Excretion;animals;8
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion;animals;30
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CFeedSummerRatio;share_maize_silage_summer;0
+Livestock::DairyCow[Stabulation vaches laitières]::Housing::Type;housing_type;Loose_Housing_Slurry
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CFeedSummerRatio;share_maize_pellets_summer;0
+PlantProduction::MineralFertiliser;mineral_fertiliser_urea_amount;0.0
+Livestock::DairyCow[Stabulation vaches laitières]::Housing::CFreeFactor;free_correction_factor;0
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CConcentrates;amount_winter;2
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CFeedWinterRatio;share_maize_pellets_winter;0
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CFeedWinterRatio;share_beets_winter;0
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Outdoor;floor_properties_exercise_yard;solid_floor
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Outdoor;yard_days;155
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées ente 1 et 2 ans]::Outdoor;exercise_yard;available_roughage_is_not_supplied_in_the_exercise_yard
+Livestock::OtherCattle[Stabulation remontes d'élevage âgées entre 1 et 2 ans]::Outdoor;free_correction_factor;0
+Storage::SolidManure::Poultry;share_applied_direct_poultry_manure;0
+Storage::SolidManure::Poultry;share_covered_basin;0
+Storage::SolidManure::Solid;share_applied_direct_cattle_other_manure;0
+Storage::SolidManure::Solid;share_covered_basin_cattle_manure;0
+Storage::SolidManure::Solid;share_applied_direct_pig_manure;0
+Storage::SolidManure::Solid;share_covered_basin_pig_manure;0
+Application::Slurry::Ctech;share_splash_plate;0
+Application::Slurry::Ctech;share_trailing_hose;100
+Application::Slurry::Ctech;share_trailing_shoe;0
+Application::Slurry::Ctech;share_shallow_injection;0
+Application::Slurry::Ctech;share_deep_injection;0
+Application::Slurry::Applrate;dilution_parts_water;1
+Application::Slurry::Applrate;appl_rate;25
+Application::Slurry::Csoft;appl_evening;0
+Application::Slurry::Csoft;appl_hotdays;sometimes
+Application::Slurry::Cseason;appl_summer;47
+Application::Slurry::Cseason;appl_autumn_winter_spring;53
+Application::Slurry::Cfermented;fermented_slurry;0
+Application::SolidManure::CincorpTime;incorp_lw1h;0
+Application::SolidManure::CincorpTime;incorp_lw4h;0
+Application::SolidManure::CincorpTime;incorp_lw8h;0
+Application::SolidManure::CincorpTime;incorp_lw1d;0
+Application::SolidManure::CincorpTime;incorp_lw3d;0
+Application::SolidManure::CincorpTime;incorp_gt3d;0
+Application::SolidManure::CincorpTime;incorp_none;100
+Application::SolidManure::Cseason;appl_summer;30
+Application::SolidManure::Cseason;appl_autumn_winter_spring;70
+PlantProduction::RecyclingFertiliser;compost;0
+PlantProduction::RecyclingFertiliser;solid_digestate;0
+PlantProduction::RecyclingFertiliser;liquid_digestate;0
+PlantProduction::MineralFertiliser;mineral_fertiliser_ammoniumNitrate_amount;1481.5
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CFeedWinterRatio;share_grass_silage_winter;0
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CFeedWinterRatio;share_maize_silage_winter;0
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CFeedSummerRatio;share_hay_summer;0
+Livestock::DairyCow[Stabulation vaches laitières]::Excretion::CMilk;milk_yield;7000
