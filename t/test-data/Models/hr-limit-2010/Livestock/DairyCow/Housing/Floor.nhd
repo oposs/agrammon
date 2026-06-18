@@ -23,7 +23,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 +UNECE_category_1_mitigation_options_for_housing_systems_for_dairy_cows
   models= SHL
   type  = enum
-  default_calc = none
+  default_value = none
   ++enum
     +++none
        en = none
@@ -57,7 +57,7 @@ UNECE 2007. Guidance document on control techniques for preventing and abating e
 +mitigation_options_for_housing_systems_for_dairy_cows_floor
   models= LU
   type  = enum
-  default_calc = none
+  default_value = none
   ++enum
     +++none
        en = none

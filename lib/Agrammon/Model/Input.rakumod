@@ -7,10 +7,9 @@ use Agrammon::LanguageParser;
 class Agrammon::Model::Input {
     has Str $.name;
     has Str $.description;
-    has     $.default-calc;
+    has     $.default-value;
     has Agrammon::Formula $.default-formula;
     has     &.compiled-default-formula is rw;
-    has     $.default-gui;
     has Str $.type;         # XXX Should be something richer than Str
     has Str $.validator;    # XXX Should be something richer than Str
     ### TODO: those are multi-level hashes; not sure how to do the typing right
@@ -29,16 +28,13 @@ class Agrammon::Model::Input {
     has Bool $!distribute = False;
     has Bool $!filter = False;
 
-    submethod TWEAK(:$default_calc, :$default_gui, :$default_formula, :$default_formula_code,
+    submethod TWEAK(:$default_value, :$default_formula, :$default_formula_code,
                     :$hidden, :$distribute, :$filter, :@enum --> Nil) {
-        with $default_calc {
-            $!default-calc = val($_);
+        with $default_value {
+            $!default-value = val($_);
         }
         with $default_formula {
             $!default-formula = $default_formula;
-        }
-        with $default_gui {
-            $!default-gui = val($_);
         }
         with $hidden {
             $!hidden = .lc eq 'true';
@@ -136,8 +132,7 @@ class Agrammon::Model::Input {
 
         return %(
             :defaults(%(
-                calc => $.default-calc,
-                gui => $.default-gui,
+                value => $.default-value,
                 hasFormula => $.default-formula.defined,
             )),
             # NB: the enum value set is sent as @options (keys + neutral labels)
@@ -172,8 +167,8 @@ class Agrammon::Model::Input {
         with $.default-formula {
             %input<hasDefaultFormula> = $.default-formula.defined;
         }
-        with $.default-calc {
-            %input<default> = $.default-calc;
+        with $.default-value {
+            %input<default> = $.default-value;
         }
         return %input
     }

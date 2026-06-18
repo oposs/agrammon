@@ -290,8 +290,8 @@ Example input variable:
 
                     :branch("false"),
                     :defaults(${
-                        :calc(Any),
-                        :gui(Any)
+                        :value(Any),
+                        :hasFormula(False)
                     }),
                     :enum(${}),
                     :gui(${

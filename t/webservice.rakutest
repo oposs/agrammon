@@ -508,7 +508,7 @@ transactionally {
                         "$var has expected keys";
                     subtest "$var" => {
                         is $input<branch>, 'false', 'branch is false';
-                        is-deeply $input<defaults>, %( calc => Any, gui => Any, hasFormula => False), "defaults as expected";
+                        is-deeply $input<defaults>, %( value => Any, hasFormula => False), "defaults as expected";
                         is-deeply $input<validator>, %( args => ["0"], name => "ge"), "validator as expected";
                     }
                 }

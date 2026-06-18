@@ -29,7 +29,7 @@ is applied.
 +appl_summer
   models = SHL
   type  = percent
-  default_calc = 25
+  default_value = 25
   ++labels 
     en = Share of slurry applied June to August (in %)
     de = Ausbringung von Gülle im Sommer (Juni, Juli, August): Anteil in Prozent
@@ -53,7 +53,7 @@ is applied.
 +appl_autumn_winter_spring
   models = SHL
   type  = percent
-  default_calc = 75
+  default_value = 75
   validator = between(0,100);
   ++labels 
     en = Share of slurry applied September to May (in %)

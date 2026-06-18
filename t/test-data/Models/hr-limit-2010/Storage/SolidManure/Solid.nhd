@@ -70,8 +70,7 @@ taxonomy = Storage::SolidManure::Solid
 +free_correction_factor_cattle_manure
   models = SHL
   type = float
-  default_calc = 0
-  default_gui = 0
+  default_value = 0
   validator = between(0,100);
   ++labels 
     en = Additional emission mitigation measure of cattle manure
@@ -159,8 +158,7 @@ taxonomy = Storage::SolidManure::Solid
 +free_correction_factor_pig_manure
   models = SHL
   type = float
-  default_calc = 0
-  default_gui = 0
+  default_value = 0
   validator = between(0,100);
   ++labels 
     en = Additional emission mitigation measure of pig manure

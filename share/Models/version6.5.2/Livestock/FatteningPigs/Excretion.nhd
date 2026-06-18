@@ -25,8 +25,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 +animalcategory
   type = enum
   filter = true
-  default_gui  = fattening_pigs
-  default_calc = fattening_pigs
+  default_value = fattening_pigs
   ++enum
     +++fattening_pigs
        en = Fattening pigs
@@ -71,8 +70,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 +dimensioning_barn
   type = float
   distribute = true
-  default_gui  = Standard
-  default_calc = Standard
+  default_value = Standard
   ++labels 
     en = Number of available animal places
     de = Anzahl Tierplätze im Stall
@@ -92,8 +90,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 ?if !Kantonal_LU
   +inp_n_excretion
     type = float
-    default_calc = Standard
-    default_gui  = Standard
+    default_value = Standard
     ++labels
       en = N excretion
       de = N Ausscheidung
@@ -143,8 +140,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
   +tan_fraction
     type = percent
-    default_calc = Standard
-    default_gui  = Standard
+    default_value = Standard
     ++labels
       en = TAN fraction of N excretion
       de = TAN Anteil der N Ausscheidung
@@ -170,8 +166,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 +feeding_phase_1_crude_protein
   type = float
-  default_calc = Standard
-  default_gui  = Standard
+  default_value = Standard
   validator = between(130,200);
   ++labels
     en = Phase feeding: Crude protein content of the ration during phase 1
@@ -247,8 +242,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 +feeding_phase_2_crude_protein
   type = float
-  default_calc = Standard
-  default_gui  = Standard
+  default_value = Standard
   validator = between(120,200);
   ++labels
     en = Phase feeding: Crude protein content of the ration during phase 2
@@ -312,8 +306,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
 +feeding_phase_3_crude_protein
   type = float
-  default_calc = Standard
-  default_gui  = Standard
+  default_value = Standard
   validator = between(110,200);
   ++labels
     en = Phase feeding: Crude protein content of the ration during phase 3
@@ -375,8 +368,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 +energy_content
   type = float
   validator = between(9,16);
-  default_calc = Standard
-  default_gui  = Standard
+  default_value = Standard
   ++labels
     en = Energy content of the ration
     de = Energiegehalt der Ration

@@ -38,7 +38,7 @@ class Agrammon::Model::Module {
             $!parent = '';
             $!name   = ~$tax;
         }
-        %!gui-defaults   = @!input.grep(*.default-gui.defined).map({ .name => .default-gui });
+        %!gui-defaults   = @!input.grep(*.default-value.defined).map({ .name => .default-value });
         %!technical-hash = @!technical.map({ .name => .value });
     }
 

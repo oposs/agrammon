@@ -18,7 +18,7 @@ Selects the emission rate and other correciton factors for the specific housing 
 +housing_type_SHL
   models = SHL
   type  = enum
-  default_calc = ignore
+  default_value = ignore
   ++enum
     +++ignore
        en = Dummy entry SHL
@@ -64,7 +64,7 @@ Selects the emission rate and other correciton factors for the specific housing 
 
 +housing_type_LU
   models = LU
-  default_calc = ignore
+  default_value = ignore
   type  = enum
   ++enum
     +++ignore
@@ -116,7 +116,7 @@ Selects the emission rate and other correciton factors for the specific housing 
 +exercise_place
   models = LU
   type  = enum
-  default_calc = none
+  default_value = none
   ++enum
     +++none
        en = none

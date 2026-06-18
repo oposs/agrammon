@@ -34,8 +34,7 @@ taxonomy = Livestock::Equides::Housing
 +free_correction_factor
   models = SHL
   type = float
-  default_calc = 0
-  default_gui = 0
+  default_value = 0
   validator = between(0,100);
   ++labels 
     en = Additional emission mitigation measure for the housing (see column Help)

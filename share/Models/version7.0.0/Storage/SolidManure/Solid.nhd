@@ -72,8 +72,7 @@ taxonomy = Storage::SolidManure::Solid
 ?if !Kantonal_LU
   +free_correction_factor_cattle_manure
     type = float
-    default_calc = 0
-    default_gui = 0
+    default_value = 0
     validator = between(-100,100);
     ++labels 
       en = Additional emission mitigation measure for cattle manure storage
@@ -172,8 +171,7 @@ taxonomy = Storage::SolidManure::Solid
 ?if !Kantonal_LU
   +free_correction_factor_pig_manure
     type = float
-    default_calc = 0
-    default_gui = 0
+    default_value = 0
     validator = between(-100,100);
     ++labels 
       en = Additional emission mitigation measure for pig manure storage

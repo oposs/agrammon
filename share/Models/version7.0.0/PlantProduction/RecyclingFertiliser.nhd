@@ -31,8 +31,7 @@ Vanderweerden and Jarvis (1997)
 +compost
   type  = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Amount of compost (in t fresh matter per year)
     de = Kompost (in t Frischsubstanz pro Jahr)
@@ -58,8 +57,7 @@ Vanderweerden and Jarvis (1997)
 +solid_digestate
   type  = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Amount of solid digestate from anaerobic digestion plants (in t fresh matter per year)
     de = Festes Gärgut von gewerblich-industriellen Anlagen (in t Frischsubstanz pro Jahr)
@@ -83,8 +81,7 @@ Vanderweerden and Jarvis (1997)
 +liquid_digestate
   type  = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Amount of liquid digestate/presswater from anaerobic digestion plants
     de = Flüssiges Gärgut von gewerblich-industriellen Anlagen

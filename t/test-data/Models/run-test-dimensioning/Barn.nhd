@@ -26,8 +26,7 @@ taxonomy = Barn
 
 +dimensioning_barn
   type = float
-  default_calc = Standard
-  default_gui  = Standard
+  default_value = Standard
   ++labels
     en = Number of available animal places
   ++units

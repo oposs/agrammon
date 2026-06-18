@@ -23,7 +23,7 @@ taxonomy = Test
 
 +an_optional_int
   type = integer
-  default_calc = 0
+  default_value = 0
   ++labels
     en = An int
   ++units
@@ -52,7 +52,7 @@ taxonomy = Test
 
 +an_enum
   type = enum
-  default_calc = third
+  default_value = third
   ++enum
     +++first
        en = The worst
@@ -64,7 +64,7 @@ taxonomy = Test
 +with_between
   type = integer
   validator = between(4000,15000);
-  default_calc = 5000
+  default_value = 5000
   ++labels
     en = With between
   ++units
@@ -73,7 +73,7 @@ taxonomy = Test
 +with_ge
   type = integer
   validator = ge(0);
-  default_calc = 5
+  default_value = 5
   ++labels
     en = With ge
   ++units
@@ -82,7 +82,7 @@ taxonomy = Test
 +with_gt
   type = float
   validator = gt(5.5);
-  default_calc = 6.5
+  default_value = 6.5
   ++labels
     en = With gt
   ++units
@@ -91,7 +91,7 @@ taxonomy = Test
 +with_le
   type = integer
   validator = le(100);
-  default_calc = 6
+  default_value = 6
   ++labels
     en = With le
   ++units
@@ -100,7 +100,7 @@ taxonomy = Test
 +with_lt
   type = float
   validator = lt(5.5);
-  default_calc = 2.5
+  default_value = 2.5
   ++labels
     en = With lt
   ++units

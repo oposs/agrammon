@@ -25,8 +25,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 +animalcategory
   type = enum
   filter = true
-  default_gui  = dairy_cows
-  default_calc = dairy_cows
+  default_value = dairy_cows
   ++enum
     +++dairy_cows
        en = Dairy_cows
@@ -71,8 +70,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 +dimensioning_barn
   type = float
   distribute = true
-  default_gui  = Standard
-  default_calc = Standard
+  default_value = Standard
   ++labels 
     en = Number of available animal places
     de = Anzahl Tierplätze im Stall
@@ -95,8 +93,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 ?if !Kantonal_LU
   +inp_n_excretion
     type = float
-    default_calc = Standard
-    default_gui  = Standard
+    default_value = Standard
     ++labels
       en = N excretion for dairy cows
       de = N Ausscheidung
@@ -146,8 +143,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 
   +tan_fraction
     type = percent
-    default_calc = Standard
-    default_gui  = Standard
+    default_value = Standard
     ++labels
       en = TAN fraction of N excretion
       de = TAN Anteil der N Ausscheidung
@@ -176,8 +172,7 @@ Richner, W., Flisch, R., Mayer, J., Schlegel, P., Zähner, M., Menzi, H., 2017. 
 +hiddenAnimals
   type = float
   hidden = true
-  default_calc = 42
-  default_gui = 42
+  default_value = 42
   ++labels
     en = Test
     de = Test

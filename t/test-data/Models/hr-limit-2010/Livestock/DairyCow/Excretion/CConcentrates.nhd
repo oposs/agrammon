@@ -28,7 +28,7 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
 +amount_summer
    models = SHL
    type = float
-   default_calc = 1
+   default_value = 1
    validator = between(0,6);
    ++labels 
      en = Amount of concentrates per animal and per day in summer
@@ -51,7 +51,7 @@ taxonomy = Livestock::DairyCow::Excretion::CConcentrates
 +amount_winter
    models = SHL
    type = float
-   default_calc = 2
+   default_value = 2
    validator = between(0,6);
    ++labels 
      en = Amount of concentrates per animal and per day in winter

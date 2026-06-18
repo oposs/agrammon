@@ -78,7 +78,7 @@ role Agrammon::Inputs::Storage {
                 my $module = $model.get-module($taxonomy);
                 my %values := (%!single-inputs{$taxonomy} //= {});
                 for $module.input -> $input {
-                    with $input.default-calc {
+                    with $input.default-value {
                         %values{$input.name} //= $_;
                     }
                     orwith $input.compiled-default-formula -> &default {

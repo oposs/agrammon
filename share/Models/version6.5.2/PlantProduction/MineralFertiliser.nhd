@@ -31,8 +31,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 
 +soil_ph
   type         = enum
-  default_calc = unknown
-  default_gui  = unknown
+  default_value = unknown
   ++enum
     +++low
        en = pH <= 7.0
@@ -86,8 +85,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_ammoniumNitrate_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Ammonium nitrate: amount used
     de = Ammonsalpeter: Verbrauch
@@ -109,8 +107,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_ammoniumNitrate_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 27
-  default_gui  = 27
+  default_value = 27
   ++labels 
     en = Ammonium nitrate: N-content
     de = Ammonsalpeter: N-Gehalt (siehe Spalte Hilfe)
@@ -148,8 +145,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_calciumAmmoniumNitrate_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Calcium ammonium nitrate: amount used
     de = Kalk-Ammonsalpeter: Verbrauch
@@ -171,8 +167,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_calciumAmmoniumNitrate_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 20
-  default_gui  = 20
+  default_value = 20
   ++labels 
     en = Calcium ammonium nitrate: N-content
     de = Kalk-Ammonsalpeter: N-Gehalt
@@ -194,8 +189,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_ammoniumSulphate_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Ammonium sulphate: amount used
     de = Ammoniumsulfat: Verbrauch
@@ -217,8 +211,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_ammoniumSulphate_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 21
-  default_gui  = 21
+  default_value = 21
   ++labels 
     en = Ammonium sulphate: N-content
     de = Ammoniumsulfat: N-Gehalt
@@ -241,8 +234,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_urea_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Urea: amount used
     de = Harnstoff: Verbrauch
@@ -264,8 +256,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_urea_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 46
-  default_gui  = 46
+  default_value = 46
   ++labels 
     en = Urea: N-content
     de = Harnstoff: N-Gehalt
@@ -288,8 +279,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_sulfamid_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Sulfamide: amount used
     de = Sulfamid: Verbrauch
@@ -311,8 +301,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_sulfamid_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 30
-  default_gui  = 30
+  default_value = 30
   ++labels 
     en = Sulfamide: N-content
     de = Sulfamid: N-Gehalt
@@ -334,8 +323,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_calciumNitrate_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Calcium nitrate: amount used
     de = Kalksalpeter: Verbrauch
@@ -357,8 +345,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_calciumNitrate_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 15.5
-  default_gui  = 15.5
+  default_value = 15.5
   ++labels 
     en = Calcium nitrate: N-content
     de = Kalksalpeter: N-Gehalt
@@ -380,8 +367,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_calciumCyanamid_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Calcium cyanamide: amount used
     de = Kalkstickstoff: Verbrauch
@@ -403,8 +389,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_calciumCyanamid_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 20
-  default_gui  = 20
+  default_value = 20
   ++labels 
     en = Calcium cyanamide: N-content
     de = Kalkstickstoff: N-Gehalt
@@ -426,8 +411,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_entec_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Entec 26% + 13S: amount used
     de = Entec 26% + 13S: Verbrauch
@@ -449,8 +433,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_entec_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 26
-  default_gui  = 26
+  default_value = 26
   ++labels 
     en = Entec 26% + 13S: N-content
     de = Entec 26% + 13S: N-Gehalt
@@ -472,8 +455,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_np_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = NP fertilizer: amount used
     de = NP-Dünger: Verbrauch
@@ -495,8 +477,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_np_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 15
-  default_gui  = 15
+  default_value = 15
   ++labels 
     en = NP fertilizer: N-content
     de = NP-Dünger: N-Gehalt
@@ -518,8 +499,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_nk_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = NK fertilizer: amount used
     de = NK-Dünger: Verbrauch
@@ -541,8 +521,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_nk_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 11.5
-  default_gui  = 11.5
+  default_value = 11.5
   ++labels 
     en = NK fertilizer: N-content
     de = NK-Dünger: N-Gehalt
@@ -564,8 +543,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_npk_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = NPK fertilizer: amount used
     de = NPK-Dünger: Verbrauch
@@ -587,8 +565,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_npk_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 12.5
-  default_gui  = 12.5
+  default_value = 12.5
   ++labels 
     en = NPK fertilizer: N-content
     de = NPK-Dünger: N-Gehalt
@@ -610,8 +587,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_entec2_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Entec as NP, NPK, with/without Mg, S or micronutrients: amount used
     de = Entec als NP, NPK, mit/ohne Mg, S oder Spurenelemente: Verbrauch
@@ -633,8 +609,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_entec2_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 18.5
-  default_gui  = 18.5
+  default_value = 18.5
   ++labels 
     en = Entec as NP, NPK, with/without Mg, S or micronutrients: N-content
     de = Entec als NP, NPK, mit/ohne Mg, S oder Spurenelemente: N-Gehalt
@@ -656,8 +631,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_other_amount 
   type         = float
   validator    = ge(0)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Other nitrogen N fertilizer: amount used
     de = Anderer mineralischer N-Dünger: Verbrauch
@@ -679,8 +653,7 @@ gui	     = PlantProduction::MineralFertiliser,Pflanzenbau::Mineralische Sticksto
 +mineral_fertiliser_other_N_content
   type         = float
   validator    = between(0,100)
-  default_calc = 0
-  default_gui  = 0
+  default_value = 0
   ++labels 
     en = Other nitrogen N fertilizer: N-content
     de = Anderer mineralischer N-Dünger: N-Gehalt
