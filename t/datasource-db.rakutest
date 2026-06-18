@@ -7,7 +7,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 22;
+plan 24;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -115,6 +115,35 @@ transactionally {
                 { flat-a => 'z_z', :simple(101) }, 'Correct enum value for third flattened input with space in enum';
         is-deeply @instances[2].input-hash-for('Test::Base2::Retained'),
                 { simple => 13 }, 'Non-distributed instance data was correctly loaded';
+    }
+}
+
+transactionally {
+    # Flattened distribution rebuilt from the dedicated `flattened` table
+    # (issue #431): marker var housing_system, options {deep_litter, aviary,
+    # floor_housing}, fractions {50, 30, 20}.
+    lives-ok { prepare-test-db-flattened-housing-data($ag-user, $ag-dataset, %regional) },
+        'Flattened housing test database prepared';
+
+    my $ds = Agrammon::DataSource::DB.new;
+    my $dataset = $ds.read($ag-user, $ag-dataset, %regional).to-inputs({
+        'Livestock::Poultry' => ['Livestock::Poultry::Housing::Type::total']
+    });
+
+    subtest "Flattened housing_system distribution read from `flattened` table" => {
+        my @instances = $dataset.inputs-list-for('Livestock::Poultry');
+        is @instances.elems, 3, 'Produced 3 instances from the flattened housing_system distribution';
+        @instances .= sort(*.input-hash-for('Livestock::Poultry::Housing::Type').<housing_system>);
+        # sorted option keys: aviary, deep_litter, floor_housing
+        is-deeply @instances[0].input-hash-for('Livestock::Poultry::Housing::Type'),
+                { housing_system => 'aviary', total => 300 },
+                'aviary instance: 30% of 1000';
+        is-deeply @instances[1].input-hash-for('Livestock::Poultry::Housing::Type'),
+                { housing_system => 'deep_litter', total => 500 },
+                'deep_litter instance: 50% of 1000';
+        is-deeply @instances[2].input-hash-for('Livestock::Poultry::Housing::Type'),
+                { housing_system => 'floor_housing', total => 200 },
+                'floor_housing instance: 20% of 1000';
     }
 }
 
@@ -315,31 +344,71 @@ sub prepare-test-db-flattened-data($user, $dataset, %variant) {
     my $iidA = test-instance-id($db, $datasetId, 'Instance A');
     my $iidB = test-instance-id($db, $datasetId, 'Instance B');
 
+    # The flattened distribution now lives in the dedicated `flattened` table:
+    # the marker data row carries data_val='flattened', and one self-describing
+    # `flattened` row holds the option keys (underscore-normalized) + fractions.
     my $sth = $db.prepare(q:to/STATEMENT/);
     INSERT INTO data (data_dataset, data_instance_id, data_var, data_val)
     VALUES ($1, $2, $3, $4)
+    RETURNING data_id
+    STATEMENT
+
+    my $sth-flat = $db.prepare(q:to/STATEMENT/);
+    INSERT INTO flattened (flattened_var, flattened_options, flattened_fractions)
+    VALUES ($1, $2, $3)
     STATEMENT
 
     $sth.execute($datasetId, $iidA, 'Test::Base[]::Sub::dist-me', 1000);
     $sth.execute($datasetId, $iidA, 'Test::Base[]::Sub::simple', 42);
-    $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a', 'flattened');
-    $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a_flattened00_x', 30);
-    # enum value with _
-    $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a_flattened01_y_y', 20);
-    # enum value with space
-    $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a_flattened02_z z', 50);
+    my $a-flat = $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::flat-a', 'flattened').value;
+    # enum keys with _ and (originally) space are stored underscore-normalized
+    $sth-flat.execute($a-flat, '{x,y_y,z_z}', [30, 20, 50]);
     $sth.execute($datasetId, $iidA, 'Test::Base[]::AnotherSub::simple', 101);
     $sth.execute($datasetId, $iidA, 'Test::Base[]::Retained::simple', 13);
 
     $sth.execute($datasetId, $iidB, 'Test::Base2[]::Sub::dist-meA', 1000);
     $sth.execute($datasetId, $iidB, 'Test::Base2[]::Sub::dist-meB', 2000);
     $sth.execute($datasetId, $iidB, 'Test::Base2[]::Sub::simple', 42);
-    $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::flat-a', 'flattened');
-    $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::flat-a_flattened00_x', 30);
-    $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::flat-a_flattened01_y_y', 20);
-    $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::flat-a_flattened01_z z', 50);
+    my $b-flat = $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::flat-a', 'flattened').value;
+    $sth-flat.execute($b-flat, '{x,y_y,z_z}', [30, 20, 50]);
     $sth.execute($datasetId, $iidB, 'Test::Base2[]::AnotherSub::simple', 101);
     $sth.execute($datasetId, $iidB, 'Test::Base2[]::Retained::simple', 13);
+}
+
+sub prepare-test-db-flattened-housing-data($user, $dataset, %variant) {
+    my $db = $*AGRAMMON-DB-HANDLE;
+
+    my $userId = $db.query(q:to/STATEMENT/, $user).value;
+    SELECT pers_email2id($1)
+    STATEMENT
+
+    $db.query(q:to/STATEMENT/, $dataset, $userId, %variant<version>, %variant<gui>, %variant<model>);
+    INSERT INTO dataset (dataset_name, dataset_pers, dataset_version, dataset_guivariant, dataset_modelvariant)
+    VALUES ($1, $2, $3, $4, $5);
+    STATEMENT
+
+    my $datasetId = $db.query(q:to/STATEMENT/, $user, $dataset, %variant<version>, %variant<gui>, %variant<model>).value;
+    SELECT dataset_name2id($1, $2, $3, $4, $5)
+    STATEMENT
+
+    my $iid = test-instance-id($db, $datasetId, 'Branched');
+
+    my $sth = $db.prepare(q:to/STATEMENT/);
+    INSERT INTO data (data_dataset, data_instance_id, data_var, data_val)
+    VALUES ($1, $2, $3, $4)
+    RETURNING data_id
+    STATEMENT
+
+    my $sth-flat = $db.prepare(q:to/STATEMENT/);
+    INSERT INTO flattened (flattened_var, flattened_options, flattened_fractions)
+    VALUES ($1, $2, $3)
+    STATEMENT
+
+    # Numeric input distributed proportionally over the flattened option keys.
+    $sth.execute($datasetId, $iid, 'Livestock::Poultry[]::Housing::Type::total', 1000);
+    my $flat = $sth.execute($datasetId, $iid,
+            'Livestock::Poultry[]::Housing::Type::housing_system', 'flattened').value;
+    $sth-flat.execute($flat, '{deep_litter,aviary,floor_housing}', [50, 30, 20]);
 }
 
 sub prepare-test-db-branched-data($user, $dataset, %variant) {
