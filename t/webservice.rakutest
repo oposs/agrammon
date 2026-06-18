@@ -487,11 +487,12 @@ subtest "get-batch-outputs-for-rest" => {
     # run in parallel via the REST batch entry point.
     my $batch-data = 't/test-data/inputs-batch.json'.IO.slurp;
     ok $batch-data, "Read JSON batch file";
-    ok my @results = $ws.get-batch-outputs-for-rest(
+    my @results = $ws.get-batch-outputs-for-rest(
         $batch-data, 'application/json',
         :format('application/json'),
         :print-only('SummaryTotal'),
-    ), "Run batch";
+    );
+    ok @results, "Run batch";
     is @results.elems, 2, "Got one result per dataset";
     is @results[0]<simulation>, 'BatchSim', "Result keeps simulation name";
     is @results[0]<dataset>, 'DS1', "First result is DS1 (order preserved)";
