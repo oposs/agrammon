@@ -4,14 +4,6 @@ use Agrammon::Inputs;
 use Agrammon::DataSource::Util;
 
 class Agrammon::DataSource::DB does Agrammon::DB {
-    my class Flattened {
-        has Str $.taxonomy;
-        has Str $.instance-id;
-        has Str $.sub-taxonomy;
-        has Str $.input-name;
-        has %.value-percentages;
-    }
-
     # Parse a stored branched var name `Taxonomy[]::SubTax::var` (or
     # `Taxonomy[]::var` with no sub-taxonomy) into (taxonomy, sub-taxonomy, var).
     sub parse-branch-var(Str $module-var) {
@@ -48,19 +40,15 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                 dataset-id      => $dataset
             );
 
-            my @flattend-to-add;
-
             for @rows -> @row {
                 my $module-var = @row[0];
                 my $value      = maybe-numify(@row[1]);
                 my $instance   = @row[2] // '';
                 my $comment    = @row[3];
-                state $flattend-prefix = '';
-                state Flattened $current-flattened;
 
-                # branched data rows carry no value of their own; their matrix is
-                # rebuilt from the dedicated branches query below.
-                next if $value && $value eq 'branched';
+                # branched/flattened marker rows carry no value of their own;
+                # their distribution is rebuilt from the dedicated queries below.
+                next if $value && ($value eq 'branched' || $value eq 'flattened');
 
                 if $instance {
                     if $module-var ~~ m/(.+)'[]'(.+)/ {
@@ -77,25 +65,7 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                             $var = $sub-var;
                         }
 
-                        if $value and $value eq 'flattened' {
-                            $flattend-prefix = $var;
-                            $current-flattened = Flattened.new:
-                                    taxonomy => $tax,
-                                    instance-id => $instance,
-                                    sub-taxonomy => $sub-tax,
-                                    input-name => $var;
-                            push @flattend-to-add, $current-flattened;
-                        }
-                        elsif $flattend-prefix && $var.starts-with($flattend-prefix ~ '_flattened') {
-                            my $key = $var.substr(($flattend-prefix ~ '_flattened00_').chars);
-                            # TODO: flattened variables should be stored with _ instead of space
-                            $key ~~ s:g/ ' ' /_/;
-                            $current-flattened.value-percentages{$key} = $value;
-                        }
-                        else {
-                            $dist-input.add-multi-input($tax, $instance, $sub-tax, $var, $value, :$comment);
-                            $flattend-prefix = '';
-                        }
+                        $dist-input.add-multi-input($tax, $instance, $sub-tax, $var, $value, :$comment);
                     }
                     else {
                         die "Malformed data: module-var=$module-var";
@@ -107,11 +77,6 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                     my $var     = "$1";
                     $dist-input.add-single-input($tax, $var, $value, :$comment);
                 }
-            }
-
-            for @flattend-to-add {
-                $dist-input.add-multi-input-flattened(.taxonomy, .instance-id, .sub-taxonomy,
-                        .input-name, .value-percentages);
             }
 
             # Branched inputs: one self-describing row each, joined to both data
@@ -134,6 +99,25 @@ class Agrammon::DataSource::DB does Agrammon::DB {
                     $row-sub, $row-var, @b[3].list,
                     $col-sub, $col-var, @b[4].list,
                     @b[5]);
+            }
+
+            # Flattened inputs: one self-describing row each, joined to the marker
+            # data row to recover variable name + instance. Options/fractions zip
+            # directly into the percentage map (no state machine / substr / munge).
+            my @flattened = $db.query(q:to/STATEMENT/, $user, $dataset, %variant<version>, %variant<gui>, %variant<model>).arrays;
+                SELECT fv.data_var, fi.data_instance_name,
+                       f.flattened_options, f.flattened_fractions
+                FROM flattened f
+                JOIN data fv ON (f.flattened_var = fv.data_id)
+                LEFT JOIN data_instance fi ON (fv.data_instance_id = fi.data_instance_id)
+                WHERE fv.data_dataset = dataset_name2id($1,$2,$3,$4,$5)
+            STATEMENT
+
+            for @flattened -> @f {
+                my ($tax, $sub, $var) = parse-branch-var(@f[0]);
+                # An unset option (NULL fraction) counts as 0% for the run.
+                my %value-percentages = @f[2].list Z=> @f[3].list.map({ .defined ?? .Numeric !! 0 });
+                $dist-input.add-multi-input-flattened($tax, @f[1], $sub, $var, %value-percentages);
             }
 
             return $dist-input;

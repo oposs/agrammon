@@ -156,6 +156,12 @@ qx.Class.define('agrammon.module.input.PropTable', {
                 case "branch":
                 case "branches":
                     break;
+                case "flattenedOf":
+                case "flattenedKey":
+                    // #431: flattened-option rows are identified by these meta
+                    // keys (replacing the old _flattenedNN_ name encoding); the
+                    // percent cell needs no special editor, just acknowledge them.
+                    break;
                 default:
                     alert("This should not happen: unknown metaData value: "+cmd);
                     break;

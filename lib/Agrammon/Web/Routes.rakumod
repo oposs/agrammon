@@ -598,6 +598,18 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
+        post -> LoggedIn $user, 'store_flattened_data' {
+            request-body -> (:datasetName($dataset-name)!, :%data!) {
+                $ws.store-flattened-data($user, $dataset-name, %data);
+                CATCH {
+                    .note;
+                    when X::Agrammon::DB::Dataset::StoreFlattenedDataFailed {
+                        conflict 'application/json', %( error => .message );
+                    }
+                }
+            }
+        }
+
         post -> LoggedIn $user, 'upload' {
             request-body -> (:$file!, :datasetName($dataset-name)!, :$comment) {
                 my $file-name = $file.filename;

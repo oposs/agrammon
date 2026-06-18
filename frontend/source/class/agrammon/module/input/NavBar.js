@@ -456,18 +456,16 @@ qx.Class.define('agrammon.module.input.NavBar', {
                     folder = this.__navHash[folderName]['folder'];
                     // FIX ME
                     var noCheck = true;
-                    var regex = /(.+)(_flattened\d?\d?_.+)$/;
-                    var match = regex.exec(varName);
-                    if ( match !== null ) {
-                        var vname = match[1];
-                        var fname = match[2];
-                        var ds = folder.getDataset();
-                        var v, vlen=ds.length;
-                        for (v=0; v<vlen; v++) {
-                            if (vname == ds[v].getName()) {
-                                folder.insertData(varName, value, noCheck, v+1, fname);
-                                break;
-                            }
+                    // #431: a flattened input is a marker row (value 'flattened')
+                    // carrying a structured {options, fractions} ride-along at
+                    // data[i][5]. Set the marker, then build the inline percent
+                    // rows by metadata (no more _flattenedNN_ name parsing).
+                    if (value == 'flattened') {
+                        var fdata = data[i][5];   // { options:[…], fractions:[…] } | null
+                        var res2 = folder.setData(varName, value, comment, noCheck, null);
+                        if (res2 === true) { nset++; }
+                        if (fdata && fdata.options) {
+                            folder.buildFlattenedRows(varName, fdata.options, fdata.fractions);
                         }
                     }
                     else {

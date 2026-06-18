@@ -1,5 +1,6 @@
 use v6;
 
+use IO::String;
 use Text::CSV;
 use Agrammon::DB::Tag;
 use Agrammon::DB::User;
@@ -133,6 +134,14 @@ class X::Agrammon::DB::Dataset::StoreBranchDataFailed is Exception {
     has Str $.variable is required;
     method message {
         "Branching data for variable '$!variable' couldn't be saved."
+    }
+}
+
+#| Error when flattened data couldn't be saved.
+class X::Agrammon::DB::Dataset::StoreFlattenedDataFailed is Exception {
+    has Str $.variable is required;
+    method message {
+        "Flattened data for variable '$!variable' couldn't be saved."
     }
 }
 
@@ -415,7 +424,10 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
             SELECT dv.data_var, dv.data_val, dv.data_instance_order,
                    (SELECT array_agg(x ORDER BY ord)
                       FROM unnest(b.branches_matrix) WITH ORDINALITY AS t(x, ord)) AS branches_data,
-                   dv.data_comment
+                   dv.data_comment,
+                   (SELECT jsonb_build_object('options',   f.flattened_options,
+                                              'fractions', f.flattened_fractions)
+                      FROM flattened f WHERE f.flattened_var = dv.data_id) AS flattened_data
               FROM data_view dv
               LEFT JOIN branches b ON (b.branches_row_var = dv.data_id OR b.branches_col_var = dv.data_id)
              WHERE dv.data_dataset=dataset_name2id($1,$2,$3,$4,$5)
@@ -431,14 +443,45 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         my $fh = IO::String.new($content);
         my $csv = Text::CSV.new;
         my $i = 0;
+        # Accumulate legacy `_flattenedNN_<key>` rows per (instance, marker var)
+        # and fold them into one store-flattened-data call (issue #431 boundary
+        # translation). Run-input CSV/JSON cannot carry flattening; only dataset
+        # imports can, so this is the sole compat surface.
+        my %flat;   # "$instance\0$base" => { var => …, instance => …, options => […], fractions => […] }
+        sub flush-flat() {
+            for %flat.values -> %g {
+                self.store-flattened-data(%g<var>, %g<instance>, %g<options>, %g<fractions>);
+                $i++;
+            }
+            %flat = ();
+        }
         while (my @row = $csv.getline($fh)) {
             my ($var-name, $value) = @row;
             next unless $var-name;
             # skip comments
             next if $var-name ~~ /^\#/;
+
+            if $var-name ~~ /^ (.+?) '[' (.+?) ']' (.*?) '_flattened' \d ** 1..2 '_' (.+) $/ {
+                my $base     = "$0\[]$2";            # marker var, instance-free
+                my $instance = ~$1;
+                my $key      = (~$3).subst(' ', '_', :g);
+                my $slot     = %flat{"$instance\0$base"} //= {
+                    :var($base), :$instance, :options([]), :fractions([])
+                };
+                $slot<options>.push: $key;
+                $slot<fractions>.push: $value;
+                next;
+            }
+            # A `=flattened` marker line for a var we're folding: skip it (the
+            # flattened row creation sets the marker itself).
+            if $value && $value eq 'flattened' {
+                next;
+            }
+
             self.store-input($var-name, $value);
             $i++;
         }
+        flush-flat();
         CATCH {
             .note;
             when CSV::Diag {
@@ -839,6 +882,54 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                                branches_matrix      = EXCLUDED.branches_matrix
                 SQL
             die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new(:variable($row-var)) unless $ret;
+
+            $db.query(q:to/SQL/, $username, $dataset-name, |self!variant);
+                    UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                     WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
+                SQL
+        }
+    }
+
+    # Ensure a flattened variable's marker data row exists for $instance-id with
+    # data_val='flattened' and return its data_id (mirrors !branched-var-id).
+    method !flattened-var-id($db, $instance-id, $variable) {
+        my $ret = $db.query(q:to/SQL/, $instance-id, $variable);
+            UPDATE data SET data_val = 'flattened'
+             WHERE data_instance_id = $1 AND data_var = $2
+            RETURNING data_id
+        SQL
+        return $ret.value if $ret.rows;
+
+        $ret = $db.query(q:to/SQL/, $instance-id, $variable);
+            INSERT INTO data (data_dataset, data_var, data_val, data_instance_id)
+                 VALUES ((SELECT data_instance_dataset FROM data_instance WHERE data_instance_id = $1),
+                         $2, 'flattened', $1)
+            RETURNING data_id
+        SQL
+        return $ret.value;
+    }
+
+    method store-flattened-data(Str $var, Str $instance, @options, @fractions) {
+        my $dataset-name = $!name;
+        self.with-db: -> $db {
+            my $username    = $!user.username;
+            my $instance-id = self!instance-id($db, $username, $instance);
+
+            my $var-id     = self!flattened-var-id($db, $instance-id, $var);
+            my @opt-keys   = @options.map(*.subst(' ', '_', :g));
+            # An unset percent arrives as undefined/'' and is stored as a NULL
+            # array element ("not yet set"), distinct from an explicit 0.
+            my @fracs      = @fractions.map({ $_.defined && $_ ne '' ?? +$_ !! Real }).Array;
+
+            my $ret = $db.query(q:to/SQL/, $var-id, @opt-keys, @fracs);
+                INSERT INTO flattened (flattened_var, flattened_options, flattened_fractions)
+                              VALUES ($1, $2, $3)
+                ON CONFLICT (flattened_var)
+                DO
+                    UPDATE SET flattened_options   = EXCLUDED.flattened_options,
+                               flattened_fractions = EXCLUDED.flattened_fractions
+                SQL
+            die X::Agrammon::DB::Dataset::StoreFlattenedDataFailed.new(:variable($var)) unless $ret;
 
             $db.query(q:to/SQL/, $username, $dataset-name, |self!variant);
                     UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP

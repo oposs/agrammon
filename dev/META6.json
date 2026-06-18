@@ -25,6 +25,7 @@
     "ECMA262Regex",
     "Email::MIME",
     "IO::Path::ChildSecure",
+    "IO::String",
     "JSON::Pointer",
     "JSON::Pointer::Relative",
     "Libarchive",

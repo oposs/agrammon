@@ -91,6 +91,16 @@ sub prepare-test-db($uid) is export {
     SQL
 
     $db.query(q:to/SQL/);
+    CREATE TABLE IF NOT EXISTS flattened (
+        flattened_id        SERIAL    NOT NULL PRIMARY KEY,
+        flattened_var       INTEGER   NOT NULL UNIQUE REFERENCES data(data_id) ON DELETE CASCADE,
+        flattened_options   TEXT[]    NOT NULL,
+        flattened_fractions NUMERIC[] NOT NULL,
+        CHECK (cardinality(flattened_options) = cardinality(flattened_fractions))
+    )
+    SQL
+
+    $db.query(q:to/SQL/);
     INSERT INTO pers (pers_id, pers_email, pers_password)
               VALUES (-42000, 'foo@agrammon.ch', 'XXX')
     SQL
@@ -121,6 +131,20 @@ sub prepare-test-db($uid) is export {
                  '{less_than_twice_a_month,twice_a_month,3_to_4_times_a_month,more_than_4_times_a_month,once_a_day,no_manure_belt}',
                  '{manure_belt_with_manure_belt_drying_system,manure_belt_without_manure_belt_drying_system,deep_pit,deep_litter}',
                  '{{0,0,0,0},{0,0,0,15.9},{31.5,33.5,0,0},{0,0,0,0},{0,2.2,0,0},{0,0,0,16.9}}')
+    SQL
+
+    # Flattened input fixture (issue #431): one marker data row + one self-
+    # describing flattened row. housing_system distributed over 3 options.
+    $db.query(q:to/SQL/);
+    INSERT INTO data (data_id, data_dataset, data_var, data_instance_id, data_val)
+                 VALUES (-76315990, -42000, 'Livestock::Poultry[]::Housing::Type::housing_system', -91000, 'flattened')
+    SQL
+
+    $db.query(q:to/SQL/);
+    INSERT INTO flattened (flattened_id, flattened_var, flattened_options, flattened_fractions)
+         VALUES (-31000, -76315990,
+                 '{deep_litter,aviary,floor_housing}',
+                 '{50,30,20}')
     SQL
 
     return 1;

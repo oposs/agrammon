@@ -25,7 +25,7 @@ qx.Class.define('agrammon.ui.table.cellrenderer.input.Label', {
 
         _getCellStyle : function(cellInfo) {
             var color;
-            if (cellInfo.rowData[0].match(/.+_flattened[\d]*_.+/)) { // match variable name
+            if (cellInfo.rowData[7] && cellInfo.rowData[7].flattenedOf) { // flattened option row (metadata)
                 cellInfo.value = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
                                  + cellInfo.value;
                 color = (cellInfo.row % 2 == 1 ? this.__colors.bgcolOdd

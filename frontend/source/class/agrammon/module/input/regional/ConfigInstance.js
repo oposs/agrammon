@@ -118,28 +118,29 @@ qx.Class.define('agrammon.module.input.regional.ConfigInstance', {
                 }
                 else if ( data[i][10] ) {
 //                    this.debug('Flattening '+data[i][4]);
-                    // these are the option keys
-                    var options = newData[i].getMetaOptions();
-                    // these are the multilingual option labels
+                    // #431: options[o][2] is the canonical underscore enum key;
+                    // optionsLang[o] the parallel per-language label hash.
+                    // Identity is metadata (flattenedOf / flattenedKey), not a
+                    // parsed _flattenedNN_ name; the row name is non-semantic.
+                    var options = newData[i].getMetaData()['options'];
                     var optionsLang = newData[i].getMetaOptionsLang();
-                    var newVar, o, oo, olen=options.length;
-                    oo = -1;
+                    var newVar, o, olen=options.length;
                     for (o=0; o<olen; o++) {
-                        // get order of flattened variables right
-//                        oo = olen-1-o;
-                          oo++;
-                        if (oo<10) {
-                            oo = '0' + oo;
-                        }
-                        newVar =
-                            newData[i].clone(newData[i].getName()
-                                             +'_flattened'+oo+'_'+options[o]);
+                        var fkey = options[o][2];
+                        newVar = newData[i].clone(newData[i].getName() + '#flat#' + fkey);
                         newVar.setLabels({  en: optionsLang[o]['en'],
                                             de: optionsLang[o]['de'],
                                             fr: optionsLang[o]['fr']
                                          });
-//                        newVar.setMetaData({type: 'integer'});
-                        newVar.setMetaData({type: 'percent'});
+                        newVar.setType('percent');
+                        newVar.setMetaData({ type: 'percent',
+                                             flattenedOf: newData[i].getName(),
+                                             flattenedKey: fkey });
+                        // #431: clear the enum default ('*** Select ***') the
+                        // clone inherited from the marker, so empty percent
+                        // cells render blank instead of the SelectBox placeholder
+                        // (matches buildFlattenedRows on the load path).
+                        newVar.setDefaultValue(null);
                         newVar.setValue(null);
                         newVar.setHelpIcon(null);
                         newVar.setHelpFunction(null);

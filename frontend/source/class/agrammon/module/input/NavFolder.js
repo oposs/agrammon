@@ -565,32 +565,31 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             return undefined;
         }, // setData
 
-        insertData: function(key, value, noCheck, pos) {
-            var oldVar = this.__propData[pos-1];
-            key.match(/.+_flattened(\d?\d?)_(.+)$/);
-            var i = RegExp.$1;
-            var f = RegExp.$2;
-            var labels = oldVar.getOptionLabels(f);
-            var newVar = oldVar.clone(key);
-            // flattened inputs are percentages not enum as their parent
-            newVar.setType('percent');
-            newVar.setDefaultValue(null);
-            newVar.setValue(value);
-            newVar.setLabels(labels);
-            newVar.setUnits({en: '%', de: '%', fr: '%'});
-            newVar.setHelpIcon(null);
-            newVar.setHelpFunction(null);
-            newVar.setMetaData({type: 'percent'});
-            // flattened inputs come after parent
-            newVar.setOrder(oldVar.getOrder()+Number(i)+1);
-            if (pos>this.__propData.length) {
-                this.__propData.push(newVar);
+        // #431: build the inline percent rows for a flattened input from the
+        // structured {options, fractions} carried by load_dataset. Identity is
+        // metadata (flattenedOf / flattenedKey), not a parsed _flattenedNN_ name.
+        buildFlattenedRows: function(markerName, options, fractions) {
+            var marker = null, pos = -1;
+            for (var i = 0; i < this.__propData.length; i++) {
+                if (this.__propData[i].getName() === markerName) { marker = this.__propData[i]; pos = i; break; }
             }
-            else {
-                this.__propData.splice(pos,0,newVar);
+            if (!marker) { return; }
+            for (var j = 0; j < options.length; j++) {
+                var key    = options[j];   // canonical underscore enum key
+                var rowName = markerName + '#flat#' + key;   // non-semantic, unique
+                var labels  = marker.getOptionLabelsByKey(key) || {};
+                var v = marker.clone(rowName);
+                v.setType('percent');
+                v.setDefaultValue(null);
+                v.setValue(fractions && fractions[j] != null ? '' + fractions[j] : null);
+                v.setLabels(labels);
+                v.setUnits({ en: '%', de: '%', fr: '%', it: '%' });
+                v.setHelpIcon(null);
+                v.setHelpFunction(null);
+                v.setMetaData({ type: 'percent', flattenedOf: markerName, flattenedKey: key });
+                v.setOrder(marker.getOrder() + j + 1);
+                this.__propData.splice(pos + 1 + j, 0, v);
             }
-            // FIX ME: comments?
-            this.setData(key, value, null, noCheck, null);
         },
 
         setDataset: function(newData, handleIgnore, storeAll) {
@@ -604,6 +603,10 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             // after the loop, not per-variable (the per-variable store_data path
             // was axis-blind). Collect the folder's branched variables here.
             var branchedVars = [];
+            // #431: flattened inputs are persisted per-marker via
+            // store_flattened_data after the loop, never as per-row store_data.
+            // markerVarName -> { rows: [{key,value}], hasMarker: bool }
+            var flattenedGroups = {};
             for (i=0; i<len; i++) {
                 data = newData[i];
                 var name = data.getName();
@@ -612,7 +615,7 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                 var meta = data.getMetaData();
                 this.__propData.push(data);
                 // prevent default value (*** Select ***) on instance creation
-                if (name.match(/_flattened/) && value === null) {
+                if (meta && meta.flattenedOf && value === null) {
                     value = '';
                 }
                 if (storeAll) {
@@ -624,6 +627,24 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                     else if (value === 'branched') {
                         branchedVars.push({ name: name, meta: meta });
                         this.setData(name, value, comment, noCheck, meta.branches);
+                    }
+                    else if (value === 'flattened') {
+                        // marker row: collect the group, persist the marker
+                        // value only (no per-row store_data).
+                        if (!flattenedGroups[name]) {
+                            flattenedGroups[name] = { rows: [], hasMarker: false };
+                        }
+                        flattenedGroups[name].hasMarker = true;
+                        this.setData(name, value, comment, noCheck, null);
+                    }
+                    else if (meta && meta.flattenedOf) {
+                        // flattened option row: identity is metadata. Collect
+                        // its percent for the marker's group; do NOT store_data.
+                        if (!flattenedGroups[meta.flattenedOf]) {
+                            flattenedGroups[meta.flattenedOf] = { rows: [], hasMarker: false };
+                        }
+                        flattenedGroups[meta.flattenedOf].rows.push({ key: meta.flattenedKey, value: value });
+                        this.setData(name, value, comment, noCheck, null);
                     }
                     else {
                         qx.event.message.Bus.dispatchByName('agrammon.PropTable.storeData',
@@ -640,6 +661,13 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             }
             if (storeAll && branchedVars.length === 2) {
                 this.__storeBranchPair(branchedVars);
+            }
+            if (storeAll) {
+                for (var mk in flattenedGroups) {
+                    if (flattenedGroups.hasOwnProperty(mk)) {
+                        this.__storeFlattenedGroup(mk, flattenedGroups[mk]);
+                    }
+                }
             }
 
             this.isComplete();
@@ -685,6 +713,31 @@ qx.Class.define('agrammon.module.input.NavFolder', {
                 function() {}, 'store_branch_data',
                 { datasetName: datasetName,
                   data: { instance: instance, vars: vars, options: options, data: matrix } });
+        },
+
+        // #431: persist one flattened input via store_flattened_data. The marker
+        // var name carries the instance; rows carry option key + percent.
+        __storeFlattenedGroup: function(markerName, group) {
+            var regex = /\[(.+)\]/;
+            var m = regex.exec(markerName);
+            if (!m) { return; }
+            var instance = m[1];
+            var varName  = markerName.replace(regex, '[]');
+            var options = [], fractions = [];
+            for (var i = 0; i < group.rows.length; i++) {
+                options.push(group.rows[i].key);
+                // #431: keep unset cells empty (null) rather than coercing them
+                // to 0 — an empty percent means "not yet set", not zero. An
+                // explicitly typed 0 is preserved.
+                var rv = group.rows[i].value;
+                fractions.push(rv === '' || rv === null || rv === undefined ? null : Number(rv));
+            }
+            if (options.length === 0) { return; }
+            var datasetName = '' + agrammon.Info.getInstance().getDatasetName();
+            agrammon.io.remote.Rpc.getInstance().callAsync(
+                function() {}, 'store_flattened_data',
+                { datasetName: datasetName,
+                  data: { instance: instance, var: varName, options: options, fractions: fractions } });
         },
 
         /**
