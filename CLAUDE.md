@@ -37,6 +37,13 @@ zef --debug --/test --deps-only --test-depends install .
 # Run all tests
 prove6 -l t/
 
+# Run all tests in parallel (much faster). Tests are parallel-safe: DB-backed
+# files use per-process-unique usernames (derived from $*PID). The shared model
+# cache (~/.agrammon) must be warm first, so parallel workers only read it
+# rather than racing to build it — run the suite serially once after a model
+# change, then use -j.
+prove6 -l -j4 t/
+
 # Run specific test file
 raku -Ilib t/model.rakutest
 
