@@ -1,5 +1,14 @@
 - 7.0.3, 2026-06-20, fritz.zaucker@oetiker.ch
 
+  - Read branch matrices order-independently. `load-branch-data` now
+    finds a branch by either axis variable and re-keys the stored matrix
+    onto each variable's current model enum order (matching by canonical
+    option key). This keeps branch editing stable regardless of how the
+    stored row/col axes are oriented — including branches migrated from
+    the old two-row layout — and across model changes such as enum
+    reordering, added/removed options, and cross-version aliases. New
+    options with no stored value read as 0; no stored data is modified.
+
   - Database storage refactor (issue #421). Requires a one-time DB
     migration (run with all instances stopped):
     - Rename the `data_new` table to `data`

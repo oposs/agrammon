@@ -942,22 +942,43 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         my $data;
         self.with-db: -> $db {
             my $username = $!user.username;
-            # @var-names[0] is the row variable; branches_row_var is unique, so
-            # the single branch row is found directly (no ordering reliance).
-            my @b = $db.query(q:to/SQL/, $username, $!name, |self!variant, @var-names[0], $instance).hashes;
-                SELECT b.branches_row_options, b.branches_col_options, b.branches_matrix
+            # Match the branch by EITHER axis variable. The single-row schema
+            # designates one variable as the row axis and one as the column axis,
+            # but which is which is not guaranteed to line up with the caller's
+            # @var-names order — branches migrated from the old two-row layout were
+            # assigned row/col by storage order, and the model's branch-variable
+            # order can change between versions. We therefore find the pair in
+            # either orientation and re-orient the stored matrix to the caller's
+            # order (@var-names[0] = row, [1] = col), transposing when it was stored
+            # the other way round. This keeps branch reads stable regardless of how
+            # the row/col axes happen to be stored.
+            # Prefer the canonical orientation (row var = @var-names[0]); fall back
+            # to the reversed one (row var = @var-names[1]) for branches stored the
+            # other way round. ORDER BY ... LIMIT 1 makes the canonical row win if
+            # both happen to exist.
+            my @b = $db.query(q:to/SQL/, $username, $!name, |self!variant, @var-names[0], @var-names[1], $instance).hashes;
+                SELECT b.branches_row_options, b.branches_col_options, b.branches_matrix,
+                       rv.data_var AS stored_row_var
                   FROM branches b
                   JOIN data rv ON (b.branches_row_var = rv.data_id)
+                  JOIN data cv ON (b.branches_col_var = cv.data_id)
                  WHERE rv.data_dataset = dataset_name2id($1,$2,$3,$4,$5)
-                   AND rv.data_var = $6
                    AND rv.data_instance_id = (SELECT data_instance_id FROM data_instance
                                                WHERE data_instance_dataset = dataset_name2id($1,$2,$3,$4,$5)
-                                                 AND data_instance_name = $7)
+                                                 AND data_instance_name = $8)
+                   AND ( (rv.data_var = $6 AND cv.data_var = $7)
+                      OR (rv.data_var = $7 AND cv.data_var = $6) )
+                 ORDER BY (rv.data_var = $6) DESC
+                 LIMIT 1
             SQL
             with @b[0] -> %row {
+                # Return the stored matrix row-major together with its own option
+                # lists. We do NOT re-orient here: the matrix is laid out as
+                # [branches_row_options] x [branches_col_options], but which model
+                # variable each axis belongs to is decided by matching option keys
+                # against the model (Agrammon::Web::Service.load-branch-data), since
+                # the stored row/col *variable* assignment can be crossed.
                 $data = {
-                    # flatten the 2-D matrix row-major (DB::Pg nests are itemized,
-                    # so .flat won't recurse — slip each row instead)
                     fractions => %row<branches_matrix>.map(*.Slip).Array,
                     options   => [ %row<branches_row_options>, %row<branches_col_options> ],
                 };

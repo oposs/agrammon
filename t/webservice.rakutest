@@ -21,7 +21,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 55;
+plan 56;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -336,6 +336,68 @@ transactionally {
                 :$instance
             )
         )}, "Load branch data";
+    }
+
+    subtest "load-branch-data re-orients crossed and drifted branch matrices" => sub {
+        plan 4;
+        my @vars = (
+            'Livestock::Poultry[]::Housing::Type::housing_type',
+            'Livestock::Poultry[]::Housing::Type::manure_removal_interval',
+        );
+        # Re-store the MyNewTestDataset branch with only 5 of the model's 6
+        # manure_removal_interval options (omit 'once_a_day') -> cross-version
+        # option drift, in a 4x5 matrix.
+        $ws.store-branch-data($user, 'MyNewTestDataset', %(
+            :@vars, :instance('Branched'),
+            :options(${
+                @vars[0] => [< manure_belt_with_manure_belt_drying_system
+                               manure_belt_without_manure_belt_drying_system
+                               deep_pit deep_litter >],
+                @vars[1] => [< less_than_twice_a_month twice_a_month
+                               3_to_4_times_a_month more_than_4_times_a_month
+                               no_manure_belt >],
+            }),
+            :data([[10,0,0,0,0],[0,0,20,0,0],[5,20,0,0,0],[0,0,15,20,10]]),
+        ));
+
+        # Expected: re-keyed to the full 4x6 model enum order. 'once_a_day' (new,
+        # model index 4) is empty; 'no_manure_belt' lands at its model index 5 —
+        # NOT at stored index 4 — proving key-based (not positional) placement.
+        my @expected = (
+            10e0, 0e0,  0e0,  0e0,  0e0, 0e0,
+             0e0, 0e0, 20e0,  0e0,  0e0, 0e0,
+             5e0,20e0,  0e0,  0e0,  0e0, 0e0,
+             0e0, 0e0, 15e0, 20e0,  0e0,10e0,
+        );
+
+        my $r = $ws.load-branch-data($user, 'MyNewTestDataset', %( :@vars, :instance('Branched') ));
+        is-deeply $r<fractions>, @expected,
+            'drifted branch re-keyed to model enum order (once_a_day empty, no_manure_belt by key)';
+        is $r<options>[1].elems, 6, 'col options expanded to the 6 model enum keys';
+
+        # Simulate the issue #421 migration crossing: swap the stored row/col vars.
+        $*AGRAMMON-DB-CONNECTION.query(q:to/SQL/, $user.username);
+            UPDATE branches
+               SET branches_row_var = branches_col_var,
+                   branches_col_var = branches_row_var
+             WHERE branches_id = (
+                SELECT b.branches_id
+                  FROM branches b
+                  JOIN data rv ON b.branches_row_var = rv.data_id
+                  JOIN data_instance di ON di.data_instance_id = rv.data_instance_id
+                  JOIN dataset ds ON ds.dataset_id = di.data_instance_dataset
+                 WHERE ds.dataset_pers   = pers_email2id($1)
+                   AND ds.dataset_name   = 'MyNewTestDataset'
+                   AND di.data_instance_name = 'Branched')
+            SQL
+
+        my $r2 = $ws.load-branch-data($user, 'MyNewTestDataset', %( :@vars, :instance('Branched') ));
+        is-deeply $r2<fractions>, @expected,
+            'crossed branch (row/col vars swapped) still re-orients correctly';
+        is-deeply $r2<options>[0],
+            [< manure_belt_with_manure_belt_drying_system
+               manure_belt_without_manure_belt_drying_system deep_pit deep_litter >],
+            'vars[0] axis reported with housing_type keys regardless of stored crossing';
     }
 
     throws-like { $ws.rename-dataset($user, 'MyTestDataset', 'MyTestDataset') },

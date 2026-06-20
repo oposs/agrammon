@@ -33,6 +33,10 @@ class Agrammon::Web::Service {
     has %.technical-parameters;
     has Agrammon::UI::Web $.ui-web .= new(:$!model);
     has Agrammon::OutputsCache $!outputs-cache .= new;
+    # Lazily-built map of full input-variable path -> Agrammon::Model::Input,
+    # used to re-key branch matrices onto the current model enum order.
+    has %!branch-input-by-path;
+    has Bool $!branch-input-cache-built = False;
 
     #| return config hash as expected by Web GUI
     method get-cfg() {
@@ -707,12 +711,74 @@ class Agrammon::Web::Service {
         return $deleted;
     }
 
+    method !branch-input(Str $path) {
+        unless $!branch-input-cache-built {
+            for $!model.load-order -> $module {
+                my $tax  = $module.taxonomy;
+                my $root = $module.instance-root;
+                $tax ~~ s/$root/$root\[\]/ if $root;
+                for $module.input -> $input {
+                    %!branch-input-by-path{"$tax\::{$input.name}"} = $input;
+                }
+            }
+            $!branch-input-cache-built = True;
+        }
+        return %!branch-input-by-path{$path};
+    }
+
     method load-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
-        return Agrammon::DB::Dataset.new(
+        my $raw = Agrammon::DB::Dataset.new(
             :$user,
             :agrammon-variant($!cfg.agrammon-variant),
             :$name
         ).lookup.load-branch-data(%data<vars>, %data<instance>);
+
+        # The DB layer returns the matrix oriented to the requested @vars order.
+        # Re-key it onto each axis variable's CURRENT model enum order: cells are
+        # matched by canonical option key, so a branch reads correctly even when
+        # the enum order changed, options were added/removed, or cross-version
+        # aliases apply (options with no stored value come back as 0). This keeps
+        # branch display stable across model changes without touching stored data.
+        return $raw unless $raw<fractions>.defined;
+        my @vars = %data<vars>.list;
+        my $in0  = self!branch-input(@vars[0]);
+        my $in1  = self!branch-input(@vars[1]);
+        return $raw unless $in0 && $in1 && $in0.enum && $in1.enum;
+
+        my @k0   = $in0.enum-ordered.map(*.key);   # vars[0] keys, model order
+        my @k1   = $in1.enum-ordered.map(*.key);   # vars[1] keys, model order
+        my @s0   = $raw<options>[0].list;          # stored ROW-axis option keys
+        my @s1   = $raw<options>[1].list;          # stored COL-axis option keys
+        my @frac = $raw<fractions>.list;           # stored matrix, row-major [@s0]x[@s1]
+
+        # The stored row/col *variable* assignment can be crossed (e.g. branches
+        # migrated from the old layout), so decide which requested variable each
+        # stored axis belongs to by matching its option keys against each model
+        # enum — not by the stored row/col designation.
+        my $row-is-v0 =  @s0.grep({ $in0.canonical-enum-value($_).defined }).elems
+                      >= @s0.grep({ $in1.canonical-enum-value($_).defined }).elems;
+        my ($row-in, $col-in) = $row-is-v0 ?? ($in0, $in1) !! ($in1, $in0);
+
+        # Build (canonical vars[0] key, canonical vars[1] key) -> value.
+        my %cell;
+        my $ncol = @s1.elems;
+        for ^@s0.elems -> $r {
+            my $rk = $row-in.canonical-enum-value(@s0[$r]) // @s0[$r];
+            for ^$ncol -> $c {
+                my $ck  = $col-in.canonical-enum-value(@s1[$c]) // @s1[$c];
+                my $val = @frac[$r * $ncol + $c];
+                if $row-is-v0 { %cell{$rk}{$ck} = $val }
+                else          { %cell{$ck}{$rk} = $val }
+            }
+        }
+        # Emit in the current model enum order; options with no stored value -> 0.
+        my @fractions;
+        for @k0 -> $a {
+            for @k1 -> $b {
+                @fractions.push: %cell{$a}{$b} // 0e0;
+            }
+        }
+        return { fractions => @fractions, options => [@k0, @k1] };
     }
 
     method store-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
