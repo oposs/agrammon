@@ -1,3 +1,41 @@
+- 7.0.3, 2026-06-20, fritz.zaucker@oetiker.ch
+
+  - Database storage refactor (issue #421). Requires a one-time DB
+    migration (run with all instances stopped):
+    - Rename the `data_new` table to `data`
+      (`db/migrate-issue-421-rename-data-new-to-data.sql`).
+    - Normalize per-instance name and display order into a dedicated
+      `data_instance` table referenced by foreign key
+      (`db/migrate-issue-421-data-instance-table.sql`).
+    - Collapse the two-row-per-branch `branches` design into one
+      self-describing row per branch
+      (`db/migrate-issue-421-branch-storage.sql`).
+
+  - Store flattened inputs in a dedicated self-describing `flattened`
+    table, retiring the `_flattenedNN_` synthetic option rows and the
+    read-time state machine (issue #431). Requires the migration
+    `db/migrate-issue-431-flatten-storage.sql`, run after the three
+    issue #421 migrations.
+
+  - Technical parameter values are now single-sourced from the
+    Environment config; the `.nhd` `value=` fallback is dropped
+    (issue #217).
+
+  - Unify the `default_calc` and `default_gui` formula attributes into a
+    single `default_value` (issue #555).
+
+  - Run REST API batch simulations in parallel with a bounded degree,
+    and apply the same cold-start warm-up to the CLI `run` (issue #569).
+
+  - Add a reference-dataset regression test that runs production
+    datasets through the v7.0.0 model and diffs against committed
+    expected results (issue #385).
+
+  - CI: run the test suite in parallel (`prove6 -j4`), bump typst to
+    v0.15.0, fix the model-cache key, and drop unused LaTeX/Perl5
+    components.
+
+
 - 7.0.2, 2026-06-15, fritz.zaucker@oetiker.ch
 
   - Isolate the model precompilation cache per instance: ModelCache and
