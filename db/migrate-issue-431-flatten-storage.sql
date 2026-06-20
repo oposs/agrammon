@@ -22,7 +22,10 @@ BEGIN
     SELECT m.data_id,
            array_agg(replace(substr(o.data_var, char_length(m.data_var) + 14), ' ', '_')
                      ORDER BY o.data_var),
-           array_agg(o.data_val::numeric ORDER BY o.data_var)
+           -- Empty-string fractions are unset percents; store them as NULL
+           -- (matches the app's "unset flatten percent round-trips as NULL"
+           -- semantics) instead of failing the numeric cast on legacy rows.
+           array_agg(NULLIF(o.data_val, '')::numeric ORDER BY o.data_var)
       FROM data m
       JOIN data o
         ON o.data_dataset = m.data_dataset

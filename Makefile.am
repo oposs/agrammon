@@ -15,7 +15,7 @@ PM := $(shell find lib -name "*.pm")
 
 # EXTRA_DIST = VERSION cpanfile COPYRIGHT LICENSE CHANGELOG AUTHORS bootstrap $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) Dockerfile
 
-EXTRA_DIST = META6.json README.md VERSION COPYRIGHT CHANGELOG.md bootstrap $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) bin lib
+EXTRA_DIST = META6.json README.md VERSION COPYRIGHT CHANGELOG.md bootstrap $(PUB) $(wildcard t/*.t) $(POD) $(TEMPL) $(PERLTESTS) $(SHARE) bin lib db
 
 # Default gzip --best is ~6× slower than -6 for marginal size gain on
 # our 250 MB tree. Override automake's default so `make dist` finishes
