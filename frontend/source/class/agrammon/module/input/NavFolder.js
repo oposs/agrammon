@@ -116,6 +116,19 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             for (i=0; i<len; i++) {
                 varOld = this.__propData[i];
                 varNew = varOld.clone(varOld.getName().replace(/\[.*\]/, newLabel));
+                // #431: a flattened option row identifies its marker via the
+                // flattenedOf metadata pointer (a full var name carrying the
+                // instance label). clone() only renames the var's own name, so
+                // re-point flattenedOf to the new instance too — otherwise the
+                // copied rows still reference the SOURCE marker, setDataset
+                // splits marker and rows into separate groups, and the copied
+                // instance is persisted with no flattened table rows (the
+                // marker then reloads as a bare enum Select).
+                var meta = varNew.getMetaData();
+                if (meta && meta.flattenedOf) {
+                    meta.flattenedOf = meta.flattenedOf.replace(/\[.*\]/, newLabel);
+                    varNew.setMetaData(meta);
+                }
                 newData.push(varNew);
             }
             return newData;
