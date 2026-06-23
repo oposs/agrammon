@@ -1,3 +1,19 @@
+- 7.0.6, 2026-06-23, fritz.zaucker@oetiker.ch
+
+  - Fix duplicating a multi-instance module instance losing its branch
+    matrix when the model's enum options had drifted since the matrix
+    was stored (e.g. a 4x5 matrix against a now-4x6 model, as in the
+    Regional model's Poultry housing inputs). The copy previously
+    reconstructed each matrix on the frontend, reshaped to the *current*
+    option counts, and silently dropped it on a dimension mismatch.
+    Branch matrices are now copied verbatim server-side
+    (`Dataset.copy-instance-branches`, via a new `copy_branch_data`
+    RPC), preserving the stored matrix and its option arrays regardless
+    of whether the model's options have since grown or shrunk. Frontend-
+    plus-backend change, no DB migration. Instances copied before this
+    fix can be re-copied to recover their matrix (the source kept it).
+
+
 - 7.0.5, 2026-06-23, fritz.zaucker@oetiker.ch
 
   - Fix duplicating a multi-instance module instance losing its
