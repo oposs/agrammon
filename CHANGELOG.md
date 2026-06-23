@@ -1,3 +1,17 @@
+- 7.0.5, 2026-06-23, fritz.zaucker@oetiker.ch
+
+  - Fix duplicating a multi-instance module instance losing its
+    flattened percentage distributions (e.g. the Regional model's
+    housing mitigation options). `cloneDataset()` renamed each cloned
+    variable to the new instance label but left the `flattenedOf`
+    metadata pointer referencing the source instance, so the copied
+    percent rows were persisted onto the source instead of the new
+    instance — the copy reloaded with the `*** Flattened ***` marker
+    reverted to a bare enum Select and the percent lines gone.
+    Frontend-only change — no DB migration. Instances copied before
+    this fix can be re-flattened by hand.
+
+
 - 7.0.4, 2026-06-23, fritz.zaucker@oetiker.ch
 
   - Fix copying a dataset losing its flattened percentage distributions
