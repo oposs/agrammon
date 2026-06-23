@@ -10,7 +10,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 26;
+plan 27;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -305,6 +305,36 @@ transactionally {
             :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).load;
         is-deeply $clone.load-branch-data(@vars, 'Branched')<fractions>,
             [1e0, 2e0, 3e0, 4e0, 5e0, 6e0], 'Cloned branch matrix matches source';
+    }
+
+    subtest 'clone copies flattened distribution (#431)' => {
+        plan 3;
+        # Regression: clone() must carry the dedicated `flattened` table rows
+        # across to the new dataset, remapping the marker var to the clone's
+        # data row. Without this, a copied dataset loses its percentages.
+        my $var = 'Livestock::Poultry[]::Housing::Type::housing_system';
+        my $src = Agrammon::DB::Dataset.new(:name<FlatTest>, :$user,
+            :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).create;
+        $src.store-flattened-data($var, 'Flattened',
+            ['deep litter', 'aviary', 'floor housing'], [60, 25, 15]);
+        lives-ok {
+            $src.clone(:new-username($user.username),
+                       :old-dataset<FlatTest>, :new-dataset<FlatClone>)
+        }, 'Clone dataset with flattened distribution';
+
+        my $db = $*AGRAMMON-DB-HANDLE;
+        my @row = $db.query(q:to/SQL/, $var).hashes;
+            SELECT f.flattened_options AS opts, f.flattened_fractions AS fracs
+              FROM flattened f
+              JOIN data d  ON f.flattened_var = d.data_id
+              JOIN data_instance di ON d.data_instance_id = di.data_instance_id
+              JOIN dataset ds ON di.data_instance_dataset = ds.dataset_id
+             WHERE ds.dataset_name = 'FlatClone' AND d.data_var = $1
+            SQL
+        is-deeply @row[0]<opts>, [< deep_litter aviary floor_housing >],
+            'cloned flattened options match source';
+        is-deeply @row[0]<fracs>.map(+*).Array, [60e0, 25e0, 15e0],
+            'cloned flattened fractions match source';
     }
 
     subtest 'store-branch-data creates data rows for a fresh instance (#421)' => {

@@ -291,6 +291,31 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
                    )
             SQL
 
+            # clone flattened distributions: one self-describing row each,
+            # remapping the marker var to the new dataset's data row by
+            # (instance name, var name). Mirrors the branches clone above but
+            # the flattened table references a single var (#431).
+            $db.query(q:to/SQL/, $ds<id>, $old-username, $old-dataset, $gui, $model, @versions);
+                INSERT INTO flattened (flattened_var, flattened_options, flattened_fractions)
+                SELECT nfv.data_id, f.flattened_options, f.flattened_fractions
+                  FROM flattened f
+                  JOIN data ofv ON (f.flattened_var = ofv.data_id)
+                  LEFT JOIN data_instance ofi ON (ofv.data_instance_id = ofi.data_instance_id)
+                  JOIN data_instance nfi ON (nfi.data_instance_dataset = $1
+                                         AND nfi.data_instance_name = ofi.data_instance_name)
+                  JOIN data nfv ON (nfv.data_dataset = $1 AND nfv.data_var = ofv.data_var
+                                AND nfv.data_instance_id = nfi.data_instance_id)
+                 WHERE ofv.data_dataset = (
+                       SELECT dataset_id FROM dataset
+                        WHERE dataset_pers         = pers_email2id($2)
+                          AND dataset_name         = $3
+                          AND dataset_guivariant   = $4
+                          AND dataset_modelvariant = $5
+                          AND dataset_version      = ANY($6)
+                        LIMIT 1
+                   )
+            SQL
+
             CATCH {
                 .note;
                 die X::Agrammon::DB::Dataset::CloneFailed.new(:$old-username, :$new-username, :$old-dataset, :$new-dataset);
