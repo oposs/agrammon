@@ -1,3 +1,14 @@
+- 7.0.4, 2026-06-23, fritz.zaucker@oetiker.ch
+
+  - Fix copying a dataset losing its flattened percentage distributions
+    (issue #431). `Dataset.clone()` now also copies the dedicated
+    `flattened` table, remapping the marker variable to the new
+    dataset's data rows; previously only the `data`, `data_instance`,
+    and `branches` rows were cloned. Code-only change — no DB migration;
+    datasets copied before this fix cannot recover their lost
+    percentages.
+
+
 - 7.0.3, 2026-06-20, fritz.zaucker@oetiker.ch
 
   - Read branch matrices order-independently. `load-branch-data` now
