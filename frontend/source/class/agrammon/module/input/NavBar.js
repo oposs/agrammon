@@ -1123,9 +1123,21 @@ qx.Class.define('agrammon.module.input.NavBar', {
                 var newFolder = this.__createNavFolder(newLabels, 'isInstance',
                                                       null, folderName);
                 this.__addFolder(folderName, newFolder, parentFolder);
+                var targetLabel = newLabel;   // bare instance name for the copy
                 newLabel =  '['+newLabel+']';
                 var newData = treeFolder.cloneDataset(newLabel);
                 newFolder.setDataset(newData, this.__handleIgnore(), true);
+
+                // #421/copy: copy this instance's branch matrices server-side,
+                // verbatim. Duplicating used to reconstruct each matrix on the
+                // frontend against the *current* model options and silently drop
+                // it when those options had drifted since the matrix was stored
+                // (e.g. a 4x5 matrix vs a now-4x6 model). The server-side copy
+                // preserves the stored matrix + its option arrays unchanged.
+                agrammon.io.remote.Rpc.getInstance().callAsync(
+                    function() {}, 'copy_branch_data',
+                    { datasetName: '' + agrammon.Info.getInstance().getDatasetName(),
+                      data: { sourceInstance: oldLabel, targetInstance: targetLabel } });
 
                 parentFolder.add(newFolder);
                 this.__navTree.setSelection([newFolder]);

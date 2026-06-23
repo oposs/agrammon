@@ -610,6 +610,18 @@ sub application-routes(Agrammon::Web::Service $ws) {
             }
         }
 
+        post -> LoggedIn $user, 'copy_branch_data' {
+            request-body -> (:datasetName($dataset-name)!, :%data!) {
+                $ws.copy-branch-data($user, $dataset-name, %data);
+                CATCH {
+                    .note;
+                    when X::Agrammon::DB::Dataset::StoreBranchDataFailed {
+                        conflict 'application/json', %( error => .message );
+                    }
+                }
+            }
+        }
+
         post -> LoggedIn $user, 'upload' {
             request-body -> (:$file!, :datasetName($dataset-name)!, :$comment) {
                 my $file-name = $file.filename;

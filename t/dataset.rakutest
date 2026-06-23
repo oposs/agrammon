@@ -10,7 +10,7 @@ use Test;
 use lib 't/lib';
 use AgrammonTest;
 
-plan 27;
+plan 28;
 
 if %*ENV<AGRAMMON_UNIT_TEST> {
     skip-rest 'Not a unit test';
@@ -305,6 +305,45 @@ transactionally {
             :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).load;
         is-deeply $clone.load-branch-data(@vars, 'Branched')<fractions>,
             [1e0, 2e0, 3e0, 4e0, 5e0, 6e0], 'Cloned branch matrix matches source';
+    }
+
+    subtest 'copy-instance-branches copies a branch verbatim to a new instance (#421)' => {
+        plan 4;
+        # Regression: duplicating an instance must copy its branch matrix
+        # server-side, verbatim (matrix + its own option arrays). The retired
+        # frontend reconstruction reshaped the matrix to the *current* model
+        # option counts and silently dropped it whenever those counts had
+        # drifted since the matrix was stored. The copy is dimension-agnostic:
+        # exercise both a wide (2x3) and a tall (3x2) matrix so neither axis is
+        # assumed nor transposed.
+        my @vars = (
+            'Livestock::Poultry[]::Housing::Type::housing_type',
+            'Livestock::Poultry[]::Housing::Type::manure_removal_interval',
+        );
+        my $ds = Agrammon::DB::Dataset.new(:name<CopyBranchTest>, :$user,
+            :agrammon-variant(version => '6.0', gui => 'Regional', model => 'Base')).create;
+
+        # wide: 2 rows x 3 cols
+        $ds.store-branch-data(@vars, 'Wide',
+            { @vars[0] => ['deep pit', 'deep litter'],
+              @vars[1] => ['once a day', 'twice a month', 'no manure belt'] },
+            [[1, 2, 3], [4, 5, 6]]);
+        lives-ok { $ds.copy-instance-branches('Wide', 'WideCopy') },
+            'copy-instance-branches (2x3) does not die';
+        is-deeply $ds.load-branch-data(@vars, 'WideCopy')<fractions>,
+            [1e0, 2e0, 3e0, 4e0, 5e0, 6e0],
+            'copied 2x3 branch matrix matches source verbatim';
+
+        # tall: 3 rows x 2 cols (m > n) — same axes, swapped option counts
+        $ds.store-branch-data(@vars, 'Tall',
+            { @vars[0] => ['deep pit', 'deep litter', 'aviary'],
+              @vars[1] => ['once a day', 'no manure belt'] },
+            [[1, 2], [3, 4], [5, 6]]);
+        lives-ok { $ds.copy-instance-branches('Tall', 'TallCopy') },
+            'copy-instance-branches (3x2) does not die';
+        is-deeply $ds.load-branch-data(@vars, 'TallCopy')<fractions>,
+            [1e0, 2e0, 3e0, 4e0, 5e0, 6e0],
+            'copied 3x2 branch matrix matches source verbatim (m > n)';
     }
 
     subtest 'clone copies flattened distribution (#431)' => {

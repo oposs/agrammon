@@ -915,6 +915,71 @@ class Agrammon::DB::Dataset does Agrammon::DB::Variant {
         }
     }
 
+    # Copy every branch from $source-instance to $target-instance within this
+    # dataset, verbatim: the 'branched' marker data rows plus the
+    # self-describing branches rows (own option arrays + matrix). Used when an
+    # instance is duplicated. Copying server-side keeps the stored matrix and
+    # its option arrays unchanged, so a matrix saved against an older model
+    # version (e.g. 4x5) survives the copy intact and the read-time re-keying
+    # renders it against the current model (e.g. 4x6) exactly as for the source.
+    # This replaces the frontend's per-copy reconstruction, which reshaped the
+    # matrix to the *current* option counts and silently dropped it whenever the
+    # model's options had drifted since the matrix was stored (#421 follow-up).
+    method copy-instance-branches(Str $source-instance, Str $target-instance --> Nil) {
+        self.with-db: -> $db {
+            my $username = $!user.username;
+            my $src-id   = self!instance-id($db, $username, $source-instance);
+            my $tgt-id   = self!instance-id($db, $username, $target-instance);
+
+            # 1) ensure each branch-axis variable exists as a 'branched' data
+            #    row in the target instance (the copy's per-variable stores
+            #    never write branch axes) so the branches rows below can
+            #    reference them.
+            $db.query(q:to/SQL/, $src-id, $tgt-id);
+                INSERT INTO data (data_dataset, data_var, data_val, data_instance_id)
+                SELECT (SELECT data_instance_dataset FROM data_instance WHERE data_instance_id = $2),
+                       sd.data_var, 'branched', $2
+                  FROM data sd
+                 WHERE sd.data_instance_id = $1 AND sd.data_val = 'branched'
+                ON CONFLICT (data_var, data_instance_id, data_dataset)
+                DO UPDATE SET data_val = 'branched'
+            SQL
+
+            # 2) clear any existing branches for the target instance, then copy
+            #    the source instance's branches verbatim, remapping the row/col
+            #    vars to the target instance's data rows by variable name.
+            $db.query(q:to/SQL/, $tgt-id);
+                DELETE FROM branches b
+                 USING data d
+                 WHERE (b.branches_row_var = d.data_id OR b.branches_col_var = d.data_id)
+                   AND d.data_instance_id = $1
+            SQL
+
+            $db.query(q:to/SQL/, $src-id, $tgt-id);
+                INSERT INTO branches (branches_row_var, branches_col_var,
+                                      branches_row_options, branches_col_options, branches_matrix)
+                SELECT trv.data_id, tcv.data_id,
+                       b.branches_row_options, b.branches_col_options, b.branches_matrix
+                  FROM branches b
+                  JOIN data orv ON (orv.data_id = b.branches_row_var)
+                  JOIN data ocv ON (ocv.data_id = b.branches_col_var)
+                  JOIN data trv ON (trv.data_instance_id = $2 AND trv.data_var = orv.data_var)
+                  JOIN data tcv ON (tcv.data_instance_id = $2 AND tcv.data_var = ocv.data_var)
+                 WHERE orv.data_instance_id = $1
+            SQL
+
+            $db.query(q:to/SQL/, $username, $!name, |self!variant);
+                UPDATE dataset SET dataset_mod_date = CURRENT_TIMESTAMP
+                 WHERE dataset_id=dataset_name2id($1,$2,$3,$4,$5)
+            SQL
+
+            CATCH {
+                .note;
+                die X::Agrammon::DB::Dataset::StoreBranchDataFailed.new(:variable($source-instance));
+            }
+        }
+    }
+
     # Ensure a flattened variable's marker data row exists for $instance-id with
     # data_val='flattened' and return its data_id (mirrors !branched-var-id).
     method !flattened-var-id($db, $instance-id, $variable) {

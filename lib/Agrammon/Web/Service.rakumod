@@ -799,6 +799,15 @@ class Agrammon::Web::Service {
         $!outputs-cache.invalidate($user.username, $name);
     }
 
+    method copy-branch-data(Agrammon::Web::SessionUser $user, Str $name, %data) {
+        Agrammon::DB::Dataset.new(
+            :$user,
+            :agrammon-variant($!cfg.agrammon-variant),
+            :$name
+        ).lookup.copy-instance-branches(%data<sourceInstance>, %data<targetInstance>);
+        $!outputs-cache.invalidate($user.username, $name);
+    }
+
     method rename-instance(Agrammon::Web::SessionUser $user, Str $dataset-name, Str $old-instance, Str $new-instance, Str $variable-pattern --> Nil) {
         Agrammon::DB::Dataset.new(
             :$user,
