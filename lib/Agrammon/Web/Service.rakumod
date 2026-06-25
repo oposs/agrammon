@@ -674,6 +674,14 @@ class Agrammon::Web::Service {
     }
 
     method store-data(Agrammon::Web::SessionUser $user, $dataset-name, $variable, $value, @branches?, @options?, $row? --> Nil) {
+        # #431 guard: a flattened percent ('…#flat#<key>') is GUI-only identity
+        # and must be persisted via store_flattened_data, never as a plain data
+        # row. A stray store_data here is how a dataset ends up with real values
+        # in `data` while the `flattened` table stays NULL (run sums to 0 → 500).
+        # Fail loudly so any such regression is caught immediately, not weeks
+        # later at run time.
+        die "Refusing to store flattened-option variable '$variable' via store_data; use store_flattened_data"
+            if $variable.contains('#flat#');
         my $ds = Agrammon::DB::Dataset.new(
             :$user,
             :agrammon-variant($!cfg.agrammon-variant),

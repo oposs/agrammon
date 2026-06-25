@@ -414,6 +414,16 @@ qx.Class.define('agrammon.module.input.PropTable', {
             if (fC != this.__valueColumn) {
                 return;
             }
+            // #431: a flattened-option percent must persist to the flattened
+            // table via store_flattened_data, NOT as a `#flat#` data row via
+            // store_data. storeFlattenedForEdit() handles the whole group and
+            // returns true when it did, so we skip the plain store_data below.
+            // Recalc only after the write lands (mirrors __store_data_func), so
+            // the run never races a not-yet-stored fraction.
+            if (this.__currentFolder.storeFlattenedForEdit(varname, this.__store_data_func)) {
+                qx.event.message.Bus.dispatchByName('agrammon.Output.invalidate');
+                return;
+            }
             // store data in database
             this.__rpc.callAsync(
                 this.__store_data_func,

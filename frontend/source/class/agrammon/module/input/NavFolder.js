@@ -689,7 +689,9 @@ qx.Class.define('agrammon.module.input.NavFolder', {
 
         // #431: persist one flattened input via store_flattened_data. The marker
         // var name carries the instance; rows carry option key + percent.
-        __storeFlattenedGroup: function(markerName, group) {
+        // onDone (optional) runs after the RPC completes — used by incremental
+        // edits to trigger the output recalc only once the write has landed.
+        __storeFlattenedGroup: function(markerName, group, onDone) {
             var regex = /\[(.+)\]/;
             var m = regex.exec(markerName);
             if (!m) { return; }
@@ -707,9 +709,46 @@ qx.Class.define('agrammon.module.input.NavFolder', {
             if (options.length === 0) { return; }
             var datasetName = '' + agrammon.Info.getInstance().getDatasetName();
             agrammon.io.remote.Rpc.getInstance().callAsync(
-                function() {}, 'store_flattened_data',
+                (onDone || function() {}), 'store_flattened_data',
                 { datasetName: datasetName,
                   data: { instance: instance, var: varName, options: options, fractions: fractions } });
+        },
+
+        // #431: persist a single-cell edit of a flattened percent. Incremental
+        // edits flow through PropTable.__dataChanged_func, which only knows
+        // store_data — for a flattened-option row that would (wrongly) write a
+        // `#flat#` data row and never touch the flattened table, leaving the run
+        // to read stale/empty fractions (sums-to-0 → 500). Detect such an edit,
+        // gather the marker's current percents from propData (identity is the
+        // flattenedOf / flattenedKey metadata, never the row name) and re-store
+        // the whole group via store_flattened_data. Returns true when handled so
+        // the caller skips its plain store_data. Match instance-independently
+        // (#420: a row's [instance] may be stale after a rename).
+        storeFlattenedForEdit: function(editedVarName, onDone) {
+            var stripInst = function(n) { return ('' + n).replace(/\[[^\]]*\]/, ''); };
+            var bareEdited = stripInst(editedVarName);
+            // Learn the edited row's marker from its metadata.
+            var markerOf = null;
+            for (var i = 0; i < this.__propData.length; i++) {
+                if (stripInst(this.__propData[i].getName()) === bareEdited) {
+                    var m = this.__propData[i].getMetaData() || {};
+                    markerOf = m.flattenedOf || null;
+                    break;
+                }
+            }
+            if (markerOf == null) { return false; }
+            // Gather all sibling percents for that marker (current values).
+            var bareMarker = stripInst(markerOf);
+            var group = { rows: [], hasMarker: true };
+            for (var j = 0; j < this.__propData.length; j++) {
+                var mj = this.__propData[j].getMetaData() || {};
+                if (mj.flattenedOf && stripInst(mj.flattenedOf) === bareMarker) {
+                    group.rows.push({ key: mj.flattenedKey,
+                                      value: this.__propData[j].getValue() });
+                }
+            }
+            this.__storeFlattenedGroup(markerOf, group, onDone);
+            return true;
         },
 
         /**
