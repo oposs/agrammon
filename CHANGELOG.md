@@ -1,3 +1,22 @@
+- 7.0.7, 2026-06-25, fritz.zaucker@oetiker.ch
+
+  - Fix flattened distribution percentages entered cell-by-cell not
+    reaching the simulation. Editing a single flattened-option percent
+    persisted it as a stray `…#flat#<option>` data row (via store_data)
+    instead of into the `flattened` table, so the GUI showed the entered
+    values while the run read empty or stale fractions. This produced
+    silently wrong results, or a 500 ("flattened values sums to 0
+    instead of 100") when the `flattened` table was all-NULL — e.g. the
+    Regional model's DairyCow housing type. Percent edits now persist
+    the whole distribution via store_flattened_data
+    (`PropTable.__dataChanged_func` → `NavFolder.storeFlattenedForEdit`),
+    and `store_data` now refuses `#flat#` variables as a safeguard.
+    Affects all variants. Frontend-plus-backend change. Datasets already
+    in the split state are corrected by a one-time data repair that
+    backfills the `flattened` fractions from the stray rows and removes
+    them (no schema migration).
+
+
 - 7.0.6, 2026-06-23, fritz.zaucker@oetiker.ch
 
   - Fix duplicating a multi-instance module instance losing its branch
