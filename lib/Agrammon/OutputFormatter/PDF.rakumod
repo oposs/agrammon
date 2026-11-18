@@ -329,7 +329,11 @@ sub input-output-as-pdf(
     %data<titles>     = %titles;
     %data<dataset>    = typst-escape($dataset-name   // 'NO DATASET');
     %data<username>   = typst-escape($user.username) // 'NO USER';
-    %data<model>      = $cfg.gui-variant // 'NO MODEL';
+    # same detailed label as the Excel export, e.g.
+    # "AGRAMMON 7.0.7 Einzelbetriebsmodell - Single"
+    %data<model>      = typst-escape(
+        ($cfg.gui-title{$language} // 'NO VERSION') ~ ' - ' ~ ($cfg.gui-variant // 'NO MODEL')
+    );
     %data<timestamp>  = timestamp;
     %data<version>    = typst-escape($cfg.gui-title{$language} // 'NO  VERSION');
     %data<outputs>    = @output-formatted;

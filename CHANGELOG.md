@@ -1,4 +1,9 @@
-- Unreleased
+- 7.0.8, 2026-11-18, fritz.zaucker@oetiker.ch
+
+  - The "Version:" line of the PDF report now shows the full model
+    designation, e.g. `AGRAMMON 7.0.8 Einzelbetriebsmodell - Single`, as
+    the Excel export already does. Before, it showed only the variant
+    (`Single`).
 
   - The browser tab now shows an icon: the ammonia molecule (blue
     nitrogen, three white hydrogens), the same as on agrammon.ch. Before,
